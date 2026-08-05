@@ -126,8 +126,12 @@ function runWithEnv(env, script) {
     // ═══════════════════════════════════
     console.log('\n  ── ارسال با قالب JSON (پیش‌فرض) ──');
 
+    /* از ۱۴ مرداد ۱۴۰۵، `payamito` قرارداد اختصاصی خودش را دارد
+       (نشانی ثابت، فرم urlencoded). این بخش رفتار **لایه عمومی**
+       را می‌سنجد — یعنی سازگاری با هر سامانه دلخواه — پس باید
+       `generic` باشد نه `payamito`. */
     const baseEnv = {
-      SMS_PROVIDER: 'payamito',
+      SMS_PROVIDER: 'generic',
       SMS_API_URL: FAKE_URL,
       SMS_USERNAME: 'testuser',
       SMS_PASSWORD: 'testpass',
@@ -198,7 +202,7 @@ function runWithEnv(env, script) {
     {
       received.length = 0;
       const { result } = await runWithEnv({
-        SMS_PROVIDER: 'payamito', SMS_API_URL: FAKE_URL,
+        SMS_PROVIDER: 'generic', SMS_API_URL: FAKE_URL,
         SMS_API_KEY: 'SECRETKEY123456', SMS_AUTH_MODE: 'bearer'
       }, 'send');
 
@@ -220,7 +224,13 @@ function runWithEnv(env, script) {
       ['{"RetStatus":1,"StrRetStatus":"Ok"}', true, 'قالب ملی‌پیامک'],
       ['{"return":{"status":200}}',          true,  'قالب کاوه‌نگار'],
       ['{"recId":123456}',                   true,  'شناسه ارسال'],
-      ['1234567',                            true,  'عدد مثبت خام'],
+      /* ── تغییر عمدی، ۱۴ مرداد ۱۴۰۵ ──
+         مستندات payamak-panel: «در صورت دریافت یک عدد بیش از ۱۵
+         رقم، ارسال موفق بوده». عدد کوتاه **کد خطاست** نه شناسه.
+         نمونه‌اش کد ۳۵ (لیست سیاه) که مثبت است ولی خطاست.
+         پیش‌تر «هر عدد مثبت = موفق» بود و کد ۳۵ را موفق می‌شمرد. */
+      ['1234567',                            false, 'عدد کوتاه = کد خطا'],
+      ['1234567890123456',                   true,  'شناسه ۱۶ رقمی'],
       ['{"status":0,"message":"اعتبار کافی نیست"}', false, 'status صفر'],
       ['{"success":false,"error":"کلید نامعتبر"}',  false, 'success نادرست'],
       ['{"RetStatus":-1}',                   false, 'RetStatus منفی'],
@@ -309,7 +319,8 @@ function runWithEnv(env, script) {
         !JSON.stringify(result || {}).includes(SECRET.slice(0, 10)));
       add('اشاره‌گر فقط ۴ نویسه آخر است',
         result?.key_hint === '••••' + SECRET.slice(-4), result?.key_hint);
-      add('نام ارائه‌دهنده گزارش می‌شود', result?.provider === 'payamito');
+      add('نام ارائه‌دهنده گزارش می‌شود', result?.provider === 'generic',
+        result?.provider);
       add('نوع خط گزارش می‌شود', /اختصاصی/.test(result?.line_type || ''),
         result?.line_type);
       add('شماره خط گزارش می‌شود', result?.sender === '3000123456');
@@ -318,7 +329,7 @@ function runWithEnv(env, script) {
 
     {
       const { result } = await runWithEnv({
-        SMS_PROVIDER: 'payamito', SMS_API_URL: FAKE_URL
+        SMS_PROVIDER: 'generic', SMS_API_URL: FAKE_URL
       }, 'health');
       add('بدون اعتبارنامه، ناقص گزارش می‌شود', result?.ok === false);
       add('راهنمای رفع داده می‌شود', !!result?.hint, result?.hint);
@@ -329,8 +340,12 @@ function runWithEnv(env, script) {
         SMS_PROVIDER: 'payamito', SMS_API_KEY: 'x'.repeat(20)
       }, 'health');
       add('بدون نشانی سرویس، خطا می‌دهد', result?.ok === false);
-      add('خطا به SMS_API_URL اشاره می‌کند',
-        /SMS_API_URL/.test(result?.message || ''), result?.message);
+      /* پیامیتو نشانی رسمی در کد دارد، پس `SMS_API_URL` برایش
+         الزامی نیست. آنچه کم است اعتبارنامه است و پیام باید
+         همان را بگوید. */
+      add('خطا علت واقعی را می‌گوید',
+        /اعتبارنامه|SMS_API_URL|فرستنده/.test(result?.message || ''),
+        result?.message);
     }
 
     {

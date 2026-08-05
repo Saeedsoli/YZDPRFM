@@ -109,6 +109,7 @@ bash scripts/smoke_test.sh     # ۹۲ آزمون خودکار
 | `test_catalog.js` | ۱۰۳ گام ۷ — پرترافیک‌ترین ماژول: فیلتر، مرتب‌سازی، جستجوی شل |
 | `test_engagement.js` | ۹۲ گام ۸ — مرز داده شخصی، توکن یک‌بارمصرف، سه محدودیت نرخ |
 | `test_enamad.js` | ۵۷ نشان اعتماد — اعتبارسنجی، CSP، سه لایه محافظ |
+| `test_sms_panel.js` | ۲۶ تفسیر پاسخ سرویس پیامک — ۲۰ کد خطا، تله HTTP 200 |
 | `test_enamad_browser.py` | ۲۲ نشان در مرورگر واقعی — DOM، CLS، حالت قطعی |
 | `test_pwa.js` | ۵۳ پیکربندی PWA — manifest، آیکن، هدر سرویس‌ورکر |
 | `test_brand_names.js` | ۱۱ نگارش فارسی برندها |
@@ -225,6 +226,7 @@ bash scripts/smoke_test.sh     # ۹۲ آزمون خودکار
 | `JOURNAL_LCP.md` | **بهبود LCP مجله** — ۵٫۲۲ به ۲٫۸۱ ثانیه، رندر سمت سرور |
 | `CHECKOUT_NOTE_AND_LABEL.md` | **یادداشت مشتری، برچسب پستی، تماس واقعی** |
 | `SMS_PAYAMITO.md` | **سامانه پیامک پیامیتو** — لایه مستقل از ارائه‌دهنده |
+| `SMS_PAYAMITO_SPEC.md` | **قرارداد فنی پیامک** — نشانی، پارامترها، ۲۰ کد خطا |
 | `NODE_VERSION.md` | **نسخه Node** — ارتقا به ۲۲ LTS، نگهبان هم‌راستایی |
 | `SERVER_MODULARIZATION.md` | **تفکیک server.js** — الگو، ترتیب، دو باگ کشف‌شده |
 | `AUDIT_INDEPENDENT.md` | **ممیزی مستقل** — نشت هش رمز، محدودیت نرخ، خطای بلعیده‌شده |

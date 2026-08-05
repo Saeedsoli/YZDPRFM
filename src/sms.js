@@ -72,6 +72,9 @@ const F_FROM = process.env.SMS_FIELD_FROM || 'from';
 function isConfigured() {
   if (PROVIDER === 'console') return false;
   if (PROVIDER === 'kavenegar') return !!API_KEY;
+  /* پیامیتو نشانی از پیش تعریف‌شده دارد، پس فقط اعتبارنامه لازم
+     است — نام کاربری به‌علاوه ApiKey (یا رمز عبور به‌عنوان جانشین). */
+  if (PROVIDER === 'payamito') return !!(USERNAME && (API_KEY || PASSWORD));
   // بقیه: یا کلید وب‌سرویس، یا نام کاربری و رمز
   return !!(API_KEY || (USERNAME && PASSWORD));
 }
@@ -121,16 +124,81 @@ function request(urlStr, opts = {}) {
   });
 }
 
+/* ═══════════════════════════════════════════
+   کدهای پلتفرم payamak-panel
+   ═══════════════════════════════════════════
+   پیامیتو، ملی پیامک، فراپیامک و چند سامانه دیگر روی همین
+   زیرساخت‌اند و کدهای خطایشان یکسان است.
+
+   چرا ترجمه لازم است: مدیر فروشگاه که «۲» می‌بیند نمی‌داند یعنی
+   اعتبار تمام شده. با پیام فارسی، خودش می‌تواند رفعش کند بدون
+   اینکه سراغ لاگ سرور برود. */
+const PANEL_ERRORS = {
+  '0':    'نام کاربری یا کلید وب‌سرویس اشتباه است.',
+  '2':    'اعتبار پنل پیامک کافی نیست — شارژ کنید.',
+  '3':    'از محدودیت ارسال روزانه گذشته‌اید.',
+  '4':    'از محدودیت حجم ارسال گذشته‌اید.',
+  '5':    'شماره فرستنده معتبر نیست — SMS_SENDER را بررسی کنید.',
+  '6':    'سامانه پیامک در حال به‌روزرسانی است.',
+  '7':    'متن پیامک حاوی کلمه فیلترشده است.',
+  '9':    'ارسال از خط عمومی با وب‌سرویس ممکن نیست — خط اختصاصی لازم است.',
+  '10':   'حساب کاربری پنل پیامک فعال نیست.',
+  '11':   'پیامک ارسال نشد.',
+  '12':   'مدارک حساب پنل پیامک کامل نیست.',
+  '14':   'متن پیامک حاوی لینک است.',
+  '15':   'ارسال گروهی بدون درج «لغو۱۱» ممکن نیست.',
+  '16':   'شماره گیرنده یافت نشد.',
+  '17':   'متن پیامک خالی است.',
+  '18':   'شماره گیرنده نامعتبر است.',
+  '35':   'شماره گیرنده در لیست سیاه مخابرات است — خط خدماتی لازم است.',
+  '-110': 'پنل ApiKey می‌خواهد نه رمز عبور — از تنظیمات وب‌سرویس بگیرید.',
+  '-109': 'IP سرور در پنل پیامک مجاز نشده است.',
+  '-108': 'IP سرور به دلیل تلاش‌های ناموفق مسدود شده است.'
+};
+
+/**
+ * آیا مقدار بازگشتی، شناسه ارسال موفق است یا کد خطا؟
+ *
+ * قاعده مستندات: «در صورت دریافت یک عدد بیش از ۱۵ رقم، ارسال
+ * موفق بوده». هر عدد کوچک‌تر کد خطاست.
+ *
+ * چرا طول و نه علامت: کد خطای `35` مثبت است ولی خطاست. اگر فقط
+ * «مثبت یعنی موفق» را ملاک بگیریم، «شماره در لیست سیاه» را
+ * موفق می‌شماریم و مدیر هرگز نمی‌فهمد چرا مشتری پیامک نگرفت.
+ */
+function readPanelValue(raw) {
+  const v = String(raw ?? '').trim();
+  if (!v) return { ok: false, message: 'پاسخ خالی از سرویس پیامک' };
+
+  // شناسه ارسال — عدد بلند
+  if (/^\d{10,}$/.test(v)) return { ok: true, recId: v };
+
+  if (Object.prototype.hasOwnProperty.call(PANEL_ERRORS, v)) {
+    return { ok: false, code: v, message: PANEL_ERRORS[v] };
+  }
+  if (/^-?\d+$/.test(v)) {
+    return { ok: false, code: v, message: `کد خطای سرویس پیامک: ${v}` };
+  }
+  return { ok: false, message: `پاسخ ناشناخته از سرویس پیامک: ${v.slice(0, 60)}` };
+}
+
 /**
  * آیا پاسخ سرویس یعنی «موفق»؟
  *
- * سامانه‌های ایرانی قالب یکسانی ندارند: بعضی `{status:200}`
- * می‌دهند، بعضی `{RetStatus:1}`، بعضی فقط یک عدد مثبت به‌عنوان
- * شناسه ارسال. این تابع رایج‌ترین‌ها را می‌شناسد و در نهایت به
- * کد وضعیت HTTP برمی‌گردد.
+ * ── درس مستندات پیامیتو ──
+ * «بسیاری از خطاهای کاربردی داخل بدنه پاسخ و همراه **HTTP 200**
+ * برمی‌گردند؛ فقط وضعیت HTTP را معیار موفقیت قرار ندهید.»
  *
- * محافظه‌کارانه نوشته شده: در تردید، **ناموفق** فرض می‌شود.
- * پیامکی که فکر کنیم رفته ولی نرفته، بدتر از خطای صریح است.
+ * نسخه پیشین این تابع در نهایت به کد HTTP برمی‌گشت — یعنی
+ * «نام کاربری اشتباه است» را **موفق** می‌شمرد. نتیجه در عمل:
+ * مدیر فکر می‌کرد پیامک‌ها می‌روند، مشتری هیچ کدی نمی‌گرفت، و
+ * هیچ خطایی هم در لاگ نبود.
+ *
+ * حالا HTTP فقط برای تشخیص **خرابی شبکه** به کار می‌رود، نه
+ * موفقیت ارسال. اگر بدنه قابل تفسیر نباشد، ناموفق فرض می‌شود.
+ *
+ * محافظه‌کارانه: در تردید، **ناموفق**. پیامکی که فکر کنیم رفته
+ * ولی نرفته، بدتر از خطای صریح است.
  */
 function looksSuccessful(res) {
   const j = res.json;
@@ -140,9 +208,22 @@ function looksSuccessful(res) {
     if (j.return && typeof j.return.status !== 'undefined') {
       return { ok: j.return.status === 200, message: j.return.message };
     }
-    // قالب ملی‌پیامک و مشابه‌ها
+    /* قالب payamak-panel (پیامیتو، ملی پیامک، …)
+       `RetStatus: 1` یعنی درخواست پذیرفته شد، ولی `Value` هنوز
+       می‌تواند کد خطا باشد — پس هر دو بررسی می‌شوند. */
     if (typeof j.RetStatus !== 'undefined') {
-      return { ok: Number(j.RetStatus) === 1, message: j.StrRetStatus };
+      const accepted = Number(j.RetStatus) === 1;
+      if (!accepted) {
+        return {
+          ok: false,
+          message: j.StrRetStatus || `وضعیت ${j.RetStatus} از سرویس پیامک`
+        };
+      }
+      if (typeof j.Value !== 'undefined') {
+        const v = readPanelValue(j.Value);
+        return { ok: v.ok, message: v.message || j.StrRetStatus || null };
+      }
+      return { ok: true, message: j.StrRetStatus || null };
     }
     // قالب‌های ساده
     if (typeof j.status !== 'undefined') {
@@ -163,18 +244,24 @@ function looksSuccessful(res) {
     }
   }
 
-  /* پاسخ متنی: بعضی سامانه‌ها فقط یک عدد می‌دهند. عدد مثبت یعنی
-     شناسه ارسال؛ عدد منفی یا صفر یعنی خطا. */
+  /* پاسخ متنی — سرویس SOAP و بعضی مسیرهای REST فقط یک عدد
+     برمی‌گردانند. همان قاعده طول عدد اعمال می‌شود. */
   const t = String(res.body || '').trim();
-  if (/^-?\d+$/.test(t)) {
-    const n = Number(t);
-    return { ok: n > 0, message: n <= 0 ? `کد خطای سرویس: ${n}` : null };
-  }
+  if (/^-?\d+$/.test(t)) return readPanelValue(t);
 
-  // آخرین مبنا: کد وضعیت HTTP
+  /* ── چرا اینجا دیگر به HTTP برنمی‌گردیم ──
+     رسیدن به این نقطه یعنی پاسخ نه JSON شناخته‌شده بود نه عدد.
+     پیش‌تر در این حالت `HTTP 200` را «موفق» می‌شمردیم؛ ولی
+     مستندات صریح می‌گوید خطاها هم با ۲۰۰ می‌آیند. پس ۲۰۰ هیچ
+     چیزی درباره موفقیت ارسال نمی‌گوید.
+
+     HTTP فقط برای تشخیص خرابی شبکه یا سرویس به کار می‌رود. */
+  if (res.status >= 400) {
+    return { ok: false, message: `سرویس پیامک پاسخ ${res.status} داد` };
+  }
   return {
-    ok: res.status >= 200 && res.status < 300,
-    message: res.status >= 400 ? `پاسخ ${res.status} از سرویس` : null
+    ok: false,
+    message: 'پاسخ سرویس پیامک قابل تفسیر نبود — ارسال تأیید نشد.'
   };
 }
 
@@ -192,8 +279,97 @@ async function sendKavenegar(mobile, text) {
   return looksSuccessful(res);
 }
 
+/* ═══════════════════════════════════════════
+   پیامیتو — پلتفرم payamak-panel
+   ═══════════════════════════════════════════
+   نشانی و قالب از مستندات رسمی گرفته شده، نه حدس:
+   `rest.payamak-panel.com/api/SendSMS/SendSMS`
+
+   ── چرا REST و نه SOAP ──
+   سرویس هر دو را می‌دهد. SOAP نیازمند تولید Client از WSDL یا
+   ساخت دستی پاکت XML است. این پروژه عمداً یک وابستگی npm دارد و
+   افزودن کتابخانه SOAP برای کاری که با فرم ساده انجام می‌شود،
+   خلاف همان اصل است.
+
+   ── نکته `password` ──
+   مستندات می‌گوید در این فیلد **ApiKey** بخش تنظیمات وب‌سرویس
+   قرار می‌گیرد، نه رمز ورود پنل. کد خطای ‎-110 دقیقاً همین را
+   می‌گوید. برای همین `API_KEY` اولویت دارد و `PASSWORD` جانشین
+   است.
+*/
+const PANEL_BASE = process.env.SMS_PANEL_BASE
+  || 'https://rest.payamak-panel.com/api/SendSMS';
+
+/** بدنه `x-www-form-urlencoded` — این سرویس JSON نمی‌پذیرد */
+function formBody(obj) {
+  return Object.entries(obj)
+    .filter(([, v]) => v !== undefined && v !== null && v !== '')
+    .map(([k, v]) => `${encodeURIComponent(k)}=${encodeURIComponent(v)}`)
+    .join('&');
+}
+
+async function postPanel(path, fields) {
+  const url = API_URL && path === '/SendSMS' ? API_URL : `${PANEL_BASE}${path}`;
+  const body = formBody({
+    username: USERNAME,
+    // ApiKey جای رمز عبور می‌نشیند — الزام سرویس
+    password: API_KEY || PASSWORD,
+    ...fields
+  });
+  const res = await request(url, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8' },
+    body
+  });
+  return looksSuccessful(res);
+}
+
+/** ارسال ساده از خط اختصاصی */
+async function sendPanel(mobile, text) {
+  if (!USERNAME || !(API_KEY || PASSWORD)) {
+    return { ok: false, message: 'نام کاربری یا کلید وب‌سرویس پیامک تنظیم نشده است.' };
+  }
+  if (!SENDER) {
+    return { ok: false, message: 'شماره خط فرستنده (SMS_SENDER) تنظیم نشده است.' };
+  }
+  return postPanel('/SendSMS', { to: mobile, from: SENDER, text });
+}
+
 /**
- * ارسال عمومی — پیامیتو و هر سامانه دیگری.
+ * ارسال کد یکبارمصرف با متد `SendOtp`.
+ *
+ * سامانه خودش متن را می‌سازد، پس نیازی به الگوی تأییدشده نیست.
+ * برای فروشگاهی که تازه راه افتاده این مسیر سریع‌ترین است.
+ */
+async function sendPanelOtp(mobile, code) {
+  if (!USERNAME || !(API_KEY || PASSWORD)) {
+    return { ok: false, message: 'اعتبارنامه سرویس پیامک تنظیم نشده است.' };
+  }
+  return postPanel('/SendOtp', { to: mobile, from: SENDER || '', code });
+}
+
+/**
+ * ارسال از خط خدماتی اشتراکی — متد `BaseServiceNumber`.
+ *
+ * ── چرا این مسیر مهم است ──
+ * پیامک از خط اختصاصی به شماره‌های داخل **لیست سیاه مخابرات**
+ * نمی‌رسد (کد خطای ۳۵). برای پیام تبلیغاتی قابل تحمل است، ولی
+ * برای **کد ورود** فاجعه است: مشتری که در لیست سیاه باشد هرگز
+ * نمی‌تواند وارد حسابش شود و هیچ راه دیگری هم ندارد.
+ *
+ * خط خدماتی این محدودیت را ندارد. نیازمند الگوی تأییدشده در پنل
+ * است که شناسه‌اش `bodyId` نام دارد.
+ *
+ * قالب متن: `arg1;arg2;arg3` — آرگومان‌های الگو با نقطه‌ویرگول.
+ */
+async function sendPanelPattern(mobile, args, bodyId) {
+  if (!bodyId) return { ok: false, message: 'شناسه الگو (bodyId) تنظیم نشده است.' };
+  const text = Array.isArray(args) ? args.join(';') : String(args);
+  return postPanel('/BaseServiceNumber', { to: mobile, text, bodyId });
+}
+
+/**
+ * ارسال عمومی — هر سامانه دیگری.
  *
  * سه شیوه احراز هویت پشتیبانی می‌شود چون سامانه‌های ایرانی هر سه
  * را به کار می‌برند:
@@ -257,10 +433,9 @@ async function send(mobile, text, tag = 'SMS') {
   }
 
   try {
-    const r = PROVIDER === 'kavenegar'
-      ? await sendKavenegar(mobile, text)
-      : await sendGeneric(mobile, text);
-    return r;
+    if (PROVIDER === 'kavenegar') return await sendKavenegar(mobile, text);
+    if (PROVIDER === 'payamito')  return await sendPanel(mobile, text);
+    return await sendGeneric(mobile, text);
   } catch (e) {
     return { ok: false, message: e.message };
   }
@@ -297,7 +472,27 @@ async function sendOtp(mobile, code) {
     } catch (e) { return { ok: false, message: e.message }; }
   }
 
-  // مسیر الگو — خط خدماتی اشتراکی
+  /* ── پیامیتو: سه مسیر، به ترتیب اولویت ──
+
+     ۱) الگوی خدماتی — اگر `SMS_OTP_PATTERN` ست شده باشد.
+        تنها مسیری که به شماره‌های داخل لیست سیاه مخابرات هم
+        می‌رسد. برای کد ورود مهم است: مشتری بلک‌لیست‌شده وگرنه
+        هرگز نمی‌تواند وارد حسابش شود.
+
+     ۲) متد `SendOtp` — سامانه خودش متن را می‌سازد، بدون نیاز
+        به الگوی تأییدشده. سریع‌ترین راه راه‌اندازی.
+
+     ۳) متن آزاد از خط اختصاصی — واپسین چاره. */
+  if (PROVIDER === 'payamito') {
+    try {
+      if (OTP_PATTERN) return await sendPanelPattern(mobile, [code], OTP_PATTERN);
+      if (String(process.env.SMS_USE_SENDOTP || '1') === '1') {
+        return await sendPanelOtp(mobile, code);
+      }
+    } catch (e) { return { ok: false, message: e.message }; }
+  }
+
+  // مسیر الگوی عمومی — سامانه‌های دیگر
   if (OTP_PATTERN) {
     const url = process.env.SMS_PATTERN_URL || API_URL;
     if (!url) return { ok: false, message: 'نشانی سرویس الگو تنظیم نشده است.' };
@@ -366,11 +561,22 @@ async function testConnection(mobile) {
     };
   }
 
-  if (PROVIDER !== 'kavenegar' && !API_URL) {
+  /* پیامیتو نشانی رسمی دارد و در کد ثبت شده، پس `SMS_API_URL`
+     برایش الزامی نیست. آنچه لازم است شماره خط فرستنده است —
+     بدون آن سرویس کد خطای ۵ می‌دهد. */
+  if (PROVIDER === 'payamito' && !SENDER && !OTP_PATTERN) {
+    return {
+      ...base, ok: false, live: false,
+      message: 'شماره خط فرستنده (SMS_SENDER) تنظیم نشده است.',
+      hint: 'شماره خط اختصاصی را از پنل پیامیتو بردارید، یا الگوی خدماتی تعریف کنید.'
+    };
+  }
+
+  if (!['kavenegar', 'payamito'].includes(PROVIDER) && !API_URL) {
     return {
       ...base, ok: false, live: false,
       message: 'نشانی سرویس (SMS_API_URL) تنظیم نشده است.',
-      hint: 'نشانی وب‌سرویس را از پنل پیامیتو بردارید و ست کنید.'
+      hint: 'نشانی وب‌سرویس را از پنل سامانه پیامکی بردارید و ست کنید.'
     };
   }
 
@@ -403,5 +609,8 @@ async function testConnection(mobile) {
 
 module.exports = {
   send, sendOtp, testConnection, isConfigured,
-  PROVIDER, SENDER, OTP_PATTERN, API_URL
+  PROVIDER, SENDER, OTP_PATTERN, API_URL,
+  /* برای آزمون — تفسیر پاسخ سرویس بدون نیاز به تماس واقعی.
+     بدون این، تنها راه سنجیدن منطق خطا فرستادن پیامک واقعی بود. */
+  _internals: { looksSuccessful, readPanelValue, PANEL_ERRORS, formBody }
 };
