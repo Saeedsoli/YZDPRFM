@@ -75,6 +75,18 @@ for (const md of mdFiles) {
     ];
     if (candidates.some(c => fs.existsSync(c))) continue;
 
+    /* ── سند تاریخی با یادداشت مهاجرت ──
+       تغییرنامه‌ها مسیرهای زمان خودشان را ثبت کرده‌اند. وقتی
+       ساختار پوشه‌ها عوض می‌شود، ویرایش آن متن یعنی تحریف تاریخ.
+       راه درست: یادداشت «مسیر قدیم ← مسیر جدید» در سربرگ سند.
+
+       اگر سند چنین یادداشتی دارد و مسیر گمشده در همان یادداشت
+       نگاشت شده، ارجاع تاریخی است نه خطا. */
+    if (/یادداشت مسیرها/.test(txt)) {
+      const noteZone = txt.slice(0, txt.indexOf('یادداشت مسیرها') + 700);
+      if (noteZone.includes(ref)) continue;
+    }
+
     if (!missing.has(ref)) missing.set(ref, []);
     missing.get(ref).push(path.basename(md));
   }
