@@ -1,0 +1,91 @@
+<!DOCTYPE html><html lang="fa" dir="rtl"><head><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16.png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="manifest" href="/site.webmanifest">
+<meta name="theme-color" content="#121212">
+<title>اتصال برقرار نیست | عطر یزد</title>
+<meta name="robots" content="noindex">
+<link rel="stylesheet" href="/assets/theme.css">
+<style>
+/* این صفحه باید بدون هیچ درخواست شبکه‌ای کامل باشد.
+   همه چیز از کش می‌آید: CSS، فونت، لوگو. */
+.off-wrap{max-width:520px;margin:0 auto;padding:70px 22px 90px;text-align:center}
+.off-logo{width:34px;height:auto;display:block}
+/* نقش برند روشن است (۲۳۸,۲۳۶,۲۳۴) و روی زمینه روشن دیده نمی‌شود.
+   همان کاری که هدر می‌کند: پس‌زمینه تیره زیرش. */
+.off-mark{width:64px;height:64px;margin:0 auto 26px;border-radius:16px;
+  background:var(--obsidian);display:flex;align-items:center;justify-content:center}
+.off-ic{width:60px;height:60px;margin:0 auto 22px;border-radius:50%;
+  background:rgba(197,155,39,.10);border:1px solid rgba(197,155,39,.28);
+  display:flex;align-items:center;justify-content:center}
+.off-ic svg{width:28px;height:28px;stroke:var(--gold);fill:none;stroke-width:1.8;
+  stroke-linecap:round}
+.off-wrap h1{font-size:1.4rem;font-weight:800;margin-bottom:12px}
+.off-wrap p{color:var(--muted);line-height:2.1;font-size:.9rem}
+.off-actions{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:26px}
+.off-note{margin-top:34px;padding:16px 18px;background:var(--surface);
+  border:1px solid var(--border);border-radius:12px;text-align:right}
+.off-note b{display:block;font-size:.86rem;margin-bottom:8px}
+.off-note p{font-size:.82rem;line-height:2}
+.off-links{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:20px}
+.off-links a{font-size:.78rem;color:var(--muted);border:1px solid var(--border);
+  border-radius:30px;padding:8px 15px;transition:all var(--t-fast)}
+.off-links a:hover{border-color:var(--gold);color:var(--gold)}
+</style>
+</head>
+<body>
+
+<main class="off-wrap">
+  <div class="off-mark">
+    <img class="off-logo" src="/images/brand_logo.png" alt="عطر یزد"
+         width="34" height="109">
+  </div>
+
+  <div class="off-ic" aria-hidden="true">
+    <svg viewBox="0 0 24 24">
+      <path d="M2 8.8a16 16 0 0 1 20 0M5 12.5a11 11 0 0 1 14 0M8.5 16.2a6 6 0 0 1 7 0"/>
+      <circle cx="12" cy="20" r="1" fill="currentColor" stroke="none"/>
+      <path d="M3 3l18 18" stroke-width="1.6"/>
+    </svg>
+  </div>
+
+  <h1>اتصال اینترنت برقرار نیست</h1>
+  <p>
+    مشکل از فروشگاه نیست — دستگاه شما به شبکه وصل نیست.
+    اتصال را بررسی کنید و دوباره تلاش کنید.
+  </p>
+
+  <div class="off-actions">
+    <button class="btn" onclick="location.reload()">تلاش دوباره</button>
+    <a class="btn btn-outline" href="/">صفحه اصلی</a>
+  </div>
+
+  <!-- صفحه‌هایی که احتمالاً از قبل در کش هستند.
+       اگر کاربر پیش‌تر دیده باشدشان، آفلاین هم باز می‌شوند. -->
+  <div class="off-links">
+    <a href="/">کاتالوگ</a>
+    <a href="/journal">مجله</a>
+    <a href="/why-us">چرا عطر یزد؟</a>
+    <a href="/contact">تماس</a>
+  </div>
+
+  <div class="off-note">
+    <b>سبد خرید شما محفوظ است</b>
+    <p>
+      اقلامی که به سبد اضافه کرده‌اید روی همین دستگاه ذخیره شده‌اند و
+      با برگشتن اینترنت سر جایشان هستند. برای ثبت سفارش به اتصال
+      نیاز است تا موجودی و قیمت لحظه‌ای بررسی شود.
+    </p>
+  </div>
+</main>
+
+<script>
+/* وقتی اتصال برگشت، خودکار به صفحه‌ای که کاربر می‌خواست برگرد.
+   انتظار دستی برای کلیک روی «تلاش دوباره» تجربه بدی است وقتی
+   مرورگر خودش می‌داند شبکه آمده. */
+window.addEventListener('online', () => location.reload());
+</script>
+</body></html>

@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16.png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="manifest" href="/site.webmanifest">
+<meta name="theme-color" content="#121212">
+<title>چرا عطر یزد؟ | تخصص، ایمنی و شفافیت</title>
+<meta name="description" content="حلال ما اتانول آرایشی است نه متانول. مدرک رسمی مدرسه عطرسازی ایران، بیش از دوازده سال فروش حضوری، و اسانس از خانه‌های معتبر جهانی. صریح و بدون ادعای اورجینال.">
+<link rel="stylesheet" href="/assets/theme.css">
+<style>
+  .w-hero { background: linear-gradient(135deg,#141414,#242424); color:#FFF;
+            padding: 54px 20px 60px; text-align: center; }
+  .w-hero .eyebrow { color: var(--gold); font-size:.76rem; font-weight:800;
+                     letter-spacing:1.6px; display:block; margin-bottom:12px }
+  .w-hero h1 { font-size: 1.72rem; font-weight: 800; margin-bottom: 14px; line-height:1.55 }
+  .w-hero h1 em { color: var(--gold); font-style: normal }
+  .w-hero p { font-size:.95rem; opacity:.84; max-width:660px; margin:0 auto; line-height:2.1 }
+
+  .wrap { max-width: 900px; margin: 0 auto; padding: 0 20px }
+
+  /* کارت شناور روی هیرو */
+  .lead { margin-top:-30px; position:relative; z-index:5; margin-bottom:44px }
+  .lead-card { background: var(--surface); border:1px solid var(--border);
+               border-right:5px solid var(--gold); border-radius: var(--radius);
+               padding: 26px 24px; box-shadow: var(--sh-lg) }
+  .lead-card h2 { font-size:1.08rem; font-weight:800; margin-bottom:12px }
+  .lead-card p { font-size:.9rem; line-height:2.15; color:#3A3A3A }
+  .lead-card p + p { margin-top:12px }
+
+  section.blk { margin-bottom: 48px; max-width:100%; overflow-wrap:anywhere }
+  section.blk > h2 { font-size:1.22rem; font-weight:800; margin-bottom:8px;
+                     display:flex; align-items:center; gap:10px }
+  section.blk > h2 .n { width:30px; height:30px; flex:none; border-radius:50%;
+                        background:var(--obsidian); color:var(--gold);
+                        display:grid; place-items:center; font-size:.85rem }
+  section.blk > .sub { color:var(--muted); font-size:.85rem; margin-bottom:20px;
+                       padding-right:40px; line-height:1.9 }
+
+  .safety { background:#FFF8F5; border:1px solid #F3D9CE; border-radius:var(--radius);
+            padding:22px 22px 20px; margin-bottom:18px }
+  .safety h3 { font-size:.98rem; font-weight:800; color:#B03A2E; margin-bottom:12px }
+  .safety p { font-size:.87rem; line-height:2.1; color:#4A3B37 }
+  .safety p + p { margin-top:10px }
+
+  .cmp-scroll { overflow-x:auto; -webkit-overflow-scrolling:touch; max-width:100% }
+  .cmp { width:100%; min-width:340px; border-collapse:collapse; font-size:.86rem;
+         background:var(--surface); border-radius:var(--radius); overflow:hidden;
+         border:1px solid var(--border) }
+  .cmp th, .cmp td { padding:12px 14px; text-align:right; border-bottom:1px solid var(--border-soft) }
+  .cmp thead th { background:var(--obsidian); color:#FFF; font-weight:700; font-size:.82rem }
+  .cmp tbody tr:last-child td { border-bottom:none }
+  .cmp .yes { color:#1E8449; font-weight:800 }
+  .cmp .no  { color:#C0392B; font-weight:800 }
+  .cmp td:first-child { font-weight:700 }
+
+  .facts { display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:14px }
+  .fact { background:var(--surface); border:1px solid var(--border);
+          border-radius:var(--radius); padding:18px 16px }
+  .fact b { display:block; font-size:1.5rem; color:var(--gold-dark); font-weight:800;
+            margin-bottom:5px }
+  .fact span { font-size:.82rem; color:var(--muted); line-height:1.85 }
+
+  .honest { background:var(--obsidian); color:#E8E8E8; border-radius:var(--radius);
+            padding:26px 24px }
+  .honest h3 { color:var(--gold); font-size:1.02rem; font-weight:800; margin-bottom:14px }
+  .honest ul { list-style:none; padding:0; margin:0 }
+  .honest li { padding:9px 0 9px 0; font-size:.88rem; line-height:2;
+               border-bottom:1px solid rgba(255,255,255,.08); display:flex; gap:10px }
+  .honest li:last-child { border-bottom:none }
+  .honest li i { color:var(--gold); font-style:normal; flex:none }
+
+  /* text-align:center در RTL سرریز افقی می‌سازد.
+     با آزمایش مستقیم پیدا شد: برداشتن همین یک خط، ۵۹ پیکسل
+     سرریز صفحه را صفر کرد. مرورگر برای متن وسط‌چین فارسی فضای
+     مجازی سمت چپ می‌سازد که در scrollWidth حساب می‌شود.
+     راه‌حل: وسط‌چینی روی فرزندان اعمال شود، نه روی خود کارت. */
+  .try { background:linear-gradient(135deg,var(--sand),var(--sand-deep));
+         border:1px solid var(--border); border-radius:var(--radius);
+         padding:28px 20px; overflow-wrap:anywhere; max-width:100%;
+         overflow:hidden }
+  .try > * { text-align:center }
+  .try h3, .try p, .try .price { margin-left:auto; margin-right:auto }
+  .try h3 { font-size:1.14rem; font-weight:800; margin-bottom:10px }
+  .try p { font-size:.89rem; color:#4A4A4A; line-height:2.05; max-width:560px;
+           margin:0 auto 18px }
+  .try .price { font-size:1.34rem; font-weight:800; color:var(--gold-dark); display:block;
+                margin-bottom:16px }
+
+  .src { font-size:.76rem; color:var(--muted); line-height:2; margin-top:14px }
+  .src a { color:var(--gold-dark) }
+  @media (max-width:640px){
+    .w-hero h1 { font-size:1.4rem }
+    section.blk > .sub { padding-right:0 }
+    .cmp { font-size:.8rem }
+    .cmp th, .cmp td { padding:10px 9px }
+  }
+</style>
+</head>
+<body>
+<a href="#main" class="skip-link">پرش به محتوای اصلی</a>
+<div id="hdr" class="hdr-reserve"></div>
+
+<section class="w-hero">
+  <span class="eyebrow">پیش از خرید بخوانید</span>
+  <h1>چرا <em>عطر یزد</em>؟<br>و چرا گاهی گران‌تریم؟</h1>
+  <p>این صفحه تبلیغ نیست. اینجا می‌گوییم دقیقاً چه می‌فروشیم،
+     با چه استانداردی می‌سازیم، و چه چیزی را ادعا نمی‌کنیم.</p>
+</section>
+
+<main id="main">
+
+<div class="wrap lead">
+  <div class="lead-card">
+    <h2>کوتاه و صریح</h2>
+    <p>محصولات ما <strong>بازآفرینی دست‌ساز</strong> رایحه‌های شناخته‌شده‌اند.
+       اورجینال نیستند و هرگز چنین ادعایی نداریم. اگر جایی «اصل» یا
+       «اورجینال» دیدید، از ما نیست.</p>
+    <p>ما روی سه چیز رقابت می‌کنیم: <strong>ایمنی مواد</strong>،
+       <strong>کیفیت اسانس</strong>، و <strong>تخصص فرمولاسیون</strong>.
+       روی قیمتِ صرف رقابت نمی‌کنیم — چون کاهش قیمت در این صنعت معمولاً
+       از یکی از آن سه تا زده می‌شود.</p>
+    <p>و یک نکته: <strong>سایت ما تازه است، ولی کار ما نه.</strong>
+       بیش از دوازده سال فروش حضوری عمده و خرده پشت این فروشگاه است.</p>
+  </div>
+</div>
+
+<div class="wrap">
+
+  <!-- ۱ ایمنی -->
+  <section class="blk">
+    <h2><span class="n">۱</span> ایمنی: چه چیزی وارد فرمول ما نمی‌شود</h2>
+    <p class="sub">مهم‌ترین بخش این صفحه. اگر فقط یک بخش را می‌خوانید، همین باشد.</p>
+
+    <div class="safety">
+      <h3>هرگز از متانول استفاده نمی‌کنیم</h3>
+      <p>در عطر، الکل حدود <strong>۷۰ تا ۹۰ درصد</strong> حجم محصول است.
+         یعنی انتخاب حلال، از خودِ اسانس هم تعیین‌کننده‌تر است.</p>
+      <p>دو الکل ظاهر یکسانی دارند: <strong>اتانول</strong> (الکل طبی، ایمن برای پوست)
+         و <strong>متانول</strong> (الکل صنعتی، سمّی). متانول ارزان‌تر است و
+         همین وسوسه‌اش می‌کند.</p>
+      <p>متانول <strong>از راه پوست جذب می‌شود</strong> و در بدن به فرمالدهید و
+         اسید فرمیک تبدیل می‌گردد — همان موادی که به عصب بینایی، کلیه و کبد
+         آسیب می‌زنند. سازمان غذا و داروی آمریکا و کمیسیون اروپا استفاده از آن
+         را در محصولات آرایشی <strong>ممنوع</strong> کرده‌اند.</p>
+      <p>این یک نگرانی نظری نیست. در سال ۲۰۲۶ در فیلیپین، آزمایش برندهای
+         محلی عطر نشان داد بعضی محصولات <strong>۲۶ تا ۶۵ درصد متانول</strong>
+         داشته‌اند — یعنی متانول به‌جای اتانول حلال اصلی بوده است.</p>
+      <p><strong>حلال ما اتانول با گرید آرایشی است. بدون استثنا، بدون
+         «فقط این یک بار».</strong></p>
+    </div>
+
+    <div class="honest">
+      <h3>چیزهای دیگری که استفاده نمی‌کنیم</h3>
+      <ul>
+        <li><i>✕</i><span>اسانس بدون منشأ مشخص یا از تأمین‌کننده ناشناس</span></li>
+        <li><i>✕</i><span>اسانس تقلبی که به نام خانه‌های معتبر فروخته می‌شود</span></li>
+        <li><i>✕</i><span>تثبیت‌کننده و رقیق‌کننده صنعتی غیرمجاز در آرایشی</span></li>
+        <li><i>✕</i><span>رنگ خوراکی یا صنعتی برای «جذاب‌تر» کردن ظاهر مایع</span></li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ۲ تخصص -->
+  <section class="blk">
+    <h2><span class="n">۲</span> پانزده سال تخصص، دوازده سال فروش</h2>
+    <p class="sub">سایت ما تازه است. کار ما نه.</p>
+
+    <div class="facts" style="margin-bottom:18px">
+      <div class="fact"><b><bdi>۱۵+</bdi></b><span>سال دوره، آموزش و تجربه تخصصی عطرسازی</span></div>
+      <div class="fact"><b><bdi>۱۲+</bdi></b><span>سال فروش حضوری، عمده و خرده</span></div>
+      <div class="fact"><b>مدرک</b><span>رسمی از مدرسه عطرسازی ایران</span></div>
+    </div>
+
+    <div class="lead-card" style="border-right-color:var(--obsidian)">
+      <p><strong>این فروشگاه اینترنتی تازه راه افتاده — ولی ما تازه‌کار
+         نیستیم.</strong> بیش از دوازده سال است که به‌صورت حضوری، هم
+         عمده و هم خرده، رایحه می‌فروشیم. آنچه امروز آنلاین می‌بینید،
+         ادامه همان کار است در بستری تازه.</p>
+      <p>پشت فرمول‌ها <strong>مدرک رسمی از مدرسه عطرسازی ایران</strong> و
+         بیش از پانزده سال دوره و تجربه است.</p>
+    </div>
+
+    <div class="lead-card" style="border-right-color:var(--gold);margin-top:16px">
+      <h2 style="font-size:.98rem">چرا فرمولاسیون مهارت است، نه مخلوط‌کردن</h2>
+      <p>هر رایحه سه لایه دارد که با سرعت متفاوتی باز می‌شوند: نُت آغازین،
+         میانی و پایه. نسبت اینها، انتخاب تثبیت‌کننده، و زمان
+         <strong>ماسراسیون</strong> (استراحت محلول پیش از بطری‌شدن)
+         تعیین می‌کند که عطر روی پوست چطور رفتار کند.</p>
+      <p>فرمول بد، در بطری خوب بو می‌دهد ولی روی پوست بعد از بیست دقیقه
+         محو می‌شود — یا بدتر، تبدیل به بویی می‌شود که با نسخه اصلی
+         هیچ نسبتی ندارد.</p>
+      <p>این همان چیزی است که در قیمت دیده می‌شود و در بطری دیده
+         نمی‌شود — تا وقتی که روی پوست امتحانش کنید.</p>
+    </div>
+  </section>
+
+  <!-- ۳ اسانس -->
+  <section class="blk">
+    <h2><span class="n">۳</span> اسانس از کجا می‌آید</h2>
+    <p class="sub">همان خانه‌هایی که به برندهای بین‌المللی اسانس می‌فروشند.</p>
+
+    <div class="facts">
+      <div class="fact"><b>ژیوودان</b><span>سوئیس — بزرگ‌ترین خانه اسانس جهان</span></div>
+      <div class="fact"><b>فیرمنیش</b><span>سوئیس — بیش از یک قرن سابقه</span></div>
+      <div class="fact"><b>ایبرکم</b><span>اسپانیا</span></div>
+      <div class="fact"><b>لوزی</b><span>سوئیس</span></div>
+    </div>
+    <p class="src">توضیح کامل درباره هر خانه و اینکه چرا این موضوع اهمیت دارد،
+       در صفحه <a href="/essences">خانه‌های اسانس</a> آمده است.</p>
+  </section>
+
+  <!-- ۴ مقایسه -->
+  <section class="blk">
+    <h2><span class="n">۴</span> ما در برابر بازار</h2>
+    <p class="sub">صادقانه — جاهایی که بهتریم و جاهایی که نیستیم.</p>
+
+    <div class="cmp-scroll">
+    <table class="cmp">
+      <thead>
+        <tr><th>موضوع</th><th>عطر یزد</th><th>عرف بازار دست‌ساز</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>حلال</td>
+            <td class="yes">اتانول آرایشی</td>
+            <td>معمولاً اعلام نمی‌شود</td></tr>
+        <tr><td>منبع اسانس</td>
+            <td class="yes">نام‌برده و شفاف</td>
+            <td>گاهی کلی و مبهم</td></tr>
+        <tr><td>ادعای اصالت</td>
+            <td class="yes">صریحاً بازآفرینی</td>
+            <td>گاهی «اصل» جا زده می‌شود</td></tr>
+        <tr><td>سمپل آزمایشی</td>
+            <td class="yes">۳ میل روی همه محصولات</td>
+            <td>معمولاً از ۱۰ میل شروع</td></tr>
+        <tr><td>تنوع</td>
+            <td class="yes">۲٬۱۰۶ رایحه · ۱۲۹ برند</td>
+            <td>معمولاً چند صد</td></tr>
+        <tr><td>تخصص سازنده</td>
+            <td class="yes">مدرک مدرسه عطرسازی ایران</td>
+            <td>معمولاً اعلام نمی‌شود</td></tr>
+        <tr><td>سابقه فروش</td>
+            <td class="yes"><bdi>۱۲+</bdi> سال حضوری، عمده و خرده</td>
+            <td>متفاوت</td></tr>
+        <tr><td>قیمت</td>
+            <td class="no">گاهی بالاتر</td>
+            <td>معمولاً پایین‌تر</td></tr>
+        <tr><td>سابقه فروش <em>آنلاین</em></td>
+            <td class="no">تازه شروع شده</td>
+            <td>بعضی چند ساله</td></tr>
+      </tbody>
+    </table>
+    </div>
+  </section>
+
+  <!-- ۵ سمپل -->
+  <section class="blk">
+    <h2><span class="n">۵</span> حرف ما را باور نکنید — امتحان کنید</h2>
+    <p class="sub">منطقی‌ترین راه برای سنجیدن ادعاهای بالا.</p>
+
+    <div class="try">
+      <h3>سمپل ۳ میلی‌لیتری، روی هر ۲٬۱۰۶ رایحه</h3>
+      <span class="price" id="sampleFrom">از ۱۹۶٬۰۰۰ تومان</span>
+      <p>خرید عطر بدون بوییدن، ریسک است. برای همین روی
+         <strong>تمام</strong> محصولات سمپل داریم — نه فقط پرفروش‌ها.
+         با کمتر از یک‌دهم قیمت حجم بزرگ، رایحه را چند روز روی پوست
+         خودتان امتحان کنید. پوست هر کس شیمی متفاوتی دارد و همان عطر
+         روی دو نفر یکسان نمی‌ماند.</p>
+      <a href="/samples" class="btn">دیدن رایحه‌ها</a>
+    </div>
+  </section>
+
+  <!-- ۶ آنچه ادعا نمی‌کنیم -->
+  <section class="blk">
+    <h2><span class="n">۶</span> آنچه ادعا نمی‌کنیم</h2>
+    <p class="sub">هر فروشگاهی این بخش را ندارد. ما داریم چون به آن اعتقاد داریم.</p>
+
+    <div class="honest">
+      <ul>
+        <li><i>✕</i><span><strong>نمی‌گوییم اورجینال است.</strong>
+            بازآفرینی دست‌ساز است.</span></li>
+        <li><i>✕</i><span><strong>نمی‌گوییم ۱۰۰٪ شبیه نسخه اصلی است.</strong>
+            هیچ بازآفرینی‌ای صددرصد نیست و هر ادعای دیگری فروش است، نه واقعیت.</span></li>
+        <li><i>✕</i><span><strong>نمی‌گوییم ارزان‌ترینیم.</strong>
+            نیستیم و نمی‌خواهیم باشیم.</span></li>
+        <li><i>✕</i><span><strong>نمی‌گوییم روی همه پوست‌ها یکسان می‌ماند.</strong>
+            شیمی پوست، فصل و دما نتیجه را عوض می‌کنند.</span></li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- منابع -->
+  <section class="blk">
+    <h2><span class="n">۷</span> منابع</h2>
+    <p class="sub">ادعاهای ایمنی بالا از منابع زیر است، نه از خودمان.</p>
+    <p class="src">
+      • ممنوعیت متانول در آرایشی — سازمان غذا و داروی آمریکا (FDA) و کمیسیون اروپا<br>
+      • سمّیت متانول و جذب پوستی — مؤسسه ملی ایمنی و بهداشت شغلی آمریکا (NIOSH)<br>
+      • سهم ۷۰ تا ۹۰ درصدی الکل از حجم عطر — منابع فنی عطرسازی<br>
+      • رسوایی متانول در عطرهای محلی فیلیپین — گزارش‌های رسانه‌ای ۲۰۲۶<br>
+      • استاندارد اتانول آرایشی — راهنماهای فنی صنعت عطرسازی
+    </p>
+  </section>
+
+</div>
+</main>
+
+<div id="ftr"></div>
+<script src="/assets/app.js"></script>
+<script>
+document.getElementById('hdr').innerHTML = renderHeader();
+document.getElementById('ftr').innerHTML = renderFooter();
+
+/* کمترین قیمت سمپل از خود کاتالوگ خوانده می‌شود، نه دستی نوشته شود.
+   عدد دستی با اولین تغییر قیمت کهنه می‌شود و اعتماد را می‌شکند. */
+fetch('/api/products?limit=60&sort=price_asc')
+  .then(r => r.json())
+  .then(d => {
+    const prices = (d.products || []).map(p => p.min_price).filter(Boolean);
+    if (!prices.length) return;
+    const el = document.getElementById('sampleFrom');
+    if (el) el.textContent = 'از ' + money(Math.min(...prices)) + ' تومان';
+  })
+  .catch(() => {});
+</script>
+</body>
+</html>

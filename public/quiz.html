@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16.png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="manifest" href="/site.webmanifest">
+<meta name="theme-color" content="#121212">
+  <title>کوییز هوشمند پیشنهاد عطر | عطر یزد</title>
+  <!-- فونت عمداً preload نمی‌شود.
+     با font-display:swap متن بلافاصله با فونت سیستمی دیده می‌شود،
+     پس preload فقط پهنای باند را از تصویر اصلی می‌دزدد. روی ۳G
+     اندازه‌گیری شد: حذف آن LCP صفحه محصول را از ۴٫۳۱s به ۳٫۵۷s
+     رساند بدون آنکه FCP بدتر شود. -->
+<link rel="stylesheet" href="/assets/theme.css">
+  <style>
+    body { background: #0A0A0A; color: #FFF; min-height: 100dvh;
+           display: flex; flex-direction: column }
+    .quiz-stage { flex: 1; display: flex; align-items: center; justify-content: center;
+                  padding: 20px 0; position: relative; overflow: hidden }
+    /* هاله آرام پس‌زمینه — همان زبان بصری بقیه سایت */
+    .quiz-stage::before {
+      content: ''; position: absolute; inset: 0; pointer-events: none;
+      background: radial-gradient(ellipse 55% 45% at 50% 28%, rgba(197,155,39,.13), transparent 70%);
+      animation: haloBreath 12s ease-in-out infinite;
+    }
+    .quiz-container { position: relative; z-index: 2; width: 100%; max-width: 540px; margin: 20px }
+
+    /* ── نوار پیشرفت با شماره ── */
+    .quiz-head { display: flex; align-items: center; justify-content: space-between;
+                 gap: 14px; margin-bottom: 18px }
+    .quiz-progress { display: flex; gap: 7px; flex: 1 }
+    .quiz-step-dot { flex: 1; height: 4px; border-radius: 3px;
+      background: rgba(255,255,255,.14); transition: background 420ms var(--ease-out) }
+    .quiz-step-dot.done { background: rgba(197,155,39,.55) }
+    .quiz-step-dot.active { background: var(--gold); box-shadow: 0 0 12px rgba(197,155,39,.6) }
+    .quiz-count { font-size: .74rem; color: rgba(255,255,255,.42);
+                  font-weight: 700; white-space: nowrap; letter-spacing: .5px }
+
+    /* ── کارت ── */
+    .quiz-card {
+      background: rgba(255,255,255,.045); backdrop-filter: blur(14px);
+      border: 1px solid rgba(197,155,39,.26); border-radius: var(--r-lg);
+      padding: 30px 24px; min-height: 400px;
+      display: flex; flex-direction: column; justify-content: center;
+    }
+    .quiz-question { font-size: 1.26rem; font-weight: 800; margin-bottom: 7px;
+                     line-height: 1.55; text-align: center }
+    .quiz-subtitle { font-size: .82rem; color: rgba(255,255,255,.48);
+                     margin-bottom: 22px; text-align: center; line-height: 1.9 }
+
+    /* ── گزینه‌ها: آیکون SVG، نه ایموجی ── */
+    .quiz-options { display: flex; flex-direction: column; gap: 9px }
+    .quiz-option {
+      display: flex; align-items: center; gap: 13px; text-align: right;
+      background: rgba(255,255,255,.05); border: 1px solid rgba(255,255,255,.1);
+      padding: 14px 17px; border-radius: 13px; cursor: pointer;
+      font-family: var(--font); color: #FFF; width: 100%;
+      position: relative; overflow: hidden;
+      animation: optIn 460ms var(--ease-out) backwards;
+      transition: background 200ms var(--ease-out), border-color 200ms var(--ease-out),
+                  transform 200ms var(--ease-out);
+    }
+    .quiz-option:nth-child(1){animation-delay:40ms} .quiz-option:nth-child(2){animation-delay:90ms}
+    .quiz-option:nth-child(3){animation-delay:140ms} .quiz-option:nth-child(4){animation-delay:190ms}
+    .quiz-option:nth-child(5){animation-delay:240ms} .quiz-option:nth-child(6){animation-delay:290ms}
+    @keyframes optIn { from { opacity: 0; transform: translateY(14px) } to { opacity: 1; transform: none } }
+    .quiz-option::before {
+      content: ''; position: absolute; inset: 0;
+      background: linear-gradient(120deg, transparent 30%, rgba(255,255,255,.13) 50%, transparent 70%);
+      transform: translateX(-120%); transition: transform 620ms var(--ease-soft);
+    }
+    .quiz-option:hover::before { transform: translateX(120%) }
+    .quiz-option:hover { background: rgba(197,155,39,.14);
+      border-color: rgba(197,155,39,.5); transform: translateY(-2px) }
+    .quiz-option .ic {
+      flex: none; width: 38px; height: 38px; border-radius: 11px;
+      background: rgba(197,155,39,.12); border: 1px solid rgba(197,155,39,.28);
+      display: grid; place-items: center; transition: all 200ms var(--ease-out);
+    }
+    .quiz-option .ic svg { width: 19px; height: 19px; stroke: var(--gold);
+                           fill: none; stroke-width: 1.7 }
+    .quiz-option .tx { flex: 1; min-width: 0 }
+    .quiz-option .lb { font-size: .94rem; font-weight: 700; line-height: 1.5 }
+    .quiz-option .ds { font-size: .73rem; opacity: .55; margin-top: 2px; line-height: 1.7 }
+    .quiz-option.selected {
+      background: var(--gold); color: #121212; border-color: var(--gold);
+      animation: pickBounce 360ms var(--ease-spring);
+    }
+    .quiz-option.selected .ds { opacity: .7 }
+    .quiz-option.selected .ic { background: rgba(18,18,18,.14); border-color: rgba(18,18,18,.24) }
+    .quiz-option.selected .ic svg { stroke: #121212 }
+    @keyframes pickBounce { 0%{transform:scale(.97)} 55%{transform:scale(1.025)} 100%{transform:scale(1)} }
+
+    /* ── دکمه بازگشت به سؤال قبل ── */
+    .quiz-nav { display: flex; justify-content: center; margin-top: 18px }
+    .back-q {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: none; border: none; cursor: pointer; font-family: var(--font);
+      color: rgba(255,255,255,.45); font-size: .8rem; font-weight: 600;
+      transition: color var(--t-fast);
+    }
+    .back-q:hover { color: var(--gold) }
+    .back-q svg { width: 14px; height: 14px; stroke: currentColor; fill: none; stroke-width: 2 }
+    .back-q[hidden] { display: none }
+
+    /* ── نتایج ── */
+    .res-top { text-align: center; margin-bottom: 18px }
+    .res-top .k { font-size: .7rem; letter-spacing: 2.2px; color: var(--gold);
+                  font-weight: 700; margin-bottom: 8px }
+    .res-top h2 { font-size: 1.2rem; font-weight: 800; line-height: 1.5 }
+    .res-top p { font-size: .8rem; color: rgba(255,255,255,.46); margin-top: 6px; line-height: 1.9 }
+
+    .quiz-result-card {
+      background: rgba(255,255,255,.055); border: 1px solid rgba(197,155,39,.22);
+      border-radius: 13px; padding: 14px; margin-bottom: 10px; text-align: right;
+      display: flex; gap: 12px; align-items: center; text-decoration: none; color: inherit;
+      animation: fadeUp 520ms var(--ease-out) backwards;
+      transition: border-color var(--t-fast), transform var(--t-fast), background var(--t-fast);
+    }
+    .quiz-result-card:hover { border-color: rgba(197,155,39,.6);
+      background: rgba(197,155,39,.07); transform: translateX(-4px) }
+    .quiz-result-rank {
+      flex: none; width: 30px; height: 30px; border-radius: 50%;
+      display: grid; place-items: center; font-size: .84rem; font-weight: 800;
+      background: rgba(197,155,39,.16); color: var(--gold);
+      border: 1px solid rgba(197,155,39,.35);
+    }
+    .quiz-result-card:first-of-type .quiz-result-rank {
+      background: var(--gold); color: #121212; border-color: var(--gold);
+    }
+    .quiz-result-card img { width: 54px; height: 54px; object-fit: cover;
+                            border-radius: 10px; flex-shrink: 0 }
+    .quiz-result-info { flex: 1; min-width: 0 }
+    .quiz-result-name { font-weight: 800; font-size: .92rem; line-height: 1.5 }
+    .quiz-result-brand { font-size: .74rem; color: var(--gold); margin-top: 2px; direction: ltr; text-align: right }
+    .quiz-result-notes { font-size: .71rem; color: rgba(255,255,255,.5); margin-top: 3px }
+    .quiz-result-price { font-weight: 800; font-size: .83rem; margin-top: 4px }
+
+    /* نوار تطابق — چقدر با سلیقه شما جور است */
+    .fitbar { height: 3px; border-radius: 2px; background: rgba(255,255,255,.1);
+              margin-top: 7px; overflow: hidden }
+    .fitbar i { display: block; height: 100%; background: var(--gold);
+                transform-origin: right; animation: barGrow 900ms var(--ease-out) backwards }
+    @keyframes barGrow { from { transform: scaleX(0) } to { transform: scaleX(1) } }
+
+    .btn-primary { background: var(--gold); color: #121212; padding: 14px 32px;
+      border-radius: 30px; font-weight: 800; font-size: .9rem; border: none;
+      cursor: pointer; font-family: var(--font); width: 100%; margin-top: 18px;
+      transition: transform var(--t-fast), box-shadow var(--t-fast) }
+    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 22px rgba(197,155,39,.32) }
+    .btn-secondary { background: transparent; color: #FFF; padding: 12px 24px;
+      border-radius: 30px; font-weight: 600; font-size: .85rem;
+      border: 1px solid rgba(255,255,255,.22); cursor: pointer;
+      font-family: var(--font); margin-top: 8px; width: 100%;
+      transition: border-color var(--t-fast) }
+    .btn-secondary:hover { border-color: var(--gold) }
+
+    .quiz-back-link { text-align: center; margin-top: 22px }
+    .quiz-back-link a { color: rgba(255,255,255,.45); font-size: .82rem;
+                        text-decoration: none; transition: color var(--t-fast) }
+    .quiz-back-link a:hover { color: var(--gold) }
+
+    .hidden { display: none !important }
+    @keyframes spin { to { transform: rotate(360deg) } }
+    .animate-in { animation: fadeUp 400ms var(--ease-out) }
+  </style>
+</head>
+<body>
+<a href="#main" class="skip-link">پرش به محتوای اصلی</a>
+<!-- ارتفاع هدر از پیش رزرو می‌شود. هدر با جاوااسکریپت از app.js
+     ساخته می‌شود، پس تا آن لحظه ارتفاعش صفر است و با ظاهر شدن،
+     کل صفحه ۹۷ تا ۱۰۳ پیکسل پایین می‌پرد. ردیابی نشان داد این
+     تک‌ریشهٔ جابه‌جایی در همه صفحات بود (MAIN#main: y 0 → 97).
+     اندازه‌گیری واقعی: موبایل ۹۷px · دسکتاپ ۱۰۳px. -->
+<div id="hdr" class="hdr-reserve"></div>
+
+<main id="main" class="quiz-stage">
+  <div class="quiz-container" id="quizRoot">
+    <div class="quiz-head">
+      <div class="quiz-progress" id="quizProgress"></div>
+      <div class="quiz-count" id="quizCount"></div>
+    </div>
+    <div class="quiz-card" id="quizCard"></div>
+    <div class="quiz-nav">
+      <button class="back-q" id="backBtn" hidden onclick="goBack()">
+        <svg viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg>
+        سؤال قبلی
+      </button>
+    </div>
+    <div class="quiz-back-link"><a href="/">بازگشت به کاتالوگ عطرها</a></div>
+  </div>
+</main>
+
+<div id="ftr"></div>
+
+<script src="/assets/app.js"></script>
+<script>
+document.getElementById('hdr').innerHTML = renderHeader('quiz');
+document.getElementById('ftr').innerHTML = renderFooter();
+
+// ═══════════════════════════════════════
+// QUIZ ENGINE - Yazd Perfume
+// ═══════════════════════════════════════
+
+const TOTAL_STEPS = 6;
+let currentStep = 0;
+let answers = {};
+let quizProducts = [];
+let results = [];
+
+// Quiz questions definition
+/* آیکون‌های SVG — بدون ایموجی، طبق قاعده برند */
+const IC = {
+  man:    '<path d="M12 12a4 4 0 100-8 4 4 0 000 8zM4 21c0-4 3.6-6.5 8-6.5s8 2.5 8 6.5"/>',
+  woman:  '<circle cx="12" cy="8" r="4"/><path d="M12 12v9M8.5 17h7"/>',
+  both:   '<circle cx="8" cy="13" r="4"/><circle cx="16" cy="9" r="4"/>',
+  any:    '<circle cx="12" cy="12" r="9"/><path d="M12 8v4l3 2"/>',
+  flame:  '<path d="M12 22c4 0 6-2.7 6-6 0-4-3-6-4-9-1 2-2 2.5-3 3.5C9.5 12 6 13 6 16c0 3.3 2 6 6 6z"/>',
+  snow:   '<path d="M12 3v18M4.5 7.5l15 9M19.5 7.5l-15 9"/>',
+  leaf:   '<path d="M4 20c0-8 5-14 16-15 0 10-5 15-12 15H4z"/><path d="M9 15c2-3 5-5 8-6"/>',
+  sun:    '<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2M5 5l1.5 1.5M17.5 17.5L19 19M19 5l-1.5 1.5M6.5 17.5L5 19"/>',
+  autumn: '<path d="M12 21V10M12 10C9 10 6 7 7 3c4 0 5 3 5 7zM12 10c3 0 6-3 5-7-4 0-5 3-5 7z"/>',
+  cal:    '<rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/>',
+  tie:    '<path d="M9 3h6l-1.5 4L17 15l-5 6-5-6 3.5-8z"/>',
+  shirt:  '<path d="M8 3l4 2 4-2 5 3-2 4-2-1v12H7V9L5 10 3 6z"/>',
+  heart:  '<path d="M12 20s-7-4.6-7-9.4A4 4 0 0112 8a4 4 0 017 2.6C19 15.4 12 20 12 20z"/>',
+  target: '<circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4"/>',
+  incense:'<path d="M12 3c2 3 3 5 3 7a3 3 0 11-6 0c0-2 1-4 3-7z"/><path d="M7 21h10"/>',
+  wood:   '<path d="M12 21V8M12 8L7 4M12 8l5-4M12 14l-4-3M12 14l4-3"/>',
+  flower: '<circle cx="12" cy="12" r="2.5"/><path d="M12 9.5V5M12 14.5V19M9.5 12H5M14.5 12H19"/>',
+  citrus: '<circle cx="12" cy="12" r="8"/><path d="M12 4v16M4 12h16M6.5 6.5l11 11M17.5 6.5l-11 11"/>',
+  herb:   '<path d="M12 21V9M12 9c-3 0-5-2-5-5 3 0 5 2 5 5zM12 12c3 0 5-2 5-5-3 0-5 2-5 5z"/>',
+  palette:'<path d="M12 3a9 9 0 000 18c1.5 0 2-1 1.5-2s0-2 1.5-2h2A4 4 0 0021 13c0-5.5-4-10-9-10z"/><circle cx="7.5" cy="11" r="1"/><circle cx="11" cy="7.5" r="1"/><circle cx="15.5" cy="9" r="1"/>',
+  coin:   '<circle cx="12" cy="12" r="9"/><path d="M15 9.5c-.6-1-1.7-1.5-3-1.5-1.7 0-3 .9-3 2s1.3 2 3 2 3 .9 3 2-1.3 2-3 2c-1.3 0-2.4-.5-3-1.5"/>',
+  gem:    '<path d="M6 3h12l3 6-9 12L3 9z"/><path d="M3 9h18M9 3L6 9l6 12M15 3l3 6-6 12"/>',
+  crown:  '<path d="M4 18h16M4 18L3 7l5 4 4-6 4 6 5-4-1 11"/>',
+  star:   '<path d="M12 3l2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1-4.4-4.3 6.1-.9z"/>'
+};
+
+// شش سؤال — هر پاسخ یک لایه از سلیقه را مشخص می‌کند
+const questions = [
+  {
+    id: 'gender',
+    title: 'عطر برای چه کسی است؟',
+    subtitle: 'جنسیت، شخصیت پایه رایحه را تعیین می‌کند',
+    options: [
+      { value: 'MEN',    icon: 'man',   label: 'مردانه',      desc: 'روایح چوبی، چرمی و آروماتیک' },
+      { value: 'WOMEN',  icon: 'woman', label: 'زنانه',       desc: 'روایح گلی، میوه‌ای و پودری' },
+      { value: 'UNISEX', icon: 'both',  label: 'یونیسکس',     desc: 'مرز میان دنیای زنانه و مردانه' },
+      { value: 'ANY',    icon: 'any',   label: 'فرقی نمی‌کند', desc: 'همه را بر اساس بو بررسی کن' }
+    ]
+  },
+  {
+    id: 'temperature',
+    title: 'چه طبع بویایی را ترجیح می‌دهید؟',
+    subtitle: 'طبع عطر مثل شخصیت آن است: گرم، خنک یا معتدل',
+    options: [
+      { value: 'گرم',    icon: 'flame', label: 'طبع گرم',      desc: 'ادویه‌ای، شرقی، چوبی' },
+      { value: 'خنک',    icon: 'snow',  label: 'طبع خنک',      desc: 'مرکباتی، آبزی، سبز' },
+      { value: 'معتدل',  icon: 'leaf',  label: 'طبع معتدل',    desc: 'آروماتیک، فوژه، متعادل' },
+      { value: 'ANY',    icon: 'any',   label: 'فرقی نمی‌کند', desc: 'همه طبع‌ها را بررسی کن' }
+    ]
+  },
+  {
+    id: 'season',
+    title: 'بیشتر در چه فصلی عطر می‌زنید؟',
+    subtitle: 'بعضی رایحه‌ها در گرما می‌درخشند، بعضی در سرما',
+    options: [
+      { value: 'بهار و تابستان', icon: 'sun',    label: 'بهار و تابستان', desc: 'خنک، مرکباتی، سبک' },
+      { value: 'پاییز و زمستان', icon: 'autumn', label: 'پاییز و زمستان', desc: 'گرم، شیرین، عمیق' },
+      { value: 'چهارفصل',        icon: 'cal',    label: 'چهارفصل',        desc: 'همه‌کاره و متعادل' },
+      { value: 'ANY',            icon: 'any',    label: 'فرقی نمی‌کند',   desc: 'بر اساس موقعیت انتخاب کن' }
+    ]
+  },
+  {
+    id: 'occasion',
+    title: 'بیشتر کجا عطر می‌زنید؟',
+    subtitle: 'موقعیت استفاده، شخصیت رایحه را تعیین می‌کند',
+    options: [
+      { value: 'رسمی',     icon: 'tie',    label: 'رسمی و کاری',       desc: 'جلسات، اداری، مجالس رسمی' },
+      { value: 'روزمره',   icon: 'shirt',  label: 'روزمره و کژوال',    desc: 'دانشگاه، کافه، خرید' },
+      { value: 'عاشقانه',  icon: 'heart',  label: 'عاشقانه و رمانتیک', desc: 'قرار، مهمانی شب' },
+      { value: 'ANY',      icon: 'target', label: 'همه موقعیت‌ها',      desc: 'همه‌کاره برای هرجا' }
+    ]
+  },
+  {
+    id: 'family',
+    title: 'کدام خانواده بویایی را بیشتر دوست دارید؟',
+    subtitle: 'خانواده بویایی، چهارچوب اصلی شخصیت عطر است',
+    options: [
+      { value: 'شرقی',      icon: 'incense', label: 'شرقی و عودی',      desc: 'عود، عنبر، مشک، ادویه' },
+      { value: 'چوبی',      icon: 'wood',    label: 'چوبی و چرمی',      desc: 'سدر، وتیور، چرم' },
+      { value: 'گلی',       icon: 'flower',  label: 'گلی و پودری',      desc: 'رز، یاس، بنفشه، زنبق' },
+      { value: 'مرکباتی',   icon: 'citrus',  label: 'مرکباتی و آبزی',   desc: 'ترنج، لیمو، دریایی' },
+      { value: 'آروماتیک',  icon: 'herb',    label: 'آروماتیک و سبز',   desc: 'اسطوخودوس، رزماری، سبز' },
+      { value: 'ANY',       icon: 'palette', label: 'همه خانواده‌ها',    desc: 'می‌خواهم از همه بچشم' }
+    ]
+  },
+  {
+    id: 'budget',
+    title: 'محدوده بودجه برای شیشه اصلی چقدر است؟',
+    subtitle: 'کمک می‌کند بهترین گزینه در محدوده خودتان را ببینید',
+    options: [
+      { value: 'low',  icon: 'coin',  label: 'اقتصادی',      desc: 'زیر ۲ میلیون تومان' },
+      { value: 'mid',  icon: 'gem',   label: 'متوسط',        desc: 'بین ۲ تا ۵ میلیون تومان' },
+      { value: 'high', icon: 'crown', label: 'لوکس',         desc: 'بالای ۵ میلیون تومان' },
+      { value: 'ANY',  icon: 'star',  label: 'فرقی نمی‌کند', desc: 'کیفیت اولویت من است، نه قیمت' }
+    ]
+  }
+];
+
+// ═══ Load quiz data ═══
+async function loadQuizData() {
+  try {
+    const resp = await fetch('/api/health');
+    if (resp.ok) { const h = await resp.json(); quizProducts = { length: h.products }; return true; }
+  } catch(e) {}
+  return true;
+}
+
+// ═══ Render ═══
+function renderProgress(done) {
+  const container = document.getElementById('quizProgress');
+  container.innerHTML = '';
+  for (let i = 0; i < TOTAL_STEPS; i++) {
+    const dot = document.createElement('div');
+    dot.className = 'quiz-step-dot';
+    if (done || i < currentStep) dot.classList.add('done');
+    if (!done && i === currentStep) dot.classList.add('active');
+    container.appendChild(dot);
+  }
+  document.getElementById('quizCount').textContent =
+    done ? 'نتیجه' : `${faNum(currentStep + 1)} از ${faNum(TOTAL_STEPS)}`;
+  // دکمه بازگشت تنها وقتی جایی برای برگشتن هست
+  document.getElementById('backBtn').hidden = done || currentStep === 0;
+}
+
+/* بازگشت به سؤال قبل — کاربر باید بتواند نظرش را عوض کند */
+function goBack() {
+  if (currentStep === 0) return;
+  currentStep--;
+  renderProgress();
+  renderQuestion();
+}
+
+function renderQuestion() {
+  const q = questions[currentStep];
+  const card = document.getElementById('quizCard');
+  card.className = 'quiz-card animate-in';
+
+  // اگر کاربر برگشته، انتخاب قبلی‌اش را نشان بده
+  const prev = answers[q.id];
+
+  const optionsHTML = q.options.map(opt => `
+    <button type="button" class="quiz-option${prev === opt.value ? ' selected' : ''}"
+            data-value="${opt.value}" onclick="selectOption('${q.id}', '${opt.value}', this)">
+      <span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true">${IC[opt.icon] || IC.any}</svg></span>
+      <span class="tx">
+        <span class="lb">${opt.label}</span>
+        <span class="ds">${opt.desc}</span>
+      </span>
+    </button>`).join('');
+
+  card.innerHTML = `
+    <div class="quiz-question">${q.title}</div>
+    <div class="quiz-subtitle">${q.subtitle}</div>
+    <div class="quiz-options">${optionsHTML}</div>`;
+}
+
+function selectOption(qid, value, el) {
+  // Highlight
+  document.querySelectorAll('.quiz-option').forEach(o => o.classList.remove('selected'));
+  el.classList.add('selected');
+  answers[qid] = value;
+  
+  // Auto-advance after short delay
+  setTimeout(() => {
+    if (currentStep < TOTAL_STEPS - 1) {
+      currentStep++;
+      renderProgress();
+      renderQuestion();
+    } else {
+      renderProgress(true);
+      runQuiz();
+    }
+  }, 340);
+}
+
+async function runQuiz() {
+  const card = document.getElementById('quizCard');
+  card.innerHTML = `<div style="text-align:center;padding:30px">
+    <div style="width:34px;height:34px;border:3px solid var(--gold);border-top-color:transparent;
+      border-radius:50%;animation:spin .8s linear infinite;margin:0 auto 14px"></div>
+    <p>در حال تحلیل سلیقه بویایی شما…</p></div>`;
+
+  try {
+    const r = await fetch('/api/quiz', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ answers })
+    });
+    const d = await r.json();
+    results = d.results || [];
+    if (d.total_products) quizProducts = { length: d.total_products };
+
+    /* ذخیره پروفایل بویایی.
+       سرور برای کاربر واردشده خودش ذخیره می‌کند؛ این نسخه محلی
+       برای مهمان است — که اکثریت بازدیدکنندگان‌اند. از این پس
+       صفحه اصلی «پیشنهاد برای شما» نشان می‌دهد. */
+    if (typeof YazdTaste !== 'undefined' && d.profile &&
+        Object.keys(d.profile).length >= 2) {
+      YazdTaste.save(d.profile);
+    }
+  } catch { results = []; }
+  renderResults();
+}
+
+function renderResults() {
+  const card = document.getElementById('quizCard');
+  card.className = 'quiz-card animate-in';
+  
+  if (results.length === 0) {
+    card.innerHTML = `
+      <div class="res-top">
+        <div class="k">نتیجه‌ای نبود</div>
+        <h2>ترکیب سلیقه شما خیلی خاص بود</h2>
+        <p>با پاسخ‌های بازتر — مثلاً «فرقی نمی‌کند» — دوباره امتحان کنید،<br>
+           یا مستقیم سراغ کاتالوگ بروید.</p>
+      </div>
+      <button class="btn-primary" onclick="resetQuiz()">شروع دوباره کوییز</button>
+      <button class="btn-secondary" onclick="location.href='/'">مشاهده کاتالوگ کامل</button>`;
+    return;
+  }
+
+  // بیشترین امتیاز مبنای درصد تطابق است
+  const best = Math.max(...results.map(r => r._score || 0), 1);
+  
+  /* نشان جنسیت کنار نُت‌ها — کاربر باید ببیند پیشنهاد مردانه است
+     یا زنانه، بدون اینکه لازم باشد صفحه محصول را باز کند. */
+  const gLabel = g => g === 'MEN' ? '<b style="color:var(--gold)">مردانه</b> · '
+                    : g === 'WOMEN' ? '<b style="color:var(--gold)">زنانه</b> · '
+                    : g === 'UNISEX' ? '<b style="color:var(--gold)">یونیسکس</b> · ' : '';
+
+  const resultsHTML = results.map((p, i) => {
+    const notesStr = (p.notes_top || []).slice(0, 3).join('، ');
+    const full = p.brand_fa ? `${p.brand_fa} — ${p.name_fa}` : p.name_fa;
+    const priceStr = p.min_price ? faNum(p.min_price.toLocaleString('en-US')) + ' تومان' : '';
+    const fit = Math.round(((p._score || 0) / best) * 100);
+    return `
+      <a class="quiz-result-card" href="/perfume/${p.slug}" style="animation-delay:${i * 80}ms">
+        <div class="quiz-result-rank">${faNum(i + 1)}</div>
+        ${p.image_url ? `<img src="${p.image_url}" alt="" loading="lazy">` : ''}
+        <div class="quiz-result-info">
+          <div class="quiz-result-name">${full}
+            <span style="font-size:.7rem;color:var(--gold)">«دست‌ساز»</span></div>
+          <div class="quiz-result-brand">${p.name_en || ''}</div>
+          ${notesStr ? `<div class="quiz-result-notes">${gLabel(p.gender)}${notesStr}</div>` : ''}
+          ${priceStr ? `<div class="quiz-result-price">از ${priceStr}</div>` : ''}
+          <div class="fitbar" title="میزان تطابق با سلیقه شما">
+            <i style="width:${fit}%;animation-delay:${i * 80 + 200}ms"></i></div>
+        </div>
+      </a>`;
+  }).join('');
+
+  // خلاصه پاسخ‌ها — کاربر ببیند بر چه اساسی انتخاب شده
+  const chosen = questions
+    .map(q => {
+      const v = answers[q.id];
+      if (!v || v === 'ANY') return null;
+      const o = q.options.find(x => x.value === v);
+      return o ? o.label : null;
+    })
+    .filter(Boolean);
+
+  card.innerHTML = `
+    <div class="res-top">
+      <div class="k">پیشنهاد اختصاصی</div>
+      <h2>این رایحه‌ها به سلیقه شما نزدیک‌اند</h2>
+      <p>از میان ${faNum(quizProducts.length || 2106)} رایحه انتخاب شد
+      ${chosen.length ? `<br><span style="color:rgba(197,155,39,.8)">${chosen.join(' · ')}</span>` : ''}</p>
+    </div>
+    ${resultsHTML}
+    <button class="btn-primary" onclick="resetQuiz()">شروع دوباره کوییز</button>
+    <button class="btn-secondary" onclick="location.href='/'">مشاهده کاتالوگ کامل</button>`;
+}
+
+function faNum(n) { return String(n).replace(/\d/g, d => '۰۱۲۳۴۵۶۷۸۹'[d]); }
+
+function resetQuiz() {
+  currentStep = 0;
+  answers = {};
+  results = [];
+  renderProgress();
+  renderQuestion();
+  document.getElementById('quizCard').scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
+
+// ═══ Init ═══
+async function init() {
+  const loaded = await loadQuizData();
+  if (!loaded) {
+    document.getElementById('quizCard').innerHTML = `
+      <div class="res-top"><h2>ارتباط برقرار نشد</h2>
+      <p>اتصال اینترنت خود را بررسی کنید و دوباره تلاش کنید.</p></div>
+      <button class="btn-primary" onclick="location.reload()">تلاش دوباره</button>`;
+    return;
+  }
+  renderProgress();
+  renderQuestion();
+}
+
+init();
+</script>
+</body>
+</html>

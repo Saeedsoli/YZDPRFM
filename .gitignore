@@ -1,0 +1,63 @@
+# ══════════════════════════════════════════════════════
+#  عطر یزد — چه چیزی به مخزن نمی‌رود
+# ══════════════════════════════════════════════════════
+
+# ── وابستگی‌ها ──
+# با `npm ci` از روی package-lock.json بازساخته می‌شوند
+node_modules/
+npm-debug.log*
+
+# ── دیتابیس زنده ──
+# ۴۵ مگابایت و پر از سفارش آزمونی. روی سرور از Disk پایدار لیارا
+# خوانده می‌شود؛ محلی با نخستین اجرا از seed/ ساخته می‌شود.
+# اگر این خطوط برداشته شوند، داده مشتریان واقعی وارد مخزن می‌شود.
+data/*.db
+data/*.db-wal
+data/*.db-shm
+data/backups/
+data/backup-*.db
+data/pre-restore-*.db
+
+# ── اسرار ──
+# رمز مدیر، کلید پیامک، شناسه درگاه — هرگز در مخزن
+.env
+.env.*
+!.env.example
+
+# ── لاگ و موقت ──
+*.log
+server.log
+*.tmp
+*.dump
+
+# ── خروجی بازتولیدشدنی ──
+# همه اینها با اجرای اسکریپت دوباره ساخته می‌شوند
+shots/
+.imgraw/
+.imgtest/
+.deploytest/
+source/dataset/generated/
+
+# ── ابزار زبان ──
+__pycache__/
+.pytest_cache/
+*.pyc
+.venv/
+
+# ── کش ابزارها ──
+# ‏.cache شامل مرورگر Playwright است (۲٬۳۶۶ فایل، صدها مگابایت).
+# با `python3 -m playwright install` دوباره نصب می‌شود.
+.cache/
+.npm/
+.local/
+.config/
+.sudo_as_admin_successful
+.bash_history
+.arena/
+
+# ── سیستم‌عامل و ویرایشگر ──
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.swp

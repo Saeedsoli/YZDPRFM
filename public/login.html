@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16.png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="manifest" href="/site.webmanifest">
+<meta name="theme-color" content="#121212">
+<title>ورود به حساب | عطر یزد</title>
+<!-- فونت عمداً preload نمی‌شود.
+     با font-display:swap متن بلافاصله با فونت سیستمی دیده می‌شود،
+     پس preload فقط پهنای باند را از تصویر اصلی می‌دزدد. روی ۳G
+     اندازه‌گیری شد: حذف آن LCP صفحه محصول را از ۴٫۳۱s به ۳٫۵۷s
+     رساند بدون آنکه FCP بدتر شود. -->
+<link rel="stylesheet" href="/assets/theme.css">
+<style>
+  .auth-wrap { min-height: 72vh; display: grid; place-items: center;
+      padding: var(--sp-6) 20px; position: relative; overflow: hidden }
+  .auth-wrap::before { content:''; position:absolute; inset:0; pointer-events:none;
+      background: radial-gradient(ellipse 55% 45% at 50% 30%, rgba(197,155,39,.10), transparent 70%);
+      animation: haloBreath 12s ease-in-out infinite }
+  .auth-wrap > * { position: relative; z-index: 2 }
+  .auth-steps { display:flex; align-items:center; justify-content:center; gap:8px;
+      margin-bottom:20px; font-size:.72rem; font-weight:700; color:var(--muted) }
+  .auth-steps .dot { width:7px; height:7px; border-radius:50%; background:var(--border);
+      transition: background .4s var(--ease-out), transform .4s var(--ease-out) }
+  .auth-steps .dot.on { background:var(--gold); transform:scale(1.4) }
+  .trust { display:flex; gap:14px; justify-content:center; flex-wrap:wrap;
+      margin-top:22px; padding-top:18px; border-top:1px dashed var(--border) }
+  .trust span { display:inline-flex; align-items:center; gap:5px;
+      font-size:.71rem; color:var(--muted) }
+  .trust svg { width:13px; height:13px; stroke:var(--gold); fill:none; stroke-width:2 }
+  .auth-card { background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--r-lg); padding: 34px 26px; width: 100%; max-width: 400px;
+      box-shadow: var(--sh-lg); text-align: center;
+      animation: panelIn 620ms var(--ease-out) backwards; }
+  .auth-card .mark {
+      width: 54px; height: 54px; margin: 0 auto 14px; border-radius: var(--r-full);
+      background: linear-gradient(135deg, var(--gold), var(--gold-light));
+      display: flex; align-items: center; justify-content: center;
+      box-shadow: var(--sh-gold); }
+  .auth-card .mark svg { width: 25px; height: 25px; fill: #121212 }
+  .auth-card h1 { font-size: 1.2rem; font-weight: 800; margin-bottom: 6px; }
+  .auth-card .sub { font-size: .84rem; color: var(--muted); margin-bottom: 22px; line-height: 1.8; }
+
+  .code-inputs { display: flex; gap: 9px; justify-content: center; direction: ltr; margin: 8px 0 6px; }
+  .code-inputs input {
+    width: 50px; height: 58px; text-align: center; font-size: 1.4rem; font-weight: 800;
+    border: 1.5px solid var(--border); border-radius: var(--r-sm); background: var(--sand);
+    transition: border-color var(--t-fast), background var(--t-fast),
+                transform var(--t-fast), box-shadow var(--t-fast);
+  }
+  .code-inputs input:focus {
+    outline: none; border-color: var(--gold); background: #FFF;
+    transform: translateY(-2px); box-shadow: 0 0 0 3px rgba(197,155,39,.15);
+  }
+  .code-inputs input:not(:placeholder-shown) { border-color: var(--gold); background: #FFFBF0 }
+
+  .timer { font-size: .8rem; color: var(--muted); margin: 12px 0; }
+  .timer strong { color: var(--gold); }
+  .link-btn { background: none; border: none; color: var(--gold); font-weight: 700;
+              font-size: .84rem; cursor: pointer; }
+  .link-btn:disabled { color: var(--muted); cursor: not-allowed; }
+  .err { background: #FDECEA; border-right: 3px solid #C0392B; color: #922B21;
+         padding: 10px 13px; border-radius: 9px; font-size: .82rem;
+         margin-bottom: 14px; display: none; text-align: right; }
+  .dev-note { background: #FFF8E7; border-right: 3px solid #F39C12;
+              padding: 9px 12px; border-radius: 9px; font-size: .76rem;
+              margin-top: 14px; text-align: right; line-height: 1.7; }
+
+  /* ── تب ورود / ثبت‌نام ── */
+  .auth-tabs { display:flex; gap:4px; background:var(--sand); padding:4px;
+      border-radius:var(--r-full); margin-bottom:22px }
+  .auth-tabs button { flex:1; padding:9px 6px; border:0; background:none;
+      font-family:inherit; font-size:.85rem; font-weight:700; color:var(--muted);
+      border-radius:var(--r-full); cursor:pointer;
+      transition:background var(--t-fast), color var(--t-fast) }
+  .auth-tabs button.on { background:#FFF; color:var(--ink); box-shadow:var(--sh-sm) }
+
+  .fld { text-align:right; margin-bottom:13px }
+  .fld label { display:block; font-size:.8rem; font-weight:700; margin-bottom:6px }
+  .fld label .opt { font-weight:400; color:var(--muted); font-size:.75rem }
+  .fld input { width:100%; padding:11px 13px; border:1.5px solid var(--border);
+      border-radius:var(--r-sm); font-family:inherit; font-size:.92rem;
+      background:var(--sand); transition:border-color var(--t-fast), background var(--t-fast) }
+  .fld input:focus { outline:none; border-color:var(--gold); background:#FFF;
+      box-shadow:0 0 0 3px rgba(197,155,39,.13) }
+  .fld .hint { font-size:.73rem; color:var(--muted); margin-top:5px; line-height:1.7 }
+  .row2 { display:grid; grid-template-columns:1fr 1fr; gap:10px }
+  @media (max-width:420px) { .row2 { grid-template-columns:1fr } }
+  .ok-msg { background:#EAF7EF; border-right:3px solid #27AE60; color:#1E7E45;
+      padding:10px 13px; border-radius:9px; font-size:.82rem;
+      margin-bottom:14px; display:none; text-align:right }
+</style>
+</head>
+<body>
+<a href="#main" class="skip-link">پرش به محتوای اصلی</a>
+<!-- ارتفاع هدر از پیش رزرو می‌شود. هدر با جاوااسکریپت از app.js
+     ساخته می‌شود، پس تا آن لحظه ارتفاعش صفر است و با ظاهر شدن،
+     کل صفحه ۹۷ تا ۱۰۳ پیکسل پایین می‌پرد. ردیابی نشان داد این
+     تک‌ریشهٔ جابه‌جایی در همه صفحات بود (MAIN#main: y 0 → 97).
+     اندازه‌گیری واقعی: موبایل ۹۷px · دسکتاپ ۱۰۳px. -->
+<div id="hdr" class="hdr-reserve"></div>
+
+<div class="auth-wrap">
+  <main class="auth-card" id="main">
+    <div class="mark">
+      <svg viewBox="0 0 24 24"><path d="M12 2a5 5 0 015 5v3h1a2 2 0 012 2v8a2 2 0 01-2 2H6a2 2 0 01-2-2v-8a2 2 0 012-2h1V7a5 5 0 015-5zm0 2a3 3 0 00-3 3v3h6V7a3 3 0 00-3-3z"/></svg>
+    </div>
+
+    <div id="err" class="err" role="alert" aria-live="assertive"></div>
+    <div id="ok" class="ok-msg" role="status" aria-live="polite"></div>
+
+    <!-- ═══ ورود / ثبت‌نام ═══ -->
+    <div id="viewMain">
+      <div class="auth-tabs" role="tablist">
+        <button id="tabLogin" class="on" onclick="showTab('login')">ورود</button>
+        <button id="tabReg" onclick="showTab('reg')">ساخت حساب</button>
+      </div>
+
+      <!-- ورود -->
+      <div id="paneLogin">
+        <h1>ورود به حساب</h1>
+        <p class="sub">با شماره موبایل و رمز عبور وارد شوید.</p>
+
+        <div class="fld">
+          <label for="lgMobile">شماره موبایل</label>
+          <input id="lgMobile" type="tel" inputmode="numeric" dir="ltr"
+                 style="text-align:right" placeholder="۰۹۱۲۳۴۵۶۷۸۹"
+                 autocomplete="username" maxlength="13">
+          <div class="hint">همان شماره، نام کاربری شماست.</div>
+        </div>
+        <div class="fld">
+          <label for="lgPass">رمز عبور</label>
+          <input id="lgPass" type="password" autocomplete="current-password"
+                 placeholder="حداقل ۸ نویسه">
+        </div>
+
+        <button class="btn btn-block" id="lgBtn" onclick="doLogin()">ورود</button>
+        <div style="margin-top:13px">
+          <button class="link-btn" onclick="showView('forgot')">رمز عبور را فراموش کرده‌ام</button>
+        </div>
+      </div>
+
+      <!-- ثبت‌نام -->
+      <div id="paneReg" style="display:none">
+        <h1>ساخت حساب کاربری</h1>
+        <p class="sub">یک بار ثبت‌نام کنید، سفارش‌های بعدی سریع‌تر می‌شود.</p>
+
+        <div class="row2">
+          <div class="fld">
+            <label for="rgFirst">نام <span style="color:var(--gold)">*</span></label>
+            <input id="rgFirst" placeholder="یا نام مستعار" maxlength="40" autocomplete="given-name">
+          </div>
+          <div class="fld">
+            <label for="rgLast">نام خانوادگی <span class="opt">(اختیاری)</span></label>
+            <input id="rgLast" maxlength="40" autocomplete="family-name">
+          </div>
+        </div>
+        <div class="fld">
+          <label for="rgMobile">شماره موبایل <span style="color:var(--gold)">*</span></label>
+          <input id="rgMobile" type="tel" inputmode="numeric" dir="ltr"
+                 style="text-align:right" placeholder="۰۹۱۲۳۴۵۶۷۸۹"
+                 autocomplete="username" maxlength="13">
+          <div class="hint">این شماره نام کاربری شما می‌شود.</div>
+        </div>
+        <div class="fld">
+          <label for="rgPass">رمز عبور <span style="color:var(--gold)">*</span></label>
+          <input id="rgPass" type="password" autocomplete="new-password"
+                 placeholder="حداقل ۸ نویسه">
+          <div class="hint">دست‌کم ۸ نویسه انتخاب کنید.</div>
+        </div>
+
+        <button class="btn btn-block" id="rgBtn" onclick="doRegister()">ساخت حساب</button>
+      </div>
+    </div>
+
+    <!-- ═══ بازیابی رمز — گام یک ═══ -->
+    <div id="viewForgot" style="display:none">
+      <h1>بازیابی رمز</h1>
+      <p class="sub">شماره موبایل خود را وارد کنید.<br>کد بازیابی پیامک می‌شود.</p>
+
+      <div class="fld">
+        <label for="fgMobile">شماره موبایل</label>
+        <input id="fgMobile" type="tel" inputmode="numeric" dir="ltr"
+               style="text-align:right" placeholder="۰۹۱۲۳۴۵۶۷۸۹" maxlength="13">
+      </div>
+
+      <button class="btn btn-block" id="fgBtn" onclick="doForgot()">ارسال کد بازیابی</button>
+      <div style="margin-top:13px">
+        <button class="link-btn" onclick="showView('main')">بازگشت به ورود</button>
+      </div>
+    </div>
+
+    <!-- ═══ بازیابی رمز — گام دو ═══ -->
+    <div id="viewReset" style="display:none">
+      <h1>رمز تازه</h1>
+      <p class="sub">کد ۵ رقمی ارسال‌شده به
+        <strong id="rsMobile" dir="ltr"></strong> را وارد کنید.</p>
+
+      <div class="fld">
+        <label for="rsCode">کد بازیابی</label>
+        <input id="rsCode" inputmode="numeric" dir="ltr" style="text-align:center;
+               font-size:1.2rem; font-weight:800; letter-spacing:.3em"
+               placeholder="•••••" maxlength="5">
+      </div>
+      <div class="fld">
+        <label for="rsPass">رمز تازه</label>
+        <input id="rsPass" type="password" autocomplete="new-password"
+               placeholder="حداقل ۸ نویسه">
+      </div>
+
+      <button class="btn btn-block" id="rsBtn" onclick="doReset()">ثبت رمز تازه</button>
+      <div class="timer" id="rsTimer" aria-live="polite"></div>
+      <div style="margin-top:8px">
+        <button class="link-btn" onclick="showView('forgot')">ارسال دوباره کد</button>
+      </div>
+    </div>
+
+    <div class="trust">
+      <span><svg viewBox="0 0 24 24"><rect x="4" y="10" width="16" height="10" rx="2"/><path d="M8 10V7a4 4 0 018 0v3"/></svg> اتصال امن</span>
+      <span><svg viewBox="0 0 24 24"><path d="M12 2L4 6v6c0 5 3.4 9.4 8 10 4.6-.6 8-5 8-10V6l-8-4z"/></svg> رمز شما رمزنگاری می‌شود</span>
+    </div>
+  </main>
+</div>
+
+<div id="ftr"></div>
+
+<script src="/assets/app.js"></script>
+<script>
+document.getElementById('hdr').innerHTML = renderHeader('');
+document.getElementById('ftr').innerHTML = renderFooter();
+
+/* اگر از صفحه دیگری آمده، بعد از ورود همان‌جا برگردد */
+const RETURN_TO = new URLSearchParams(location.search).get('next') || '/account';
+
+const $ = id => document.getElementById(id);
+const enDigits = v => String(v || '')
+  .replace(/[۰-۹]/g, d => '۰۱۲۳۴۵۶۷۸۹'.indexOf(d))
+  .replace(/[٠-٩]/g, d => '٠١٢٣٤٥٦٧٨٩'.indexOf(d))
+  .replace(/[\s\-()]/g, '').trim();
+
+function showErr(m) {
+  $('ok').style.display = 'none';
+  const e = $('err'); e.textContent = m; e.style.display = 'block';
+}
+function showOk(m) {
+  $('err').style.display = 'none';
+  const e = $('ok'); e.textContent = m; e.style.display = 'block';
+}
+function clearMsg() { $('err').style.display = 'none'; $('ok').style.display = 'none'; }
+
+function showTab(which) {
+  clearMsg();
+  const isLogin = which === 'login';
+  $('tabLogin').classList.toggle('on', isLogin);
+  $('tabReg').classList.toggle('on', !isLogin);
+  $('paneLogin').style.display = isLogin ? '' : 'none';
+  $('paneReg').style.display = isLogin ? 'none' : '';
+}
+
+function showView(v) {
+  clearMsg();
+  $('viewMain').style.display   = v === 'main'   ? '' : 'none';
+  $('viewForgot').style.display = v === 'forgot' ? '' : 'none';
+  $('viewReset').style.display  = v === 'reset'  ? '' : 'none';
+}
+
+/** ذخیره نشست و رفتن به مقصد */
+function afterAuth(d) {
+  localStorage.setItem('yazd_customer_token', d.token);
+  localStorage.setItem('yazd_customer_mobile', d.customer.mobile);
+  location.href = RETURN_TO;
+}
+
+async function doLogin() {
+  clearMsg();
+  const mobile = enDigits($('lgMobile').value);
+  const password = $('lgPass').value;
+
+  if (!/^09\d{9}$/.test(mobile)) return showErr('شماره موبایل باید با ۰۹ شروع شود و ۱۱ رقم باشد.');
+  if (!password) return showErr('رمز عبور را وارد کنید.');
+
+  const btn = $('lgBtn');
+  btn.disabled = true; btn.textContent = 'در حال ورود…';
+  try {
+    const r = await fetch('/api/auth/login', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ mobile, password })
+    });
+    const d = await r.json();
+    if (!r.ok) throw new Error(d.error || 'ورود ناموفق');
+    afterAuth(d);
+  } catch (e) {
+    showErr(e.message);
+    btn.disabled = false; btn.textContent = 'ورود';
+  }
+}
+
+async function doRegister() {
+  clearMsg();
+  const first = $('rgFirst').value.trim();
+  const last = $('rgLast').value.trim();
+  const mobile = enDigits($('rgMobile').value);
+  const password = $('rgPass').value;
+
+  if (first.length < 2) return showErr('نام را وارد کنید (حداقل ۲ نویسه).');
+  if (!/^09\d{9}$/.test(mobile)) return showErr('شماره موبایل باید با ۰۹ شروع شود و ۱۱ رقم باشد.');
+  if (password.length < 8) return showErr('رمز عبور باید حداقل ۸ نویسه باشد.');
+
+  const btn = $('rgBtn');
+  btn.disabled = true; btn.textContent = 'در حال ساخت حساب…';
+  try {
+    const r = await fetch('/api/auth/register', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ first_name: first, last_name: last || undefined,
+                             mobile, password })
+    });
+    const d = await r.json();
+    if (!r.ok) throw new Error(d.error || 'ثبت‌نام ناموفق');
+    afterAuth(d);
+  } catch (e) {
+    showErr(e.message);
+    btn.disabled = false; btn.textContent = 'ساخت حساب';
+  }
+}
+
+let resetMobile = '';
+let resendTimer = null;
+
+async function doForgot() {
+  clearMsg();
+  const mobile = enDigits($('fgMobile').value);
+  if (!/^09\d{9}$/.test(mobile)) return showErr('شماره موبایل معتبر نیست.');
+
+  const btn = $('fgBtn');
+  btn.disabled = true; btn.textContent = 'در حال ارسال…';
+  try {
+    const r = await fetch('/api/auth/forgot-password', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ mobile })
+    });
+    const d = await r.json();
+    if (!r.ok) throw new Error(d.error || 'خطا');
+
+    resetMobile = mobile;
+    $('rsMobile').textContent = toFa(mobile);
+    showView('reset');
+    startResendTimer();
+    $('rsCode').focus();
+  } catch (e) {
+    showErr(e.message);
+  } finally {
+    btn.disabled = false; btn.textContent = 'ارسال کد بازیابی';
+  }
+}
+
+function startResendTimer() {
+  let left = 120;
+  clearInterval(resendTimer);
+  const tick = () => {
+    if (left <= 0) { clearInterval(resendTimer); $('rsTimer').textContent = ''; return; }
+    const m = String(Math.floor(left / 60)).padStart(2, '0');
+    const s = String(left % 60).padStart(2, '0');
+    $('rsTimer').innerHTML = `اعتبار کد: <strong>${toFa(m + ':' + s)}</strong>`;
+    left--;
+  };
+  tick();
+  resendTimer = setInterval(tick, 1000);
+}
+
+async function doReset() {
+  clearMsg();
+  const code = enDigits($('rsCode').value);
+  const pw = $('rsPass').value;
+
+  if (code.length !== 5) return showErr('کد ۵ رقمی را وارد کنید.');
+  if (pw.length < 8) return showErr('رمز تازه باید حداقل ۸ نویسه باشد.');
+
+  const btn = $('rsBtn');
+  btn.disabled = true; btn.textContent = 'در حال ثبت…';
+  try {
+    const r = await fetch('/api/auth/reset-password', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ mobile: resetMobile, code, new_password: pw })
+    });
+    const d = await r.json();
+    if (!r.ok) throw new Error(d.error || 'خطا');
+    clearInterval(resendTimer);
+    afterAuth(d);
+  } catch (e) {
+    showErr(e.message);
+    btn.disabled = false; btn.textContent = 'ثبت رمز تازه';
+  }
+}
+
+// Enter در هر فیلد دکمه همان بخش را می‌زند
+$('lgPass').addEventListener('keydown', e => { if (e.key === 'Enter') doLogin(); });
+$('rgPass').addEventListener('keydown', e => { if (e.key === 'Enter') doRegister(); });
+$('fgMobile').addEventListener('keydown', e => { if (e.key === 'Enter') doForgot(); });
+$('rsPass').addEventListener('keydown', e => { if (e.key === 'Enter') doReset(); });
+
+// اگر از قبل وارد شده، مستقیم به حساب
+if (localStorage.getItem('yazd_customer_token')) {
+  YazdAuth.check().then(m => { if (m.authenticated) location.href = RETURN_TO; });
+}
+</script>
+</body>
+</html>

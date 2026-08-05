@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16.png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="manifest" href="/site.webmanifest">
+<meta name="theme-color" content="#121212">
+<title>برچسب پستی | عطر یزد</title>
+<!-- فونت عمداً preload نمی‌شود.
+     با font-display:swap متن بلافاصله با فونت سیستمی دیده می‌شود،
+     پس preload فقط پهنای باند را از تصویر اصلی می‌دزدد. روی ۳G
+     اندازه‌گیری شد: حذف آن LCP صفحه محصول را از ۴٫۳۱s به ۳٫۵۷s
+     رساند بدون آنکه FCP بدتر شود. -->
+<link rel="stylesheet" href="/assets/fonts.css">
+<style>
+  :root { --gold:#C59B27; --ink:#1C1C1C; --muted:#666; --line:#CFCCC5; --sand:#F7F4EF }
+  * { box-sizing:border-box; margin:0; padding:0 }
+  body { font-family:'Vazirmatn',sans-serif; background:#EFEFEF;
+         color:var(--ink); direction:rtl; padding:22px }
+
+  .toolbar { max-width:640px; margin:0 auto 16px; display:flex; gap:9px;
+             justify-content:space-between; flex-wrap:wrap; align-items:center }
+  .btn { background:var(--gold); color:#121212; border:none; padding:11px 24px;
+         border-radius:9px; font-weight:800; font-size:.88rem; cursor:pointer;
+         font-family:inherit; text-decoration:none; display:inline-block }
+  .btn-ghost { background:#FFF; color:var(--ink); border:1px solid var(--line) }
+
+  /* برچسب استاندارد ۱۰×۱۵ سانتی‌متر */
+  .label { width:100mm; min-height:150mm; background:#FFF; margin:0 auto;
+           padding:8mm; box-shadow:0 4px 22px rgba(0,0,0,.1);
+           display:flex; flex-direction:column }
+
+  .lbl-head { display:flex; justify-content:space-between; align-items:flex-start;
+              border-bottom:2.5px solid var(--ink); padding-bottom:3mm }
+  .lbl-head .b { font-size:1.15rem; font-weight:800; line-height:1.25 }
+  .lbl-head .b small { display:block; font-size:.55rem; letter-spacing:2px;
+                       color:var(--gold); font-weight:700 }
+  .carrier { border:2px solid var(--ink); border-radius:5px; padding:3px 10px;
+             font-size:.72rem; font-weight:800 }
+
+  .box { border:1.5px solid var(--line); border-radius:6px;
+         padding:3.5mm 4mm; margin-top:3.5mm }
+  .box h3 { font-size:.62rem; color:var(--muted); font-weight:800;
+            letter-spacing:.5px; margin-bottom:2mm }
+  .to-name { font-size:1.05rem; font-weight:800; margin-bottom:1.5mm }
+  .to-addr { font-size:.85rem; line-height:1.95 }
+  .to-meta { font-size:.82rem; margin-top:2mm; display:flex;
+             justify-content:space-between; gap:8px; flex-wrap:wrap }
+  .to-meta b { font-weight:800 }
+
+  .from { font-size:.72rem; line-height:1.85; color:#333 }
+
+  .barcode-wrap { text-align:center; margin-top:auto; padding-top:4mm }
+  .barcode { direction:ltr; line-height:0 }
+  .barcode svg { width:100%; height:16mm; display:block }
+  .barcode-txt { font-family:monospace; font-size:.82rem; letter-spacing:2.5px;
+                 margin-top:1.5mm; direction:ltr }
+  .barcode-kind { font-size:.6rem; color:var(--muted); letter-spacing:.5px; margin-top:.5mm }
+
+  .items { font-size:.72rem; line-height:1.8; color:#444 }
+  .items .row { display:flex; justify-content:space-between; gap:8px }
+
+  .fragile { background:#FFF4E5; border:1.5px solid #E8A33D; border-radius:5px;
+             padding:2.5mm 4mm; margin-top:3mm; font-size:.75rem;
+             font-weight:700; text-align:center; color:#8A5A0B }
+
+  @media print {
+    body { background:#FFF; padding:0 }
+    .toolbar { display:none !important }
+    .label { box-shadow:none; margin:0; width:100mm; min-height:150mm }
+    @page { size:100mm 150mm; margin:0 }
+  }
+</style>
+</head>
+<body>
+
+<div class="toolbar">
+  <a href="/admin" class="btn btn-ghost">بازگشت</a>
+  <button class="btn" onclick="window.print()">چاپ برچسب</button>
+</div>
+
+<div class="label" id="label">
+  <div style="text-align:center;padding:40px;color:#888">در حال بارگذاری…</div>
+</div>
+
+<script src="/assets/code128.js"></script>
+<script>
+const esc = v => v === null || v === undefined ? '' : String(v)
+  .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
+  .replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+const fa = n => String(n).replace(/\d/g, d => '۰۱۲۳۴۵۶۷۸۹'[d]);
+const oid = new URLSearchParams(location.search).get('order');
+
+function headers() {
+  const a = localStorage.getItem('yazd_admin_token');
+  return a ? { 'Authorization': 'Bearer ' + a } : {};
+}
+
+async function load() {
+  if (!oid) {
+    document.getElementById('label').innerHTML =
+      '<div style="padding:40px;text-align:center">شماره سفارش مشخص نیست.</div>';
+    return;
+  }
+  const r = await fetch(`/api/orders/${oid}/invoice`, { headers: headers() });
+  if (!r.ok) {
+    const e = await r.json().catch(() => ({}));
+    document.getElementById('label').innerHTML =
+      `<div style="padding:40px;text-align:center">${e.error || 'خطا در دریافت اطلاعات'}</div>`;
+    return;
+  }
+  render(await r.json());
+}
+
+function render(d) {
+  const { order: o, items, settings: st } = d;
+
+  /* ── بارکد: همیشه شماره سفارش، هرگز کد رهگیری ──
+     خواسته مالک (مرداد ۱۴۰۵): «درج کد رهگیری پستی و مواردی
+     این‌چنینی لزومی ندارد. چون شرکت‌های پستی لیبل مخصوص خود
+     را دارند.»
+
+     ولی بارکد حذف نشد چون کاربرد واقعی دارد و پس از تحویل به
+     پست هم به کار می‌آید:
+
+       • انبار: هنگام بسته‌بندی، اسکن به‌جای تایپ ۱۷ نویسه
+       • پیدا کردن مرسوله برگشتی بدون باز کردن بسته
+       • جستجوی سریع سفارش در پنل (فیلد جستجو شماره را می‌پذیرد)
+
+     کد رهگیری پستی روی برچسب خودِ شرکت پستی است و تکرارش اینجا
+     فقط ابهام می‌سازد — دو بارکد روی یک بسته یعنی اسکنر انبار
+     ممکن است اشتباه بخواند. */
+  const code = o.order_id;
+  document.title = `برچسب ${o.order_id}`;
+
+  const units = items.reduce((s, i) => s + i.quantity, 0);
+
+  document.getElementById('label').innerHTML = `
+    <div class="lbl-head">
+      <div class="b">${esc(st.shop_name)}<small>${esc(st.shop_name_en || '')}</small></div>
+      <div class="carrier">${esc(o.carrier || 'پست پیشتاز')}</div>
+    </div>
+
+    <div class="box">
+      <h3>گیرنده</h3>
+      <div class="to-name">${esc(o.customer_name)}</div>
+      <div class="to-addr">${esc(o.province || '')} — ${esc(o.city || '')}<br>${esc(o.address || '')}</div>
+      <div class="to-meta">
+        <span><b>تلفن:</b> <span dir="ltr">${fa(o.mobile)}</span></span>
+        ${o.postal_code ? `<span><b>کد پستی:</b> <span dir="ltr">${fa(o.postal_code)}</span></span>` : ''}
+      </div>
+    </div>
+
+    <div class="box">
+      <h3>فرستنده</h3>
+      <div class="from">
+        <!-- پست نام شخص می‌خواهد نه نام فروشگاه؛ اگر مرسوله
+             برگشت بخورد باید معلوم باشد به دست چه کسی برسد. -->
+        <b>${esc(st.shop_name)}${st.sender_person ? ` — ${esc(st.sender_person)}` : ''}</b><br>
+        ${esc(st.address || '—')}
+        ${st.phone ? `<br>تماس: <span dir="ltr">${fa(st.phone)}</span>` : ''}
+        ${st.postal_code ? `<br>کد پستی: <span dir="ltr">${fa(st.postal_code)}</span>` : ''}
+      </div>
+    </div>
+
+    <div class="box">
+      <h3>محتویات مرسوله</h3>
+      <div class="items">
+        <div class="row"><span>تعداد اقلام</span><b>${fa(units)} عدد</b></div>
+        <div class="row"><span>شماره سفارش</span><b dir="ltr">${o.order_id}</b></div>
+        <div class="row"><span>تاریخ</span>
+          <b>${fa(new Date(o.created_at).toLocaleDateString('fa-IR'))}</b></div>
+      </div>
+    </div>
+
+    <div class="fragile">شکستنی — با احتیاط جابه‌جا شود • دور از نور و گرما</div>
+
+    <div class="barcode-wrap">
+      <div class="barcode">${code128SVG(code, { height: 60, moduleWidth: 2 })}</div>
+      <div class="barcode-txt">${code}</div>
+      <div class="barcode-kind">شماره سفارش — برای اسکن در انبار · Code128</div>
+    </div>`;
+}
+
+load();
+</script>
+</body>
+</html>

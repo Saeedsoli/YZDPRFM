@@ -1,0 +1,324 @@
+<!DOCTYPE html><html lang="fa" dir="rtl"><head><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16.png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="manifest" href="/site.webmanifest">
+<meta name="theme-color" content="#121212">
+<title>تماس و مرجوعی | عطر یزد</title>
+<meta name="description" content="راه‌های تماس با عطر یزد و ثبت درخواست مرجوعی — پاسخگویی حداکثر ۲۴ ساعت.">
+<!-- فونت عمداً preload نمی‌شود.
+     با font-display:swap متن بلافاصله با فونت سیستمی دیده می‌شود،
+     پس preload فقط پهنای باند را از تصویر اصلی می‌دزدد. روی ۳G
+     اندازه‌گیری شد: حذف آن LCP صفحه محصول را از ۴٫۳۱s به ۳٫۵۷s
+     رساند بدون آنکه FCP بدتر شود. -->
+<link rel="stylesheet" href="/assets/theme.css">
+<style>
+  .panel { background: var(--surface); border: 1px solid var(--border);
+           border-radius: var(--r); padding: 23px; margin-bottom: 16px;
+           animation: fadeUp 520ms var(--ease-out) backwards }
+  .panel:nth-of-type(2){animation-delay:80ms} .panel:nth-of-type(3){animation-delay:160ms}
+  .panel h2 { font-size: 1rem; font-weight: 800; margin-bottom: 14px }
+
+  /* کارت‌های راه ارتباطی */
+  .ways { display: grid; grid-template-columns: repeat(auto-fit,minmax(210px,1fr)); gap: 12px }
+  .way {
+    display: flex; align-items: center; gap: 12px; text-decoration: none; color: inherit;
+    background: var(--sand); border: 1px solid var(--border-soft);
+    border-radius: 12px; padding: 14px;
+    transition: transform var(--t-fast), border-color var(--t-fast), background var(--t-fast);
+  }
+  .way:hover { transform: translateY(-2px); border-color: rgba(197,155,39,.45); background: #FFFBF0 }
+  .way .ic {
+    flex: none; width: 38px; height: 38px; border-radius: 11px;
+    background: rgba(197,155,39,.13); border: 1px solid rgba(197,155,39,.3);
+    display: grid; place-items: center;
+  }
+  .way .ic svg { width: 18px; height: 18px; stroke: var(--gold); fill: none; stroke-width: 1.8 }
+  .way .k { font-size: .71rem; color: var(--muted) }
+  .way .v { font-size: .88rem; font-weight: 800; margin-top: 2px; line-height: 1.5 }
+  .way .v[dir=ltr] { direction: ltr; text-align: right }
+
+  /* شرایط مرجوعی به شکل چک‌لیست */
+  .rules { list-style: none; padding: 0; margin: 0 0 16px }
+  .rules li {
+    display: flex; gap: 9px; align-items: flex-start;
+    font-size: .85rem; line-height: 2; padding: 7px 0;
+    border-bottom: 1px dashed var(--border-soft);
+  }
+  .rules li:last-child { border: none }
+  .rules svg { flex: none; width: 15px; height: 15px; margin-top: 5px;
+               stroke: var(--gold); fill: none; stroke-width: 2.4 }
+
+  .field-msg { display: none; align-items: center; gap: 5px;
+               font-size: .74rem; color: var(--danger); margin-top: 5px;
+               animation: fadeUp 280ms var(--ease-out) }
+  .field.invalid .field-msg { display: flex }
+  .field.invalid input, .field.invalid textarea {
+    border-color: var(--danger); box-shadow: 0 0 0 3px rgba(192,57,43,.1) }
+  .field.valid input, .field.valid textarea { border-color: rgba(30,132,73,.5) }
+  .field-msg svg { flex: none; width: 12px; height: 12px; stroke: currentColor;
+                   fill: none; stroke-width: 2.4 }
+
+  .check-row { display: flex; gap: 9px; align-items: flex-start;
+               background: var(--sand); border-radius: 10px; padding: 12px 14px }
+  .check-row input { width: auto; margin-top: 3px; accent-color: var(--gold) }
+  .check-row label { font-size: .85rem; line-height: 1.9; cursor: pointer }
+
+  /* نتیجه ثبت تیکت */
+  .done-box {
+    background: #E8F6EF; border: 1px solid rgba(30,132,73,.3);
+    border-radius: 14px; padding: 22px; text-align: center;
+    animation: panelIn 560ms var(--ease-out);
+  }
+  .done-box .mk { width: 52px; height: 52px; margin: 0 auto 12px }
+  .done-box .mk svg { width: 100%; height: 100% }
+  .done-box .mk circle, .done-box .mk path {
+    fill: none; stroke: #1E8449; stroke-linecap: round; stroke-linejoin: round;
+  }
+  .done-box .mk circle { stroke-width: 2.2; stroke-dasharray: 138; stroke-dashoffset: 138;
+    animation: ringDraw 800ms var(--ease-out) forwards;
+    transform: rotate(-90deg); transform-origin: center }
+  .done-box .mk path { stroke-width: 3; stroke-dasharray: 40; stroke-dashoffset: 40;
+    animation: tickDraw 460ms var(--ease-out) 660ms forwards }
+  @keyframes ringDraw { to { stroke-dashoffset: 0 } }
+  @keyframes tickDraw { to { stroke-dashoffset: 0 } }
+  .done-box h3 { font-size: 1.05rem; font-weight: 800; color: #1E8449 }
+  .done-box .tid { font-size: 1.15rem; font-weight: 800; direction: ltr;
+                   margin: 10px 0; letter-spacing: .5px }
+  .done-box p { font-size: .85rem; line-height: 2; color: #2C6B45 }
+</style></head>
+<body><a href="#main" class="skip-link">پرش به محتوای اصلی</a>
+<!-- ارتفاع هدر از پیش رزرو می‌شود. هدر با جاوااسکریپت از app.js
+     ساخته می‌شود، پس تا آن لحظه ارتفاعش صفر است و با ظاهر شدن،
+     کل صفحه ۹۷ تا ۱۰۳ پیکسل پایین می‌پرد. ردیابی نشان داد این
+     تک‌ریشهٔ جابه‌جایی در همه صفحات بود (MAIN#main: y 0 → 97).
+     اندازه‌گیری واقعی: موبایل ۹۷px · دسکتاپ ۱۰۳px. -->
+<div id="hdr" class="hdr-reserve"></div>
+
+<section class="page-head">
+  <div class="inner">
+    <span class="eyebrow">پشتیبانی</span>
+    <h1>تماس و <em>مرجوعی</em></h1>
+    <p>پاسخگویی شنبه تا پنجشنبه · پاسخ به تیکت حداکثر ۲۴ ساعت.</p>
+  </div>
+</section>
+
+<main id="main" class="container" style="max-width:760px;margin-top:26px">
+
+<div class="panel">
+  <h2>راه‌های ارتباطی</h2>
+  <div class="ways" id="ways">
+    <div class="way"><div class="ic"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/></svg></div>
+      <div><div class="k">در حال بارگذاری…</div></div></div>
+  </div>
+  <p style="font-size:.8rem;color:var(--muted);line-height:2;margin-top:14px">
+    ساعات پاسخگویی: شنبه تا پنجشنبه، ۹ صبح تا ۶ عصر ·
+    زمان پاسخ به تیکت‌ها حداکثر <strong style="color:var(--text)">۲۴ ساعت</strong>
+  </p>
+</div>
+
+<div class="panel">
+  <h2>ثبت درخواست مرجوعی</h2>
+
+  <ul class="rules">
+    <li><svg viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg>
+      حجم محصول <strong>بالای ۱۰ میلی‌لیتر</strong> باشد — سمپل‌ها قابل مرجوع نیستند</li>
+    <li><svg viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg>
+      کمتر از <strong>۲ میلی‌لیتر</strong> از محصول مصرف شده باشد</li>
+    <li><svg viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg>
+      محصول در معرض نور مستقیم یا گرما قرار نگرفته باشد</li>
+    <li><svg viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg>
+      سفارش <strong>ارسال یا تحویل شده</strong> باشد</li>
+  </ul>
+
+  <div id="formBox">
+    <div class="field">
+      <label for="oid">شماره سفارش *</label>
+      <input id="oid" placeholder="YZD-XXXXXXXX" dir="ltr" style="text-align:right">
+      <div class="hint">شماره را از <a href="/track" style="color:var(--gold)">صفحه پیگیری</a> بردارید</div>
+      <div class="field-msg"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16h.01"/></svg><span>شماره سفارش را وارد کنید</span></div>
+    </div>
+
+    <div class="field">
+      <label for="pname">نام محصول *</label>
+      <input id="pname" placeholder="مثلاً: کرِید — اونتوس">
+      <div class="field-msg"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16h.01"/></svg><span>نام محصول را وارد کنید</span></div>
+    </div>
+
+    <div class="field" style="max-width:220px">
+      <label for="vol">حجم (میلی‌لیتر) *</label>
+      <input id="vol" type="number" inputmode="numeric" placeholder="۳۰" min="11">
+      <div class="field-msg"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16h.01"/></svg><span>حجم باید بیشتر از ۱۰ میلی‌لیتر باشد</span></div>
+    </div>
+
+    <div class="field">
+      <label for="desc">توضیحات *</label>
+      <textarea id="desc" rows="4" placeholder="چه مشکلی وجود دارد؟ هرچه دقیق‌تر بنویسید، سریع‌تر رسیدگی می‌شود."></textarea>
+      <div class="field-msg"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16h.01"/></svg><span>حداقل ۱۰ حرف توضیح بنویسید</span></div>
+    </div>
+
+    <div class="field">
+      <div class="check-row">
+        <input type="checkbox" id="used">
+        <label for="used">تأیید می‌کنم کمتر از ۲ میلی‌لیتر از محصول مصرف شده
+          و در معرض نور یا گرما قرار نگرفته است.</label>
+      </div>
+      <div class="field-msg" id="msgUsed"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16h.01"/></svg><span>برای ادامه باید این مورد را تأیید کنید</span></div>
+    </div>
+
+    <button class="btn btn-block" id="sendBtn" onclick="sendTicket()">ثبت تیکت مرجوعی</button>
+  </div>
+</div>
+</main>
+
+<div id="ftr"></div>
+<script src="/assets/app.js"></script>
+<script>
+document.getElementById('hdr').innerHTML = renderHeader();
+document.getElementById('ftr').innerHTML = renderFooter();
+
+const ICONS = {
+  phone: '<path d="M22 16.9v3a2 2 0 01-2.2 2 19.8 19.8 0 01-8.6-3.1 19.5 19.5 0 01-6-6A19.8 19.8 0 012.1 4.2 2 2 0 014.1 2h3a2 2 0 012 1.7c.1 1 .4 1.9.7 2.8a2 2 0 01-.5 2.1L8.1 9.9a16 16 0 006 6l1.3-1.2a2 2 0 012.1-.5c.9.3 1.8.6 2.8.7a2 2 0 011.7 2z"/>',
+  pin:   '<path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 1116 0z"/><circle cx="12" cy="10" r="3"/>',
+  clock: '<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>',
+  mail:  '<rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/>',
+  tg:    '<path d="M21.9 4.3L2.9 11.6c-1 .4-1 1.3 0 1.6l4.8 1.5 1.8 5.6c.2.6.4.8.9.8.4 0 .6-.2.9-.5l2.3-2.3 4.8 3.5c.9.5 1.5.2 1.7-.8l3.1-14.6c.3-1.2-.5-1.8-1.3-1.5z"/>',
+  ig:    '<rect x="2.5" y="2.5" width="19" height="19" rx="5.5"/><circle cx="12" cy="12" r="4.2"/><circle cx="17.6" cy="6.4" r="1.2" fill="currentColor" stroke="none"/>'
+};
+
+/* اطلاعات تماس از تنظیمات فروشگاه می‌آید، نه سخت‌کد شده در HTML.
+   قبلاً این بخش عملاً خالی بود — نه تلفنی، نه نشانی‌ای. */
+async function loadWays() {
+  let d = {};
+  try { d = await fetch('/api/contact-info').then(r => r.json()); } catch {}
+
+  const ways = [];
+  if (d.phone) {
+    const tel = String(d.phone).replace(/\D/g, '');
+    ways.push(`<a class="way" href="tel:${tel}">
+      <div class="ic"><svg viewBox="0 0 24 24">${ICONS.phone}</svg></div>
+      <div><div class="k">تماس تلفنی</div>
+        <div class="v" dir="ltr">${toFa(d.phone)}</div></div></a>`);
+  }
+  if (d.address) {
+    ways.push(`<div class="way">
+      <div class="ic"><svg viewBox="0 0 24 24">${ICONS.pin}</svg></div>
+      <div><div class="k">نشانی فروشگاه</div>
+        <div class="v" style="font-size:.8rem;font-weight:600">${d.address}</div></div></div>`);
+  }
+  /* تلگرام سریع‌ترین راه است — اول از تلفن می‌آید چون بیشتر
+     مشتری‌ها ترجیح می‌دهند بنویسند تا زنگ بزنند. */
+  ways.push(`<a class="way" href="${SOCIAL.telegram.url}"
+       target="_blank" rel="noopener noreferrer">
+    <div class="ic"><svg viewBox="0 0 24 24">${ICONS.tg}</svg></div>
+    <div><div class="k">پشتیبانی تلگرام</div>
+      <div class="v" dir="ltr">${SOCIAL.telegram.handle}</div></div></a>`);
+
+  ways.push(`<a class="way" href="${SOCIAL.instagram.url}"
+       target="_blank" rel="noopener noreferrer">
+    <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.7">${ICONS.ig}</svg></div>
+    <div><div class="k">اینستاگرام</div>
+      <div class="v" dir="ltr">${SOCIAL.instagram.handle}</div></div></a>`);
+
+  ways.push(`<div class="way">
+    <div class="ic"><svg viewBox="0 0 24 24">${ICONS.clock}</svg></div>
+    <div><div class="k">زمان پاسخ‌گویی</div>
+      <div class="v">حداکثر ۲۴ ساعت</div></div></div>`);
+
+  document.getElementById('ways').innerHTML = ways.join('');
+}
+
+/* ── اعتبارسنجی درجا ── */
+const RULES = {
+  oid:   v => /^YZD-[A-Z0-9-]{4,}$/i.test(v.trim()),
+  pname: v => v.trim().length >= 2,
+  vol:   v => Number(v) > 10,
+  desc:  v => v.trim().length >= 10
+};
+
+function markField(id, ok) {
+  const box = document.getElementById(id).closest('.field');
+  box.classList.toggle('invalid', !ok);
+  box.classList.toggle('valid', ok);
+  return ok;
+}
+const checkField = id => markField(id, RULES[id](document.getElementById(id).value));
+
+Object.keys(RULES).forEach(id => {
+  const el = document.getElementById(id);
+  el.addEventListener('blur', () => { if (el.value.trim() !== '') checkField(id); });
+  el.addEventListener('input', () => {
+    const box = el.closest('.field');
+    if (box.classList.contains('invalid') && RULES[id](el.value)) checkField(id);
+  });
+});
+
+document.getElementById('used').addEventListener('change', e => {
+  e.target.closest('.field').classList.toggle('invalid', !e.target.checked);
+});
+
+function validateAll() {
+  let first = null;
+  for (const id of Object.keys(RULES)) if (!checkField(id) && !first) first = id;
+
+  const used = document.getElementById('used');
+  const usedOk = used.checked;
+  used.closest('.field').classList.toggle('invalid', !usedOk);
+  if (!usedOk && !first) first = 'used';
+
+  if (first) {
+    const el = document.getElementById(first);
+    el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    setTimeout(() => el.focus({ preventScroll: true }), 300);
+  }
+  return !first;
+}
+
+async function sendTicket() {
+  if (!validateAll()) return;
+
+  const btn = document.getElementById('sendBtn');
+  btn.disabled = true; btn.textContent = 'در حال ثبت…';
+
+  try {
+    const r = await fetch('/api/tickets', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', ...YazdAuth.headers() },
+      body: JSON.stringify({
+        order_id: document.getElementById('oid').value.trim().toUpperCase(),
+        product_name: document.getElementById('pname').value.trim(),
+        volume_ml: Number(document.getElementById('vol').value),
+        used_under_2ml: true,
+        description: document.getElementById('desc').value.trim()
+      })
+    });
+    const d = await r.json();
+
+    if (!r.ok) { toast(d.error || 'خطا در ثبت تیکت'); return; }
+
+    // نمایش نتیجه به‌جای toast زودگذر — شماره تیکت باید بماند
+    document.getElementById('formBox').innerHTML = `
+      <div class="done-box">
+        <div class="mk"><svg viewBox="0 0 52 52">
+          <circle cx="26" cy="26" r="22"/><path d="M16 27l7 7 14-14"/></svg></div>
+        <h3>درخواست شما ثبت شد</h3>
+        <div class="tid">${d.ticket_id}</div>
+        <p>این شماره را نگه دارید.<br>
+           حداکثر تا <strong>۲۴ ساعت</strong> با شما تماس می‌گیریم.</p>
+      </div>`;
+  } catch {
+    toast('ارتباط برقرار نشد — دوباره تلاش کنید');
+  } finally {
+    btn.disabled = false; btn.textContent = 'ثبت تیکت مرجوعی';
+  }
+}
+
+// اگر از صفحه سفارش آمده، شماره را پیش‌پر کن
+const pre = new URLSearchParams(location.search).get('order');
+if (pre) document.getElementById('oid').value = pre;
+
+loadWays();
+</script></body></html>

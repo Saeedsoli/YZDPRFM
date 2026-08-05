@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16.png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="manifest" href="/site.webmanifest">
+<meta name="theme-color" content="#121212">
+<title>حساب کاربری | عطر یزد</title>
+<!-- فونت عمداً preload نمی‌شود.
+     با font-display:swap متن بلافاصله با فونت سیستمی دیده می‌شود،
+     پس preload فقط پهنای باند را از تصویر اصلی می‌دزدد. روی ۳G
+     اندازه‌گیری شد: حذف آن LCP صفحه محصول را از ۴٫۳۱s به ۳٫۵۷s
+     رساند بدون آنکه FCP بدتر شود. -->
+<link rel="stylesheet" href="/assets/theme.css">
+<style>
+  .acc-head { position:relative; overflow:hidden;
+      background: linear-gradient(135deg,#131313 0%,#1F1E1C 55%,#262320 100%);
+      color:#FFF; padding: 38px 20px 46px; }
+  .acc-head::before { content:''; position:absolute; inset:0; pointer-events:none;
+      background: radial-gradient(ellipse 70% 90% at 88% 15%,
+                  rgba(197,155,39,.16), transparent 62%);
+      animation: haloBreath 11s ease-in-out infinite }
+  .acc-head .inner { position:relative; z-index:2;
+      max-width: 940px; margin: 0 auto; display: flex;
+      justify-content: space-between; align-items: center; gap: 16px; flex-wrap: wrap;
+      animation: headRise 820ms var(--ease-out) backwards }
+  .acc-id { display:flex; align-items:center; gap:14px }
+  .avatar {
+    flex:none; width:52px; height:52px; border-radius:50%;
+    background: linear-gradient(150deg, rgba(197,155,39,.24), rgba(197,155,39,.06));
+    border:1px solid rgba(197,155,39,.42); display:grid; place-items:center;
+    position:relative;
+  }
+  .avatar svg { width:24px; height:24px; stroke:var(--gold); fill:none; stroke-width:1.7 }
+  .avatar::after {
+    content:''; position:absolute; inset:-5px; border-radius:50%;
+    border:1px solid rgba(197,155,39,.2); animation: haloBreath 6s ease-in-out infinite;
+  }
+  .acc-eyebrow { font-size:.68rem; font-weight:700; letter-spacing:2.2px;
+                 color:var(--gold); margin-bottom:5px }
+  .logout-btn {
+    background:rgba(255,255,255,.07); border:1px solid rgba(255,255,255,.2);
+    color:#FFF; padding:9px 18px; border-radius:30px; cursor:pointer;
+    font-size:.82rem; font-family:var(--font); font-weight:700;
+    display:inline-flex; align-items:center; gap:7px;
+    transition: all var(--t-fast);
+  }
+  .logout-btn:hover { background:rgba(255,255,255,.14); border-color:rgba(197,155,39,.5) }
+  .logout-btn svg { width:15px; height:15px; stroke:currentColor; fill:none; stroke-width:1.9 }
+  .acc-stats { display: grid; grid-template-columns: repeat(auto-fit,minmax(140px,1fr));
+               gap: 12px; max-width: 940px; margin: -26px auto 22px; padding: 0 20px; }
+  .acc-stat { background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--r); padding: 17px; box-shadow: var(--sh);
+      transition: transform var(--t-smooth), box-shadow var(--t-smooth);
+      animation: fadeUp 520ms var(--ease-out) backwards }
+  .acc-stat:hover { transform: translateY(-3px); box-shadow: var(--sh-lg) }
+  .acc-stat:nth-child(2){animation-delay:60ms} .acc-stat:nth-child(3){animation-delay:120ms}
+  .acc-stat:nth-child(4){animation-delay:180ms}
+  .acc-stat .n { font-size: 1.4rem; font-weight: 800; }
+  .acc-stat .l { font-size: .76rem; color: var(--muted); margin-top: 2px; }
+  a.acc-stat { position:relative; overflow:hidden }
+  a.acc-stat::after { content:''; position:absolute; inset:auto 0 0 0; height:2px;
+      background:var(--gold); transform:scaleX(0); transform-origin:right;
+      transition:transform .45s var(--ease-out) }
+  a.acc-stat:hover::after { transform:scaleX(1) }
+
+  .sec-title { display:flex; align-items:center; gap:12px; margin-bottom:16px }
+  .sec-title h2 { font-size:1.1rem; font-weight:800; white-space:nowrap }
+  .sec-title::after { content:''; flex:1; height:1px; background:var(--border) }
+  .sec-title .cnt { font-size:.74rem; color:var(--muted); background:var(--sand);
+      border-radius:20px; padding:3px 11px; font-weight:700 }
+
+  .order-card { background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--r); padding: 19px; margin-bottom: 14px;
+      transition: border-color var(--t-fast), box-shadow var(--t-smooth), transform var(--t-smooth);
+      animation: fadeUp 520ms var(--ease-out) backwards }
+  .order-card:nth-child(2){animation-delay:70ms} .order-card:nth-child(3){animation-delay:140ms}
+  .order-card:nth-child(4){animation-delay:210ms} .order-card:nth-child(5){animation-delay:280ms}
+  .order-card:hover { border-color: rgba(197,155,39,.38); box-shadow: var(--sh); transform: translateY(-2px) }
+  .order-card.open { border-color: rgba(197,155,39,.5) }
+  .ord-top { display:flex; justify-content:space-between; align-items:center;
+      gap:10px; flex-wrap:wrap; cursor:pointer }
+  .ord-body { max-height:0; opacity:0; overflow:hidden;
+      transition: max-height .55s var(--ease-out), opacity .35s ease }
+  .order-card.open .ord-body { max-height:1400px; opacity:1 }
+  .chev { width:16px; height:16px; stroke:var(--muted); fill:none; stroke-width:2;
+      transition: transform .4s var(--ease-out) }
+  .order-card.open .chev { transform: rotate(180deg) }
+  .badge { padding: 4px 12px; border-radius: 20px; font-size: .73rem; font-weight: 800; }
+  .b-paid { background:#E8F6EF; color:#1E8449; }
+  .b-pending { background:#FEF5E7; color:#B9770E; }
+  .b-cancel { background:#FDEDEC; color:#C0392B; }
+  .oi { display:flex; justify-content:space-between; padding:7px 0;
+        border-bottom:1px dashed var(--border); font-size:.84rem; gap:10px; }
+  .oi:last-child { border:none; }
+</style>
+</head>
+<body>
+<a href="#main" class="skip-link">پرش به محتوای اصلی</a>
+<!-- ارتفاع هدر از پیش رزرو می‌شود. هدر با جاوااسکریپت از app.js
+     ساخته می‌شود، پس تا آن لحظه ارتفاعش صفر است و با ظاهر شدن،
+     کل صفحه ۹۷ تا ۱۰۳ پیکسل پایین می‌پرد. ردیابی نشان داد این
+     تک‌ریشهٔ جابه‌جایی در همه صفحات بود (MAIN#main: y 0 → 97).
+     اندازه‌گیری واقعی: موبایل ۹۷px · دسکتاپ ۱۰۳px. -->
+<div id="hdr" class="hdr-reserve"></div>
+
+<div id="content" style="display:none">
+  <div class="acc-head">
+    <div class="inner">
+      <div class="acc-id">
+        <div class="avatar">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-7 8-7s8 2.6 8 7"/></svg>
+        </div>
+        <div>
+          <div class="acc-eyebrow">خوش آمدید</div>
+          <div style="font-size:1.22rem;font-weight:800">حساب کاربری</div>
+          <div style="font-size:.84rem;opacity:.68;margin-top:3px" id="accMobile" dir="ltr"></div>
+        </div>
+      </div>
+      <button onclick="logout()" class="logout-btn">
+        <svg viewBox="0 0 24 24"><path d="M15 4h3a2 2 0 012 2v12a2 2 0 01-2 2h-3M10 17l-5-5 5-5M5 12h11"/></svg>
+        خروج از حساب
+      </button>
+    </div>
+  </div>
+
+  <div class="acc-stats" id="stats"></div>
+
+  <main id="main" class="container" style="max-width:940px">
+    <div class="sec-title">
+      <h2>سفارش‌های من</h2>
+      <span class="cnt" id="ordCount" style="display:none"></span>
+    </div>
+    <div id="orders"></div>
+  </main>
+</div>
+
+<div id="loading"><div class="spinner"></div></div>
+
+<div id="ftr"></div>
+
+<script src="/assets/app.js"></script>
+<script>
+document.getElementById('hdr').innerHTML = renderHeader();
+document.getElementById('ftr').innerHTML = renderFooter();
+
+const TOKEN = localStorage.getItem('yazd_customer_token');
+const H = { 'X-Customer-Token': TOKEN || '' };
+const ST = {
+  PENDING:['در انتظار پرداخت','b-pending'], PAID:['پرداخت شده','b-paid'],
+  PROCESSING:['در حال آماده‌سازی','b-pending'], SHIPPED:['ارسال شده','b-pending'],
+  DELIVERED:['تحویل داده شده','b-paid'], CANCELLED:['لغو شده','b-cancel'],
+  FAILED:['ناموفق','b-cancel'], RETURNED:['مرجوع شده','b-cancel']
+};
+const STEPS = ['PAID','PROCESSING','SHIPPED','DELIVERED'];
+const STEP_FA = { PAID:'ثبت', PROCESSING:'آماده‌سازی', SHIPPED:'ارسال', DELIVERED:'تحویل' };
+
+function progressBar(status) {
+  const idx = STEPS.indexOf(status);
+  if (idx < 0) return '';
+  return `<div style="display:flex;align-items:center;margin:14px 0 4px">
+    ${STEPS.map((s, i) => {
+      const done = i <= idx;
+      return `<div style="flex:1;text-align:center;position:relative">
+        ${i > 0 ? `<div style="position:absolute;right:50%;top:9px;width:100%;height:2px;
+          background:${i <= idx ? 'var(--gold)' : 'var(--border)'};z-index:0"></div>` : ''}
+        <div style="position:relative;z-index:1;width:20px;height:20px;border-radius:50%;
+          margin:0 auto;background:${done ? 'var(--gold)' : '#FFF'};
+          border:2px solid ${done ? 'var(--gold)' : 'var(--border)'};
+          display:flex;align-items:center;justify-content:center;
+          font-size:.66rem;color:#121212;font-weight:800">${done ? '✓' : ''}</div>
+        <div style="font-size:.68rem;margin-top:5px;color:${done ? 'var(--text)' : 'var(--muted)'};
+          font-weight:${done ? '700' : '400'}">${STEP_FA[s]}</div>
+      </div>`;
+    }).join('')}
+  </div>`;
+}
+
+async function init() {
+  if (!TOKEN) return location.href = '/login?next=/account';
+
+  const me = await fetch('/api/auth/me', { headers: H }).then(r => r.json());
+  if (!me.authenticated) {
+    localStorage.removeItem('yazd_customer_token');
+    return location.href = '/login?next=/account';
+  }
+
+  document.getElementById('accMobile').textContent = me.mobile;
+  document.getElementById('stats').innerHTML = `
+    <div class="acc-stat"><div class="n">${toFa(me.orders || 0)}</div><div class="l">سفارش موفق</div></div>
+    <div class="acc-stat"><div class="n">${money(me.spent || 0)}</div><div class="l">مجموع خرید (تومان)</div></div>
+    <div class="acc-stat"><div class="n">${toFa(YazdCart.count())}</div><div class="l">در سبد خرید</div></div>
+    <a class="acc-stat" href="/wishlist" style="text-decoration:none;color:inherit">
+      <div class="n" id="wishCount">—</div><div class="l">علاقه‌مندی ←</div></a>`;
+
+  fetch('/api/wishlist', { headers: H }).then(r => r.json()).then(w => {
+    const el = document.getElementById('wishCount');
+    if (el) el.textContent = toFa(w.total || 0);
+  }).catch(() => {});
+
+  const d = await fetch('/api/auth/orders', { headers: H }).then(r => r.json());
+  const box = document.getElementById('orders');
+
+  const cntEl = document.getElementById('ordCount');
+  if (d.total) { cntEl.style.display = ''; cntEl.textContent = toFa(d.total) + ' سفارش'; }
+
+  box.innerHTML = d.total ? d.orders.map((o, oi) => {
+    const s = ST[o.status] || ['نامشخص','b-pending'];
+    return `<div class="order-card${oi === 0 ? ' open' : ''}">
+      <div class="ord-top" onclick="this.parentNode.classList.toggle('open')">
+        <div style="display:flex;align-items:center;gap:10px">
+          <svg class="chev" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg>
+          <div>
+            <strong dir="ltr" style="font-size:.92rem">${o.order_id}</strong>
+            <div style="font-size:.76rem;color:var(--muted);margin-top:3px">
+              ${new Date(o.created_at).toLocaleDateString('fa-IR')} · ${money(o.total_paid)} تومان
+            </div>
+          </div>
+        </div>
+        <span class="badge ${s[1]}">${s[0]}</span>
+      </div>
+      <div class="ord-body">
+      <div style="font-size:.8rem;color:var(--muted);margin:12px 0 0">
+        ${esc(o.province||'')} ${esc(o.city||'')}
+      </div>
+      ${progressBar(o.status)}
+      ${o.tracking_code ? `<div style="background:var(--sand);border-radius:9px;padding:10px 12px;
+        margin:12px 0;font-size:.8rem">
+        کد رهگیری ${o.carrier ? o.carrier : 'پستی'}:
+        <strong dir="ltr">${esc(o.tracking_code)}</strong></div>` : ''}
+      ${o.items.map(i => `<div class="oi">
+        <span>${esc(i.product_name)}</span>
+        <span style="white-space:nowrap">${toFa(i.quantity)} × ${money(i.unit_price)}</span>
+      </div>`).join('')}
+      ${o.discount_amount > 0 ? `<div class="oi" style="color:#1E8449">
+        <span>تخفیف ${o.discount_code || ''}</span><span>− ${money(o.discount_amount)}</span></div>` : ''}
+      <div class="oi" style="font-weight:800;padding-top:10px">
+        <span>مبلغ کل</span><span>${money(o.total_paid)} تومان</span>
+      </div>
+      ${o.payment_ref && ['PAID','PROCESSING','SHIPPED','DELIVERED'].includes(o.status)
+        ? `<div style="font-size:.75rem;color:var(--muted);margin-top:8px">
+             کد پیگیری بانکی: <span dir="ltr">${o.payment_ref}</span></div>` : ''}
+      <div style="margin-top:11px;display:flex;gap:12px;flex-wrap:wrap;align-items:center">
+        ${['PAID','PROCESSING','SHIPPED','DELIVERED'].includes(o.status)
+          ? `<a href="/invoice?order=${o.order_id}" target="_blank"
+               style="font-size:.78rem;color:var(--gold);font-weight:700">مشاهده فاکتور ←</a>` : ''}
+        ${['DELIVERED','SHIPPED'].includes(o.status)
+          ? `<a href="/contact" style="font-size:.78rem;color:var(--gold);font-weight:700">
+               ثبت درخواست مرجوعی ←</a>` : ''}
+      </div>
+      </div>
+    </div>`;
+  }).join('') : `<div class="empty-state soft-card" style="padding:52px 24px">
+      <h3 style="font-size:1.1rem">هنوز سفارشی ثبت نکرده‌اید</h3>
+      <p style="margin-top:8px;font-size:.88rem;color:var(--muted);line-height:2">
+        نمی‌دانید از کجا شروع کنید؟ کوییز شش سؤالی ما در کمتر از یک دقیقه<br>
+        رایحه متناسب با سلیقه‌تان را پیدا می‌کند.</p>
+      <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:20px">
+        <a href="/" class="btn">مشاهده کاتالوگ</a>
+        <a href="/quiz" class="btn btn-outline">شروع کوییز</a>
+      </div>
+    </div>`;
+
+  document.getElementById('loading').style.display = 'none';
+  document.getElementById('content').style.display = 'block';
+}
+
+async function logout() {
+  await fetch('/api/auth/logout', { method: 'POST', headers: H });
+  localStorage.removeItem('yazd_customer_token');
+  localStorage.removeItem('yazd_customer_mobile');
+  location.href = '/';
+}
+
+init();
+</script>
+</body>
+</html>

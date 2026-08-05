@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16.png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="manifest" href="/site.webmanifest">
+<meta name="theme-color" content="#121212">
+<title>علاقه‌مندی‌های من | عطر یزد</title>
+<meta name="robots" content="noindex">
+<!-- فونت عمداً preload نمی‌شود.
+     با font-display:swap متن بلافاصله با فونت سیستمی دیده می‌شود،
+     پس preload فقط پهنای باند را از تصویر اصلی می‌دزدد. روی ۳G
+     اندازه‌گیری شد: حذف آن LCP صفحه محصول را از ۴٫۳۱s به ۳٫۵۷s
+     رساند بدون آنکه FCP بدتر شود. -->
+<link rel="stylesheet" href="/assets/theme.css">
+</head>
+<body>
+<a href="#main" class="skip-link">پرش به محتوای اصلی</a>
+<!-- ارتفاع هدر از پیش رزرو می‌شود. هدر با جاوااسکریپت از app.js
+     ساخته می‌شود، پس تا آن لحظه ارتفاعش صفر است و با ظاهر شدن،
+     کل صفحه ۹۷ تا ۱۰۳ پیکسل پایین می‌پرد. ردیابی نشان داد این
+     تک‌ریشهٔ جابه‌جایی در همه صفحات بود (MAIN#main: y 0 → 97).
+     اندازه‌گیری واقعی: موبایل ۹۷px · دسکتاپ ۱۰۳px. -->
+<div id="hdr" class="hdr-reserve"></div>
+
+<section class="page-head">
+  <div class="inner">
+    <span class="eyebrow">فهرست شخصی</span>
+    <h1>رایحه‌های <em>ذخیره‌شده</em></h1>
+    <p id="sub">رایحه‌هایی که برای بعد نگه داشته‌اید.</p>
+  </div>
+</section>
+
+<main id="main" class="container" style="margin-top:26px">
+  <div id="bar"></div>
+  <div id="grid" class="product-grid stagger" role="list"></div>
+  <div id="loading" role="status"><div class="spinner"></div></div>
+</main>
+
+<div id="ftr"></div>
+
+<script src="/assets/app.js"></script>
+<script>
+document.getElementById('hdr').innerHTML = renderHeader();
+document.getElementById('ftr').innerHTML = renderFooter();
+
+let items = [];
+
+const TRASH = '<svg viewBox="0 0 24 24"><path d="M4 7h16M10 11v6M14 11v6' +
+  'M5 7l1 13a2 2 0 002 2h8a2 2 0 002-2l1-13M9 7V4h6v3"/></svg>';
+
+/* کارت علاقه‌مندی — نسخه کارت معمولی به‌علاوه حذف و افزودن سریع.
+   قبلاً برای برداشتن یک رایحه از این فهرست باید به صفحه محصول
+   برمی‌گشتید و قلب را دوباره می‌زدید. */
+function wishCard(p) {
+  const notes = (p.notes?.top || []).slice(0, 3).join('، ');
+  const cheapest = (p.variants || [])
+    .filter(v => v.stock > 0)
+    .sort((a, b) => a.price_toman - b.price_toman)[0];
+
+  return `
+  <div class="product-card wish-card" data-slug="${esc(p.slug)}">
+    <button class="rm" title="حذف از علاقه‌مندی"
+      aria-label="حذف ${esc(p.name_fa)} از علاقه‌مندی"
+      onclick="removeItem('${esc(p.slug)}', this)">${TRASH}</button>
+
+    <a href="/perfume/${esc(p.slug)}" style="text-decoration:none;color:inherit;display:block">
+      <div class="img-wrap">
+        <img src="${p.image_url}" alt="تصویر ${esc(p.name_fa)}" loading="lazy" width="300" height="300">
+        ${genderLabel(p.gender) ? `<span class="card-badge">${genderLabel(p.gender)}</span>` : ''}
+      </div>
+      <div class="body">
+        <div class="card-title">${p.brand_fa ? p.brand_fa + ' — ' : ''}${esc(p.name_fa)}
+          <span class="card-tag">«دست‌ساز»</span></div>
+        <div class="card-sub">${esc(p.name_en || '')}</div>
+        ${notes ? `<div class="card-notes">نُت‌های آغازین: ${notes}</div>` : ''}
+        <div class="card-price-row">
+          <span class="price">از ${money(p.min_price)} <small>تومان</small></span>
+          ${cheapest ? '' : '<span style="font-size:.72rem;color:var(--muted)">ناموجود</span>'}
+        </div>
+      </div>
+    </a>
+
+    <div class="wish-act">
+      <a href="/perfume/${esc(p.slug)}">جزئیات و حجم‌ها</a>
+      ${cheapest ? `<button class="gold"
+        onclick="quickAdd('${cheapest.sku}', ${cheapest.price_toman}, '${esc(p.slug)}')">
+        افزودن سمپل</button>` : ''}
+    </div>
+  </div>`;
+}
+
+function render() {
+  const grid = document.getElementById('grid');
+  const bar = document.getElementById('bar');
+
+  document.getElementById('sub').textContent =
+    items.length ? `${toFa(items.length)} رایحه ذخیره‌شده` : 'رایحه‌هایی که برای بعد نگه داشته‌اید.';
+
+  if (!items.length) {
+    bar.innerHTML = '';
+    grid.innerHTML = `
+      <div class="empty-state soft-card" style="grid-column:1/-1;padding:52px 24px">
+        <h3 style="font-size:1.1rem">هنوز رایحه‌ای ذخیره نکرده‌اید</h3>
+        <p style="margin-top:8px;font-size:.88rem;color:var(--muted);line-height:2">
+          در صفحه هر عطر، نشان قلب گوشه تصویر را بزنید<br>
+          تا آن رایحه اینجا برای بعد نگه داشته شود.</p>
+        <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:20px">
+          <a href="/" class="btn">مشاهده کاتالوگ</a>
+          <a href="/quiz" class="btn btn-outline">کوییز پیدا کردن رایحه</a>
+        </div>
+      </div>`;
+    return;
+  }
+
+  const avail = items.filter(p => (p.variants || []).some(v => v.stock > 0)).length;
+  bar.innerHTML = `
+    <div class="wish-bar">
+      <div class="t"><b>${toFa(items.length)}</b> رایحه ذخیره شده${
+        avail < items.length
+          ? ` · ${toFa(items.length - avail)} مورد فعلاً ناموجود`
+          : ' · همه موجودند'}</div>
+      <a href="/" class="btn btn-outline" style="padding:8px 18px;font-size:.8rem">
+        افزودن رایحه دیگر</a>
+    </div>`;
+
+  grid.innerHTML = items.map(wishCard).join('');
+}
+
+/* حذف خوش‌بینانه: کارت بلافاصله محو می‌شود.
+   اگر سرور خطا داد، فهرست دوباره بارگذاری می‌شود. */
+async function removeItem(slug, btn) {
+  const card = btn.closest('.wish-card');
+  card.classList.add('removing');
+
+  try {
+    const r = await fetch('/api/wishlist', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', ...YazdAuth.headers() },
+      body: JSON.stringify({ product: slug })
+    });
+    if (!r.ok) throw 0;
+
+    setTimeout(() => {
+      items = items.filter(p => p.slug !== slug);
+      render();
+      toast('از علاقه‌مندی حذف شد');
+    }, 340);
+  } catch {
+    card.classList.remove('removing');
+    toast('حذف انجام نشد — دوباره تلاش کنید');
+  }
+}
+
+function quickAdd(sku, price, slug) {
+  const p = items.find(x => x.slug === slug);
+  if (!p) return;
+  const v = (p.variants || []).find(x => x.sku === sku);
+  const label = v
+    ? `${p.brand_fa ? p.brand_fa + ' — ' : ''}${esc(p.name_fa)} — ${v.type_label || ''} ${v.volume_ml || ''} میل`.trim()
+    : p.name_fa;
+  YazdCart.add(sku, label, price, p.image_url, 1);
+}
+
+async function load() {
+  const me = await YazdAuth.check();
+  if (!me.authenticated) { location.href = '/login.html?next=/wishlist.html'; return; }
+
+  try {
+    const r = await fetch('/api/wishlist', { headers: YazdAuth.headers() });
+    if (!r.ok) throw 0;
+    const d = await r.json();
+    items = d.products || [];
+  } catch {
+    document.getElementById('loading').innerHTML =
+      `<div class="empty-state soft-card"><h3>ارتباط برقرار نشد</h3>
+       <p style="margin-top:6px;font-size:.87rem;color:var(--muted)">اتصال اینترنت را بررسی کنید.</p>
+       <button class="btn" style="margin-top:14px" onclick="location.reload()">تلاش دوباره</button></div>`;
+    return;
+  }
+
+  document.getElementById('loading').style.display = 'none';
+  render();
+}
+
+load();
+</script>
+</body>
+</html>

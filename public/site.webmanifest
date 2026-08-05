@@ -1,0 +1,65 @@
+{
+  "name": "عطر یزد | بازآفرینی دست‌ساز رایحه",
+  "short_name": "عطر یزد",
+  "description": "بازآفرینی دست‌ساز رایحه‌های ماندگار با اسانس خانه‌های معتبر جهانی — بیش از ۲۱۰۰ رایحه، سمپل ۳ میل، ارسال سراسری.",
+  "start_url": "/?utm_source=pwa",
+  "scope": "/",
+  "id": "/",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#121212",
+  "theme_color": "#121212",
+  "lang": "fa",
+  "dir": "rtl",
+  "categories": ["shopping", "lifestyle"],
+  "prefer_related_applications": false,
+  "icons": [
+    {
+      "src": "/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icon-maskable-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "/icon-maskable-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "کوییز رایحه",
+      "short_name": "کوییز",
+      "description": "پیدا کردن رایحه متناسب با سلیقه شما",
+      "url": "/quiz?utm_source=pwa_shortcut",
+      "icons": [{ "src": "/icon-192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "سمپل ۳ میل",
+      "short_name": "سمپل",
+      "description": "امتحان رایحه پیش از خرید بطری کامل",
+      "url": "/samples?utm_source=pwa_shortcut",
+      "icons": [{ "src": "/icon-192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "پیگیری سفارش",
+      "short_name": "پیگیری",
+      "description": "وضعیت سفارش شما",
+      "url": "/track?utm_source=pwa_shortcut",
+      "icons": [{ "src": "/icon-192.png", "sizes": "192x192" }]
+    }
+  ]
+}

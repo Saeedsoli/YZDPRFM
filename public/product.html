@@ -1,0 +1,981 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16.png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="manifest" href="/site.webmanifest">
+<meta name="theme-color" content="#121212">
+<title>عطر یزد | صفحه محصول</title>
+<meta name="description" content="عطر دست‌ساز با کیفیت بالا از فروشگاه عطر یزد">
+<!-- فونت عمداً preload نمی‌شود.
+     با font-display:swap متن بلافاصله با فونت سیستمی دیده می‌شود،
+     پس preload فقط پهنای باند را از تصویر اصلی می‌گیرد. روی ۳G
+     اندازه‌گیری شد: با preload فونت LCP=۴٫۳s، بدون آن به‌مراتب
+     بهتر. تصویر محصول همان چیزی است که مشتری منتظرش است. -->
+<link rel="stylesheet" href="/assets/theme.css">
+<style>
+  .pdp { max-width: 1280px; margin: 26px auto; padding: 0 20px;
+         display: grid; grid-template-columns: 1fr 1fr; gap: 44px; }
+  @media (max-width: 900px) { .pdp { grid-template-columns: 1fr; gap: 24px; margin-top: 14px; } }
+
+  .gallery { position: relative; border-radius: var(--radius); overflow: hidden;
+             background: var(--sand); aspect-ratio: 1/1; touch-action: pan-y; user-select: none; }
+  .gallery-track { display: flex; height: 100%; transition: transform 340ms cubic-bezier(.16,1,.3,1); }
+  /* هر اسلاید باید دقیقاً یک عرض کامل بگیرد. تصویر نخست داخل
+     <picture> است (برای هماهنگی با preloadِ WebP)، پس قاعده باید
+     روی خودِ picture هم اعمال شود — وگرنه اسلاید اول جمع می‌شود
+     و گالری به‌هم می‌ریزد. */
+  .gallery-track > img,
+  .gallery-track > picture { min-width: 100%; width: 100%; height: 100%; display: block; }
+  .gallery-track img { width: 100%; height: 100%; object-fit: cover; pointer-events: none; }
+  .gallery-dots { position: absolute; bottom: 14px; left: 0; right: 0;
+                  display: flex; justify-content: center; gap: 7px; }
+  .gallery-dots span { width: 7px; height: 7px; border-radius: var(--r-full);
+      background: rgba(255,255,255,.45); transition: all var(--t-smooth);
+      box-shadow: 0 1px 4px rgba(0,0,0,.3); }
+  .gallery-dots span.on { background: var(--gold); width: 22px; }
+
+  /* بندانگشتی زیر گالری — دسکتاپ */
+  .thumbs { display: flex; gap: 9px; margin-top: 11px }
+  .thumbs button {
+    flex: 1; aspect-ratio: 1/1; border-radius: 11px; overflow: hidden; cursor: pointer;
+    border: 2px solid transparent; background: var(--sand); padding: 0;
+    transition: border-color var(--t-fast), transform var(--t-fast), opacity var(--t-fast);
+    opacity: .68;
+  }
+  .thumbs button img { width: 100%; height: 100%; object-fit: cover; display: block }
+  .thumbs button:hover { opacity: 1; transform: translateY(-2px) }
+  .thumbs button.on { border-color: var(--gold); opacity: 1 }
+  @media (max-width: 900px) { .thumbs { display: none } }
+
+  /* نشان جنسیت روی گالری */
+  .g-badge {
+    position: absolute; top: 14px; right: 14px; z-index: 4;
+    background: rgba(18,18,18,.78); backdrop-filter: blur(8px); color: #FFF;
+    font-size: .72rem; font-weight: 700; padding: 6px 14px; border-radius: 30px;
+    letter-spacing: .4px; animation: fadeUp 520ms var(--ease-out) 200ms backwards;
+  }
+
+  .pdp h1 { font-size: 1.75rem; font-weight: 800; line-height: 1.4; }
+  .pdp h1 .tag { font-size: .78rem; color: var(--gold); font-weight: 600; }
+  .pdp .en-title { font-size: .95rem; color: var(--muted); font-weight: 600; margin-bottom: 14px; letter-spacing:.3px; }
+
+  .meta-chips { display: flex; flex-wrap: wrap; gap: 7px; margin: 14px 0; }
+  .chip { background: var(--sand); border: 1px solid var(--border);
+      padding: 6px 13px; border-radius: var(--r-full);
+      font-size: var(--fs-xs); font-weight: 600;
+      transition: background var(--t-fast), border-color var(--t-fast);
+      animation: fadeUp 420ms var(--ease-out) backwards; }
+  .chip:hover { background: #FFFBF0; border-color: var(--gold); }
+
+  /* ── هرم بویایی: سه لایه با خط زمانی طلایی ── */
+  .notes-box { background: var(--surface); border: 1px solid var(--border);
+               border-radius: var(--r); padding: 20px; margin: 18px 0; }
+  .notes-box .hd { display: flex; align-items: baseline; gap: 9px; margin-bottom: 16px }
+  .notes-box .hd b { font-weight: 800; font-size: .95rem }
+  .notes-box .hd span { font-size: .74rem; color: var(--muted) }
+
+  .pyramid { position: relative; padding-right: 26px }
+  /* خط عمودی که سه لایه را وصل می‌کند */
+  .pyramid::before {
+    content: ''; position: absolute; right: 7px; top: 10px; bottom: 14px; width: 2px;
+    background: linear-gradient(to bottom, var(--gold), rgba(197,155,39,.18));
+    border-radius: 2px;
+  }
+  .layer { position: relative; padding-bottom: 18px;
+           animation: fadeUp 520ms var(--ease-out) backwards }
+  .layer:nth-child(2) { animation-delay: 90ms }
+  .layer:nth-child(3) { animation-delay: 180ms }
+  .layer:last-child { padding-bottom: 0 }
+  .layer::before {
+    content: ''; position: absolute; right: -25px; top: 5px;
+    width: 12px; height: 12px; border-radius: 50%;
+    background: #FFF; border: 2px solid var(--gold);
+    box-shadow: 0 0 0 4px rgba(197,155,39,.12);
+  }
+  .layer .lb { display: flex; align-items: baseline; gap: 8px; margin-bottom: 7px }
+  .layer .lb b { font-size: .82rem; font-weight: 800; color: var(--gold) }
+  .layer .lb i { font-style: normal; font-size: .69rem; color: var(--muted-light) }
+  .note-tags { display: flex; flex-wrap: wrap; gap: 6px }
+  .note-tag {
+    background: var(--sand); border: 1px solid var(--border-soft);
+    border-radius: 30px; padding: 5px 12px; font-size: .78rem; color: #3A3A3A;
+    transition: background var(--t-fast), border-color var(--t-fast), transform var(--t-fast);
+  }
+  .note-tag:hover { background: #FFFBF0; border-color: rgba(197,155,39,.45); transform: translateY(-1px) }
+
+  /* ── جمع‌بندی سریع بالای صفحه ── */
+  .quick { display: grid; grid-template-columns: repeat(3,1fr); gap: 9px; margin: 16px 0 }
+  .quick div { background: var(--sand); border: 1px solid var(--border-soft);
+    border-radius: 11px; padding: 11px 8px; text-align: center }
+  .quick .k { font-size: .66rem; color: var(--muted); letter-spacing: .4px }
+  .quick .v { font-size: .82rem; font-weight: 800; margin-top: 3px }
+
+  .variant-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(122px,1fr)); gap: 9px; margin: 14px 0; }
+  .variant-btn { background: var(--surface); border: 1.5px solid var(--border);
+      border-radius: var(--r-sm); padding: 12px 8px; cursor: pointer; text-align: center;
+      position: relative; overflow: hidden;
+      transition: border-color var(--t-fast), background var(--t-fast), transform var(--t-fast); }
+  .variant-btn:hover { border-color: var(--gold-light); transform: translateY(-2px); }
+  .variant-btn.on {
+      border-color: var(--gold); background: #FFFBF0;
+      box-shadow: 0 0 0 3px rgba(197,155,39,.12);
+      animation: pickPop 320ms var(--ease-spring); }
+  @keyframes pickPop { 0%{transform:scale(.96)} 60%{transform:scale(1.03)} 100%{transform:scale(1)} }
+  .variant-btn .vt { font-size: .76rem; font-weight: 700; }
+  .variant-btn .vp { font-size: .84rem; font-weight: 800; margin-top: 3px; }
+  .variant-btn .vs { font-size: .66rem; color: var(--muted); margin-top: 2px; }
+  .variant-btn.out { opacity: .42; cursor: not-allowed; }
+  /* قیمت پیش از جشنواره — کوچک و خط‌خورده بالای قیمت نهایی */
+  .variant-btn .vo { font-size: .68rem; color: var(--muted); text-decoration: line-through;
+      margin-top: 3px; line-height: 1.3; }
+  .variant-btn .vp.sale { color: #B3261E; }
+  /* نشان درصد روی گوشه دکمه واریانت */
+  .variant-btn .voff { position: absolute; top: 0; left: 0;
+      background: #B3261E; color: #FFF; font-size: .6rem; font-weight: 800;
+      padding: 2px 6px; border-bottom-left-radius: 0; border-bottom-right-radius: 8px; }
+
+  /* ── جعبه جشنواره بالای قیمت ── */
+  .camp-flag { display: flex; align-items: center; gap: 8px;
+      background: #FDECEA; border: 1px solid #F5C6C1; color: #8C1D18;
+      border-radius: var(--r-sm); padding: 8px 11px; margin: 4px 0 12px;
+      font-size: .78rem; font-weight: 700; line-height: 1.7; }
+  .camp-flag svg { width: 17px; height: 17px; flex: none; fill: none;
+      stroke: currentColor; stroke-width: 2; stroke-linecap: round; }
+  .price-was { font-size: .84rem; color: var(--muted); text-decoration: line-through;
+      font-weight: 600; margin-bottom: 1px; }
+
+  .buy-box { background: var(--surface); border: 1px solid var(--border);
+             border-radius: var(--r-lg); padding: 22px; margin-top: 18px;
+             box-shadow: var(--sh-lg); position: relative; overflow: hidden; }
+  .buy-box::before {
+    content: ''; position: absolute; inset: 0 0 auto 0; height: 3px;
+    background: linear-gradient(90deg, transparent, var(--gold), transparent);
+    opacity: .7;
+  }
+  /* نوار اطمینان زیر دکمه خرید */
+  .assure { display: flex; gap: 14px; flex-wrap: wrap; justify-content: center;
+    margin-top: 14px; padding-top: 13px; border-top: 1px dashed var(--border) }
+  .assure span { display: inline-flex; align-items: center; gap: 5px;
+    font-size: .71rem; color: var(--muted) }
+  .assure svg { width: 13px; height: 13px; stroke: var(--gold); fill: none; stroke-width: 2 }
+  .price-lg { font-size: var(--fs-2xl); font-weight: 800;
+      transition: transform var(--t-fast); }
+  .price-lg.bump { animation: priceBump 380ms var(--ease-spring); }
+  @keyframes priceBump { 0%{transform:scale(1)} 45%{transform:scale(1.05)} 100%{transform:scale(1)} }
+  .price-lg small { font-size: .82rem; color: var(--muted); font-weight: 600; }
+
+  .qty-row { display: flex; align-items: center; gap: 12px; margin: 14px 0; }
+  .qty-ctrl { display: flex; align-items: center; border: 1px solid var(--border); border-radius: 10px; overflow: hidden; }
+  .qty-ctrl button { width: 38px; height: 40px; border: none; background: var(--sand);
+                     font-size: 1.15rem; cursor: pointer; font-weight: 700; }
+  .qty-ctrl span { width: 46px; text-align: center; font-weight: 800; }
+
+  .ship-note { display: flex; gap: 9px; align-items: flex-start; font-size: .8rem;
+               color: var(--muted); margin-top: 12px; line-height: 1.8; }
+
+  .wish-btn { position:absolute; top:12px; left:12px; z-index:5;
+    width:42px; height:42px; border-radius:50%; border:none; cursor:pointer;
+    background:rgba(255,255,255,.92); backdrop-filter:blur(6px);
+    display:flex; align-items:center; justify-content:center;
+    font-size:1.3rem; color:#C0392B; box-shadow:0 3px 12px rgba(0,0,0,.14);
+    transition:transform var(--t-fast) }
+  .wish-btn:hover { transform:scale(1.12) }
+  .wish-btn:active { transform:scale(.9) }
+  .wish-btn.saved { animation: heartBeat 620ms var(--ease-spring) }
+  @keyframes heartBeat {
+    0%{transform:scale(1)} 25%{transform:scale(1.3)}
+    50%{transform:scale(.95)} 75%{transform:scale(1.14)} 100%{transform:scale(1)} }
+
+  .essence-box { background:linear-gradient(135deg,#FFFBF0,#FFF8E8);
+    border:1px solid rgba(197,155,39,.38); border-radius:var(--radius);
+    padding:15px 17px; margin:16px 0; font-size:.85rem; line-height:2 }
+  .essence-box .h { font-weight:800; margin-bottom:5px; display:flex;
+    align-items:center; gap:7px }
+  .essence-box .names { color:var(--gold); font-weight:700 }
+  .essence-box a { color:var(--gold); font-weight:700; font-size:.8rem }
+
+  .rating-inline { display:flex; align-items:center; gap:7px; margin:8px 0 2px;
+    font-size:.84rem; cursor:pointer }
+  .stars { color:var(--gold); letter-spacing:2px; font-size:1rem }
+  .stars-muted { color:var(--border); letter-spacing:2px; font-size:1rem }
+
+  .reviews { max-width:1280px; margin:52px auto; padding:0 20px }
+  .rev-head { display:flex; gap:30px; flex-wrap:wrap; align-items:flex-start;
+    background:var(--surface); border:1px solid var(--border);
+    border-radius:var(--radius); padding:22px; margin-bottom:20px }
+  .rev-score { text-align:center; min-width:130px }
+  .rev-score .big { font-size:2.6rem; font-weight:800; line-height:1 }
+  .rev-bars { flex:1; min-width:230px }
+  .rev-bar { display:flex; align-items:center; gap:9px; font-size:.78rem; margin-bottom:5px }
+  .rev-bar .t { flex:1; height:8px; background:var(--sand); border-radius:4px; overflow:hidden }
+  .rev-bar .f { height:100%; background:var(--gold) }
+  .rev-item { background:var(--surface); border:1px solid var(--border);
+    border-radius:var(--radius); padding:17px; margin-bottom:12px }
+  .verified-tag { background:#E8F6EF; color:#1E8449; font-size:.7rem;
+    font-weight:800; padding:2px 9px; border-radius:12px }
+  /* مشتری فروش حضوری — رنگ متفاوت تا با «خرید آنلاین» اشتباه نشود.
+     هر دو خرید واقعی‌اند ولی سندشان فرق دارد و صداقت حکم می‌کند
+     تفاوت دیده شود، نه اینکه همه را یک کاسه کنیم. */
+  .instore-tag { background:#FDF3E3; color:#8A6110; font-size:.7rem;
+    font-weight:800; padding:2px 9px; border-radius:12px }
+  .star-pick { font-size:1.9rem; color:var(--border); cursor:pointer;
+    background:none; border:none; padding:0 2px; line-height:1 }
+  .star-pick.on { color:var(--gold) }
+  .alert-box { background:#FFF8E7; border-right:3px solid #F39C12;
+    padding:13px 15px; border-radius:10px; margin-top:12px; font-size:.84rem }
+
+  .related { max-width: 1280px; margin: 56px auto; padding: 0 20px; }
+  .related h2 { font-size: 1.2rem; font-weight: 800; margin-bottom: 18px; }
+
+  /* اسکلت بارگذاری با ارتفاع نزدیک به محتوای واقعی.
+     اندازه‌گیری شد: صفحه محصول روی دسکتاپ ~۲۳۰۰px و روی موبایل
+     ~۳۵۰۰px است. با رزرو این فضا، وقتی محتوا می‌نشیند چیزی
+     جابه‌جا نمی‌شود. */
+  /* واحد نسبی به‌جای پیکسل ثابت: روی دسکتاپ (ارتفاع ~۷۷۰px)
+     می‌شود ~۲۰۰۰px و روی موبایل (~۸۴۰px) می‌شود ~۲۲۰۰px — هر دو
+     نزدیک به ارتفاع واقعی محتوا. مقدار یکسان در style درون‌خطی
+     هم هست تا پیش از رسیدن CSS اعمال شود. */
+  .pdp-skeleton {
+    min-height: 260vh;
+    display: flex; align-items: flex-start; justify-content: center;
+    padding-top: 20vh;
+  }
+  @media (max-width: 860px) { .pdp-skeleton { min-height: 380vh } }
+
+  /* اگر کاربر حرکت را دوست ندارد، چرخش اسپینر متوقف شود */
+  @media (prefers-reduced-motion: reduce) {
+    .pdp-skeleton .spinner { animation: none }
+  }
+</style>
+</head>
+<body>
+<a href="#main" class="skip-link">پرش به محتوای اصلی</a>
+<!-- ارتفاع هدر از پیش رزرو می‌شود. هدر با جاوااسکریپت از app.js
+     ساخته می‌شود، پس تا آن لحظه ارتفاعش صفر است و با ظاهر شدن،
+     کل صفحه ۹۷ تا ۱۰۳ پیکسل پایین می‌پرد. ردیابی نشان داد این
+     تک‌ریشهٔ جابه‌جایی در همه صفحات بود (MAIN#main: y 0 → 97).
+     اندازه‌گیری واقعی: موبایل ۹۷px · دسکتاپ ۱۰۳px. -->
+<div id="hdr" class="hdr-reserve"></div>
+
+<!-- ارتفاع رزروشده جلوی پرش چیدمان را می‌گیرد.
+     بدون آن، اسپینرِ ۳۴ پیکسلی جایش را به محتوای ۲۳۰۰ تا ۳۵۰۰
+     پیکسلی می‌داد و کل صفحه یک‌باره جابه‌جا می‌شد — بنچمارک
+     CLS=۰٫۷۵ روی موبایل نشان داد، هفت‌ونیم برابر آستانه گوگل.
+     در عمل یعنی دکمه «افزودن به سبد» درست موقع کلیک فرار می‌کرد. -->
+<!-- ارتفاع به‌صورت inline است، نه فقط در CSS.
+     دلیل: تا وقتی theme.css برسد مرورگر min-height را نمی‌داند و
+     همان چند میلی‌ثانیه کافی است تا یک جابه‌جایی ۰٫۱۱ ثبت شود —
+     با ردیابی رویداد layout-shift دیده شد که منبعش خودِ این DIV
+     بود. سبک inline پیش از هر شیوه‌نامه‌ای اعمال می‌شود. -->
+<div id="loading" class="pdp-skeleton" style="min-height:260vh"><div class="spinner"></div></div>
+<div id="content" style="display:none">
+
+  <nav class="crumbs" id="crumbs" aria-label="مسیر صفحه"></nav>
+
+  <main id="main"><div class="pdp">
+    <div>
+      <div style="position:relative">
+      <button class="wish-btn" id="wishBtn" onclick="toggleWish()"
+        aria-label="افزودن به علاقه‌مندی" title="افزودن به علاقه‌مندی">♡</button>
+      <span class="g-badge" id="gBadge"></span>
+      <div class="gallery" id="gallery" role="region" aria-label="گالری تصاویر محصول">
+        <div class="gallery-track" id="track"></div>
+        <div class="gallery-dots" id="dots"></div>
+      </div>
+      </div>
+      <div class="thumbs" id="thumbs"></div>
+    </div>
+
+    <div>
+      <h1 id="titleFa"></h1>
+      <div class="en-title" id="titleEn"></div>
+      <div class="rating-inline" id="ratingInline" onclick="scrollToReviews()" style="display:none"></div>
+
+      <div class="quick" id="quick"></div>
+      <div class="meta-chips" id="chips"></div>
+
+      <div class="essence-box">
+        <div class="h">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="var(--gold)" aria-hidden="true">
+            <path d="M12 2L4 7v10l8 5 8-5V7l-8-5zm0 2.3L18 8v8l-6 3.7L6 16V8l6-3.7z"/>
+          </svg>
+          اسانس از خانه‌های معتبر جهانی
+        </div>
+        <div>
+          <span class="names">ژیوودان · فیرمنیش · ایبرکم · لوزی</span> —
+          همان خانه‌هایی که برای برندهای بین‌المللی اسانس می‌سازند.
+        </div>
+        <a href="/essences">چرا این مهم است؟ ←</a>
+      </div>
+
+      <div class="transparency">
+        🌱 <strong>اطلاعیه شفافیت عطر یزد:</strong>
+        <span id="transparency"></span>
+      </div>
+
+      <div class="notes-box">
+        <div class="hd"><b>هرم بویایی</b>
+          <span>از لحظه اسپری تا ساعت‌ها بعد</span></div>
+        <div class="pyramid" id="pyramid"></div>
+      </div>
+
+      <div class="buy-box">
+        <div id="campFlag"></div>
+        <div style="font-weight:800;font-size:.9rem;margin-bottom:4px;">انتخاب حجم و نوع محصول</div>
+        <div class="variant-grid" id="variants"></div>
+
+        <div class="price-was" id="priceWas" hidden></div>
+        <div class="price-lg" id="price"></div>
+        <div style="font-size:.76rem;color:var(--muted)" id="stockInfo"></div>
+
+        <div class="qty-row">
+          <span style="font-size:.84rem;font-weight:700;">تعداد:</span>
+          <div class="qty-ctrl">
+            <button onclick="chQty(-1)" aria-label="کاهش تعداد">−</button>
+            <span id="qty" aria-live="polite">۱</span>
+            <button onclick="chQty(1)" aria-label="افزایش تعداد">+</button>
+          </div>
+        </div>
+
+        <button class="btn btn-block" id="addBtn" onclick="addToCart()" aria-label="افزودن به سبد خرید">افزودن به سبد خرید</button>
+
+        <div class="assure">
+          <span><svg viewBox="0 0 24 24"><path d="M12 3l7 3v6c0 4.4-3 8.2-7 9-4-.8-7-4.6-7-9V6z"/></svg> پرداخت امن بانکی</span>
+          <span><svg viewBox="0 0 24 24"><path d="M3 7h11v8H3zM14 10h4l3 3v2h-7z"/><circle cx="7" cy="17" r="2"/><circle cx="17" cy="17" r="2"/></svg> ارسال ۳ تا ۷ روز کاری</span>
+          <span><svg viewBox="0 0 24 24"><path d="M9 14l-4-4 4-4"/><path d="M5 10h9a5 5 0 015 5v3"/></svg> مرجوعی طبق شرایط</span>
+        </div>
+
+        <div class="ship-note">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="var(--gold)" style="flex-shrink:0;margin-top:3px">
+            <path d="M20 8h-3V4H3c-1.1 0-2 .9-2 2v11h2c0 1.66 1.34 3 3 3s3-1.34 3-3h6c0 1.66 1.34 3 3 3s3-1.34 3-3h2v-5l-3-4zM6 18.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5zm13.5-9l1.96 2.5H17V9.5h2.5zm-1.5 9c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/>
+          </svg>
+          <span>ارسال با پست و تیپاکس ۳ تا ۷ روز کاری — شهر یزد ۲۵۰٬۰۰۰ تومان، سایر شهرها ۳۵۰٬۰۰۰ تومان.
+          خرید بالای ۲٬۵۰۰٬۰۰۰ تومان ارسال رایگان.</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <section class="reviews" id="reviewsSection">
+    <h2 style="font-size:1.2rem;font-weight:800;margin-bottom:16px">نظرات خریداران</h2>
+    <div id="revHead"></div>
+    <div id="revForm"></div>
+    <div id="revList"></div>
+  </section>
+
+  <div class="related">
+    <h2>رایحه‌های هم‌خانواده</h2>
+    <div class="product-grid" id="related"></div>
+  </div>
+
+  <!-- اخیراً دیدید — با جاوااسکریپت پر می‌شود؛ اگر تاریخچه‌ای
+       نباشد خالی و پنهان می‌ماند (بدون رزرو فضا، بدون CLS) -->
+  <div class="related recent-wrap" id="recent" style="display:none"></div>
+</div>
+
+</main>
+
+<div class="buy-bar" id="buyBar">
+  <div class="p"><div class="n" id="barPrice">—</div><div class="l" id="barLabel">—</div></div>
+  <button class="btn" id="barBtn" onclick="addToCart()">افزودن به سبد</button>
+</div>
+
+<div id="ftr"></div>
+
+<script src="/assets/app.js"></script>
+<script>
+document.getElementById('hdr').innerHTML = renderHeader('home');
+document.getElementById('ftr').innerHTML = renderFooter();
+
+let product = null, selected = null, qty = 1;
+
+const slug = location.pathname.replace('/perfume/', '').replace(/\/$/, '');
+
+async function load() {
+  /* ── چرا سه حالت جدا و نه یک catch ──
+     نسخه اول هر خطایی را «محصول یافت نشد» می‌گفت. ممیزی نشان داد
+     کاربرِ آفلاین روی صفحه‌ای که قبلاً دیده بود، پیام «این رایحه
+     در کاتالوگ موجود نیست» می‌گرفت — یعنی سایت به او دروغ می‌گفت
+     و او فکر می‌کرد محصول حذف شده.
+
+     حالا سه حالت تفکیک می‌شوند: نبود شبکه، نبود محصول، خطای
+     سرور. هر کدام پیام و راه‌حل خودش را دارد. */
+  const box = document.getElementById('loading');
+  const card = (title, body, extra = '') =>
+    `<div class="empty-state"><h3>${title}</h3><p>${body}</p>${extra}</div>`;
+  const backBtn =
+    '<a href="/" class="btn" style="margin-top:16px;display:inline-block">بازگشت به کاتالوگ</a>';
+
+  // نبود شبکه را پیش از درخواست تشخیص می‌دهیم
+  if (navigator.onLine === false) {
+    box.innerHTML = card('اتصال اینترنت برقرار نیست',
+      'برای دیدن قیمت و موجودی لحظه‌ای به اتصال نیاز است.',
+      '<button class="btn" style="margin-top:16px" onclick="location.reload()">تلاش دوباره</button>');
+    window.addEventListener('online', () => location.reload(), { once: true });
+    return;
+  }
+
+  let r;
+  try {
+    r = await fetch('/api/products/' + encodeURIComponent(slug));
+  } catch {
+    // شکست شبکه وسط درخواست
+    box.innerHTML = card('اتصال برقرار نشد',
+      'اتصال اینترنت خود را بررسی کنید.',
+      '<button class="btn" style="margin-top:16px" onclick="location.reload()">تلاش دوباره</button>');
+    window.addEventListener('online', () => location.reload(), { once: true });
+    return;
+  }
+
+  if (r.status === 404) {
+    box.innerHTML = card('محصول یافت نشد',
+      'این رایحه در کاتالوگ موجود نیست.', backBtn);
+    return;
+  }
+  if (!r.ok) {
+    box.innerHTML = card('مشکلی پیش آمد',
+      'لحظه‌ای بعد دوباره تلاش کنید.',
+      '<button class="btn" style="margin-top:16px" onclick="location.reload()">تلاش دوباره</button>');
+    return;
+  }
+
+  try {
+    product = await r.json();
+    render();
+  } catch {
+    box.innerHTML = card('مشکلی پیش آمد',
+      'لحظه‌ای بعد دوباره تلاش کنید.',
+      '<button class="btn" style="margin-top:16px" onclick="location.reload()">تلاش دوباره</button>');
+  }
+}
+
+function render() {
+  const p = product;
+  const full = p.brand_fa ? `${p.brand_fa} — ${p.name_fa}` : p.name_fa;
+  document.title = `${full} | عطر یزد`;
+  document.querySelector('meta[name=description]')
+    .setAttribute('content', `${full} — ${p.name_en}. عطر دست‌ساز ${p.family_fa || ''} از عطر یزد.`);
+
+  // مسیر راهنما — کمک به کاربر و به خزنده گوگل
+  const famLink = p.family_slug ? `/?family=${p.family_slug}` : '/';
+  document.getElementById('crumbs').innerHTML = `
+    <a href="/">کاتالوگ</a><span class="sep">›</span>
+    <a href="/?brand=${encodeURIComponent(p.brand_fa || '')}">${p.brand_fa || 'برند'}</a>
+    ${p.family_fa ? `<span class="sep">›</span><a href="${famLink}">${p.family_fa}</a>` : ''}
+    <span class="sep">›</span><span class="cur">${p.name_fa}</span>`;
+
+  // نشان جنسیت روی گالری
+  document.getElementById('gBadge').textContent =
+    p.gender === 'MEN' ? 'مردانه' : p.gender === 'WOMEN' ? 'زنانه' : 'یونیسکس';
+
+  // گالری (سه نمای یکسان تا عکاسی واقعی جایگزین شود)
+  const imgs = [p.image_url, p.image_url, '/images/products/variant-sample.jpg'];
+  const capt = ['نمای اصلی', 'جزئیات', 'سمپل'];
+  /* تصویر نخست با <picture> ساخته می‌شود تا با همان فایل WebP که
+     سرور preload کرده یکی باشد.
+
+     درس گران‌بها: اول فقط preload اضافه کردم و LCP بدتر شد.
+     ردیابی شبکه نشان داد چرا — مرورگر WebP را preload می‌کرد
+     (۵۱۰ms) ولی جاوااسکریپت تگ تصویر را با پسوند jpg می‌ساخت،
+     پس فایل دومی از صفر دانلود می‌شد. یعنی دو دانلود به‌جای یکی.
+     preload تنها وقتی کار می‌کند که نشانی دقیقاً یکسان باشد.
+
+     دو تصویر بعدی تنبل‌اند؛ تا کاربر اسلاید نکند لازم نیستند. */
+  const webpOf = s => s.replace(/\.(jpe?g|png)$/i, '.webp');
+  document.getElementById('track').innerHTML = imgs.map((s, i) => i === 0
+    ? `<picture>
+         <source srcset="${webpOf(s)}" type="image/webp">
+         <img src="${s}" alt="${full}" fetchpriority="high" decoding="async">
+       </picture>`
+    : `<img src="${s}" alt="${full}" loading="lazy" decoding="async">`
+  ).join('');
+  document.getElementById('dots').innerHTML = imgs.map((_, i) =>
+    `<span class="${i === 0 ? 'on' : ''}"></span>`).join('');
+  /* بندانگشتی‌ها فقط ۶۴ پیکسل نمایش داده می‌شوند ولی فایل کامل
+     (۱۰۲KB) را می‌گرفتند — یعنی همان تصویر دوباره از صفر دانلود
+     می‌شد و پهنای باند را از عنصر LCP می‌دزدید. نسخه کوچک
+     ۱۶KB است. اگر نسخه کوچک نبود، همان فایل اصلی برمی‌گردد. */
+  document.getElementById('thumbs').innerHTML = imgs.map((s, i) => {
+    const sm = s.replace(/(\.[a-z]+)$/i, '-sm$1');
+    return `<button class="${i === 0 ? 'on' : ''}" data-i="${i}" aria-label="${capt[i]}">
+       <img src="${sm}" alt="${capt[i]}" loading="lazy" decoding="async"
+            onerror="this.onerror=null;this.src='${s}'"></button>`;
+  }).join('');
+  initGallery(imgs.length);
+
+  document.getElementById('titleFa').innerHTML = `${full} <span class="tag">«دست‌ساز»</span>`;
+  document.getElementById('titleEn').textContent = p.name_en;
+  document.getElementById('transparency').textContent =
+    p.transparency_notice || 'این محصول بازآفرینی دست‌ساز با عصاره خالص اولیه و فرمولاسیون اختصاصی عطر یزد است و ادعای اورجینال بودن ندارد.';
+
+  const chips = [
+    p.gender === 'MEN' ? 'مردانه' : p.gender === 'WOMEN' ? 'زنانه' : 'یونیسکس',
+    p.family_fa, p.season, p.occasion, p.temperature,
+    p.longevity ? 'ماندگاری: ' + p.longevity : null,
+    p.sillage ? 'پخش بو: ' + p.sillage : null
+  ].filter(Boolean);
+  document.getElementById('chips').innerHTML = chips.map(c => `<span class="chip">${c}</span>`).join('');
+
+  // جمع‌بندی سه‌تایی — چیزی که خریدار اول از همه می‌خواهد بداند
+  document.getElementById('quick').innerHTML = [
+    ['خانواده', p.family_fa],
+    ['ماندگاری', p.longevity],
+    ['فصل', p.season]
+  ].filter(([, v]) => v)
+   .map(([k, v]) => `<div><div class="k">${k}</div><div class="v">${v}</div></div>`).join('');
+
+  // هرم بویایی — سه لایه روی خط زمانی
+  const LAYERS = [
+    ['نُت آغازین', 'دقایق نخست', p.notes.top],
+    ['نُت میانی',  'قلب رایحه',  p.notes.middle],
+    ['نُت پایه',   'ساعت‌ها بعد', p.notes.base]
+  ];
+  document.getElementById('pyramid').innerHTML = LAYERS
+    .filter(([, , arr]) => arr && arr.length)
+    .map(([name, when, arr]) => `<div class="layer">
+        <div class="lb"><b>${name}</b><i>${when}</i></div>
+        <div class="note-tags">${arr.map(n => `<span class="note-tag">${n}</span>`).join('')}</div>
+      </div>`).join('') ||
+    '<div style="font-size:.84rem;color:var(--muted)">اطلاعات نُت‌ها ثبت نشده است.</div>';
+
+  const vg = document.getElementById('variants');
+  /* آیا درصد جشنواره بین واریانت‌ها فرق می‌کند؟ */
+  const pcts = [...new Set(p.variants.map(v => v.campaign_percent || 0))];
+  const mixedPct = pcts.length > 1;
+  vg.innerHTML = p.variants.map((v, i) => {
+    const out = v.stock <= 0;
+    const label = typeLabel(v.type);
+    /* `final_price` و `campaign_percent` را سرور می‌دهد. اگر
+       جشنواره‌ای نباشد، `final_price` برابر خودِ قیمت است — پس
+       اینجا شرط اضافه لازم نیست و هیچ‌وقت undefined نمی‌شود. */
+    const pct = v.campaign_percent || 0;
+    const shown = v.final_price != null ? v.final_price : v.price_toman;
+    /* نشان درصد فقط وقتی روی همه واریانت‌ها یکسان **نیست**.
+       اگر همه ۲۵٪ باشند، هفت برچسب قرمز یک حرف را هفت بار تکرار
+       می‌کنند و چشم را خسته می‌کنند — جعبه بالای شبکه همان را یک
+       بار و رساتر می‌گوید. ولی وقتی مثلاً فقط سمپل تخفیف دارد،
+       برچسب تنها راه فهمیدن است. */
+    return `<div class="variant-btn ${out ? 'out' : ''}" data-i="${i}"
+              onclick="${out ? '' : `pick(${i})`}">
+      ${pct > 0 && mixedPct ? `<span class="voff"><bdi>${toFa(pct)}٪</bdi></span>` : ''}
+      <div class="vt">${label}</div>
+      <div class="vt" style="color:var(--muted);font-size:.72rem">${toFa(v.volume_ml)} میل</div>
+      ${pct > 0 ? `<div class="vo">${money(v.price_toman)}</div>` : ''}
+      <div class="vp${pct > 0 ? ' sale' : ''}">${money(shown)}</div>
+      <div class="vs">${out ? 'ناموجود' : 'موجود'}</div>
+    </div>`;
+  }).join('');
+
+  /* پیام جشنواره بالای قیمت — فقط اگر دست‌کم یک واریانت تخفیف دارد */
+  const anyPct = Math.max(0, ...p.variants.map(v => v.campaign_percent || 0));
+  /* «تا ۲۵٪» فقط وقتی درست است که همه واریانت‌ها این درصد را
+     نگیرند. اگر همه یکسان‌اند، «۲۵٪» دقیق‌تر و صادقانه‌تر است. */
+  const pctText = mixedPct
+    ? `تا <bdi>${toFa(anyPct)}٪</bdi>`
+    : `<bdi>${toFa(anyPct)}٪</bdi>`;
+  document.getElementById('campFlag').innerHTML = anyPct > 0
+    ? `<div class="camp-flag">
+         <svg viewBox="0 0 24 24"><path d="M20.6 13.4 11 3.8V3H3v8h.8l9.6 9.6a2 2 0 0 0 2.8 0l4.4-4.4a2 2 0 0 0 0-2.8Z"/><circle cx="7" cy="7" r="1.3"/></svg>
+         <span>${pctText} تخفیف جشنواره روی این محصول — خودکار اعمال می‌شود و به کد تخفیف نیاز ندارد.</span>
+       </div>`
+    : '';
+
+  const firstAvailable = p.variants.findIndex(v => v.stock > 0);
+  pick(firstAvailable >= 0 ? firstAvailable : 0);
+
+  /* نمایش صفحه.
+     `#content` با display:none شروع می‌شود تا کاربر محتوای
+     نیمه‌ساخته نبیند، ولی هیچ‌جا دوباره روشن نمی‌شد — یعنی صفحه
+     محصول برای همه بازدیدکنندگان کاملاً خالی می‌ماند و هیچ عطری
+     قابل خرید نبود. سرور ۲۰۰ می‌داد و خطای جاوااسکریپتی هم نبود،
+     برای همین هیچ آزمون سطح API آن را نمی‌گرفت. */
+  document.getElementById('loading').style.display = 'none';
+  document.getElementById('content').style.display = '';
+
+  loadRelated();
+  checkWish();
+  loadReviews();
+
+  /* ── تاریخچه بازدید ──
+     ترتیب مهم است: اول ردیف «اخیراً دیدید» با تاریخچه **پیش از**
+     این بازدید ساخته می‌شود، بعد محصول جاری ثبت می‌گردد. برعکسش
+     یعنی کاربر همان صفحه‌ای که رویش ایستاده را در ردیف ببیند.
+
+     `exclude` هم گذاشته شده تا اگر کسی صفحه را دوباره بارگذاری
+     کرد، محصول جاری از ردیف کنار برود. */
+  YazdRecent.render('#recent', { exclude: p.slug, limit: 4 });
+  YazdRecent.push({
+    slug: p.slug, id: p.id, name_fa: p.name_fa, name_en: p.name_en,
+    brand_fa: p.brand_fa, gender: p.gender,
+    image_url: p.image_url, min_price: p.min_price
+  });
+}
+
+function pick(i) {
+  selected = product.variants[i];
+  qty = 1;
+  document.getElementById('qty').textContent = toFa(1);
+  document.querySelectorAll('.variant-btn').forEach(b =>
+    b.classList.toggle('on', +b.dataset.i === i));
+  updatePrice();
+}
+
+const typeLabel = t => t === 'SAMPLE' ? 'سمپل'
+  : t === 'HAIR_MIST' ? 'عطر مو'
+  : t === 'BODY_SPLASH' ? 'بادی اسپلش' : 'ادوپرفیوم';
+
+function updatePrice() {
+  if (!selected) return;
+  const pEl = document.getElementById('price');
+
+  /* قیمت نمایشی همان قیمت پس از جشنواره است. قیمت پیش از تخفیف
+     بالای آن خط‌خورده می‌آید تا مشتری بداند چقدر برنده شده — ولی
+     فقط وقتی واقعاً تخفیفی هست، وگرنه خط‌خوردگی الکی بی‌اعتمادی
+     می‌سازد. */
+  const unit = selected.final_price != null ? selected.final_price : selected.price_toman;
+  const wasEl = document.getElementById('priceWas');
+  if ((selected.campaign_percent || 0) > 0) {
+    wasEl.textContent = `${money(selected.price_toman * qty)} تومان`;
+    wasEl.hidden = false;
+  } else {
+    wasEl.hidden = true;
+  }
+
+  pEl.innerHTML = `${money(unit * qty)} <small>تومان</small>`;
+  pEl.classList.remove('bump'); void pEl.offsetWidth; pEl.classList.add('bump');
+  const s = selected.stock;
+  document.getElementById('stockInfo').textContent =
+    s > 10 ? 'موجود در انبار' : s > 0 ? `تنها ${toFa(s)} عدد باقی مانده` : 'ناموجود';
+  const btn = document.getElementById('addBtn');
+  btn.disabled = s <= 0;
+
+  // نوار چسبان موبایل
+  const bp = document.getElementById('barPrice');
+  if (bp) {
+    bp.textContent = money(unit * qty);
+    document.getElementById('barLabel').textContent =
+      `${typeLabel(selected.type)} · ${toFa(selected.volume_ml)} میل`;
+    const bb = document.getElementById('barBtn');
+    bb.disabled = s <= 0;
+    bb.textContent = s <= 0 ? 'ناموجود' : 'افزودن به سبد';
+  }
+  const old = document.getElementById('notifyBtn');
+  if (old) old.remove();
+  if (s <= 0) {
+    btn.insertAdjacentHTML('afterend',
+      `<button id="notifyBtn" class="btn btn-outline btn-block" style="margin-top:9px"
+        onclick="notifyMe('${selected.sku}')">به من اطلاع بده وقتی موجود شد</button>`);
+  }
+}
+
+function chQty(d) {
+  if (!selected) return;
+  const n = qty + d;
+  if (n < 1 || n > selected.stock) return;
+  qty = n;
+  document.getElementById('qty').textContent = toFa(qty);
+  updatePrice();
+}
+
+function addToCart() {
+  if (!selected) return;
+  const label = typeLabel(selected.type);
+  const full = product.brand_fa ? `${product.brand_fa} — ${product.name_fa}` : product.name_fa;
+  /* حجم با رقم فارسی — نام قلم در سبد، تسویه و فاکتور چاپ می‌شود
+     و «سمپل 3 میل» وسط متن فارسی وصله می‌زند.
+
+     قیمت **پیش از** جشنواره ذخیره می‌شود، نه قیمت تخفیف‌خورده:
+     سرور خودش جشنواره را دوباره حساب می‌کند و اگر اینجا قیمت
+     نهایی برود، تخفیف دوبار اعمال می‌شود. سبد هم تخفیف را در
+     سطر جداگانه نشان می‌دهد که شفاف‌تر است. */
+  YazdCart.add(selected.sku,
+    `${full} — ${label} ${toFa(selected.volume_ml)} میل`,
+    selected.price_toman, product.image_url, qty);
+}
+
+async function loadRelated() {
+  if (!product.family_slug) return;
+  const r = await fetch(`/api/products?family=${product.family_slug}&limit=5`);
+  const d = await r.json();
+  const list = d.products.filter(x => x.id !== product.id).slice(0, 4);
+  document.getElementById('related').innerHTML = list.map(productCard).join('');
+}
+
+/* گالری لمسی — کشیدن چپ = بعدی، راست = قبلی */
+function initGallery(n) {
+  const track = document.getElementById('track');
+  const dots = document.getElementById('dots').children;
+  let idx = 0, startX = 0, dragging = false, delta = 0;
+
+  const thumbs = document.getElementById('thumbs');
+
+  const go = i => {
+    idx = Math.max(0, Math.min(n - 1, i));
+    track.style.transition = 'transform 340ms cubic-bezier(.16,1,.3,1)';
+    track.style.transform = `translateX(${idx * 100}%)`;
+    [...dots].forEach((d, k) => d.classList.toggle('on', k === idx));
+    [...thumbs.children].forEach((t, k) => t.classList.toggle('on', k === idx));
+  };
+
+  thumbs.onclick = e => {
+    const b = e.target.closest('button[data-i]');
+    if (b) go(+b.dataset.i);
+  };
+  // کلید جهت‌دار — دسترس‌پذیری صفحه‌کلید
+  document.getElementById('gallery').tabIndex = 0;
+  document.getElementById('gallery').addEventListener('keydown', e => {
+    if (e.key === 'ArrowLeft')  go(idx + 1);
+    if (e.key === 'ArrowRight') go(idx - 1);
+  });
+
+  const down = x => { dragging = true; startX = x; delta = 0; track.style.transition = 'none'; };
+  const move = x => {
+    if (!dragging) return;
+    delta = x - startX;
+    track.style.transform = `translateX(calc(${idx * 100}% + ${delta}px))`;
+  };
+  const up = () => {
+    if (!dragging) return;
+    dragging = false;
+    // RTL: کشیدن به چپ (delta منفی) → عکس بعدی
+    if (delta < -55) go(idx + 1);
+    else if (delta > 55) go(idx - 1);
+    else go(idx);
+  };
+
+  const g = document.getElementById('gallery');
+  g.addEventListener('touchstart', e => down(e.touches[0].clientX), { passive: true });
+  g.addEventListener('touchmove',  e => move(e.touches[0].clientX), { passive: true });
+  g.addEventListener('touchend', up);
+  g.addEventListener('mousedown', e => { e.preventDefault(); down(e.clientX); });
+  window.addEventListener('mousemove', e => move(e.clientX));
+  window.addEventListener('mouseup', up);
+  go(0);
+}
+
+/* ── علاقه‌مندی ── */
+let isSaved = false;
+
+async function checkWish() {
+  try {
+    const d = await fetch('/api/wishlist/check/' + slug,
+      { headers: YazdAuth.headers() }).then(r => r.json());
+    isSaved = !!d.saved;
+    paintWish();
+  } catch {}
+}
+
+function paintWish() {
+  const b = document.getElementById('wishBtn');
+  b.textContent = isSaved ? '♥' : '♡';
+  b.classList.toggle('saved', isSaved);
+  b.setAttribute('aria-label', isSaved ? 'حذف از علاقه‌مندی' : 'افزودن به علاقه‌مندی');
+  b.title = b.getAttribute('aria-label');
+}
+
+async function toggleWish() {
+  if (!YazdAuth.token()) {
+    location.href = '/login?next=' + encodeURIComponent(location.pathname);
+    return;
+  }
+  const r = await fetch('/api/wishlist', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...YazdAuth.headers() },
+    body: JSON.stringify({ product: slug })
+  });
+  const d = await r.json();
+  if (r.ok) { isSaved = d.saved; paintWish(); toast(d.message); }
+  else toast(d.error);
+}
+
+/* ── نظرات ── */
+function scrollToReviews() {
+  document.getElementById('reviewsSection').scrollIntoView({ behavior: 'smooth' });
+}
+
+const starRow = n => '★'.repeat(n) + '☆'.repeat(5 - n);
+
+async function loadReviews() {
+  const d = await fetch('/api/reviews/' + slug, { headers: YazdAuth.headers() }).then(r => r.json());
+  const sm = d.summary;
+
+  if (sm.count) {
+    const el = document.getElementById('ratingInline');
+    el.style.display = 'flex';
+    el.innerHTML = `<span class="stars">${starRow(Math.round(sm.avg))}</span>
+      <strong>${toFa(sm.avg)}</strong>
+      <span style="color:var(--muted)">(${toFa(sm.count)} نظر)</span>`;
+  }
+
+  document.getElementById('revHead').innerHTML = sm.count ? `
+    <div class="rev-head">
+      <div class="rev-score">
+        <div class="big">${toFa(sm.avg)}</div>
+        <div class="stars">${starRow(Math.round(sm.avg))}</div>
+        <div style="font-size:.78rem;color:var(--muted);margin-top:4px">
+          از ${toFa(sm.count)} نظر</div>
+      </div>
+      <div class="rev-bars">
+        ${[5,4,3,2,1].map(n => {
+          const c = sm.breakdown[n] || 0;
+          return `<div class="rev-bar"><span>${toFa(n)}★</span>
+            <span class="t"><span class="f" style="width:${sm.count ? c/sm.count*100 : 0}%"></span></span>
+            <span style="min-width:24px;text-align:left">${toFa(c)}</span></div>`;
+        }).join('')}
+        ${sm.longevity || sm.sillage ? `<div style="margin-top:11px;font-size:.8rem;
+          display:flex;gap:18px;flex-wrap:wrap">
+          ${sm.longevity ? `<span>ماندگاری: <strong>${toFa(sm.longevity)}</strong>/۵</span>` : ''}
+          ${sm.sillage ? `<span>پخش بو: <strong>${toFa(sm.sillage)}</strong>/۵</span>` : ''}
+        </div>` : ''}
+      </div>
+    </div>` : '';
+
+  renderRevForm(d);
+
+  document.getElementById('revList').innerHTML = d.reviews.length
+    ? d.reviews.map(r => `<div class="rev-item">
+        <div style="display:flex;justify-content:space-between;gap:9px;flex-wrap:wrap;margin-bottom:6px">
+          <div style="display:flex;align-items:center;gap:8px">
+            <strong style="font-size:.88rem">${esc(r.display_name)}</strong>
+            ${r.source === 'INVITED'
+              ? '<span class="instore-tag" title="مشتری فروش حضوری، با دعوت‌نامه اختصاصی">خرید حضوری تأییدشده</span>'
+              : r.verified ? '<span class="verified-tag">خرید تأییدشده</span>' : ''}
+          </div>
+          <span class="stars">${starRow(r.rating)}</span>
+        </div>
+        ${r.title ? `<div style="font-weight:700;font-size:.9rem;margin-bottom:5px">${esc(r.title)}</div>` : ''}
+        <div style="font-size:.87rem;line-height:2;color:#333">${escLines(r.body)}</div>
+        <div style="font-size:.73rem;color:var(--muted);margin-top:8px">
+          ${r.longevity ? `ماندگاری ${toFa(r.longevity)}/۵` : ''}
+          ${r.sillage ? ` • پخش بو ${toFa(r.sillage)}/۵` : ''}
+        </div>
+        ${r.admin_reply ? `<div style="background:var(--sand);border-radius:9px;
+          padding:11px;margin-top:10px;font-size:.82rem;line-height:1.9">
+          <strong style="color:var(--gold)">پاسخ عطر یزد:</strong> ${escLines(r.admin_reply)}</div>` : ''}
+      </div>`).join('')
+    : `<div style="color:var(--muted);font-size:.86rem;padding:16px;text-align:center">
+         هنوز نظری ثبت نشده — اولین نفر باشید.</div>`;
+}
+
+let pickedRating = 0;
+
+function renderRevForm(d) {
+  const box = document.getElementById('revForm');
+
+  if (!d.can_review) {
+    box.innerHTML = `<div class="alert-box">
+      برای ثبت نظر ابتدا <a href="/login?next=${encodeURIComponent(location.pathname)}"
+      style="color:var(--gold);font-weight:700">وارد شوید</a>.</div>`;
+    return;
+  }
+
+  if (d.my_review) {
+    const st = { PENDING: 'در انتظار بررسی', APPROVED: 'منتشر شده', REJECTED: 'تأیید نشد' };
+    box.innerHTML = `<div class="alert-box">
+      نظر شما ثبت شده — وضعیت: <strong>${st[d.my_review.status] || d.my_review.status}</strong>
+      <div style="margin-top:6px;font-size:.8rem">
+        <span class="stars">${starRow(d.my_review.rating)}</span> ${esc(d.my_review.title || '')}</div>
+      <button class="btn btn-outline" style="margin-top:9px;padding:6px 14px;font-size:.78rem"
+        onclick="editMyReview()">ویرایش نظر</button></div>`;
+    return;
+  }
+  showRevForm(d.purchased);
+}
+
+function editMyReview() { showRevForm(true); }
+
+function showRevForm(purchased) {
+  document.getElementById('revForm').innerHTML = `
+    <div style="background:var(--surface);border:1px solid var(--border);
+      border-radius:var(--radius);padding:18px;margin-bottom:18px">
+      <div style="font-weight:800;font-size:.94rem;margin-bottom:4px">ثبت نظر شما</div>
+      ${purchased ? '<div style="font-size:.78rem;color:#1E8449;margin-bottom:10px">✓ خرید شما تأیید شده است</div>' : ''}
+      <div style="margin-bottom:12px">
+        <div style="font-size:.82rem;font-weight:700;margin-bottom:5px">امتیاز کلی *</div>
+        <div id="starPick" role="group" aria-label="انتخاب امتیاز">
+          ${[1,2,3,4,5].map(n => `<button type="button" class="star-pick" data-n="${n}"
+            onclick="pickStar(${n})" aria-label="${n} ستاره">★</button>`).join('')}
+        </div>
+      </div>
+      <div class="field"><label for="rvTitle">عنوان</label>
+        <input id="rvTitle" placeholder="مثلاً: ماندگاری عالی"></div>
+      <div class="field"><label for="rvBody">نظر شما *</label>
+        <textarea id="rvBody" rows="4" placeholder="تجربه‌تان از این رایحه…"></textarea></div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+        <div class="field"><label for="rvLong">ماندگاری (۱ تا ۵)</label>
+          <select id="rvLong"><option value="">انتخاب…</option>
+            ${[1,2,3,4,5].map(n => `<option value="${n}">${n}</option>`).join('')}</select></div>
+        <div class="field"><label for="rvSill">پخش بو (۱ تا ۵)</label>
+          <select id="rvSill"><option value="">انتخاب…</option>
+            ${[1,2,3,4,5].map(n => `<option value="${n}">${n}</option>`).join('')}</select></div>
+      </div>
+      <button class="btn" onclick="submitReview()">ثبت نظر</button>
+      <div style="font-size:.74rem;color:var(--muted);margin-top:9px">
+        نظر شما پس از بررسی منتشر می‌شود.</div>
+    </div>`;
+  pickedRating = 0;
+}
+
+function pickStar(n) {
+  pickedRating = n;
+  document.querySelectorAll('.star-pick').forEach(b =>
+    b.classList.toggle('on', +b.dataset.n <= n));
+}
+
+async function submitReview() {
+  if (!pickedRating) return toast('امتیاز خود را انتخاب کنید');
+  const body = document.getElementById('rvBody').value.trim();
+  if (body.length < 10) return toast('متن نظر باید حداقل ۱۰ حرف باشد');
+
+  const r = await fetch('/api/reviews', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...YazdAuth.headers() },
+    body: JSON.stringify({
+      product: slug, rating: pickedRating,
+      title: document.getElementById('rvTitle').value.trim(),
+      body,
+      longevity: document.getElementById('rvLong').value || null,
+      sillage: document.getElementById('rvSill').value || null
+    })
+  });
+  const d = await r.json();
+  toast(r.ok ? d.message : d.error);
+  if (r.ok) loadReviews();
+}
+
+/* ── اطلاع موجود شدن ── */
+async function notifyMe(sku) {
+  let mobile = YazdAuth.mobile();
+  if (!mobile) {
+    mobile = prompt('شماره موبایل برای اطلاع‌رسانی:');
+    if (!mobile) return;
+  }
+  const r = await fetch('/api/stock-alert', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...YazdAuth.headers() },
+    body: JSON.stringify({ sku, mobile })
+  });
+  const d = await r.json();
+  toast(r.ok ? d.message : d.error);
+}
+
+/* نوار خرید چسبان — تنها وقتی جعبه اصلی از دید خارج شد نمایان می‌شود.
+   جای بی‌دلیل اشغال نکردن مهم‌تر از همیشه دیده شدن است. */
+function initBuyBar() {
+  const box = document.querySelector('.buy-box');
+  const bar = document.getElementById('buyBar');
+  if (!box || !bar || !('IntersectionObserver' in window)) return;
+  new IntersectionObserver(([e]) => {
+    bar.classList.toggle('up', !e.isIntersecting);
+  }, { rootMargin: '-70px 0px 0px 0px' }).observe(box);
+}
+
+load().then(initBuyBar);
+</script>
+</body>
+</html>

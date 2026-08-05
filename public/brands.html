@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16.png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="manifest" href="/site.webmanifest">
+<meta name="theme-color" content="#121212">
+<title>خانه‌های عطر | عطر یزد</title>
+<!-- فونت عمداً preload نمی‌شود.
+     با font-display:swap متن بلافاصله با فونت سیستمی دیده می‌شود،
+     پس preload فقط پهنای باند را از تصویر اصلی می‌دزدد. روی ۳G
+     اندازه‌گیری شد: حذف آن LCP صفحه محصول را از ۴٫۳۱s به ۳٫۵۷s
+     رساند بدون آنکه FCP بدتر شود. -->
+<link rel="stylesheet" href="/assets/theme.css">
+<style>
+.bgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:12px}
+.bcard{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);
+ padding:20px 14px;text-align:center;cursor:pointer;
+ transition:transform var(--t-smooth),box-shadow var(--t-smooth),border-color var(--t-fast)}
+.bcard:hover{border-color:rgba(197,155,39,.5);transform:translateY(-4px);box-shadow:var(--sh-lg)}
+.bcard .en{font-size:.92rem;font-weight:800;letter-spacing:.5px}
+.bcard .fa{font-size:.82rem;color:var(--muted);margin-top:3px}
+.bcard .ct{font-size:.72rem;color:var(--gold);font-weight:700;margin-top:6px}
+.bcard::after{content:'';position:absolute;inset:auto 0 0 0;height:2px;background:var(--gold);
+ transform:scaleX(0);transform-origin:right;transition:transform .45s var(--ease-out)}
+.bcard:hover::after{transform:scaleX(1)}
+.bcard{position:relative;overflow:hidden}
+.bsearch{position:relative;max-width:420px;margin:0 auto var(--sp-6)}
+.bsearch input{width:100%;padding:14px 46px 14px 18px;border:1px solid var(--border);
+ border-radius:40px;background:var(--surface);font:inherit;font-size:.9rem;
+ transition:border-color var(--t-fast),box-shadow var(--t-fast)}
+.bsearch input:focus{outline:none;border-color:var(--gold);box-shadow:0 0 0 4px rgba(197,155,39,.12)}
+.bsearch svg{position:absolute;right:16px;top:50%;transform:translateY(-50%);
+ width:17px;height:17px;stroke:var(--muted);fill:none;stroke-width:2}
+.alpha{display:flex;gap:6px;flex-wrap:wrap;justify-content:center;margin-bottom:var(--sp-5)}
+.alpha button{border:1px solid var(--border);background:var(--surface);border-radius:8px;
+ min-width:30px;height:30px;font:inherit;font-size:.76rem;font-weight:700;cursor:pointer;color:var(--muted);
+ transition:all var(--t-fast)}
+.alpha button:hover{border-color:var(--gold);color:var(--text)}
+.alpha button.on{background:var(--obsidian);color:#FFF;border-color:var(--obsidian)}
+</style></head>
+<body>
+<a href="#main" class="skip-link">پرش به محتوای اصلی</a>
+<!-- ارتفاع هدر از پیش رزرو می‌شود. هدر با جاوااسکریپت از app.js
+     ساخته می‌شود، پس تا آن لحظه ارتفاعش صفر است و با ظاهر شدن،
+     کل صفحه ۹۷ تا ۱۰۳ پیکسل پایین می‌پرد. ردیابی نشان داد این
+     تک‌ریشهٔ جابه‌جایی در همه صفحات بود (MAIN#main: y 0 → 97).
+     اندازه‌گیری واقعی: موبایل ۹۷px · دسکتاپ ۱۰۳px. -->
+<div id="hdr" class="hdr-reserve"></div>
+<section class="page-head">
+  <div class="inner">
+    <span class="eyebrow">فهرست الفبایی</span>
+    <h1>خانه‌های <em>عطر</em></h1>
+    <p id="sub">رایحه‌های دست‌ساز الهام‌گرفته از معتبرترین خانه‌های عطر دنیا.</p>
+  </div>
+</section>
+
+<main id="main" class="container" style="margin-top:34px">
+  <div class="bsearch">
+    <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
+    <input id="bq" placeholder="جستجوی برند…" aria-label="جستجوی برند">
+  </div>
+  <div class="alpha" id="alpha"></div>
+  <!-- فضای گرید پیش از اجرای جاوااسکریپت رزرو می‌شود.
+       اسکلت با JS ساخته می‌شود، پس تا آن لحظه ارتفاع صفر است و
+       با پر شدن، کل صفحه جابه‌جا می‌شود — ردیابی CLS=۰٫۱۱ نشان داد. -->
+  <div class="bgrid stagger" id="bg" style="min-height:100vh"></div>
+</main>
+<div id="ftr"></div>
+<script src="/assets/app.js"></script>
+<script>
+document.getElementById('hdr').innerHTML=renderHeader('brands');
+document.getElementById('ftr').innerHTML=renderFooter();
+let all=[], letter='';
+document.getElementById('bg').innerHTML = skeletonGrid ? skeletonGrid(12) : '';
+async function load(){
+  try {
+    const r=await fetch('/api/brands');
+    if(!r.ok) throw new Error();
+    const d=await r.json(); all=d.brands;
+    document.getElementById('sub').textContent =
+      toFa(all.length)+' خانه عطر — رایحه‌های دست‌ساز الهام‌گرفته از معتبرترین برندهای دنیا.';
+    drawAlpha(); apply();
+  } catch {
+    document.getElementById('bg').innerHTML =
+      `<div class="empty-state" style="grid-column:1/-1"><h3>ارتباط برقرار نشد</h3>
+       <button class="btn" style="margin-top:14px" onclick="location.reload()">تلاش دوباره</button></div>`;
+  }
+}
+function drawAlpha(){
+  const set=[...new Set(all.map(b=>(b.brand_en||'?').trim().charAt(0).toUpperCase()))]
+            .filter(c=>/[A-Z]/.test(c)).sort();
+  document.getElementById('alpha').innerHTML =
+    `<button class="on" data-l="">همه</button>`+set.map(c=>`<button data-l="${c}">${c}</button>`).join('');
+  document.getElementById('alpha').onclick=e=>{
+    const b=e.target.closest('button'); if(!b) return;
+    letter=b.dataset.l;
+    [...e.currentTarget.children].forEach(x=>x.classList.toggle('on', x===b));
+    apply();
+  };
+}
+function apply(){
+  const q=document.getElementById('bq').value.trim().toLowerCase();
+  draw(all.filter(b=>{
+    const okQ=!q||(b.brand_fa||'').toLowerCase().includes(q)||(b.brand_en||'').toLowerCase().includes(q);
+    const okL=!letter||(b.brand_en||'').trim().charAt(0).toUpperCase()===letter;
+    return okQ&&okL;
+  }));
+}
+function draw(list){
+  const el=document.getElementById('bg');
+  el.style.minHeight = '';   // رزرو برداشته می‌شود؛ محتوا ارتفاع را تعیین می‌کند
+  if(!list.length){
+    el.innerHTML=`<div class="empty-state" style="grid-column:1/-1"><h3>برندی پیدا نشد</h3>
+      <p style="margin-top:6px">جستجو یا حرف انتخابی را تغییر دهید.</p></div>`;
+    return;
+  }
+  el.innerHTML=list.map(b=>
+   `<a class="bcard" href="/?brand=${encodeURIComponent(b.brand_fa)}">
+      <div class="en">${(b.brand_en||'').toUpperCase()}</div>
+      <div class="fa">${esc(b.brand_fa)}</div>
+      <div class="ct">${toFa(b.count)} رایحه</div></a>`).join('');
+}
+document.getElementById('bq').oninput=apply;
+load();
+</script></body></html>

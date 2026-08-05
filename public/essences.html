@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16.png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="manifest" href="/site.webmanifest">
+<meta name="theme-color" content="#121212">
+<title>خانه‌های اسانس | عطر یزد</title>
+<meta name="description" content="اسانس عطرهای دست‌ساز عطر یزد از خانه‌های معتبر جهانی ژیوودان، فیرمنیش، ایبرکم و لوزی تأمین می‌شود — همان خانه‌هایی که به برندهای بین‌المللی اسانس می‌فروشند.">
+<!-- فونت عمداً preload نمی‌شود.
+     با font-display:swap متن بلافاصله با فونت سیستمی دیده می‌شود،
+     پس preload فقط پهنای باند را از تصویر اصلی می‌دزدد. روی ۳G
+     اندازه‌گیری شد: حذف آن LCP صفحه محصول را از ۴٫۳۱s به ۳٫۵۷s
+     رساند بدون آنکه FCP بدتر شود. -->
+<link rel="stylesheet" href="/assets/theme.css">
+<style>
+  .es-hero { background: linear-gradient(135deg,#141414,#242424); color:#FFF;
+             padding: 52px 20px; text-align: center; }
+  .es-hero h1 { font-size: 1.75rem; font-weight: 800; margin-bottom: 12px; line-height:1.5; }
+  .es-hero h1 span { color: var(--gold); }
+  .es-hero p { font-size: .95rem; opacity: .82; max-width: 680px;
+               margin: 0 auto; line-height: 2.1; }
+
+  .truth { max-width: 860px; margin: -28px auto 40px; padding: 0 20px; position: relative; z-index: 5; }
+  .truth-card { background: var(--surface); border: 1px solid var(--border);
+                border-right: 5px solid var(--gold); border-radius: var(--radius);
+                padding: 26px; box-shadow: var(--shadow); }
+  .truth-card h2 { font-size: 1.1rem; font-weight: 800; margin-bottom: 12px; }
+  .truth-card p { font-size: .92rem; line-height: 2.2; color: #333; }
+  .truth-card strong { color: var(--gold); }
+
+  .flow { display: flex; align-items: center; justify-content: center;
+          gap: 10px; flex-wrap: wrap; margin: 26px 0 6px; }
+  .flow-box { background: var(--sand); border: 1px solid var(--border);
+              border-radius: 11px; padding: 13px 18px; text-align: center; min-width: 130px; }
+  .flow-box .t { font-size: .82rem; font-weight: 800; }
+  .flow-box .s { font-size: .72rem; color: var(--muted); margin-top: 3px; }
+  .flow-box.gold { background: #FFFBF0; border-color: var(--gold); }
+  .flow-arrow { color: var(--gold); font-size: 1.3rem; font-weight: 700; }
+  @media (max-width: 620px) {
+    .flow { flex-direction: column; }
+    .flow-arrow { transform: rotate(90deg); }
+    .flow-box { width: 100%; }
+  }
+
+  .houses { max-width: 1180px; margin: 44px auto; padding: 0 20px; }
+  .houses h2 { font-size: 1.25rem; font-weight: 800; margin-bottom: 6px; }
+  .houses .sub { font-size: .86rem; color: var(--muted); margin-bottom: 22px; }
+  .house-grid { display: grid; grid-template-columns: repeat(auto-fill,minmax(310px,1fr)); gap: 18px; }
+  .house { background: var(--surface); border: 1px solid var(--border);
+           border-radius: var(--radius); padding: 22px;
+           transition: transform var(--t-smooth), box-shadow var(--t-smooth); }
+  .house:hover { transform: translateY(-3px); box-shadow: var(--shadow); border-color: var(--gold); }
+  .house-top { display: flex; justify-content: space-between;
+               align-items: flex-start; gap: 12px; margin-bottom: 10px; }
+  .house-name { font-size: 1.15rem; font-weight: 800; line-height: 1.4; }
+  .house-name small { display: block; font-size: .78rem; color: var(--gold);
+                      font-weight: 700; letter-spacing: .6px; direction: ltr; text-align: right; }
+  .house-meta { text-align: left; font-size: .72rem; color: var(--muted);
+                white-space: nowrap; line-height: 1.9; }
+  .house-tag { display: inline-block; background: var(--sand); color: var(--text);
+               font-size: .74rem; font-weight: 700; padding: 4px 12px;
+               border-radius: 14px; margin-bottom: 11px; }
+  .house p { font-size: .87rem; line-height: 2.1; color: #3A3A3A; }
+  .house .known { font-size: .78rem; color: var(--muted); margin-top: 11px;
+                  padding-top: 11px; border-top: 1px dashed var(--border); }
+
+  .faq { max-width: 860px; margin: 44px auto; padding: 0 20px; }
+  .faq h2 { font-size: 1.2rem; font-weight: 800; margin-bottom: 18px; }
+  .faq-item { background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--r); padding: 18px; margin-bottom: 12px;
+      transition: border-color var(--t-fast), transform var(--t-fast) }
+  .faq-item:hover { border-color: rgba(197,155,39,.4); transform: translateX(-3px) }
+  .faq-item .q { font-size: .94rem; font-weight: 800; margin-bottom: 8px; }
+  .faq-item .a { font-size: .87rem; line-height: 2.1; color: #3A3A3A; }
+
+  /* text-align:center روی بلوک RTL سرریز افقی می‌سازد — مرورگر
+     برای متن وسط‌چین فارسی فضای مجازی سمت چپ در نظر می‌گیرد که
+     در scrollWidth حساب می‌شود. اینجا ۱۳۵ پیکسل سرریز داشت و
+     صفحه روی موبایل به‌پهلو کشیده می‌شد.
+     راه‌حل: وسط‌چینی به فرزندان منتقل شود. */
+  .cta-band { background: var(--obsidian); color: #FFF; padding: 40px 20px;
+              margin-top: 44px; overflow: hidden; }
+  .cta-band > * { text-align: center; }
+  .cta-band h2 { font-size: 1.25rem; font-weight: 800; margin-bottom: 8px; }
+  .cta-band p { font-size: .88rem; opacity: .76; margin-bottom: 20px; }
+
+  /* ارتفاع رزروشده — اندازه‌گیری واقعی:
+     موبایل ۲۲۷vh · دسکتاپ ۸۰vh. مقدار درون‌خطی همان ۸۰vh است
+     تا پیش از رسیدن CSS اعمال شود؛ این قاعده روی موبایل اصلاحش
+     می‌کند. */
+  @media (max-width: 860px) {
+    #houseGrid:not(.is-ready) { min-height: 227vh }
+  }
+</style>
+</head>
+<body>
+<a href="#main" class="skip-link">پرش به محتوای اصلی</a>
+<!-- ارتفاع هدر از پیش رزرو می‌شود. هدر با جاوااسکریپت از app.js
+     ساخته می‌شود، پس تا آن لحظه ارتفاعش صفر است و با ظاهر شدن،
+     کل صفحه ۹۷ تا ۱۰۳ پیکسل پایین می‌پرد. ردیابی نشان داد این
+     تک‌ریشهٔ جابه‌جایی در همه صفحات بود (MAIN#main: y 0 → 97).
+     اندازه‌گیری واقعی: موبایل ۹۷px · دسکتاپ ۱۰۳px. -->
+<div id="hdr" class="hdr-reserve"></div>
+
+<main id="main">
+  <section class="page-head" style="padding-bottom:60px">
+    <div class="inner">
+      <span class="eyebrow">منبع مواد اولیه</span>
+      <h1>اسانس ما از <em>خانه‌های عطر جهان</em> می‌آید</h1>
+      <p>ژیوودان، فیرمنیش، ایبرکم و لوزی — همان خانه‌هایی که
+         برای برندهای بین‌المللی اسانس می‌سازند.</p>
+    </div>
+  </section>
+
+  <div class="truth">
+    <div class="truth-card">
+      <h2>یک حقیقت که کمتر گفته می‌شود</h2>
+      <p>
+        برندهای مشهور عطر، خودشان اسانس نمی‌سازند. آن‌ها فرمول را از
+        <strong>خانه‌های عطر</strong> سفارش می‌دهند — شرکت‌هایی مثل ژیوودان و
+        فیرمنیش که عطرسازان حرفه‌ای در استخدام دارند. سپس اسانس را با الکل
+        ترکیب می‌کنند، در شیشه خود می‌ریزند و نام برندشان را رویش می‌گذارند.
+      </p>
+
+      <div class="flow">
+        <div class="flow-box gold">
+          <div class="t">خانه عطر</div>
+          <div class="s">ژیوودان، فیرمنیش…</div>
+        </div>
+        <span class="flow-arrow">←</span>
+        <div class="flow-box">
+          <div class="t">برند بین‌المللی</div>
+          <div class="s">شیشه و بسته‌بندی</div>
+        </div>
+        <span class="flow-arrow">←</span>
+        <div class="flow-box">
+          <div class="t">مشتری</div>
+          <div class="s">قیمت چند برابر</div>
+        </div>
+      </div>
+
+      <p style="margin-top:20px">
+        عطر یزد اسانس را از <strong>همان خانه‌ها</strong> تهیه می‌کند و
+        دست‌ساز ترکیب می‌کند. محصول ما اورجینال نیست و هرگز چنین ادعایی
+        نداریم — اما <strong>منبع مواد اولیه یکی است</strong>.
+        تفاوت در نامی است که روی شیشه می‌نشیند.
+      </p>
+      <p style="margin-top:14px">
+        اسانس اما نیمی از ماجراست. نیم دیگر <strong>حلال</strong> است که
+        ۷۰ تا ۹۰ درصد حجم عطر را می‌سازد. ما هرگز از متانول استفاده
+        نمی‌کنیم — دلیلش را در صفحه
+        <a href="/why-us" style="color:var(--gold);font-weight:700">چرا عطر یزد؟</a>
+        توضیح داده‌ایم.
+      </p>
+    </div>
+  </div>
+
+  <section class="houses reveal">
+    <h2>خانه‌های تأمین‌کننده</h2>
+    <p class="sub" id="houseCount"></p>
+    <!-- فضای کارت‌های خانه اسانس پیش از رسیدن داده رزرو می‌شود،
+         وگرنه با پر شدن، کل صفحه جابه‌جا می‌شود (CLS=۰٫۲۷ اندازه‌گیری شد). -->
+    <div class="house-grid stagger" id="houseGrid" style="min-height:80vh"></div>
+    <div id="loading" role="status"><div class="spinner"></div></div>
+  </section>
+
+  <section class="faq reveal">
+    <h2>پرسش‌های رایج</h2>
+
+    <div class="faq-item">
+      <div class="q">پس چرا قیمت شما پایین‌تر است؟</div>
+      <div class="a">
+        چون هزینه‌های برند را پرداخت نمی‌کنید: تبلیغات جهانی، بسته‌بندی
+        لوکس، حق امتیاز نام و شبکه توزیع بین‌المللی. آنچه می‌پردازید
+        عمدتاً بهای خود اسانس و کار دست است.
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <div class="q">یعنی محصول شما با اصل یکی است؟</div>
+      <div class="a">
+        نه، و چنین ادعایی نداریم. فرمول دقیق هر عطر متعلق به برند سازنده
+        است و در دسترس نیست. ما پروفایل بویایی را بازآفرینی می‌کنیم.
+        نتیجه بسیار نزدیک است، اما یکسان نیست.
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <div class="q">از کجا بدانم راست می‌گویید؟</div>
+      <div class="a">
+        بهترین راه، آزمودن است. سمپل ۳ میلی‌لیتری هر رایحه با کمترین
+        هزینه در دسترس است. کیفیت اسانس در ماندگاری و نحوه باز شدن
+        نُت‌ها روی پوست خودش را نشان می‌دهد.
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <div class="q">چرا نام خانه اسانس هر محصول را جداگانه نمی‌گویید؟</div>
+      <div class="a">
+        هر رایحه ممکن است از ترکیب اسانس چند خانه ساخته شود و
+        تأمین‌کننده گاهی بسته به موجودی تغییر می‌کند. به‌جای ادعای
+        دقیقی که نتوانیم همیشه تضمین کنیم، فهرست کامل خانه‌هایی را
+        که با آن‌ها کار می‌کنیم شفاف اعلام می‌کنیم.
+      </div>
+    </div>
+  </section>
+
+  <section class="cta-band">
+    <h2>خودتان بیازمایید</h2>
+    <p>سمپل ۳ میلی‌لیتری، پیش از سفارش شیشه اصلی</p>
+    <a href="/" class="btn">مشاهده کاتالوگ عطرها</a>
+  </section>
+</main>
+
+<div id="ftr"></div>
+
+<script src="/assets/app.js"></script>
+<script>
+document.getElementById('hdr').innerHTML = renderHeader('essences');
+document.getElementById('ftr').innerHTML = renderFooter();
+
+async function load() {
+  try {
+    const r = await fetch('/api/essences');
+    if (!r.ok) throw new Error();
+    const d = await r.json();
+
+    document.getElementById('loading').style.display = 'none';
+    document.getElementById('houseCount').textContent =
+      `${toFa(d.total)} خانه معتبر جهانی که اسانس محصولات ما را تأمین می‌کنند`;
+
+    document.getElementById('houseGrid').style.minHeight = '';
+    document.getElementById('houseGrid').classList.add('is-ready');
+    document.getElementById('houseGrid').innerHTML = d.houses.map(h => `
+      <article class="house fade-up">
+        <div class="house-top">
+          <div class="house-name">${h.name_fa}<small>${h.name_en}</small></div>
+          <div class="house-meta">${h.country_fa}<br>از ${toFa(h.founded)}</div>
+        </div>
+        <span class="house-tag">${h.tagline}</span>
+        <p>${h.description}</p>
+        <div class="known">شناخته‌شده برای: ${h.known_for_fa}</div>
+      </article>`).join('');
+  } catch {
+    document.getElementById('loading').innerHTML =
+      `<div class="empty-state"><h3>ارتباط برقرار نشد</h3>
+       <button class="btn" style="margin-top:14px" onclick="location.reload()">تلاش دوباره</button></div>`;
+  }
+}
+load();
+</script>
+</body>
+</html>

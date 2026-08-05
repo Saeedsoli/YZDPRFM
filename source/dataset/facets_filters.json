@@ -1,0 +1,184 @@
+{
+  "facets": [
+    {
+      "code": "brand",
+      "name": "برند الهام‌بخش",
+      "values": [
+        {
+          "code": "penhaligon's",
+          "name": "پنهالیگونز (Penhaligon's)"
+        },
+        {
+          "code": "creed",
+          "name": "کرِید (Creed)"
+        }
+      ]
+    },
+    {
+      "code": "family",
+      "name": "خانواده بویایی",
+      "values": [
+        {
+          "code": "floral",
+          "name": "گلی مشکی"
+        },
+        {
+          "code": "ambery-oriental",
+          "name": "شرقی فوژه"
+        },
+        {
+          "code": "woody",
+          "name": "چوبی ادویه‌ای گرم"
+        },
+        {
+          "code": "aromatic-fresh",
+          "name": "چرمی آروماتیک"
+        },
+        {
+          "code": "ambery-oriental",
+          "name": "شرقی گلی چوبی"
+        },
+        {
+          "code": "floral",
+          "name": "شرقی گلی"
+        },
+        {
+          "code": "aromatic-fresh",
+          "name": "آروماتیک ادویه‌ای"
+        },
+        {
+          "code": "woody",
+          "name": "چوبی میوه‌ای سبز"
+        },
+        {
+          "code": "leather",
+          "name": "چرمی ادویه‌ای"
+        },
+        {
+          "code": "floral",
+          "name": "گلی پودری"
+        },
+        {
+          "code": "floral",
+          "name": "گلی گورماند"
+        },
+        {
+          "code": "woody",
+          "name": "شرقی چوبی"
+        },
+        {
+          "code": "aromatic-fresh",
+          "name": "آروماتیک خنک"
+        },
+        {
+          "code": "fruity-gourmand",
+          "name": "مدیترانه‌ای میوه‌ای"
+        },
+        {
+          "code": "citrus",
+          "name": "مرکباتی آروماتیک"
+        },
+        {
+          "code": "fruity-gourmand",
+          "name": "شرقی گورماند"
+        },
+        {
+          "code": "woody",
+          "name": "چوبی گلی مشکی"
+        },
+        {
+          "code": "woody",
+          "name": "چوبی ادویه‌ای"
+        },
+        {
+          "code": "woody",
+          "name": "چوبی آروماتیک"
+        },
+        {
+          "code": "ambery-oriental",
+          "name": "شرقی تنباکویی"
+        },
+        {
+          "code": "ambery-oriental",
+          "name": "شرقی ادویه‌ای وانیلی"
+        },
+        {
+          "code": "ambery-oriental",
+          "name": "شرقی کهربایی"
+        },
+        {
+          "code": "citrus",
+          "name": "مرکباتی"
+        },
+        {
+          "code": "aromatic-fresh",
+          "name": "آبزی آروماتیک"
+        },
+        {
+          "code": "aromatic-fresh",
+          "name": "آروماتیک فوژه"
+        },
+        {
+          "code": "citrus",
+          "name": "مرکباتی شیرین"
+        },
+        {
+          "code": "ambery-oriental",
+          "name": "شرقی چوبی عودی"
+        },
+        {
+          "code": "floral",
+          "name": "گلی میوه‌ای"
+        },
+        {
+          "code": "fruity-gourmand",
+          "name": "شیپر گلی میوه‌ای"
+        },
+        {
+          "code": "floral",
+          "name": "چرمی گلی چوبی"
+        }
+      ]
+    },
+    {
+      "code": "gender",
+      "name": "جنسیت",
+      "values": [
+        {
+          "code": "men",
+          "name": "مردانه"
+        },
+        {
+          "code": "women",
+          "name": "زنانه"
+        },
+        {
+          "code": "unisex",
+          "name": "یونی‌سکشوال / مشترک"
+        }
+      ]
+    },
+    {
+      "code": "season",
+      "name": "فصل مناسب",
+      "values": [
+        {
+          "code": "spring",
+          "name": "بهار"
+        },
+        {
+          "code": "summer",
+          "name": "تابستان"
+        },
+        {
+          "code": "autumn",
+          "name": "پاییز"
+        },
+        {
+          "code": "winter",
+          "name": "زمستان"
+        }
+      ]
+    }
+  ]
+}

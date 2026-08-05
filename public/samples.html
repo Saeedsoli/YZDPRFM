@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16.png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="manifest" href="/site.webmanifest">
+<meta name="theme-color" content="#121212">
+<title>سمپل ۳ میل | امتحان کنید، بعد بخرید</title>
+<meta name="description" content="سمپل ۳ میلی‌لیتری روی هر ۲۱۰۶ رایحه عطر یزد. با کمتر از یک‌دهم قیمت بطری کامل، رایحه را چند روز روی پوست خودتان امتحان کنید.">
+<link rel="stylesheet" href="/assets/theme.css">
+<style>
+  .s-hero { background:linear-gradient(135deg,#141414,#242424); color:#FFF;
+            padding:52px 20px 58px; overflow:hidden }
+  .s-hero > * { text-align:center }
+  .s-hero .eyebrow { color:var(--gold); font-size:.75rem; font-weight:800;
+                     letter-spacing:1.6px; display:block; margin-bottom:12px }
+  .s-hero h1 { font-size:1.68rem; font-weight:800; margin-bottom:13px; line-height:1.55 }
+  .s-hero h1 em { color:var(--gold); font-style:normal }
+  .s-hero p { font-size:.93rem; opacity:.85; max-width:620px; margin:0 auto; line-height:2.1 }
+
+  .s-why { max-width:900px; margin:-28px auto 34px; padding:0 20px;
+           position:relative; z-index:5 }
+  .s-why-grid { display:grid; gap:13px; grid-template-columns:repeat(auto-fit,minmax(232px,1fr)) }
+  .s-card { background:var(--surface); border:1px solid var(--border);
+            border-radius:var(--radius); padding:19px 17px; overflow:hidden }
+  .s-card > * { text-align:center }
+  .s-card .ic { display:grid; place-items:center; width:40px; height:40px; margin:0 auto 11px;
+                border-radius:11px; background:var(--sand) }
+  .s-card .ic svg { width:20px; height:20px; fill:none; stroke:var(--gold-dark);
+                    stroke-width:1.7; stroke-linecap:round; stroke-linejoin:round }
+  .s-card b { display:block; font-size:.9rem; font-weight:800; margin-bottom:6px }
+  .s-card span { display:block; font-size:.79rem; color:var(--muted); line-height:1.95 }
+
+  .filters { background:var(--sand); border-block:1px solid var(--border);
+             padding:20px 0; margin-bottom:26px }
+  .filters .inner { max-width:1180px; margin:0 auto; padding:0 20px }
+  .flabel { font-size:.8rem; font-weight:700; margin-bottom:9px; color:var(--muted) }
+  .frow { display:flex; gap:8px; flex-wrap:wrap; margin-bottom:15px }
+  .frow:last-child { margin-bottom:0 }
+  .fchip2 { padding:7px 15px; border-radius:22px; border:1px solid var(--border);
+            background:var(--surface); font-size:.81rem; font-weight:700; cursor:pointer;
+            font-family:var(--font); color:var(--text); transition:all var(--t-smooth) }
+  .fchip2:hover { border-color:var(--gold) }
+  .fchip2.on { background:var(--obsidian); color:#FFF; border-color:var(--obsidian) }
+
+  .promo { max-width:1180px; margin:0 auto 18px; padding:13px 18px;
+           background:linear-gradient(135deg,#FFF9E8,#FFF4D6);
+           border:1px solid rgba(197,155,39,.42); border-radius:var(--radius);
+           display:flex; align-items:center; justify-content:space-between;
+           gap:12px; flex-wrap:wrap }
+  .promo .p-txt { font-size:.85rem; line-height:1.9 }
+  .promo .p-txt b { color:var(--gold-dark); font-weight:800 }
+  .promo .p-copy { border:1px solid var(--gold-dark); background:transparent;
+                   color:var(--gold-dark); border-radius:8px; padding:7px 15px;
+                   font-size:.79rem; font-weight:700; cursor:pointer;
+                   font-family:var(--font); white-space:nowrap }
+  .promo .p-copy:hover { background:var(--gold); color:#121212; border-color:var(--gold) }
+  @media (max-width:640px){ .promo { margin-inline:20px } }
+
+  .s-count { max-width:1180px; margin:0 auto 16px; padding:0 20px;
+             font-size:.84rem; color:var(--muted) }
+  .s-count b { color:var(--gold-dark) }
+
+  .s-grid { max-width:1180px; margin:0 auto; padding:0 20px 46px;
+            display:grid; gap:16px;
+            grid-template-columns:repeat(auto-fill,minmax(215px,1fr)) }
+
+  .sc { background:var(--surface); border:1px solid var(--border);
+        border-radius:var(--radius); overflow:hidden; display:flex; flex-direction:column;
+        transition:transform var(--t-smooth), box-shadow var(--t-smooth) }
+  .sc:hover { transform:translateY(-3px); box-shadow:var(--sh-lg) }
+  .sc .img { position:relative; aspect-ratio:1/1; background:var(--sand); overflow:hidden }
+  .sc .img img { width:100%; height:100%; object-fit:cover; display:block }
+  .sc .tag { position:absolute; top:9px; right:9px; background:var(--gold);
+             color:#121212; font-size:.66rem; font-weight:800; padding:4px 10px;
+             border-radius:16px }
+  .sc .bd { padding:13px; display:flex; flex-direction:column; flex:1 }
+  .sc .nm { font-size:.85rem; font-weight:800; line-height:1.65; margin-bottom:3px }
+  .sc .en { font-size:.7rem; color:var(--muted); direction:ltr; text-align:right;
+            margin-bottom:8px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap }
+  .sc .fam { font-size:.71rem; color:var(--muted); margin-bottom:10px }
+  .sc .pr { margin-top:auto; display:flex; align-items:baseline; justify-content:space-between;
+            gap:6px; padding-top:9px; border-top:1px solid var(--border-soft) }
+  .sc .pr b { font-size:.94rem; font-weight:800; color:var(--gold-dark) }
+  .sc .pr s { font-size:.7rem; color:var(--muted-light) }
+  .sc .go { display:block; margin-top:10px; text-align:center; padding:8px;
+            border-radius:9px; background:var(--obsidian); color:#FFF;
+            font-size:.78rem; font-weight:700; text-decoration:none }
+  .sc .go:hover { background:var(--gold); color:#121212 }
+  .sc .oos { display:block; margin-top:10px; text-align:center; padding:8px;
+             border-radius:9px; background:var(--sand); color:var(--muted);
+             font-size:.78rem; font-weight:700 }
+
+  .more-wrap { max-width:1180px; margin:0 auto 46px; padding:0 20px; text-align:center }
+
+  .tip { background:var(--obsidian); color:#E8E8E8; padding:34px 20px; overflow:hidden }
+  .tip > * { text-align:center }
+  .tip h2 { color:var(--gold); font-size:1.12rem; font-weight:800; margin-bottom:16px }
+  .tip .steps { max-width:820px; margin:0 auto; display:grid; gap:13px;
+                grid-template-columns:repeat(auto-fit,minmax(210px,1fr)) }
+  .tip .step { background:rgba(255,255,255,.06); border-radius:12px; padding:16px 14px;
+               overflow:hidden }
+  .tip .step > * { text-align:center }
+  .tip .step .n { color:var(--gold); font-size:1.15rem; font-weight:800; margin-bottom:6px }
+  .tip .step p { font-size:.81rem; line-height:1.95; opacity:.88 }
+
+  @media (max-width:640px){
+    .s-hero h1 { font-size:1.36rem }
+    .s-grid { grid-template-columns:repeat(auto-fill,minmax(158px,1fr)); gap:12px }
+    .sc .nm { font-size:.79rem }
+  }
+</style>
+</head>
+<body>
+<a href="#main" class="skip-link">پرش به محتوای اصلی</a>
+<div id="hdr" class="hdr-reserve"></div>
+
+<section class="s-hero">
+  <span class="eyebrow">پیش از خرید بطری کامل</span>
+  <h1>سمپل <em>۳ میلی‌لیتری</em><br>روی هر ۲٬۱۰۶ رایحه</h1>
+  <p>خرید عطر بدون بوییدن، قمار است. با کمتر از یک‌دهم قیمت بطری کامل،
+     رایحه را چند روز روی پوست خودتان امتحان کنید.</p>
+</section>
+
+<main id="main">
+
+<div class="s-why">
+  <div class="s-why-grid">
+    <div class="s-card">
+      <span class="ic" aria-hidden="true">
+        <svg viewBox="0 0 24 24"><path d="M9 2h6M10 2v6.5L5.5 17A3 3 0 0 0 8 21.5h8a3 3 0 0 0 2.5-4.5L14 8.5V2"/></svg>
+      </span>
+      <b>روی <em id="cntAll">۲٬۱۰۶</em> رایحه</b>
+      <span>نه فقط پرفروش‌ها — سمپل هر محصولی موجود است.</span>
+    </div>
+    <div class="s-card">
+      <span class="ic" aria-hidden="true">
+        <svg viewBox="0 0 24 24"><path d="M20.6 13.4 12 22l-9-9V4a1 1 0 0 1 1-1h9z"/><circle cx="7.5" cy="7.5" r="1.2"/></svg>
+      </span>
+      <b id="fromPrice">از ۴۸٬۶۴۰ تومان</b>
+      <span>ریسک امتحان کردن را به کمترین حد می‌رساند.</span>
+    </div>
+    <div class="s-card">
+      <span class="ic" aria-hidden="true">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+      </span>
+      <b>چند روز فرصت</b>
+      <span>پوست هر کس شیمی متفاوتی دارد؛ یک بار بو کردن کافی نیست.</span>
+    </div>
+  </div>
+</div>
+
+<div class="filters">
+  <div class="inner">
+    <div class="flabel">دسته‌بندی</div>
+    <div class="frow" id="genderRow">
+      <button class="fchip2 on" data-g="">همه</button>
+      <button class="fchip2" data-g="MEN">مردانه</button>
+      <button class="fchip2" data-g="WOMEN">زنانه</button>
+      <button class="fchip2" data-g="UNISEX">یونیسکس</button>
+    </div>
+    <div class="flabel">خانواده رایحه</div>
+    <div class="frow" id="famRow"></div>
+  </div>
+</div>
+
+<!-- کد تخفیف سمپل. از API خوانده می‌شود نه دستی نوشته —
+     اگر مدیر کد را غیرفعال کند یا ظرفیتش تمام شود، نوار
+     خودبه‌خود پنهان می‌شود و وعده‌ای که قابل استفاده نیست
+     روی صفحه نمی‌ماند. -->
+<div class="promo" id="promo" hidden>
+  <span class="p-txt">با کد <b id="promoCode"></b> روی اولین سفارش سمپل
+    <b id="promoVal"></b> تخفیف بگیرید</span>
+  <button class="p-copy" id="promoCopy" type="button">کپی کد</button>
+</div>
+
+<div class="s-count" id="cnt"></div>
+<div class="s-grid" id="grid"></div>
+<div class="more-wrap">
+  <button class="btn btn-outline" id="moreBtn" style="display:none">رایحه‌های بیشتر</button>
+</div>
+
+<section class="tip">
+  <h2>چطور سمپل را درست امتحان کنیم</h2>
+  <div class="steps">
+    <div class="step">
+      <div class="n">۱</div>
+      <p>روی پوست تمیز بزنید، نه روی لباس. رایحه با گرمای بدن باز می‌شود.</p>
+    </div>
+    <div class="step">
+      <div class="n">۲</div>
+      <p>نمالید. مالیدن نُت‌های آغازین را می‌شکند و رایحه را عوض می‌کند.</p>
+    </div>
+    <div class="step">
+      <div class="n">۳</div>
+      <p>حداقل شش ساعت صبر کنید. نُت پایه دیرتر از همه خودش را نشان می‌دهد.</p>
+    </div>
+    <div class="step">
+      <div class="n">۴</div>
+      <p>در یک نوبت بیش از دو رایحه امتحان نکنید؛ بینی خسته می‌شود.</p>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<div id="ftr"></div>
+<script src="/assets/app.js"></script>
+<script>
+document.getElementById('hdr').innerHTML = renderHeader('samples');
+document.getElementById('ftr').innerHTML = renderFooter();
+
+/* صفحه سمپل.
+
+   چرا صفحه جدا لازم بود: لینک قبلی «?q=سمپل» صفر نتیجه می‌داد،
+   چون «سمپل» نام محصول نیست — نوع واریانت است و در ایندکس
+   جستجو نمی‌آید. با آزمون واقعی روی API معلوم شد.
+
+   اینجا از همان API کاتالوگ استفاده می‌شود ولی قیمت سمپل
+   (کمینه هر محصول) نمایش داده می‌شود، نه قیمت بطری کامل. */
+
+const state = { gender: '', family: '', page: 1, done: false };
+let items = [];
+
+async function loadFamilies() {
+  try {
+    const d = await fetch('/api/families').then(r => r.json());
+    /* نام فیلدها family_slug و family_fa است، نه slug/name.
+       بار اول اشتباه نوشتم و فیلتر بی‌اثر بود — با آزمون مرورگر
+       معلوم شد: شمارنده پس از کلیک تغییر نمی‌کرد. */
+    const list = (d.families || []).slice(0, 10);
+    document.getElementById('famRow').innerHTML =
+      `<button class="fchip2 on" data-f="">همه</button>` +
+      list.map(f => `<button class="fchip2" data-f="${esc(f.family_slug)}">` +
+                    `${esc(f.family_fa)}</button>`).join('');
+    bind('famRow', 'f', v => { state.family = v; reset(); });
+  } catch {}
+}
+
+function bind(rowId, attr, fn) {
+  const row = document.getElementById(rowId);
+  row.querySelectorAll('.fchip2').forEach(b => b.onclick = () => {
+    row.querySelectorAll('.fchip2').forEach(x => x.classList.remove('on'));
+    b.classList.add('on');
+    fn(b.dataset[attr]);
+  });
+}
+
+function reset() { state.page = 1; state.done = false; items = []; load(); }
+
+async function load() {
+  const q = new URLSearchParams({ limit: '24', page: String(state.page) });
+  if (state.gender) q.set('gender', state.gender);
+  if (state.family) q.set('family', state.family);
+
+  const grid = document.getElementById('grid');
+  if (state.page === 1) grid.innerHTML = skeletonGrid ? skeletonGrid(8) : '';
+
+  try {
+    const d = await fetch('/api/products?' + q).then(r => r.json());
+    items = state.page === 1 ? (d.products || []) : items.concat(d.products || []);
+
+    document.getElementById('cnt').innerHTML =
+      `<b>${toFa(d.total || 0)}</b> رایحه — سمپل ۳ میل هر کدام موجود است`;
+
+    grid.innerHTML = items.map(card).join('');
+
+    const more = document.getElementById('moreBtn');
+    state.done = items.length >= (d.total || 0);
+    more.style.display = state.done ? 'none' : '';
+  } catch {
+    grid.innerHTML = `<div class="empty-state" style="grid-column:1/-1">
+      <h3>ارتباط برقرار نشد</h3><p>لطفاً دوباره تلاش کنید.</p></div>`;
+  }
+}
+
+/* قیمت نمایش‌داده‌شده، قیمت سمپل است نه بطری کامل.
+   min_price همیشه سمپل ۳ میل است چون ارزان‌ترین واریانت است. */
+function card(p) {
+  const full = fullName(p);
+  return `
+  <article class="sc">
+    <a href="/perfume/${p.slug}" class="img" aria-label="${esc(full)}">
+      <img src="${cardImage(p.image_url)}" alt="" loading="lazy" width="215" height="215">
+      <span class="tag">سمپل ۳ میل</span>
+    </a>
+    <div class="bd">
+      <div class="nm">${esc(full)}</div>
+      <div class="en">${esc(p.name_en || '')}</div>
+      <div class="fam">${esc(p.family_fa || '')}</div>
+      <div class="pr">
+        <b>${money(p.min_price)}</b>
+        <span style="font-size:.7rem;color:var(--muted)">تومان</span>
+      </div>
+      ${p.in_stock
+        ? `<a class="go" href="/perfume/${p.slug}">مشاهده و خرید</a>`
+        : `<span class="oos">فعلاً ناموجود</span>`}
+    </div>
+  </article>`;
+}
+
+document.getElementById('moreBtn').onclick = () => { state.page++; load(); };
+bind('genderRow', 'g', v => { state.gender = v; reset(); });
+
+/* آمار بالای صفحه از داده واقعی، نه عدد دستی —
+   عدد دستی با اولین تغییر کاتالوگ کهنه می‌شود. */
+fetch('/api/products?limit=1')
+  .then(r => r.json())
+  .then(d => {
+    if (d.total) document.getElementById('cntAll').textContent = toFa(d.total);
+  })
+  .catch(() => {});
+
+fetch('/api/products?limit=60&sort=price_asc')
+  .then(r => r.json())
+  .then(d => {
+    const prices = (d.products || []).map(p => p.min_price).filter(Boolean);
+    if (prices.length) {
+      document.getElementById('fromPrice').textContent =
+        'از ' + money(Math.min(...prices)) + ' تومان';
+    }
+  })
+  .catch(() => {});
+
+/* کد تخفیف سمپل — فقط اگر واقعاً فعال، منقضی‌نشده و دارای
+   ظرفیت باشد. اگر مدیر کد را ببندد، بنر خودبه‌خود محو می‌شود. */
+(async () => {
+  try {
+    const r = await fetch('/api/coupons/public?code=SAMPLE20');
+    if (!r.ok) return;
+    const c = await r.json();
+
+    document.getElementById('promoCode').textContent = c.code;
+    document.getElementById('promoVal').textContent =
+      c.type === 'PERCENT' ? toFa(c.value) + '٪' : money(c.value) + ' تومان';
+    document.getElementById('promo').hidden = false;
+
+    /* کپی در کلیپ‌بورد روی HTTP یا مرورگر قدیمی کار نمی‌کند.
+       بازخورد باید در هر دو حالت داده شود، وگرنه کاربر فکر
+       می‌کند دکمه خراب است. */
+    document.getElementById('promoCopy').onclick = async (e) => {
+      const btn = e.currentTarget;
+      let done = false;
+      try {
+        if (navigator.clipboard && window.isSecureContext) {
+          await navigator.clipboard.writeText(c.code);
+          done = true;
+        }
+      } catch {}
+      if (!done) {
+        // راه جایگزین برای بستر ناامن
+        const ta = document.createElement('textarea');
+        ta.value = c.code;
+        ta.style.cssText = 'position:fixed;opacity:0';
+        document.body.appendChild(ta);
+        ta.select();
+        try { done = document.execCommand('copy'); } catch {}
+        ta.remove();
+      }
+      btn.textContent = done ? '✓ کپی شد' : c.code;
+      setTimeout(() => { btn.textContent = 'کپی کد'; }, 2200);
+    };
+  } catch {}
+})();
+
+loadFamilies();
+load();
+</script>
+</body>
+</html>

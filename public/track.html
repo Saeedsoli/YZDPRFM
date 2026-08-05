@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16.png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="manifest" href="/site.webmanifest">
+<meta name="theme-color" content="#121212">
+<title>پیگیری سفارش | عطر یزد</title>
+<!-- فونت عمداً preload نمی‌شود.
+     با font-display:swap متن بلافاصله با فونت سیستمی دیده می‌شود،
+     پس preload فقط پهنای باند را از تصویر اصلی می‌دزدد. روی ۳G
+     اندازه‌گیری شد: حذف آن LCP صفحه محصول را از ۴٫۳۱s به ۳٫۵۷s
+     رساند بدون آنکه FCP بدتر شود. -->
+<link rel="stylesheet" href="/assets/theme.css">
+<style>
+.panel{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:22px;margin-bottom:16px}
+.order-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:18px;margin-bottom:14px}
+.badge{display:inline-block;padding:4px 12px;border-radius:20px;font-size:.74rem;font-weight:800}
+.b-paid{background:#E8F6EF;color:#1E8449}.b-pending{background:#FEF5E7;color:#B9770E}.b-cancel{background:#FDEDEC;color:#C0392B}
+.oi{display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px dashed var(--border);font-size:.84rem}
+.oi:last-child{border:none}
+</style></head>
+<body>
+<a href="#main" class="skip-link">پرش به محتوای اصلی</a>
+<!-- ارتفاع هدر از پیش رزرو می‌شود. هدر با جاوااسکریپت از app.js
+     ساخته می‌شود، پس تا آن لحظه ارتفاعش صفر است و با ظاهر شدن،
+     کل صفحه ۹۷ تا ۱۰۳ پیکسل پایین می‌پرد. ردیابی نشان داد این
+     تک‌ریشهٔ جابه‌جایی در همه صفحات بود (MAIN#main: y 0 → 97).
+     اندازه‌گیری واقعی: موبایل ۹۷px · دسکتاپ ۱۰۳px. -->
+<div id="hdr" class="hdr-reserve"></div>
+<section class="page-head">
+  <div class="inner">
+    <span class="eyebrow">وضعیت مرسوله</span>
+    <h1>پیگیری <em>سفارش</em></h1>
+    <p>با شماره موبایلی که هنگام ثبت سفارش وارد کرده‌اید.</p>
+  </div>
+</section>
+
+<div class="container" style="max-width:760px;margin-top:26px">
+  <div class="panel focus-panel">
+    <div class="field">
+      <label>شماره موبایل ثبت‌شده در سفارش</label>
+      <input id="m" placeholder="۰۹۱۲۳۴۵۶۷۸۹" dir="ltr" style="text-align:right"
+             onkeydown="if(event.key==='Enter')track()">
+    </div>
+    <button class="btn btn-block" onclick="track()">مشاهده سفارش‌ها</button>
+  </div>
+  <div id="out"></div>
+</div>
+<div id="ftr"></div>
+<script src="/assets/app.js"></script>
+<script>
+document.getElementById('hdr').innerHTML=renderHeader();
+document.getElementById('ftr').innerHTML=renderFooter();
+const saved=sessionStorage.getItem('yazd_last_mobile'); if(saved) document.getElementById('m').value=saved;
+/* هر ۸ وضعیت سرور — قبلاً فقط ۳ تا شناخته می‌شد و بقیه «نامشخص» بودند */
+const ST = {
+  PENDING:    ['در انتظار پرداخت',   'b-pending'],
+  PAID:       ['پرداخت شده',         'b-paid'],
+  PROCESSING: ['در حال آماده‌سازی',  'b-pending'],
+  SHIPPED:    ['ارسال شده',          'b-pending'],
+  DELIVERED:  ['تحویل داده شده',     'b-paid'],
+  CANCELLED:  ['لغو شده',            'b-cancel'],
+  FAILED:     ['پرداخت ناموفق',      'b-cancel'],
+  RETURNED:   ['مرجوع شده',          'b-cancel'],
+  EXPIRED:    ['منقضی شده',          'b-cancel']
+};
+
+const FLOW = ['PAID', 'PROCESSING', 'SHIPPED', 'DELIVERED'];
+const FLOW_FA = {
+  PAID:       ['سفارش ثبت شد',      'پرداخت تأیید و سفارش وارد صف شد'],
+  PROCESSING: ['در حال آماده‌سازی', 'رایحه شما ساخته و بسته‌بندی می‌شود'],
+  SHIPPED:    ['تحویل پست',         'مرسوله به شرکت حمل تحویل داده شد'],
+  DELIVERED:  ['تحویل به شما',      'سفارش به مقصد رسید']
+};
+const DEAD = { CANCELLED: 'سفارش لغو شد', FAILED: 'پرداخت انجام نشد',
+               RETURNED: 'سفارش مرجوع شد', EXPIRED: 'مهلت پرداخت تمام شد' };
+
+/* خط زمانی سفارش — کاربر می‌بیند کجای مسیر است، نه فقط یک برچسب */
+function timeline(status) {
+  if (DEAD[status]) {
+    return `<div class="timeline">
+      <div class="tl-step done"><div class="t">سفارش ثبت شد</div></div>
+      <div class="tl-step cancel"><div class="t">${DEAD[status]}</div>
+        <div class="d">برای پیگیری با پشتیبانی تماس بگیرید.</div></div>
+    </div>`;
+  }
+  const idx = FLOW.indexOf(status);
+  if (idx < 0) return '';
+  const pct = FLOW.length > 1 ? (idx / (FLOW.length - 1)) * 100 : 0;
+  return `<div class="timeline">
+    <div class="fill" style="height:calc(${pct}% - 0px)"></div>
+    ${FLOW.map((st, i) => {
+      const cls = i < idx ? 'done' : i === idx ? 'now done' : '';
+      const [t, d] = FLOW_FA[st];
+      return `<div class="tl-step ${cls}">
+        <div class="t">${t}</div>
+        ${i === idx ? `<div class="d">${d}</div>` : ''}
+      </div>`;
+    }).join('')}
+  </div>`;
+}
+
+function copyCode(el, code) {
+  navigator.clipboard.writeText(code).then(() => {
+    const old = el.textContent;
+    el.textContent = 'کپی شد ✓';
+    setTimeout(() => { el.textContent = old; }, 1800);
+  }).catch(() => {});
+}
+
+async function track() {
+  const btn = document.querySelector('.focus-panel .btn');
+  let m = document.getElementById('m').value
+    .replace(/[۰-۹]/g, d => '۰۱۲۳۴۵۶۷۸۹'.indexOf(d))
+    .replace(/[٠-٩]/g, d => '٠١٢٣٤٥٦٧٨٩'.indexOf(d))
+    .replace(/[\s\-‌]/g, '');
+  if (!/^09\d{9}$/.test(m)) return toast('شماره موبایل معتبر وارد کنید');
+
+  btn.disabled = true; btn.textContent = 'در حال جستجو…';
+  const o = document.getElementById('out');
+
+  let d;
+  try {
+    const r = await fetch('/api/orders/track?mobile=' + m);
+    if (!r.ok) throw 0;
+    d = await r.json();
+  } catch {
+    o.innerHTML = `<div class="empty-state soft-card"><h3>ارتباط برقرار نشد</h3>
+      <p style="margin-top:6px">اتصال اینترنت را بررسی کنید.</p></div>`;
+    btn.disabled = false; btn.textContent = 'مشاهده سفارش‌ها';
+    return;
+  }
+  btn.disabled = false; btn.textContent = 'مشاهده سفارش‌ها';
+
+  if (!d.orders.length) {
+    o.innerHTML = `<div class="empty-state soft-card" style="padding:44px 24px">
+      <h3>سفارشی با این شماره پیدا نشد</h3>
+      <p style="margin-top:8px;font-size:.87rem;color:var(--muted);line-height:2">
+        مطمئن شوید همان شماره‌ای را وارد کرده‌اید که هنگام ثبت سفارش نوشته‌اید.</p>
+      <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:18px">
+        <a href="/contact" class="btn btn-outline">تماس با پشتیبانی</a>
+      </div></div>`;
+    return;
+  }
+
+  o.innerHTML = d.orders.map(x => {
+    const st = ST[x.status] || ['نامشخص', 'b-pending'];
+    const paidLike = ['PAID','PROCESSING','SHIPPED','DELIVERED'].includes(x.status);
+    return `<div class="order-card soft-card">
+      <div style="display:flex;justify-content:space-between;align-items:center;
+                  margin-bottom:6px;flex-wrap:wrap;gap:8px">
+        <strong dir="ltr" style="font-size:.95rem">${x.order_id}</strong>
+        <span class="badge ${st[1]}">${st[0]}</span>
+      </div>
+      <div style="font-size:.79rem;color:var(--muted)">
+        ${new Date(x.created_at).toLocaleDateString('fa-IR')} · ${esc(x.province || '')} ${esc(x.city || '')}
+      </div>
+
+      ${timeline(x.status)}
+
+      ${x.tracking_code ? `<div class="track-box">
+        <div><div style="font-size:.72rem;color:var(--muted)">کد رهگیری ${esc(x.carrier || 'پستی')}</div>
+          <div class="code">${esc(x.tracking_code)}</div></div>
+        <button onclick="copyCode(this,'${esc(x.tracking_code)}')">کپی کد</button>
+      </div>` : ''}
+
+      ${x.items.map(i => `<div class="oi"><span>${esc(i.product_name)}</span>
+        <span style="white-space:nowrap">${toFa(i.quantity)} × ${money(i.unit_price)}</span></div>`).join('')}
+      <div class="oi" style="font-weight:800;padding-top:10px">
+        <span>مبلغ کل</span><span>${money(x.total_paid)} تومان</span></div>
+
+      ${x.payment_ref ? `<div style="font-size:.74rem;color:var(--muted);margin-top:8px">
+        کد پیگیری بانکی: <span dir="ltr">${x.payment_ref}</span></div>` : ''}
+
+      ${paidLike ? `<div style="margin-top:11px">
+        <a href="/invoice.html?order=${x.order_id}" target="_blank"
+           style="font-size:.79rem;color:var(--gold);font-weight:700">مشاهده فاکتور ←</a>
+      </div>` : ''}
+    </div>`;
+  }).join('');
+}
+
+if(saved) track();
+</script></body></html>

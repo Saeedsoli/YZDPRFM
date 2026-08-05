@@ -1,0 +1,1200 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16.png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="manifest" href="/site.webmanifest">
+<meta name="theme-color" content="#121212">
+<title>عطر یزد | Yazd Perfume — مرجع تخصصی عطر دست‌ساز</title>
+<meta name="description" content="فروشگاه عطر یزد — بیش از ۲۱۰۰ رایحه دست‌ساز بازآفرینی‌شده از ۱۳۵ خانه عطر معتبر جهان. سمپل ۳ میل، ادوپرفیوم، عطر مو و بادی اسپلش.">
+<!-- فونت عمداً preload نمی‌شود.
+     با font-display:swap متن بلافاصله با فونت سیستمی دیده می‌شود،
+     پس preload فقط پهنای باند را از تصویر اصلی می‌دزدد. روی ۳G
+     اندازه‌گیری شد: حذف آن LCP صفحه محصول را از ۴٫۳۱s به ۳٫۵۷s
+     رساند بدون آنکه FCP بدتر شود. -->
+<link rel="stylesheet" href="/assets/theme.css">
+<!-- تصویر هیرو داخل CSS تعریف شده؛ بدون preload مرورگر تا پس از
+     تجزیه کامل استایل کشفش نمی‌کند و اولین نمایش دیر می‌شود. -->
+<link rel="preload" as="image" href="/images/hero-cinematic.webp"
+      type="image/webp" media="(min-width: 861px)" fetchpriority="high">
+<link rel="preload" as="image" href="/images/hero-cinematic-sm.webp"
+      type="image/webp" media="(max-width: 860px)" fetchpriority="high">
+<style>
+  /* ═══ هیرو سینمایی ═══ */
+  .hero {
+    position: relative; min-height: 78vh; background: #0A0908;
+    display: flex; align-items: center; overflow: hidden; color: #FFF;
+  }
+  .hero-bg {
+    position: absolute; inset: 0;
+    /* پس‌افت برای مرورگرهای قدیمی؛ خط بعد اگر image-set پشتیبانی شود جایش را می‌گیرد */
+    background: url('/images/hero-cinematic.jpg') center right/cover no-repeat;
+    background-image: image-set(
+      url('/images/hero-cinematic.webp') type('image/webp'),
+      url('/images/hero-cinematic.jpg')  type('image/jpeg'));
+    background-image: -webkit-image-set(
+      url('/images/hero-cinematic.webp') type('image/webp'),
+      url('/images/hero-cinematic.jpg')  type('image/jpeg'));
+    /* `center right` بطری را که سمت چپ قاب است به لبه می‌راند و
+       نیمی‌اش بیرون می‌ماند. با `35% center` بطری کامل دیده
+       می‌شود و فضای خالی سمت راست برای متن باقی می‌ماند. */
+    background-position: 35% center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    animation: heroDrift 30s ease-in-out infinite alternate;
+  }
+  @keyframes heroDrift {
+    from { transform: scale(1.04) translate3d(0,0,0); }
+    to   { transform: scale(1.12) translate3d(-22px,-10px,0); }
+  }
+  /* پرده تیره سمت راست تا متن خوانا بماند.
+     شدت با تصویر تازه تنظیم شد: خودِ عکس از نسخه قبل تیره‌تر است،
+     پس پرده سبک‌تری کافی است. با مقادیر قبلی، بطری تقریباً محو
+     می‌شد و کل قاب یکدست سیاه به‌نظر می‌رسید. */
+  .hero-veil {
+    position: absolute; inset: 0; z-index: 2;
+    background: linear-gradient(to left,
+      rgba(10,9,8,0) 0%, rgba(10,9,8,.42) 38%,
+      rgba(10,9,8,.80) 62%, rgba(10,9,8,.92) 100%);
+  }
+  .hero::after {
+    content: ''; position: absolute; left: 0; right: 0; bottom: 0; height: 140px;
+    background: linear-gradient(to bottom, transparent, var(--bg));
+    z-index: 4; pointer-events: none;
+  }
+
+  /* ═══════════════════════════════════════
+     ذرات طلایی معلق
+     ═══════════════════════════════════════
+     تصویر ثابت است و فقط این نقاط ریز حرکت می‌کنند — حس «عطر در
+     هوا» بدون شلوغی.
+
+     چرا CSS خالص و نه جاوااسکریپت:
+       ۴۵ عنصر با جاوااسکریپت ساختن یعنی کار روی نخ اصلی، درست
+       همان لحظه‌ای که مرورگر می‌خواهد صفحه را رنگ کند. با
+       nth-child همه‌چیز پیش از نخستین رنگ‌آمیزی آماده است.
+
+     چرا z-index بالای پرده (۳):
+       نسخه اول ذرات را زیر پرده تیره گذاشت و سمت راست — جایی که
+       متن است — خالی می‌ماند. حالا در کل قاب دیده می‌شوند.
+
+     فقط transform و opacity استفاده می‌شود، پس روی کارت گرافیک
+     اجرا می‌شود و چیدمان را جابه‌جا نمی‌کند: CLS صفر می‌ماند. */
+  .hero-dust {
+    position: absolute; inset: 0; z-index: 3;
+    pointer-events: none; overflow: hidden;
+  }
+  .hero-dust i {
+    position: absolute; width: 2px; height: 2px; border-radius: 50%;
+    background: #F3D98A; box-shadow: 0 0 7px 1px rgba(243,217,138,.6);
+    opacity: 0; animation: dustFloat 14s linear infinite;
+  }
+  @keyframes dustFloat {
+    0%   { opacity: 0;   transform: translate3d(0,20px,0) scale(.7) }
+    12%  { opacity: .9 }
+    50%  { transform: translate3d(16px,-70px,0) scale(1) }
+    85%  { opacity: .55 }
+    100% { opacity: 0;   transform: translate3d(-10px,-160px,0) scale(.65) }
+  }
+  /* موقعیت، اندازه، سرعت و تأخیر هر ذره جدا تنظیم می‌شود تا
+     الگوی تکراری به چشم نیاید. */
+  .hero-dust i:nth-child(1){left:3%;bottom:8%;width:2.6px;height:2.6px;animation-delay:0s;animation-duration:13s}
+  .hero-dust i:nth-child(2){left:9%;bottom:31%;width:1.6px;height:1.6px;animation-delay:2.4s;animation-duration:17s}
+  .hero-dust i:nth-child(3){left:15%;bottom:54%;width:3.1px;height:3.1px;animation-delay:5.1s;animation-duration:11s}
+  .hero-dust i:nth-child(4){left:21%;bottom:12%;width:1.9px;height:1.9px;animation-delay:7.8s;animation-duration:19s}
+  .hero-dust i:nth-child(5){left:27%;bottom:68%;width:2.3px;height:2.3px;animation-delay:1.2s;animation-duration:15s}
+  .hero-dust i:nth-child(6){left:33%;bottom:25%;width:1.4px;height:1.4px;animation-delay:9.6s;animation-duration:12s}
+  .hero-dust i:nth-child(7){left:39%;bottom:47%;width:2.8px;height:2.8px;animation-delay:3.7s;animation-duration:18s}
+  .hero-dust i:nth-child(8){left:45%;bottom:5%;width:2.1px;height:2.1px;animation-delay:11.3s;animation-duration:14s}
+  .hero-dust i:nth-child(9){left:51%;bottom:73%;width:1.7px;height:1.7px;animation-delay:6.2s;animation-duration:16s}
+  .hero-dust i:nth-child(10){left:57%;bottom:19%;width:3.4px;height:3.4px;animation-delay:0.8s;animation-duration:20s}
+  .hero-dust i:nth-child(11){left:63%;bottom:61%;width:1.5px;height:1.5px;animation-delay:13.1s;animation-duration:10s}
+  .hero-dust i:nth-child(12){left:69%;bottom:36%;width:2.4px;height:2.4px;animation-delay:4.5s;animation-duration:17s}
+  .hero-dust i:nth-child(13){left:75%;bottom:80%;width:1.8px;height:1.8px;animation-delay:8.9s;animation-duration:13s}
+  .hero-dust i:nth-child(14){left:81%;bottom:14%;width:2.9px;height:2.9px;animation-delay:2.1s;animation-duration:19s}
+  .hero-dust i:nth-child(15){left:87%;bottom:52%;width:1.3px;height:1.3px;animation-delay:10.7s;animation-duration:15s}
+  .hero-dust i:nth-child(16){left:93%;bottom:28%;width:2.2px;height:2.2px;animation-delay:5.9s;animation-duration:12s}
+  .hero-dust i:nth-child(17){left:6%;bottom:66%;width:1.9px;height:1.9px;animation-delay:14.2s;animation-duration:18s}
+  .hero-dust i:nth-child(18){left:12%;bottom:41%;width:3.2px;height:3.2px;animation-delay:1.7s;animation-duration:11s}
+  .hero-dust i:nth-child(19){left:18%;bottom:85%;width:1.6px;height:1.6px;animation-delay:7.3s;animation-duration:16s}
+  .hero-dust i:nth-child(20){left:24%;bottom:2%;width:2.5px;height:2.5px;animation-delay:12.4s;animation-duration:14s}
+  .hero-dust i:nth-child(21){left:30%;bottom:58%;width:1.4px;height:1.4px;animation-delay:3.1s;animation-duration:20s}
+  .hero-dust i:nth-child(22){left:36%;bottom:33%;width:2.7px;height:2.7px;animation-delay:9.1s;animation-duration:10s}
+  .hero-dust i:nth-child(23){left:42%;bottom:77%;width:2px;height:2px;animation-delay:6.6s;animation-duration:17s}
+  .hero-dust i:nth-child(24){left:48%;bottom:22%;width:1.5px;height:1.5px;animation-delay:15.3s;animation-duration:13s}
+  .hero-dust i:nth-child(25){left:54%;bottom:49%;width:3px;height:3px;animation-delay:0.4s;animation-duration:19s}
+  .hero-dust i:nth-child(26){left:60%;bottom:9%;width:1.8px;height:1.8px;animation-delay:11.8s;animation-duration:15s}
+  .hero-dust i:nth-child(27){left:66%;bottom:71%;width:2.3px;height:2.3px;animation-delay:4.2s;animation-duration:12s}
+  .hero-dust i:nth-child(28){left:72%;bottom:44%;width:1.3px;height:1.3px;animation-delay:8.4s;animation-duration:18s}
+  .hero-dust i:nth-child(29){left:78%;bottom:16%;width:2.6px;height:2.6px;animation-delay:13.7s;animation-duration:11s}
+  .hero-dust i:nth-child(30){left:84%;bottom:63%;width:1.7px;height:1.7px;animation-delay:2.8s;animation-duration:16s}
+  .hero-dust i:nth-child(31){left:90%;bottom:38%;width:3.3px;height:3.3px;animation-delay:10.1s;animation-duration:14s}
+  .hero-dust i:nth-child(32){left:96%;bottom:82%;width:1.4px;height:1.4px;animation-delay:5.4s;animation-duration:20s}
+  .hero-dust i:nth-child(33){left:2%;bottom:46%;width:2.1px;height:2.1px;animation-delay:14.9s;animation-duration:10s}
+  .hero-dust i:nth-child(34){left:8%;bottom:88%;width:1.9px;height:1.9px;animation-delay:1.5s;animation-duration:17s}
+  .hero-dust i:nth-child(35){left:14%;bottom:21%;width:2.8px;height:2.8px;animation-delay:7.1s;animation-duration:13s}
+  .hero-dust i:nth-child(36){left:20%;bottom:56%;width:1.6px;height:1.6px;animation-delay:12.6s;animation-duration:19s}
+  .hero-dust i:nth-child(37){left:26%;bottom:4%;width:2.4px;height:2.4px;animation-delay:3.4s;animation-duration:15s}
+  .hero-dust i:nth-child(38){left:32%;bottom:79%;width:1.2px;height:1.2px;animation-delay:9.8s;animation-duration:12s}
+  .hero-dust i:nth-child(39){left:38%;bottom:29%;width:3.1px;height:3.1px;animation-delay:6.9s;animation-duration:18s}
+  .hero-dust i:nth-child(40){left:44%;bottom:64%;width:1.8px;height:1.8px;animation-delay:15.8s;animation-duration:11s}
+  .hero-dust i:nth-child(41){left:50%;bottom:11%;width:2.2px;height:2.2px;animation-delay:0.9s;animation-duration:16s}
+  .hero-dust i:nth-child(42){left:56%;bottom:86%;width:1.5px;height:1.5px;animation-delay:11.1s;animation-duration:14s}
+  .hero-dust i:nth-child(43){left:62%;bottom:42%;width:2.9px;height:2.9px;animation-delay:4.8s;animation-duration:20s}
+  .hero-dust i:nth-child(44){left:68%;bottom:7%;width:1.7px;height:1.7px;animation-delay:8.1s;animation-duration:10s}
+  .hero-dust i:nth-child(45){left:74%;bottom:69%;width:2.5px;height:2.5px;animation-delay:13.4s;animation-duration:17s}
+
+  .hero-inner {
+    position: relative; z-index: 5;
+    max-width: 1320px; width: 100%;
+    margin: 0 auto; padding: 0 40px;
+  }
+  .hero-copy { max-width: 560px; }
+
+  .hero-eyebrow {
+    display: inline-flex; align-items: center; gap: 9px;
+    font-size: .74rem; font-weight: 700; letter-spacing: 2.6px;
+    color: var(--gold); margin-bottom: 22px;
+  }
+  .hero-eyebrow::before {
+    content: ''; width: 34px; height: 1px; background: var(--gold);
+    transform-origin: right; animation: lineGrow 1.1s var(--ease-out) 300ms backwards;
+  }
+  @keyframes lineGrow { from { transform: scaleX(0) } to { transform: scaleX(1) } }
+
+  .hero-copy h1 {
+    font-size: clamp(2rem, 5.2vw, 3.4rem);
+    font-weight: 800; line-height: 1.32;
+    letter-spacing: -.022em; margin-bottom: 20px;
+  }
+  .hero-copy h1 em {
+    font-style: normal; color: var(--gold);
+    position: relative; display: inline-block;
+  }
+  /* خط طلایی زیر واژه کلیدی که کشیده می‌شود */
+  .hero-copy h1 em::after {
+    content: ''; position: absolute; right: 0; bottom: 4px; height: 2px;
+    width: 100%; background: linear-gradient(90deg, transparent, var(--gold));
+    transform-origin: right; transform: scaleX(0);
+    animation: lineGrow 1.3s var(--ease-out) 1s forwards;
+  }
+
+  .hero-copy p {
+    font-size: clamp(.9rem, 1.5vw, 1.05rem);
+    line-height: 2.1; color: rgba(255,255,255,.78);
+    margin-bottom: 30px; max-width: 470px;
+  }
+
+  .hero-actions { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 34px; }
+  .btn-ghost {
+    background: transparent; color: #FFF;
+    border: 1px solid rgba(255,255,255,.28);
+    padding: 13px 26px; border-radius: var(--r-full);
+    font-weight: 700; font-size: var(--fs-base);
+    transition: background var(--t-fast), border-color var(--t-fast), transform var(--t-fast);
+  }
+  .btn-ghost:hover {
+    background: rgba(255,255,255,.09);
+    border-color: rgba(255,255,255,.5); transform: translateY(-2px);
+  }
+
+  /* آمار زیر هیرو */
+  .hero-stats { display: flex; gap: 38px; flex-wrap: wrap; }
+  .hero-stat .n {
+    font-size: 1.65rem; font-weight: 800; color: #FFF; line-height: 1.1;
+  }
+  .hero-stat .l {
+    font-size: .74rem; color: rgba(255,255,255,.5);
+    margin-top: 5px; letter-spacing: .3px;
+  }
+
+  /* ورود پلکانی */
+  .hero-copy > *, .hero-stats {
+    animation: heroRise 1s var(--ease-out) backwards;
+  }
+  .hero-copy > *:nth-child(1) { animation-delay: 150ms }
+  .hero-copy > *:nth-child(2) { animation-delay: 300ms }
+  .hero-copy > *:nth-child(3) { animation-delay: 440ms }
+  .hero-copy > *:nth-child(4) { animation-delay: 580ms }
+  .hero-copy > *:nth-child(5) { animation-delay: 700ms }
+  @keyframes heroRise {
+    from { opacity: 0; transform: translateY(26px); filter: blur(6px); }
+    to   { opacity: 1; transform: none; filter: none; }
+  }
+
+  /* نشانگر اسکرول */
+  .scroll-cue {
+    position: absolute; bottom: 26px; left: 50%; transform: translateX(-50%);
+    z-index: 6; display: flex; flex-direction: column; align-items: center;
+    gap: 7px; color: rgba(255,255,255,.4); font-size: .7rem;
+    animation: heroRise 1s var(--ease-out) 1.2s backwards;
+  }
+  .scroll-cue .line {
+    width: 1px; height: 32px;
+    background: linear-gradient(to bottom, var(--gold), transparent);
+    animation: cueSlide 2.2s ease-in-out infinite;
+  }
+  @keyframes cueSlide {
+    0%,100% { opacity: .3; transform: scaleY(.6) }
+    50%     { opacity: 1;  transform: scaleY(1) }
+  }
+
+  @media (max-width: 860px) {
+    .hero { min-height: 88vh; }
+    .hero-bg {
+      /* `72%` سمت راست تصویر را نشان می‌داد که عمداً خالی است —
+         روی موبایل بطری کاملاً از قاب بیرون می‌ماند و کاربر یک
+         مستطیل سیاه می‌دید. `28% top` بطری را در بالای قاب نگه
+         می‌دارد و متن زیرش می‌نشیند. */
+      background-position: 28% top;
+      /* روی موبایل تصویر ۱۸۵۵ پیکسلی اسراف است — نسخه ۹۰۰ پیکسلی کافی است */
+      background-image: url('/images/hero-cinematic-sm.jpg');
+      background-image: image-set(
+        url('/images/hero-cinematic-sm.webp') type('image/webp'),
+        url('/images/hero-cinematic-sm.jpg')  type('image/jpeg'));
+      background-image: -webkit-image-set(
+        url('/images/hero-cinematic-sm.webp') type('image/webp'),
+        url('/images/hero-cinematic-sm.jpg')  type('image/jpeg'));
+    }
+    /* پرده عمودی: بالا شفاف تا بطری دیده شود، پایین تیره تا متن
+       خوانا بماند. */
+    .hero-veil {
+      background: linear-gradient(to top,
+        rgba(10,9,8,.96) 0%, rgba(10,9,8,.92) 40%,
+        rgba(10,9,8,.58) 60%, rgba(10,9,8,.10) 84%, rgba(10,9,8,0) 100%);
+    }
+    /* متن به پایین قاب می‌رود تا نیمه بالا برای تصویر آزاد شود */
+    .hero { display: flex; align-items: flex-end; padding-bottom: 54px;
+            min-height: 92vh; }
+    /* تصویر کوچک‌تر می‌شود تا کل بطری در نیمه بالا جا شود.
+       با `cover` بطری چنان بزرگ می‌شد که فقط بخشی از آن دیده
+       می‌شد؛ `auto 62%` ارتفاعش را مهار می‌کند. */
+    .hero-bg { background-size: auto 62%; background-position: 26% top; }
+    /* «کاوش» با ردیف آمار تداخل داشت. روی موبایل که فضا تنگ است و
+       اسکرول بدیهی است، حذفش می‌کنیم. */
+    .scroll-cue { display: none; }
+    .hero-inner { padding: 0 22px; }
+    .hero-stats { gap: 24px; }
+    .hero-stat .n { font-size: 1.35rem; }
+    /* روی صفحه باریک، ذرات کمتری لازم است: قاب کوچک‌تر است و همان
+       تعداد، شلوغ به‌نظر می‌رسد. نیمه دوم پنهان می‌شود — هیچ
+       هزینه رندری ندارد چون display:none از چرخه انیمیشن خارجشان
+       می‌کند. */
+    .hero-dust i:nth-child(n+26) { display: none; }
+  }
+
+  .search-hub { max-width: 1320px; margin: -46px auto 34px; padding: 0 20px;
+                position: relative; z-index: 30; }
+  .search-box { background: linear-gradient(135deg,#141414,#1F1F1F); color: #FFF;
+                padding: 22px; border-radius: 16px;
+                border: 1px solid rgba(197,155,39,.32); box-shadow: 0 14px 40px rgba(0,0,0,.22); }
+  /* ── فهرست پیشنهاد جستجو ──
+     با تایپ دو حرف باز می‌شود. position:absolute تا صفحه را
+     جابه‌جا نکند (CLS)، و z-index بالا تا زیر کارت‌ها نرود. */
+  .search-wrap { position: relative; }
+  .sugg {
+    position: absolute; top: calc(100% + 7px); left: 0; right: 0; z-index: 60;
+    background: #FFF; border-radius: 14px; overflow: hidden;
+    box-shadow: 0 18px 48px rgba(0,0,0,.28);
+    max-height: 62vh; overflow-y: auto; text-align: right;
+    border: 1px solid rgba(197,155,39,.25);
+  }
+  .sugg-item {
+    display: flex; align-items: center; gap: 11px; padding: 9px 13px;
+    cursor: pointer; border-bottom: 1px solid var(--border-soft);
+    text-decoration: none; color: var(--text); transition: background .12s;
+  }
+  .sugg-item:last-child { border-bottom: none }
+  .sugg-item:hover, .sugg-item.active { background: var(--sand) }
+  .sugg-item img {
+    width: 42px; height: 42px; border-radius: 8px; object-fit: cover;
+    flex: none; background: var(--sand);
+  }
+  /* هر سه خط باید block باشند وگرنه نام لاتین و نشان «ناموجود»
+     در یک سطر قاطی می‌شوند — با اسکرین‌شات دیده شد. */
+  .sugg-t  { display: block; font-weight: 700; font-size: .86rem; line-height: 1.45;
+             overflow: hidden; text-overflow: ellipsis; white-space: nowrap }
+  .sugg-s  { display: block; font-size: .72rem; color: var(--muted);
+             direction: ltr; text-align: right; overflow: hidden;
+             text-overflow: ellipsis; white-space: nowrap }
+  .sugg-p  { margin-right: auto; font-size: .78rem; font-weight: 800;
+             color: var(--gold-dark); white-space: nowrap; padding-right: 8px }
+  .sugg-more {
+    display: block; padding: 11px; text-align: center; font-size: .8rem;
+    font-weight: 700; background: var(--sand); color: var(--text);
+    cursor: pointer; border: none; width: 100%; font-family: var(--font);
+  }
+  .sugg-more:hover { background: var(--gold); color: #121212 }
+  .sugg-empty { padding: 15px 13px; font-size: .82rem; color: var(--muted); text-align: center }
+  /* نشان «ناموجود» — پیش از افتتاح همه کالاها صفرند */
+  .sugg-out { display: block; font-size: .66rem; color: #C0392B; font-weight: 700 }
+
+  /* نوار اعتماد زیر جستجو */
+  .trust-row { display:grid; gap:14px; grid-template-columns:repeat(auto-fit,minmax(258px,1fr)) }
+  .trust-card {
+    display:block; text-decoration:none; color:var(--text);
+    background:var(--surface); border:1px solid var(--border);
+    border-radius:var(--radius); padding:20px 18px;
+    transition:transform var(--t-smooth), box-shadow var(--t-smooth),
+               border-color var(--t-smooth);
+  }
+  .trust-card:hover { transform:translateY(-3px); box-shadow:var(--sh-lg);
+                      border-color:rgba(197,155,39,.5) }
+  .trust-card .ic { display:grid; place-items:center; width:42px; height:42px;
+                    border-radius:12px; background:var(--sand); margin-bottom:12px }
+  .trust-card .ic svg { width:21px; height:21px; fill:none; stroke:var(--gold-dark);
+                        stroke-width:1.7; stroke-linecap:round; stroke-linejoin:round }
+  .trust-card b { display:block; font-size:.93rem; font-weight:800; margin-bottom:7px;
+                  line-height:1.7 }
+  .trust-card .t { display:block; font-size:.81rem; color:var(--muted); line-height:1.95 }
+
+  .search-input { width: 100%; padding: 14px 20px; border-radius: 30px;
+                  border: 1px solid rgba(197,155,39,.4); background: rgba(255,255,255,.08);
+                  color: #FFF; font-size: .93rem; outline: none; }
+  .search-input::placeholder { color: rgba(255,255,255,.45); }
+
+  .filter-bar { display: flex; gap: 9px; flex-wrap: wrap; margin: 14px 0 0; }
+  .fchip { background: rgba(255,255,255,.08); border: 1px solid rgba(255,255,255,.14);
+           color: #E8E8E8; padding: 7px 15px; border-radius: 20px;
+           font-size: .79rem; font-weight: 600; cursor: pointer; transition: all var(--t-fast); }
+  .fchip:hover { border-color: var(--gold); }
+  .fchip.on { background: var(--gold); color: var(--obsidian); border-color: var(--gold); font-weight: 800; }
+
+  /* ── نوار نُت بویایی ──
+     مشتری عطر با نُت فکر می‌کند، نه با خانواده بویایی. این نوار
+     ۱۸۱ نُت موجود در دیتابیس را برای نخستین بار قابل کاوش می‌کند.
+     کمی کوچک‌تر و کم‌رنگ‌تر از نوار خانواده تا سلسله‌مراتب بصری
+     حفظ شود: خانواده انتخاب اصلی است، نُت پالایش دقیق‌تر. */
+  .note-bar { margin-top: 10px; align-items: center; }
+  .note-lbl { font-size: .72rem; color: rgba(255,255,255,.5);
+              font-weight: 700; margin-inline-end: 4px; white-space: nowrap; }
+  /* ارتفاع حداقل ۳۴ پیکسل: کوچک‌تر از چیپ خانواده تا سلسله‌مراتب
+     حفظ شود، ولی همچنان هدف لمسی قابل قبول. آزمون مرورگر هر دکمه
+     زیر ۳۲ پیکسل را قرمز می‌کند. */
+  .nchip { background: rgba(255,255,255,.05); border: 1px solid rgba(255,255,255,.10);
+           color: #D8D8D8; padding: 7px 13px; min-height: 34px; border-radius: 20px;
+           display: inline-flex; align-items: center; gap: 3px;
+           font-family: inherit; font-size: .74rem; font-weight: 600;
+           cursor: pointer; transition: all var(--t-fast); }
+  .nchip i { font-style: normal; opacity: .45; font-size: .68rem; margin-inline-start: 3px; }
+  .nchip:hover { border-color: var(--gold); color: #FFF; }
+  .nchip.on { background: rgba(197,155,39,.9); color: var(--obsidian);
+              border-color: var(--gold); font-weight: 800; }
+  .nchip.on i { opacity: .7; }
+  .nchip:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
+
+  @media (max-width: 640px) {
+    /* ── نوارهای فیلتر روی موبایل افقی می‌شوند ──
+       اندازه‌گیری نشان داد نوار خانواده روی صفحه ۳۹۰ پیکسلی
+       ۳۲۵ پیکسل ارتفاع می‌گرفت — هشت چیپ که هر کدام یک سطر
+       می‌شدند و کاتالوگ را از دید خارج می‌کردند.
+
+       این ایراد از قبل وجود داشت و هنگام افزودن نوار نُت پیدا
+       شد. اسکرول افقی همان الگویی است که نوار تب‌های ویترین
+       (`.showcase-tabs`) از قبل استفاده می‌کند. */
+    .filter-bar { flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none;
+                  padding-bottom: 2px; }
+    .filter-bar::-webkit-scrollbar { display: none; }
+    .fchip, .nchip { white-space: nowrap; }
+  }
+
+  .brands-strip { max-width: 1320px; margin: 30px auto; padding: 0 20px; }
+  .brands-row { display: grid; grid-template-columns: repeat(auto-fill, minmax(142px,1fr)); gap: 10px; }
+  .brand-pill { background: var(--surface); border: 1px solid var(--border);
+                padding: 12px 10px; border-radius: 11px; text-align: center;
+                cursor: pointer; transition: all var(--t-fast); }
+  .brand-pill:hover { background: var(--obsidian); border-color: var(--gold); }
+  .brand-pill:hover .bn, .brand-pill:hover .bc { color: var(--gold); }
+  .bn { font-size: .82rem; font-weight: 800; letter-spacing: .4px; }
+  .bc { font-size: .68rem; color: var(--muted); margin-top: 2px; }
+
+  .journal-cta { max-width: 1320px; margin: 40px auto; padding: 0 20px; }
+  .journal-inner { background: var(--sand); border: 1px solid var(--border);
+                   border-right: 6px solid var(--gold); border-radius: 16px;
+                   padding: 26px; display: flex; justify-content: space-between;
+                   align-items: center; gap: 20px; flex-wrap: wrap; }
+
+  .sec-head { display: flex; justify-content: space-between; align-items: baseline;
+              margin-bottom: 16px; flex-wrap: wrap; gap: 8px; }
+  .sec-head h2 { font-size: 1.28rem; font-weight: 800; }
+  .sec-head .count { font-size: .82rem; color: var(--muted); }
+
+  .pager { display: flex; justify-content: center; gap: 8px; margin: 34px 0; flex-wrap: wrap; }
+  .pager button { min-width: 40px; height: 40px; border-radius: 10px;
+                  border: 1px solid var(--border); background: var(--surface);
+                  font-weight: 700; cursor: pointer; font-size: .86rem; }
+  .pager button.on { background: var(--gold); border-color: var(--gold); color: var(--obsidian); }
+  .pager button:disabled { opacity: .4; cursor: not-allowed; }
+</style>
+</head>
+<body>
+<a href="#main" class="skip-link">پرش به محتوای اصلی</a>
+<!-- ارتفاع هدر از پیش رزرو می‌شود. هدر با جاوااسکریپت از app.js
+     ساخته می‌شود، پس تا آن لحظه ارتفاعش صفر است و با ظاهر شدن،
+     کل صفحه ۹۷ تا ۱۰۳ پیکسل پایین می‌پرد. ردیابی نشان داد این
+     تک‌ریشهٔ جابه‌جایی در همه صفحات بود (MAIN#main: y 0 → 97).
+     اندازه‌گیری واقعی: موبایل ۹۷px · دسکتاپ ۱۰۳px. -->
+<div id="hdr" class="hdr-reserve"></div>
+
+<main id="main">
+<section class="hero" aria-label="معرفی فروشگاه">
+  <div class="hero-bg" role="presentation"></div>
+  <div class="hero-veil" role="presentation"></div>
+  <!-- ذرات طلایی معلق — تزئینی محض، پس aria-hidden.
+       ۴۵ عنصر خالی که موقعیت و زمان‌بندی‌شان در CSS تعریف شده. -->
+  <div class="hero-dust" aria-hidden="true">
+    <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+    <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+    <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+    <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+    <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+  </div>
+
+  <div class="hero-inner">
+    <div class="hero-copy">
+      <span class="hero-eyebrow">عطر یزد · دست‌ساز</span>
+
+      <h1>رایحه‌ای که <em>می‌ماند</em><br>حتی وقتی رفته‌اید</h1>
+
+      <p>
+        بازآفرینی دست‌ساز روایح ماندگار جهان، با اسانس خانه‌های
+        ژیوودان، فیرمنیش و ایبرکم.
+      </p>
+
+      <div class="hero-actions">
+        <a href="/quiz" class="btn">رایحه‌ام را پیدا کن</a>
+        <a href="/essences" class="btn-ghost">اسانس ما از کجاست؟</a>
+      </div>
+
+      <div class="hero-stats">
+        <div class="hero-stat">
+          <div class="n">۲٬۱۰۶</div>
+          <div class="l">رایحه</div>
+        </div>
+        <div class="hero-stat">
+          <div class="n">۱۲۹</div>
+          <div class="l">خانه عطر</div>
+        </div>
+        <div class="hero-stat">
+          <div class="n">۳ میل</div>
+          <div class="l">سمپل آزمایشی</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="scroll-cue" aria-hidden="true">
+    <span>کاوش</span>
+    <span class="line"></span>
+  </div>
+</section>
+
+<section class="search-hub">
+  <div class="search-box">
+    <div style="font-weight:800;font-size:1rem;margin-bottom:4px">جستجو در کاتالوگ عطر یزد</div>
+    <p style="font-size:.82rem;color:#BBB;margin-bottom:10px">
+      جستجو بر اساس نام عطر، برند یا نُت بویایی — در میان تمام محصولات
+    </p>
+    <label for="q" class="sr-only">جستجو در کاتالوگ</label>
+    <!-- combobox طبق الگوی ARIA: صفحه‌خوان می‌فهمد فهرست پیشنهاد
+         باز شده و کدام گزینه انتخاب است. -->
+    <div class="search-wrap" role="combobox" aria-haspopup="listbox"
+         aria-owns="sugg" aria-expanded="false" id="searchWrap">
+      <input class="search-input" id="q" type="search" aria-label="جستجوی عطر"
+        placeholder="مثلاً: اونتوس، توباکو وانیل، عود، رز…"
+        autocomplete="off" aria-autocomplete="list" aria-controls="sugg">
+      <div id="sugg" class="sugg" role="listbox" aria-label="پیشنهادها" hidden></div>
+    </div>
+    <div class="filter-bar" id="genderBar">
+      <span class="fchip on" data-g="">همه</span>
+      <span class="fchip" data-g="MEN">مردانه</span>
+      <span class="fchip" data-g="WOMEN">زنانه</span>
+      <span class="fchip" data-g="UNISEX">یونیسکس</span>
+    </div>
+    <div class="filter-bar" id="familyBar"></div>
+    <!-- نوار نُت بویایی — با جاوااسکریپت پر می‌شود؛ اگر داده نبود
+         پنهان می‌ماند (بدون رزرو فضا، بدون CLS) -->
+    <div class="filter-bar note-bar" id="noteBar" style="display:none"></div>
+  </div>
+</section>
+
+<!-- نوار اعتماد.
+     سه چیزی که ما را از بازار جدا می‌کند و تا امروز فقط در صفحات
+     داخلی گفته شده بود. تحلیل رقابتی نشان داد سمپل قوی‌ترین برگ
+     ماست ولی در صفحه اصلی دیده نمی‌شد. -->
+<section class="container section trust-row" aria-label="چرا عطر یزد">
+  <a class="trust-card" href="/samples">
+    <span class="ic" aria-hidden="true">
+      <svg viewBox="0 0 24 24"><path d="M9 2h6M10 2v6.5L5.5 17A3 3 0 0 0 8 21.5h8a3 3 0 0 0 2.5-4.5L14 8.5V2"/></svg>
+    </span>
+    <b>سمپل ۳ میل روی همه رایحه‌ها</b>
+    <span class="t">پیش از خرید بطری کامل، رایحه را چند روز روی
+      پوست خودتان امتحان کنید.</span>
+  </a>
+  <a class="trust-card" href="/why-us">
+    <span class="ic" aria-hidden="true">
+      <svg viewBox="0 0 24 24"><path d="M12 2.5 4 6v6c0 5 3.4 8.4 8 9.5 4.6-1.1 8-4.5 8-9.5V6z"/><path d="m9 12 2 2 4-4"/></svg>
+    </span>
+    <b>اتانول آرایشی، هرگز متانول</b>
+    <span class="t">متانول از پوست جذب می‌شود و سمّی است.
+      در فرمول ما جایی ندارد.</span>
+  </a>
+  <a class="trust-card" href="/essences">
+    <span class="ic" aria-hidden="true">
+      <svg viewBox="0 0 24 24"><path d="M12 3v4M8.5 7h7l1.5 10a3 3 0 0 1-3 3.5h-4A3 3 0 0 1 7 17z"/><path d="M9 13h6"/></svg>
+    </span>
+    <b>اسانس از خانه‌های معتبر جهانی</b>
+    <span class="t">ژیوودان، فیرمنیش، ایبرکم و لوزی — با نام،
+      نه ادعای کلی.</span>
+  </a>
+  <a class="trust-card" href="/why-us">
+    <span class="ic" aria-hidden="true">
+      <svg viewBox="0 0 24 24"><path d="M12 14 3.5 9.5 12 5l8.5 4.5z"/><path d="M7 11.5V16c0 1.4 2.2 2.5 5 2.5s5-1.1 5-2.5v-4.5"/><path d="M20.5 9.5V15"/></svg>
+    </span>
+    <b>۱۲ سال فروش، مدرک عطرسازی</b>
+    <span class="t">سایت ما تازه است، کار ما نه. مدرک رسمی از
+      مدرسه عطرسازی ایران.</span>
+  </a>
+</section>
+
+<!-- ویترین خودکار — از داده واقعی فروش، علاقه‌مندی و بازدید ساخته می‌شود.
+     اگر داده‌ای نباشد، بخش اصلاً نمایش داده نمی‌شود. -->
+<section class="container section showcase-wrap" id="showcase" style="display:none">
+  <div class="showcase-tabs" id="showcaseTabs" role="tablist"></div>
+  <div class="product-grid" id="showcaseGrid" role="list"></div>
+</section>
+
+<!-- پیشنهاد برای شما — بر پایه پروفایل بویایی از کوییز.
+     بالاتر از «اخیراً دیدید» چون سلیقه اعلام‌شده صریح‌تر از
+     رفتار ضمنی است. اگر کاربر کوییز نداده، اصلاً ساخته نمی‌شود. -->
+<div class="container section taste-wrap" id="tasteBox" style="display:none"></div>
+
+<!-- اخیراً دیدید — فقط برای بازدیدکننده بازگشتی ظاهر می‌شود.
+     پیش از نوار برندها می‌نشیند چون ادامه دادن کاری که کاربر
+     نیمه‌کاره رها کرده، بر کشف تازه اولویت دارد. -->
+<div class="container section recent-wrap" id="recent" style="display:none"></div>
+
+<section class="brands-strip reveal">
+  <div class="sec-head">
+    <h2>خانه‌های عطر</h2>
+    <a href="/brands" style="font-size:.82rem;color:var(--gold);font-weight:700">مشاهده همه ←</a>
+  </div>
+  <div class="brands-row" id="brands"></div>
+</section>
+
+<section class="container section" style="margin:36px auto">
+  <div style="background:linear-gradient(135deg,#141414,#232323);color:#FFF;
+    border-radius:var(--radius);padding:28px;display:flex;
+    justify-content:space-between;align-items:center;gap:22px;flex-wrap:wrap">
+    <div style="flex:1;min-width:260px">
+      <div style="display:flex;align-items:center;gap:9px;margin-bottom:8px">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="var(--gold)" aria-hidden="true">
+          <path d="M12 2L4 7v10l8 5 8-5V7l-8-5zm0 2.3L18 8v8l-6 3.7L6 16V8l6-3.7z"/>
+        </svg>
+        <h2 style="font-size:1.2rem;font-weight:800">اسانس از خانه‌های عطر جهان</h2>
+      </div>
+      <p style="font-size:.9rem;opacity:.82;line-height:2.1">
+        <span style="color:var(--gold);font-weight:700">ژیوودان · فیرمنیش · ایبرکم · لوزی</span><br>
+        همان خانه‌هایی که برای برندهای بین‌المللی اسانس می‌سازند.
+        تفاوت در نام روی شیشه است، نه در منبع مواد اولیه.
+      </p>
+    </div>
+    <a href="/essences" class="btn" style="white-space:nowrap">آشنایی با خانه‌ها ←</a>
+  </div>
+</section>
+
+<section class="journal-cta reveal">
+  <div class="journal-inner">
+    <div>
+      <h2 style="font-size:1.2rem;font-weight:800">مجله آموزشی و دانشنامه روایح</h2>
+      <p style="font-size:.86rem;color:var(--muted);margin-top:4px">
+        شناخت نُت‌ها، تفاوت ادوپرفیوم و عطر مو، و راهنمای انتخاب رایحه
+      </p>
+    </div>
+    <a href="/journal" class="btn btn-dark">ورود به مجله ←</a>
+  </div>
+</section>
+
+<section class="container section">
+  <div class="transparency" style="margin-bottom:20px">
+    🌱 <strong>اطلاعیه شفافیت عطر یزد:</strong>
+    تمامی روایح موجود، بازآفرینی دست‌ساز با عصاره غلیظ اولیه و فرمولاسیون اختصاصی عطر یزد هستند
+    و ادعای اورجینال بودن ندارند.
+  </div>
+
+  <div class="sec-head">
+    <h2 id="catTitle">کاتالوگ عطرها</h2>
+    <div class="cat-tools">
+      <span class="count" id="catCount"></span>
+      <label class="sr-only" for="sortSel">ترتیب نمایش</label>
+      <select class="sort-sel" id="sortSel" aria-label="ترتیب نمایش">
+        <option value="">مرتب‌سازی: پیش‌فرض</option>
+        <option value="price_asc">ارزان‌ترین</option>
+        <option value="price_desc">گران‌ترین</option>
+        <option value="name">نام (الفبا)</option>
+        <option value="brand">برند</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="search-note" id="searchNote" style="display:none"></div>
+
+  <div class="active-filters" id="activeFilters" style="display:none"></div>
+
+  <div id="grid" class="product-grid" role="list" aria-label="فهرست عطرها"></div>
+  <div id="loading" role="status" aria-label="در حال بارگذاری"><div class="spinner"></div></div>
+  <div class="pager" id="pager"></div>
+</section>
+
+</main>
+<div id="ftr"></div>
+
+<script src="/assets/app.js"></script>
+<script>
+document.getElementById('hdr').innerHTML = renderHeader('home');
+document.getElementById('ftr').innerHTML = renderFooter();
+
+let state = { q: '', gender: '', family: '', brand: '', notes: [], sort: '', page: 1, limit: 24 };
+let timer = null;
+let familyNames = {};   // slug → نام فارسی، برای برچسب فیلتر فعال
+
+/* ── خواندن وضعیت از نشانی صفحه ──
+   لینک‌هایی مثل /?brand=کرِید از صفحه برندها و مسیر راهنمای محصول می‌آیند.
+   بدون این، کاربر به کاتالوگ کامل می‌رسید و فیلترش گم می‌شد. */
+function readURL() {
+  const u = new URLSearchParams(location.search);
+  state.q      = u.get('q')      || '';
+  state.gender = (u.get('gender') || '').toUpperCase();
+  state.family = u.get('family') || '';
+  state.brand  = u.get('brand')  || '';
+  /* نُت‌ها با کاما جدا می‌شوند تا نشانی قابل اشتراک بماند:
+     /?note=وانیل,چوب عود */
+  state.notes  = (u.get('note') || '').split(',')
+                   .map(x => x.trim()).filter(Boolean).slice(0, 4);
+  state.sort   = u.get('sort')   || '';
+  state.page   = Math.max(1, parseInt(u.get('page')) || 1);
+
+  const qEl = document.getElementById('q');
+  if (qEl) qEl.value = state.q;
+  const sEl = document.getElementById('sortSel');
+  if (sEl) sEl.value = state.sort;
+  syncChips();
+}
+
+/* نشانی صفحه را با وضعیت هماهنگ می‌کند تا قابل اشتراک و بازگشت‌پذیر باشد */
+function writeURL(push) {
+  const u = new URLSearchParams();
+  if (state.q)      u.set('q', state.q);
+  if (state.gender) u.set('gender', state.gender);
+  if (state.family) u.set('family', state.family);
+  if (state.brand)  u.set('brand', state.brand);
+  if (state.notes.length) u.set('note', state.notes.join(','));
+  if (state.sort)   u.set('sort', state.sort);
+  if (state.page > 1) u.set('page', state.page);
+  const url = u.toString() ? '/?' + u : '/';
+  history[push ? 'pushState' : 'replaceState'](null, '', url);
+}
+
+/* چیپ‌های جنسیت و خانواده را با وضعیت هماهنگ می‌کند */
+function syncChips() {
+  document.querySelectorAll('#genderBar .fchip').forEach(c =>
+    c.classList.toggle('on', (c.dataset.g || '') === state.gender));
+  document.querySelectorAll('#familyBar .fchip').forEach(c =>
+    c.classList.toggle('on', (c.dataset.f || '') === state.family));
+  syncNoteChips();
+}
+
+/* ── نوار فیلترهای فعال ──
+   کاربر باید ببیند چه چیزی نتیجه را محدود کرده و بتواند تک‌تک بردارد */
+const GENDER_FA = { MEN: 'مردانه', WOMEN: 'زنانه', UNISEX: 'یونیسکس' };
+
+function renderActiveFilters() {
+  const box = document.getElementById('activeFilters');
+  const items = [];
+  if (state.q)      items.push(['جستجو', state.q, 'q']);
+  if (state.brand)  items.push(['برند', state.brand, 'brand']);
+  if (state.gender) items.push(['جنسیت', GENDER_FA[state.gender] || state.gender, 'gender']);
+  if (state.family) items.push(['خانواده', familyNames[state.family] || state.family, 'family']);
+  // هر نُت چیپ جدا می‌گیرد تا بشود تک‌تک برداشت
+  state.notes.forEach(n => items.push(['نُت', n, 'note:' + n]));
+
+  if (!items.length) { box.style.display = 'none'; box.innerHTML = ''; return; }
+
+  box.style.display = 'flex';
+  /* کلید فیلتر در data-key می‌نشیند نه در onclick.
+     نام نُت می‌تواند فاصله یا نشانه داشته باشد و درون رشته
+     جاوااسکریپتیِ inline، هم می‌شکند و هم مسیر تزریق باز می‌کند. */
+  box.innerHTML = '<span class="ttl">فیلتر فعال:</span>' +
+    items.map(([k, v, key]) =>
+      `<span class="fpill">${k}: <b>${esc(v)}</b>
+        <button type="button" data-key="${esc(key)}"
+                aria-label="حذف فیلتر ${esc(k)}">×</button></span>`).join('') +
+    (items.length > 1 ? '<button class="clear-all" data-key="">پاک کردن همه</button>' : '');
+
+  box.querySelectorAll('[data-key]').forEach(b => {
+    b.onclick = () => clearFilter(b.dataset.key || undefined);
+  });
+}
+
+function clearFilter(key) {
+  if (key && key.startsWith('note:')) {
+    // فقط همان نُت برداشته می‌شود، نه کل فیلتر نُت
+    const n = key.slice(5);
+    state.notes = state.notes.filter(x => x !== n);
+  } else if (key) {
+    state[key] = '';
+  } else {
+    state.q = state.brand = state.gender = state.family = '';
+    state.notes = [];
+  }
+  if (!key || key === 'q') { const e = document.getElementById('q'); if (e) e.value = ''; }
+  state.page = 1;
+  syncChips();
+  loadProducts();
+}
+
+/* ── نوار نُت‌های بویایی ──
+   ۱۸۱ نُت در دیتابیس هست ولی نمایش همه، نوار را غیرقابل استفاده
+   می‌کند. پرتکرارترین‌ها نشان داده می‌شوند و بقیه با جستجو در
+   دسترس‌اند.
+
+   چرا این مهم است: مشتری عطر با نُت فکر می‌کند («چیزی با وانیل
+   می‌خواهم»)، نه با خانواده بویایی. تا امروز این داده در دیتابیس
+   بود و هیچ راهی برای کاوشش وجود نداشت. */
+async function loadNotes() {
+  const bar = document.getElementById('noteBar');
+  if (!bar) return;
+  let list;
+  try {
+    const r = await fetch('/api/notes?min=40&limit=18');
+    if (!r.ok) return;
+    list = (await r.json()).notes || [];
+  } catch { return; }
+  if (list.length < 4) return;
+
+  bar.innerHTML =
+    `<span class="note-lbl">نُت بویایی:</span>` +
+    list.map(n =>
+      `<button type="button" class="nchip" data-n="${esc(n.note)}">
+         ${esc(n.note)} <i>${toFa(n.count)}</i></button>`).join('');
+
+  bar.querySelectorAll('.nchip').forEach(c => {
+    c.onclick = () => toggleNote(c.dataset.n);
+  });
+  bar.style.display = '';
+  syncNoteChips();
+}
+
+function toggleNote(n) {
+  const i = state.notes.indexOf(n);
+  if (i >= 0) state.notes.splice(i, 1);
+  else if (state.notes.length < 4) state.notes.push(n);
+  state.page = 1;
+  syncNoteChips();
+  loadProducts();
+}
+
+function syncNoteChips() {
+  document.querySelectorAll('#noteBar .nchip').forEach(c =>
+    c.classList.toggle('on', state.notes.includes(c.dataset.n)));
+}
+
+async function loadFamilies() {
+  try {
+  const r = await fetch('/api/families');
+  const d = await r.json();
+  d.families.forEach(f => { familyNames[f.family_slug] = f.family_fa || f.family_slug; });
+
+  document.getElementById('familyBar').innerHTML =
+    `<span class="fchip" data-f="">همه خانواده‌ها</span>` +
+    d.families.filter(f => f.count > 5).map(f =>
+      `<span class="fchip" data-f="${f.family_slug}">${f.family_fa || f.family_slug} (${toFa(f.count)})</span>`
+    ).join('');
+
+  document.querySelectorAll('#familyBar .fchip').forEach(c =>
+    c.onclick = () => {
+      state.family = c.dataset.f; state.page = 1;
+      syncChips(); loadProducts();
+    });
+
+  syncChips();
+  renderActiveFilters();
+  } catch { /* فیلتر خانواده اختیاری است */ }
+}
+
+async function loadBrands() {
+  try {
+  const r = await fetch('/api/brands');
+  const d = await r.json();
+  document.getElementById('brands').innerHTML = d.brands.slice(0, 12).map(b =>
+    `<a class="brand-pill" href="/?brand=${encodeURIComponent(b.brand_fa)}"
+        onclick="event.preventDefault();pickBrand('${b.brand_fa.replace(/'/g,"\\'")}')">
+       <div class="bn">${(b.brand_en || '').toUpperCase()}</div>
+       <div class="bc">${esc(b.brand_fa)} (${toFa(b.count)})</div>
+     </a>`).join('');
+  } catch { document.querySelector('.brands-strip').style.display = 'none'; }
+}
+
+/* ── ویترین خودکار ──
+   سه دسته از داده واقعی: پرفروش‌ترین (سفارش‌های پرداخت‌شده)،
+   محبوب‌ترین (علاقه‌مندی‌ها)، پربازدیدترین (این هفته).
+   هر دسته‌ای که داده نداشته باشد اصلاً تب نمی‌گیرد؛ اگر هیچ‌کدام
+   داده نداشتند، کل بخش پنهان می‌ماند. */
+async function loadShowcase() {
+  let d;
+  try {
+    const r = await fetch('/api/showcase');
+    if (!r.ok) return;
+    d = await r.json();
+  } catch { return; }
+
+  const slots = [
+    /* ── ویترین فصلی ──
+       اول می‌آید چون تنها بخشی است که از روز نخست پر است. بقیه به
+       تاریخچه فروش و بازدید نیاز دارند؛ این فقط به تقویم. */
+    { key: 'seasonal',
+      label: d.season_fa ? `مناسب ${d.season_fa}` : 'پیشنهاد فصل',
+      note: d.season_fa
+        ? `عطرهایی که برای هوای ${d.season_fa} ساخته شده‌اند — هر هفته تازه می‌شود.`
+        : 'پیشنهادهای متناسب با فصل.',
+      items: d.seasonal },
+    { key: 'bestsellers',
+      // وقتی هنوز فروشی نبوده، ادعای «پرفروش» دروغ است
+      label: d.bestsellers_fallback ? 'منتخب سردبیر' : 'پرفروش‌ترین‌ها',
+      note:  d.bestsellers_fallback
+        ? 'گلچینی از خانواده‌های بویایی مختلف — تا نخستین فروش‌ها ثبت شود.'
+        : 'بیشترین فروش سه ماه گذشته.',
+      items: d.bestsellers },
+    { key: 'most_wanted', label: 'بیشترین علاقه‌مندی',
+      note: 'عطرهایی که مشتریان بیش از همه ذخیره کرده‌اند.',
+      items: d.most_wanted },
+    { key: 'trending', label: 'پربازدید این هفته',
+      note: 'بیشترین بازدید در هفت روز گذشته.',
+      items: d.trending }
+  ].filter(s => (s.items || []).length >= 3);
+
+  if (!slots.length) return;   // داده کافی نیست — بخش نمایش داده نمی‌شود
+
+  const wrap = document.getElementById('showcase');
+  const tabs = document.getElementById('showcaseTabs');
+
+  tabs.innerHTML = slots.map((s, i) =>
+    `<button class="sc-tab ${i === 0 ? 'on' : ''}" role="tab"
+             aria-selected="${i === 0}" data-slot="${s.key}">${s.label}</button>`
+  ).join('');
+
+  const show = (key) => {
+    const s = slots.find(x => x.key === key);
+    if (!s) return;
+    tabs.querySelectorAll('.sc-tab').forEach(b => {
+      const on = b.dataset.slot === key;
+      b.classList.toggle('on', on);
+      b.setAttribute('aria-selected', on);
+    });
+    document.getElementById('showcaseGrid').innerHTML =
+      `<p class="sc-note">${s.note}</p>` +
+      s.items.map(p => productCard({
+        ...p,
+        notes: { top: [] },
+        min_price: p.min_price
+      })).join('');
+  };
+
+  tabs.querySelectorAll('.sc-tab').forEach(b => {
+    b.onclick = () => show(b.dataset.slot);
+  });
+
+  wrap.style.display = '';
+  show(slots[0].key);
+}
+
+function pickBrand(name) {
+  // فیلتر دقیق برند — نه جستجوی متنی که «کرِید» را با «کرِید اونتوس» قاطی کند
+  state.brand = name; state.q = ''; state.page = 1;
+  document.getElementById('q').value = '';
+  loadProducts();
+  document.getElementById('catTitle').scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+async function loadProducts() {
+  document.getElementById('loading').style.display = 'none';
+  document.getElementById('grid').innerHTML = skeletonGrid(state.limit > 12 ? 8 : 4);
+
+  writeURL(false);
+  renderActiveFilters();
+
+  const p = new URLSearchParams({ page: state.page, limit: state.limit });
+  if (state.q) p.set('q', state.q);
+  if (state.gender) p.set('gender', state.gender);
+  if (state.family) p.set('family', state.family);
+  if (state.brand)  p.set('brand', state.brand);
+  if (state.notes.length) p.set('note', state.notes.join(','));
+  if (state.sort)   p.set('sort', state.sort);
+
+  let d;
+  try {
+    const r = await fetch('/api/products?' + p);
+    if (!r.ok) throw new Error();
+    d = await r.json();
+  } catch {
+    document.getElementById('loading').style.display = 'none';
+    document.getElementById('grid').innerHTML =
+      `<div class="empty-state" style="grid-column:1/-1">
+         <h3>ارتباط برقرار نشد</h3>
+         <p>اتصال اینترنت خود را بررسی کنید.</p>
+         <button class="btn" style="margin-top:14px" onclick="loadProducts()">تلاش دوباره</button>
+       </div>`;
+    return;
+  }
+
+  document.getElementById('loading').style.display = 'none';
+  document.getElementById('catCount').textContent =
+    d.total ? `${toFa(d.total)} رایحه یافت شد` : '';
+  document.getElementById('catTitle').textContent =
+    state.brand ? `رایحه‌های ${state.brand}`
+    : state.family ? `خانواده ${familyNames[state.family] || state.family}`
+    : state.q ? `نتیجه جستجوی «${state.q}»`
+    : 'کاتالوگ عطرها';
+
+  if (!d.products.length) {
+    document.getElementById('grid').innerHTML =
+      `<div class="empty-state" style="grid-column:1/-1">
+         <h3>رایحه‌ای یافت نشد</h3>
+         <p style="margin-top:6px">شاید فیلترها بیش از حد محدودند.</p>
+         <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:18px">
+           <button class="btn" onclick="clearFilter()">پاک کردن فیلترها</button>
+           <a href="/quiz" class="btn btn-outline">کوییز پیدا کردن رایحه</a>
+         </div></div>`;
+    document.getElementById('pager').innerHTML = '';
+    return;
+  }
+
+  /* سرور وقتی همه کلمات با هم نتیجه‌ای نداشتند، با ترکیب OR
+     دوباره می‌گردد. باید صادق باشیم که این نتیجه دقیق نیست. */
+  const note = document.getElementById('searchNote');
+  if (d.relaxed) {
+    note.innerHTML = `عطری که همه‌ی این ویژگی‌ها را با هم داشته باشد پیدا نکردیم؛
+      این‌ها نزدیک‌ترین‌ها هستند — از بیشترین شباهت به کمترین.`;
+    note.style.display = '';
+  } else {
+    note.style.display = 'none';
+  }
+
+  document.getElementById('grid').innerHTML = d.products.map(productCard).join('');
+  initReveal();
+  renderPager(d.page, d.totalPages);
+}
+
+function renderPager(cur, total) {
+  if (total <= 1) { document.getElementById('pager').innerHTML = ''; return; }
+  let html = `<button ${cur === 1 ? 'disabled' : ''} onclick="go(${cur - 1})">قبلی</button>`;
+  const pages = new Set([1, total, cur, cur - 1, cur + 1, cur - 2, cur + 2]);
+  [...pages].filter(n => n >= 1 && n <= total).sort((a, b) => a - b).forEach((n, i, arr) => {
+    if (i && n - arr[i - 1] > 1) html += `<button disabled>…</button>`;
+    html += `<button class="${n === cur ? 'on' : ''}" onclick="go(${n})">${toFa(n)}</button>`;
+  });
+  html += `<button ${cur === total ? 'disabled' : ''} onclick="go(${cur + 1})">بعدی</button>`;
+  document.getElementById('pager').innerHTML = html;
+}
+
+function go(n) {
+  state.page = n; loadProducts();
+  document.getElementById('catTitle').scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+/* ══════════ پیشنهاد خودکار جستجو ══════════
+   با تایپ دو حرف، پنج نتیجه برتر زیر کادر می‌آید. کاربر می‌تواند
+   مستقیم روی محصول برود بدون آنکه منتظر بارگذاری کل فهرست بماند.
+
+   سه نکته در پیاده‌سازی:
+     • مکث ۲۵۰ms — بدون آن با هر حرف یک درخواست می‌رود
+     • شماره درخواست — پاسخ کند مربوط به عبارت قدیمی نباید
+       روی نتیجه تازه بنشیند (شرط رقابتی رایج در autocomplete)
+     • کیبورد — بالا/پایین/Enter/Esc کار می‌کند، نه فقط ماوس
+*/
+const qEl     = document.getElementById('q');
+const suggEl  = document.getElementById('sugg');
+const wrapEl  = document.getElementById('searchWrap');
+let suggItems = [];
+let suggIdx   = -1;
+let suggSeq   = 0;
+let suggScrollY = 0;
+
+function closeSugg() {
+  suggEl.hidden = true;
+  suggEl.innerHTML = '';
+  suggItems = []; suggIdx = -1;
+  wrapEl.setAttribute('aria-expanded', 'false');
+  qEl.removeAttribute('aria-activedescendant');
+}
+
+function markActive(i) {
+  const nodes = suggEl.querySelectorAll('.sugg-item');
+  nodes.forEach(n => n.classList.remove('active'));
+  if (i >= 0 && nodes[i]) {
+    nodes[i].classList.add('active');
+    /* اسکرول فقط داخل خود فهرست، نه کل صفحه.
+       با scrollIntoView صفحه ~۸۰ پیکسل جابه‌جا می‌شد، شنونده
+       اسکرول آن را «حرکت کاربر» می‌فهمید و فهرست را می‌بست —
+       یعنی ناوبری با کیبورد اصلاً کار نمی‌کرد. */
+    const box = suggEl.getBoundingClientRect();
+    const it  = nodes[i].getBoundingClientRect();
+    if (it.bottom > box.bottom) suggEl.scrollTop += it.bottom - box.bottom;
+    else if (it.top < box.top)  suggEl.scrollTop -= box.top - it.top;
+    qEl.setAttribute('aria-activedescendant', nodes[i].id);
+  } else {
+    qEl.removeAttribute('aria-activedescendant');
+  }
+}
+
+async function fetchSugg(term) {
+  const seq = ++suggSeq;
+  try {
+    const r = await fetch(`/api/products?q=${encodeURIComponent(term)}&limit=5`);
+    const d = await r.json();
+    if (seq !== suggSeq) return;        // پاسخ کهنه — دور انداخته شود
+
+    const list = d.products || [];
+    if (!list.length) {
+      suggEl.innerHTML =
+        `<div class="sugg-empty">چیزی برای «${esc(term)}» پیدا نشد.<br>
+         <span style="font-size:.74rem">نام برند یا نُت بویایی را امتحان کنید.</span></div>`;
+      suggEl.hidden = false;
+      suggScrollY = window.scrollY;
+      wrapEl.setAttribute('aria-expanded', 'true');
+      suggItems = []; suggIdx = -1;
+      return;
+    }
+
+    suggItems = list;
+    suggEl.innerHTML = list.map((p, i) => `
+      <a class="sugg-item" id="sg-${i}" role="option" aria-selected="false"
+         href="/perfume/${p.slug}">
+        <img src="${cardImage(p.image_url)}" alt="" loading="lazy" width="42" height="42">
+        <span style="min-width:0">
+          <span class="sugg-t">${esc(fullName(p))}</span>
+          <span class="sugg-s">${esc(p.name_en || '')}</span>
+          ${p.in_stock ? '' : '<span class="sugg-out">ناموجود</span>'}
+        </span>
+        <span class="sugg-p">${money(p.min_price)}</span>
+      </a>`).join('') +
+      (d.total > list.length
+        ? `<button class="sugg-more" type="button" onclick="applySearch()">
+             دیدن هر ${toFa(d.total)} نتیجه</button>`
+        : '');
+
+    suggEl.hidden = false;
+    suggScrollY = window.scrollY;
+    wrapEl.setAttribute('aria-expanded', 'true');
+    suggIdx = -1;
+  } catch {
+    closeSugg();     // خطای شبکه نباید چیزی نشان بدهد
+  }
+}
+
+/** عبارت فعلی را روی کاتالوگ اعمال و فهرست را ببند */
+function applySearch() {
+  clearTimeout(timer);
+  state.q = qEl.value.trim();
+  state.page = 1;
+  closeSugg();
+  loadProducts();
+  document.getElementById('catTitle')
+    ?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+qEl.oninput = e => {
+  const v = e.target.value.trim();
+
+  // کاتالوگ پایین صفحه مثل قبل به‌روز می‌شود
+  clearTimeout(timer);
+  timer = setTimeout(() => { state.q = v; state.page = 1; loadProducts(); }, 350);
+
+  // فهرست پیشنهاد
+  clearTimeout(window.__sgTimer);
+  if (v.length < 2) { closeSugg(); return; }
+  window.__sgTimer = setTimeout(() => fetchSugg(v), 250);
+};
+
+qEl.addEventListener('keydown', e => {
+  const n = suggItems.length;
+  if (e.key === 'Escape') { closeSugg(); return; }
+  if (e.key === 'Enter') {
+    if (suggIdx >= 0 && suggItems[suggIdx]) {
+      /* تایمرِ در صفِ به‌روزرسانی کاتالوگ باید لغو شود، وگرنه
+         درست وقتی کاربر دارد به صفحه محصول می‌رود، نشانی صفحه
+         با pushState عوض می‌شود و در تاریخچه مرورگر یک ورودی
+         اضافه می‌ماند — دکمه بازگشت دو بار زدن می‌خواهد. */
+      clearTimeout(timer);
+      clearTimeout(window.__sgTimer);
+      location.href = '/perfume/' + suggItems[suggIdx].slug;
+    } else {
+      applySearch();
+    }
+    e.preventDefault();
+    return;
+  }
+  if (!n || suggEl.hidden) return;
+  if (e.key === 'ArrowDown') { suggIdx = (suggIdx + 1) % n; markActive(suggIdx); e.preventDefault(); }
+  if (e.key === 'ArrowUp')   { suggIdx = (suggIdx - 1 + n) % n; markActive(suggIdx); e.preventDefault(); }
+});
+
+// کلیک بیرون از کادر فهرست را می‌بندد
+document.addEventListener('click', e => {
+  if (!wrapEl.contains(e.target)) closeSugg();
+});
+
+/* اسکرول فهرست را می‌بندد — ولی فقط اسکرول واقعیِ کاربر.
+
+   نسخه اول هر رویداد scroll را می‌گرفت و فهرست بلافاصله بسته
+   می‌شد: خودِ باز شدن فهرست و تغییر ارتفاع صفحه یک اسکرول جزئی
+   می‌سازد. نتیجه این بود که ناوبری با کیبورد اصلاً کار نمی‌کرد
+   چون تا کاربر فلش را بزند، فهرست رفته بود.
+
+   حالا فقط جابه‌جایی بیش از ۴۰ پیکسل نسبت به لحظه باز شدن
+   شمرده می‌شود. */
+window.addEventListener('scroll', () => {
+  if (suggEl.hidden) return;
+  // تا وقتی تمرکز روی کادر جستجوست، کاربر دارد تایپ/ناوبری می‌کند
+  if (document.activeElement === qEl) { suggScrollY = window.scrollY; return; }
+  if (Math.abs(window.scrollY - suggScrollY) > 40) closeSugg();
+}, { passive: true });
+
+document.querySelectorAll('#genderBar .fchip').forEach(c =>
+  c.onclick = () => {
+    state.gender = c.dataset.g; state.page = 1;
+    syncChips(); loadProducts();
+  });
+
+document.getElementById('sortSel').onchange = e => {
+  state.sort = e.target.value; state.page = 1; loadProducts();
+};
+
+/* دکمه بازگشت مرورگر باید فیلتر قبلی را برگرداند */
+window.addEventListener('popstate', () => { readURL(); loadProducts(); });
+
+readURL();
+loadFamilies();
+loadNotes();
+loadBrands();
+loadShowcase();
+loadProducts();
+
+/* «اخیراً دیدید» — کاملاً محلی، هیچ درخواستی به سرور نمی‌زند.
+   برای بازدیدکننده تازه هیچ‌چیز نشان نمی‌دهد و بی‌صدا پنهان
+   می‌ماند؛ حداقل دو کارت لازم است تا ردیف واقعاً ردیف به‌نظر برسد. */
+YazdRecent.render('#recent', { limit: 4 });
+
+/* «پیشنهاد برای شما» — تنها بخشی که به شبکه نیاز دارد، پس تا پس
+   از رنگ‌آمیزی اصلی عقب می‌افتد. اگر کاربر کوییز نداده و وارد هم
+   نشده، هیچ درخواستی زده نمی‌شود. */
+(window.requestIdleCallback || (f => setTimeout(f, 900)))(
+  () => YazdTaste.render('#tasteBox')
+);
+</script>
+</body>
+</html>

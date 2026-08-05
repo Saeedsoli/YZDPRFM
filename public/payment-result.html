@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16.png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="manifest" href="/site.webmanifest">
+<meta name="theme-color" content="#121212">
+<title>نتیجه پرداخت | عطر یزد</title>
+<meta name="robots" content="noindex">
+<!-- فونت عمداً preload نمی‌شود.
+     با font-display:swap متن بلافاصله با فونت سیستمی دیده می‌شود،
+     پس preload فقط پهنای باند را از تصویر اصلی می‌دزدد. روی ۳G
+     اندازه‌گیری شد: حذف آن LCP صفحه محصول را از ۴٫۳۱s به ۳٫۵۷s
+     رساند بدون آنکه FCP بدتر شود. -->
+<link rel="stylesheet" href="/assets/theme.css">
+<style>
+  .res-wrap { min-height: 70vh; display: grid; place-items: center;
+              padding: var(--sp-6) 20px; position: relative; overflow: hidden }
+  .res-wrap::before {
+    content: ''; position: absolute; inset: 0; pointer-events: none;
+    background: radial-gradient(ellipse 55% 45% at 50% 28%, rgba(197,155,39,.11), transparent 70%);
+    animation: haloBreath 12s ease-in-out infinite;
+  }
+  .res-card {
+    position: relative; z-index: 2;
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: var(--r-lg); padding: var(--sp-7) var(--sp-5) var(--sp-6);
+    width: 100%; max-width: 440px; box-shadow: var(--sh-lg); text-align: center;
+    animation: panelIn 660ms var(--ease-out) backwards;
+  }
+  /* نشان دایره‌ای متحرک */
+  .mark { width: 74px; height: 74px; margin: 0 auto 18px; position: relative }
+  .mark svg { width: 100%; height: 100%; overflow: visible }
+  .mark circle {
+    fill: none; stroke-width: 2.4; stroke-linecap: round;
+    stroke-dasharray: 201; stroke-dashoffset: 201;
+    animation: ringDraw 900ms var(--ease-out) 160ms forwards;
+    transform: rotate(-90deg); transform-origin: center;
+  }
+  .mark path {
+    fill: none; stroke-width: 3; stroke-linecap: round; stroke-linejoin: round;
+    stroke-dasharray: 60; stroke-dashoffset: 60;
+    animation: tickDraw 520ms var(--ease-out) 780ms forwards;
+  }
+  .mark.ok circle { stroke: #2E9E5B }
+  .mark.ok path   { stroke: #2E9E5B }
+  .mark.bad circle { stroke: #C2452F }
+  .mark.bad path   { stroke: #C2452F }
+  .mark::after {
+    content: ''; position: absolute; inset: -8px; border-radius: 50%;
+    background: currentColor; opacity: 0;
+  }
+  @keyframes ringDraw { to { stroke-dashoffset: 0 } }
+  @keyframes tickDraw { to { stroke-dashoffset: 0 } }
+
+  .res-card h1 { font-size: 1.28rem; font-weight: 800; margin-bottom: 10px;
+                 animation: fadeUp 600ms var(--ease-out) 420ms backwards }
+  .res-card > p { font-size: .9rem; color: var(--muted); line-height: 2.1;
+                  animation: fadeUp 600ms var(--ease-out) 520ms backwards }
+  .ref-box {
+    background: var(--sand); border: 1px solid var(--border); border-radius: 12px;
+    padding: 14px; margin: 20px 0 18px; font-size: .82rem; color: var(--muted);
+    animation: fadeUp 600ms var(--ease-out) 600ms backwards;
+  }
+  .ref-box strong { display: block; font-size: 1rem; color: var(--text);
+                    margin-top: 4px; letter-spacing: .5px }
+  .ref-box .row + .row { margin-top: 10px; padding-top: 10px; border-top: 1px dashed var(--border) }
+  .res-acts { display: grid; gap: 9px; animation: fadeUp 600ms var(--ease-out) 680ms backwards }
+  .res-acts a { display: block; text-decoration: none }
+  .res-next {
+    margin-top: 20px; padding-top: 16px; border-top: 1px dashed var(--border);
+    font-size: .78rem; color: var(--muted); line-height: 2;
+    animation: fadeUp 600ms var(--ease-out) 760ms backwards;
+  }
+  .res-next b { color: var(--text) }
+</style>
+</head>
+<body>
+<a href="#main" class="skip-link">پرش به محتوای اصلی</a>
+<!-- ارتفاع هدر از پیش رزرو می‌شود. هدر با جاوااسکریپت از app.js
+     ساخته می‌شود، پس تا آن لحظه ارتفاعش صفر است و با ظاهر شدن،
+     کل صفحه ۹۷ تا ۱۰۳ پیکسل پایین می‌پرد. ردیابی نشان داد این
+     تک‌ریشهٔ جابه‌جایی در همه صفحات بود (MAIN#main: y 0 → 97).
+     اندازه‌گیری واقعی: موبایل ۹۷px · دسکتاپ ۱۰۳px. -->
+<div id="hdr" class="hdr-reserve"></div>
+
+<main id="main" class="res-wrap">
+  <div class="res-card" id="card"></div>
+</main>
+
+<div id="ftr"></div>
+
+<script src="/assets/app.js"></script>
+<script>
+document.getElementById('hdr').innerHTML = renderHeader();
+document.getElementById('ftr').innerHTML = renderFooter();
+
+const q = new URLSearchParams(location.search);
+const ok = q.get('ok') === '1';
+const order = q.get('order') || '';
+const ref = q.get('ref') || '';
+const msg = q.get('msg') || '';
+
+const ring = '<circle cx="37" cy="37" r="32"/>';
+
+if (ok) {
+  YazdCart.clear();
+  document.getElementById('card').innerHTML = `
+    <div class="mark ok">
+      <svg viewBox="0 0 74 74">${ring}<path d="M23 38.5l9.5 9.5L52 27"/></svg>
+    </div>
+    <h1>پرداخت با موفقیت انجام شد</h1>
+    <p>سفارش شما ثبت شد و همین حالا وارد صف آماده‌سازی شده است.</p>
+    <div class="ref-box">
+      <div class="row">شماره سفارش<strong dir="ltr">${order}</strong></div>
+      ${ref ? `<div class="row">کد پیگیری بانکی<strong dir="ltr">${ref}</strong></div>` : ''}
+    </div>
+    <div class="res-acts">
+      <a href="/account" class="btn btn-block">مشاهده سفارش‌های من</a>
+      <a href="/" class="btn btn-outline btn-block">ادامه خرید</a>
+    </div>
+    <div class="res-next">
+      <b>مرحله بعد:</b> بسته‌بندی و ارسال ظرف <b>۳ تا ۷ روز کاری</b>.<br>
+      کد رهگیری مرسوله به‌محض ارسال برایتان پیامک می‌شود.
+    </div>`;
+} else {
+  document.getElementById('card').innerHTML = `
+    <div class="mark bad">
+      <svg viewBox="0 0 74 74">${ring}<path d="M27 27l20 20M47 27L27 47"/></svg>
+    </div>
+    <h1>پرداخت انجام نشد</h1>
+    <p>${msg || 'تراکنش لغو شد یا با خطا مواجه شد.'}<br>
+       <b style="color:var(--text)">مبلغی از حساب شما کسر نشده است.</b></p>
+    ${order ? `<div class="ref-box"><div class="row">شماره سفارش<strong dir="ltr">${order}</strong></div></div>` : ''}
+    <div class="res-acts">
+      <a href="/cart" class="btn btn-block">بازگشت به سبد خرید</a>
+      <a href="/contact" class="btn btn-outline btn-block">تماس با پشتیبانی</a>
+    </div>
+    <div class="res-next">
+      اگر مبلغ از حسابتان کسر شده، معمولاً ظرف <b>۷۲ ساعت</b> به‌صورت خودکار برمی‌گردد.
+      در غیر این صورت با ما تماس بگیرید.
+    </div>`;
+}
+</script>
+</body>
+</html>

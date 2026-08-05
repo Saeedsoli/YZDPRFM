@@ -1,0 +1,3251 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16.png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="manifest" href="/site.webmanifest">
+<meta name="theme-color" content="#121212">
+<title>پنل مدیریت | عطر یزد</title>
+<!-- فونت عمداً preload نمی‌شود.
+     با font-display:swap متن بلافاصله با فونت سیستمی دیده می‌شود،
+     پس preload فقط پهنای باند را از تصویر اصلی می‌دزدد. روی ۳G
+     اندازه‌گیری شد: حذف آن LCP صفحه محصول را از ۴٫۳۱s به ۳٫۵۷s
+     رساند بدون آنکه FCP بدتر شود. -->
+<link rel="stylesheet" href="/assets/theme.css">
+<style>
+  body { background: #F2F3F5 }
+
+  /* ── ورود ── */
+  .login-wrap {
+    min-height: 100dvh; display: grid; place-items: center; padding: 20px;
+    background: linear-gradient(150deg, #131313 0%, #1F1E1C 55%, #262320 100%);
+    position: relative; overflow: hidden;
+  }
+  .login-wrap::before {
+    content: ''; position: absolute; inset: 0; pointer-events: none;
+    background: radial-gradient(ellipse 60% 50% at 50% 30%, rgba(197,155,39,.18), transparent 68%);
+    animation: haloBreath 11s ease-in-out infinite;
+  }
+  .login-card {
+    position: relative; z-index: 2;
+    background: #FFF; border-radius: var(--r-lg); padding: 36px 28px;
+    width: 100%; max-width: 384px; box-shadow: 0 24px 64px rgba(0,0,0,.34);
+    text-align: center; animation: panelIn 640ms var(--ease-out) backwards;
+  }
+  .lock {
+    width: 56px; height: 56px; margin: 0 auto 16px; border-radius: 50%;
+    background: linear-gradient(150deg, rgba(197,155,39,.2), rgba(197,155,39,.05));
+    border: 1px solid rgba(197,155,39,.4); display: grid; place-items: center;
+    position: relative;
+  }
+  .lock svg { width: 25px; height: 25px; stroke: var(--gold); fill: none; stroke-width: 1.8 }
+  .lock::after {
+    content: ''; position: absolute; inset: -6px; border-radius: 50%;
+    border: 1px solid rgba(197,155,39,.22); animation: haloBreath 6s ease-in-out infinite;
+  }
+
+  /* ── سربرگ پنل ── */
+  .admin-top {
+    background: var(--obsidian); color: #FFF; padding: 12px 20px;
+    display: flex; justify-content: space-between; align-items: center; gap: 14px;
+    position: sticky; top: 0; z-index: 100;
+    border-bottom: 1px solid rgba(197,155,39,.28);
+  }
+  .admin-top .brand { display: flex; align-items: center; gap: 9px; font-size: .93rem; font-weight: 800 }
+  .admin-top .brand .dot {
+    width: 7px; height: 7px; border-radius: 50%; background: #35C46A;
+    box-shadow: 0 0 0 3px rgba(53,196,106,.2); animation: haloBreath 3.4s ease-in-out infinite;
+  }
+  .admin-top a { font-size: .8rem; color: #B9B9B9; transition: color var(--t-fast) }
+  .admin-top a:hover { color: var(--gold) }
+  .admin-top button {
+    background: rgba(255,255,255,.08); border: 1px solid rgba(255,255,255,.18);
+    color: #FFF; padding: 7px 15px; border-radius: 30px; cursor: pointer;
+    font: inherit; font-size: .79rem; font-weight: 700; transition: all var(--t-fast);
+  }
+  .admin-top button:hover { background: rgba(255,255,255,.15); border-color: rgba(197,155,39,.5) }
+
+  .admin-body { max-width: 1240px; margin: 22px auto; padding: 0 20px }
+
+  /* ── نوار اعلان کارهای انجام‌نشده ──
+     حالت عادی طلایی ملایم؛ اگر کار فوری باشد (تیکت از مهلت
+     گذشته، کالای ناموجود) قرمز می‌شود تا از بقیه جدا دیده شود. */
+  .notif-bar {
+    display: flex; align-items: flex-start; gap: 11px;
+    background: #FDF9F0;
+    border: 1px solid rgba(197,155,39,.34);
+    border-right: 3px solid #C59B27;
+    border-radius: 13px;
+    padding: 12px 15px; margin-bottom: 18px;
+  }
+  .notif-bar.urgent {
+    background: #FEF6F5;
+    border-color: rgba(192,57,43,.30);
+    border-right-color: #C0392B;
+  }
+  .notif-bar .nb-icon { color: #C59B27; flex-shrink: 0; margin-top: 2px }
+  .notif-bar.urgent .nb-icon { color: #C0392B }
+  .nb-items { display: flex; flex-wrap: wrap; gap: 7px }
+  .nb-chip {
+    background: #FFF; border: 1px solid var(--line);
+    border-radius: 30px; padding: 6px 13px;
+    font-family: inherit; font-size: .81rem; color: var(--ink);
+    cursor: pointer; transition: border-color .18s, background .18s;
+  }
+  .nb-chip b { color: #C59B27; font-weight: 800; margin-left: 3px }
+  .nb-chip:hover { border-color: #C59B27; background: #FFFDF7 }
+  .nb-chip.on { border-color: rgba(192,57,43,.45); background: #FFF8F7 }
+  .nb-chip.on b { color: #C0392B }
+  .nb-chip.on:hover { border-color: #C0392B }
+
+  /* ── پروفایل کارمند ── */
+  .pf-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+    gap: 2px 22px;
+  }
+
+  /* ── کارت دسترسی ──
+     کارمند باید بداند چه کارهایی از او برمی‌آید و — مهم‌تر — چه
+     کارهایی برنمی‌آید. پیش‌تر فقط عدد «۳۴ مجوز» نشان داده می‌شد
+     که هیچ چیزی نمی‌گفت. */
+  .acc-role {
+    background: rgba(197,155,39,.07); border: 1px solid rgba(197,155,39,.24);
+    border-radius: 10px; padding: 13px 15px; margin-bottom: 16px;
+  }
+  .acc-role .rn { font-weight: 800; font-size: .95rem; }
+  .acc-role .rd { font-size: .82rem; color: var(--muted); line-height: 1.95; margin-top: 5px; }
+
+  .acc-cols {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 18px;
+  }
+  .acc-box h4 {
+    font-size: .84rem; font-weight: 800; margin-bottom: 10px;
+    display: flex; align-items: center; gap: 7px;
+  }
+  .acc-box h4 .dot { width: 8px; height: 8px; border-radius: 50%; flex: none; }
+  .acc-yes .dot { background: #2E9E5B; }
+  .acc-no  .dot { background: #B14747; }
+
+  .acc-grp { margin-bottom: 12px; }
+  .acc-grp > b {
+    display: block; font-size: .74rem; color: var(--muted);
+    font-weight: 700; margin-bottom: 5px;
+  }
+  .acc-item {
+    font-size: .8rem; line-height: 1.85; padding: 3px 0 3px 0;
+    display: flex; gap: 6px; align-items: baseline;
+  }
+  .acc-item .ico { flex: none; font-weight: 800; font-size: .8rem; }
+  .acc-yes .acc-item .ico { color: #2E9E5B; }
+  .acc-no  .acc-item .ico { color: #B14747; }
+  .acc-item .hint { display: block; font-size: .72rem; color: var(--muted-light); }
+  .acc-item.danger .lbl::after {
+    content: 'حساس'; font-size: .62rem; font-weight: 800;
+    color: #A8761A; background: rgba(197,155,39,.16);
+    border-radius: 4px; padding: 1px 5px; margin-inline-start: 6px;
+  }
+  .acc-no .acc-item { opacity: .72; }
+  .pf-row {
+    display: flex; justify-content: space-between; align-items: baseline;
+    gap: 12px; padding: 9px 0; border-bottom: 1px dashed var(--line);
+    font-size: .85rem;
+  }
+  .pf-row span { color: var(--muted) }
+  .pf-row b { font-weight: 700 }
+
+  /* ── تب‌ها: نوار افقی اسکرول‌شونده، نه چند ردیف پیچیده ── */
+  .tabs {
+    display: flex; gap: 6px; margin-bottom: 20px;
+    overflow-x: auto; scrollbar-width: none; padding-bottom: 3px;
+    -webkit-overflow-scrolling: touch;
+  }
+  .tabs::-webkit-scrollbar { display: none }
+  .tab {
+    flex: none; display: inline-flex; align-items: center; gap: 7px;
+    padding: 9px 17px; border-radius: 30px; border: 1px solid var(--border);
+    background: #FFF; cursor: pointer; font-weight: 700; font-size: .84rem;
+    white-space: nowrap; transition: all var(--t-fast);
+  }
+  .tab:hover { border-color: var(--gold); transform: translateY(-1px) }
+  .tab.on { background: var(--obsidian); color: var(--gold); border-color: var(--obsidian) }
+  .tab .cnt {
+    background: var(--danger); color: #FFF; font-size: .64rem; font-weight: 800;
+    min-width: 17px; height: 17px; border-radius: 9px; padding: 0 5px;
+    display: inline-grid; place-items: center;
+  }
+  .tab.on .cnt { background: var(--gold); color: #121212 }
+
+  /* ── آمار ── */
+  .stats { display: grid; grid-template-columns: repeat(auto-fit,minmax(158px,1fr));
+           gap: 12px; margin-bottom: 22px }
+  .stat {
+    background: #FFF; border: 1px solid var(--border); border-radius: var(--r);
+    padding: 17px; position: relative; overflow: hidden;
+    transition: transform var(--t-smooth), box-shadow var(--t-smooth);
+    animation: fadeUp 520ms var(--ease-out) backwards;
+  }
+  .stat:nth-child(2){animation-delay:60ms} .stat:nth-child(3){animation-delay:120ms}
+  .stat:nth-child(4){animation-delay:180ms} .stat:nth-child(5){animation-delay:240ms}
+  .stat:hover { transform: translateY(-3px); box-shadow: var(--sh-lg) }
+  .stat::before {
+    content: ''; position: absolute; inset: 0 auto 0 0; width: 3px;
+    background: var(--gold); transform: scaleY(0); transform-origin: bottom;
+    transition: transform .45s var(--ease-out);
+  }
+  .stat:hover::before { transform: scaleY(1) }
+  .stat .n { font-size: 1.58rem; font-weight: 800; letter-spacing: -.02em }
+  .stat .l { font-size: .77rem; color: var(--muted); margin-top: 3px }
+
+  /* ── کارت ── */
+  .card {
+    background: #FFF; border: 1px solid var(--border); border-radius: var(--r);
+    padding: 20px; margin-bottom: 16px;
+    animation: fadeUp 480ms var(--ease-out) backwards;
+  }
+  .card h3 { font-size: .98rem; font-weight: 800; margin-bottom: 14px }
+
+  /* ── جدول با سربرگ ثابت هنگام اسکرول ── */
+  table { width: 100%; border-collapse: collapse; font-size: .84rem }
+  th, td { padding: 11px 9px; text-align: right; border-bottom: 1px solid var(--border) }
+  th {
+    background: var(--sand); font-weight: 800; font-size: .79rem;
+    position: sticky; top: 0; z-index: 2; white-space: nowrap;
+  }
+  tbody tr { transition: background var(--t-fast) }
+  tbody tr:hover { background: #FCFBF8 }
+  .scroll { overflow: auto; max-height: 68vh; border-radius: 10px }
+
+  /* جعبه دامنه — جمع‌شونده تا فرم شلوغ نشود */
+  .scope-box { border:1px solid var(--border); border-radius:10px;
+               padding:12px 14px; margin:10px 0; background:var(--sand) }
+  .scope-box summary { cursor:pointer; font-size:.85rem; font-weight:700;
+                       color:var(--gold-dark); user-select:none }
+  .scope-box summary:hover { color:var(--text) }
+  .scope-grid { display:grid; gap:12px; margin-top:12px;
+                grid-template-columns:repeat(auto-fit,minmax(180px,1fr)) }
+  .scope-grid select[multiple] { min-height:112px; padding:6px }
+  .scope-tag { display:inline-block; background:var(--sand); border:1px solid var(--border);
+               border-radius:6px; padding:1px 7px; font-size:.68rem; margin:1px 2px }
+
+  .badge { padding: 3px 11px; border-radius: 20px; font-size: .72rem; font-weight: 800; white-space: nowrap }
+
+  /* کنترل موجودی: منها / عدد / به‌علاوه.
+     دکمه‌ها ۳۴ پیکسل‌اند تا روی تبلت انبار هم قابل لمس باشند. */
+  .stock-ctrl { display: flex; align-items: center; gap: 0; justify-content: center }
+  .stock-ctrl button {
+    width: 34px; height: 34px; flex: none;
+    border: 1px solid var(--border); background: var(--sand);
+    cursor: pointer; font-size: 1.05rem; font-weight: 800; line-height: 1;
+    color: var(--text); font-family: var(--font); transition: background .15s;
+  }
+  .stock-ctrl button:first-child { border-radius: 0 8px 8px 0 }
+  .stock-ctrl button:last-child  { border-radius: 8px 0 0 8px }
+  .stock-ctrl button:hover  { background: var(--gold); color: #121212 }
+  .stock-ctrl button:active { transform: scale(.94) }
+  .stock-ctrl input {
+    width: 62px; height: 34px; text-align: center;
+    border: 1px solid var(--border); border-right: none; border-left: none;
+    font-family: var(--font); font-weight: 700; direction: ltr;
+    background: #FFF; color: var(--text);
+  }
+  /* فلش‌های پیش‌فرض مرورگر کنار دکمه‌های خودمان اضافی‌اند */
+  .stock-ctrl input::-webkit-outer-spin-button,
+  .stock-ctrl input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0 }
+  .stock-ctrl input[type=number] { -moz-appearance: textfield }
+
+  .stock-msg { font-size: .68rem; text-align: center; min-height: 14px; margin-top: 2px }
+  .stock-msg.ok      { color: #1E8449 }
+  .stock-msg.err     { color: #C0392B }
+  .stock-msg.pending { color: var(--muted) }
+  .b-paid { background: #E8F6EF; color: #1E8449 }
+  .b-pending { background: #FEF5E7; color: #B9770E }
+  .b-cancel { background: #FDEDEC; color: #C0392B }
+  .del { background: none; border: none; color: #C0392B; cursor: pointer; font-weight: 700; font-size: .8rem }
+  .del:hover { text-decoration: underline }
+  .hidden { display: none !important }
+
+  .rng-btn { padding: 6px 14px; border-radius: 18px; border: 1px solid var(--border);
+             background: #FFF; cursor: pointer; font-size: .78rem; font-weight: 700;
+             font-family: var(--font); transition: all var(--t-fast) }
+  .rng-btn:hover { border-color: var(--gold) }
+  .rng-btn.on { background: var(--obsidian); color: var(--gold); border-color: var(--obsidian) }
+
+  .bar-row { display: flex; align-items: center; gap: 10px; margin-bottom: 9px; font-size: .82rem }
+  .bar-row .lbl { min-width: 104px; font-weight: 700 }
+  .bar-row .track { flex: 1; height: 22px; background: var(--sand); border-radius: 6px; overflow: hidden }
+  .bar-row .fill {
+    height: 100%; background: linear-gradient(90deg, var(--gold), #D9B44A); border-radius: 6px;
+    transform-origin: right; animation: barGrow 780ms var(--ease-out) backwards;
+  }
+  @keyframes barGrow { from { transform: scaleX(0) } to { transform: scaleX(1) } }
+  .bar-row .val { min-width: 96px; text-align: left; direction: ltr; font-weight: 700; font-size: .78rem }
+
+  /* یادداشت مشتری در جدول سفارش — کهربایی تا از متن معمولی جدا باشد */
+  .cust-note { display:flex; gap:6px; align-items:flex-start; margin-top:6px;
+    background:#FDF3E3; border-right:3px solid #C59927; border-radius:6px;
+    padding:6px 9px; font-size:.75rem; line-height:1.85; color:#6B4E0F;
+    max-width:280px; }
+  .cust-note svg { width:14px; height:14px; flex:none; margin-top:3px;
+    fill:none; stroke:currentColor; stroke-width:2; stroke-linecap:round; }
+
+  .rev-card { border: 1px solid var(--border); border-radius: 11px; padding: 14px; margin-bottom: 11px;
+              transition: border-color var(--t-fast) }
+  .rev-card:hover { border-color: rgba(197,155,39,.4) }
+  .stars { color: var(--gold); letter-spacing: 2px }
+  .growth-up { color: #1E8449; font-size: .74rem; font-weight: 700 }
+  .growth-dn { color: #C0392B; font-size: .74rem; font-weight: 700 }
+
+  @media (max-width: 620px) {
+    .admin-body { padding: 0 14px; margin-top: 16px }
+    .admin-top .brand span { display: none }
+    .stat .n { font-size: 1.36rem }
+  }
+</style>
+</head>
+<body>
+
+<!-- ورود -->
+<div class="login-wrap" id="loginView">
+  <div class="login-card">
+    <div class="lock"><svg viewBox="0 0 24 24">
+      <rect x="4" y="10.5" width="16" height="10" rx="2.5"/>
+      <path d="M8 10.5V7a4 4 0 018 0v3.5"/></svg></div>
+    <h1 style="font-size:1.15rem;font-weight:800;margin-bottom:4px">پنل مدیریت عطر یزد</h1>
+    <p style="font-size:.8rem;color:var(--muted);margin-bottom:20px">نام کاربری و رمز عبور خود را وارد کنید</p>
+    <div class="field">
+      <input id="usr" placeholder="نام کاربری" dir="ltr" style="text-align:right"
+             autocomplete="username" onkeydown="if(event.key==='Enter')login()">
+    </div>
+    <div class="field">
+      <input type="password" id="pw" placeholder="رمز عبور" autocomplete="current-password"
+             onkeydown="if(event.key==='Enter')login()">
+    </div>
+    <button class="btn btn-block" onclick="login()">ورود</button>
+    <div id="loginErr" style="color:#C0392B;font-size:.8rem;margin-top:10px"></div>
+    <a href="/" style="display:block;margin-top:16px;font-size:.8rem;color:var(--muted)">بازگشت به فروشگاه</a>
+  </div>
+</div>
+
+<!-- پنل -->
+<div id="panel" class="hidden">
+  <div class="admin-top">
+    <div class="brand"><span class="dot"></span>پنل مدیریت<span> عطر یزد</span></div>
+    <div style="display:flex;gap:8px;align-items:center">
+      <a href="/" target="_blank">مشاهده سایت ↗</a>
+      <button onclick="logout()">خروج</button>
+    </div>
+  </div>
+
+  <div class="admin-body">
+    <!-- اعلان کارهای انجام‌نشده — فقط مواردی که این کارمند
+         مجوزشان را دارد. اگر کاری نباشد اصلاً نمایش داده نمی‌شود. -->
+    <div class="notif-bar" id="notifBar" style="display:none"></div>
+
+    <div class="stats" id="stats"></div>
+
+    <div class="tabs" id="tabs"></div>
+
+
+    <div id="tab-staff" class="hidden">
+      <div class="card">
+        <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap">
+          <h3 style="margin:0">کارکنان</h3>
+          <button class="btn" id="btnNewStaff" onclick="openStaffForm()">افزودن کارمند</button>
+        </div>
+        <div id="staffForm" class="hidden" style="margin-top:16px;padding:16px;
+             background:var(--sand);border-radius:12px"></div>
+        <div class="scroll" style="margin-top:14px"><table id="staffTable"></table></div>
+      </div>
+
+      <div class="card">
+        <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap">
+          <h3 style="margin:0">نقش‌ها و سطح دسترسی</h3>
+          <button class="btn btn-outline" id="btnNewRole" onclick="openRoleForm()">تعریف نقش تازه</button>
+        </div>
+        <p style="font-size:.8rem;color:var(--muted);line-height:1.9;margin-top:6px">
+          هر نقش مجموعه‌ای از اجازه‌هاست. تغییر نقش بلافاصله روی همه کارکنان آن نقش اثر می‌گذارد.
+        </p>
+        <div id="roleForm" class="hidden" style="margin-top:16px;padding:16px;
+             background:var(--sand);border-radius:12px"></div>
+        <div id="rolesList" style="margin-top:14px"></div>
+      </div>
+    </div>
+
+    <div id="tab-audit" class="hidden">
+      <div class="card">
+        <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap">
+          <h3 style="margin:0">سابقه کارهای کارکنان</h3>
+          <label style="font-size:.8rem;display:flex;align-items:center;gap:6px;cursor:pointer">
+            <input type="checkbox" id="auditDenied" onchange="loadAudit()" style="accent-color:var(--gold)">
+            فقط تلاش‌های رد شده
+          </label>
+        </div>
+        <div class="scroll" style="margin-top:14px"><table id="auditTable"></table></div>
+      </div>
+    </div>
+
+    <div id="tab-reports" class="hidden">
+      <div class="card">
+        <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap">
+          <h3 style="margin:0">گزارش فروش</h3>
+          <div style="display:flex;gap:6px">
+            <button class="rng-btn on" data-d="7"  onclick="loadReports(7,this)">۷ روز</button>
+            <button class="rng-btn"    data-d="30" onclick="loadReports(30,this)">۳۰ روز</button>
+            <button class="rng-btn"    data-d="90" onclick="loadReports(90,this)">۹۰ روز</button>
+          </div>
+        </div>
+        <div id="repStats" class="stats" style="margin-top:16px"></div>
+      </div>
+      <div class="card">
+        <h3>روند فروش</h3>
+        <div id="chartBox"></div>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:16px">
+        <div class="card"><h3>پرفروش‌ترین محصولات</h3><div class="scroll"><table id="repTop"></table></div></div>
+        <div class="card"><h3>فروش بر اساس برند</h3><div id="repBrand"></div></div>
+        <div class="card"><h3>نوع محصول</h3><div id="repType"></div></div>
+        <div class="card"><h3>پراکندگی استانی</h3><div class="scroll"><table id="repProv"></table></div></div>
+        <div class="card"><h3>مشتریان وفادار</h3><div class="scroll"><table id="repCust"></table></div></div>
+        <div class="card"><h3>عملکرد کد تخفیف</h3><div class="scroll"><table id="repCoup"></table></div></div>
+      </div>
+    </div>
+
+    <div id="tab-profile" class="hidden">
+      <div class="card">
+        <h3>مشخصات من</h3>
+        <div id="profInfo" style="margin-top:14px"></div>
+      </div>
+
+      <!-- کارت دسترسی — نقش، اجازه‌ها و محدودیت‌ها.
+           با جاوااسکریپت پر می‌شود. -->
+      <div class="card">
+        <h3>نقش و سطح دسترسی من</h3>
+        <p style="font-size:.8rem;color:var(--muted);line-height:1.9;margin-top:10px">
+          این فهرست دقیقاً می‌گوید چه کارهایی از شما برمی‌آید و چه کارهایی
+          در حیطه شما نیست. اگر به کاری نیاز دارید که اینجا در ستون
+          «در دسترس نیست» آمده، از مدیر بخواهید نقشتان را به‌روز کند.
+        </p>
+        <div id="accessCard" style="margin-top:16px"></div>
+      </div>
+
+      <div class="card">
+        <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap">
+          <h3 style="margin:0">کارنامه من</h3>
+          <div style="display:flex;gap:6px">
+            <button class="rng-btn on" data-d="7"  onclick="loadProfile(7,this)">۷ روز</button>
+            <button class="rng-btn"    data-d="30" onclick="loadProfile(30,this)">۳۰ روز</button>
+            <button class="rng-btn"    data-d="90" onclick="loadProfile(90,this)">۹۰ روز</button>
+          </div>
+        </div>
+        <p style="font-size:.8rem;color:var(--muted);line-height:1.9;margin-top:10px">
+          این آمار فقط کار خودتان است و با کسی مقایسه نمی‌شود.
+        </p>
+        <div id="profStats" class="stats" style="margin-top:14px"></div>
+      </div>
+
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:16px">
+        <div class="card">
+          <h3>پرکارترین کارها</h3>
+          <div id="profActions"></div>
+        </div>
+        <div class="card">
+          <h3>آخرین کارهای من</h3>
+          <div class="scroll"><table id="profRecent"></table></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>ویرایش مشخصات</h3>
+        <p style="font-size:.8rem;color:var(--muted);line-height:1.9;margin-bottom:14px">
+          نقش و سطح دسترسی را فقط مدیر می‌تواند عوض کند.
+        </p>
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px">
+          <div class="field"><label for="pfName">نام و نام خانوادگی</label>
+            <input id="pfName" maxlength="60"></div>
+          <div class="field"><label for="pfMobile">شماره موبایل</label>
+            <input id="pfMobile" dir="ltr" placeholder="۰۹۱۲۳۴۵۶۷۸۹"></div>
+        </div>
+        <div style="display:flex;gap:9px;flex-wrap:wrap;margin-top:6px">
+          <button class="btn" onclick="saveProfile()">ذخیره مشخصات</button>
+          <button class="btn btn-outline" onclick="openPasswordChange(false)">
+            تغییر رمز عبور</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="tab-analytics" class="hidden">
+      <div class="card">
+        <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap">
+          <h3 style="margin:0">تحلیل بازدید و رفتار مشتری</h3>
+          <div style="display:flex;gap:6px">
+            <button class="rng-btn on" data-d="7"  onclick="loadAnalytics(7,this)">۷ روز</button>
+            <button class="rng-btn"    data-d="30" onclick="loadAnalytics(30,this)">۳۰ روز</button>
+            <button class="rng-btn"    data-d="90" onclick="loadAnalytics(90,this)">۹۰ روز</button>
+          </div>
+        </div>
+        <p style="font-size:.8rem;color:var(--muted);line-height:1.9;margin-top:10px">
+          تحلیل کاملاً داخلی است — هیچ داده‌ای به سرویس بیرونی نمی‌رود.
+          نشانی IP و شماره موبایل ذخیره نمی‌شوند؛ شناسه بازدیدکننده
+          هر روز عوض می‌شود.
+        </p>
+        <div id="anStats" class="stats" style="margin-top:16px"></div>
+      </div>
+
+      <div class="card">
+        <h3>قیف خرید</h3>
+        <p style="font-size:.8rem;color:var(--muted);margin-bottom:14px">
+          هر پله نشان می‌دهد چند نفر از مرحله قبل جلو آمده‌اند.
+          بزرگ‌ترین افت، جایی است که باید درستش کرد.
+        </p>
+        <div id="anFunnel"></div>
+      </div>
+
+      <div class="card">
+        <h3>روند روزانه</h3>
+        <div id="anDaily"></div>
+      </div>
+
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:16px">
+        <div class="card">
+          <h3>جستجوهای بی‌نتیجه</h3>
+          <p style="font-size:.78rem;color:var(--muted);margin-bottom:10px">
+            مشتری این‌ها را خواسته و چیزی پیدا نکرده — یا نداریم، یا
+            پیدا نشده. مهم‌ترین راهنما برای خرید بعدی.
+          </p>
+          <div class="scroll"><table id="anFailed"></table></div>
+        </div>
+        <div class="card">
+          <h3>پرجستجوترین عبارت‌ها</h3>
+          <div class="scroll"><table id="anSearches"></table></div>
+        </div>
+        <div class="card">
+          <h3>زیاد دیده، کم فروخته</h3>
+          <p style="font-size:.78rem;color:var(--muted);margin-bottom:10px">
+            بازدید بالا ولی فروش پایین — احتمالاً قیمت یا توضیح
+            محصول مشکل دارد.
+          </p>
+          <div class="scroll"><table id="anLowConv"></table></div>
+        </div>
+        <div class="card">
+          <h3>بیشترین علاقه‌مندی</h3>
+          <div class="scroll"><table id="anWanted"></table></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>ویترین صفحه اصلی</h3>
+        <p style="font-size:.82rem;color:var(--muted);line-height:1.9">
+          بخش «پرفروش‌ترین»، «بیشترین علاقه‌مندی» و «پربازدید این
+          هفته» در صفحه اصلی خودکار از همین داده ساخته می‌شوند و هر
+          ساعت تازه می‌شوند. اگر می‌خواهید همین حالا به‌روز شود:
+        </p>
+        <button class="btn btn-outline" style="margin-top:12px"
+                onclick="refreshShowcase()">به‌روزرسانی ویترین</button>
+      </div>
+    </div>
+
+    <div id="tab-reviews" class="hidden">
+      <div class="card">
+        <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap">
+          <h3 style="margin:0">مدیریت نظرات</h3>
+          <div style="display:flex;gap:6px" id="revTabs"></div>
+        </div>
+        <div id="reviewsList" style="margin-top:14px"></div>
+      </div>
+
+      <!-- ═══ دعوت‌نامه نظر برای مشتریان فروش حضوری ═══ -->
+      <div class="card" id="inviteCard">
+        <h3>دعوت‌نامه نظر — مشتریان فروش حضوری</h3>
+        <p style="font-size:.83rem;color:var(--muted);line-height:2;margin-bottom:14px">
+          مشتری‌ای که حضوری خرید کرده سفارش آنلاین ندارد، پس نمی‌تواند نظر بدهد.
+          اینجا شماره‌اش را وارد کنید تا یک لینک اختصاصی ساخته شود؛ لینک را
+          برایش بفرستید و <strong>خودش</strong> نظرش را می‌نویسد. نظرش نشان
+          «خرید حضوری تأییدشده» می‌گیرد. لینک یک‌بارمصرف است و ۳۰ روز اعتبار دارد.
+        </p>
+
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px">
+          <div class="field">
+            <label for="ivProduct">محصول (نام یا شناسه)</label>
+            <input id="ivProduct" placeholder="مثلاً creed-aventus یا YZD-0001"
+              autocomplete="off" oninput="ivSearch()">
+            <div id="ivResults" style="margin-top:6px"></div>
+          </div>
+          <div class="field">
+            <label for="ivMobile">شماره موبایل مشتری</label>
+            <input id="ivMobile" placeholder="۰۹۱۲۳۴۵۶۷۸۹" inputmode="numeric">
+          </div>
+        </div>
+        <div class="field">
+          <label for="ivNote">یادداشت داخلی (اختیاری)</label>
+          <input id="ivNote" maxlength="200" placeholder="مثلاً: مشتری قدیمی، خرید فروردین">
+        </div>
+        <button class="btn" style="margin-top:10px" onclick="makeInvite()">ساخت دعوت‌نامه</button>
+
+        <div id="ivResult" style="margin-top:14px"></div>
+
+        <h4 style="margin:22px 0 10px;font-size:.92rem">دعوت‌نامه‌های ساخته‌شده</h4>
+        <div id="ivList"></div>
+      </div>
+    </div>
+
+    <div id="tab-products" class="hidden">
+      <div class="card">
+        <h3>جستجوی محصول</h3>
+        <div style="display:flex;gap:9px;flex-wrap:wrap">
+          <!-- جستجوی زنده: با تایپ چند حرف نتیجه می‌آید، بدون زدن دکمه.
+               دکمه هم می‌ماند برای کسی که با کیبورد کار می‌کند. -->
+          <input id="pSearch" placeholder="نام عطر، برند یا نُت… (تایپ کنید)"
+            autocomplete="off"
+            style="flex:1;min-width:200px;padding:11px 14px;border:1px solid var(--border);
+            border-radius:9px;font-family:var(--font)"
+            oninput="liveSearch()"
+            onkeydown="if(event.key==='Enter')searchProducts()">
+          <button class="btn" onclick="searchProducts()">جستجو</button>
+          <button class="btn btn-outline" onclick="showLowStock()">کالاهای رو به اتمام</button>
+        </div>
+        <div id="pResults" style="margin-top:16px"></div>
+      </div>
+
+      <div class="card hidden" id="pEditCard">
+        <h3 id="pEditTitle"></h3>
+        <div style="background:var(--sand);border-radius:10px;padding:14px;margin-bottom:16px">
+          <div style="font-size:.86rem;font-weight:700;margin-bottom:10px">تغییر گروهی</div>
+          <div style="display:flex;gap:9px;flex-wrap:wrap;align-items:flex-end">
+            <div style="flex:1;min-width:150px">
+              <label style="font-size:.78rem;display:block;margin-bottom:4px">تغییر قیمت (٪)</label>
+              <input id="bulkPct" type="number" placeholder="مثلاً ۱۰ یا ۱۰-"
+                style="width:100%;padding:9px;border:1px solid var(--border);border-radius:8px">
+            </div>
+            <button class="btn" onclick="bulkPrice()">اعمال</button>
+            <div style="flex:1;min-width:150px">
+              <label style="font-size:.78rem;display:block;margin-bottom:4px">موجودی همه</label>
+              <input id="bulkStock" type="number" placeholder="مثلاً ۱۰۰"
+                style="width:100%;padding:9px;border:1px solid var(--border);border-radius:8px">
+            </div>
+            <button class="btn" onclick="bulkStock()">اعمال</button>
+          </div>
+        </div>
+        <div class="scroll"><table id="pVariants"></table></div>
+      </div>
+    </div>
+
+    <div id="tab-orders">
+      <div class="card">
+        <h3>سفارش‌های ثبت‌شده</h3>
+        <div style="display:flex;gap:9px;flex-wrap:wrap;margin-bottom:12px">
+          <input id="oSearch" placeholder="شماره سفارش، نام، موبایل، کد رهگیری…"
+            style="flex:1;min-width:210px;padding:10px 13px;border:1px solid var(--border);
+            border-radius:9px;font-family:var(--font)"
+            onkeydown="if(event.key==='Enter')loadOrders()">
+          <button class="btn" onclick="loadOrders()">جستجو</button>
+          <button class="btn btn-outline" onclick="clearOrderSearch()">پاک کردن</button>
+        </div>
+        <div id="statusFilter" style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px"></div>
+        <div class="scroll"><table id="ordersTable"></table></div>
+        <div id="ordersPager" style="display:flex;gap:6px;justify-content:center;margin-top:14px"></div>
+      </div>
+    </div>
+
+    <div id="tab-coupons" class="hidden">
+      <div class="card">
+        <h3>ایجاد کد تخفیف</h3>
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px">
+          <div class="field"><label>کد</label><input id="cCode" placeholder="NOWRUZ25" style="text-transform:uppercase"></div>
+          <div class="field"><label>نوع</label>
+            <select id="cType" onchange="onCouponType()">
+              <option value="PERCENT">درصدی</option>
+              <option value="FIXED">مبلغ ثابت</option>
+              <option value="FREE_SHIPPING">ارسال رایگان</option>
+            </select>
+          </div>
+          <div class="field" id="cValueWrap"><label>مقدار</label>
+            <input id="cValue" type="number" placeholder="۱۰"><div class="hint" id="cValueHint">درصد</div></div>
+          <div class="field"><label>حداقل خرید (تومان)</label><input id="cMin" type="number" placeholder="۵۰۰۰۰۰"></div>
+          <div class="field" id="cMaxWrap"><label>سقف تخفیف (تومان)</label><input id="cMax" type="number" placeholder="۵۰۰۰۰۰"></div>
+          <div class="field"><label>محدودیت تعداد</label><input id="cLimit" type="number" placeholder="خالی = نامحدود"></div>
+          <div class="field"><label>تاریخ انقضا</label><input id="cExp" type="date"></div>
+          <div class="field"><label>توضیح</label><input id="cDesc" placeholder="تخفیف نوروزی"></div>
+        </div>
+        <label style="font-size:.84rem;display:block;margin:6px 0 4px">
+          <input type="checkbox" id="cOnce" checked style="width:auto;margin-left:6px">
+          هر مشتری فقط یک‌بار بتواند استفاده کند
+        </label>
+        <label style="font-size:.84rem;display:block;margin:0 0 12px">
+          <input type="checkbox" id="cFirst" style="width:auto;margin-left:6px">
+          فقط برای اولین خرید مشتری
+        </label>
+
+        <!-- دامنه: خالی گذاشتن یعنی «روی کل سبد». هر فیلدی که
+             پر شود، تخفیف را فقط به همان محدود می‌کند. -->
+        <details class="scope-box">
+          <summary>محدود کردن به دسته، برند یا محصول خاص (اختیاری)</summary>
+          <div class="scope-grid">
+            <div class="field"><label>خانواده رایحه</label>
+              <select id="cFam" multiple size="5"></select>
+              <div class="hint">با Ctrl چندتایی انتخاب کنید</div></div>
+            <div class="field"><label>برند</label>
+              <select id="cBrand" multiple size="5"></select></div>
+            <div class="field"><label>نوع محصول</label>
+              <select id="cVType" multiple size="5">
+                <option value="SAMPLE">سمپل ۳ میل</option>
+                <option value="EDP">ادو پرفیوم</option>
+                <option value="HAIR_MIST">عطر مو</option>
+                <option value="BODY_SPLASH">بادی اسپلش</option>
+              </select></div>
+            <div class="field"><label>جنسیت</label>
+              <select id="cGender" multiple size="4">
+                <option value="MEN">مردانه</option>
+                <option value="WOMEN">زنانه</option>
+                <option value="UNISEX">یونیسکس</option>
+              </select></div>
+          </div>
+          <div class="scope-grid" style="margin-top:10px">
+            <div class="field"><label>تاریخ شروع</label><input id="cStart" type="date"></div>
+            <div class="field"><label>سقف خرید (تومان)</label>
+              <input id="cMaxSub" type="number" placeholder="خالی = بدون سقف"></div>
+            <div class="field"><label>کد اختصاصی این شماره</label>
+              <input id="cAssign" placeholder="۰۹۱۲۳۴۵۶۷۸۹" dir="ltr" style="text-align:right">
+              <div class="hint">فقط همین مشتری بتواند استفاده کند</div></div>
+          </div>
+        </details>
+
+        <button class="btn" onclick="createCoupon()">ایجاد کد تخفیف</button>
+      </div>
+      <div class="card">
+        <h3>کدهای موجود</h3>
+        <div class="scroll"><table id="couponsTable"></table></div>
+      </div>
+
+      <!-- ═══ جشنواره ═══ -->
+      <div class="card">
+        <h3>جشنواره — تخفیف خودکار بدون کد</h3>
+        <p style="font-size:.82rem;color:var(--muted);margin-bottom:14px;line-height:1.9">
+          مشتری کاری نمی‌کند؛ قیمت خط‌خورده روی کارت محصول دیده می‌شود.
+          اگر چند جشنواره شامل یک کالا شوند، فقط بهترینشان اعمال می‌شود.
+        </p>
+        <div class="scope-grid">
+          <div class="field"><label>عنوان</label>
+            <input id="fTitle" placeholder="جشنواره نوروزی"></div>
+          <div class="field"><label>درصد تخفیف</label>
+            <input id="fPct" type="number" min="1" max="90" placeholder="۲۰"></div>
+          <div class="field"><label>سقف تخفیف هر کالا</label>
+            <input id="fMax" type="number" placeholder="خالی = بدون سقف"></div>
+          <div class="field"><label>از تاریخ</label><input id="fStart" type="date"></div>
+          <div class="field"><label>تا تاریخ</label><input id="fEnd" type="date"></div>
+        </div>
+        <details class="scope-box" style="margin-top:12px">
+          <summary>محدود کردن جشنواره (خالی = همه محصولات)</summary>
+          <div class="scope-grid">
+            <div class="field"><label>خانواده رایحه</label>
+              <select id="fFam" multiple size="5"></select></div>
+            <div class="field"><label>برند</label>
+              <select id="fBrand" multiple size="5"></select></div>
+            <div class="field"><label>نوع محصول</label>
+              <select id="fVType" multiple size="5">
+                <option value="SAMPLE">سمپل ۳ میل</option>
+                <option value="EDP">ادو پرفیوم</option>
+                <option value="HAIR_MIST">عطر مو</option>
+                <option value="BODY_SPLASH">بادی اسپلش</option>
+              </select></div>
+            <div class="field"><label>جنسیت</label>
+              <select id="fGender" multiple size="4">
+                <option value="MEN">مردانه</option>
+                <option value="WOMEN">زنانه</option>
+                <option value="UNISEX">یونیسکس</option>
+              </select></div>
+          </div>
+        </details>
+        <button class="btn" style="margin-top:12px" onclick="createCampaign()">راه‌اندازی جشنواره</button>
+        <div class="scroll" style="margin-top:16px"><table id="campaignsTable"></table></div>
+      </div>
+
+      <!-- ═══ نوار اعلان ═══ -->
+      <div class="card">
+        <h3>نوار اعلان بالای سایت</h3>
+        <p style="font-size:.82rem;color:var(--muted);margin-bottom:14px;line-height:1.9">
+          یک پیام، بدون چرخش. پژوهش‌ها نشان می‌دهند بنر اسلایدی فقط
+          حدود یک درصد کلیک می‌گیرد و پیام‌های بعدی عملاً دیده نمی‌شوند.
+          با انتشار اعلان تازه، اعلان قبلی خودکار خاموش می‌شود.
+        </p>
+        <div class="field"><label>متن اعلان</label>
+          <input id="nText" maxlength="160" placeholder="جشنواره نوروزی — ۲۰٪ تخفیف تا ۱۵ فروردین"></div>
+        <div class="scope-grid">
+          <div class="field"><label>لینک (داخلی)</label>
+            <input id="nLink" placeholder="/samples" dir="ltr" style="text-align:right">
+            <div class="hint">باید با / شروع شود</div></div>
+          <div class="field"><label>متن دکمه لینک</label>
+            <input id="nLabel" placeholder="مشاهده"></div>
+          <div class="field"><label>رنگ</label>
+            <select id="nTone">
+              <option value="gold">طلایی</option>
+              <option value="dark">مشکی</option>
+              <option value="success">سبز</option>
+              <option value="alert">قرمز</option>
+            </select></div>
+          <div class="field"><label>از تاریخ</label><input id="nStart" type="date"></div>
+          <div class="field"><label>تا تاریخ</label><input id="nEnd" type="date"></div>
+        </div>
+        <button class="btn" style="margin-top:12px" onclick="createNotice()">انتشار اعلان</button>
+        <div class="scroll" style="margin-top:16px"><table id="noticesTable"></table></div>
+      </div>
+    </div>
+
+    <div id="tab-tickets" class="hidden">
+      <div class="card">
+        <h3>تیکت‌های مرجوعی</h3>
+        <div class="scroll"><table id="ticketsTable"></table></div>
+      </div>
+    </div>
+
+    <div id="tab-articles" class="hidden">
+      <div class="card">
+        <h3 id="artFormTitle">انتشار مقاله جدید</h3>
+        <div class="field"><label>عنوان مقاله</label><input id="aTitle"></div>
+        <div class="field"><label>دسته‌بندی</label>
+          <select id="aCat">
+            <option value="guide">راهنمای خرید تخصصی</option>
+            <option value="notes">دانشنامه روایح و نُت‌ها</option>
+            <option value="video">ویدیوهای آموزشی</option>
+          </select>
+        </div>
+        <div class="field"><label>خلاصه</label><textarea id="aExcerpt" rows="2"></textarea></div>
+        <div class="field"><label>متن کامل</label><textarea id="aContent" rows="6"></textarea></div>
+        <button class="btn" onclick="publish()" id="artSaveBtn">انتشار مقاله</button>
+        <button class="btn btn-outline" onclick="cancelEditArticle()" id="artCancelBtn"
+          style="margin-right:8px;display:none">انصراف</button>
+      </div>
+      <div class="card">
+        <h3>مقالات منتشرشده</h3>
+        <div class="scroll"><table id="articlesTable"></table></div>
+      </div>
+    </div>
+
+
+    <div id="tab-settings" class="hidden">
+      <!-- ═══ بررسی آمادگی افتتاح ═══ -->
+      <div class="card" id="readyCard">
+        <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap">
+          <h3 style="margin:0">بررسی آمادگی افتتاح</h3>
+          <div style="display:flex;gap:7px;flex-wrap:wrap">
+            <button class="btn btn-outline" style="padding:7px 14px;font-size:.78rem"
+              onclick="loadReadiness(false)">بررسی سریع</button>
+            <button class="btn" style="padding:7px 14px;font-size:.78rem"
+              onclick="loadReadiness(true)">بررسی کامل (تماس با سرویس‌ها)</button>
+          </div>
+        </div>
+        <p style="font-size:.8rem;color:var(--muted);line-height:1.95;margin-top:10px">
+          «بررسی کامل» واقعاً به زرین‌پال و کاوه‌نگار وصل می‌شود تا معلوم شود کلیدها
+          درست‌اند — بدون اینکه پرداختی انجام شود یا پیامکی برود.
+          <strong>هیچ کلیدی اینجا نمایش داده نمی‌شود</strong>، فقط وضعیتش.
+        </p>
+        <div id="readyList" style="margin-top:14px"></div>
+
+        <div id="smsTestBox" style="margin-top:16px;display:none">
+          <div style="border-top:1px solid var(--border);padding-top:14px">
+            <div style="font-weight:700;font-size:.85rem;margin-bottom:8px">
+              پیامک آزمایشی واقعی</div>
+            <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:flex-end">
+              <div class="field" style="flex:1;min-width:190px;margin:0">
+                <label for="smsTo">شماره خودتان</label>
+                <input id="smsTo" placeholder="۰۹۱۲۳۴۵۶۷۸۹" inputmode="numeric">
+              </div>
+              <button class="btn btn-outline" style="padding:9px 16px;font-size:.8rem"
+                onclick="sendTestSms()">ارسال</button>
+            </div>
+            <div style="font-size:.73rem;color:var(--muted);margin-top:6px">
+              یک پیامک از اعتبار حساب شما مصرف می‌شود. حداکثر ۵ بار در ساعت.
+            </div>
+            <div id="smsTestResult" style="margin-top:9px"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>اطلاعات فروشگاه</h3>
+        <p style="font-size:.82rem;color:var(--muted);margin-bottom:16px;line-height:1.95">
+          <strong>تماس، نشانی و کد پستی</strong> روی فوتر سایت، فاکتور و برچسب پستی
+          دیده می‌شوند — اینماد درجشان را الزامی کرده است.<br>
+          <strong>نام حقوقی، کد اقتصادی، شناسه ملی و شماره ثبت</strong> اختیاری‌اند و
+          فقط روی «فاکتور رسمی» چاپ می‌شوند (برای خریدار عمده).</p>
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:12px">
+          <div class="field"><label for="sName">نام فروشگاه</label><input id="sName"></div>
+          <div class="field"><label for="sNameEn">نام لاتین</label><input id="sNameEn" dir="ltr"></div>
+          <div class="field"><label for="sLegal">نام حقوقی</label><input id="sLegal"></div>
+          <div class="field"><label for="sEco">کد اقتصادی</label><input id="sEco" dir="ltr"></div>
+          <div class="field"><label for="sNat">شناسه ملی</label><input id="sNat" dir="ltr"></div>
+          <div class="field"><label for="sReg">شماره ثبت</label><input id="sReg" dir="ltr"></div>
+          <div class="field"><label for="sPhone">شماره تماس</label><input id="sPhone" dir="ltr">
+            <div style="font-size:.72rem;color:var(--muted);margin-top:4px">موبایل یا تلفن ثابت</div></div>
+          <div class="field"><label for="sPerson">نام تحویل‌گیرنده مرسوله</label><input id="sPerson">
+            <div style="font-size:.72rem;color:var(--muted);margin-top:4px">
+              روی برچسب پستی کنار نام فروشگاه — پست نام شخص می‌خواهد</div></div>
+          <div class="field"><label for="sPost">کد پستی فروشگاه</label><input id="sPost" dir="ltr"></div>
+          <div class="field"><label for="sEnamadId">شناسه نماد اعتماد (id)</label><input id="sEnamadId" dir="ltr" inputmode="numeric" placeholder="580961">
+            <div style="font-size:.72rem;color:var(--muted);margin-top:4px">
+              فقط عدد — از نشانی نشان در پنل اینماد</div></div>
+          <div class="field"><label for="sEnamad">کد امنیتی نماد (Code)</label><input id="sEnamad" dir="ltr" placeholder="ZWbXjtwpxxh2fPPh72XCAXEIjFrTLMU8">
+            <div style="font-size:.72rem;color:var(--muted);margin-top:4px">
+              حرف و عدد — هر دو فیلد باید پر باشند تا نشان روی سایت بیاید</div></div>
+        </div>
+        <div class="field"><label for="sAddr">نشانی کامل</label>
+          <textarea id="sAddr" rows="2"></textarea></div>
+        <div class="field"><label for="sNote">یادداشت پای فاکتور</label>
+          <textarea id="sNote" rows="2"></textarea></div>
+        <button class="btn" onclick="saveShopSettings()">ذخیره تنظیمات</button>
+      </div>
+    </div>
+
+    <div id="tab-tools" class="hidden">
+      <div class="card">
+        <h3>خروجی و گزارش</h3>
+        <p style="font-size:.84rem;color:var(--muted);margin-bottom:14px">
+          دریافت فایل CSV تمام سفارش‌ها برای حسابداری.</p>
+        <button class="btn" onclick="exportCsv()">دانلود CSV سفارش‌ها</button>
+        <button class="btn btn-outline" style="margin-right:8px" onclick="downloadBackup()">
+          دانلود پشتیبان دیتابیس
+        </button>
+        <div id="backupList" style="margin-top:14px"></div>
+      </div>
+      <div class="card">
+        <h3>وضعیت سیستم</h3>
+        <div id="health" style="font-size:.86rem;line-height:2"></div>
+        <button class="btn btn-outline" style="margin-top:12px" onclick="runMaintenance()">
+          آزادسازی سفارش‌های پرداخت‌نشده
+        </button>
+        <!-- بازسازی ایندکس.
+             هر دو ایندکس (جستجو و نُت) هنگام راه‌اندازی سرور ساخته
+             می‌شوند. اگر داده محصول از بیرون عوض شود، ایندکس کهنه
+             می‌ماند و بی‌صدا نتیجه غلط می‌دهد. تا امروز تنها راه
+             بازسازی، راه‌اندازی دوباره سرور بود. -->
+        <button class="btn btn-outline" style="margin-top:12px;margin-right:8px"
+                onclick="runReindex()">
+          بازسازی ایندکس جستجو و نُت
+        </button>
+        <p style="font-size:.76rem;color:var(--muted);line-height:1.9;margin-top:10px">
+          اگر جستجو محصولی را پیدا نمی‌کند یا شمار فیلتر نُت با واقعیت
+          نمی‌خواند، ایندکس را بازسازی کنید.
+        </p>
+      </div>
+
+      <div class="card">
+        <h3>لاگ سیستم</h3>
+        <div style="display:flex;gap:7px;margin-bottom:12px;flex-wrap:wrap">
+          <button class="btn btn-outline" style="padding:7px 14px;font-size:.8rem"
+            onclick="loadLogs('')">همه</button>
+          <button class="btn btn-outline" style="padding:7px 14px;font-size:.8rem"
+            onclick="loadLogs('ERROR')">خطاها</button>
+          <button class="btn btn-outline" style="padding:7px 14px;font-size:.8rem"
+            onclick="loadLogs('WARN')">هشدارها</button>
+        </div>
+        <div id="logsBox" style="max-height:340px;overflow-y:auto"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="/assets/app.js"></script>
+<script>
+let TOKEN = localStorage.getItem('yazd_admin_token') || '';
+const H = () => ({ 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + TOKEN });
+
+/* کارمند فعلی و مجوزهایش — پایه‌ی ساخت منو */
+let ME = null;
+
+/** آیا کاربر فعلی این اجازه را دارد؟ */
+function may(perm) {
+  return !!(ME && ME.permissions && ME.permissions.includes(perm));
+}
+
+/** آیا دست‌کم یکی از این اجازه‌ها را دارد؟ */
+function mayAny(...list) {
+  return list.some(may);
+}
+
+async function checkAuth() {
+  if (!TOKEN) return false;
+  try {
+    const r = await fetch('/api/admin/whoami', { headers: H() });
+    if (!r.ok) return false;
+    ME = await r.json();
+    return true;
+  } catch { return false; }
+}
+
+async function login() {
+  const username = document.getElementById('usr').value.trim();
+  const pw = document.getElementById('pw').value;
+  const err = document.getElementById('loginErr');
+  err.textContent = '';
+
+  if (!username || !pw) { err.textContent = 'نام کاربری و رمز را وارد کنید.'; return; }
+
+  const r = await fetch('/api/admin/login', {
+    method: 'POST', headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ username, password: pw })
+  });
+  const d = await r.json();
+  if (!r.ok) { err.textContent = d.error; return; }
+
+  TOKEN = d.token;
+  ME = d.user;
+  localStorage.setItem('yazd_admin_token', TOKEN);
+  showPanel();
+}
+
+async function logout() {
+  await fetch('/api/admin/logout', { method: 'POST', headers: H() });
+  localStorage.removeItem('yazd_admin_token');
+  location.reload();
+}
+
+/* تعریف تب‌ها با مجوز لازم برای دیدنشان.
+   کارمند نباید تبی ببیند که با کلیک روی آن ۴۰۳ بگیرد. */
+const TABS = [
+  { key: 'orders',   label: 'سفارش‌ها',        need: ['orders.view'],   badge: 'cnt-orders' },
+  { key: 'reports',  label: 'گزارش فروش',      need: ['reports.sales'] },
+  { key: 'analytics', label: 'تحلیل بازدید',    need: ['reports.traffic'] },
+  { key: 'products', label: 'محصولات و موجودی', need: ['products.view', 'products.stock'] },
+  { key: 'coupons',  label: 'کدهای تخفیف',      need: ['coupons.view'] },
+  { key: 'reviews',  label: 'نظرات',           need: ['reviews.view'],  badge: 'cnt-reviews' },
+  { key: 'tickets',  label: 'تیکت‌های مرجوعی',  need: ['tickets.view'],  badge: 'cnt-tickets' },
+  { key: 'articles', label: 'مقالات',          need: ['content.view', 'content.write'] },
+  { key: 'staff',    label: 'کارکنان و نقش‌ها', need: ['staff.view'] },
+  { key: 'audit',    label: 'سابقه کارها',      need: ['system.logs'] },
+  { key: 'settings', label: 'تنظیمات فروشگاه',  need: ['settings.view'] },
+  { key: 'tools',    label: 'ابزارها',          need: ['system.backup', 'system.logs',
+                                                       'system.maintenance', 'orders.export'] },
+  /* پروفایل برای همه باز است — هر کارمند فقط کارنامه خودش را
+     می‌بیند، پس مجوز ویژه لازم ندارد. `need: []` یعنی همیشه. */
+  { key: 'profile',  label: 'پروفایل من',       need: [] }
+];
+
+let VISIBLE_TABS = [];
+
+function buildTabs() {
+  // تب بدون مجوزِ لازم (need خالی) همیشه دیده می‌شود
+  VISIBLE_TABS = TABS.filter(t => t.need.length === 0 || mayAny(...t.need));
+  const box = document.getElementById('tabs');
+
+  box.innerHTML = VISIBLE_TABS.map((t, i) =>
+    `<div class="tab ${i === 0 ? 'on' : ''}" data-t="${t.key}">${t.label}` +
+    (t.badge ? `<span class="cnt hidden" id="${t.badge}"></span>` : '') +
+    `</div>`).join('');
+
+  box.querySelectorAll('.tab').forEach(t => t.onclick = () => {
+    box.querySelectorAll('.tab').forEach(x => x.classList.remove('on'));
+    t.classList.add('on');
+    t.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+    showTab(t.dataset.t);
+  });
+
+  if (VISIBLE_TABS.length) showTab(VISIBLE_TABS[0].key);
+}
+
+function showTab(key) {
+  TABS.forEach(t => {
+    const el = document.getElementById('tab-' + t.key);
+    if (el) el.classList.toggle('hidden', t.key !== key);
+  });
+
+  // بارگذاری تنبل — فقط وقتی تب باز شد
+  if (key === 'reports' && !document.getElementById('repStats').innerHTML) loadReports();
+  if (key === 'analytics' && !document.getElementById('anStats').innerHTML) loadAnalytics();
+  if (key === 'profile')  loadProfile();
+  if (key === 'reviews') {
+    if (!document.getElementById('reviewsList').innerHTML) loadReviews();
+    /* کارت دعوت‌نامه فقط برای کسی که مجوز ساخت دارد.
+       پنهان کردن سمت مرورگر تزئینی است — سرور هم `reviews.invite`
+       را می‌سنجد و بدون آن ۴۰۳ می‌دهد. */
+    const ivc = document.getElementById('inviteCard');
+    if (ivc) {
+      const allowed = may('reviews.invite');
+      ivc.classList.toggle('hidden', !allowed);
+      if (allowed) loadInvites();
+    }
+  }
+  if (key === 'settings') loadShopSettings();
+  if (key === 'staff')    loadStaffTab();
+  if (key === 'audit')    loadAudit();
+  /* تب کدهای تخفیف حالا سه بخش دارد: کوپن، جشنواره، اعلان.
+     گزینه‌های دامنه یک بار پر می‌شوند و بعد در حافظه می‌مانند. */
+  if (key === 'coupons') {
+    fillScopeOptions();
+    loadCampaigns();
+    loadNotices();
+  }
+}
+
+function showPanel() {
+  document.getElementById('loginView').classList.add('hidden');
+  document.getElementById('panel').classList.remove('hidden');
+
+  // نام و نقش کارمند در سربرگ
+  const brand = document.querySelector('.admin-top .brand');
+  if (brand && ME) {
+    brand.innerHTML = `<span class="dot"></span>${esc(ME.display_name)}` +
+      `<span style="font-weight:400;opacity:.7;font-size:.82rem"> · ${esc(ME.role_name)}</span>`;
+  }
+
+  /* تا وقتی رمز اولیه عوض نشده، سرور هیچ درخواستی را قبول نمی‌کند.
+     پس به جای ساختن پنلی که همه‌جایش خطا می‌دهد، فقط پنجره رمز را
+     نشان می‌دهیم و بعد از تغییر، پنل واقعی ساخته می‌شود. */
+  if (ME && ME.must_change) {
+    document.getElementById('tabs').innerHTML = '';
+    document.getElementById('stats').innerHTML = '';
+    openPasswordChange(true);
+    return;
+  }
+
+  buildTabs();
+  loadAll();
+  startNotifications();
+}
+
+/* ═══ اعلان کارهای انجام‌نشده ═══ */
+
+let notifTimer = null;
+
+/**
+ * نوار اعلان بالای پنل.
+ *
+ * چرا لازم بود: کارمند باید هر تب را دستی باز می‌کرد تا بفهمد کاری
+ * هست یا نه. حالا در یک نگاه می‌بیند — و مهم‌تر، تیکتی که از مهلت
+ * ۲۴ ساعته گذشته با رنگ هشدار جدا می‌شود.
+ *
+ * سرور فقط مواردی را می‌فرستد که این کارمند مجوزشان را دارد، پس
+ * فیلتر سمت مرورگر لازم نیست.
+ */
+async function loadNotifications() {
+  let d;
+  try {
+    const r = await fetch('/api/admin/notifications', { headers: H() });
+    if (!r.ok) return;
+    d = await r.json();
+  } catch { return; }
+
+  const bar = document.getElementById('notifBar');
+  if (!d.items || !d.items.length) {
+    bar.style.display = 'none';
+    // نشان تب‌ها هم پاک شود
+    ['orders', 'tickets', 'reviews'].forEach(k => setTabCount(k, 0));
+    return;
+  }
+
+  bar.className = 'notif-bar' + (d.urgent ? ' urgent' : '');
+  bar.innerHTML = `
+    <span class="nb-icon" aria-hidden="true">
+      <svg viewBox="0 0 24 24" width="17" height="17" fill="none"
+           stroke="currentColor" stroke-width="1.8">
+        <path d="M18 8a6 6 0 10-12 0c0 7-3 8-3 8h18s-3-1-3-8"/>
+        <path d="M13.7 21a2 2 0 01-3.4 0"/>
+      </svg>
+    </span>
+    <div class="nb-items">
+      ${d.items.map(it => `
+        <button class="nb-chip ${it.urgent ? 'on' : ''}"
+                onclick="jumpToTab('${it.tab}')">
+          <b>${toFa(it.count)}</b> ${esc(it.label)}
+        </button>`).join('')}
+    </div>`;
+  bar.style.display = '';
+
+  // نشان روی تب‌ها هم همگام شود
+  const byTab = {};
+  d.items.forEach(it => { byTab[it.tab] = (byTab[it.tab] || 0) + it.count; });
+  ['orders', 'tickets', 'reviews'].forEach(k => setTabCount(k, byTab[k] || 0));
+}
+
+/** پرش به تبی که کار در آن است */
+function jumpToTab(key) {
+  const tab = document.querySelector(`.tab[data-t="${key}"]`);
+  if (!tab) return;      // این کارمند تب را ندارد
+  tab.click();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function startNotifications() {
+  loadNotifications();
+  // هر دو دقیقه تازه می‌شود — سبک است و کار تازه را زود نشان می‌دهد
+  if (notifTimer) clearInterval(notifTimer);
+  notifTimer = setInterval(loadNotifications, 120000);
+}
+
+/* ═══ تغییر رمز ═══ */
+function openPasswordChange(forced) {
+  const html = `
+    <div id="pwModal" style="position:fixed;inset:0;z-index:500;background:rgba(0,0,0,.55);
+         display:grid;place-items:center;padding:20px">
+      <div style="background:#FFF;border-radius:16px;padding:26px;max-width:400px;width:100%">
+        <h3 style="font-size:1.05rem;font-weight:800;margin-bottom:6px">تغییر رمز عبور</h3>
+        <p style="font-size:.82rem;color:var(--muted);line-height:1.9;margin-bottom:16px">
+          ${forced ? 'این رمز اولیه‌ای است که مدیر به شما داده و او هم آن را می‌داند. تا عوضش نکنید هیچ بخشی از پنل باز نمی‌شود.'
+                   : 'رمز تازه باید حداقل ۸ نویسه باشد.'}</p>
+        <div class="field"><label>رمز فعلی</label>
+          <input type="password" id="pwCur" autocomplete="current-password"></div>
+        <div class="field"><label>رمز تازه</label>
+          <input type="password" id="pwNew" autocomplete="new-password"></div>
+        <div class="field"><label>تکرار رمز تازه</label>
+          <input type="password" id="pwNew2" autocomplete="new-password"></div>
+        <div id="pwErr" style="color:#C0392B;font-size:.8rem;margin-bottom:10px"></div>
+        <button class="btn btn-block" onclick="submitPasswordChange()">تغییر رمز</button>
+        ${forced ? `<button class="btn btn-outline btn-block" style="margin-top:8px"
+          onclick="logout()">خروج از حساب</button>`
+                 : `<button class="btn btn-outline btn-block" style="margin-top:8px"
+          onclick="document.getElementById('pwModal').remove()">انصراف</button>`}
+      </div>
+    </div>`;
+  document.body.insertAdjacentHTML('beforeend', html);
+}
+
+async function submitPasswordChange() {
+  const cur = document.getElementById('pwCur').value;
+  const n1 = document.getElementById('pwNew').value;
+  const n2 = document.getElementById('pwNew2').value;
+  const err = document.getElementById('pwErr');
+  err.textContent = '';
+
+  if (n1.length < 8) { err.textContent = 'رمز تازه باید حداقل ۸ نویسه باشد.'; return; }
+  if (n1 !== n2) { err.textContent = 'دو رمز تازه یکسان نیستند.'; return; }
+
+  const r = await fetch('/api/admin/change-password', {
+    method: 'POST', headers: H(),
+    body: JSON.stringify({ current: cur, new_password: n1 })
+  });
+  const d = await r.json();
+  if (!r.ok) { err.textContent = d.error; return; }
+
+  document.getElementById('pwModal').remove();
+  const wasLocked = !!(ME && ME.must_change);
+  if (ME) ME.must_change = false;
+  toast('رمز عبور تغییر کرد');
+
+  // حساب تازه باز شد — حالا پنل واقعی را بساز
+  if (wasLocked) { buildTabs(); loadAll(); }
+}
+
+const STATUS_FA = {
+  PENDING:'در انتظار پرداخت', PAID:'پرداخت شده', PROCESSING:'در حال آماده‌سازی',
+  SHIPPED:'ارسال شده', DELIVERED:'تحویل داده شده', CANCELLED:'لغو شده',
+  FAILED:'ناموفق', RETURNED:'مرجوع شده', EXPIRED:'منقضی شده'
+};
+const STATUS_CLS = {
+  PAID:'b-paid', DELIVERED:'b-paid', PROCESSING:'b-pending', SHIPPED:'b-pending',
+  PENDING:'b-pending', CANCELLED:'b-cancel', FAILED:'b-cancel',
+  RETURNED:'b-cancel', EXPIRED:'b-cancel'
+};
+const NEXT_STATUS = {
+  PENDING:['CANCELLED'], PAID:['PROCESSING','CANCELLED'],
+  PROCESSING:['SHIPPED','CANCELLED'], SHIPPED:['DELIVERED','RETURNED'],
+  DELIVERED:['RETURNED'], CANCELLED:[], FAILED:[], RETURNED:[], EXPIRED:[]
+};
+
+/* درخواست محافظت‌شده: اگر مجوز نداریم یا سرور رد کرد، مقدار
+   پیش‌فرض برمی‌گردد تا پنل برای کارمند محدود کرش نکند. */
+async function safeGet(url, perm, fallback) {
+  if (perm && !may(perm)) return fallback;
+  try {
+    const r = await fetch(url, { headers: H() });
+    if (!r.ok) return fallback;
+    return await r.json();
+  } catch { return fallback; }
+}
+
+async function loadAll() {
+  const [o, t, a, h, c] = await Promise.all([
+    safeGet('/api/orders', 'orders.view', { total: 0, orders: [] }),
+    safeGet('/api/tickets', 'tickets.view', { tickets: [] }),
+    safeGet('/api/articles', null, { total: 0, articles: [] }),
+    safeGet('/api/health', null, {}),
+    safeGet('/api/admin/coupons', 'coupons.view', { total: 0, coupons: [] })
+  ]);
+
+  const paidLike = ['PAID','PROCESSING','SHIPPED','DELIVERED'];
+  const orders = o.orders || [];
+  const revenue = orders.filter(x => paidLike.includes(x.status))
+    .reduce((s, x) => s + x.total_paid, 0);
+  const pending = orders.filter(x => ['PAID','PROCESSING'].includes(x.status)).length;
+
+  /* کارت‌های آمار هم بر اساس مجوز فیلتر می‌شوند — انباردار نباید
+     رقم فروش را در نگاه اول ببیند. */
+  const cards = [];
+  if (may('orders.view'))   cards.push([toFa(o.total || 0), 'سفارش']);
+  if (may('reports.sales')) cards.push([money(revenue), 'فروش (تومان)']);
+  if (may('orders.view'))   cards.push([toFa(pending), 'در انتظار ارسال']);
+  if (may('tickets.view'))  cards.push([toFa((t.tickets || []).length), 'تیکت مرجوعی']);
+  if (may('coupons.view'))  cards.push([toFa(c.total || 0), 'کد تخفیف']);
+
+  document.getElementById('stats').innerHTML = cards
+    .map(([n, l]) => `<div class="stat"><div class="n">${n}</div><div class="l">${l}</div></div>`)
+    .join('');
+
+  if (may('orders.view')) renderOrders(o);
+
+  // نشان کار انجام‌نشده روی تب‌ها
+  setTabCount('orders', pending);
+  setTabCount('tickets', (t.tickets || []).filter(x => x.status !== 'CLOSED').length);
+  if (may('reviews.view')) {
+    safeGet('/api/admin/reviews?status=PENDING', 'reviews.view', { reviews: [] })
+      .then(d => setTabCount('reviews', (d.reviews || []).length));
+  }
+
+  const cl = c.coupons || [];
+  document.getElementById('couponsTable').innerHTML = cl.length ? `
+    <tr><th>کد</th><th>نوع</th><th>مقدار</th><th>حداقل خرید</th><th>استفاده</th><th>وضعیت</th><th>اقدام</th></tr>
+    ${cl.map(x => {
+      const typeFa = { PERCENT:'درصدی', FIXED:'مبلغ ثابت', FREE_SHIPPING:'ارسال رایگان' }[x.type] || x.type;
+      const val = x.type === 'PERCENT' ? toFa(x.value) + '٪'
+                : x.type === 'FIXED' ? money(x.value) : '—';
+      const lim = x.usage_limit == null ? '∞' : toFa(x.usage_limit);
+      return `<tr>
+        <td dir="ltr" style="font-weight:800">${x.code}
+          ${x.description ? `<div style="font-size:.72rem;color:var(--muted);direction:rtl">${x.description}</div>` : ''}</td>
+        <td>${typeFa}</td><td>${val}</td><td>${x.min_subtotal ? money(x.min_subtotal) : '—'}</td>
+        <td>${toFa(x.used_count)}/${lim}</td>
+        <td><span class="badge ${x.active ? 'b-paid' : 'b-cancel'}">${x.active ? 'فعال' : 'غیرفعال'}</span></td>
+        <td>
+          <button onclick="toggleCoupon('${x.code}',${x.active ? 0 : 1})"
+            style="background:var(--sand);border:1px solid var(--border);border-radius:7px;
+            padding:5px 10px;cursor:pointer;font-size:.74rem;font-family:var(--font)">
+            ${x.active ? 'غیرفعال' : 'فعال'}</button>
+          <button class="del" onclick="delCoupon('${x.code}')">حذف</button>
+        </td></tr>`;
+    }).join('')}`
+    : '<tr><td style="text-align:center;padding:26px;color:var(--muted)">کد تخفیفی ثبت نشده</td></tr>';
+
+  document.getElementById('ticketsTable').innerHTML = t.tickets.length ? `
+    <tr><th>شناسه</th><th>سفارش</th><th>محصول</th><th>توضیح</th><th>وضعیت</th><th>پاسخ</th></tr>
+    ${t.tickets.map(x => `<tr>
+      <td dir="ltr" style="font-size:.78rem">${x.ticket_id}</td>
+      <td dir="ltr" style="font-size:.78rem">${x.order_id || '—'}</td>
+      <td>${esc(x.product_name || '—')}<div style="font-size:.72rem;color:var(--muted)">${toFa(x.volume_ml || 0)} میل</div></td>
+      <td style="font-size:.78rem;max-width:220px">${esc((x.description || '').slice(0, 90)) || '—'}</td>
+      <td><span class="badge ${x.status === 'ANSWERED' ? 'b-paid' : 'b-pending'}">
+        ${x.status === 'ANSWERED' ? 'پاسخ داده شده' : 'در انتظار بررسی'}</span></td>
+      <td><button onclick="replyTicket('${x.ticket_id}')"
+        style="background:var(--sand);border:1px solid var(--border);border-radius:7px;
+        padding:5px 10px;cursor:pointer;font-size:.74rem;font-family:var(--font)">پاسخ</button></td>
+    </tr>`).join('')}`
+    : '<tr><td style="text-align:center;padding:26px;color:var(--muted)">تیکتی ثبت نشده</td></tr>';
+
+  window._articles = a.articles || [];
+  document.getElementById('articlesTable').innerHTML = a.total ? `
+    <tr><th>عنوان</th><th>دسته</th><th>عملیات</th></tr>
+    ${a.articles.map(x => `<tr>
+      <td>${esc(x.title)}<div style="font-size:.72rem;color:var(--muted)" dir="ltr">/journal/${esc(x.slug)}</div></td>
+      <td>${esc(x.category_label || x.category)}</td>
+      <td>
+        <a href="/journal/${x.slug}" target="_blank"
+          style="display:inline-block;background:var(--sand);border:1px solid var(--border);
+          border-radius:7px;padding:5px 11px;font-size:.74rem;text-decoration:none;
+          color:inherit;margin-left:4px">مشاهده</a>
+        <button onclick="editArticle('${x.id}')"
+          style="background:var(--obsidian);color:#FFF;border:none;border-radius:7px;
+          padding:5px 12px;cursor:pointer;font-size:.74rem;font-family:var(--font);
+          margin-left:4px">ویرایش</button>
+        <button class="del" onclick="delArticle('${x.id}')">حذف</button>
+      </td></tr>`).join('')}`
+    : '<tr><td style="text-align:center;padding:26px;color:var(--muted)">مقاله‌ای نیست</td></tr>';
+
+  document.getElementById('health').innerHTML = `
+    وضعیت: <strong style="color:#1E8449">فعال</strong><br>
+    محصولات: <strong>${toFa(h.products)}</strong> — متغیرها: <strong>${toFa(h.variants)}</strong><br>
+    درگاه پرداخت: <strong>${h.payment_gateway}</strong>
+      ${h.payment_live ? '<span style="color:#1E8449">(واقعی)</span>'
+                       : '<span style="color:#B9770E">(آزمایشی)</span>'}<br>
+    سرویس پیامک: <strong>${h.sms_provider === 'console' ? 'لاگ سرور (آزمایشی)' : h.sms_provider}</strong><br>
+    نشست‌های فعال: <strong>${toFa(h.sessions ?? 0)}</strong><br>
+    سفارش پرداخت‌نشده: <strong>${toFa(h.pending_orders ?? 0)}</strong>
+      <span style="color:var(--muted);font-size:.8rem">(آزادسازی پس از ${toFa(h.pending_ttl_min ?? 30)} دقیقه)</span><br>
+    خطای ۲۴ ساعت اخیر: <strong style="color:${h.errors_24h ? '#C0392B' : '#1E8449'}">${toFa(h.errors_24h ?? 0)}</strong><br>
+    دیتابیس: <span dir="ltr" style="font-size:.78rem">${h.db}</span>`;
+
+  loadLogs('');
+  loadBackups();
+}
+
+async function loadLogs(level) {
+  const r = await fetch('/api/admin/logs?limit=60' + (level ? '&level=' + level : ''), { headers: H() });
+  const d = await r.json();
+  const CL = { ERROR:'#C0392B', WARN:'#B9770E', INFO:'#1E8449' };
+  document.getElementById('logsBox').innerHTML = d.total ? `
+    <table style="font-size:.78rem">
+    ${d.logs.map(l => `<tr>
+      <td style="width:70px;color:${CL[l.level] || '#666'};font-weight:800">${l.level}</td>
+      <td style="width:88px;color:var(--muted)">${l.scope || '—'}</td>
+      <td>${l.message}${l.meta ? `<div style="color:var(--muted);font-size:.7rem;direction:ltr">${l.meta}</div>` : ''}</td>
+      <td style="width:118px;color:var(--muted);font-size:.72rem" dir="ltr">${l.logged_at}</td>
+    </tr>`).join('')}</table>`
+    : '<div style="color:var(--muted);font-size:.84rem;padding:12px">رویدادی ثبت نشده</div>';
+}
+
+async function downloadBackup() {
+  toast('در حال تهیه پشتیبان…');
+  const r = await fetch('/api/admin/backup', { headers: H() });
+  if (!r.ok) return toast('خطا در تهیه پشتیبان');
+  const blob = await r.blob();
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = `yazd-backup-${new Date().toISOString().slice(0,10)}.db`;
+  a.click();
+  toast('پشتیبان دانلود شد');
+  loadBackups();
+}
+
+async function loadBackups() {
+  if (!may('system.backup')) return;
+  const r = await fetch('/api/admin/backups', { headers: H() });
+  const d = await r.json();
+  document.getElementById('backupList').innerHTML = d.total ? `
+    <div style="font-size:.82rem;font-weight:700;margin-bottom:7px">
+      پشتیبان‌های خودکار (${toFa(d.total)})</div>
+    <table style="font-size:.78rem">
+    ${d.backups.map(b => `<tr>
+      <td dir="ltr">${b.name}</td>
+      <td>${(b.size/1024/1024).toFixed(1)} MB</td>
+      <td style="color:var(--muted)" dir="ltr">${b.created.slice(0,16).replace('T',' ')}</td>
+      <td><a href="/api/admin/backups/${encodeURIComponent(b.name)}"
+             onclick="dlBackup(event,'${b.name}')"
+             style="color:var(--gold);font-weight:700;font-size:.76rem">دانلود</a></td>
+    </tr>`).join('')}</table>
+    <div style="font-size:.74rem;color:var(--muted);line-height:1.9;margin-top:10px">
+      این نسخه‌ها روی همان دیسک دیتابیس‌اند. دست‌کم یکی را جای دیگری نگه دارید.<br>
+      برای بازگرداندن: <code style="direction:ltr;display:inline-block">node scripts/restore_backup.js &lt;file&gt;</code>
+    </div>`
+    : '<div style="font-size:.8rem;color:var(--muted)">هنوز پشتیبان خودکاری ساخته نشده</div>';
+}
+
+/* دانلود با توکن — لینک ساده کار نمی‌کند چون مسیر احراز هویت می‌خواهد */
+async function dlBackup(e, name) {
+  e.preventDefault();
+  toast('در حال دریافت…');
+  try {
+    const r = await fetch('/api/admin/backups/' + encodeURIComponent(name), { headers: H() });
+    if (!r.ok) return toast('خطا در دریافت نسخه پشتیبان');
+    const blob = await r.blob();
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = name;
+    a.click();
+    URL.revokeObjectURL(a.href);
+    toast('دانلود شد');
+  } catch { toast('ارتباط برقرار نشد'); }
+}
+
+async function runMaintenance() {
+  const r = await fetch('/api/admin/maintenance', { method: 'POST', headers: H() });
+  const d = await r.json();
+  toast(r.ok ? d.message : d.error);
+  loadAll();
+}
+
+/* بازسازی ایندکس جستجو و نُت — پس از تغییر داده محصول از بیرون */
+async function runReindex() {
+  if (!confirm('ایندکس جستجو و نُت از نو ساخته شود؟')) return;
+  try {
+    const r = await fetch('/api/admin/reindex', { method: 'POST', headers: H() });
+    const d = await r.json();
+    toast(r.ok ? d.message : (d.error || 'انجام نشد'), r.ok ? 'ok' : 'err');
+  } catch { toast('ارتباط برقرار نشد', 'err'); }
+}
+
+
+let editingArticle = null;
+
+function editArticle(id) {
+  const a = (window._articles || []).find(x => x.id === id);
+  if (!a) return;
+  editingArticle = id;
+  document.getElementById('aTitle').value = a.title || '';
+  document.getElementById('aCat').value = a.category || 'guide';
+  document.getElementById('aExcerpt').value = a.excerpt || '';
+  document.getElementById('aContent').value = a.content || '';
+  document.getElementById('artFormTitle').textContent = 'ویرایش مقاله';
+  document.getElementById('artSaveBtn').textContent = 'ذخیره تغییرات';
+  document.getElementById('artCancelBtn').style.display = 'inline-block';
+  document.getElementById('artFormTitle').scrollIntoView({ behavior: 'smooth' });
+}
+
+function cancelEditArticle() {
+  editingArticle = null;
+  ['aTitle', 'aExcerpt', 'aContent'].forEach(id => document.getElementById(id).value = '');
+  document.getElementById('artFormTitle').textContent = 'انتشار مقاله جدید';
+  document.getElementById('artSaveBtn').textContent = 'انتشار مقاله';
+  document.getElementById('artCancelBtn').style.display = 'none';
+}
+
+async function publish() {
+  const title = document.getElementById('aTitle').value.trim();
+  if (!title) return toast('عنوان الزامی است');
+
+  const body = {
+    title,
+    category: document.getElementById('aCat').value,
+    category_label: document.getElementById('aCat').selectedOptions[0].text,
+    excerpt: document.getElementById('aExcerpt').value,
+    content: document.getElementById('aContent').value
+  };
+
+  const r = editingArticle
+    ? await fetch('/api/articles/' + editingArticle, {
+        method: 'PUT', headers: H(), body: JSON.stringify(body) })
+    : await fetch('/api/articles', {
+        method: 'POST', headers: H(), body: JSON.stringify(body) });
+
+  if (r.ok) {
+    toast(editingArticle ? 'مقاله بروزرسانی شد' : 'مقاله منتشر شد');
+    cancelEditArticle();
+    loadAll();
+  } else {
+    const d = await r.json().catch(() => ({}));
+    toast(d.error || 'خطا در ذخیره');
+  }
+}
+
+async function delArticle(id) {
+  if (!confirm('این مقاله حذف شود؟')) return;
+  const r = await fetch('/api/articles/' + id, { method: 'DELETE', headers: H() });
+  toast(r.ok ? 'مقاله حذف شد' : 'خطا در حذف');
+  loadAll();
+}
+
+
+/* ── تنظیمات فروشگاه ── */
+const SFIELDS = {
+  sName:'shop_name', sNameEn:'shop_name_en', sLegal:'legal_name',
+  sEco:'economic_code', sNat:'national_id', sReg:'register_no',
+  sPhone:'phone', sPost:'postal_code',
+  sEnamadId:'enamad_id', sEnamad:'enamad_code',
+  sAddr:'address', sNote:'invoice_note',
+  sPerson:'sender_person'
+};
+
+/* ══════════════════════════════════════════
+   بررسی آمادگی افتتاح
+   ══════════════════════════════════════════ */
+const RD_ICON = {
+  ok:    ['#1E8449', '<path d="M5 13l4 4L19 7"/>'],
+  warn:  ['#C59927', '<path d="M12 8v5M12 16h.01"/><circle cx="12" cy="12" r="9"/>'],
+  error: ['#C0392B', '<circle cx="12" cy="12" r="9"/><path d="M15 9l-6 6M9 9l6 6"/>']
+};
+
+async function loadReadiness(deep) {
+  if (!may('settings.view')) return;
+  const box = document.getElementById('readyList');
+  box.innerHTML = `<div style="color:var(--muted);font-size:.85rem;padding:12px">
+    ${deep ? 'در حال تماس با سرویس‌ها…' : 'در حال بررسی…'}</div>`;
+
+  const d = await fetch('/api/admin/readiness' + (deep ? '?deep=1' : ''), { headers: H() })
+    .then(r => r.json()).catch(() => null);
+  if (!d) { box.innerHTML = '<div style="color:#C0392B">بررسی انجام نشد</div>'; return; }
+
+  const head = d.ready
+    ? `<div style="background:#E8F6EF;border-right:3px solid #1E8449;padding:12px 15px;
+         border-radius:9px;font-weight:800;font-size:.88rem;margin-bottom:12px">
+         آماده افتتاح — هیچ مورد بازدارنده‌ای نیست${d.warnings
+           ? ` (${toFa(d.warnings)} هشدار غیربحرانی)` : ''}</div>`
+    : `<div style="background:#FDECEA;border-right:3px solid #C0392B;padding:12px 15px;
+         border-radius:9px;font-weight:800;font-size:.88rem;margin-bottom:12px">
+         ${toFa(d.errors)} مورد باید پیش از فروش واقعی درست شود</div>`;
+
+  box.innerHTML = head + d.items.map(i => {
+    const [col, path] = RD_ICON[i.level] || RD_ICON.warn;
+    return `<div style="display:flex;gap:11px;align-items:flex-start;padding:11px 13px;
+        border:1px solid var(--border);border-radius:9px;margin-bottom:8px;background:var(--surface)">
+      <svg viewBox="0 0 24 24" style="width:19px;height:19px;flex:none;margin-top:2px;
+        fill:none;stroke:${col};stroke-width:2;stroke-linecap:round">${path}</svg>
+      <div style="flex:1">
+        <div style="font-weight:700;font-size:.85rem">${esc(i.title)}</div>
+        <div style="font-size:.79rem;color:var(--muted);line-height:1.9;margin-top:2px">
+          ${esc(i.message).replace(/(\/[\w./-]+)/g, '<bdi dir="ltr">$1</bdi>')}</div>
+        ${i.hint ? (() => {
+          /* راهنما دو نوع است: دستور شل (لاتین) و مسیر منو (فارسی).
+             نسخه اول همه را `direction:ltr` می‌کرد و راهنمای فارسی
+             به‌هم می‌ریخت — «پنل ← تنظیمات» وارونه نمایش داده می‌شد.
+             تشخیص با وجود حرف فارسی، نه با حدس. */
+          const isCmd = !/[\u0600-\u06FF]/.test(i.hint);
+          return `<div style="font-size:.74rem;margin-top:5px;
+            ${isCmd ? 'direction:ltr;text-align:left;font-family:monospace;' : ''}
+            background:var(--sand);padding:6px 9px;border-radius:6px;
+            line-height:1.9;word-break:break-word">${esc(i.hint)}</div>`;
+        })() : ''}
+      </div>
+    </div>`;
+  }).join('');
+
+  /* اطلاعات تکمیلی سرویس‌ها — فقط در بررسی کامل معنی دارد */
+  if (d.checked_deep) {
+    const extra = [];
+    if (d.sms?.provider) extra.push(`سامانه پیامک: <b>${esc(d.sms.provider)}</b>`);
+    if (d.sms?.key_hint) extra.push(`کلید پیامک: <code dir="ltr">${esc(d.sms.key_hint)}</code>`);
+    if (d.sms?.sender) extra.push(`خط ارسال: <code dir="ltr">${esc(d.sms.sender)}</code>`);
+    if (d.sms?.line_type) extra.push(`نوع خط: ${esc(d.sms.line_type)}`);
+    if (d.sms?.remaining_credit != null)
+      extra.push(`اعتبار پیامک: ${toFa(Number(d.sms.remaining_credit).toLocaleString('en-US'))} ریال`);
+    if (d.payment?.merchant_hint)
+      extra.push(`شناسه پذیرنده: <code dir="ltr">${esc(d.payment.merchant_hint)}</code>`);
+    if (extra.length) {
+      box.innerHTML += `<div style="font-size:.77rem;color:var(--muted);
+        line-height:2;padding:10px 13px;background:var(--sand);border-radius:8px">
+        ${extra.join(' · ')}</div>`;
+    }
+  }
+
+  // جعبه پیامک آزمایشی فقط وقتی کاوه‌نگار فعال است
+  const sb = document.getElementById('smsTestBox');
+  /* جعبه پیامک آزمایشی برای هر ارائه‌دهنده واقعی — نه فقط یکی.
+     با افزودن پیامیتو معلوم شد شرط قبلی به نام سامانه گره خورده
+     بود و با هر تغییری می‌شکست. */
+  if (sb) sb.style.display = (d.sms?.provider && d.sms.provider !== 'console'
+    && may('settings.edit')) ? 'block' : 'none';
+}
+
+async function sendTestSms() {
+  const mobile = document.getElementById('smsTo').value.trim();
+  const out = document.getElementById('smsTestResult');
+  if (!mobile) return toast('شماره را وارد کنید');
+  out.innerHTML = '<span style="font-size:.8rem;color:var(--muted)">در حال ارسال…</span>';
+
+  const r = await fetch('/api/admin/readiness/test-sms', {
+    method: 'POST', headers: H(), body: JSON.stringify({ mobile })
+  });
+  const d = await r.json();
+
+  if (!r.ok) {
+    out.innerHTML = `<div style="color:#C0392B;font-size:.8rem">${esc(d.error)}</div>`;
+    return;
+  }
+  const good = d.test_sms === 'sent';
+  out.innerHTML = `<div style="background:${good ? '#E8F6EF' : '#FDECEA'};
+    border-right:3px solid ${good ? '#1E8449' : '#C0392B'};padding:10px 13px;
+    border-radius:8px;font-size:.81rem;line-height:1.9">
+    ${good ? 'پیامک ارسال شد — گوشی‌تان را بررسی کنید.'
+           : esc(d.test_error || d.message || 'ارسال نشد.')}</div>`;
+}
+
+async function loadShopSettings() {
+  if (!may('settings.view')) return;
+  loadReadiness(false);
+  const d = await fetch('/api/admin/settings', { headers: H() }).then(r => r.json());
+  Object.entries(SFIELDS).forEach(([id, key]) => {
+    const el = document.getElementById(id);
+    if (el) el.value = d[key] || '';
+  });
+}
+
+async function saveShopSettings() {
+  const body = {};
+  Object.entries(SFIELDS).forEach(([id, key]) => {
+    const el = document.getElementById(id);
+    if (el) body[key] = el.value.trim();
+  });
+  const r = await fetch('/api/admin/settings', {
+    method: 'POST', headers: H(), body: JSON.stringify(body)
+  });
+  const d = await r.json();
+  toast(r.ok ? d.message : d.error);
+}
+
+/* ── گزارش فروش ── */
+let repDays = 7;
+
+async function loadReports(days, btn) {
+  if (!may('reports.sales')) return;
+  repDays = days || repDays;
+  if (btn) document.querySelectorAll('.rng-btn').forEach(b => b.classList.toggle('on', b === btn));
+  const d = await fetch('/api/admin/reports?days=' + repDays, { headers: H() }).then(r => r.json());
+  const s = d.summary;
+
+  const arrow = v => v > 0 ? `<span class="growth-up">▲ ${toFa(Math.abs(v))}٪</span>`
+               : v < 0 ? `<span class="growth-dn">▼ ${toFa(Math.abs(v))}٪</span>` : '';
+
+  document.getElementById('repStats').innerHTML = `
+    <div class="stat"><div class="n">${money(s.revenue)}</div>
+      <div class="l">فروش (تومان) ${arrow(s.growth.revenue)}</div></div>
+    <div class="stat"><div class="n">${toFa(s.orders)}</div>
+      <div class="l">سفارش ${arrow(s.growth.orders)}</div></div>
+    <div class="stat"><div class="n">${money(s.avg_order)}</div><div class="l">میانگین سبد</div></div>
+    <div class="stat"><div class="n">${toFa(s.units)}</div><div class="l">تعداد فروش</div></div>
+    <div class="stat"><div class="n">${toFa(s.funnel.conversion)}٪</div>
+      <div class="l">نرخ تبدیل (${toFa(s.funnel.paid)}/${toFa(s.funnel.total)})</div></div>
+    <div class="stat"><div class="n">${money(s.discounts)}</div><div class="l">تخفیف داده‌شده</div></div>
+    <div class="stat"><div class="n">${money(d.inventory.value)}</div><div class="l">ارزش انبار</div></div>
+    <div class="stat"><div class="n">${toFa(d.inventory.out_of_stock)}</div><div class="l">کالای ناموجود</div></div>`;
+
+  drawChart(d.daily);
+
+  document.getElementById('repTop').innerHTML = d.top_products.length ? `
+    <tr><th>محصول</th><th>تعداد</th><th>فروش</th></tr>
+    ${d.top_products.map(p => `<tr>
+      <td>${p.brand_fa || ''} — ${p.name_fa}</td>
+      <td>${toFa(p.units)}</td><td>${money(p.revenue)}</td></tr>`).join('')}`
+    : emptyRow();
+
+  document.getElementById('repBrand').innerHTML = barChart(d.by_brand, 'brand', 'revenue');
+  document.getElementById('repType').innerHTML =
+    barChart(d.by_type.map(t => ({ label: t.type_label || t.type, revenue: t.revenue })), 'label', 'revenue');
+
+  document.getElementById('repProv').innerHTML = d.by_province.length ? `
+    <tr><th>استان</th><th>سفارش</th><th>فروش</th></tr>
+    ${d.by_province.map(p => `<tr><td>${p.province}</td>
+      <td>${toFa(p.orders)}</td><td>${money(p.revenue)}</td></tr>`).join('')}`
+    : emptyRow();
+
+  document.getElementById('repCust').innerHTML = d.top_customers.length ? `
+    <tr><th>مشتری</th><th>سفارش</th><th>مجموع خرید</th></tr>
+    ${d.top_customers.map(c => `<tr>
+      <td>${c.name}<div style="font-size:.72rem;color:var(--muted)" dir="ltr">${c.mobile}</div></td>
+      <td>${toFa(c.orders)}</td><td>${money(c.spent)}</td></tr>`).join('')}`
+    : emptyRow();
+
+  document.getElementById('repCoup').innerHTML = d.coupons.length ? `
+    <tr><th>کد</th><th>استفاده</th><th>تخفیف</th><th>فروش حاصل</th></tr>
+    ${d.coupons.map(c => `<tr><td dir="ltr" style="font-weight:700">${c.code}</td>
+      <td>${toFa(c.uses)}</td><td>${money(c.given)}</td><td>${money(c.revenue)}</td></tr>`).join('')}`
+    : emptyRow();
+}
+
+/* ── کارت دسترسی ──
+   پیش‌تر پنل فقط می‌گفت «۳۴ مجوز». کارمند نمی‌دانست کدام کارها از
+   او برمی‌آید و وقتی به خطای «دسترسی ندارید» می‌خورد، نمی‌فهمید
+   اشتباه کرده یا سیستم خراب است.
+
+   ستون «در دسترس نیست» عمدی است: دانستن مرز کار، به‌اندازه دانستن
+   خودِ کار مهم است — به‌ویژه در فروشگاهی که چند نفر با نقش‌های
+   متفاوت کار می‌کنند. */
+function renderAccessCard(p, access) {
+  const box = document.getElementById('accessCard');
+  if (!box) return;
+  if (!access || !Array.isArray(access.granted)) { box.innerHTML = ''; return; }
+
+  const item = (i, yes) => `
+    <div class="acc-item${i.danger ? ' danger' : ''}">
+      <span class="ico">${yes ? '✓' : '✕'}</span>
+      <span><span class="lbl">${esc(i.label)}</span>
+        ${i.hint ? `<span class="hint">${esc(i.hint)}</span>` : ''}</span>
+    </div>`;
+
+  const col = (groups, yes) => (groups || []).map(gr => `
+    <div class="acc-grp">
+      <b>${esc(gr.label)}</b>
+      ${gr.items.map(i => item(i, yes)).join('')}
+    </div>`).join('') || '<p style="font-size:.82rem;color:var(--muted)">—</p>';
+
+  const nGranted = (access.granted || []).flatMap(x => x.items).length;
+  const nDenied  = (access.denied  || []).flatMap(x => x.items).length;
+
+  box.innerHTML = `
+    <div class="acc-role">
+      <div class="rn">${esc(p.role_name || '—')}</div>
+      ${p.role_description
+        ? `<div class="rd">${esc(p.role_description)}</div>` : ''}
+    </div>
+    <div class="acc-cols">
+      <div class="acc-box acc-yes">
+        <h4><span class="dot"></span>در دسترس شما (${toFa(nGranted)})</h4>
+        ${col(access.granted, true)}
+      </div>
+      <div class="acc-box acc-no">
+        <h4><span class="dot"></span>در دسترس نیست (${toFa(nDenied)})</h4>
+        ${col(access.denied, false)}
+      </div>
+    </div>
+    <p style="font-size:.76rem;color:var(--muted-light);line-height:1.9;margin-top:14px">
+      نشان «حساس» یعنی کاری که برگشت‌ناپذیر است یا اثر مالی دارد.
+      همه کارهای شما در «سابقه کارها» ثبت می‌شود.
+    </p>`;
+}
+
+function emptyRow() {
+  return '<tr><td style="text-align:center;padding:22px;color:var(--muted)">داده‌ای در این بازه نیست</td></tr>';
+}
+
+/* ═══ تحلیل بازدید ═══ */
+let anDays = 7;
+
+async function loadAnalytics(days, btn) {
+  if (!may('reports.traffic')) return;
+  anDays = days || anDays;
+  if (btn) {
+    document.querySelectorAll('#tab-analytics .rng-btn')
+      .forEach(b => b.classList.toggle('on', b === btn));
+  }
+
+  const d = await safeGet('/api/admin/analytics?days=' + anDays,
+                          'reports.traffic', null);
+  if (!d) return;
+
+  const t = d.traffic;
+  document.getElementById('anStats').innerHTML = `
+    <div class="stat"><div class="n">${toFa(t.visitors)}</div>
+      <div class="l">بازدیدکننده جدا</div></div>
+    <div class="stat"><div class="n">${toFa(t.funnel.view)}</div>
+      <div class="l">مشاهده محصول</div></div>
+    <div class="stat"><div class="n">${toFa(t.funnel.add_cart)}</div>
+      <div class="l">افزودن به سبد</div></div>
+    <div class="stat"><div class="n">${toFa(t.funnel.purchase)}</div>
+      <div class="l">خرید موفق</div></div>
+    <div class="stat"><div class="n">${toFa(t.funnel.overall)}٪</div>
+      <div class="l">نرخ تبدیل کل</div></div>`;
+
+  // ── قیف خرید ──
+  const f = t.funnel;
+  const steps = [
+    { label: 'مشاهده محصول', v: f.view,      rate: null },
+    { label: 'افزودن به سبد', v: f.add_cart,  rate: f.view_to_cart },
+    { label: 'شروع تسویه',   v: f.checkout,  rate: f.cart_to_checkout },
+    { label: 'خرید موفق',    v: f.purchase,  rate: f.checkout_to_buy }
+  ];
+  const top = Math.max(f.view, 1);
+
+  document.getElementById('anFunnel').innerHTML = f.view === 0
+    ? '<div style="color:var(--muted);font-size:.84rem;padding:14px">هنوز بازدیدی ثبت نشده است.</div>'
+    : steps.map((s, i) => {
+        const pct = Math.max(2, s.v / top * 100);
+        // بزرگ‌ترین افت را قرمز نشان می‌دهیم — همان جایی که باید درست شود
+        const weak = s.rate !== null && s.rate < 30;
+        return `<div class="bar-row">
+          <span class="lbl">${s.label}</span>
+          <span class="track"><span class="fill"
+            style="width:${pct}%;${weak ? 'background:#C0392B' : ''}"></span></span>
+          <span class="val">${toFa(s.v)}${
+            s.rate !== null
+              ? ` <small style="color:${weak ? '#C0392B' : 'var(--muted)'}">(${toFa(s.rate)}٪)</small>`
+              : ''}</span></div>`;
+      }).join('');
+
+  // ── روند روزانه ──
+  const dl = d.daily || [];
+  document.getElementById('anDaily').innerHTML = dl.length
+    ? barChartPlain(dl.map(r => ({
+        label: r.day.slice(5),
+        v: r.visitors
+      })), 'بازدیدکننده')
+    : '<div style="color:var(--muted);font-size:.84rem;padding:14px">داده‌ای نیست</div>';
+
+  // ── جستجوهای بی‌نتیجه ──
+  document.getElementById('anFailed').innerHTML = (d.failed_searches || []).length ? `
+    <tr><th>عبارت</th><th>دفعات</th><th>نفر</th></tr>
+    ${d.failed_searches.map(s => `<tr>
+      <td style="font-weight:700">${esc(s.term)}</td>
+      <td>${toFa(s.n)}</td><td>${toFa(s.people)}</td></tr>`).join('')}`
+    : emptyRow();
+
+  // ── پرجستجوترین ──
+  document.getElementById('anSearches').innerHTML = (d.top_searches || []).length ? `
+    <tr><th>عبارت</th><th>دفعات</th><th>میانگین نتیجه</th></tr>
+    ${d.top_searches.map(s => `<tr>
+      <td>${esc(s.term)}</td><td>${toFa(s.n)}</td>
+      <td>${toFa(Math.round(s.avg_results || 0))}</td></tr>`).join('')}`
+    : emptyRow();
+
+  // ── زیاد دیده، کم فروخته ──
+  document.getElementById('anLowConv').innerHTML = (d.high_view_low_sale || []).length ? `
+    <tr><th>محصول</th><th>بازدید</th><th>فروش</th></tr>
+    ${d.high_view_low_sale.map(p => `<tr>
+      <td>${esc(p.brand_fa || '')} — ${esc(p.name_fa)}</td>
+      <td>${toFa(p.viewers)}</td><td>${toFa(p.sold)}</td></tr>`).join('')}`
+    : emptyRow();
+
+  // ── بیشترین علاقه‌مندی ──
+  document.getElementById('anWanted').innerHTML = (d.most_wanted || []).length ? `
+    <tr><th>محصول</th><th>ذخیره</th></tr>
+    ${d.most_wanted.map(p => `<tr>
+      <td>${esc(p.brand_fa || '')} — ${esc(p.name_fa)}</td>
+      <td>${toFa(p.saves)}</td></tr>`).join('')}`
+    : emptyRow();
+}
+
+/** نمودار میله‌ای برای عددهای ساده (نه مبلغ) */
+function barChartPlain(rows) {
+  const max = Math.max(...rows.map(r => r.v), 1);
+  return rows.map(r => `<div class="bar-row">
+    <span class="lbl">${r.label}</span>
+    <span class="track"><span class="fill"
+      style="width:${Math.max(2, r.v / max * 100)}%"></span></span>
+    <span class="val">${toFa(r.v)}</span></div>`).join('');
+}
+
+/* ═══ پروفایل و کارنامه شخصی ═══ */
+
+let profDays = 30;
+
+/** نام فارسی هر عمل — کد خام برای کاربر معنی ندارد */
+const ACTION_FA = {
+  'auth.login': 'ورود به پنل',
+  'auth.change_password': 'تغییر رمز',
+  'profile.update': 'ویرایش مشخصات',
+  'orders.view': 'مشاهده سفارش',
+  'orders.status': 'پیشبرد وضعیت سفارش',
+  'orders.cancel': 'لغو سفارش',
+  'orders.invoice': 'صدور فاکتور',
+  'orders.export': 'خروجی سفارش‌ها',
+  'products.view': 'مشاهده محصولات',
+  'products.stock': 'تغییر موجودی',
+  'products.price': 'تغییر قیمت',
+  'products.edit': 'ویرایش محصول',
+  'reviews.view': 'مشاهده نظرات',
+  'reviews.moderate': 'بررسی نظر',
+  'reviews.reply': 'پاسخ به نظر',
+  'reviews.delete': 'حذف نظر',
+  'tickets.view': 'مشاهده تیکت',
+  'tickets.reply': 'پاسخ به تیکت',
+  'coupons.view': 'مشاهده کد تخفیف',
+  'coupons.create': 'ساخت کد تخفیف',
+  'coupons.toggle': 'فعال/غیرفعال کد',
+  'coupons.delete': 'حذف کد تخفیف',
+  'content.write': 'نوشتن مقاله',
+  'content.delete': 'حذف مقاله',
+  'settings.view': 'مشاهده تنظیمات',
+  'settings.edit': 'ویرایش تنظیمات',
+  'staff.view': 'مشاهده کارکنان',
+  'staff.manage': 'مدیریت کارکنان',
+  'roles.manage': 'مدیریت نقش‌ها',
+  'system.logs': 'مشاهده لاگ',
+  'system.backup': 'پشتیبان‌گیری',
+  'system.maintenance': 'نگهداری سیستم',
+  'reports.sales': 'گزارش فروش',
+  'reports.stock': 'گزارش موجودی',
+  'reports.traffic': 'تحلیل بازدید'
+};
+const actionFa = a => ACTION_FA[a] || a;
+
+/** تاریخ میلادی ISO → شمسی خوانا */
+function faDateTime(iso) {
+  if (!iso) return '—';
+  try {
+    const dt = new Date(iso.replace(' ', 'T') + (iso.includes('Z') ? '' : 'Z'));
+    return new Intl.DateTimeFormat('fa-IR', {
+      month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit'
+    }).format(dt);
+  } catch { return iso.slice(0, 16); }
+}
+
+async function loadProfile(days, btn) {
+  profDays = days || profDays;
+  if (btn) {
+    document.querySelectorAll('#tab-profile .rng-btn')
+      .forEach(b => b.classList.toggle('on', b === btn));
+  }
+
+  let d;
+  try {
+    const r = await fetch('/api/admin/me/activity?days=' + profDays, { headers: H() });
+    if (!r.ok) return;
+    d = await r.json();
+  } catch { return; }
+
+  const p = d.profile;
+
+  // ── مشخصات ──
+  const row = (k, v) => `<div class="pf-row"><span>${k}</span><b>${v}</b></div>`;
+  document.getElementById('profInfo').innerHTML = `
+    <div class="pf-grid">
+      ${row('نام', esc(p.display_name))}
+      ${row('نام کاربری', `<span dir="ltr">${esc(p.username)}</span>`)}
+      ${row('نقش', esc(p.role_name))}
+      ${row('سطح دسترسی', toFa(p.permission_count) + ' از ' +
+            toFa(p.total_permissions || 34) + ' مجوز')}
+      ${row('موبایل', p.mobile ? `<span dir="ltr">${toFa(p.mobile)}</span>` : '—')}
+      ${row('آخرین ورود', faDateTime(p.last_login))}
+      ${row('عضو از', faDateTime(p.created_at))}
+      ${row('نشست فعال', toFa(p.active_sessions))}
+    </div>`;
+
+  // فرم ویرایش را پر کن
+  document.getElementById('pfName').value = p.display_name || '';
+  document.getElementById('pfMobile').value = p.mobile || '';
+
+  renderAccessCard(p, d.access);
+
+  // ── آمار ──
+  const cards = [
+    [toFa(d.summary.total), 'کار انجام‌شده'],
+    [toFa(d.summary.active_days), 'روز فعال']
+  ];
+  /* کارت با مقدار صفر نمایش داده نمی‌شود — «۰ پاسخ به تیکت» چیزی
+     به کارمند نمی‌گوید و فقط کارت‌های واقعی را کم‌رنگ می‌کند. */
+  (d.highlights || []).filter(h => h.value > 0)
+    .forEach(h => cards.push([toFa(h.value), h.label]));
+  if (d.summary.denied) cards.push([toFa(d.summary.denied), 'تلاش رد شده']);
+
+  document.getElementById('profStats').innerHTML = cards
+    .map(([n, l]) => `<div class="stat"><div class="n">${n}</div><div class="l">${l}</div></div>`)
+    .join('');
+
+  // ── پرکارترین کارها ──
+  const acts = d.actions || [];
+  document.getElementById('profActions').innerHTML = acts.length
+    ? barChartPlain(acts.map(a => ({ label: actionFa(a.action), v: a.n })))
+    : '<div style="color:var(--muted);font-size:.84rem;padding:14px">در این بازه کاری ثبت نشده است.</div>';
+
+  // ── آخرین کارها ──
+  const rec = d.recent || [];
+  document.getElementById('profRecent').innerHTML = rec.length ? `
+    <tr><th>کار</th><th>مورد</th><th>زمان</th></tr>
+    ${rec.map(x => `<tr>
+      <td>${esc(actionFa(x.action))}${x.allowed ? ''
+        : ' <span style="color:#C0392B;font-size:.72rem">(رد شد)</span>'}</td>
+      <td style="font-size:.78rem;color:var(--muted)">${esc(x.target || '—')}</td>
+      <td style="font-size:.76rem;white-space:nowrap">${faDateTime(x.at)}</td></tr>`).join('')}`
+    : emptyRow();
+}
+
+async function saveProfile() {
+  const display_name = document.getElementById('pfName').value.trim();
+  const mobile = document.getElementById('pfMobile').value.trim();
+
+  const r = await fetch('/api/admin/me/profile', {
+    method: 'PUT', headers: H(),
+    body: JSON.stringify({ display_name, mobile })
+  });
+  const d = await r.json();
+  if (!r.ok) { toast(d.error || 'خطا'); return; }
+
+  toast(d.message);
+  // نام در سربرگ هم باید همگام شود
+  if (ME && d.staff) {
+    ME.display_name = d.staff.display_name;
+    const brand = document.querySelector('.admin-top .brand');
+    if (brand) {
+      brand.innerHTML = `<span class="dot"></span>${esc(ME.display_name)}` +
+        `<span style="font-weight:400;opacity:.7;font-size:.82rem"> · ${esc(ME.role_name)}</span>`;
+    }
+  }
+  loadProfile();
+}
+
+async function refreshShowcase() {
+  const r = await fetch('/api/admin/analytics/refresh',
+                        { method: 'POST', headers: H() });
+  const d = await r.json();
+  if (!r.ok) { toast(d.error || 'خطا'); return; }
+  toast(d.message);
+}
+
+function barChart(rows, labelKey, valKey) {
+  if (!rows || !rows.length)
+    return '<div style="color:var(--muted);font-size:.84rem;padding:14px">داده‌ای نیست</div>';
+  const max = Math.max(...rows.map(r => r[valKey])) || 1;
+  return rows.map(r => `<div class="bar-row">
+    <span class="lbl">${r[labelKey] || '—'}</span>
+    <span class="track"><span class="fill" style="width:${Math.max(3, r[valKey] / max * 100)}%"></span></span>
+    <span class="val">${money(r[valKey])}</span></div>`).join('');
+}
+
+/* نمودار خطی SVG بدون کتابخانه */
+function drawChart(daily) {
+  const box = document.getElementById('chartBox');
+  if (!daily || !daily.length) { box.innerHTML = emptyRow(); return; }
+
+  const W = 780, Hh = 230, pad = { t: 18, r: 14, b: 30, l: 62 };
+  const iw = W - pad.l - pad.r, ih = Hh - pad.t - pad.b;
+  const max = Math.max(...daily.map(d => d.revenue), 1);
+  const n = daily.length;
+
+  const x = i => pad.l + (n === 1 ? iw / 2 : i * iw / (n - 1));
+  const y = v => pad.t + ih - (v / max) * ih;
+
+  const pts = daily.map((d, i) => `${x(i).toFixed(1)},${y(d.revenue).toFixed(1)}`).join(' ');
+  const area = `${pad.l},${pad.t + ih} ${pts} ${x(n - 1).toFixed(1)},${pad.t + ih}`;
+
+  const grid = [0, .25, .5, .75, 1].map(f => {
+    const gy = pad.t + ih - f * ih;
+    return `<line x1="${pad.l}" y1="${gy}" x2="${W - pad.r}" y2="${gy}"
+             stroke="#E5E2DC" stroke-width="1"/>
+      <text x="${pad.l - 8}" y="${gy + 4}" text-anchor="end" font-size="10"
+            fill="#888" font-family="Vazirmatn">${money(Math.round(max * f))}</text>`;
+  }).join('');
+
+  const step = Math.max(1, Math.ceil(n / 8));
+  const labels = daily.map((d, i) => i % step === 0 || i === n - 1
+    ? `<text x="${x(i)}" y="${Hh - 8}" text-anchor="middle" font-size="9.5"
+            fill="#888" font-family="Vazirmatn">${d.d.slice(5)}</text>` : '').join('');
+
+  const dots = daily.map((d, i) => d.revenue > 0
+    ? `<circle cx="${x(i)}" cy="${y(d.revenue)}" r="3.5" fill="#C59B27">
+         <title>${d.d} — ${money(d.revenue)} تومان — ${toFa(d.orders)} سفارش</title></circle>` : '').join('');
+
+  box.innerHTML = `<svg viewBox="0 0 ${W} ${Hh}" style="width:100%;height:auto"
+      role="img" aria-label="نمودار روند فروش">
+    <defs><linearGradient id="gA" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#C59B27" stop-opacity=".28"/>
+      <stop offset="100%" stop-color="#C59B27" stop-opacity="0"/></linearGradient></defs>
+    ${grid}
+    <polygon points="${area}" fill="url(#gA)"/>
+    <polyline points="${pts}" fill="none" stroke="#C59B27" stroke-width="2.5"
+      stroke-linejoin="round" stroke-linecap="round"/>
+    ${dots}${labels}
+  </svg>`;
+}
+
+/* ── مدیریت نظرات ── */
+let revStatus = 'PENDING';
+
+async function loadReviews(st) {
+  if (!may('reviews.view')) return;
+  revStatus = st || revStatus;
+  const d = await fetch('/api/admin/reviews?status=' + revStatus, { headers: H() }).then(r => r.json());
+  const c = d.counts || {};
+
+  document.getElementById('revTabs').innerHTML =
+    [['PENDING', 'در انتظار'], ['APPROVED', 'منتشرشده'], ['REJECTED', 'ردشده']]
+    .map(([k, l]) => `<button class="rng-btn ${revStatus === k ? 'on' : ''}"
+        onclick="loadReviews('${k}')">${l} (${toFa(c[k] || 0)})</button>`).join('');
+
+  document.getElementById('reviewsList').innerHTML = d.reviews.length
+    ? d.reviews.map(r => `<div class="rev-card">
+        <div style="display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-bottom:7px">
+          <div>
+            <strong>${esc(r.brand_fa || '')} — ${esc(r.name_fa)}</strong>
+            <div style="font-size:.76rem;color:var(--muted)">
+              ${esc(r.display_name)} ${r.verified ? '<span style="color:#1E8449">✓ خرید تأییدشده</span>' : ''}
+            </div>
+          </div>
+          <div class="stars">${'★'.repeat(r.rating)}${'☆'.repeat(5 - r.rating)}</div>
+        </div>
+        ${r.title ? `<div style="font-weight:700;font-size:.88rem;margin-bottom:4px">${esc(r.title)}</div>` : ''}
+        <div style="font-size:.85rem;line-height:1.9;color:#333">${escLines(r.body)}</div>
+        <div style="font-size:.74rem;color:var(--muted);margin-top:7px">
+          ${r.longevity ? `ماندگاری ${toFa(r.longevity)}/۵` : ''}
+          ${r.sillage ? ` • پخش بو ${toFa(r.sillage)}/۵` : ''}
+          • ${r.created_at.slice(0, 16).replace('T', ' ')}
+        </div>
+        <div style="margin-top:11px;display:flex;gap:7px;flex-wrap:wrap">
+          ${revStatus !== 'APPROVED' ? `<button class="btn" style="padding:6px 15px;font-size:.78rem"
+            onclick="setReview(${r.id},'APPROVED')">انتشار</button>` : ''}
+          ${revStatus !== 'REJECTED' ? `<button class="btn btn-outline" style="padding:6px 15px;font-size:.78rem"
+            onclick="setReview(${r.id},'REJECTED')">رد</button>` : ''}
+          <button class="btn btn-outline" style="padding:6px 15px;font-size:.78rem"
+            onclick="replyReview(${r.id})">پاسخ فروشگاه</button>
+          <button class="del" onclick="delReview(${r.id})">حذف</button>
+        </div>
+        ${r.admin_reply ? `<div style="background:var(--sand);border-radius:8px;padding:9px;
+          margin-top:9px;font-size:.8rem"><strong>پاسخ فروشگاه:</strong> ${r.admin_reply}</div>` : ''}
+      </div>`).join('')
+    : '<div style="color:var(--muted);font-size:.86rem;padding:18px">نظری در این دسته نیست</div>';
+}
+
+async function setReview(id, status) {
+  const r = await fetch('/api/admin/reviews/' + id, {
+    method: 'PUT', headers: H(), body: JSON.stringify({ status })
+  });
+  const d = await r.json();
+  toast(r.ok ? d.message : d.error);
+  loadReviews();
+}
+
+async function replyReview(id) {
+  const reply = prompt('پاسخ فروشگاه به این نظر:');
+  if (!reply || !reply.trim()) return;
+  const r = await fetch('/api/admin/reviews/' + id, {
+    method: 'PUT', headers: H(), body: JSON.stringify({ admin_reply: reply.trim() })
+  });
+  toast(r.ok ? 'پاسخ ثبت شد' : 'خطا');
+  loadReviews();
+}
+
+async function delReview(id) {
+  if (!confirm('این نظر حذف شود؟')) return;
+  const r = await fetch('/api/admin/reviews/' + id, { method: 'DELETE', headers: H() });
+  toast(r.ok ? 'حذف شد' : 'خطا');
+  loadReviews();
+}
+
+/* ══════════════════════════════════════════
+   دعوت‌نامه نظر — مشتریان فروش حضوری
+   ══════════════════════════════════════════ */
+let ivTimer = null, ivPicked = null;
+
+function ivSearch() {
+  clearTimeout(ivTimer);
+  const q = document.getElementById('ivProduct').value.trim();
+  ivPicked = null;                       // با تایپ دوباره، انتخاب قبلی باطل می‌شود
+  if (q.length < 2) { document.getElementById('ivResults').innerHTML = ''; return; }
+  ivTimer = setTimeout(async () => {
+    const d = await fetch('/api/products?q=' + encodeURIComponent(q) + '&limit=6')
+      .then(r => r.json()).catch(() => ({ products: [] }));
+    document.getElementById('ivResults').innerHTML = (d.products || []).length
+      ? (d.products || []).map(p => `<button type="button" class="btn btn-outline"
+          style="display:block;width:100%;text-align:right;padding:8px 11px;
+                 font-size:.8rem;margin-bottom:5px"
+          onclick="ivPick('${p.slug}', '${esc((p.brand_fa ? p.brand_fa + ' — ' : '') + p.name_fa).replace(/'/g, "\\'")}')">
+          ${esc(p.brand_fa ? p.brand_fa + ' — ' + p.name_fa : p.name_fa)}</button>`).join('')
+      : '<div style="font-size:.78rem;color:var(--muted)">محصولی یافت نشد</div>';
+  }, 350);
+}
+
+function ivPick(slug, label) {
+  ivPicked = slug;
+  document.getElementById('ivProduct').value = label;
+  document.getElementById('ivResults').innerHTML =
+    `<div style="font-size:.78rem;color:#1E8449;font-weight:700">✓ انتخاب شد</div>`;
+}
+
+async function makeInvite() {
+  const raw = document.getElementById('ivProduct').value.trim();
+  const product = ivPicked || raw;      // اگر از فهرست انتخاب نشد، همان متن تایپ‌شده
+  const mobile = document.getElementById('ivMobile').value.trim();
+  if (!product) return toast('محصول را انتخاب کنید');
+  if (!mobile) return toast('شماره موبایل را وارد کنید');
+
+  const r = await fetch('/api/admin/review-invites', {
+    method: 'POST', headers: H(),
+    body: JSON.stringify({
+      product, mobile,
+      note: document.getElementById('ivNote').value.trim() || undefined
+    })
+  });
+  const d = await r.json();
+
+  if (!r.ok) {
+    document.getElementById('ivResult').innerHTML =
+      `<div style="background:#FDECEA;border-right:3px solid #C0392B;padding:11px 13px;
+        border-radius:8px;font-size:.82rem;line-height:1.9">${esc(d.error)}</div>`;
+    return;
+  }
+
+  const full = location.origin + d.url;
+  /* متن آماده پیامک کنار لینک نمایش داده می‌شود تا مدیر چیزی
+     تایپ نکند — کپی و ارسال. هرچه اصطکاک کمتر، احتمال اینکه
+     واقعاً برای مشتری فرستاده شود بیشتر. */
+  document.getElementById('ivResult').innerHTML = `
+    <div style="background:#E8F6EF;border-right:3px solid #1E8449;padding:13px 15px;
+      border-radius:9px">
+      <div style="font-weight:800;font-size:.86rem;margin-bottom:8px">
+        ${d.reused ? 'دعوت‌نامه باز از قبل وجود داشت — همان لینک:' : esc(d.message)}
+      </div>
+      <input readonly value="${esc(full)}" dir="ltr" id="ivLink"
+        style="width:100%;padding:9px 11px;border:1px solid var(--border);
+        border-radius:7px;font-family:var(--font);font-size:.78rem;background:#FFF">
+      <div style="display:flex;gap:7px;margin-top:9px;flex-wrap:wrap">
+        <button class="btn" style="padding:6px 14px;font-size:.78rem"
+          onclick="ivCopy('${esc(full)}')">کپی لینک</button>
+        <button class="btn btn-outline" style="padding:6px 14px;font-size:.78rem"
+          onclick="ivCopyText()">کپی متن پیامک</button>
+        <a class="btn btn-outline" style="padding:6px 14px;font-size:.78rem"
+          href="${esc(full)}" target="_blank" rel="noopener">پیش‌نمایش صفحه</a>
+      </div>
+      <textarea id="ivSms" readonly rows="4"
+        style="width:100%;margin-top:9px;padding:9px 11px;border:1px solid var(--border);
+        border-radius:7px;font-family:var(--font);font-size:.78rem;line-height:1.9;
+        background:#FFF;resize:vertical">${esc(d.sms_text || '')}</textarea>
+    </div>`;
+
+  document.getElementById('ivMobile').value = '';
+  document.getElementById('ivNote').value = '';
+  loadInvites();
+}
+
+function ivCopy(t) {
+  navigator.clipboard?.writeText(t).then(
+    () => toast('لینک کپی شد'),
+    () => toast('کپی نشد — دستی انتخاب کنید'));
+}
+
+function ivCopyText() {
+  const el = document.getElementById('ivSms');
+  navigator.clipboard?.writeText(el.value).then(
+    () => toast('متن پیامک کپی شد'),
+    () => { el.select(); toast('کپی نشد — دستی کپی کنید'); });
+}
+
+const IV_STATE = {
+  OPEN:    ['باز', '#1E8449'],
+  USED:    ['استفاده شده', '#8A6110'],
+  EXPIRED: ['منقضی', '#C0392B']
+};
+/* وضعیت نظر هم فارسی — بقیه پنل فارسی است و «APPROVED» وسط
+   جدول فارسی وصله می‌زند. */
+const REV_FA = { PENDING: 'در انتظار بررسی', APPROVED: 'منتشر شده', REJECTED: 'رد شده' };
+
+async function loadInvites() {
+  if (!may('reviews.view')) return;
+  const d = await fetch('/api/admin/review-invites', { headers: H() })
+    .then(r => r.json()).catch(() => ({ invites: [] }));
+
+  document.getElementById('ivList').innerHTML = (d.invites || []).length
+    ? `<table class="tbl"><tr><th>محصول</th><th>شماره</th><th>وضعیت</th>
+         <th>نتیجه</th><th>ساخته</th><th></th></tr>
+       ${d.invites.map(i => {
+         const [lbl, col] = IV_STATE[i.state] || ['—', 'var(--muted)'];
+         return `<tr>
+           <td style="font-size:.8rem">${esc(i.brand_fa || '')} — ${esc(i.name_fa)}</td>
+           <td dir="ltr" style="font-size:.76rem">${esc(i.mobile)}</td>
+           <td style="color:${col};font-weight:700;font-size:.78rem">${lbl}</td>
+           <td style="font-size:.76rem">${i.review_status
+             ? `<span style="color:var(--gold)">${'★'.repeat(i.review_rating || 0)}</span>`
+               + ` ${REV_FA[i.review_status] || esc(i.review_status)}` : '—'}</td>
+           <td style="font-size:.73rem;color:var(--muted)">
+             ${(i.created_at || '').slice(0, 10)}${i.created_by ? '<br>' + esc(i.created_by) : ''}</td>
+           <td style="white-space:nowrap">
+             ${i.state === 'OPEN' ? `<button class="btn btn-outline"
+               style="padding:4px 10px;font-size:.73rem"
+               onclick="ivCopy('${location.origin}${i.url}')">کپی</button>` : ''}
+             ${i.state !== 'USED' ? `<button class="del"
+               onclick="delInvite(${i.id})">حذف</button>` : ''}
+           </td></tr>`;
+       }).join('')}</table>`
+    : '<div style="color:var(--muted);font-size:.84rem;padding:14px">هنوز دعوت‌نامه‌ای ساخته نشده</div>';
+}
+
+async function delInvite(id) {
+  if (!confirm('این دعوت‌نامه حذف شود؟')) return;
+  const r = await fetch('/api/admin/review-invites/' + id, { method: 'DELETE', headers: H() });
+  const d = await r.json();
+  toast(r.ok ? d.message : d.error);
+  loadInvites();
+}
+
+/* ── سفارش‌ها: جستجو، فیلتر، صفحه‌بندی ── */
+let orderState = { q: '', status: '', page: 1 };
+
+async function loadOrders() {
+  orderState.q = document.getElementById('oSearch').value.trim();
+  orderState.page = 1;
+  const p = new URLSearchParams({ page: orderState.page, limit: 50 });
+  if (orderState.q) p.set('q', orderState.q);
+  if (orderState.status) p.set('status', orderState.status);
+  const o = await fetch('/api/orders?' + p, { headers: H() }).then(r => r.json());
+  renderOrders(o);
+}
+
+async function goOrderPage(n) {
+  orderState.page = n;
+  const p = new URLSearchParams({ page: n, limit: 50 });
+  if (orderState.q) p.set('q', orderState.q);
+  if (orderState.status) p.set('status', orderState.status);
+  const o = await fetch('/api/orders?' + p, { headers: H() }).then(r => r.json());
+  renderOrders(o);
+}
+
+function filterStatus(st) {
+  orderState.status = st;
+  document.getElementById('oSearch').value = orderState.q;
+  loadOrders();
+}
+
+function clearOrderSearch() {
+  orderState = { q: '', status: '', page: 1 };
+  document.getElementById('oSearch').value = '';
+  loadOrders();
+}
+
+function renderOrders(o) {
+  const counts = o.status_counts || {};
+  const chips = [['', 'همه', o.total]].concat(
+    Object.keys(STATUS_FA).filter(k => counts[k]).map(k => [k, STATUS_FA[k], counts[k]]));
+  document.getElementById('statusFilter').innerHTML = chips.map(([k, label, n]) =>
+    `<button onclick="filterStatus('${k}')" style="padding:6px 13px;border-radius:18px;
+      border:1px solid ${orderState.status === k ? 'var(--obsidian)' : 'var(--border)'};
+      background:${orderState.status === k ? 'var(--obsidian)' : '#FFF'};
+      color:${orderState.status === k ? 'var(--gold)' : 'var(--text)'};
+      cursor:pointer;font-size:.78rem;font-weight:700;font-family:var(--font)">
+      ${label} (${toFa(n)})</button>`).join('');
+
+  document.getElementById('ordersTable').innerHTML = o.orders.length ? `
+    <tr><th>شناسه</th><th>مشتری</th><th>مقصد</th><th>مبلغ</th><th>وضعیت</th><th>اقدام</th></tr>
+    ${o.orders.map(x => {
+      const nexts = NEXT_STATUS[x.status] || [];
+      return `<tr>
+        <td dir="ltr" style="font-size:.78rem">${x.order_id}
+          ${x.discount_code ? `<div style="color:#1E8449;font-size:.7rem">${x.discount_code}</div>` : ''}
+        </td>
+        <td>${esc(x.customer_name)}<div style="font-size:.74rem;color:var(--muted)" dir="ltr">${esc(x.mobile)}</div>
+          <!-- یادداشت مشتری — عمداً برجسته است.
+               یادداشتی که دیده نشود، بدتر از نبودنش است: مشتری
+               فکر می‌کند خواسته‌اش ثبت شده ولی کسی نخوانده. -->
+          ${x.customer_note ? `<div class="cust-note" title="یادداشت مشتری">
+            <svg viewBox="0 0 24 24"><path d="M8 10h8M8 14h5"/><path d="M21 12a9 9 0 1 1-3.2-6.9"/></svg>
+            <span>${esc(x.customer_note)}</span></div>` : ''}
+        </td>
+        <td style="font-size:.8rem">${esc(x.province || '')} ${esc(x.city || '')}
+          ${x.tracking_code ? `<div style="font-size:.7rem;color:var(--muted)" dir="ltr">${esc(x.tracking_code)}</div>` : ''}
+        </td>
+        <td>${money(x.total_paid)}</td>
+        <td><span class="badge ${STATUS_CLS[x.status] || 'b-pending'}">${STATUS_FA[x.status] || x.status}</span></td>
+        <td>${nexts.map(n =>
+            `<button onclick="changeStatus('${x.order_id}','${n}')"
+              style="background:var(--sand);border:1px solid var(--border);border-radius:7px;
+              padding:5px 10px;margin:2px;cursor:pointer;font-size:.74rem;font-family:var(--font);
+              white-space:nowrap">${STATUS_FA[n]}</button>`).join('')}
+          <a href="/invoice?order=${x.order_id}" target="_blank"
+            style="display:inline-block;background:#FFF;border:1px solid var(--border);
+            border-radius:7px;padding:5px 10px;margin:2px;font-size:.74rem;
+            text-decoration:none;color:inherit;white-space:nowrap">فاکتور</a>
+          <!-- نسخه رسمی فقط وقتی معنی دارد که اطلاعات حقوقی ثبت شده
+               باشد؛ برای خریدار عمده‌ای که فاکتور رسمی می‌خواهد. -->
+          <a href="/invoice?order=${x.order_id}&formal=1" target="_blank"
+            title="با کد اقتصادی و شناسه ملی — برای خریدار عمده"
+            style="display:inline-block;background:#FFF;border:1px dashed var(--border);
+            border-radius:7px;padding:5px 10px;margin:2px;font-size:.74rem;
+            text-decoration:none;color:var(--muted);white-space:nowrap">فاکتور رسمی</a>
+          <a href="/label?order=${x.order_id}" target="_blank"
+            style="display:inline-block;background:#FFF;border:1px solid var(--border);
+            border-radius:7px;padding:5px 10px;margin:2px;font-size:.74rem;
+            text-decoration:none;color:inherit;white-space:nowrap">برچسب</a></td>
+      </tr>`;
+    }).join('')}`
+    : '<tr><td style="text-align:center;padding:26px;color:var(--muted)">سفارشی یافت نشد</td></tr>';
+
+  const pg = document.getElementById('ordersPager');
+  if (o.totalPages > 1) {
+    let h = '';
+    for (let i = 1; i <= o.totalPages; i++) {
+      h += `<button onclick="goOrderPage(${i})" style="min-width:34px;height:34px;
+        border-radius:8px;border:1px solid var(--border);cursor:pointer;font-family:var(--font);
+        background:${i === o.page ? 'var(--gold)' : '#FFF'};font-weight:700;
+        font-size:.8rem">${toFa(i)}</button>`;
+    }
+    pg.innerHTML = h;
+  } else pg.innerHTML = '';
+}
+
+/* ── مدیریت محصول و موجودی ── */
+let currentProduct = null;
+
+/** quiet=true یعنی از جستجوی زنده آمده — پیام خطای مزاحم ندهد */
+async function searchProducts(quiet) {
+  const q = document.getElementById('pSearch').value.trim();
+  if (!q) { if (!quiet) toast('عبارت جستجو را وارد کنید'); return; }
+  const r = await fetch(`/api/products?q=${encodeURIComponent(q)}&limit=20&full=1`);
+  const d = await r.json();
+  const box = document.getElementById('pResults');
+  if (!d.products.length) {
+    box.innerHTML = '<div style="color:var(--muted);font-size:.86rem;padding:12px">محصولی یافت نشد</div>';
+    return;
+  }
+  box.innerHTML = `<div style="font-size:.8rem;color:var(--muted);margin-bottom:8px">
+      ${toFa(d.total)} نتیجه — یکی را انتخاب کنید</div>
+    <div class="scroll"><table>
+    <tr><th>محصول</th><th>خانواده</th><th>قیمت پایه</th><th>موجودی کل</th><th></th></tr>
+    ${d.products.map(p => {
+      const st = (p.variants || []).reduce((s, v) => s + v.stock, 0);
+      return `<tr>
+        <td><strong>${p.brand_fa || ''} — ${p.name_fa}</strong>
+          <div style="font-size:.74rem;color:var(--muted)" dir="ltr">${p.name_en}</div></td>
+        <td style="font-size:.8rem">${p.family_fa || '—'}</td>
+        <td>${money(p.min_price)}</td>
+        <td><span class="badge ${st > 20 ? 'b-paid' : st > 0 ? 'b-pending' : 'b-cancel'}">${toFa(st)}</span></td>
+        <td><button onclick="editProduct('${p.slug}')"
+          style="background:var(--obsidian);color:#FFF;border:none;border-radius:7px;
+          padding:6px 13px;cursor:pointer;font-size:.76rem;font-family:var(--font)">ویرایش</button></td>
+      </tr>`;
+    }).join('')}</table></div>`;
+}
+
+async function showLowStock() {
+  const r = await fetch('/api/admin/low-stock?threshold=15', { headers: H() });
+  const d = await r.json();
+  const box = document.getElementById('pResults');
+  box.innerHTML = !d.total
+    ? '<div style="color:#1E8449;font-size:.86rem;padding:12px">✓ همه کالاها موجودی کافی دارند</div>'
+    : `<div style="font-size:.82rem;margin-bottom:8px">
+         <strong>${toFa(d.total)}</strong> کالا با موجودی کمتر از ${toFa(d.threshold)}
+         ${d.total >= 50 ? `<div style="color:var(--muted);font-size:.76rem;margin-top:4px">
+           پیش از افتتاح، موجودی همه کالاها صفر است. برای ثبت موجودی واقعی
+           نام محصول را در کادر بالا جستجو کنید.</div>` : ''}</div>
+       <div class="scroll"><table>
+       <tr><th>کالا</th><th>SKU</th><th>قیمت</th><th>موجودی</th><th></th></tr>
+       ${d.items.map(i => `<tr>
+         <td>${i.brand_fa || ''} — ${i.name_fa}
+           <div style="font-size:.74rem;color:var(--muted)">${i.type_label || ''} ${toFa(i.volume_ml || 0)} میل</div></td>
+         <td dir="ltr" style="font-size:.74rem">${i.sku}</td>
+         <td>${money(i.price_toman)}</td>
+         <td><span class="badge ${i.stock > 0 ? 'b-pending' : 'b-cancel'}">${toFa(i.stock)}</span></td>
+         <td><button onclick="editProduct('${i.slug}')"
+           style="background:var(--sand);border:1px solid var(--border);border-radius:7px;
+           padding:5px 11px;cursor:pointer;font-size:.74rem;font-family:var(--font)">ویرایش</button></td>
+       </tr>`).join('')}</table></div>`;
+}
+
+async function editProduct(slug) {
+  const r = await fetch('/api/products/' + slug);
+  currentProduct = await r.json();
+  const p = currentProduct;
+  document.getElementById('pEditCard').classList.remove('hidden');
+  document.getElementById('pEditTitle').textContent =
+    `${p.brand_fa || ''} — ${p.name_fa}`;
+  renderVariants();
+  document.getElementById('pEditCard').scrollIntoView({ behavior: 'smooth' });
+}
+
+/* ── جستجوی زنده ──
+   کاربر انبار روزی ده‌ها بار جستجو می‌کند؛ زدن دکمه پس از هر
+   عبارت وقت‌گیر است. با ۳۵۰ میلی‌ثانیه مکث پس از آخرین حرف،
+   نتیجه خودکار می‌آید. مکث لازم است وگرنه با هر حرف یک درخواست
+   می‌رود و سرور بی‌جهت شلوغ می‌شود. */
+let liveTimer = null;
+function liveSearch() {
+  clearTimeout(liveTimer);
+  const q = document.getElementById('pSearch').value.trim();
+  if (q.length < 2) {
+    if (!q) document.getElementById('pResults').innerHTML = '';
+    return;
+  }
+  liveTimer = setTimeout(() => searchProducts(true), 350);
+}
+
+/* ── جدول حجم‌ها با کنترل موجودی ──
+   هر ردیف دکمه منها و به‌علاوه دارد و عدد هم دستی قابل تایپ است.
+   تغییر فوری ذخیره می‌شود تا انباردار مجبور نباشد جداگانه دکمه
+   ذخیره بزند — ولی قیمت همچنان ذخیره دستی دارد چون اشتباه در
+   قیمت گران تمام می‌شود. */
+function renderVariants() {
+  const p = currentProduct;
+  const total = p.variants.reduce((s, v) => s + v.stock, 0);
+
+  document.getElementById('pVariants').innerHTML = `
+    <tr><th>نوع</th><th>حجم</th><th>SKU</th><th>قیمت (تومان)</th>
+        <th style="text-align:center">موجودی</th><th></th></tr>
+    ${p.variants.map(v => `<tr>
+      <td style="font-size:.82rem">${v.type_label || v.type}</td>
+      <td style="white-space:nowrap">${toFa(v.volume_ml)} میل</td>
+      <td dir="ltr" style="font-size:.72rem;color:var(--muted)">${v.sku}</td>
+      <td><input id="pr_${v.sku}" type="number" value="${v.price_toman}"
+        style="width:118px;padding:7px;border:1px solid var(--border);border-radius:7px;
+        font-family:var(--font);direction:ltr;text-align:left"></td>
+      <td>
+        <div class="stock-ctrl">
+          <button type="button" onclick="stepStock('${v.sku}',-1)"
+            aria-label="کاهش موجودی">−</button>
+          <input id="st_${v.sku}" type="number" min="0" value="${v.stock}"
+            inputmode="numeric" onchange="commitStock('${v.sku}')"
+            aria-label="موجودی ${v.type_label || v.type} ${v.volume_ml} میل">
+          <button type="button" onclick="stepStock('${v.sku}',1)"
+            aria-label="افزایش موجودی">+</button>
+        </div>
+        <div id="sm_${v.sku}" class="stock-msg"></div>
+      </td>
+      <td><button onclick="saveVariant('${v.sku}')"
+        style="background:var(--gold);color:#121212;border:none;border-radius:7px;
+        padding:6px 14px;cursor:pointer;font-weight:700;font-size:.76rem;
+        font-family:var(--font)">ذخیره قیمت</button></td>
+    </tr>`).join('')}
+    <tr style="background:var(--sand)">
+      <td colspan="4" style="font-weight:700;font-size:.84rem">موجودی کل این محصول</td>
+      <td style="text-align:center">
+        <span class="badge ${total > 0 ? 'b-paid' : 'b-cancel'}" id="pTotalStock">${toFa(total)}</span>
+      </td><td></td>
+    </tr>`;
+}
+
+/** دکمه ± — عدد را عوض و فوری ذخیره می‌کند */
+function stepStock(sku, delta) {
+  const el = document.getElementById('st_' + sku);
+  const cur = parseInt(el.value) || 0;
+  el.value = Math.max(0, cur + delta);
+  commitStock(sku);
+}
+
+/* ذخیره موجودی با مکث کوتاه.
+   بدون مکث، فشردن پیاپی دکمه + ده درخواست پشت هم می‌فرستد. */
+const stockTimers = {};
+function commitStock(sku) {
+  clearTimeout(stockTimers[sku]);
+  const msg = document.getElementById('sm_' + sku);
+  if (msg) { msg.textContent = '…'; msg.className = 'stock-msg pending'; }
+  stockTimers[sku] = setTimeout(() => saveStockOnly(sku), 420);
+}
+
+async function saveStockOnly(sku) {
+  const el = document.getElementById('st_' + sku);
+  const msg = document.getElementById('sm_' + sku);
+  let val = parseInt(el.value);
+  if (!Number.isInteger(val) || val < 0) { val = 0; el.value = 0; }
+
+  try {
+    const r = await fetch('/api/admin/variants/' + encodeURIComponent(sku), {
+      method: 'PUT', headers: H(), body: JSON.stringify({ stock: val })
+    });
+    const d = await r.json();
+    if (!r.ok) {
+      if (msg) { msg.textContent = d.error || 'خطا'; msg.className = 'stock-msg err'; }
+      return;
+    }
+    if (msg) {
+      // اگر مشتری منتظر این کالا بوده، پیامک رفته — بگو
+      msg.textContent = d.notified ? `✓ ${toFa(d.notified)} نفر خبر شدند` : '✓';
+      msg.className = 'stock-msg ok';
+      setTimeout(() => { if (msg.classList.contains('ok')) msg.textContent = ''; }, 2500);
+    }
+    // مقدار در حافظه هم به‌روز شود تا جمع کل درست بماند
+    const v = currentProduct.variants.find(x => x.sku === sku);
+    if (v) v.stock = val;
+    const tot = currentProduct.variants.reduce((s, x) => s + x.stock, 0);
+    const box = document.getElementById('pTotalStock');
+    if (box) {
+      box.textContent = toFa(tot);
+      box.className = 'badge ' + (tot > 0 ? 'b-paid' : 'b-cancel');
+    }
+  } catch {
+    if (msg) { msg.textContent = 'ارتباط برقرار نشد'; msg.className = 'stock-msg err'; }
+  }
+}
+
+async function saveVariant(sku) {
+  const price = document.getElementById('pr_' + sku).value;
+  const stock = document.getElementById('st_' + sku).value;
+  const r = await fetch('/api/admin/variants/' + encodeURIComponent(sku), {
+    method: 'PUT', headers: H(),
+    body: JSON.stringify({ price_toman: price, stock })
+  });
+  const d = await r.json();
+  toast(r.ok ? 'ذخیره شد' : d.error);
+  if (r.ok) editProduct(currentProduct.slug);
+}
+
+async function bulkPrice() {
+  const pct = document.getElementById('bulkPct').value;
+  if (!pct) return toast('درصد را وارد کنید');
+  if (!confirm(`قیمت تمام حجم‌های این محصول ${pct}٪ تغییر کند؟`)) return;
+  const r = await fetch('/api/admin/products/' + currentProduct.slug, {
+    method: 'PUT', headers: H(), body: JSON.stringify({ price_change_percent: pct })
+  });
+  const d = await r.json();
+  toast(r.ok ? d.message : d.error);
+  if (r.ok) { document.getElementById('bulkPct').value = ''; editProduct(currentProduct.slug); }
+}
+
+async function bulkStock() {
+  const s = document.getElementById('bulkStock').value;
+  if (s === '') return toast('موجودی را وارد کنید');
+  const r = await fetch('/api/admin/products/' + currentProduct.slug, {
+    method: 'PUT', headers: H(), body: JSON.stringify({ set_all_stock: s })
+  });
+  const d = await r.json();
+  toast(r.ok ? d.message : d.error);
+  if (r.ok) { document.getElementById('bulkStock').value = ''; editProduct(currentProduct.slug); }
+}
+
+/* ── مدیریت وضعیت سفارش ── */
+async function changeStatus(orderId, next) {
+  const body = { status: next };
+
+  if (next === 'SHIPPED') {
+    const code = prompt('کد رهگیری پستی را وارد کنید (اختیاری):');
+    if (code === null) return;
+    if (code.trim()) body.tracking_code = code.trim();
+    const carrier = prompt('شیوه ارسال:', 'پست پیشتاز');
+    if (carrier && carrier.trim()) body.carrier = carrier.trim();
+  } else if (next === 'CANCELLED' || next === 'RETURNED') {
+    if (!confirm(`سفارش ${orderId} ${next === 'CANCELLED' ? 'لغو' : 'مرجوع'} شود؟\nموجودی کالاها بازگردانده می‌شود.`)) return;
+    const note = prompt('دلیل (اختیاری):');
+    if (note) body.note = note;
+  }
+
+  const r = await fetch(`/api/orders/${orderId}/status`, {
+    method: 'PUT', headers: H(), body: JSON.stringify(body)
+  });
+  const d = await r.json();
+  toast(r.ok ? d.message : d.error);
+  if (r.ok) loadAll();
+}
+
+/* ── کدهای تخفیف ── */
+function onCouponType() {
+  const t = document.getElementById('cType').value;
+  document.getElementById('cValueWrap').style.display = t === 'FREE_SHIPPING' ? 'none' : 'block';
+  document.getElementById('cMaxWrap').style.display = t === 'PERCENT' ? 'block' : 'none';
+  document.getElementById('cValueHint').textContent = t === 'PERCENT' ? 'درصد' : 'تومان';
+}
+
+/** مقادیر انتخاب‌شده یک <select multiple> → آرایه */
+function picked(id) {
+  const el = document.getElementById(id);
+  if (!el) return [];
+  return [...el.selectedOptions].map(o => o.value).filter(Boolean);
+}
+
+/** پرکردن فهرست خانواده و برند از داده واقعی — نه فهرست دستی */
+async function fillScopeOptions() {
+  try {
+    const [fam, br] = await Promise.all([
+      fetch('/api/families').then(r => r.json()),
+      fetch('/api/brands').then(r => r.json())
+    ]);
+    const famOpts = (fam.families || [])
+      .map(f => `<option value="${f.family_slug}">${f.family_fa} (${toFa(f.count)})</option>`)
+      .join('');
+    // فقط برندهای پرمحصول — فهرست ۱۲۹تایی کامل غیرقابل استفاده است
+    const brOpts = (br.brands || []).slice(0, 60)
+      .map(b => `<option value="${b.brand_fa}">${b.brand_fa} (${toFa(b.count)})</option>`)
+      .join('');
+    ['cFam', 'fFam'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.innerHTML = famOpts;
+    });
+    ['cBrand', 'fBrand'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.innerHTML = brOpts;
+    });
+  } catch {}
+}
+
+async function createCoupon() {
+  const code = document.getElementById('cCode').value.trim().toUpperCase();
+  if (!code) return toast('کد تخفیف را وارد کنید');
+  const body = {
+    code,
+    type: document.getElementById('cType').value,
+    value: parseInt(document.getElementById('cValue').value) || 0,
+    min_subtotal: parseInt(document.getElementById('cMin').value) || 0,
+    max_subtotal: parseInt(document.getElementById('cMaxSub').value) || null,
+    max_discount: parseInt(document.getElementById('cMax').value) || null,
+    usage_limit: parseInt(document.getElementById('cLimit').value) || null,
+    starts_at: document.getElementById('cStart').value || null,
+    expires_at: document.getElementById('cExp').value || null,
+    per_user_once: document.getElementById('cOnce').checked,
+    first_order_only: document.getElementById('cFirst').checked,
+    description: document.getElementById('cDesc').value.trim(),
+    scope_families: picked('cFam'),
+    scope_brands: picked('cBrand'),
+    scope_types: picked('cVType'),
+    scope_gender: picked('cGender'),
+    assigned_mobile: document.getElementById('cAssign').value.trim() || null
+  };
+  const r = await fetch('/api/admin/coupons', { method: 'POST', headers: H(), body: JSON.stringify(body) });
+  const d = await r.json();
+  toast(r.ok ? d.message : d.error);
+  if (r.ok) {
+    ['cCode','cValue','cMin','cMaxSub','cMax','cLimit','cStart','cExp','cDesc','cAssign']
+      .forEach(id => { const e = document.getElementById(id); if (e) e.value = ''; });
+    ['cFam','cBrand','cVType','cGender'].forEach(id => {
+      const e = document.getElementById(id);
+      if (e) [...e.options].forEach(o => o.selected = false);
+    });
+    document.getElementById('cFirst').checked = false;
+    loadAll();
+  }
+}
+
+/* ── جشنواره ── */
+async function createCampaign() {
+  const title = document.getElementById('fTitle').value.trim();
+  const pct = parseInt(document.getElementById('fPct').value);
+  if (!title) return toast('عنوان جشنواره را وارد کنید');
+  if (!(pct > 0 && pct <= 90)) return toast('درصد باید بین ۱ تا ۹۰ باشد');
+
+  const body = {
+    title, percent: pct,
+    max_discount: parseInt(document.getElementById('fMax').value) || null,
+    starts_at: document.getElementById('fStart').value || null,
+    ends_at: document.getElementById('fEnd').value || null,
+    scope_families: picked('fFam'),
+    scope_brands: picked('fBrand'),
+    scope_types: picked('fVType'),
+    scope_gender: picked('fGender')
+  };
+
+  // هشدار: جشنواره بدون دامنه روی کل کاتالوگ اعمال می‌شود
+  const noScope = !body.scope_families.length && !body.scope_brands.length
+               && !body.scope_types.length && !body.scope_gender.length;
+  if (noScope && !confirm(
+      `این جشنواره روی «همه» محصولات اعمال می‌شود (${pct}٪ تخفیف).\nمطمئنید؟`)) return;
+
+  const r = await fetch('/api/admin/campaigns', { method: 'POST', headers: H(), body: JSON.stringify(body) });
+  const d = await r.json();
+  toast(r.ok ? d.message : d.error);
+  if (r.ok) {
+    ['fTitle','fPct','fMax','fStart','fEnd'].forEach(id =>
+      { const e = document.getElementById(id); if (e) e.value = ''; });
+    ['fFam','fBrand','fVType','fGender'].forEach(id => {
+      const e = document.getElementById(id);
+      if (e) [...e.options].forEach(o => o.selected = false);
+    });
+    loadCampaigns();
+  }
+}
+
+function scopeSummary(c) {
+  const parts = [];
+  const TYPE_FA = { SAMPLE:'سمپل', EDP:'ادوپرفیوم', HAIR_MIST:'عطر مو', BODY_SPLASH:'بادی اسپلش' };
+  const G_FA = { MEN:'مردانه', WOMEN:'زنانه', UNISEX:'یونیسکس' };
+  if (c.scope_families) parts.push(...c.scope_families.split(','));
+  if (c.scope_brands)   parts.push(...c.scope_brands.split(','));
+  if (c.scope_types)    parts.push(...c.scope_types.split(',').map(t => TYPE_FA[t] || t));
+  if (c.scope_gender)   parts.push(...c.scope_gender.split(',').map(g => G_FA[g] || g));
+  if (!parts.length) return '<span style="color:var(--muted)">همه محصولات</span>';
+  return parts.map(p => `<span class="scope-tag">${esc(p)}</span>`).join('');
+}
+
+async function loadCampaigns() {
+  if (!may('coupons.view')) return;
+  try {
+    const d = await fetch('/api/admin/campaigns', { headers: H() }).then(r => r.json());
+    const rows = d.campaigns || [];
+    document.getElementById('campaignsTable').innerHTML = !rows.length
+      ? '<tr><td style="color:var(--muted);font-size:.85rem;padding:12px">هنوز جشنواره‌ای ساخته نشده</td></tr>'
+      : `<tr><th>عنوان</th><th>تخفیف</th><th>دامنه</th><th>بازه</th><th>وضعیت</th><th></th></tr>
+         ${rows.map(c => `<tr>
+           <td><strong>${esc(c.title)}</strong></td>
+           <td>${toFa(c.percent)}٪${c.max_discount ? `<div style="font-size:.7rem;color:var(--muted)">سقف ${money(c.max_discount)}</div>` : ''}</td>
+           <td style="max-width:230px">${scopeSummary(c)}</td>
+           <td style="font-size:.74rem;color:var(--muted)">
+             ${c.starts_at ? toFa(c.starts_at) : '—'} تا ${c.ends_at ? toFa(c.ends_at) : '—'}</td>
+           <td><span class="badge ${c.active ? 'b-paid' : 'b-cancel'}">${c.active ? 'فعال' : 'متوقف'}</span></td>
+           <td style="white-space:nowrap">
+             <button onclick="toggleCampaign(${c.id}, ${c.active ? 0 : 1})"
+               style="background:var(--sand);border:1px solid var(--border);border-radius:7px;
+               padding:5px 10px;cursor:pointer;font-size:.73rem;font-family:var(--font)">
+               ${c.active ? 'توقف' : 'فعال'}</button>
+             <button onclick="deleteCampaign(${c.id})"
+               style="background:none;border:none;color:#C0392B;cursor:pointer;
+               font-size:.73rem;font-family:var(--font)">حذف</button>
+           </td></tr>`).join('')}`;
+  } catch {}
+}
+
+async function toggleCampaign(id, active) {
+  const r = await fetch('/api/admin/campaigns/' + id, {
+    method: 'PUT', headers: H(), body: JSON.stringify({ active: !!active })
+  });
+  const d = await r.json();
+  toast(r.ok ? d.message : d.error);
+  loadCampaigns();
+}
+
+async function deleteCampaign(id) {
+  if (!confirm('این جشنواره حذف شود؟')) return;
+  const r = await fetch('/api/admin/campaigns/' + id, { method: 'DELETE', headers: H() });
+  const d = await r.json();
+  toast(r.ok ? d.message : d.error);
+  loadCampaigns();
+}
+
+/* ── نوار اعلان ── */
+async function createNotice() {
+  const text = document.getElementById('nText').value.trim();
+  if (!text) return toast('متن اعلان را وارد کنید');
+  const link = document.getElementById('nLink').value.trim();
+  if (link && !link.startsWith('/')) return toast('لینک باید داخلی باشد و با / شروع شود');
+
+  const body = {
+    text, link: link || null,
+    link_label: document.getElementById('nLabel').value.trim() || null,
+    tone: document.getElementById('nTone').value,
+    starts_at: document.getElementById('nStart').value || null,
+    ends_at: document.getElementById('nEnd').value || null
+  };
+  const r = await fetch('/api/admin/notices', { method: 'POST', headers: H(), body: JSON.stringify(body) });
+  const d = await r.json();
+  toast(r.ok ? d.message : d.error);
+  if (r.ok) {
+    ['nText','nLink','nLabel','nStart','nEnd'].forEach(id =>
+      { const e = document.getElementById(id); if (e) e.value = ''; });
+    loadNotices();
+  }
+}
+
+async function loadNotices() {
+  if (!may('coupons.view')) return;
+  try {
+    const d = await fetch('/api/admin/notices', { headers: H() }).then(r => r.json());
+    const rows = d.notices || [];
+    document.getElementById('noticesTable').innerHTML = !rows.length
+      ? '<tr><td style="color:var(--muted);font-size:.85rem;padding:12px">هنوز اعلانی ساخته نشده</td></tr>'
+      : `<tr><th>متن</th><th>لینک</th><th>بازه</th><th>وضعیت</th><th></th></tr>
+         ${rows.map(n => `<tr>
+           <td style="max-width:280px">${esc(n.text)}</td>
+           <td style="font-size:.74rem" dir="ltr">${esc(n.link || '—')}</td>
+           <td style="font-size:.74rem;color:var(--muted)">
+             ${n.starts_at ? toFa(n.starts_at) : '—'} تا ${n.ends_at ? toFa(n.ends_at) : '—'}</td>
+           <td><span class="badge ${n.active ? 'b-paid' : 'b-cancel'}">${n.active ? 'نمایش' : 'خاموش'}</span></td>
+           <td style="white-space:nowrap">
+             <button onclick="toggleNotice(${n.id}, ${n.active ? 0 : 1})"
+               style="background:var(--sand);border:1px solid var(--border);border-radius:7px;
+               padding:5px 10px;cursor:pointer;font-size:.73rem;font-family:var(--font)">
+               ${n.active ? 'خاموش' : 'نمایش'}</button>
+             <button onclick="deleteNotice(${n.id})"
+               style="background:none;border:none;color:#C0392B;cursor:pointer;
+               font-size:.73rem;font-family:var(--font)">حذف</button>
+           </td></tr>`).join('')}`;
+  } catch {}
+}
+
+async function toggleNotice(id, active) {
+  const r = await fetch('/api/admin/notices/' + id, {
+    method: 'PUT', headers: H(), body: JSON.stringify({ active: !!active })
+  });
+  const d = await r.json();
+  toast(r.ok ? d.message : d.error);
+  loadNotices();
+}
+
+async function deleteNotice(id) {
+  if (!confirm('این اعلان حذف شود؟')) return;
+  const r = await fetch('/api/admin/notices/' + id, { method: 'DELETE', headers: H() });
+  const d = await r.json();
+  toast(r.ok ? d.message : d.error);
+  loadNotices();
+}
+
+async function toggleCoupon(code, active) {
+  const r = await fetch('/api/admin/coupons/' + encodeURIComponent(code), {
+    method: 'PUT', headers: H(), body: JSON.stringify({ active: !!active })
+  });
+  const d = await r.json();
+  toast(r.ok ? d.message : d.error);
+  loadAll();
+}
+
+async function delCoupon(code) {
+  if (!confirm(`کد ${code} حذف شود؟`)) return;
+  const r = await fetch('/api/admin/coupons/' + encodeURIComponent(code), {
+    method: 'DELETE', headers: H()
+  });
+  const d = await r.json();
+  toast(r.ok ? d.message : d.error);
+  loadAll();
+}
+
+/* ── پاسخ تیکت ── */
+async function replyTicket(id) {
+  const reply = prompt('پاسخ به مشتری (پیامک ارسال می‌شود):');
+  if (!reply || !reply.trim()) return;
+  const r = await fetch('/api/tickets/' + id, {
+    method: 'PUT', headers: H(), body: JSON.stringify({ reply: reply.trim(), status: 'ANSWERED' })
+  });
+  const d = await r.json();
+  toast(r.ok ? d.message : d.error);
+  loadAll();
+}
+
+async function exportCsv() {
+  const r = await fetch('/api/admin/export/csv', { headers: H() });
+  if (!r.ok) return toast('خطا در دریافت فایل');
+  const blob = await r.blob();
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'yazd_orders.csv';
+  a.click();
+}
+
+function setTabCount(name, n) {
+  const el = document.getElementById('cnt-' + name);
+  if (!el) return;   // تب برای این کارمند نمایش داده نشده
+  el.textContent = toFa(n);
+  el.classList.toggle('hidden', !n);
+}
+
+/* ═══════════ کارکنان و نقش‌ها ═══════════ */
+let ROLES = [], STAFF = [], PERM_GROUPS = null;
+
+async function loadStaffTab() {
+  const [rs, ss] = await Promise.all([
+    fetch('/api/admin/roles', { headers: H() }).then(r => r.json()).catch(() => ({})),
+    fetch('/api/admin/staff', { headers: H() }).then(r => r.json()).catch(() => ({}))
+  ]);
+  ROLES = rs.roles || [];
+  STAFF = ss.staff || [];
+
+  document.getElementById('btnNewStaff').classList.toggle('hidden', !may('staff.manage'));
+  document.getElementById('btnNewRole').classList.toggle('hidden', !may('roles.manage'));
+
+  renderStaffTable();
+  renderRoles();
+}
+
+function renderStaffTable() {
+  const canEdit = may('staff.manage');
+  document.getElementById('staffTable').innerHTML = STAFF.length ? `
+    <tr><th>نام</th><th>نام کاربری</th><th>نقش</th><th>آخرین ورود</th>
+        <th>وضعیت</th>${canEdit ? '<th>اقدام</th>' : ''}</tr>
+    ${STAFF.map(u => `<tr>
+      <td>${esc(u.display_name)}
+        ${u.mobile ? `<div style="font-size:.72rem;color:var(--muted)" dir="ltr">${esc(u.mobile)}</div>` : ''}</td>
+      <td dir="ltr" style="font-size:.8rem">${esc(u.username)}</td>
+      <td><span class="badge" style="background:var(--sand);color:var(--text)">${esc(u.role_name)}</span></td>
+      <td style="font-size:.76rem;color:var(--muted)" dir="ltr">
+        ${u.last_login ? u.last_login.slice(0, 16).replace('T', ' ') : '—'}</td>
+      <td><span class="badge ${u.active ? 'b-paid' : 'b-cancel'}">
+        ${u.active ? 'فعال' : 'غیرفعال'}</span>
+        ${u.must_change ? '<div style="font-size:.68rem;color:var(--warning);margin-top:3px">رمز اولیه</div>' : ''}</td>
+      ${canEdit ? `<td style="white-space:nowrap">
+        <button onclick="openStaffForm(${u.id})" style="background:var(--sand);
+          border:1px solid var(--border);border-radius:7px;padding:5px 10px;
+          cursor:pointer;font-size:.74rem;font-family:var(--font)">ویرایش</button>
+        ${u.id !== ME.id ? `<button class="del" onclick="deleteStaff(${u.id})">حذف</button>` : ''}
+      </td>` : ''}
+    </tr>`).join('')}`
+    : '<tr><td style="text-align:center;padding:24px;color:var(--muted)">کارمندی ثبت نشده</td></tr>';
+}
+
+function openStaffForm(id) {
+  const u = id ? STAFF.find(x => x.id === id) : null;
+  const box = document.getElementById('staffForm');
+  box.classList.remove('hidden');
+  box.innerHTML = `
+    <div style="font-weight:800;font-size:.94rem;margin-bottom:12px">
+      ${u ? 'ویرایش ' + esc(u.display_name) : 'افزودن کارمند تازه'}</div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px">
+      <div class="field"><label>نام *</label>
+        <input id="sfFirst" value="${u ? esc(u.first_name || (u.display_name || '').split(' ')[0]) : ''}"
+          maxlength="40"></div>
+      <div class="field"><label>نام خانوادگی *</label>
+        <input id="sfLast" maxlength="40"
+          value="${u ? esc(u.last_name || (u.display_name || '').split(' ').slice(1).join(' ')) : ''}"></div>
+      <div class="field"><label>کد ملی *</label>
+        <input id="sfNid" dir="ltr" style="text-align:right" inputmode="numeric"
+          maxlength="10" value="${u ? esc(u.username) : ''}" ${u ? 'disabled' : ''}
+          placeholder="۱۰ رقم">
+        <div class="hint">${u ? 'کد ملی قابل تغییر نیست'
+                              : 'همین کد، نام کاربری کارمند می‌شود'}</div></div>
+      <div class="field"><label>شماره تماس *</label>
+        <input id="sfMobile" dir="ltr" style="text-align:right" inputmode="numeric"
+          maxlength="13" value="${u && u.mobile ? esc(u.mobile) : ''}"
+          placeholder="۰۹۱۲۳۴۵۶۷۸۹">
+        ${u ? '' : '<div class="hint">رمز موقت از این شماره ساخته و پیامک می‌شود</div>'}</div>
+      <div class="field"><label>نقش و دسترسی *</label>
+        <select id="sfRole" onchange="showRolePerms()">${ROLES.map(rl =>
+          `<option value="${esc(rl.key)}" ${u && u.role_key === rl.key ? 'selected' : ''}>
+            ${esc(rl.name)}</option>`).join('')}</select>
+        <div class="hint" id="sfPermHint"></div></div>
+      ${u ? `<div class="field"><label>رمز تازه (خالی = بدون تغییر)</label>
+        <input type="password" id="sfPass" autocomplete="new-password"
+          placeholder="برای بازنشانی پر کنید"></div>
+      <div class="field"><label>وضعیت</label>
+        <select id="sfActive">
+          <option value="1" ${u.active ? 'selected' : ''}>فعال</option>
+          <option value="0" ${!u.active ? 'selected' : ''}>غیرفعال</option>
+        </select></div>` : ''}
+    </div>
+    ${u ? '' : `<div style="background:#FDF9F0;border:1px solid rgba(197,155,39,.3);
+        border-radius:10px;padding:11px 14px;margin-top:12px;font-size:.82rem;line-height:1.9">
+      رمز موقت خودکار ساخته می‌شود (شماره موبایل بدون صفر) و همراه نقش و
+      نام کاربری برای کارمند پیامک می‌شود. در نخستین ورود باید عوضش کند.
+    </div>`}
+    <div id="sfErr" style="color:#C0392B;font-size:.8rem;margin:8px 0"></div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap">
+      <button class="btn" onclick="saveStaff(${u ? u.id : 'null'})">
+        ${u ? 'ذخیره تغییرات' : 'ساخت حساب'}</button>
+      <button class="btn btn-outline" onclick="document.getElementById('staffForm').classList.add('hidden')">
+        انصراف</button>
+    </div>`;
+  box.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  showRolePerms();
+}
+
+/** خلاصه دسترسی نقش انتخاب‌شده — مدیر پیش از ساخت حساب بداند
+    این کارمند به چه چیزی دسترسی پیدا می‌کند. */
+function showRolePerms() {
+  const sel = document.getElementById('sfRole');
+  const hint = document.getElementById('sfPermHint');
+  if (!sel || !hint) return;
+  const role = ROLES.find(r => r.key === sel.value);
+  if (!role) { hint.textContent = ''; return; }
+  hint.textContent = `${toFa(role.permissions.length)} دسترسی` +
+    (role.description ? ` · ${role.description}` : '');
+}
+
+async function saveStaff(id) {
+  const err = document.getElementById('sfErr');
+  err.textContent = '';
+
+  const first = document.getElementById('sfFirst').value.trim();
+  const last  = document.getElementById('sfLast').value.trim();
+  const mobile = document.getElementById('sfMobile').value.trim();
+
+  if (first.length < 2) { err.textContent = 'نام را وارد کنید.'; return; }
+  if (last.length < 2)  { err.textContent = 'نام خانوادگی را وارد کنید.'; return; }
+
+  const payload = {
+    first_name: first, last_name: last,
+    display_name: `${first} ${last}`,
+    mobile: mobile || null,
+    role_key: document.getElementById('sfRole').value
+  };
+
+  const passEl = document.getElementById('sfPass');
+  const act = document.getElementById('sfActive');
+
+  if (!id) {
+    /* رمز اینجا فرستاده نمی‌شود — سرور خودش رمز موقت را از
+       شماره موبایل می‌سازد و پیامک می‌کند. */
+    payload.national_id = document.getElementById('sfNid').value.trim();
+    if (!payload.mobile) { err.textContent = 'شماره تماس الزامی است.'; return; }
+  } else {
+    if (passEl && passEl.value) payload.password = passEl.value;
+    if (act) payload.active = act.value === '1';
+  }
+
+  const r = await fetch(id ? `/api/admin/staff/${id}` : '/api/admin/staff', {
+    method: id ? 'PUT' : 'POST', headers: H(), body: JSON.stringify(payload)
+  });
+  const d = await r.json();
+  if (!r.ok) { err.textContent = d.error; return; }
+
+  document.getElementById('staffForm').classList.add('hidden');
+  toast(d.message);
+  loadStaffTab();
+}
+
+async function deleteStaff(id) {
+  const u = STAFF.find(x => x.id === id);
+  if (!confirm(`حساب «${u.display_name}» حذف شود؟ این کار برگشت‌ناپذیر است.`)) return;
+  const r = await fetch(`/api/admin/staff/${id}`, { method: 'DELETE', headers: H() });
+  const d = await r.json();
+  toast(r.ok ? d.message : d.error);
+  if (r.ok) loadStaffTab();
+}
+
+/* ═══ نقش‌ها ═══ */
+function renderRoles() {
+  const canEdit = may('roles.manage');
+  document.getElementById('rolesList').innerHTML = ROLES.map(rl => `
+    <div style="border:1px solid var(--border);border-radius:12px;padding:15px;margin-bottom:11px">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:10px;flex-wrap:wrap">
+        <div>
+          <div style="font-weight:800;font-size:.94rem">${esc(rl.name)}
+            ${rl.builtin ? '<span style="font-size:.68rem;color:var(--muted);font-weight:400">پیش‌فرض</span>' : ''}
+            ${rl.locked ? '<span style="font-size:.68rem;color:var(--gold);font-weight:400">قفل</span>' : ''}
+          </div>
+          <div style="font-size:.78rem;color:var(--muted);line-height:1.9;margin-top:3px">
+            ${esc(rl.description || '')}</div>
+          <div style="font-size:.74rem;color:var(--muted);margin-top:5px">
+            ${toFa(rl.permissions.length)} اجازه · ${toFa(rl.staff_count)} کارمند</div>
+        </div>
+        ${canEdit && !rl.locked ? `<div style="display:flex;gap:6px">
+          <button onclick="openRoleForm('${esc(rl.key)}')" style="background:var(--sand);
+            border:1px solid var(--border);border-radius:7px;padding:5px 11px;
+            cursor:pointer;font-size:.74rem;font-family:var(--font)">ویرایش اجازه‌ها</button>
+          ${!rl.builtin ? `<button class="del" onclick="deleteRole('${esc(rl.key)}')">حذف</button>` : ''}
+        </div>` : ''}
+      </div>
+    </div>`).join('');
+}
+
+async function openRoleForm(key) {
+  if (!PERM_GROUPS) {
+    const r = await fetch('/api/admin/permissions', { headers: H() });
+    if (!r.ok) { toast('اجازه دیدن فهرست مجوزها را ندارید'); return; }
+    PERM_GROUPS = (await r.json()).groups;
+  }
+  const rl = key ? ROLES.find(x => x.key === key) : null;
+  const owned = new Set(rl ? rl.permissions : []);
+
+  const box = document.getElementById('roleForm');
+  box.classList.remove('hidden');
+  box.innerHTML = `
+    <div style="font-weight:800;font-size:.94rem;margin-bottom:12px">
+      ${rl ? 'ویرایش نقش ' + esc(rl.name) : 'تعریف نقش تازه'}</div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px">
+      <div class="field"><label>نام نقش *</label>
+        <input id="rfName" value="${rl ? esc(rl.name) : ''}" placeholder="مثلاً: ناظر انبار"></div>
+      ${rl ? '' : `<div class="field"><label>شناسه لاتین *</label>
+        <input id="rfKey" dir="ltr" style="text-align:right" placeholder="warehouse_lead">
+        <div class="hint">حروف کوچک لاتین، بدون فاصله</div></div>`}
+      <div class="field" style="grid-column:1/-1"><label>توضیح</label>
+        <input id="rfDesc" value="${rl ? esc(rl.description || '') : ''}"
+          placeholder="این نقش چه کاری انجام می‌دهد؟"></div>
+    </div>
+
+    <div style="font-weight:700;font-size:.86rem;margin:14px 0 8px">اجازه‌ها</div>
+    ${PERM_GROUPS.map(gr => `
+      <div style="border:1px solid var(--border);border-radius:10px;padding:12px;margin-bottom:9px">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+          <strong style="font-size:.84rem">${esc(gr.label)}</strong>
+          <button onclick="toggleGroup('${esc(gr.key)}')" style="background:none;border:none;
+            color:var(--gold);cursor:pointer;font-size:.74rem;font-family:var(--font)">
+            انتخاب همه</button>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:7px">
+          ${gr.items.map(it => `
+            <label style="display:flex;gap:7px;align-items:flex-start;font-size:.8rem;
+                   line-height:1.7;cursor:pointer;padding:5px;border-radius:7px"
+                   data-group="${esc(gr.key)}">
+              <input type="checkbox" class="perm-box" value="${esc(it.key)}"
+                ${owned.has(it.key) ? 'checked' : ''} style="margin-top:3px;accent-color:var(--gold)">
+              <span>
+                ${esc(it.label)}
+                ${it.danger ? '<span style="color:var(--danger);font-size:.68rem"> حساس</span>' : ''}
+                ${it.hint ? `<div style="font-size:.7rem;color:var(--muted)">${esc(it.hint)}</div>` : ''}
+              </span>
+            </label>`).join('')}
+        </div>
+      </div>`).join('')}
+
+    <div id="rfErr" style="color:#C0392B;font-size:.8rem;margin:8px 0"></div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap">
+      <button class="btn" onclick="saveRole(${rl ? `'${esc(rl.key)}'` : 'null'})">
+        ${rl ? 'ذخیره اجازه‌ها' : 'ساخت نقش'}</button>
+      <button class="btn btn-outline"
+        onclick="document.getElementById('roleForm').classList.add('hidden')">انصراف</button>
+    </div>`;
+  box.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+
+function toggleGroup(gkey) {
+  const boxes = [...document.querySelectorAll(`label[data-group="${gkey}"] .perm-box`)];
+  const allOn = boxes.every(b => b.checked);
+  boxes.forEach(b => { b.checked = !allOn; });
+}
+
+async function saveRole(key) {
+  const err = document.getElementById('rfErr');
+  err.textContent = '';
+
+  const permissions = [...document.querySelectorAll('.perm-box:checked')].map(b => b.value);
+  if (!permissions.length) { err.textContent = 'دست‌کم یک اجازه انتخاب کنید.'; return; }
+
+  const payload = {
+    name: document.getElementById('rfName').value.trim(),
+    description: document.getElementById('rfDesc').value.trim(),
+    permissions
+  };
+  if (!key) payload.key = document.getElementById('rfKey').value.trim().toLowerCase();
+
+  const r = await fetch(key ? `/api/admin/roles/${key}` : '/api/admin/roles', {
+    method: key ? 'PUT' : 'POST', headers: H(), body: JSON.stringify(payload)
+  });
+  const d = await r.json();
+  if (!r.ok) { err.textContent = d.error; return; }
+
+  document.getElementById('roleForm').classList.add('hidden');
+  toast(d.message);
+  loadStaffTab();
+}
+
+async function deleteRole(key) {
+  const rl = ROLES.find(x => x.key === key);
+  if (!confirm(`نقش «${rl.name}» حذف شود؟`)) return;
+  const r = await fetch(`/api/admin/roles/${key}`, { method: 'DELETE', headers: H() });
+  const d = await r.json();
+  toast(r.ok ? d.message : d.error);
+  if (r.ok) loadStaffTab();
+}
+
+/* ═══ سابقه ═══ */
+async function loadAudit() {
+  const denied = document.getElementById('auditDenied').checked;
+  const r = await fetch(`/api/admin/audit?limit=200${denied ? '&denied=1' : ''}`,
+                        { headers: H() });
+  if (!r.ok) return;
+  const d = await r.json();
+
+  document.getElementById('auditTable').innerHTML = d.entries.length ? `
+    <tr><th>زمان</th><th>کارمند</th><th>عمل</th><th>مسیر</th><th>هدف</th><th></th></tr>
+    ${d.entries.map(e => `<tr ${e.allowed ? '' : 'style="background:#FDF3F2"'}>
+      <td style="font-size:.74rem;color:var(--muted);white-space:nowrap" dir="ltr">
+        ${e.at ? e.at.slice(0, 16).replace('T', ' ') : ''}</td>
+      <td style="font-size:.78rem">${esc(e.username || '—')}
+        ${e.role_key ? `<div style="font-size:.68rem;color:var(--muted)">${esc(e.role_key)}</div>` : ''}</td>
+      <td dir="ltr" style="font-size:.76rem">${esc(e.action)}</td>
+      <td dir="ltr" style="font-size:.72rem;color:var(--muted);max-width:190px;
+          overflow:hidden;text-overflow:ellipsis">${esc(e.path || '')}</td>
+      <td style="font-size:.74rem">${esc(e.target || '—')}</td>
+      <td>${e.allowed ? '' : '<span class="badge b-cancel">رد شد</span>'}</td>
+    </tr>`).join('')}`
+    : '<tr><td style="text-align:center;padding:24px;color:var(--muted)">موردی ثبت نشده</td></tr>';
+}
+
+onCouponType();
+
+checkAuth().then(ok => { if (ok) showPanel(); });
+</script>
+</body>
+</html>

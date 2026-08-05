@@ -1,0 +1,77 @@
+<!DOCTYPE html><html lang="fa" dir="rtl"><head><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16.png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="manifest" href="/site.webmanifest">
+<meta name="theme-color" content="#121212">
+<title>صفحه یافت نشد | عطر یزد</title>
+<meta name="robots" content="noindex">
+<!-- فونت عمداً preload نمی‌شود.
+     با font-display:swap متن بلافاصله با فونت سیستمی دیده می‌شود،
+     پس preload فقط پهنای باند را از تصویر اصلی می‌دزدد. روی ۳G
+     اندازه‌گیری شد: حذف آن LCP صفحه محصول را از ۴٫۳۱s به ۳٫۵۷s
+     رساند بدون آنکه FCP بدتر شود. -->
+<link rel="stylesheet" href="/assets/theme.css">
+<style>
+.nf-search{position:relative;max-width:340px;margin:22px auto 0;
+ animation:headRise 900ms var(--ease-out) 420ms backwards}
+.nf-search input{width:100%;padding:13px 44px 13px 16px;border:1px solid var(--border);
+ border-radius:40px;background:var(--surface);font:inherit;font-size:.88rem;
+ transition:border-color var(--t-fast),box-shadow var(--t-fast)}
+.nf-search input:focus{outline:none;border-color:var(--gold);box-shadow:0 0 0 4px rgba(197,155,39,.12)}
+.nf-search svg{position:absolute;right:15px;top:50%;transform:translateY(-50%);
+ width:17px;height:17px;stroke:var(--muted);fill:none;stroke-width:2}
+.nf-hint{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:16px;
+ animation:headRise 900ms var(--ease-out) 520ms backwards}
+.nf-hint a{font-size:.78rem;color:var(--muted);border:1px solid var(--border);
+ border-radius:30px;padding:7px 14px;transition:all var(--t-fast)}
+.nf-hint a:hover{border-color:var(--gold);color:var(--gold)}
+</style>
+</head>
+<body><a href="#main" class="skip-link">پرش به محتوای اصلی</a>
+<!-- ارتفاع هدر از پیش رزرو می‌شود. هدر با جاوااسکریپت از app.js
+     ساخته می‌شود، پس تا آن لحظه ارتفاعش صفر است و با ظاهر شدن،
+     کل صفحه ۹۷ تا ۱۰۳ پیکسل پایین می‌پرد. ردیابی نشان داد این
+     تک‌ریشهٔ جابه‌جایی در همه صفحات بود (MAIN#main: y 0 → 97).
+     اندازه‌گیری واقعی: موبایل ۹۷px · دسکتاپ ۱۰۳px. -->
+<div id="hdr" class="hdr-reserve"></div>
+
+<main id="main" class="nf">
+  <div class="nf-inner">
+    <div class="nf-code">۴۰۴</div>
+    <h1>این رایحه در هوا گم شد</h1>
+    <p>صفحه‌ای که دنبالش بودید وجود ندارد یا جابه‌جا شده.
+    بگذارید از جای درست شروع کنیم.</p>
+
+    <form class="nf-search" onsubmit="go(event)">
+      <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
+      <input id="q" placeholder="دنبال چه عطری بودید؟" aria-label="جستجو در کاتالوگ">
+    </form>
+
+    <div class="nf-acts">
+      <a href="/" class="btn">بازگشت به کاتالوگ</a>
+      <a href="/quiz" class="btn btn-outline">کوییز پیدا کردن رایحه</a>
+    </div>
+
+    <div class="nf-hint">
+      <a href="/brands">خانه‌های عطر</a>
+      <a href="/journal">ژورنال</a>
+      <a href="/track">پیگیری سفارش</a>
+      <a href="/contact">تماس با ما</a>
+    </div>
+  </div>
+</main>
+
+<div id="ftr"></div>
+<script src="/assets/app.js"></script>
+<script>
+document.getElementById('hdr').innerHTML=renderHeader();
+document.getElementById('ftr').innerHTML=renderFooter();
+function go(e){
+  e.preventDefault();
+  const q=document.getElementById('q').value.trim();
+  location.href = q ? '/?q='+encodeURIComponent(q) : '/';
+}
+</script></body></html>

@@ -1,0 +1,17 @@
+{
+  "platform": "node",
+  "app": "yazdperfume",
+  "port": 3000,
+  "build": {
+    "location": "iran"
+  },
+  "disks": [
+    {
+      "name": "database",
+      "mountTo": "/app/data"
+    }
+  ],
+  "node": {
+    "version": "22"
+  }
+}

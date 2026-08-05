@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16.png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="manifest" href="/site.webmanifest">
+<meta name="theme-color" content="#121212">
+<title>فاکتور فروش | عطر یزد</title>
+<!-- فونت عمداً preload نمی‌شود.
+     با font-display:swap متن بلافاصله با فونت سیستمی دیده می‌شود،
+     پس preload فقط پهنای باند را از تصویر اصلی می‌دزدد. روی ۳G
+     اندازه‌گیری شد: حذف آن LCP صفحه محصول را از ۴٫۳۱s به ۳٫۵۷s
+     رساند بدون آنکه FCP بدتر شود. -->
+<link rel="stylesheet" href="/assets/fonts.css">
+<style>
+  :root { --gold:#C59B27; --ink:#1C1C1C; --muted:#6B6B6B; --line:#D8D5CE; --sand:#F7F4EF; }
+  * { box-sizing:border-box; margin:0; padding:0 }
+  body { font-family:'Vazirmatn',sans-serif; background:#EFEFEF; color:var(--ink);
+         direction:rtl; line-height:1.8; padding:22px }
+
+  .toolbar { max-width:820px; margin:0 auto 16px; display:flex; gap:9px; flex-wrap:wrap;
+             justify-content:space-between; align-items:center }
+  .btn { background:var(--gold); color:#121212; border:none; padding:11px 24px;
+         border-radius:9px; font-weight:800; font-size:.88rem; cursor:pointer;
+         font-family:inherit; text-decoration:none; display:inline-block }
+  .btn-ghost { background:#FFF; color:var(--ink); border:1px solid var(--line) }
+
+  .sheet { max-width:820px; margin:0 auto; background:#FFF; padding:34px 38px;
+           box-shadow:0 4px 24px rgba(0,0,0,.09) }
+
+  .head { display:flex; justify-content:space-between; align-items:flex-start;
+          gap:20px; border-bottom:3px solid var(--gold); padding-bottom:18px }
+  .head .brand { font-size:1.5rem; font-weight:800 }
+  .head .brand small { display:block; font-size:.62rem; letter-spacing:2.5px;
+                       color:var(--gold); font-weight:700 }
+  .head .legal { font-size:.74rem; color:var(--muted); line-height:1.95; margin-top:7px }
+  .doc-title { text-align:left; min-width:200px }
+  .doc-title h1 { font-size:1.12rem; font-weight:800 }
+  .doc-title .meta { font-size:.78rem; color:var(--muted); line-height:2; margin-top:5px }
+  .doc-title .no { font-size:1rem; font-weight:800; color:var(--gold) }
+
+  .parties { display:grid; grid-template-columns:1fr 1fr; gap:16px; margin:20px 0 }
+  .party { background:var(--sand); border-radius:9px; padding:14px 16px }
+  .party h3 { font-size:.78rem; color:var(--gold); font-weight:800; margin-bottom:7px }
+  .party .row { font-size:.82rem; line-height:2.1 }
+  .party .row b { font-weight:700 }
+
+  table { width:100%; border-collapse:collapse; margin-top:8px }
+  thead th { background:var(--ink); color:#FFF; font-size:.78rem; font-weight:700;
+             padding:10px 8px; text-align:right }
+  tbody td { padding:11px 8px; border-bottom:1px solid var(--line); font-size:.83rem }
+  tbody tr:nth-child(even) { background:#FBFAF8 }
+  .num { direction:ltr; text-align:left; white-space:nowrap }
+  .idx { width:34px; color:var(--muted) }
+
+  .totals { display:flex; justify-content:flex-start; margin-top:18px }
+  .totals table { width:auto; min-width:310px }
+  .totals td { padding:8px 12px; font-size:.85rem; border:none }
+  .totals tr.grand td { border-top:2px solid var(--ink); font-size:1.05rem;
+                        font-weight:800; padding-top:12px }
+  .discount td { color:#1E8449 }
+
+  /* یادداشت مشتری روی فاکتور — ممکن است درخواست فاکتور رسمی
+     یا نکته تحویل باشد و باید همراه سند بماند. */
+  .cust-note-box { margin-top:10px; padding:9px 12px; background:#FAF7F0;
+    border-right:3px solid #C59927; border-radius:6px; font-size:.8rem;
+    line-height:1.9; }
+  .words { background:var(--sand); border-right:4px solid var(--gold);
+           padding:11px 15px; border-radius:8px; margin-top:16px; font-size:.83rem }
+
+  .foot { margin-top:26px; padding-top:16px; border-top:1px solid var(--line);
+          display:flex; justify-content:space-between; gap:20px; flex-wrap:wrap }
+  .foot .note { font-size:.75rem; color:var(--muted); line-height:1.95; max-width:420px }
+  .sign { text-align:center; font-size:.78rem; color:var(--muted) }
+  .sign .box { width:150px; height:62px; border:1px dashed var(--line);
+               border-radius:7px; margin-top:7px }
+
+  .stamp { position:absolute; left:44px; top:200px; transform:rotate(-14deg);
+           border:3px solid #1E8449; color:#1E8449; padding:7px 20px;
+           border-radius:9px; font-weight:800; font-size:1.05rem; opacity:.72 }
+  .sheet { position:relative }
+
+  .inv-barcode { text-align:center; margin-top:18px; padding-top:14px;
+                 border-top:1px dashed var(--line) }
+  .inv-barcode svg { width:56mm; max-width:100%; height:13mm }
+  .inv-barcode .t { font-family:monospace; font-size:.74rem; letter-spacing:2px;
+                    direction:ltr; margin-top:2px; color:var(--muted) }
+
+  @media print {
+    body { background:#FFF; padding:0 }
+    .toolbar { display:none !important }
+    .sheet { box-shadow:none; max-width:100%; padding:14mm }
+    @page { size:A4; margin:8mm }
+    /* جدول اقلام نباید وسط صفحه بریده شود */
+    tbody tr { page-break-inside:avoid }
+    thead { display:table-header-group }
+    .totals, .words, .foot, .inv-barcode { page-break-inside:avoid }
+    /* رنگ پس‌زمینه هنگام چاپ حفظ شود */
+    * { -webkit-print-color-adjust:exact; print-color-adjust:exact }
+  }
+  @media (max-width:640px) {
+    body { padding:12px }
+    .sheet { padding:20px }
+    .parties { grid-template-columns:1fr }
+    .head { flex-direction:column }
+    .doc-title { text-align:right }
+  }
+</style>
+</head>
+<body>
+
+<div class="toolbar">
+  <a href="/admin" class="btn btn-ghost">بازگشت</a>
+  <div style="display:flex;gap:9px">
+    <button class="btn btn-ghost" onclick="window.print()">ذخیره PDF</button>
+    <button class="btn" onclick="window.print()">چاپ فاکتور</button>
+  </div>
+</div>
+
+<div class="sheet" id="sheet">
+  <div style="text-align:center;padding:50px;color:#888">در حال بارگذاری…</div>
+</div>
+
+<script src="/assets/code128.js"></script>
+<script>
+const esc = v => v === null || v === undefined ? '' : String(v)
+  .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
+  .replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+const fa = n => String(n).replace(/\d/g, d => '۰۱۲۳۴۵۶۷۸۹'[d]);
+const money = n => fa(Number(n || 0).toLocaleString('en-US'));
+
+/* تبدیل عدد به حروف فارسی */
+function toWords(num) {
+  if (!num) return 'صفر';
+  const yekan = ['','یک','دو','سه','چهار','پنج','شش','هفت','هشت','نه'];
+  const dahgan = ['','','بیست','سی','چهل','پنجاه','شصت','هفتاد','هشتاد','نود'];
+  const dahYek = ['ده','یازده','دوازده','سیزده','چهارده','پانزده','شانزده','هفده','هجده','نوزده'];
+  const sadgan = ['','صد','دویست','سیصد','چهارصد','پانصد','ششصد','هفتصد','هشتصد','نهصد'];
+
+  const three = n => {
+    const p = [];
+    const s = Math.floor(n / 100), r = n % 100;
+    if (s) p.push(sadgan[s]);
+    if (r >= 10 && r < 20) p.push(dahYek[r - 10]);
+    else {
+      const d = Math.floor(r / 10), y = r % 10;
+      if (d) p.push(dahgan[d]);
+      if (y) p.push(yekan[y]);
+    }
+    return p.join(' و ');
+  };
+
+  const scales = ['', ' هزار', ' میلیون', ' میلیارد', ' بیلیون'];
+  const parts = [];
+  let i = 0;
+  while (num > 0) {
+    const chunk = num % 1000;
+    if (chunk) parts.unshift(three(chunk) + scales[i]);
+    num = Math.floor(num / 1000);
+    i++;
+  }
+  return parts.join(' و ');
+}
+
+const TYPE_FA = { PAID:'پرداخت شده', PROCESSING:'در حال آماده‌سازی',
+  SHIPPED:'ارسال شده', DELIVERED:'تحویل داده شده',
+  PENDING:'در انتظار پرداخت', CANCELLED:'لغو شده', EXPIRED:'منقضی شده' };
+
+const oid = new URLSearchParams(location.search).get('order');
+
+function headers() {
+  const a = localStorage.getItem('yazd_admin_token');
+  const c = localStorage.getItem('yazd_customer_token');
+  const h = {};
+  if (a) h['Authorization'] = 'Bearer ' + a;
+  if (c) h['X-Customer-Token'] = c;
+  return h;
+}
+
+async function load() {
+  if (!oid) { document.getElementById('sheet').innerHTML =
+    '<div style="padding:44px;text-align:center">شماره سفارش مشخص نیست.</div>'; return; }
+
+  const r = await fetch(`/api/orders/${oid}/invoice`, { headers: headers() });
+  if (!r.ok) {
+    const e = await r.json().catch(() => ({}));
+    document.getElementById('sheet').innerHTML =
+      `<div style="padding:44px;text-align:center">${e.error || 'خطا در دریافت فاکتور'}</div>`;
+    return;
+  }
+  render(await r.json());
+}
+
+function render(d) {
+  const { order: o, items, settings: st, totals: t, invoice_no } = d;
+  const dt = new Date(o.created_at);
+  const paid = ['PAID','PROCESSING','SHIPPED','DELIVERED'].includes(o.status);
+
+  document.title = `فاکتور ${invoice_no || o.order_id} | عطر یزد`;
+
+  /* ── دو حالت فاکتور ──
+     خواسته صریح مالک فروشگاه (مرداد ۱۴۰۵):
+       «ما در فاکتور یا جای دیگر، اصلا نیازی به درج اطلاعات
+        حقوقی نداریم. خود ای‌نماد کفایت می‌کند.»
+
+     حالت عادی (پیش‌فرض): فقط نام فروشگاه، تلفن و نشانی.
+     مشتری خرده‌فروشی این فاکتور را به اداره دارایی نمی‌برد،
+     پس کد اقتصادی و شناسه ملی روی آن بی‌معنی است — و پر کردنش
+     با عدد ساختگی مسئولیت حقوقی می‌سازد.
+
+     حالت رسمی (`?formal=1`): برای خریدار عمده‌ای که فاکتور
+     رسمی می‌خواهد. کد اقتصادی، شناسه ملی و شماره ثبت هم
+     چاپ می‌شوند — ولی فقط اگر واقعاً در تنظیمات ثبت شده باشند.
+     نبودشان بهتر از ساختگی بودنشان است.
+
+     تلفن و نشانی در **هر دو حالت** می‌مانند: خودِ اینماد
+     درجشان را الزام می‌کند، پس حذفشان مجوز را به خطر می‌اندازد. */
+  const formal = new URLSearchParams(location.search).get('formal') === '1';
+
+  const legal = [
+    formal && st.legal_name && `نام حقوقی: ${esc(st.legal_name)}`,
+    formal && st.economic_code && `کد اقتصادی: ${esc(st.economic_code)}`,
+    formal && st.national_id && `شناسه ملی: ${esc(st.national_id)}`,
+    formal && st.register_no && `شماره ثبت: ${esc(st.register_no)}`,
+    st.phone && `تلفن: ${esc(st.phone)}`,
+    st.address,
+    formal && st.postal_code && `کد پستی: ${esc(st.postal_code)}`
+  ].filter(Boolean).join('<br>');
+
+  document.getElementById('sheet').innerHTML = `
+    ${paid ? '<div class="stamp">پرداخت شد</div>' : ''}
+
+    <div class="head">
+      <div>
+        <div class="brand">${esc(st.shop_name)}<small>${esc(st.shop_name_en || '')}</small></div>
+        <div class="legal">${legal || '<span style="color:#BBB">تلفن و نشانی در تنظیمات ثبت نشده</span>'}</div>
+      </div>
+      <div class="doc-title">
+        <h1>${formal ? 'فاکتور رسمی فروش کالا' : 'فاکتور فروش کالا'}</h1>
+        <div class="meta">
+          ${invoice_no ? `شماره فاکتور: <span class="no">${fa(invoice_no)}</span><br>` : ''}
+          شماره سفارش: <span dir="ltr">${o.order_id}</span><br>
+          تاریخ: ${fa(dt.toLocaleDateString('fa-IR'))}<br>
+          وضعیت: ${TYPE_FA[o.status] || o.status}
+        </div>
+      </div>
+    </div>
+
+    <div class="parties">
+      <div class="party">
+        <h3>مشخصات خریدار</h3>
+        <div class="row"><b>نام:</b> ${esc(o.customer_name)}</div>
+        <div class="row"><b>تلفن:</b> <span dir="ltr">${fa(o.mobile)}</span></div>
+        <div class="row"><b>نشانی:</b> ${esc(o.province || '')} ${esc(o.city || '')} ${esc(o.address || '')}</div>
+        ${o.postal_code ? `<div class="row"><b>کد پستی:</b> <span dir="ltr">${fa(o.postal_code)}</span></div>` : ''}
+      </div>
+      <div class="party">
+        <h3>اطلاعات ارسال و پرداخت</h3>
+        <div class="row"><b>شیوه ارسال:</b> ${esc(o.carrier || 'پست / تیپاکس')}</div>
+        <!-- کد رهگیری عمداً روی فاکتور نیست: شرکت پستی خودش
+             آن را به مشتری پیامک می‌کند و تکرارش اینجا فقط
+             سند را شلوغ می‌کند. مشتری در «پیگیری سفارش» می‌بیندش. -->
+        ${o.payment_ref ? `<div class="row"><b>کد پیگیری بانکی:</b> <span dir="ltr">${esc(o.payment_ref)}</span></div>` : ''}
+        <div class="row"><b>تاریخ صدور:</b> ${fa(new Date().toLocaleDateString('fa-IR'))}</div>
+      </div>
+    </div>
+
+    <table>
+      <thead><tr>
+        <th class="idx">#</th><th>شرح کالا</th><th>تعداد</th>
+        <th>مبلغ واحد</th><th>مبلغ کل</th>
+      </tr></thead>
+      <tbody>
+        ${items.map((i, k) => `<tr>
+          <td class="idx">${fa(k + 1)}</td>
+          <td>${esc(i.product_name)}
+            <div style="font-size:.7rem;color:var(--muted)" dir="ltr">${esc(i.sku)}</div></td>
+          <td class="num">${fa(i.quantity)}</td>
+          <td class="num">${money(i.unit_price)}</td>
+          <td class="num">${money(i.line_total)}</td>
+        </tr>`).join('')}
+      </tbody>
+    </table>
+
+    <div class="totals">
+      <table>
+        <tr><td>جمع کالاها</td><td class="num">${money(t.subtotal)} تومان</td></tr>
+        ${t.campaign > 0 ? `<tr class="discount">
+          <td>تخفیف جشنواره${t.campaign_note ? ` (${esc(t.campaign_note)})` : ''}</td>
+          <td class="num">− ${money(t.campaign)}</td></tr>` : ''}
+        ${t.coupon > 0 ? `<tr class="discount">
+          <td>تخفیف ${o.discount_code ? `(${esc(o.discount_code)})` : 'کد'}</td>
+          <td class="num">− ${money(t.coupon)}</td></tr>` : ''}
+        <tr><td>هزینه ارسال</td>
+          <td class="num">${t.shipping ? money(t.shipping) : 'رایگان'}</td></tr>
+        <tr class="grand"><td>مبلغ قابل پرداخت</td>
+          <td class="num">${money(t.grand_total)} تومان</td></tr>
+      </table>
+    </div>
+
+    <div class="words">
+      <b>به حروف:</b> ${toWords(t.grand_total)} تومان
+    </div>
+
+    ${o.customer_note ? `<div class="cust-note-box">
+      <b>توضیحات مشتری:</b> ${esc(o.customer_note)}
+    </div>` : ''}
+
+    <div class="foot">
+      <div class="note">
+        ${esc(st.invoice_note || '')}<br>
+        تمامی محصولات بازآفرینی دست‌ساز عطر یزد هستند و ادعای اورجینال بودن ندارند.<br>
+        اسانس از خانه‌های معتبر جهانی ژیوودان، فیرمنیش، ایبرکم و لوزی تأمین می‌شود.<br>
+        شرایط مرجوعی: تنها حجم‌های بالای ۱۰ میلی‌لیتر و در صورت مصرف کمتر از ۲ میلی‌لیتر.
+      </div>
+      <div class="sign">مهر و امضای فروشنده<div class="box"></div></div>
+    </div>
+
+    <div class="inv-barcode">
+      ${code128SVG(o.order_id, { height: 52, moduleWidth: 1.6 })}
+      <div class="t">${o.order_id}</div>
+    </div>`;
+}
+
+load();
+</script>
+</body>
+</html>

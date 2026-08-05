@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16.png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="manifest" href="/site.webmanifest">
+<meta name="theme-color" content="#121212">
+<title>درگاه پرداخت آزمایشی | عطر یزد</title>
+<!-- فونت عمداً preload نمی‌شود.
+     با font-display:swap متن بلافاصله با فونت سیستمی دیده می‌شود،
+     پس preload فقط پهنای باند را از تصویر اصلی می‌دزدد. روی ۳G
+     اندازه‌گیری شد: حذف آن LCP صفحه محصول را از ۴٫۳۱s به ۳٫۵۷s
+     رساند بدون آنکه FCP بدتر شود. -->
+<link rel="stylesheet" href="/assets/theme.css">
+<style>
+  body { background: #0E1116; display: flex; align-items: center;
+         justify-content: center; min-height: 100dvh; padding: 20px; }
+  .gate { width: 100%; max-width: 430px; background: #FFF;
+          border-radius: 18px; overflow: hidden; box-shadow: 0 24px 60px rgba(0,0,0,.4); }
+  .gate-top { background: linear-gradient(135deg,#1B2735,#243447); color: #FFF;
+              padding: 20px; text-align: center; }
+  .sandbox-tag { display: inline-block; background: #F39C12; color: #1B2735;
+                 font-size: .68rem; font-weight: 800; padding: 3px 11px;
+                 border-radius: 20px; margin-bottom: 9px; }
+  .gate-body { padding: 24px; }
+  .row { display: flex; justify-content: space-between; padding: 10px 0;
+         border-bottom: 1px dashed var(--border); font-size: .88rem; }
+  .row:last-of-type { border: none; }
+  .amount { font-size: 1.6rem; font-weight: 800; text-align: center;
+            padding: 16px 0; color: var(--obsidian); }
+  .card-mock { background: var(--sand); border: 1px solid var(--border);
+               border-radius: 12px; padding: 16px; margin: 14px 0; }
+  .card-mock input { width: 100%; padding: 11px; border: 1px solid var(--border);
+                     border-radius: 8px; margin-bottom: 9px; font-family: var(--font);
+                     direction: ltr; text-align: center; letter-spacing: 2px; }
+  .note { background: #FFF8E7; border-right: 3px solid #F39C12;
+          padding: 11px 14px; border-radius: 9px; font-size: .78rem;
+          line-height: 1.8; margin-bottom: 16px; }
+  .result { text-align: center; padding: 34px 22px; }
+  .result .icon { font-size: 3rem; margin-bottom: 12px; }
+</style>
+</head>
+<body>
+<div class="gate" id="gate"></div>
+
+<script src="/assets/app.js"></script>
+<script>
+const orderId = new URLSearchParams(location.search).get('order');
+
+function renderGate() {
+  document.getElementById('gate').innerHTML = `
+    <div class="gate-top">
+      <div class="sandbox-tag">محیط آزمایشی — SANDBOX</div>
+      <div style="font-weight:800;font-size:1.05rem">درگاه پرداخت الکترونیک</div>
+      <div style="font-size:.76rem;opacity:.75;margin-top:3px">فروشگاه عطر یزد</div>
+    </div>
+    <div class="gate-body">
+      <div class="note">
+        <strong>توجه:</strong> این یک درگاه آزمایشی است. هیچ مبلغ واقعی کسر نمی‌شود.
+        پس از دریافت نماد اعتماد، درگاه واقعی جایگزین خواهد شد.
+      </div>
+
+      <div class="row"><span>شماره سفارش</span><strong dir="ltr">${orderId || '—'}</strong></div>
+      <div class="row"><span>پذیرنده</span><strong>عطر یزد</strong></div>
+      <div class="amount" id="amt">در حال دریافت…</div>
+
+      <div class="card-mock">
+        <input value="6037-9911-XXXX-XXXX" readonly>
+        <div style="display:flex;gap:8px">
+          <input value="12/07" readonly style="flex:1">
+          <input value="CVV2" readonly style="flex:1">
+        </div>
+      </div>
+
+      <button class="btn btn-block" onclick="finish('success')">پرداخت موفق (آزمایشی)</button>
+      <button class="btn btn-outline btn-block" style="margin-top:9px" onclick="finish('cancel')">
+        انصراف از پرداخت
+      </button>
+    </div>`;
+  loadAmount();
+}
+
+async function loadAmount() {
+  const m = sessionStorage.getItem('yazd_last_mobile');
+  if (!m) { document.getElementById('amt').textContent = '—'; return; }
+  try {
+    const r = await fetch(`/api/orders/track?mobile=${m}&order_id=${orderId}`);
+    const d = await r.json();
+    const o = d.orders?.[0];
+    if (o) document.getElementById('amt').innerHTML =
+      `${money(o.total_paid)} <span style="font-size:.8rem">تومان</span>`;
+  } catch {}
+}
+
+async function finish(result) {
+  const r = await fetch('/api/payment/verify', {
+    method: 'POST', headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ order_id: orderId, result })
+  });
+  const d = await r.json();
+
+  if (result === 'success') {
+    YazdCart.clear();
+    document.getElementById('gate').innerHTML = `
+      <div class="result">
+        <div class="icon">✅</div>
+        <h2 style="font-size:1.2rem;font-weight:800;margin-bottom:8px">پرداخت با موفقیت انجام شد</h2>
+        <p style="font-size:.86rem;color:var(--muted);line-height:1.9">
+          سفارش <strong dir="ltr">${orderId}</strong> ثبت شد.<br>
+          کد پیگیری: <strong dir="ltr">${d.payment_ref}</strong><br>
+          سفارش شما ظرف ۳ تا ۷ روز کاری ارسال می‌شود.
+        </p>
+        <a href="/track" class="btn" style="margin-top:18px;display:inline-block">پیگیری سفارش</a>
+        <a href="/" class="btn btn-outline" style="margin-top:8px;display:block">بازگشت به فروشگاه</a>
+      </div>`;
+  } else {
+    document.getElementById('gate').innerHTML = `
+      <div class="result">
+        <div class="icon">⚠️</div>
+        <h2 style="font-size:1.2rem;font-weight:800;margin-bottom:8px">پرداخت لغو شد</h2>
+        <p style="font-size:.86rem;color:var(--muted)">سفارش لغو و موجودی بازگردانده شد.</p>
+        <a href="/cart" class="btn" style="margin-top:18px;display:inline-block">بازگشت به سبد خرید</a>
+      </div>`;
+  }
+}
+
+renderGate();
+</script>
+</body>
+</html>

@@ -1,0 +1,1349 @@
+/* ═══════════════════════════════════════════════
+   عطر یزد | سیستم بصری
+   الهام: By Kilian · Penhaligon's — آرامش و فضای خالی
+   ═══════════════════════════════════════════════ */
+
+/* ── فونت: فقط ۴ وزن مورد استفاده، نه ۹ تا ──
+   swap = متن بلافاصله با فونت جایگزین دیده می‌شود، بدون پرش ناگهانی */
+@font-face {
+  font-family: 'Vazirmatn';
+  src: url('/fonts/Vazirmatn-Regular.woff2') format('woff2');
+  font-weight: 400; font-display: optional; font-style: normal;
+}
+/* فونت جایگزینِ هم‌ابعاد با وزیرمتن.
+
+   مسئله‌ای که حل می‌کند: با font-display:swap متن اول با فونت
+   سیستمی نمایش داده می‌شود و بعد وزیرمتن جایش را می‌گیرد. چون
+   ابعاد دو فونت فرق دارد، در آن لحظه کل متن جابه‌جا می‌شود —
+   بنچمارک نشان داد CLS از ۰٫۰۱۶ به ۰٫۱۳ می‌پرد.
+
+   اعداد از خودِ فایل وزیرمتن استخراج شدند (unitsPerEm=2048):
+     ascent 102.54% · descent 53.71% · lineGap 0
+   با این تنظیم، فونت سیستمی دقیقاً همان ارتفاع خط را می‌گیرد و
+   وقتی وزیرمتن می‌رسد هیچ‌چیز تکان نمی‌خورد.
+
+   size-adjust برای فارسی روی ۱۰۰٪ می‌ماند؛ تنظیمش برای خطوط
+   غیرلاتین نتیجه معکوس می‌دهد. */
+@font-face {
+  font-family: 'Vazir Fallback';
+  src: local('Tahoma'), local('Segoe UI'), local('Arial'), local('sans-serif');
+  ascent-override: 102.54%;
+  descent-override: 53.71%;
+  line-gap-override: 0%;
+}
+
+/* وزن ۵۰۰ (Medium) عمداً بارگذاری نمی‌شود.
+   فقط در دو جا استفاده می‌شد ولی ۲۸ کیلوبایت هزینه داشت. روی
+   ۳G هر فایل فونت پهنای باند را از تصویر اصلی می‌دزدد — بنچمارک
+   نشان داد ۱۴۱KB فونت باعث می‌شد LCP به ۶ ثانیه برسد.
+   مرورگر برای وزن ۵۰۰ از Regular استفاده می‌کند؛ تفاوت بصری
+   در متن فارسی عملاً نامحسوس است. */
+@font-face {
+  font-family: 'Vazirmatn';
+  src: url('/fonts/Vazirmatn-SemiBold.woff2') format('woff2');
+  font-weight: 600; font-display: optional; font-style: normal;
+}
+@font-face {
+  font-family: 'Vazirmatn';
+  src: url('/fonts/Vazirmatn-Bold.woff2') format('woff2');
+  font-weight: 700; font-display: optional; font-style: normal;
+}
+@font-face {
+  font-family: 'Vazirmatn';
+  src: url('/fonts/Vazirmatn-ExtraBold.woff2') format('woff2');
+  font-weight: 800; font-display: optional; font-style: normal;
+}
+
+:root {
+  /* ── رنگ ── */
+  --obsidian: #121212;
+  --obsidian-soft: #1C1C1C;
+  --obsidian-glass: rgba(18, 18, 18, 0.86);
+  --sand: #F7F4EF;
+  --sand-deep: #EFEAE1;
+  --gold: #C59B27;
+  --gold-light: #D9B44A;
+  --gold-dark: #A37E1C;
+  --bg: #FAFAFA;
+  --surface: #FFFFFF;
+  --border: #E5E2DC;
+  --border-soft: #F0EDE7;
+  --text: #1C1C1C;
+  --muted: #6B6B6B;
+  --muted-light: #9A9A9A;
+
+  --success: #1E8449;
+  --warning: #B9770E;
+  --danger: #C0392B;
+
+  /* ── تایپوگرافی ── */
+  --font: 'Vazirmatn', 'Vazir Fallback', system-ui, -apple-system, sans-serif;
+
+  /* مقیاس هماهنگ — نسبت ۱.۲ */
+  --fs-xs: .72rem;
+  --fs-sm: .82rem;
+  --fs-base: .92rem;
+  --fs-md: 1.05rem;
+  --fs-lg: 1.25rem;
+  --fs-xl: 1.5rem;
+  --fs-2xl: 1.85rem;
+  --fs-3xl: 2.25rem;
+
+  --lh-tight: 1.4;
+  --lh-normal: 1.8;
+  --lh-loose: 2.1;
+
+  /* ── فاصله — مقیاس ۴ ── */
+  --sp-1: 4px;   --sp-2: 8px;   --sp-3: 12px;
+  --sp-4: 16px;  --sp-5: 24px;  --sp-6: 32px;
+  --sp-7: 48px;  --sp-8: 64px;
+
+  /* ── حرکت ──
+     منحنی نرم با بازگشت ملایم — حس گران‌قیمت */
+  --ease-out: cubic-bezier(.16, 1, .3, 1);
+  --ease-soft: cubic-bezier(.4, 0, .2, 1);
+  --ease-spring: cubic-bezier(.34, 1.4, .64, 1);
+
+  --t-fast: 180ms var(--ease-out);
+  --t-smooth: 320ms var(--ease-out);
+  --t-slow: 520ms var(--ease-out);
+
+  /* ── شکل ── */
+  --r-sm: 8px;
+  --r: 14px;
+  --r-lg: 20px;
+  --r-full: 999px;
+
+  /* ── سایه — لایه‌ای و نرم ── */
+  --sh-sm: 0 1px 3px rgba(0,0,0,.05), 0 1px 2px rgba(0,0,0,.03);
+  --sh: 0 4px 14px rgba(0,0,0,.06), 0 2px 6px rgba(0,0,0,.03);
+  --sh-lg: 0 12px 34px rgba(0,0,0,.09), 0 4px 12px rgba(0,0,0,.04);
+  --sh-gold: 0 6px 22px rgba(197,155,39,.22);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font);
+  font-size: var(--fs-base);
+  line-height: var(--lh-normal);
+  direction: rtl;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  font-feature-settings: 'ss01', 'ss02';
+}
+
+a { text-decoration: none; color: inherit; cursor: pointer; }
+img { max-width: 100%; display: block; }
+button, input, select, textarea { font-family: var(--font); font-size: inherit; }
+
+h1, h2, h3, h4 { line-height: var(--lh-tight); letter-spacing: -.01em; }
+
+/* ═══ نوار اعلان ═══ */
+/* ── نوار اعلان (تک‌پیامی) ──
+   روی همان نوار ثابت می‌نشیند تا ارتفاع صفحه عوض نشود.
+   چهار لحن دارد که مدیر از پنل انتخاب می‌کند. */
+.announce.notice-gold    { background:#1A1508; color:#F5E6B8 }
+.announce.notice-dark    { background:#080808; color:var(--sand) }
+.announce.notice-success { background:#0C2A18; color:#BFE8CF }
+.announce.notice-alert   { background:#2A0F0C; color:#F5C9C2 }
+
+.announce .n-txt  { vertical-align:middle }
+.announce .n-link {
+  color:var(--gold); font-weight:800; text-decoration:underline;
+  text-underline-offset:3px; margin-inline-start:6px; vertical-align:middle;
+}
+.announce .n-link:hover { color:#FFF }
+.announce .n-x {
+  position:absolute; inset-inline-end:10px; top:50%; transform:translateY(-50%);
+  background:none; border:none; color:inherit; opacity:.55; cursor:pointer;
+  font-size:.82rem; line-height:1; padding:4px 6px; font-family:var(--font);
+}
+.announce .n-x:hover { opacity:1 }
+
+.announce {
+  position: relative;
+  background: #080808;
+  color: var(--sand);
+  text-align: center;
+  /* فضای سمت چپ برای دکمه بستن */
+  padding: 8px 38px;
+  font-size: var(--fs-xs);
+  letter-spacing: .2px;
+  border-bottom: 1px solid rgba(197,155,39,.2);
+}
+
+/* ═══ هدر شیشه‌ای ═══ */
+/* فضای هدر پیش از ساخته‌شدنش رزرو می‌شود.
+
+   هدر با جاوااسکریپت از app.js تزریق می‌شود؛ تا آن لحظه ارتفاعش
+   صفر است و وقتی ظاهر می‌شود کل صفحه پایین می‌پرد. ردیابی رویداد
+   layout-shift نشان داد این تک‌ریشهٔ CLS در همه صفحات بود.
+
+   عدد از اندازه‌گیری واقعی می‌آید: موبایل ۹۷px · دسکتاپ ۱۰۳px.
+   پس از تزریق، محتوای هدر خودش همان ارتفاع را می‌گیرد و رزرو
+   بی‌اثر می‌شود. */
+.hdr-reserve { min-height: 103px }
+@media (max-width: 860px) { .hdr-reserve { min-height: 97px } }
+
+.glass-header {
+  background: var(--obsidian-glass);
+  backdrop-filter: blur(22px) saturate(180%);
+  -webkit-backdrop-filter: blur(22px) saturate(180%);
+  border-bottom: 1px solid rgba(197,155,39,.28);
+  position: sticky; top: 0; z-index: 200;
+  color: #FFF;
+  transition: box-shadow var(--t-smooth), background var(--t-smooth);
+}
+/* سایه فقط پس از اسکرول — با JS کلاس اضافه می‌شود */
+.glass-header.scrolled {
+  box-shadow: 0 8px 30px rgba(0,0,0,.32);
+  background: rgba(18,18,18,.94);
+}
+
+.header-row {
+  max-width: 1320px; margin: 0 auto;
+  padding: 11px 20px;
+  display: flex; align-items: center; justify-content: space-between; gap: 18px;
+}
+
+.logo-brand { display: flex; align-items: center; gap: 11px; flex-shrink: 0; }
+.logo-brand img {
+  height: 42px; width: auto; object-fit: contain;
+  filter: drop-shadow(0 2px 10px rgba(197,155,39,.4));
+  transition: transform var(--t-smooth);
+}
+.logo-brand:hover img { transform: scale(1.06) rotate(-2deg); }
+.brand-title { font-size: var(--fs-md); font-weight: 800; color: #FFF; white-space: nowrap; line-height: 1.2; }
+.brand-sub { font-size: .55rem; color: var(--gold); letter-spacing: 2.4px; font-weight: 700; }
+
+.nav-links { display: flex; align-items: center; gap: 22px; list-style: none; margin: 0 auto; }
+.nav-links a {
+  font-size: var(--fs-sm); font-weight: 600; color: #DDD;
+  white-space: nowrap; position: relative; padding: 4px 0;
+  transition: color var(--t-fast);
+}
+/* خط طلایی که از وسط باز می‌شود */
+.nav-links a::after {
+  content: ''; position: absolute; bottom: 0; left: 50%; right: 50%;
+  height: 1.5px; background: var(--gold);
+  transition: left var(--t-smooth), right var(--t-smooth);
+}
+.nav-links a:hover { color: #FFF; }
+.nav-links a:hover::after,
+.nav-links a.active::after { left: 0; right: 0; }
+.nav-links a.active { color: var(--gold); }
+@media (max-width: 1080px) { .nav-links { display: none; } }
+
+.header-actions { display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
+.icon-btn {
+  width: 40px; height: 40px; border-radius: var(--r-full);
+  background: rgba(255,255,255,.07);
+  border: 1px solid rgba(197,155,39,.32);
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; position: relative;
+  transition: background var(--t-fast), border-color var(--t-fast), transform var(--t-fast);
+}
+.icon-btn:hover { background: rgba(197,155,39,.18); border-color: var(--gold); transform: translateY(-1px); }
+.icon-btn:active { transform: scale(.94); }
+.icon-btn svg { width: 18px; height: 18px; fill: #FFF; transition: fill var(--t-fast); }
+.icon-btn.cart { background: var(--gold); border-color: var(--gold); }
+.icon-btn.cart:hover { background: var(--gold-light); }
+.icon-btn.cart svg { fill: var(--obsidian); }
+
+.cart-badge {
+  position: absolute; top: -4px; right: -4px;
+  background: var(--obsidian); color: var(--gold);
+  font-size: .66rem; font-weight: 800;
+  min-width: 19px; height: 19px; border-radius: var(--r-full);
+  display: flex; align-items: center; justify-content: center;
+  border: 2px solid var(--gold); padding: 0 4px;
+  animation: badgePop 420ms var(--ease-spring);
+}
+@keyframes badgePop {
+  0% { transform: scale(0); }
+  60% { transform: scale(1.25); }
+  100% { transform: scale(1); }
+}
+
+/* ═══ دکمه ═══ */
+.btn {
+  background: var(--gold); color: var(--obsidian);
+  padding: 13px 28px; border-radius: var(--r-full);
+  font-weight: 800; font-size: var(--fs-base);
+  border: none; cursor: pointer;
+  position: relative; overflow: hidden;
+  transition: background var(--t-fast), transform var(--t-fast), box-shadow var(--t-fast);
+}
+.btn::before {
+  content: ''; position: absolute; inset: 0;
+  background: linear-gradient(120deg, transparent 30%, rgba(255,255,255,.32) 50%, transparent 70%);
+  transform: translateX(-120%);
+  transition: transform 620ms var(--ease-soft);
+}
+.btn:hover::before { transform: translateX(120%); }
+.btn:hover { background: var(--gold-light); transform: translateY(-2px); box-shadow: var(--sh-gold); }
+.btn:active { transform: translateY(0) scale(.98); }
+.btn:disabled { opacity: .45; cursor: not-allowed; transform: none; box-shadow: none; }
+.btn:disabled::before { display: none; }
+
+.btn-outline {
+  background: transparent; color: var(--text);
+  border: 1px solid var(--border); box-shadow: none;
+}
+.btn-outline:hover { background: var(--sand); border-color: var(--gold); box-shadow: none; }
+.btn-dark { background: var(--obsidian); color: var(--gold); }
+.btn-dark:hover { background: var(--obsidian-soft); }
+.btn-block { width: 100%; }
+
+/* ═══ فرم ═══ */
+.field { margin-bottom: var(--sp-4); }
+.field label { display: block; font-size: var(--fs-sm); font-weight: 700; margin-bottom: 6px; }
+.field input, .field select, .field textarea {
+  width: 100%; padding: 12px 14px;
+  border: 1px solid var(--border); border-radius: var(--r-sm);
+  background: var(--surface); color: var(--text);
+  transition: border-color var(--t-fast), box-shadow var(--t-fast);
+}
+.field input:focus, .field select:focus, .field textarea:focus {
+  outline: none; border-color: var(--gold);
+  box-shadow: 0 0 0 3px rgba(197,155,39,.13);
+}
+.field .hint { font-size: var(--fs-xs); color: var(--muted); margin-top: 5px; }
+
+/* ═══ کارت محصول ═══ */
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: var(--sp-5);
+}
+.product-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--r);
+  overflow: hidden;
+  display: flex; flex-direction: column;
+  cursor: pointer;
+  transition: transform var(--t-smooth), box-shadow var(--t-smooth), border-color var(--t-fast);
+}
+.product-card:hover {
+  transform: translateY(-6px);
+  border-color: rgba(197,155,39,.5);
+  box-shadow: var(--sh-lg);
+}
+.product-card .img-wrap {
+  aspect-ratio: 1/1; background: var(--sand);
+  overflow: hidden; position: relative;
+}
+/* برچسب جنسیت گوشه تصویر */
+.card-badge {
+  position: absolute; top: 10px; right: 10px; z-index: 3;
+  background: rgba(255,255,255,.92); backdrop-filter: blur(8px);
+  color: var(--obsidian); font-size: .66rem; font-weight: 700;
+  padding: 4px 10px; border-radius: var(--r-full);
+  opacity: 0; transform: translateY(-6px);
+  transition: opacity var(--t-smooth), transform var(--t-smooth);
+}
+.product-card:hover .card-badge { opacity: 1; transform: none; }
+
+/* نوار «مشاهده» که از پایین بالا می‌آید */
+.card-peek {
+  position: absolute; left: 0; right: 0; bottom: 0; z-index: 3;
+  background: linear-gradient(to top, rgba(18,18,18,.88), transparent);
+  color: #FFF; text-align: center; padding: 22px 10px 12px;
+  font-size: var(--fs-xs); font-weight: 700; letter-spacing: .4px;
+  transform: translateY(100%);
+  transition: transform var(--t-smooth);
+}
+.product-card:hover .card-peek { transform: none; }
+@media (pointer: coarse) { .card-peek, .card-badge { display: none; } }
+.product-card .img-wrap::after {
+  content: ''; position: absolute; inset: 0;
+  background: linear-gradient(to top, rgba(18,18,18,.07), transparent 42%);
+  opacity: 0; transition: opacity var(--t-smooth);
+}
+.product-card:hover .img-wrap::after { opacity: 1; }
+.product-card .img-wrap img {
+  width: 100%; height: 100%; object-fit: cover;
+  transition: transform 760ms var(--ease-out);
+}
+.product-card:hover .img-wrap img { transform: scale(1.07); }
+
+.product-card .body { padding: var(--sp-4); display: flex; flex-direction: column; flex: 1; }
+.card-title { font-size: var(--fs-md); font-weight: 800; line-height: var(--lh-tight); margin-bottom: 3px; }
+.card-tag { font-size: var(--fs-xs); color: var(--gold); font-weight: 600; }
+.card-sub {
+  font-size: var(--fs-sm); color: var(--muted); font-weight: 600;
+  margin-bottom: 8px; letter-spacing: .2px;
+}
+.card-notes { font-size: var(--fs-xs); color: var(--muted); margin-bottom: var(--sp-3); line-height: 1.9; }
+.card-price-row {
+  display: flex; justify-content: space-between; align-items: center;
+  gap: 6px;
+  margin-top: auto; padding-top: var(--sp-3); border-top: 1px solid var(--border-soft);
+}
+/* ── چرا ستونی روی موبایل ──
+   شبکه موبایل دو ستونه است و کارت حدود ۱۶۹px پهنا دارد؛ ردیف
+   قیمت عملاً ۱۳۵px می‌شود. «از ۱۹۶٬۰۰۰ تومان» کنار «مشاهده ←»
+   در این عرض جا نمی‌شود و به سه خط می‌شکند — اندازه‌گیری واقعی:
+   ارتفاع ردیف ۷۳px به‌جای ~۲۴px و متن روی هم می‌افتد.
+   با افزودن قیمت خط‌خورده جشنواره به ۹۱px رسید.
+
+   راه‌حل: زیر ۵۲۰px قیمت و پیوند زیر هم می‌نشینند. هیچ اطلاعاتی
+   حذف نمی‌شود و ارتفاع کارت‌ها هم یکسان می‌ماند. */
+@media (max-width: 520px) {
+  .card-price-row {
+    flex-direction: column; align-items: flex-start; gap: 4px;
+  }
+  .card-price-row .price { white-space: nowrap; }
+}
+.price { font-size: var(--fs-md); font-weight: 800; }
+.price small { font-size: var(--fs-xs); font-weight: 600; color: var(--muted); }
+
+/* نشانی و تلفن فوتر — الزام اینماد */
+/* نشانی و تلفن فوتر — الزام اینماد.
+   `word-break` لازم است چون شماره تلفن ۱۱ رقمی در ستون باریک
+   موبایل از قاب بیرون می‌زد (با عکس دیده شد). */
+.foot-contact { margin-top: 12px; font-size: .76rem; line-height: 2.1;
+                opacity: .72; overflow-wrap: anywhere; }
+.foot-contact > div { margin-bottom: 2px; }
+.foot-contact a { color: inherit; text-decoration: none; }
+.foot-contact a:hover { color: var(--gold); }
+/* لینک واتس‌اپ — تنها راه پیام‌دادن وقتی تلفن ثابت نیست */
+.wa-link { display: inline-flex; align-items: center; gap: 5px; color: #4FBF6B !important; }
+.wa-link svg { width: 14px; height: 14px; fill: none; stroke: currentColor;
+               stroke-width: 1.7; stroke-linejoin: round; }
+
+/* ── جداکننده میان‌متنی ──
+   به‌جای نوشتن «·» داخل متن. نویسه نقطه‌وسط در الگوریتم دوطرفه
+   خنثی است و بین فارسی و عدد به جای اشتباه می‌پرد — «۷ · دقیقه»
+   به‌جای «· ۷ دقیقه». به‌صورت عنصر مستقل این مشکل پیش نمی‌آید. */
+.sep { display: inline-block; width: 1.5em; text-align: center; }
+/* نقطه‌وسط در اندازه‌های کوچک با رقم فارسی «۰» اشتباه گرفته
+   می‌شود — در بزرگ‌نمایی ۳ برابر «۷ · دقیقه» شبیه «۷۰ دقیقه»
+   دیده شد. خط عمودی نازک این ابهام را ندارد. */
+.sep::before { content: '|'; opacity: .38; font-weight: 400; }
+
+/* ═══ قیمت جشنواره ═══
+   قیمت قبلی خط‌خورده بالای قیمت جدید می‌نشیند، نه کنارش: در RTL
+   دو عدد پهلوی هم روی موبایل ۳۶۰ پیکسلی ردیف قیمت را می‌شکند و
+   فلش «مشاهده ←» به خط بعد می‌افتد. */
+.price-old {
+  display: block; font-size: var(--fs-xs); font-weight: 600;
+  color: var(--muted); text-decoration-thickness: 1px;
+  margin-bottom: 1px; line-height: 1.4;
+}
+/* نشان درصد تخفیف — گوشه چپ تصویر تا با برچسب جنسیت (راست) قاطی نشود */
+.card-off {
+  position: absolute; top: 10px; left: 10px; z-index: 4;
+  background: #B3261E; color: #FFF;
+  font-size: .66rem; font-weight: 800; letter-spacing: .2px;
+  padding: 4px 9px; border-radius: var(--r-full);
+  box-shadow: 0 2px 8px rgba(179,38,30,.32);
+}
+/* برخلاف .card-badge روی موبایل هم می‌ماند — تخفیفی که دیده نشود
+   بی‌فایده است، و روی صفحه لمسی هاوری در کار نیست. */
+
+/* فلش که هنگام هاور جلو می‌رود */
+.card-price-row > span:last-child { transition: transform var(--t-fast); display: inline-block; }
+.product-card:hover .card-price-row > span:last-child { transform: translateX(-4px); }
+
+/* ═══ شفافیت ═══ */
+.transparency {
+  background: var(--sand);
+  border-right: 4px solid var(--gold);
+  padding: 14px 17px; border-radius: var(--r-sm);
+  font-size: var(--fs-sm); line-height: var(--lh-loose);
+}
+
+/* ═══ فوتر ═══ */
+footer {
+  background: var(--obsidian); color: var(--sand);
+  padding: var(--sp-7) 20px var(--sp-5);
+  margin-top: var(--sp-8);
+  border-top: 3px solid var(--gold);
+}
+.footer-grid {
+  max-width: 1320px; margin: 0 auto var(--sp-6);
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+  gap: var(--sp-6);
+}
+.footer-grid h4 { color: var(--gold); font-size: var(--fs-base); margin-bottom: var(--sp-3); }
+.footer-grid a, .footer-grid p {
+  font-size: var(--fs-sm); color: #C4C4C4; line-height: 2.1; display: block;
+}
+.footer-grid a { transition: color var(--t-fast), padding-right var(--t-fast); }
+.footer-grid a:hover { color: var(--gold); padding-right: 5px; }
+.footer-bottom {
+  max-width: 1320px; margin: 0 auto;
+  border-top: 1px solid rgba(255,255,255,.09);
+  padding-top: var(--sp-4); text-align: center;
+  font-size: var(--fs-xs); color: #8E8E8E;
+}
+.enamad-badge {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: rgba(255,255,255,.05);
+  border: 1px solid rgba(197,155,39,.26);
+  padding: 9px 15px; border-radius: var(--r-sm);
+  font-size: var(--fs-xs); color: #C4C4C4; margin-top: 10px;
+  transition: border-color var(--t-fast);
+}
+.enamad-badge:hover { border-color: var(--gold); }
+
+/* ═══ نشان اعتماد الکترونیک ═══
+   زمینه سفید عمدی است: نشان اینماد پس‌زمینه روشن دارد و روی فوتر
+   تیره این سایت محو می‌شود.
+
+   ارتفاع جعبه ثابت است تا وقتی تصویر از سرور اینماد می‌رسد، فوتر
+   نپرد. CLS این پروژه در همه سناریوها ۰٫۰۰۰۰ اندازه‌گیری شده و
+   یک نشان بیرونی نباید خرابش کند. */
+/* ارتفاع **ثابت**، نه کمینه.
+   جانشین ۴۱ پیکسل است و نشان واقعی ۱۱۰ — با `min-height` جعبه
+   هنگام جایگزینی از ۱۱۰ به ۱۱۸ می‌رفت (خط پایه متن لینک) و
+   همان ۸ پیکسل، پرش می‌ساخت. با ارتفاع ثابت و چیدمان انعطافی،
+   هر دو حالت دقیقاً یک فضا می‌گیرند. */
+#enamadSeal {
+  height: 110px; margin-top: 10px;
+  display: flex; align-items: center;
+}
+
+/* گزینشگر با `.footer-grid` شروع می‌شود تا از قاعده عمومی
+   `.footer-grid a { display:block }` اختصاصی‌تر باشد.
+
+   بدون این، نشان تمام عرض ستون را می‌گرفت: کادر سفید ۳۵۰ پیکسلی
+   دور یک تصویر ۹۶ پیکسلی. آزمون‌های متنی این را نمی‌گرفتند چون
+   خودِ قاعده درست نوشته شده بود — فقط قاعده دیگری بر آن غلبه
+   می‌کرد. تصویر مرورگر گرفتش. */
+.footer-grid a.enamad-seal,
+.enamad-seal {
+  display: inline-block; width: auto; line-height: 0;
+  background: #FFF; border-radius: var(--r-sm);
+  padding: 6px;
+  border: 1px solid rgba(197,155,39,.26);
+  transition: border-color var(--t-fast), transform var(--t-fast);
+}
+.footer-grid a.enamad-seal:hover,
+.enamad-seal:hover {
+  border-color: var(--gold); transform: translateY(-2px);
+  /* قاعده عمومی فوتر روی hover یک `padding-right:5px` می‌گذارد
+     که اینجا کادر را کج می‌کند. خنثی می‌شود. */
+  padding: 6px;
+}
+.enamad-seal:focus-visible { outline: 2px solid var(--gold); outline-offset: 3px; }
+.enamad-seal img {
+  display: block; width: 96px; height: 96px;
+  object-fit: contain; border-radius: 4px;
+}
+
+/* ═══ کمکی ═══ */
+.container { max-width: 1320px; margin: 0 auto; padding: 0 20px; }
+.section { margin: var(--sp-7) auto; }
+
+.spinner {
+  width: 34px; height: 34px;
+  border: 2.5px solid rgba(197,155,39,.22);
+  border-top-color: var(--gold);
+  border-radius: 50%;
+  animation: spin .75s linear infinite;
+  margin: var(--sp-6) auto;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ── ورود نرم عناصر ── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translate3d(0, 18px, 0); }
+  to   { opacity: 1; transform: none; }
+}
+.fade-up { animation: fadeUp 520ms var(--ease-out) backwards; }
+
+/* پلکانی — کارت‌ها یکی‌یکی وارد می‌شوند */
+.product-grid > *:nth-child(1) { animation-delay: 0ms }
+.product-grid > *:nth-child(2) { animation-delay: 45ms }
+.product-grid > *:nth-child(3) { animation-delay: 90ms }
+.product-grid > *:nth-child(4) { animation-delay: 135ms }
+.product-grid > *:nth-child(5) { animation-delay: 180ms }
+.product-grid > *:nth-child(6) { animation-delay: 225ms }
+.product-grid > *:nth-child(7) { animation-delay: 270ms }
+.product-grid > *:nth-child(8) { animation-delay: 315ms }
+
+/* ── آشکارسازی هنگام اسکرول ── */
+.reveal {
+  opacity: 0; transform: translateY(26px);
+  transition: opacity 720ms var(--ease-out), transform 720ms var(--ease-out);
+}
+.reveal.visible { opacity: 1; transform: none; }
+
+/* ── اسکلت بارگذاری ── */
+.skeleton {
+  background: linear-gradient(90deg, var(--sand) 25%, var(--sand-deep) 50%, var(--sand) 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.4s ease-in-out infinite;
+  border-radius: var(--r-sm);
+}
+@keyframes shimmer {
+  0%   { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+.sk-card { background: var(--surface); border: 1px solid var(--border);
+           border-radius: var(--r); overflow: hidden; }
+.sk-card .sk-img { aspect-ratio: 1/1; }
+.sk-card .sk-body { padding: var(--sp-4); }
+.sk-line { height: 11px; margin-bottom: 9px; }
+
+/* ── نوار پیشرفت بالای صفحه ── */
+.page-progress {
+  position: fixed; top: 0; right: 0; height: 2px;
+  background: linear-gradient(90deg, var(--gold-light), var(--gold));
+  z-index: 9999; width: 0;
+  transition: width 220ms var(--ease-soft), opacity 320ms;
+}
+
+/* ═══ اعلان شناور ═══ */
+.toast {
+  position: fixed; bottom: 24px; left: 50%;
+  transform: translateX(-50%) translateY(90px);
+  background: var(--obsidian); color: #FFF;
+  padding: 13px 26px; border-radius: var(--r-full);
+  font-size: var(--fs-sm); font-weight: 600;
+  box-shadow: var(--sh-lg);
+  z-index: 3000; opacity: 0; pointer-events: none;
+  border: 1px solid rgba(197,155,39,.5);
+  transition: opacity var(--t-smooth), transform 420ms var(--ease-spring);
+  max-width: calc(100vw - 40px);
+}
+.toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+.empty-state { text-align: center; padding: var(--sp-8) 20px; color: var(--muted); }
+.empty-state h3 { font-size: var(--fs-md); margin-bottom: var(--sp-2); color: var(--text); }
+
+/* ═══ دسترس‌پذیری ═══ */
+.sr-only {
+  position: absolute; width: 1px; height: 1px;
+  padding: 0; margin: -1px; overflow: hidden;
+  clip: rect(0,0,0,0); white-space: nowrap; border: 0;
+}
+a:focus-visible, button:focus-visible,
+input:focus-visible, select:focus-visible, textarea:focus-visible {
+  outline: 2.5px solid var(--gold);
+  outline-offset: 2px;
+  border-radius: var(--r-sm);
+}
+.skip-link {
+  position: absolute; top: -60px; right: 12px; z-index: 9999;
+  background: var(--obsidian); color: var(--gold);
+  padding: 11px 20px; border-radius: 0 0 var(--r-sm) var(--r-sm);
+  font-weight: 700; font-size: var(--fs-sm);
+  transition: top var(--t-fast);
+}
+.skip-link:focus { top: 0; }
+
+/* ═══ موبایل ═══ */
+@media (max-width: 640px) {
+  :root { --fs-2xl: 1.5rem; --fs-3xl: 1.75rem; }
+  .header-row { padding: 9px 14px; }
+  .logo-brand img { height: 36px; }
+  .brand-title { font-size: var(--fs-base); }
+  .product-grid { grid-template-columns: repeat(auto-fill, minmax(152px, 1fr)); gap: var(--sp-3); }
+  .card-title { font-size: var(--fs-base); }
+  .product-card:hover { transform: none; }
+  .toast { bottom: 16px; }
+}
+
+/* هدف لمسی حداقل ۴۴ پیکسل.
+   `.nchip` و `.sc-tab` هنگام افزودن فیلتر نُت از قلم افتاده بودند —
+   آزمون مرورگر ۳۹ دکمه کوچک‌تر از حد لمس گزارش داد. */
+@media (pointer: coarse) {
+  .icon-btn { width: 44px; height: 44px; }
+  .qty-ctrl button { min-width: 44px; min-height: 44px; }
+  .btn, .cat, .fchip, .rng-btn, .nchip, .sc-tab { min-height: 44px; }
+  .nav-links a { padding: 12px 0; }
+  .del, .link-btn { min-height: 44px; padding: 10px 8px; }
+}
+
+/* حاشیه امن آیفون */
+@supports (padding: max(0px)) {
+  footer { padding-bottom: max(24px, env(safe-area-inset-bottom)); }
+  .glass-header { padding-top: env(safe-area-inset-top); }
+}
+
+/* جلوگیری از زوم خودکار سافاری هنگام تایپ */
+@media (max-width: 768px) {
+  input, select, textarea { font-size: 16px; }
+}
+
+/* ═══ احترام به ترجیح کاربر ═══ */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .01ms !important;
+  }
+  .reveal { opacity: 1; transform: none; }
+  /* ذرات هیرو با opacity:0 شروع می‌شوند و حرکتشان آن‌ها را نمایان
+     می‌کند. با متوقف کردن انیمیشن، برای کاربری که حرکت کمتر
+     خواسته کاملاً نامرئی می‌ماندند — یعنی افکت حذف می‌شد نه آرام.
+     اینجا حالت ساکنِ دیدنی تعریف می‌شود: ذرات هستند، ولی ثابت. */
+  .hero-dust i {
+    opacity: .38 !important;
+    transform: none !important;
+  }
+}
+
+
+/* ═══════════════════════════════════════
+   سربرگ صفحات داخلی — الگوی مشترک
+   ═══════════════════════════════════════ */
+.page-head {
+  position: relative;
+  background: linear-gradient(135deg, #131313 0%, #1F1E1C 55%, #262320 100%);
+  color: #FFF;
+  padding: var(--sp-7) 20px var(--sp-6);
+  overflow: hidden;
+}
+/* هاله طلایی آرام گوشه */
+.page-head::before {
+  content: ''; position: absolute; inset: 0; pointer-events: none;
+  background: radial-gradient(ellipse 70% 90% at 88% 15%,
+              rgba(197,155,39,.16), transparent 62%);
+  animation: haloBreath 11s ease-in-out infinite;
+}
+@keyframes haloBreath {
+  0%,100% { opacity: .6; transform: scale(1) }
+  50%     { opacity: 1;  transform: scale(1.07) }
+}
+.page-head::after {
+  content: ''; position: absolute; left: 0; right: 0; bottom: 0; height: 60px;
+  background: linear-gradient(to bottom, transparent, rgba(250,250,250,.06));
+  pointer-events: none;
+}
+.page-head .inner {
+  position: relative; z-index: 2;
+  max-width: 1320px; margin: 0 auto;
+}
+.page-head .eyebrow {
+  display: inline-flex; align-items: center; gap: 9px;
+  font-size: .72rem; font-weight: 700; letter-spacing: 2.4px;
+  color: var(--gold); margin-bottom: 14px;
+}
+.page-head .eyebrow::before {
+  content: ''; width: 28px; height: 1px; background: var(--gold);
+  transform-origin: right;
+  animation: lineGrow 1s var(--ease-out) 220ms backwards;
+}
+@keyframes lineGrow { from { transform: scaleX(0) } to { transform: scaleX(1) } }
+
+.page-head h1 {
+  font-size: clamp(1.5rem, 3.4vw, 2.15rem);
+  font-weight: 800; line-height: 1.36; letter-spacing: -.018em;
+  margin-bottom: 10px;
+}
+.page-head h1 em { font-style: normal; color: var(--gold) }
+.page-head p {
+  font-size: var(--fs-base); line-height: 2.05;
+  color: rgba(255,255,255,.72); max-width: 620px;
+}
+.page-head .inner > * { animation: headRise 820ms var(--ease-out) backwards }
+.page-head .inner > *:nth-child(1) { animation-delay: 100ms }
+.page-head .inner > *:nth-child(2) { animation-delay: 220ms }
+.page-head .inner > *:nth-child(3) { animation-delay: 340ms }
+@keyframes headRise {
+  from { opacity: 0; transform: translateY(20px); filter: blur(5px) }
+  to   { opacity: 1; transform: none; filter: none }
+}
+@media (max-width: 640px) {
+  .page-head { padding: var(--sp-6) 18px var(--sp-5) }
+}
+
+/* ── کارت عمومی با ورود نرم ── */
+.soft-card {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--r); padding: var(--sp-5);
+  transition: transform var(--t-smooth), box-shadow var(--t-smooth), border-color var(--t-fast);
+}
+.soft-card:hover {
+  transform: translateY(-3px);
+  border-color: rgba(197,155,39,.42);
+  box-shadow: var(--sh-lg);
+}
+
+/* ── ورود پلکانی هر شبکه ── */
+.stagger > * { animation: fadeUp 520ms var(--ease-out) backwards }
+.stagger > *:nth-child(1) { animation-delay: 40ms }
+.stagger > *:nth-child(2) { animation-delay: 90ms }
+.stagger > *:nth-child(3) { animation-delay: 140ms }
+.stagger > *:nth-child(4) { animation-delay: 190ms }
+.stagger > *:nth-child(5) { animation-delay: 240ms }
+.stagger > *:nth-child(6) { animation-delay: 290ms }
+.stagger > *:nth-child(7) { animation-delay: 340ms }
+.stagger > *:nth-child(8) { animation-delay: 390ms }
+
+/* ── جعبه فرم متمرکز (ورود، پیگیری) ── */
+.focus-panel {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+  padding: var(--sp-6) var(--sp-5);
+  box-shadow: var(--sh);
+  animation: panelIn 600ms var(--ease-out) backwards;
+}
+@keyframes panelIn {
+  from { opacity: 0; transform: translateY(22px) scale(.985) }
+  to   { opacity: 1; transform: none }
+}
+
+/* ═══════════════════════════════════════
+   صفحات سندی — قوانین، حریم خصوصی
+   ═══════════════════════════════════════ */
+.doc { max-width: 860px; margin: 0 auto; padding: 0 20px var(--sp-7) }
+.doc-card {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--r-lg); padding: var(--sp-6) var(--sp-5);
+  margin-top: -34px; position: relative; z-index: 5;
+  box-shadow: var(--sh-lg);
+  animation: panelIn 640ms var(--ease-out) backwards;
+}
+.doc-card > section { padding: var(--sp-5) 0; border-bottom: 1px dashed var(--border) }
+.doc-card > section:first-child { padding-top: 0 }
+.doc-card > section:last-child { border-bottom: none; padding-bottom: 0 }
+.doc h2 {
+  display: flex; align-items: center; gap: 10px;
+  font-size: 1.02rem; font-weight: 800; margin-bottom: 12px; color: var(--text);
+}
+.doc h2 .n {
+  flex: none; width: 27px; height: 27px; border-radius: 9px;
+  background: var(--sand); color: var(--gold); font-size: .76rem; font-weight: 800;
+  display: grid; place-items: center; border: 1px solid rgba(197,155,39,.32);
+}
+.doc p, .doc li { font-size: .9rem; line-height: 2.15; color: #3A3A3A }
+.doc ul { list-style: none; padding: 0; margin: 10px 0 }
+.doc li { position: relative; padding-right: 21px; margin-bottom: 5px }
+.doc li::before {
+  content: ''; position: absolute; right: 5px; top: .95em;
+  width: 5px; height: 5px; border-radius: 50%; background: var(--gold);
+}
+.doc strong { color: var(--text); font-weight: 800 }
+.doc-note {
+  background: var(--sand); border-right: 3px solid var(--gold);
+  border-radius: 10px; padding: 14px 16px; margin: 14px 0 2px;
+  font-size: .86rem; line-height: 2; color: #3A3A3A;
+}
+.doc-foot { text-align: center; font-size: .8rem; color: var(--muted); margin-top: var(--sp-6); line-height: 2.1 }
+.doc-links { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; margin-top: 12px }
+.doc-links a {
+  font-size: .82rem; font-weight: 700; padding: 9px 18px; border-radius: 30px;
+  border: 1px solid var(--border); background: var(--surface); color: var(--text);
+  transition: all var(--t-fast);
+}
+.doc-links a:hover { border-color: var(--gold); color: var(--gold); transform: translateY(-2px) }
+
+/* ═══════════════════════════════════════
+   صفحه ۴۰۴
+   ═══════════════════════════════════════ */
+.nf {
+  min-height: 62vh; display: grid; place-items: center; text-align: center;
+  padding: var(--sp-7) 20px; position: relative; overflow: hidden;
+}
+.nf::before {
+  content: ''; position: absolute; inset: 0; pointer-events: none;
+  background: radial-gradient(ellipse 60% 50% at 50% 35%, rgba(197,155,39,.10), transparent 70%);
+  animation: haloBreath 12s ease-in-out infinite;
+}
+.nf-inner { position: relative; z-index: 2; max-width: 460px }
+.nf-code {
+  font-size: clamp(4.6rem, 18vw, 7.5rem); font-weight: 800; line-height: 1;
+  letter-spacing: -.04em; color: transparent;
+  background: linear-gradient(160deg, #E7DCC2, #C59B27 45%, #EFE7D6);
+  -webkit-background-clip: text; background-clip: text;
+  animation: headRise 900ms var(--ease-out) backwards;
+}
+.nf h1 {
+  font-size: 1.3rem; font-weight: 800; margin: 14px 0 8px;
+  animation: headRise 900ms var(--ease-out) 140ms backwards;
+}
+.nf p {
+  font-size: .92rem; line-height: 2.05; color: var(--muted);
+  animation: headRise 900ms var(--ease-out) 240ms backwards;
+}
+.nf-acts {
+  display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; margin-top: 24px;
+  animation: headRise 900ms var(--ease-out) 340ms backwards;
+}
+
+/* ═══════════════════════════════════════
+   مسیر راهنما (Breadcrumb)
+   ═══════════════════════════════════════ */
+.crumbs {
+  max-width: 1280px; margin: 0 auto; padding: var(--sp-4) 20px 0;
+  display: flex; align-items: center; gap: 7px; flex-wrap: wrap;
+  font-size: .78rem; color: var(--muted);
+  animation: fadeUp 500ms var(--ease-out) backwards;
+}
+.crumbs a { color: var(--muted); transition: color var(--t-fast) }
+.crumbs a:hover { color: var(--gold) }
+.crumbs .sep { opacity: .45; font-size: .7rem }
+.crumbs .cur { color: var(--text); font-weight: 700 }
+
+/* ═══════════════════════════════════════
+   نوار خرید چسبان موبایل
+   ═══════════════════════════════════════ */
+.buy-bar {
+  position: fixed; inset: auto 0 0 0; z-index: 90;
+  background: rgba(255,255,255,.97); backdrop-filter: blur(14px);
+  border-top: 1px solid var(--border);
+  box-shadow: 0 -6px 26px rgba(0,0,0,.09);
+  padding: 11px 16px calc(11px + env(safe-area-inset-bottom));
+  display: none; align-items: center; gap: 12px;
+  transform: translateY(110%);
+  transition: transform .42s var(--ease-out);
+}
+.buy-bar.up { transform: none }
+.buy-bar .p { flex: none; line-height: 1.35 }
+.buy-bar .p .n { font-size: 1.02rem; font-weight: 800 }
+.buy-bar .p .l { font-size: .68rem; color: var(--muted) }
+.buy-bar .btn { flex: 1; padding: 13px 18px }
+@media (max-width: 900px) { .buy-bar { display: flex } body { padding-bottom: 76px } }
+
+/* ── دکمه‌های شبکه اجتماعی در فوتر ── */
+.social-row { display: flex; flex-direction: column; gap: 9px; margin-top: 4px }
+.social-btn {
+  display: inline-flex; align-items: center; gap: 9px;
+  padding: 8px 13px; border-radius: 30px;
+  background: rgba(255, 255, 255, .06);
+  border: 1px solid rgba(255, 255, 255, .14);
+  font-size: .82rem; font-weight: 700;
+  transition: background 200ms var(--ease-out), border-color 200ms var(--ease-out);
+  width: fit-content;
+}
+.social-btn svg { width: 17px; height: 17px; fill: currentColor; flex-shrink: 0 }
+.social-btn:hover {
+  background: rgba(197, 155, 39, .16);
+  border-color: var(--gold);
+}
+
+/* ═══════════════════════════════════════
+   ویترین خودکار — پرفروش، محبوب، پربازدید
+   ═══════════════════════════════════════ */
+.showcase-wrap { margin: 40px auto }
+
+.showcase-tabs {
+  display: flex; gap: 8px; flex-wrap: wrap;
+  margin-bottom: var(--sp-4);
+  border-bottom: 1px solid var(--line);
+  padding-bottom: 2px;
+}
+.sc-tab {
+  background: none; border: 0; cursor: pointer;
+  font-family: inherit; font-size: .92rem; font-weight: 800;
+  color: var(--muted); padding: 10px 4px; margin-left: 14px;
+  position: relative; transition: color 200ms var(--ease-out);
+}
+.sc-tab::after {
+  content: ''; position: absolute; inset-inline: 0; bottom: -3px;
+  height: 2px; background: var(--gold);
+  transform: scaleX(0); transform-origin: right;
+  transition: transform 260ms var(--ease-out);
+}
+.sc-tab:hover { color: var(--ink) }
+.sc-tab.on { color: var(--ink) }
+.sc-tab.on::after { transform: scaleX(1) }
+
+.sc-note {
+  grid-column: 1 / -1;
+  font-size: .82rem; color: var(--muted);
+  margin: -4px 0 10px; line-height: 1.9;
+}
+
+@media (max-width: 640px) {
+  .showcase-tabs { flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none }
+  .showcase-tabs::-webkit-scrollbar { display: none }
+  .sc-tab { white-space: nowrap; font-size: .86rem }
+}
+
+/* ═══════════════════════════════════════
+   «اخیراً دیدید»
+   ═══════════════════════════════════════
+   ظرف با display:none شروع می‌شود و فقط وقتی تاریخچه هست باز
+   می‌شود — پس برای بازدیدکننده تازه هیچ فضایی نمی‌گیرد و هیچ
+   جابه‌جایی چیدمانی نمی‌سازد (CLS صفر).
+
+   دکمه «پاک کردن» عمداً کم‌رنگ است: کنترل باید در دسترس باشد،
+   ولی رقیب بصری خود محصولات نشود. */
+.recent-head {
+  display: flex; align-items: baseline; justify-content: space-between;
+  gap: 12px; margin-bottom: var(--sp-4);
+}
+.recent-head h2 { font-size: 1.2rem; font-weight: 800; }
+
+.recent-clear {
+  background: none; border: 0; cursor: pointer;
+  font-family: inherit; font-size: .78rem; font-weight: 700;
+  color: var(--muted-light); padding: 4px 2px;
+  transition: color 180ms var(--ease-out);
+}
+.recent-clear:hover { color: var(--gold); }
+.recent-clear:focus-visible {
+  outline: 2px solid var(--gold); outline-offset: 3px; border-radius: 3px;
+}
+
+/* ═══════════════════════════════════════
+   «پیشنهاد برای شما» — پروفایل بویایی
+   ═══════════════════════════════════════
+   خلاصه پروفایل به‌شکل چیپ نشان داده می‌شود تا کاربر ببیند سایت
+   بر چه اساسی پیشنهاد می‌دهد. «پیشنهاد اختصاصی» بدون توضیح مبهم
+   و کمی نگران‌کننده است؛ با توضیح، شفاف و قابل کنترل. */
+.taste-head {
+  display: flex; align-items: flex-start; justify-content: space-between;
+  gap: 14px; flex-wrap: wrap; margin-bottom: var(--sp-4);
+}
+.taste-head h2 { font-size: 1.2rem; font-weight: 800; }
+
+.taste-chips {
+  display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px;
+}
+.taste-chip {
+  font-size: .72rem; font-weight: 700; color: var(--gold-dark);
+  background: rgba(197, 155, 39, .10);
+  border: 1px solid rgba(197, 155, 39, .28);
+  border-radius: 999px; padding: 3px 10px;
+}
+
+.taste-actions { display: flex; align-items: center; gap: 12px; }
+
+.taste-link {
+  font-size: .78rem; font-weight: 700; color: var(--gold);
+  text-decoration: none; white-space: nowrap;
+}
+.taste-link:hover { text-decoration: underline; }
+
+.taste-clear {
+  background: none; border: 0; cursor: pointer;
+  font-family: inherit; font-size: .78rem; font-weight: 700;
+  color: var(--muted-light); padding: 4px 2px; white-space: nowrap;
+  transition: color 180ms var(--ease-out);
+}
+.taste-clear:hover { color: var(--ink); }
+.taste-link:focus-visible,
+.taste-clear:focus-visible {
+  outline: 2px solid var(--gold); outline-offset: 3px; border-radius: 3px;
+}
+
+.taste-note {
+  font-size: .8rem; color: var(--muted); line-height: 1.9;
+  margin: -6px 0 14px;
+}
+
+/* ── پیام «نتیجه دقیق نبود» ──
+   وقتی همه کلمات با هم نتیجه‌ای ندادند و سرور نزدیک‌ترین‌ها را آورد */
+.search-note {
+  display: flex; align-items: flex-start; gap: 9px;
+  background: var(--sand, #FAF7F2);
+  border: 1px solid rgba(191, 160, 84, .35);
+  border-right: 3px solid var(--gold);
+  border-radius: 12px;
+  padding: 12px 15px;
+  margin-bottom: var(--sp-4);
+  font-size: .84rem; line-height: 1.9; color: var(--ink);
+  animation: fadeUp 420ms var(--ease-out);
+}
+
+/* ═══════════════════════════════════════
+   نوار فیلترهای فعال — کاتالوگ
+   ═══════════════════════════════════════ */
+.active-filters {
+  display: flex; align-items: center; gap: 8px; flex-wrap: wrap;
+  margin-bottom: var(--sp-4);
+  animation: fadeUp 420ms var(--ease-out);
+}
+.active-filters .ttl { font-size: .78rem; color: var(--muted); font-weight: 700 }
+.fpill {
+  display: inline-flex; align-items: center; gap: 7px;
+  background: var(--obsidian); color: #FFF;
+  border-radius: 30px; padding: 6px 8px 6px 14px;
+  font-size: .78rem; font-weight: 700;
+  animation: badgePop 340ms var(--ease-spring);
+}
+.fpill b { font-weight: 800; color: var(--gold) }
+.fpill button {
+  width: 19px; height: 19px; border-radius: 50%; border: none; cursor: pointer;
+  background: rgba(255,255,255,.16); color: #FFF; font-size: .82rem; line-height: 1;
+  display: grid; place-items: center; padding: 0;
+  transition: background var(--t-fast), transform var(--t-fast);
+}
+.fpill button:hover { background: var(--danger); transform: rotate(90deg) }
+.clear-all {
+  font-size: .76rem; font-weight: 700; color: var(--muted);
+  background: none; border: none; cursor: pointer; text-decoration: underline;
+  font-family: var(--font); transition: color var(--t-fast);
+}
+.clear-all:hover { color: var(--danger) }
+
+/* ── مرتب‌سازی ── */
+.cat-tools { display: flex; align-items: center; gap: 10px; flex-wrap: wrap }
+.sort-sel {
+  border: 1px solid var(--border); background: var(--surface); border-radius: 30px;
+  padding: 8px 14px; font: inherit; font-size: .8rem; font-weight: 700;
+  cursor: pointer; color: var(--text); transition: border-color var(--t-fast);
+}
+.sort-sel:hover, .sort-sel:focus { border-color: var(--gold); outline: none }
+
+/* ═══════════════════════════════════════
+   هشدارهای سبد خرید — تغییر قیمت و موجودی
+   ═══════════════════════════════════════ */
+.cart-alert {
+  display: flex; gap: 10px; align-items: flex-start;
+  border-radius: 12px; padding: 13px 15px; margin-bottom: 14px;
+  font-size: .84rem; line-height: 1.95;
+  animation: fadeUp 460ms var(--ease-out);
+}
+.cart-alert svg { flex: none; width: 17px; height: 17px; margin-top: 3px; stroke-width: 2; fill: none }
+.cart-alert.warn { background: #FFF8E7; border-right: 3px solid var(--warning); color: #6B4E0C }
+.cart-alert.warn svg { stroke: var(--warning) }
+.cart-alert.bad  { background: #FDECEA; border-right: 3px solid var(--danger); color: #8C271A }
+.cart-alert.bad svg { stroke: var(--danger) }
+.cart-alert b { font-weight: 800 }
+
+/* نشان روی خود قلم سبد */
+.ci-flag {
+  display: inline-flex; align-items: center; gap: 5px;
+  font-size: .72rem; font-weight: 700; border-radius: 20px;
+  padding: 3px 10px; margin-top: 6px;
+}
+.ci-flag.up   { background: #FDECEA; color: #A93226 }
+.ci-flag.down { background: #E8F6EF; color: #1E8449 }
+.ci-flag.out  { background: #F0F0F0; color: #6B6B6B }
+.ci-flag.low  { background: #FFF8E7; color: #B9770E }
+.cart-item.stale { border-color: rgba(185,119,14,.45); background: #FFFDF8 }
+.cart-item.dead  { border-color: rgba(192,57,43,.4); opacity: .72 }
+.ci-old { text-decoration: line-through; opacity: .5; margin-left: 5px }
+
+/* اسکلت بارگذاری سبد */
+.cart-skel {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--r); padding: 15px; display: flex; gap: 14px;
+  align-items: center; margin-bottom: 12px;
+}
+.cart-skel .sq { width: 78px; height: 78px; border-radius: 10px; flex: none }
+.cart-skel .ln { height: 12px; border-radius: 6px }
+
+/* ── هدف ارسال رایگان ── */
+.ship-goal { background: var(--sand); border-radius: 11px; padding: 11px 13px; margin: 10px 0 }
+.ship-goal-t { font-size: .77rem; line-height: 1.8; color: #3A3A3A }
+.ship-goal-t b { color: var(--gold); font-weight: 800 }
+.ship-goal-bar { height: 5px; border-radius: 3px; background: var(--sand-deep);
+                 overflow: hidden; margin-top: 8px }
+.ship-goal-bar i {
+  display: block; height: 100%; border-radius: 3px;
+  background: linear-gradient(90deg, var(--gold-dark), var(--gold-light));
+  transform-origin: right; animation: barGrow 900ms var(--ease-out);
+  transition: width .5s var(--ease-out);
+}
+@keyframes barGrow { from { transform: scaleX(0) } to { transform: scaleX(1) } }
+.ship-goal.done {
+  display: flex; align-items: center; gap: 8px;
+  background: #E8F6EF; color: #1E8449; font-size: .82rem; font-weight: 700;
+}
+.ship-goal.done svg { width: 15px; height: 15px; stroke: #1E8449; fill: none; stroke-width: 2.4 }
+
+/* ═══════════════════════════════════════
+   اعتبارسنجی درجا — فرم تسویه
+   ═══════════════════════════════════════ */
+.field.invalid input,
+.field.invalid textarea,
+.field.invalid select {
+  border-color: var(--danger);
+  box-shadow: 0 0 0 3px rgba(192,57,43,.1);
+}
+.field.valid input,
+.field.valid textarea,
+.field.valid select { border-color: rgba(30,132,73,.5) }
+.field-msg {
+  display: none; align-items: center; gap: 5px;
+  font-size: .74rem; color: var(--danger); margin-top: 5px; line-height: 1.7;
+  animation: fadeUp 280ms var(--ease-out);
+}
+.field.invalid .field-msg { display: flex }
+.field.invalid .hint { display: none }
+.field-msg svg { flex: none; width: 12px; height: 12px; stroke: currentColor; fill: none; stroke-width: 2.4 }
+.shake { animation: shake 420ms var(--ease-out) }
+@keyframes shake {
+  0%,100% { transform: translateX(0) }
+  20% { transform: translateX(-6px) }
+  40% { transform: translateX(5px) }
+  60% { transform: translateX(-3px) }
+  80% { transform: translateX(2px) }
+}
+
+/* نوار مراحل خرید */
+.steps {
+  display: flex; align-items: center; justify-content: center; gap: 0;
+  max-width: 460px; margin: var(--sp-5) auto 0; padding: 0 20px;
+}
+.steps .s { display: flex; align-items: center; gap: 8px; font-size: .78rem; font-weight: 700 }
+.steps .s .n {
+  width: 24px; height: 24px; border-radius: 50%; display: grid; place-items: center;
+  font-size: .72rem; font-weight: 800;
+  background: var(--surface); border: 1.5px solid var(--border); color: var(--muted);
+  transition: all .4s var(--ease-out);
+}
+.steps .s.done .n { background: var(--gold); border-color: var(--gold); color: #121212 }
+.steps .s.on .n {
+  background: var(--obsidian); border-color: var(--obsidian); color: var(--gold);
+  box-shadow: 0 0 0 4px rgba(18,18,18,.08);
+}
+.steps .s.done, .steps .s.on { color: var(--text) }
+.steps .s { color: var(--muted-light) }
+.steps .line { flex: 1; height: 1.5px; background: var(--border); margin: 0 10px; min-width: 26px }
+.steps .line.done { background: var(--gold) }
+
+/* ═══════════════════════════════════════
+   خط زمانی سفارش — پیگیری و حساب کاربری
+   ═══════════════════════════════════════ */
+.timeline { position: relative; padding-right: 26px; margin: 16px 0 4px }
+.timeline::before {
+  content: ''; position: absolute; right: 7px; top: 8px; bottom: 8px; width: 2px;
+  background: var(--border); border-radius: 2px;
+}
+.timeline .fill {
+  position: absolute; right: 7px; top: 8px; width: 2px; border-radius: 2px;
+  background: linear-gradient(to bottom, var(--gold), var(--gold-light));
+  transform-origin: top; animation: tlGrow 900ms var(--ease-out);
+}
+@keyframes tlGrow { from { transform: scaleY(0) } to { transform: scaleY(1) } }
+.tl-step { position: relative; padding-bottom: 16px;
+           animation: fadeUp 520ms var(--ease-out) backwards }
+.tl-step:nth-child(2){animation-delay:70ms} .tl-step:nth-child(3){animation-delay:140ms}
+.tl-step:nth-child(4){animation-delay:210ms} .tl-step:nth-child(5){animation-delay:280ms}
+.tl-step:last-child { padding-bottom: 0 }
+.tl-step::before {
+  content: ''; position: absolute; right: -25px; top: 3px;
+  width: 12px; height: 12px; border-radius: 50%;
+  background: #FFF; border: 2px solid var(--border); z-index: 1;
+}
+.tl-step.done::before { background: var(--gold); border-color: var(--gold) }
+.tl-step.now::before {
+  background: #FFF; border-color: var(--gold);
+  box-shadow: 0 0 0 4px rgba(197,155,39,.18);
+  animation: haloBreath 2.6s ease-in-out infinite;
+}
+.tl-step .t { font-size: .86rem; font-weight: 700; color: var(--muted-light) }
+.tl-step.done .t, .tl-step.now .t { color: var(--text) }
+.tl-step.now .t { font-weight: 800 }
+.tl-step .d { font-size: .73rem; color: var(--muted); margin-top: 2px; line-height: 1.8 }
+.tl-step.cancel::before { background: var(--danger); border-color: var(--danger) }
+.tl-step.cancel .t { color: var(--danger) }
+
+/* کارت رهگیری مرسوله */
+.track-box {
+  background: var(--sand); border: 1px solid var(--border);
+  border-radius: 11px; padding: 12px 14px; margin: 12px 0;
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 10px; flex-wrap: wrap; font-size: .82rem;
+}
+.track-box .code { font-weight: 800; direction: ltr; letter-spacing: .5px; font-size: .92rem }
+.track-box button {
+  border: 1px solid var(--border); background: var(--surface); border-radius: 20px;
+  padding: 6px 13px; font: inherit; font-size: .74rem; font-weight: 700;
+  cursor: pointer; transition: all var(--t-fast);
+}
+.track-box button:hover { border-color: var(--gold); color: var(--gold) }
+
+/* ═══════════════════════════════════════
+   کارت علاقه‌مندی — با حذف و افزودن سریع
+   ═══════════════════════════════════════ */
+.wish-card { position: relative }
+.wish-card .rm {
+  position: absolute; top: 10px; left: 10px; z-index: 6;
+  width: 34px; height: 34px; border-radius: 50%; border: none; cursor: pointer;
+  background: rgba(255,255,255,.94); backdrop-filter: blur(6px);
+  display: grid; place-items: center; box-shadow: 0 3px 12px rgba(0,0,0,.14);
+  transition: transform var(--t-fast), background var(--t-fast);
+}
+.wish-card .rm svg { width: 15px; height: 15px; stroke: #C0392B; fill: none; stroke-width: 2.2 }
+.wish-card .rm:hover { transform: scale(1.12); background: #FDECEA }
+.wish-card .rm:active { transform: scale(.9) }
+.wish-card.removing { animation: cardOut 380ms var(--ease-out) forwards }
+@keyframes cardOut {
+  to { opacity: 0; transform: scale(.92) translateY(8px) }
+}
+
+/* نوار اقدام پایین کارت */
+.wish-act {
+  display: flex; gap: 7px; padding: 0 var(--sp-4) var(--sp-4);
+}
+.wish-act a, .wish-act button {
+  flex: 1; text-align: center; border-radius: 9px; padding: 9px 10px;
+  font: inherit; font-size: .78rem; font-weight: 700; cursor: pointer;
+  border: 1px solid var(--border); background: var(--surface); color: var(--text);
+  text-decoration: none; transition: all var(--t-fast);
+}
+.wish-act a:hover { border-color: var(--gold); color: var(--gold) }
+.wish-act .gold { background: var(--obsidian); color: var(--gold); border-color: var(--obsidian) }
+.wish-act .gold:hover { background: var(--obsidian-soft) }
+
+/* خلاصه بالای فهرست */
+.wish-bar {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 12px; flex-wrap: wrap; margin-bottom: var(--sp-5);
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--r); padding: 14px 18px;
+  animation: fadeUp 480ms var(--ease-out);
+}
+.wish-bar .t { font-size: .86rem; line-height: 1.9 }
+.wish-bar .t b { color: var(--gold) }
+
+/* ═══════════════════════════════════════
+   دعوت نصب PWA
+   ═══════════════════════════════════════
+   نوار پایین صفحه، نه پاپ‌آپ وسط. کاربر می‌تواند نادیده بگیرد و
+   به خریدش برسد — همان تفاوتی که بین دعوت و مزاحمت هست.
+
+   فقط وقتی ظاهر می‌شود که مرورگر بگوید نصب ممکن است، و اگر رد
+   شود تا سی روز دیگر پرسیده نمی‌شود. */
+.pwa-install {
+  position: fixed; inset-inline: 12px; bottom: 12px; z-index: 90;
+  display: flex; align-items: center; gap: 12px;
+  background: var(--obsidian); color: #F2F2F2;
+  border: 1px solid rgba(197,155,39,.32); border-radius: 14px;
+  padding: 13px 15px; box-shadow: 0 12px 36px rgba(0,0,0,.34);
+  max-width: 460px; margin-inline: auto;
+  transform: translateY(130%); opacity: 0;
+  transition: transform 340ms var(--ease-out), opacity 300ms var(--ease-out);
+}
+.pwa-install.on { transform: translateY(0); opacity: 1; }
+
+.pwa-txt { flex: 1; min-width: 0; line-height: 1.7; }
+.pwa-txt b { display: block; font-size: .87rem; font-weight: 800; }
+.pwa-txt span { font-size: .76rem; color: rgba(255,255,255,.62); }
+
+.pwa-yes {
+  flex: none; background: var(--gold); color: #121212; border: 0;
+  border-radius: 9px; padding: 10px 18px; min-height: 40px;
+  font-family: inherit; font-size: .83rem; font-weight: 800; cursor: pointer;
+  transition: background var(--t-fast);
+}
+.pwa-yes:hover { background: var(--gold-light); }
+
+.pwa-no {
+  flex: none; background: none; border: 0; cursor: pointer;
+  color: rgba(255,255,255,.5); font-size: 1rem; line-height: 1;
+  padding: 8px; min-width: 36px; min-height: 36px;
+  transition: color var(--t-fast);
+}
+.pwa-no:hover { color: #FFF; }
+.pwa-yes:focus-visible, .pwa-no:focus-visible {
+  outline: 2px solid var(--gold); outline-offset: 2px;
+}
+
+/* روی صفحه نصب‌شده (standalone) هرگز نشان داده نشود */
+@media (display-mode: standalone) { .pwa-install { display: none !important; } }
+
+/* نوار خرید صفحه محصول پایین صفحه است — تداخل نکنند */
+@media (max-width: 768px) {
+  .pwa-install { bottom: 78px; }
+}

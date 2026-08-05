@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16.png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="manifest" href="/site.webmanifest">
+<meta name="theme-color" content="#121212">
+<title>سبد خرید | عطر یزد</title>
+<!-- فونت عمداً preload نمی‌شود.
+     با font-display:swap متن بلافاصله با فونت سیستمی دیده می‌شود،
+     پس preload فقط پهنای باند را از تصویر اصلی می‌دزدد. روی ۳G
+     اندازه‌گیری شد: حذف آن LCP صفحه محصول را از ۴٫۳۱s به ۳٫۵۷s
+     رساند بدون آنکه FCP بدتر شود. -->
+<link rel="stylesheet" href="/assets/theme.css">
+<style>
+  .cart-wrap { max-width: 1100px; margin: 30px auto; padding: 0 20px;
+               display: grid; grid-template-columns: 1fr 340px; gap: 26px; }
+  @media (max-width: 860px) { .cart-wrap { grid-template-columns: 1fr; } }
+  .cart-item { background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--r); padding: 15px; display: flex; gap: 14px;
+      margin-bottom: 12px; align-items: center;
+      transition: border-color var(--t-fast), box-shadow var(--t-smooth);
+      animation: fadeUp 460ms var(--ease-out) backwards }
+  .cart-item:hover { border-color: rgba(197,155,39,.35); box-shadow: var(--sh) }
+  .cart-item:nth-child(2){animation-delay:60ms} .cart-item:nth-child(3){animation-delay:120ms}
+  .cart-item img { width: 78px; height: 78px; object-fit: cover; border-radius: 10px; flex-shrink: 0; }
+  .ci-name { font-weight: 800; font-size: .92rem; line-height: 1.5; }
+  .ci-price { font-size: .84rem; color: var(--muted); margin-top: 3px; }
+  .qty-ctrl { display: flex; align-items: center; border: 1px solid var(--border);
+              border-radius: 9px; overflow: hidden; }
+  .qty-ctrl button { width: 32px; height: 34px; border: none; background: var(--sand);
+                     cursor: pointer; font-weight: 700; font-size: 1.05rem; }
+  .qty-ctrl span { width: 38px; text-align: center; font-weight: 800; font-size: .88rem; }
+  .rm-btn { background: none; border: none; color: #C0392B; cursor: pointer;
+            font-size: .78rem; font-weight: 700; margin-top: 6px; }
+  .summary { background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--r); padding: 21px; align-self: start;
+      position: sticky; top: 90px; box-shadow: var(--sh-lg);
+      animation: panelIn 560ms var(--ease-out) backwards }
+  .sum-row { display: flex; justify-content: space-between; padding: 9px 0; font-size: .88rem; }
+  .sum-total { border-top: 2px solid var(--border); margin-top: 8px; padding-top: 14px;
+               font-size: 1.12rem; font-weight: 800; }
+  .coupon-box { border-top: 1px dashed var(--border); margin-top: 12px; padding-top: 14px; }
+  .coupon-row { display: flex; gap: 7px; }
+  .coupon-row input { flex: 1; padding: 10px 12px; border: 1px solid var(--border);
+                      border-radius: 9px; font-size: .85rem; font-family: var(--font);
+                      text-transform: uppercase; }
+  .coupon-row input:focus { outline: none; border-color: var(--gold); }
+  .coupon-row button { padding: 10px 16px; border-radius: 9px; border: 1px solid var(--obsidian);
+                       background: var(--obsidian); color: #FFF; font-weight: 700;
+                       font-size: .82rem; cursor: pointer; font-family: var(--font); white-space: nowrap; }
+  .coupon-applied { background: #E8F6EF; border-right: 3px solid #1E8449; color: #1E8449;
+                    padding: 10px 12px; border-radius: 9px; font-size: .8rem;
+                    display: flex; justify-content: space-between; align-items: center; gap: 8px; }
+  .coupon-applied button { background: none; border: none; color: #922B21;
+                           cursor: pointer; font-weight: 700; font-size: .78rem; }
+  .coupon-err { color: #C0392B; font-size: .78rem; margin-top: 7px; }
+  .coupon-hint { font-size: .72rem; color: var(--muted); margin-top: 7px; line-height: 1.7; }
+  .discount-row { color: #1E8449; font-weight: 700; }
+  .camp-row { color: #B3261E; font-weight: 700; }
+  .camp-note { font-size: .72rem; color: var(--muted); line-height: 1.8;
+               margin-top: 4px; padding-right: 2px; }
+</style>
+</head>
+<body>
+<a href="#main" class="skip-link">پرش به محتوای اصلی</a>
+<!-- ارتفاع هدر از پیش رزرو می‌شود. هدر با جاوااسکریپت از app.js
+     ساخته می‌شود، پس تا آن لحظه ارتفاعش صفر است و با ظاهر شدن،
+     کل صفحه ۹۷ تا ۱۰۳ پیکسل پایین می‌پرد. ردیابی نشان داد این
+     تک‌ریشهٔ جابه‌جایی در همه صفحات بود (MAIN#main: y 0 → 97).
+     اندازه‌گیری واقعی: موبایل ۹۷px · دسکتاپ ۱۰۳px. -->
+<div id="hdr" class="hdr-reserve"></div>
+
+<section class="page-head">
+  <div class="inner">
+    <span class="eyebrow">مرحله ۱ از ۲</span>
+    <h1>سبد <em>خرید</em></h1>
+  </div>
+</section>
+
+<div class="cart-wrap" id="wrap"></div>
+
+<div id="ftr"></div>
+
+<script src="/assets/app.js"></script>
+<script>
+document.getElementById('hdr').innerHTML = renderHeader();
+document.getElementById('ftr').innerHTML = renderFooter();
+
+let appliedCoupon = null, discount = 0, freeShipCoupon = false;
+/* تخفیف جشنواره — خودکار و بدون کد. سمت سرور محاسبه می‌شود؛
+   مرورگر فقط نمایش می‌دهد تا عدد سبد با عدد تسویه یکی بماند. */
+let campOff = 0, campLines = [];
+let couponDraft = '', couponError = '';
+let liveMap = {};        // sku → { price, stock, name } آخرین وضعیت واقعی از سرور
+let syncNotes = [];      // پیام‌های تغییر برای نمایش بالای سبد
+let synced = false;
+
+/* ── همگام‌سازی سبد با سرور ──
+   سبد در localStorage می‌ماند و ممکن است روزها دست‌نخورده بماند.
+   در این فاصله قیمت عوض می‌شود یا کالا تمام می‌شود. بدون این تابع،
+   کاربر تا لحظه پرداخت متوجه نمی‌شد و آنجا با خطا روبه‌رو می‌شد. */
+async function syncCart() {
+  const items = YazdCart.get();
+  if (!items.length) { synced = true; return; }
+
+  let data;
+  try {
+    const r = await fetch('/api/cart/sync', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ skus: items.map(i => i.sku) })
+    });
+    if (!r.ok) throw 0;
+    data = await r.json();
+  } catch {
+    synced = true;   // سرور در دسترس نیست — با داده محلی ادامه بده
+    return;
+  }
+
+  liveMap = {};
+  (data.variants || []).forEach(v => { liveMap[v.sku] = v; });
+
+  const notes = [];
+  const kept = [];
+
+  for (const it of items) {
+    const live = liveMap[it.sku];
+
+    // کالا از کاتالوگ حذف شده
+    if (!live) {
+      notes.push({ kind: 'bad', text: `«${it.name}» دیگر در کاتالوگ موجود نیست و از سبد حذف شد.` });
+      continue;
+    }
+
+    /* نام هم از سرور مبنا می‌گیرد.
+       سبد در localStorage می‌ماند و نامی که ماه‌ها پیش ذخیره شده
+       ممکن است با قالب امروز جور نباشد (نمونه واقعی: «سمپل 3 میل»
+       با رقم لاتین وسط متن فارسی). سرور `variantLabel` دارد که
+       تنها مرجع درست نام‌گذاری است — سبد، فاکتور و برچسب پستی
+       همه باید از همان بخوانند، نه از نسخه‌ای که مرورگر ساخته. */
+    if (live.name && live.name !== it.name) it.name = live.name;
+
+    // قیمت تغییر کرده — قیمت سرور مبناست
+    if (live.price !== it.price) {
+      it._oldPrice = it.price;
+      it.price = live.price;
+      notes.push({
+        kind: 'warn',
+        text: `قیمت «${it.name}» ${live.price > it._oldPrice ? 'افزایش' : 'کاهش'} یافته است.`
+      });
+    }
+
+    // موجودی کمتر از تعداد درخواستی
+    if (live.stock <= 0) {
+      it._out = true;
+      notes.push({ kind: 'bad', text: `«${it.name}» فعلاً ناموجود است.` });
+    } else if (live.stock < it.quantity) {
+      notes.push({
+        kind: 'warn',
+        text: `از «${it.name}» تنها ${toFa(live.stock)} عدد موجود است؛ تعداد اصلاح شد.`
+      });
+      it.quantity = live.stock;
+    }
+
+    kept.push(it);
+  }
+
+  // ذخیره نسخه اصلاح‌شده، بدون فیلدهای موقت
+  YazdCart.save(kept.map(({ _oldPrice, _out, ...rest }) => rest));
+  // فیلدهای موقت را برای نمایش نگه می‌داریم
+  window._cartMeta = {};
+  kept.forEach(k => { window._cartMeta[k.sku] = { oldPrice: k._oldPrice, out: k._out }; });
+
+  syncNotes = notes;
+  synced = true;
+}
+
+const ALERT_IC = {
+  warn: '<path d="M12 9v4M12 17h.01M10.3 3.9L2.4 18a2 2 0 001.7 3h15.8a2 2 0 001.7-3L13.7 3.9a2 2 0 00-3.4 0z"/>',
+  bad:  '<circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16h.01"/>'
+};
+
+function render() {
+  const items = YazdCart.get();
+  const wrap = document.getElementById('wrap');
+  const meta = window._cartMeta || {};
+
+  // تا وقتی وضعیت واقعی نیامده، اسکلت نشان بده — نه قیمتی که شاید کهنه باشد
+  if (!synced && items.length) {
+    wrap.innerHTML = `<div>${items.map(() => `
+      <div class="cart-skel">
+        <div class="sq skeleton"></div>
+        <div style="flex:1">
+          <div class="ln skeleton" style="width:62%"></div>
+          <div class="ln skeleton" style="width:38%;margin-top:9px"></div>
+        </div>
+      </div>`).join('')}</div>
+      <div class="summary"><div class="ln skeleton" style="height:19px;width:52%"></div>
+        <div class="ln skeleton" style="height:13px;margin-top:16px"></div>
+        <div class="ln skeleton" style="height:13px;margin-top:10px"></div>
+        <div class="ln skeleton" style="height:44px;margin-top:20px;border-radius:10px"></div>
+      </div>`;
+    return;
+  }
+
+  if (!items.length) {
+    wrap.innerHTML = `<div class="empty-state soft-card" style="grid-column:1/-1;padding:52px 24px">
+      <h3 style="font-size:1.12rem">سبد خرید شما خالی است</h3>
+      <p style="margin-top:8px;font-size:.88rem;color:var(--muted);line-height:2">
+        نمی‌دانید از کجا شروع کنید؟ سمپل ۳ میلی‌لیتری بگیرید<br>
+        و پیش از خرید شیشه اصلی، رایحه را روی پوست خودتان امتحان کنید.</p>
+      <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:20px">
+        <a href="/" class="btn">مشاهده کاتالوگ عطرها</a>
+        <a href="/quiz" class="btn btn-outline">کوییز پیدا کردن رایحه</a>
+      </div>
+    </div>`;
+    return;
+  }
+
+  const subtotal = YazdCart.subtotal();
+  /* آستانه ارسال رایگان روی **جمع کالاها** سنجیده می‌شود، نه
+     مبلغ پس از تخفیف — دقیقاً مثل سرور.
+
+     نسخه قبلی پس از جشنواره حساب می‌کرد و همان رفتار سرور بود،
+     ولی هر دو یک اشتباه مشترک داشتند: جشنواره می‌توانست سبد را
+     زیر آستانه ببرد و کرایه ۳۵۰,۰۰۰ اضافه کند — یعنی تخفیف،
+     پرداختی را بالا می‌برد. */
+  const freeShip = subtotal >= 2500000;
+  const remain = 2500000 - subtotal;
+
+  const outCount = items.filter(i => meta[i.sku]?.out).length;
+
+  wrap.innerHTML = `
+    <div>
+      ${syncNotes.map(n => `<div class="cart-alert ${n.kind}">
+        <svg viewBox="0 0 24 24">${ALERT_IC[n.kind]}</svg>
+        <span>${n.text}</span></div>`).join('')}
+
+      ${items.map(i => {
+        const m = meta[i.sku] || {};
+        const live = liveMap[i.sku];
+        const low = live && live.stock > 0 && live.stock <= 3;
+        return `
+        <div class="cart-item${m.out ? ' dead' : m.oldPrice ? ' stale' : ''}">
+          <img src="${i.image}" alt="${i.name}" width="78" height="78">
+          <div style="flex:1">
+            <div class="ci-name">${i.name}</div>
+            <div class="ci-price">
+              ${m.oldPrice ? `<span class="ci-old">${money(m.oldPrice)}</span>` : ''}
+              ${money(i.price)} تومان
+            </div>
+            ${m.oldPrice ? `<span class="ci-flag ${i.price > m.oldPrice ? 'up' : 'down'}">
+              ${i.price > m.oldPrice ? 'قیمت افزایش یافت' : 'قیمت کاهش یافت'}</span>` : ''}
+            ${m.out ? '<span class="ci-flag out">ناموجود</span>'
+              : low ? `<span class="ci-flag low">تنها ${toFa(live.stock)} عدد باقی مانده</span>` : ''}
+            <button class="rm-btn" onclick="rm('${i.sku}')">حذف از سبد</button>
+          </div>
+          <div style="text-align:center">
+            <div class="qty-ctrl">
+              <button onclick="q('${i.sku}',${i.quantity - 1})" aria-label="کاهش تعداد">−</button>
+              <span>${toFa(i.quantity)}</span>
+              <button onclick="q('${i.sku}',${i.quantity + 1})" aria-label="افزایش تعداد">+</button>
+            </div>
+            <div style="font-weight:800;font-size:.86rem;margin-top:7px">
+              ${money(i.price * i.quantity)}
+            </div>
+          </div>
+        </div>`; }).join('')}
+    </div>
+
+    <div class="summary">
+      <div style="font-weight:800;font-size:1rem;margin-bottom:10px">خلاصه سفارش</div>
+      <div class="sum-row"><span>جمع کالاها</span><strong>${money(subtotal)} تومان</strong></div>
+      ${campOff > 0 ? `<div class="sum-row camp-row">
+        <span>تخفیف جشنواره</span><strong>− ${money(campOff)}</strong></div>
+        <div class="camp-note">${campLines.map(l =>
+          `${l.title} — <bdi>${toFa(l.percent)}٪</bdi>`).filter((v, i, a) => a.indexOf(v) === i).join(' · ')}
+        </div>` : ''}
+      ${discount > 0 ? `<div class="sum-row discount-row">
+        <span>تخفیف (${appliedCoupon.code})</span><strong>− ${money(discount)}</strong></div>` : ''}
+      <div class="sum-row">
+        <span>هزینه ارسال</span>
+        <strong>${freeShipCoupon ? 'رایگان (کد تخفیف)' : freeShip ? 'رایگان' : 'در مرحله بعد'}</strong>
+      </div>
+      ${!freeShip && !freeShipCoupon ? `<div class="ship-goal">
+        <div class="ship-goal-t">با <b>${money(remain)}</b> تومان خرید بیشتر، ارسال رایگان می‌شود</div>
+        <div class="ship-goal-bar"><i style="width:${Math.min(100, subtotal / 2500000 * 100).toFixed(1)}%"></i></div>
+      </div>` : `<div class="ship-goal done">
+        <svg viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg>
+        ارسال این سفارش رایگان است
+      </div>`}
+
+      <div class="coupon-box">
+        ${appliedCoupon ? `
+          <div class="coupon-applied">
+            <span>✓ ${appliedCoupon.code} — ${appliedCoupon.description || ''}</span>
+            <button onclick="removeCoupon()">حذف</button>
+          </div>` : `
+          <div class="coupon-row">
+            <input id="couponInput" aria-label="کد تخفیف" placeholder="کد تخفیف" value="${couponDraft}"
+                   onkeydown="if(event.key==='Enter')applyCoupon()">
+            <button onclick="applyCoupon()">اعمال</button>
+          </div>
+          ${couponError ? `<div class="coupon-err">${couponError}</div>` : ''}
+          <div class="coupon-hint">اگر کد تخفیف دارید اینجا وارد کنید.</div>`}
+      </div>
+
+      <div class="sum-row sum-total"><span>مبلغ قابل پرداخت</span>
+        <span>${money(Math.max(0, subtotal - campOff - discount))} تومان</span></div>
+      ${outCount ? `
+        <div class="cart-alert bad" style="margin:14px 0 0">
+          <svg viewBox="0 0 24 24">${ALERT_IC.bad}</svg>
+          <span>برای ادامه، ${toFa(outCount)} کالای ناموجود را از سبد حذف کنید.</span>
+        </div>
+        <button class="btn btn-block" style="margin-top:10px" disabled>ادامه و تکمیل اطلاعات ←</button>`
+      : `<a href="/checkout" class="btn btn-block" style="margin-top:14px;display:block;text-align:center">
+          ادامه و تکمیل اطلاعات ←
+        </a>`}
+      <a href="/" class="btn btn-outline btn-block" style="margin-top:8px;display:block;text-align:center">
+        افزودن رایحه دیگر
+      </a>
+    </div>`;
+}
+
+function rm(sku) { YazdCart.remove(sku); render(); toast('کالا حذف شد'); }
+function q(sku, n) { YazdCart.setQty(sku, n); revalidateCoupon(); }
+
+/* ── منبع واحد حقیقت برای مبالغ ──
+   یک مسیر واحد (`/api/cart/calculate`) هم جشنواره را حساب می‌کند
+   هم کوپن، با همان ترتیبی که هنگام ثبت سفارش اجرا می‌شود.
+
+   پیش‌تر صفحه سبد از `/api/coupons/validate` استفاده می‌کرد و
+   صفحه تسویه از `calculate`. وقتی جشنواره فعال بود، دو صفحه دو
+   عدد متفاوت نشان می‌دادند. حالا هر دو یک منبع دارند.
+
+   @param code کد تخفیف یا خالی. اگر خالی باشد فقط جشنواره حساب می‌شود. */
+async function calcTotals(code) {
+  const items = YazdCart.get();
+  if (!items.length) {
+    campOff = 0; campLines = []; discount = 0;
+    appliedCoupon = null; freeShipCoupon = false;
+    return { ok: true };
+  }
+  let d;
+  try {
+    const r = await fetch('/api/cart/calculate', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', ...YazdAuth.headers() },
+      body: JSON.stringify({
+        items: items.map(i => ({ sku: i.sku, quantity: i.quantity })),
+        coupon_code: code || undefined
+      })
+    });
+    d = await r.json();
+    if (!r.ok) return { ok: false, error: d.error || 'خطا در محاسبه سبد' };
+  } catch {
+    /* سرور در دسترس نیست — بهتر است مبالغ قبلی بماند تا صفر
+       نشان دادن تخفیف که مشتری را گیج می‌کند. */
+    return { ok: false, error: 'ارتباط با سرور برقرار نشد' };
+  }
+
+  campOff   = d.campaign_discount || 0;
+  campLines = d.campaign_lines || [];
+
+  if (d.coupon) {
+    appliedCoupon = { code: d.coupon.code, description: d.coupon.description };
+    discount = d.coupon.free_shipping ? 0 : (d.discount || 0);
+    freeShipCoupon = !!d.coupon.free_shipping;
+    return { ok: true, applied: true };
+  }
+  appliedCoupon = null; discount = 0; freeShipCoupon = false;
+  return { ok: true, applied: false, error: d.coupon_error || null };
+}
+
+async function applyCoupon() {
+  const el = document.getElementById('couponInput');
+  const code = (el?.value || '').trim().toUpperCase();
+  if (!code) return;
+  couponDraft = code; couponError = '';
+
+  const res = await calcTotals(code);
+  if (!res.ok) {
+    couponError = res.error;
+  } else if (res.applied) {
+    couponDraft = '';
+    localStorage.setItem('yazd_coupon', appliedCoupon.code);
+    toast('کد تخفیف اعمال شد');
+  } else {
+    couponError = res.error || 'این کد قابل استفاده نیست.';
+  }
+  render();
+}
+
+async function removeCoupon() {
+  couponDraft = ''; couponError = '';
+  localStorage.removeItem('yazd_coupon');
+  await calcTotals('');          // جشنواره باقی می‌ماند، فقط کوپن می‌رود
+  render(); toast('کد تخفیف حذف شد');
+}
+
+/* پس از هر تغییر تعداد، مبالغ دوباره از سرور گرفته می‌شوند:
+   جشنواره و کوپن هر دو ممکن است به حداقل خرید وابسته باشند. */
+async function revalidateCoupon() {
+  document.body.dataset.pending = '1';
+  const code = appliedCoupon ? appliedCoupon.code : (localStorage.getItem('yazd_coupon') || '');
+  const res = await calcTotals(code);
+  if (code && res.ok && !res.applied) {
+    couponError = res.error || '';
+    localStorage.removeItem('yazd_coupon');
+  }
+  delete document.body.dataset.pending;
+  render();
+}
+
+/* ترتیب مهم است: اول اسکلت، بعد وضعیت واقعی از سرور، بعد کد تخفیف.
+   اگر کد تخفیف را پیش از همگام‌سازی بررسی کنیم، ممکن است روی مبلغی
+   محاسبه شود که دیگر معتبر نیست. */
+(async () => {
+  render();                       // اسکلت
+  await syncCart();               // قیمت و موجودی واقعی
+  /* حتی بدون کد تخفیف هم باید محاسبه شود — جشنواره خودکار است و
+     مشتری کدی وارد نمی‌کند. نسخه قبلی فقط وقتی کوپن ذخیره بود
+     سرور را صدا می‌زد، پس تخفیف جشنواره در سبد نامرئی می‌ماند. */
+  if (YazdCart.get().length) {
+    await calcTotals(localStorage.getItem('yazd_coupon') || '');
+  }
+  render();
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,29 @@
+{
+  "name": "yazd-perfume-platform",
+  "version": "1.0.0",
+  "description": "فروشگاه آنلاین عطر یزد | Yazd Perfume Platform",
+  "main": "src/server.js",
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "node src/server.js",
+    "seed": "node -e \"require('./src/db')\"",
+    "check-node": "node scripts/check_node_version.js"
+  },
+  "keywords": [
+    "perfume",
+    "ecommerce",
+    "yazdperfume",
+    "sqlite",
+    "rtl",
+    "persian"
+  ],
+  "author": "Yazd Perfume Core Team",
+  "license": "UNLICENSED",
+  "dependencies": {
+    "better-sqlite3": "^12.11.1"
+  },
+  "engines": {
+    "node": ">=22 <23",
+    "npm": ">=10"
+  }
+}

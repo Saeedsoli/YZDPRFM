@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16.png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="manifest" href="/site.webmanifest">
+<meta name="theme-color" content="#121212">
+<title>تکمیل سفارش | عطر یزد</title>
+<!-- فونت عمداً preload نمی‌شود.
+     با font-display:swap متن بلافاصله با فونت سیستمی دیده می‌شود،
+     پس preload فقط پهنای باند را از تصویر اصلی می‌دزدد. روی ۳G
+     اندازه‌گیری شد: حذف آن LCP صفحه محصول را از ۴٫۳۱s به ۳٫۵۷s
+     رساند بدون آنکه FCP بدتر شود. -->
+<link rel="stylesheet" href="/assets/theme.css">
+<style>
+  .co-wrap { max-width: 1100px; margin: 30px auto; padding: 0 20px;
+             display: grid; grid-template-columns: 1fr 340px; gap: 26px; }
+  @media (max-width: 860px) { .co-wrap { grid-template-columns: 1fr; } }
+  .panel { background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--r); padding: 23px;
+      animation: fadeUp 520ms var(--ease-out) backwards }
+  .panel:nth-of-type(2){animation-delay:80ms} .panel:nth-of-type(3){animation-delay:160ms}
+  .panel h2 { font-size: 1.02rem; font-weight: 800; margin-bottom: 16px; }
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  @media (max-width: 560px) { .two-col { grid-template-columns: 1fr; } }
+  .summary { background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--r); padding: 21px; align-self: start;
+      position: sticky; top: 90px; box-shadow: var(--sh-lg);
+      animation: panelIn 560ms var(--ease-out) backwards }
+  .sum-row { display: flex; justify-content: space-between; padding: 8px 0; font-size: .87rem; }
+  .sum-total { border-top: 2px solid var(--border); margin-top: 8px; padding-top: 13px;
+               font-size: 1.1rem; font-weight: 800; }
+  .mini-item { display: flex; gap: 9px; padding: 8px 0; border-bottom: 1px dashed var(--border); font-size: .8rem; }
+  .mini-item:last-of-type { border: none; }
+  .err { background: #FDECEA; border-right: 3px solid #C0392B; color: #922B21;
+         padding: 11px 14px; border-radius: 9px; font-size: .84rem; margin-bottom: 14px; display: none; }
+</style>
+</head>
+<body>
+<a href="#main" class="skip-link">پرش به محتوای اصلی</a>
+<!-- ارتفاع هدر از پیش رزرو می‌شود. هدر با جاوااسکریپت از app.js
+     ساخته می‌شود، پس تا آن لحظه ارتفاعش صفر است و با ظاهر شدن،
+     کل صفحه ۹۷ تا ۱۰۳ پیکسل پایین می‌پرد. ردیابی نشان داد این
+     تک‌ریشهٔ جابه‌جایی در همه صفحات بود (MAIN#main: y 0 → 97).
+     اندازه‌گیری واقعی: موبایل ۹۷px · دسکتاپ ۱۰۳px. -->
+<div id="hdr" class="hdr-reserve"></div>
+
+<section class="page-head">
+  <div class="inner">
+    <span class="eyebrow">مرحله ۲ از ۲</span>
+    <h1>تکمیل اطلاعات و <em>پرداخت</em></h1>
+  </div>
+</section>
+
+<div class="steps" aria-label="مراحل خرید">
+  <span class="s done"><span class="n">✓</span> سبد خرید</span>
+  <span class="line done"></span>
+  <span class="s on"><span class="n">۲</span> اطلاعات</span>
+  <span class="line"></span>
+  <span class="s"><span class="n">۳</span> پرداخت</span>
+</div>
+
+<div class="co-wrap">
+  <div>
+    <div class="err" id="err" role="alert" aria-live="assertive"></div>
+
+    <div class="panel" id="loginHint" style="margin-bottom:18px;display:none;
+         background:var(--sand);border-right:4px solid var(--gold)">
+      <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap">
+        <div style="font-size:.86rem;line-height:1.8">
+          <strong>حساب کاربری دارید؟</strong><br>
+          با ورود، سفارش‌هایتان ذخیره می‌شود و پیگیری آسان‌تر است.
+        </div>
+        <a href="/login?next=/checkout" class="btn" style="white-space:nowrap">ورود با پیامک</a>
+      </div>
+    </div>
+
+    <div class="panel" style="margin-bottom:18px">
+      <h2>اطلاعات گیرنده</h2>
+      <div class="two-col">
+        <div class="field">
+          <label>نام *</label>
+          <input id="fFirst" aria-label="نام" placeholder="مثلاً: زهرا">
+          <div class="field-msg" id="msg-fFirst"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16h.01"/></svg><span>نام را وارد کنید</span></div>
+        </div>
+        <div class="field">
+          <label>نام خانوادگی *</label>
+          <input id="fLast" aria-label="نام خانوادگی" placeholder="مثلاً: محمدی">
+          <div class="field-msg" id="msg-fLast"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16h.01"/></svg><span>نام خانوادگی را وارد کنید</span></div>
+        </div>
+        <div class="field">
+          <label>شماره موبایل *</label>
+          <input id="fMobile" aria-label="شماره موبایل" placeholder="۰۹۱۲۳۴۵۶۷۸۹" inputmode="numeric" dir="ltr" style="text-align:right">
+          <div class="hint">پیگیری سفارش با این شماره انجام می‌شود</div>
+          <div class="field-msg" id="msg-fMobile"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16h.01"/></svg><span>شماره باید با ۰۹ شروع شود و ۱۱ رقم باشد</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel">
+      <h2>نشانی تحویل</h2>
+      <div class="two-col">
+        <div class="field">
+          <label>استان *</label>
+          <select id="fProvince" aria-label="استان" onchange="recalc()"></select>
+          <div class="field-msg" id="msg-fProvince"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16h.01"/></svg><span>استان را انتخاب کنید</span></div>
+        </div>
+        <div class="field">
+          <label>شهر *</label>
+          <input id="fCity" aria-label="شهر" placeholder="نام شهر" oninput="recalc()">
+          <div class="field-msg" id="msg-fCity"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16h.01"/></svg><span>نام شهر را وارد کنید</span></div>
+        </div>
+      </div>
+      <div class="field">
+        <label>نشانی کامل پستی *</label>
+        <textarea id="fAddress" aria-label="نشانی کامل" rows="3" placeholder="خیابان، کوچه، پلاک، واحد"></textarea>
+        <div class="field-msg" id="msg-fAddress"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16h.01"/></svg><span>نشانی کامل پستی را وارد کنید (حداقل ۱۰ حرف)</span></div>
+        </div>
+      <div class="two-col">
+        <div class="field">
+          <label>کد پستی *</label>
+          <input id="fPostal" aria-label="کد پستی" placeholder="۱۰ رقم" inputmode="numeric" dir="ltr" style="text-align:right">
+          <div class="hint">بدون کد پستی، مرسوله پستی برگشت می‌خورد</div>
+          <div class="field-msg" id="msg-fPostal"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16h.01"/></svg><span>کد پستی باید دقیقاً ۱۰ رقم باشد</span></div>
+        </div>
+        <div class="field">
+          <label>ایمیل <span style="font-weight:400;color:var(--muted);font-size:.8rem">(اختیاری)</span></label>
+          <input id="fEmail" type="email" aria-label="ایمیل" placeholder="you@example.com" dir="ltr" style="text-align:right">
+          <div class="hint">برای دریافت رسید — اجباری نیست</div>
+          <div class="field-msg" id="msg-fEmail"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16h.01"/></svg><span>ایمیل معتبر نیست</span></div>
+        </div>
+      </div>
+
+      <!-- ── یادداشت مشتری ──
+           یک فیلد متن آزاد به‌جای چند دکمه. هر خواسته‌ای که به
+           دکمه تبدیل شود فرم را شلوغ‌تر می‌کند و نرخ رها کردن
+           سبد را بالا می‌برد. -->
+      <div class="field" style="margin-top:4px">
+        <label>توضیحات سفارش
+          <span style="font-weight:400;color:var(--muted);font-size:.8rem">(اختیاری)</span></label>
+        <textarea id="fNote" aria-label="توضیحات سفارش" rows="3" maxlength="500"
+          placeholder="مثلاً: فاکتور رسمی لازم دارم · کادوپیچ شود · قبل از ارسال پیام بدهید"></textarea>
+        <div class="hint">
+          هر نکته‌ای که باید بدانیم — درخواست فاکتور رسمی، زمان مناسب تحویل،
+          یا هر چیز دیگر. <span id="noteCount"></span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="summary" id="summary"></div>
+</div>
+
+<div id="ftr"></div>
+
+<script src="/assets/app.js"></script>
+<script>
+document.getElementById('hdr').innerHTML = renderHeader();
+document.getElementById('ftr').innerHTML = renderFooter();
+
+const PROVINCES = ['آذربایجان شرقی','آذربایجان غربی','اردبیل','اصفهان','البرز','ایلام','بوشهر','تهران',
+'چهارمحال و بختیاری','خراسان جنوبی','خراسان رضوی','خراسان شمالی','خوزستان','زنجان','سمنان',
+'سیستان و بلوچستان','فارس','قزوین','قم','کردستان','کرمان','کرمانشاه','کهگیلویه و بویراحمد',
+'گلستان','گیلان','لرستان','مازندران','مرکزی','هرمزگان','همدان','یزد'];
+
+document.getElementById('fProvince').innerHTML =
+  '<option value="">انتخاب کنید…</option>' +
+  PROVINCES.map(p => `<option>${p}</option>`).join('');
+
+function shippingFee() {
+  const sub = YazdCart.subtotal();
+  if (sub >= 2500000) return { fee: 0, label: 'رایگان (خرید بالای ۲٬۵۰۰٬۰۰۰)' };
+  const prov = document.getElementById('fProvince').value;
+  const city = document.getElementById('fCity').value.trim();
+  const isYazd = prov === 'یزد' || city === 'یزد';
+  return isYazd
+    ? { fee: 250000, label: 'شهر یزد' }
+    : { fee: 350000, label: 'پست / تیپاکس سراسری' };
+}
+
+let couponCode = localStorage.getItem('yazd_coupon') || '';
+let serverCalc = null;
+
+async function renderSummary() {
+  const items = YazdCart.get();
+  if (!items.length) { location.href = '/cart'; return; }
+  const sub = YazdCart.subtotal();
+  const s = shippingFee();
+
+  // محاسبه دقیق از سرور (شامل تخفیف)
+  let discount = 0, shipFee = s.fee, shipLabel = s.label, total = sub + s.fee, cErr = null;
+  let campOff = 0, campLines = [];
+  try {
+    const r = await fetch('/api/cart/calculate', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', ...YazdAuth.headers() },
+      body: JSON.stringify({
+        items: items.map(i => ({ sku: i.sku, quantity: i.quantity })),
+        coupon_code: couponCode || undefined,
+        province: document.getElementById('fProvince').value,
+        city: document.getElementById('fCity').value.trim()
+      })
+    });
+    const d = await r.json();
+    if (r.ok) {
+      serverCalc = d;
+      discount = d.discount || 0;
+      campOff = d.campaign_discount || 0;
+      campLines = d.campaign_lines || [];
+      shipFee = d.shipping_fee; shipLabel = d.shipping_label;
+      total = d.total_payable; cErr = d.coupon_error;
+      if (cErr) { couponCode = ''; localStorage.removeItem('yazd_coupon'); }
+    }
+  } catch {}
+
+  document.getElementById('summary').innerHTML = `
+    <div style="font-weight:800;font-size:1rem;margin-bottom:10px">سفارش شما</div>
+    ${items.map(i => `<div class="mini-item">
+       <span style="flex:1">${i.name}</span>
+       <span style="color:var(--muted)">×${toFa(i.quantity)}</span>
+       <strong>${money(i.price * i.quantity)}</strong>
+     </div>`).join('')}
+    <div class="sum-row" style="margin-top:10px"><span>جمع کالاها</span><strong>${money(sub)}</strong></div>
+    ${campOff > 0 ? `<div class="sum-row" style="color:#B3261E;font-weight:700">
+      <span>تخفیف جشنواره</span><strong>− ${money(campOff)}</strong></div>
+      <div style="font-size:.72rem;color:var(--muted);line-height:1.8;margin-top:2px">
+        ${campLines.map(l => `${l.title} — <bdi>${toFa(l.percent)}٪</bdi>`)
+          .filter((v, i, a) => a.indexOf(v) === i).join(' · ')}
+      </div>` : ''}
+    ${discount > 0 ? `<div class="sum-row" style="color:#1E8449;font-weight:700">
+      <span>تخفیف (${couponCode})</span><strong>− ${money(discount)}</strong></div>` : ''}
+    <div class="sum-row"><span>ارسال — ${shipLabel}</span><strong>${shipFee ? money(shipFee) : 'رایگان'}</strong></div>
+    ${cErr ? `<div style="color:#C0392B;font-size:.76rem;padding:6px 0">${cErr}</div>` : ''}
+    <div class="sum-row sum-total"><span>قابل پرداخت</span><span>${money(total)} تومان</span></div>
+    <button class="btn btn-block" style="margin-top:14px" id="payBtn" onclick="submitOrder()">
+      پرداخت و ثبت نهایی سفارش
+    </button>
+    <div style="font-size:.72rem;color:var(--muted);text-align:center;margin-top:9px;line-height:1.7">
+      با ثبت سفارش، <a href="/terms" style="color:var(--gold)">قوانین فروشگاه</a> را می‌پذیرید.
+    </div>`;
+}
+function recalc() { renderSummary(); }
+
+/* ── اعتبارسنجی درجا ──
+   خطا کنار خود فیلد نشان داده می‌شود، نه بالای صفحه. کاربر روی موبایل
+   دیگر لازم نیست بالا اسکرول کند تا بفهمد کدام فیلد ایراد دارد. */
+/* ارقام فارسی/عربی به لاتین + حذف فاصله و خط تیره.
+   کاربر معمولاً «۰۹۱۲ ۳۴۵ ۶۷۸۹» یا «0912-345-6789» می‌نویسد. */
+const toEnDigits = v => String(v)
+  .replace(/[۰-۹]/g, d => '۰۱۲۳۴۵۶۷۸۹'.indexOf(d))
+  .replace(/[٠-٩]/g, d => '٠١٢٣٤٥٦٧٨٩'.indexOf(d))
+  .replace(/[\s\-‌]/g, '');
+
+const RULES = {
+  fFirst:    v => v.trim().length >= 2,
+  fLast:     v => v.trim().length >= 2,
+  fMobile:   v => /^09\d{9}$/.test(toEnDigits(v).trim()),
+  fProvince: v => !!v,
+  fCity:     v => v.trim().length >= 2,
+  fAddress:  v => v.trim().length >= 10,
+  // کد پستی حالا الزامی است — بدون آن مرسوله برگشت می‌خورد
+  fPostal:   v => /^\d{10}$/.test(toEnDigits(v).trim()),
+  // ایمیل اختیاری، ولی اگر پر شد باید معتبر باشد
+  fEmail:    v => v.trim() === '' || /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v.trim())
+};
+
+function markField(id, ok) {
+  const el = document.getElementById(id);
+  const box = el.closest('.field');
+  if (!box) return ok;
+  box.classList.toggle('invalid', !ok);
+  box.classList.toggle('valid', ok && el.value.trim() !== '');
+  return ok;
+}
+
+function checkField(id) { return markField(id, RULES[id](document.getElementById(id).value)); }
+
+/* اعتبارسنجی هنگام ترک فیلد — نه هنگام تایپ، که آزاردهنده است */
+Object.keys(RULES).forEach(id => {
+  const el = document.getElementById(id);
+  if (!el) return;
+  el.addEventListener('blur', () => { if (el.value.trim() !== '') checkField(id); });
+  // به‌محض اصلاح، خطا برداشته شود
+  el.addEventListener('input', () => {
+    const box = el.closest('.field');
+    if (box && box.classList.contains('invalid') && RULES[id](el.value)) checkField(id);
+  });
+});
+
+function validateAll() {
+  let firstBad = null;
+  for (const id of Object.keys(RULES)) {
+    if (!checkField(id) && !firstBad) firstBad = id;
+  }
+  if (firstBad) {
+    const el = document.getElementById(firstBad);
+    el.closest('.field').classList.add('shake');
+    setTimeout(() => el.closest('.field').classList.remove('shake'), 500);
+    el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    setTimeout(() => el.focus({ preventScroll: true }), 320);
+  }
+  return !firstBad;
+}
+
+function showErr(m) {
+  const e = document.getElementById('err');
+  e.textContent = m; e.style.display = 'block';
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+async function submitOrder() {
+  document.getElementById('err').style.display = 'none';
+  if (!validateAll()) return;
+
+  const first = document.getElementById('fFirst').value.trim();
+  const last  = document.getElementById('fLast').value.trim();
+  const name  = `${first} ${last}`.trim();
+  const email = document.getElementById('fEmail').value.trim();
+  const mobile = toEnDigits(document.getElementById('fMobile').value).trim();
+  const prov = document.getElementById('fProvince').value;
+  const city = document.getElementById('fCity').value.trim();
+  const addr = document.getElementById('fAddress').value.trim();
+
+  const btn = document.getElementById('payBtn');
+  btn.disabled = true; btn.textContent = 'در حال ثبت سفارش…';
+
+  try {
+    const r = await fetch('/api/orders', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        customer_name: name,
+        first_name: first, last_name: last,
+        email: email || undefined,
+        mobile, province: prov, city,
+        address: addr,
+        postal_code: toEnDigits(document.getElementById('fPostal').value).trim(),
+        customer_note: document.getElementById('fNote').value.trim() || undefined,
+        coupon_code: couponCode || undefined,
+        items: YazdCart.get().map(i => ({ sku: i.sku, quantity: i.quantity }))
+      })
+    });
+    const d = await r.json();
+    if (!r.ok) throw new Error(d.error || 'خطا در ثبت سفارش');
+    sessionStorage.setItem('yazd_last_mobile', mobile);
+    localStorage.removeItem('yazd_coupon');
+    location.href = d.payment_url;
+  } catch (e) {
+    showErr(e.message);
+    btn.disabled = false; btn.textContent = 'پرداخت و ثبت نهایی سفارش';
+  }
+}
+
+renderSummary();
+
+/* رسیدن به صفحه تسویه — مرحله سوم قیف خرید.
+   فاصله این عدد با «خرید موفق» نشان می‌دهد چند نفر پشت فرم
+   پرداخت جا می‌مانند. */
+(() => {
+  const items = YazdCart.get();
+  if (items.length) {
+    track('checkout', null, {
+      items: items.length,
+      units: items.reduce((s, i) => s + i.quantity, 0)
+    });
+  }
+})();
+
+// پیش‌پر کردن برای کاربران واردشده
+/* شمارنده نویسه یادداشت — کاربر نباید پس از نوشتن متن بلند
+   بفهمد که بریده شده. نزدیک سقف رنگ عوض می‌شود. */
+{
+  const nt = document.getElementById('fNote');
+  const cn = document.getElementById('noteCount');
+  if (nt && cn) {
+    const upd = () => {
+      const n = nt.value.length;
+      cn.textContent = n ? `(${toFa(n)} از ۵۰۰)` : '';
+      cn.style.color = n > 450 ? '#C0392B' : 'var(--muted)';
+    };
+    nt.addEventListener('input', upd);
+  }
+}
+
+(async () => {
+  const me = await YazdAuth.check();
+  if (me.authenticated) {
+    const f = document.getElementById('fMobile');
+    f.value = me.mobile;
+    f.readOnly = true;
+    f.style.background = 'var(--sand)';
+    f.insertAdjacentHTML('afterend',
+      '<div class="hint" style="color:#1E8449">✓ با حساب کاربری شما ثبت می‌شود</div>');
+    // آخرین نشانی
+    try {
+      const d = await fetch('/api/auth/orders', { headers: YazdAuth.headers() }).then(r => r.json());
+      const last = d.orders?.[0];
+      if (last) {
+        /* سفارش‌های قدیمی نام را یکجا ذخیره کرده‌اند. اگر فیلدهای
+           تفکیک‌شده نبودند، از روی فاصله جدا می‌شوند. */
+        const fn = last.first_name || (last.customer_name || '').split(' ')[0] || '';
+        const ln = last.last_name
+          || (last.customer_name || '').split(' ').slice(1).join(' ') || '';
+        document.getElementById('fFirst').value = fn;
+        document.getElementById('fLast').value = ln;
+        if (last.email) document.getElementById('fEmail').value = last.email;
+        if (last.province) document.getElementById('fProvince').value = last.province;
+        document.getElementById('fCity').value = last.city || '';
+        document.getElementById('fAddress').value = last.address || '';
+        document.getElementById('fPostal').value = last.postal_code || '';
+        recalc();
+      }
+    } catch {}
+  } else {
+    document.getElementById('loginHint').style.display = 'block';
+  }
+})();
+</script>
+</body>
+</html>

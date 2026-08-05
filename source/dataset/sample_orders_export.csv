@@ -1,0 +1,5 @@
+﻿Order_ID,Transaction_Date_Jalali,Transaction_Time,Customer_Name,Customer_Mobile,SKU,Product_Name,Quantity,Unit_Price_Toman,Discount_Amount_Toman,Net_Amount_Toman,Shipping_Cost_Toman,Total_Paid_Toman,Payment_Gateway,Gateway_Ref_Code,Shipping_City,Shipping_State,OrderStatus
+YZD-10842,1405/04/19,16:35:20,امیرحسین رضایی,09123456789,YZD-CRD-AVE-EDP-050,عطر دست‌ساز کرید اونتوس - EDP ۵۰ میل,1,2425000,100000,2325000,350000,2675000,Shaparak_Saman,849201948102,شیراز,فارس,COMPLETED
+YZD-10843,1405/04/19,17:10:05,سارا طباطبایی,09139876543,YZD-PNH-SMM-SMP-003,سمپل ۳ میل د بلیزینگ مستر سم - پنهالیگونز,2,196000,0,392000,250000,642000,Shaparak_Saman,910294810238,یزد,یزد,COMPLETED
+YZD-10844,1405/04/19,18:02:44,رضا محمدی,09351112233,YZD-TMF-TBV-HM-050,عطر موی دست‌ساز توباکو وانیل - تام فورد ۵۰ میل,1,1440000,0,1440000,350000,1790000,ZarinPal,100293849102,اصفهان,اصفهان,PROCESSING
+YZD-10845,1405/04/19,19:15:12,مریم کاظمی,09128889900,YZD-AMG-ITL-BS-100,بادی اسپلش دست‌ساز اینترلود - آمواژ ۱۰۰ میل,1,1540000,50000,1490000,350000,1840000,Shaparak_Saman,883019284102,تهران,تهران,COMPLETED

@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16.png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="manifest" href="/site.webmanifest">
+<meta name="theme-color" content="#121212">
+<title>بررسی سلامت — عطر یزد</title>
+<link rel="stylesheet" href="/assets/theme.css">
+<style>
+  /* overflow-x:hidden جلوی سرریز ۱۷ پیکسلی دکمه پایین را می‌گیرد.
+     صفحه فنی است و مشتری نمی‌بیندش، ولی سرریز افقی روی موبایل
+     تجربه بدی می‌سازد و بهتر است هیچ صفحه‌ای نداشته باشد. */
+  /* سرریز افقی باید روی html هم بسته شود؛ فقط body کافی نبود
+     چون عنصر ریشه خودش scrollWidth بزرگ‌تر می‌گرفت. */
+  html { overflow-x: hidden }
+  body { padding: 24px; max-width: 780px; margin: 0 auto;
+         overflow-x: hidden; max-width: 100% }
+  @media (min-width: 828px) { body { max-width: 780px } }
+  .row { display:flex; justify-content:space-between; align-items:center; gap:12px;
+         padding:12px 14px; border:1px solid var(--border); border-radius:10px;
+         margin-bottom:8px; background:var(--surface); font-size:.88rem }
+  .ok { color:#1E8449; font-weight:800 }
+  .bad { color:#C0392B; font-weight:800 }
+  .wait { color:var(--muted) }
+  h1 { font-size:1.3rem; margin-bottom:6px }
+  .sub { color:var(--muted); font-size:.85rem; margin-bottom:20px }
+  .spec { background:var(--sand); border-radius:10px; padding:16px; margin:18px 0 }
+  .fw { margin:7px 0; font-size:1.05rem }
+</style>
+</head>
+<body>
+<h1>بررسی سلامت صفحه</h1>
+<p class="sub">این صفحه نشان می‌دهد کدام بخش‌ها درست لود می‌شوند.</p>
+
+<div id="list"></div>
+
+<div class="spec">
+  <div style="font-weight:800;margin-bottom:10px">نمونه فونت وزیرمتن</div>
+  <div class="fw" style="font-weight:400">۴۰۰ — عطر یزد، بازآفرینی رایحه‌های ماندگار</div>
+  <div class="fw" style="font-weight:500">۵۰۰ — عطر یزد، بازآفرینی رایحه‌های ماندگار</div>
+  <div class="fw" style="font-weight:600">۶۰۰ — عطر یزد، بازآفرینی رایحه‌های ماندگار</div>
+  <div class="fw" style="font-weight:700">۷۰۰ — عطر یزد، بازآفرینی رایحه‌های ماندگار</div>
+  <div class="fw" style="font-weight:800">۸۰۰ — عطر یزد، بازآفرینی رایحه‌های ماندگار</div>
+  <div id="fontVerdict" style="margin-top:14px;padding-top:12px;border-top:1px solid var(--border)"></div>
+</div>
+
+<div style="margin-top:20px">
+  <a href="/" class="btn">بازگشت به فروشگاه</a>
+</div>
+
+<script>
+const checks = [
+  ['استایل اصلی',      '/assets/theme.css'],
+  ['اسکریپت مشترک',    '/assets/app.js'],
+  ['فونت وزیرمتن ۴۰۰', '/fonts/Vazirmatn-Regular.woff2'],
+  ['فونت وزیرمتن ۷۰۰', '/fonts/Vazirmatn-Bold.woff2'],
+  ['فونت وزیرمتن ۸۰۰', '/fonts/Vazirmatn-ExtraBold.woff2'],
+  ['تصویر هیرو',       '/images/hero-cinematic.jpg'],
+  ['تصویر محصول',      '/images/products/brand-creed.jpg'],
+  ['لوگو',             '/images/brand_logo.png'],
+  ['API محصولات',      '/api/products?limit=1'],
+  ['API خانه‌های اسانس','/api/essences'],
+  ['سلامت سرور',       '/api/health']
+];
+
+const list = document.getElementById('list');
+list.innerHTML = checks.map(([n, u], i) =>
+  `<div class="row"><span>${n}</span>
+   <span id="c${i}" class="wait">در حال بررسی…</span></div>`).join('');
+
+checks.forEach(async ([n, u], i) => {
+  const el = document.getElementById('c' + i);
+  const t0 = performance.now();
+  try {
+    const r = await fetch(u, { cache: 'no-store' });
+    const ms = Math.round(performance.now() - t0);
+    const kb = Math.round((+r.headers.get('content-length') || 0) / 1024);
+    el.className = r.ok ? 'ok' : 'bad';
+    el.textContent = r.ok
+      ? `✓ ${ms}ms${kb ? ' · ' + kb + 'KB' : ''}`
+      : `✗ خطای ${r.status}`;
+  } catch (e) {
+    el.className = 'bad';
+    el.textContent = '✗ در دسترس نیست';
+  }
+});
+
+// آیا فونت واقعاً اعمال شده؟
+document.fonts.ready.then(() => {
+  const loaded = document.fonts.check('700 16px Vazirmatn');
+  const v = document.getElementById('fontVerdict');
+  v.innerHTML = loaded
+    ? '<span class="ok">✓ فونت وزیرمتن فعال است</span>'
+    : '<span class="bad">✗ فونت وزیرمتن لود نشد — متن با فونت پیش‌فرض سیستم نمایش داده می‌شود</span>';
+});
+</script>
+</body>
+</html>
