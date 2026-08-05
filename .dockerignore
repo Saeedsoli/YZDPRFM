@@ -46,6 +46,17 @@ shots/
 .gitignore
 .gitattributes
 
+# ── کش ابزارها ──
+# ‏.cache شامل مرورگر Playwright است — ۴۷ مگابایت که هرگز روی
+# سرور اجرا نمی‌شود. بدون این خط، بسته استقرار سه برابر می‌شود.
+.cache/
+.npm/
+.local/
+.config/
+.bash_history
+.sudo_as_admin_successful
+.arena/
+
 # ── سیستمی ──
 .DS_Store
 *.tmp
