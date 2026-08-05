@@ -38,6 +38,7 @@ const pay = require('./payment');
 const otp = require('./otp');
 const perms = require('./permissions');
 const notify = require('./notify');
+const alerts = require('./alerts');
 const seo = require('./seo');
 
 /* ── مسیرهای جداشده ──
@@ -1179,6 +1180,9 @@ const server = http.createServer(async (req, res) => {
 
         // کوپن هنگام ثبت سفارش رزرو شده است؛ اینجا کاری لازم نیست.
         notify.orderPaid({ ...order, status: 'PAID' }).catch(() => {});
+        /* خبر به مسئول فروشگاه — بدون await، چون سفارش نباید
+           منتظر پیامک بماند. */
+        alerts.fireAsync('newOrder', order);
         trackPurchase(order, req);
 
         return sendJSON(200, {
@@ -1291,10 +1295,12 @@ const server = http.createServer(async (req, res) => {
         logStatus(orderId, 'PAID', 'پرداخت تأیید شد');
         // کوپن هنگام ثبت سفارش رزرو شده است؛ اینجا کاری لازم نیست.
         notify.orderPaid({ ...order, status: 'PAID' }).catch(() => {});
+        alerts.fireAsync('newOrder', order);
         trackPurchase(order, req);
         return goto(true, vr.ref_id);
       }
 
+      alerts.fireAsync('paymentFailed', { order_id: orderId });
       releaseStock('پرداخت تأیید نشد — موجودی آزاد شد');
       notifyStockWatchers(releasedSkus, 'پرداخت تأیید نشد');
       return goto(false, null, vr.error);

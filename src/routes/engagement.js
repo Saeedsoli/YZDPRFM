@@ -317,6 +317,15 @@ async function handle(ctx) {
            clamp(b.longevity), clamp(b.sillage), verified);
 
     appLog('INFO', 'review', 'نظر جدید ثبت شد', { product: p.id, rating, verified });
+    /* خبر به مسئول نظرات — شمار کل صف فرستاده می‌شود نه تک‌تک
+       نظرها، چون سقف ساعتی دارد و «۳ نظر در انتظار» مفیدتر از
+       سه پیامک جداگانه است. */
+    try {
+      const pend = db.prepare(
+        "SELECT COUNT(*) c FROM reviews WHERE status='PENDING'").get().c;
+      require('../alerts').fireAsync('newReview', { count: pend });
+    } catch { /* اطلاع‌رسانی نباید ثبت نظر را بشکند */ }
+
     return sendJSON(201, {
       message: 'نظر شما ثبت شد و پس از بررسی منتشر می‌شود.',
       verified: !!verified

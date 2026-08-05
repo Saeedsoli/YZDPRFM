@@ -102,6 +102,9 @@ async function handle(ctx) {
            mobile);
 
     if (mobile) notify.ticketReceived({ ticket_id: id }, mobile).catch(() => {});
+    /* خبر به مسئول مرجوعی — مهلت پاسخ ۲۴ ساعت است و کسی باید
+       بداند ساعت شمارش شروع شده. */
+    require('../alerts').fireAsync('newTicket', { ticket_id: id });
 
     sendJSON(201, {
       message: 'تیکت ثبت شد. حداکثر تا ۲۴ ساعت پاسخ داده می‌شود.',

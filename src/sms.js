@@ -441,6 +441,93 @@ async function send(mobile, text, tag = 'SMS') {
   }
 }
 
+/* ═══════════════════════════════════════════
+   انتخاب خط بر پایه اهمیت پیام
+   ═══════════════════════════════════════════
+
+   فروشگاه هر دو نوع خط دارد و هر کدام محدودیت خودش را:
+
+     خط اختصاصی (5000…)
+       ✅ متن آزاد، بدون نیاز به تأیید الگو
+       ❌ به شماره‌های داخل **لیست سیاه مخابرات** نمی‌رسد
+
+     خط خدماتی اشتراکی
+       ✅ به همه می‌رسد، حتی لیست سیاه
+       ❌ فقط الگوی از پیش تأییدشده؛ متن آزاد ممکن نیست
+
+   ── چرا انتخاب باید خودکار باشد ──
+   حدود ۱۰ تا ۱۵ درصد شماره‌های ایرانی در لیست سیاه مخابرات‌اند
+   (کاربرانی که تبلیغات را مسدود کرده‌اند). برای پیام تبلیغاتی
+   مهم نیست، ولی برای این دو دسته فاجعه است:
+
+     • **کد ورود** — مشتری بلک‌لیست هرگز نمی‌تواند وارد شود
+     • **وضعیت سفارش** — کسی که پول داده باید خبردار شود
+
+   پس هر پیام یک «اهمیت» دارد و اگر الگوی متناظرش تعریف شده
+   باشد، از خط خدماتی می‌رود. وگرنه خط اختصاصی — که بهتر از
+   نفرستادن است.
+
+   هر الگو با یک متغیر محیطی به `bodyId` پنل وصل می‌شود:
+     SMS_PATTERN_OTP        کد ورود
+     SMS_PATTERN_ORDER      ثبت سفارش
+     SMS_PATTERN_SHIPPED    ارسال مرسوله
+     SMS_PATTERN_STOCK      موجود شدن کالا
+*/
+const PATTERNS = {
+  otp:     process.env.SMS_PATTERN_OTP     || process.env.SMS_OTP_PATTERN || '',
+  order:   process.env.SMS_PATTERN_ORDER   || '',
+  shipped: process.env.SMS_PATTERN_SHIPPED || '',
+  stock:   process.env.SMS_PATTERN_STOCK   || ''
+};
+
+/** آیا برای این نوع پیام، الگوی خدماتی تعریف شده؟ */
+function patternFor(kind) {
+  return PATTERNS[kind] || '';
+}
+
+/**
+ * ارسال با انتخاب خودکار خط.
+ *
+ * @param {string}   mobile
+ * @param {string}   kind   نوع پیام — کلید جدول PATTERNS
+ * @param {string[]} args   متغیرهای الگو (برای خط خدماتی)
+ * @param {string}   text   متن کامل (برای خط اختصاصی)
+ */
+async function sendSmart(mobile, kind, args, text, tag = 'SMS') {
+  if (!mobile || !/^09\d{9}$/.test(mobile)) {
+    return { ok: false, message: 'شماره موبایل نامعتبر' };
+  }
+
+  if (PROVIDER === 'console' || !isConfigured()) {
+    const line = patternFor(kind) ? 'خدماتی' : 'اختصاصی';
+    console.log(`\n  ┌─ [${tag}] → ${mobile}   ${d_(line)}`);
+    String(text).split('\n').forEach(l => console.log(`  │ ${l}`));
+    console.log(`  └─────────────────────────\n`);
+    return { ok: true, logged: true };
+  }
+
+  const bodyId = patternFor(kind);
+  if (bodyId && PROVIDER === 'payamito') {
+    try {
+      const r = await sendPanelPattern(mobile, args, bodyId);
+      /* اگر خط خدماتی به هر دلیلی رد کرد (الگو تأیید نشده،
+         اعتبار خدماتی تمام شده)، به خط اختصاصی برمی‌گردیم.
+         پیام رسیده بهتر از پیام نرسیده است — حتی اگر به همه
+         نرسد. */
+      if (r.ok) return { ...r, line: 'service' };
+      console.error(`  [${tag}] خط خدماتی رد کرد (${r.message}) — تلاش با خط اختصاصی`);
+    } catch (e) {
+      console.error(`  [${tag}] خطای خط خدماتی: ${e.message}`);
+    }
+  }
+
+  const r = await send(mobile, text, tag);
+  return { ...r, line: 'dedicated' };
+}
+
+/** برچسب کم‌رنگ برای لاگ — بدون وابستگی بیرونی */
+const d_ = s => `\x1b[2m(${s})\x1b[0m`;
+
 /**
  * ارسال کد یکبار مصرف.
  *
@@ -449,12 +536,9 @@ async function send(mobile, text, tag = 'SMS') {
  *   • **خط اختصاصی** (پیش‌فرض): متن آزاد می‌رود. ساده و بدون
  *     پیش‌نیاز، ولی به شماره‌های بلک‌لیست نمی‌رسد.
  *
- *   • **خط خدماتی اشتراکی** (`SMS_OTP_PATTERN` پر باشد): فقط
+ *   • **خط خدماتی اشتراکی** (`SMS_PATTERN_OTP` پر باشد): فقط
  *     متغیرها فرستاده می‌شوند و متن از الگوی از پیش تعریف‌شده در
  *     پنل ساخته می‌شود. به بلک‌لیست هم می‌رسد.
- *
- * مالک فروشگاه خط اختصاصی دارد، ولی هر دو پشتیبانی می‌شود چون
- * ممکن است بعداً خط خدماتی هم بگیرد.
  */
 async function sendOtp(mobile, code) {
   if (PROVIDER === 'console' || !isConfigured()) {
@@ -485,7 +569,8 @@ async function sendOtp(mobile, code) {
      ۳) متن آزاد از خط اختصاصی — واپسین چاره. */
   if (PROVIDER === 'payamito') {
     try {
-      if (OTP_PATTERN) return await sendPanelPattern(mobile, [code], OTP_PATTERN);
+      const otpPattern = patternFor('otp');
+      if (otpPattern) return await sendPanelPattern(mobile, [code], otpPattern);
       if (String(process.env.SMS_USE_SENDOTP || '1') === '1') {
         return await sendPanelOtp(mobile, code);
       }
@@ -608,7 +693,8 @@ async function testConnection(mobile) {
 }
 
 module.exports = {
-  send, sendOtp, testConnection, isConfigured,
+  send, sendOtp, sendSmart, testConnection, isConfigured,
+  patternFor, PATTERNS,
   PROVIDER, SENDER, OTP_PATTERN, API_URL,
   /* برای آزمون — تفسیر پاسخ سرویس بدون نیاز به تماس واقعی.
      بدون این، تنها راه سنجیدن منطق خطا فرستادن پیامک واقعی بود. */
