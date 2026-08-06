@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="utf-8">
+<title>نمونه‌کار — نشان ناموجودی و فیلتر موجود</title>
+<style>
+  :root{
+    --gold:#C59B27; --ink:#141414; --text:#2A2A2A; --muted:#7A7A7A;
+    --surface:#FFF; --sand:#F7F4EE; --border:#E4E0D8;
+    --r:14px; --r-sm:8px; --t-fast:.18s;
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0;background:#EFEBE4;color:var(--text);
+    font-family:system-ui,-apple-system,"Segoe UI",Tahoma,sans-serif;
+    line-height:1.9;padding:26px 14px;
+  }
+  .wrap{max-width:1000px;margin:0 auto}
+  h1{font-size:1.14rem;color:var(--ink);margin:0 0 4px}
+  .sub{color:var(--muted);font-size:.83rem;margin-bottom:24px}
+  .panel{
+    background:var(--surface);border:1px solid var(--border);
+    border-radius:var(--r);padding:22px;margin-bottom:20px;
+  }
+  .panel>h2{
+    font-size:.9rem;color:var(--gold);margin:0 0 15px;
+    padding-bottom:9px;border-bottom:1px solid rgba(197,155,39,.22);
+  }
+
+  /* ═══ کارت محصول — کپی از سایت ═══ */
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:15px}
+  .product-card{
+    background:var(--surface);border:1px solid var(--border);
+    border-radius:var(--r);overflow:hidden;display:block;
+    text-decoration:none;color:inherit;position:relative;
+    transition:transform .3s,box-shadow .3s;
+  }
+  .product-card:hover{transform:translateY(-3px);box-shadow:0 10px 26px rgba(0,0,0,.09)}
+  .img-wrap{position:relative;aspect-ratio:1;background:var(--sand);overflow:hidden}
+  .img-wrap img{width:100%;height:100%;object-fit:cover;display:block}
+  .card-badge{
+    position:absolute;top:9px;right:9px;background:rgba(20,20,20,.72);
+    color:#fff;font-size:.66rem;padding:3px 9px;border-radius:20px;
+  }
+  .body{padding:12px 13px 14px}
+  .card-title{font-size:.85rem;font-weight:700;line-height:1.7;color:var(--ink)}
+  .card-tag{font-size:.66rem;color:var(--gold)}
+  .card-sub{font-size:.68rem;color:var(--muted);direction:ltr;text-align:right;margin:2px 0 7px}
+  .card-notes{font-size:.7rem;color:var(--muted);margin-bottom:9px;line-height:1.8}
+  .card-price-row{display:flex;align-items:center;justify-content:space-between;gap:8px}
+  .price{font-size:.85rem;font-weight:800;color:var(--ink)}
+  .price small{font-weight:600;font-size:.68rem;color:var(--muted)}
+  .go{font-size:.72rem;color:var(--gold);font-weight:700}
+
+  /* ═══ آنچه پیشنهاد می‌شود ═══ */
+  .card-out{
+    position:absolute;top:9px;left:9px;
+    background:rgba(120,120,120,.92);color:#fff;
+    font-size:.64rem;font-weight:700;padding:3px 9px;border-radius:20px;
+    letter-spacing:.01em;
+  }
+  .product-card.is-out .img-wrap img{
+    filter:grayscale(.72) opacity(.62);
+  }
+  .product-card.is-out .price{color:var(--muted)}
+  .notify-go{font-size:.72rem;color:#5A7FA8;font-weight:700}
+
+  /* ═══ فیلتر ═══ */
+  .filters{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:14px}
+  .chip{
+    border:1px solid var(--border);background:var(--surface);
+    border-radius:30px;padding:7px 15px;font-size:.78rem;font-weight:700;
+    cursor:pointer;color:var(--text);
+  }
+  .chip.on{background:var(--gold);border-color:var(--gold);color:#fff}
+  .chip .n{font-size:.68rem;opacity:.75;margin-right:3px}
+
+  /* ═══ دکمه خبرم کن ═══ */
+  .notify-box{
+    background:var(--sand);border:1px solid var(--border);
+    border-radius:12px;padding:15px 16px;max-width:420px;
+  }
+  .notify-box h4{margin:0 0 6px;font-size:.88rem;color:var(--ink)}
+  .notify-box p{margin:0 0 12px;font-size:.79rem;color:var(--muted);line-height:1.95}
+  .btn-notify{
+    display:inline-flex;align-items:center;gap:7px;
+    background:var(--ink);color:#fff;border:0;border-radius:30px;
+    padding:10px 20px;font:inherit;font-size:.82rem;font-weight:700;cursor:pointer;
+  }
+  .btn-notify svg{width:15px;height:15px;stroke:currentColor;fill:none;stroke-width:2}
+
+  .two{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+  @media(max-width:720px){.two{grid-template-columns:1fr}}
+  .box{border:1px solid var(--border);border-radius:12px;padding:14px;background:#FCFBF9}
+  .box h3{font-size:.8rem;margin:0 0 12px;padding-bottom:8px;border-bottom:1px dashed var(--border)}
+  .bad h3{color:#B4553F}
+  .good h3{color:#3F7D4E}
+  .note{
+    background:rgba(197,155,39,.07);border-right:3px solid var(--gold);
+    padding:12px 15px;border-radius:8px;font-size:.82rem;color:#4A4A4A;margin-top:14px;
+  }
+  table{width:100%;border-collapse:collapse;font-size:.81rem}
+  th,td{text-align:right;padding:8px 10px;border-bottom:1px solid var(--border);vertical-align:top}
+  th{color:var(--gold);font-weight:700;white-space:nowrap}
+  td:first-child{white-space:nowrap;color:#555}
+  .ph{
+    width:100%;height:100%;display:flex;align-items:center;justify-content:center;
+    background:linear-gradient(135deg,#EDE7DC,#DDD3C4);color:#A89880;font-size:.7rem;
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <h1>نمونه‌کار — نشان ناموجودی و فیلتر موجود</h1>
+  <div class="sub">
+    ۰٫۰۵٪ کاتالوگ قابل خرید است. این سه تغییر، ناامیدی کاربر را کم می‌کند.
+  </div>
+
+  <!-- ═══════════ ۱ ═══════════ -->
+  <div class="panel">
+    <h2>۱) کارت محصول — امروز در برابر پیشنهاد</h2>
+    <div class="two">
+      <div class="box bad">
+        <h3>✗ امروز — کاربر نمی‌داند</h3>
+        <div class="grid" style="grid-template-columns:1fr">
+          <a class="product-card">
+            <div class="img-wrap">
+              <div class="ph">تصویر محصول</div>
+              <span class="card-badge">یونیسکس</span>
+            </div>
+            <div class="body">
+              <div class="card-title">له لابو — انجیر له <span class="card-tag">«دست‌ساز»</span></div>
+              <div class="card-sub">LE LABO - Figue Le</div>
+              <div class="card-notes">نُت‌های آغازین: انجیر، نارگیل</div>
+              <div class="card-price-row">
+                <span class="price">از ۱۹۸,۴۰۰ <small>تومان</small></span>
+                <span class="go">مشاهده ←</span>
+              </div>
+            </div>
+          </a>
+        </div>
+        <div style="font-size:.78rem;color:#B4553F;margin-top:11px;line-height:1.9">
+          کاربر کلیک می‌کند، به صفحه محصول می‌رود، و آنجا دکمه
+          خاکستری «ناموجود» می‌بیند. این چند بار تکرار می‌شود تا برود.
+        </div>
+      </div>
+
+      <div class="box good">
+        <h3>✓ پیشنهاد — صادقانه و زودهنگام</h3>
+        <div class="grid" style="grid-template-columns:1fr">
+          <a class="product-card is-out">
+            <div class="img-wrap">
+              <div class="ph">تصویر محصول</div>
+              <span class="card-badge">یونیسکس</span>
+              <span class="card-out">ناموجود</span>
+            </div>
+            <div class="body">
+              <div class="card-title">له لابو — انجیر له <span class="card-tag">«دست‌ساز»</span></div>
+              <div class="card-sub">LE LABO - Figue Le</div>
+              <div class="card-notes">نُت‌های آغازین: انجیر، نارگیل</div>
+              <div class="card-price-row">
+                <span class="price">از ۱۹۸,۴۰۰ <small>تومان</small></span>
+                <span class="notify-go">خبرم کن ←</span>
+              </div>
+            </div>
+          </a>
+        </div>
+        <div style="font-size:.78rem;color:#3F7D4E;margin-top:11px;line-height:1.9">
+          سه نشانه همزمان: برچسب، تصویر کم‌رنگ، و دعوت به
+          «خبرم کن» به‌جای «مشاهده».
+        </div>
+      </div>
+    </div>
+    <div class="note">
+      داده <code>in_stock</code> از قبل در پاسخ API هست — فقط
+      نمایش داده نمی‌شود. این تغییر داده تازه‌ای نمی‌خواهد.
+    </div>
+  </div>
+
+  <!-- ═══════════ ۲ ═══════════ -->
+  <div class="panel">
+    <h2>۲) فیلتر «فقط موجودها»</h2>
+    <div class="filters">
+      <button class="chip on">همه <span class="n">۲۱۰۶</span></button>
+      <button class="chip">فقط موجودها <span class="n">۱</span></button>
+      <button class="chip">مردانه</button>
+      <button class="chip">زنانه</button>
+    </div>
+    <div class="note">
+      با ۰٫۰۵٪ موجودی، این تنها راهی است که کاربر بتواند چیزی
+      بخرد. شمار کنار هر گزینه <strong>صادقانه</strong> است — اگر
+      یک محصول موجود است، همان را می‌گوید.
+      <br><br>
+      پیشنهاد دوم: <strong>مرتب‌سازی پیش‌فرض، موجودها اول</strong>.
+      یک خط تغییر، ولی یعنی نخستین چیزی که کاربر می‌بیند قابل خرید است.
+    </div>
+  </div>
+
+  <!-- ═══════════ ۳ ═══════════ -->
+  <div class="panel">
+    <h2>۳) دکمه «خبرم کن» روی صفحه محصول</h2>
+    <div class="notify-box">
+      <h4>این رایحه فعلاً موجود نیست</h4>
+      <p>شماره‌تان را بگذارید؛ به‌محض آماده شدن، پیامک می‌دهیم.
+         فقط یک پیامک — نه تبلیغات.</p>
+      <button class="btn-notify">
+        <svg viewBox="0 0 24 24"><path d="M18 8a6 6 0 10-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 01-3.4 0"/></svg>
+        خبرم کن وقتی موجود شد
+      </button>
+    </div>
+    <div class="note">
+      زیرساختش <strong>از قبل ساخته شده</strong> — جدول
+      <code>stock_alerts</code>، مسیر API، و پیامک اطلاع‌رسانی.
+      فقط دکمه‌اش روی صفحه نیست.
+      <br><br>
+      با این وضعیت موجودی، این مهم‌ترین دکمه سایت است: هر بازدید
+      ناموفق را به یک سرنخ تبدیل می‌کند.
+    </div>
+  </div>
+
+  <!-- ═══════════ ۴ ═══════════ -->
+  <div class="panel">
+    <h2>۴) دامنه تغییر</h2>
+    <table>
+      <tr><th>بخش</th><th>تغییر</th></tr>
+      <tr><td><code>app.js</code></td><td>سه خط در <code>productCard</code> — برچسب، کلاس، متن دکمه</td></tr>
+      <tr><td><code>theme.css</code></td><td>دو قاعده تازه: <code>.card-out</code> و <code>.is-out</code></td></tr>
+      <tr><td><code>index.html</code></td><td>یک گزینه فیلتر + مرتب‌سازی پیش‌فرض</td></tr>
+      <tr><td><code>product.html</code></td><td>نمایش دکمه «خبرم کن» وقتی ناموجود است</td></tr>
+      <tr><td>سرور</td><td>پارامتر <code>in_stock=1</code> در <code>/api/products</code></td></tr>
+    </table>
+    <div class="note">
+      بدون تغییر دیتابیس · بدون وابستگی تازه · بدون تغییر هویت بصری
+    </div>
+  </div>
+
+</div>
+</body>
+</html>

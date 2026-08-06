@@ -43,7 +43,12 @@
   <div class="panel focus-panel">
     <div class="field">
       <label>شماره موبایل ثبت‌شده در سفارش</label>
-      <input id="m" placeholder="۰۹۱۲۳۴۵۶۷۸۹" dir="ltr" style="text-align:right"
+      <!-- type=tel و inputmode=numeric صفحه‌کلید عددی موبایل را
+           باز می‌کنند. بدون این، کاربر با صفحه‌کلید حروف روبه‌رو
+           می‌شد و باید دستی به حالت عدد سوییچ می‌کرد.
+           autocomplete=tel شماره ذخیره‌شده مرورگر را پیشنهاد می‌دهد. -->
+      <input id="m" type="tel" inputmode="numeric" autocomplete="tel"
+             maxlength="11" placeholder="۰۹۱۲۳۴۵۶۷۸۹" dir="ltr" style="text-align:right"
              onkeydown="if(event.key==='Enter')track()">
     </div>
     <button class="btn btn-block" onclick="track()">مشاهده سفارش‌ها</button>

@@ -114,6 +114,7 @@ bash scripts/smoke_test.sh     # ۹۲ آزمون خودکار
 | `test_sms_panel.js` | ۲۶ تفسیر پاسخ سرویس پیامک — ۲۰ کد خطا، تله HTTP 200 |
 | `test_alerts.js` | ۳۹ اطلاع‌رسانی داخلی — مجوز، ساعت آرام، ضد سیل |
 | `test_article_media.js` | ۵۹ رسانه مقالات — امضای فایل، پیمایش مسیر، آپارات |
+| `test_audit_blackbox_fixes.js` | ۳۵ رفع ممیزی جعبه‌سیاه — نشت داده، محدودیت نرخ، سئو |
 | `test_enamad_browser.py` | ۲۲ نشان در مرورگر واقعی — DOM، CLS، حالت قطعی |
 | `test_pwa.js` | ۵۳ پیکربندی PWA — manifest، آیکن، هدر سرویس‌ورکر |
 | `test_brand_names.js` | ۱۱ نگارش فارسی برندها |

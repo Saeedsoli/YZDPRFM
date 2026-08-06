@@ -92,6 +92,11 @@ async function handle(ctx) {
      پایین می‌رسد — همان رفتار پیشین (۴۰۴ از سرور). */
   const sendJSON = (code, data) => { ctx.sendJSON(code, data); return true; };
 
+  /* رقم فارسی در پیام‌های کاربر.
+     پیش‌تر «۳۰ دقیقه» به‌صورت «30 دقیقه» نمایش داده می‌شد — تنها
+     جای سایت که رقم لاتین به کاربر نشان داده می‌شد. */
+  const fa = n => String(n).replace(/\d/g, d => '۰۱۲۳۴۵۶۷۸۹'[d]);
+
 
   /** ثبت رویداد از سمت مرورگر (افزودن به سبد، شروع تسویه، کوییز) */
   if (method === 'POST' && pathname === '/api/track') {
@@ -337,7 +342,7 @@ async function handle(ctx) {
     const arl = rateLimit(`alert:${reqIP}`, RL.alert.limit, RL.alert.window, RL.alert.block);
     if (!arl.ok) {
       return sendJSON(429, {
-        error: `درخواست‌های بیش از حد. ${Math.ceil(arl.retry_after / 60)} دقیقه دیگر تلاش کنید.`
+        error: `درخواست‌های بیش از حد. ${fa(Math.ceil(arl.retry_after / 60))} دقیقه دیگر تلاش کنید.`
       });
     }
     const b = await parseBody(req);
@@ -374,15 +379,75 @@ async function handle(ctx) {
 
   // پیگیری سفارش با موبایل
   if (method === 'GET' && pathname === '/api/orders/track') {
-    const mobile = parsed.query.mobile || '';
+    const mobile = String(parsed.query.mobile || '').trim();
     const oid = parsed.query.order_id || '';
     if (!mobile) return sendJSON(400, { error: 'شماره موبایل الزامی است.' });
+
+    /* ── قالب شماره پیش از هر کاری ──
+       پیش‌تر هر رشته‌ای پذیرفته می‌شد و به کوئری می‌رفت. حالا
+       ورودی بی‌قالب زودتر رد می‌شود و سطل محدودیت را هم مصرف
+       نمی‌کند — یعنی کاربری که اشتباه تایپ کرده جریمه نمی‌شود. */
+    if (!/^09\d{9}$/.test(mobile)) {
+      return sendJSON(400, { error: 'شماره موبایل معتبر وارد کنید (۰۹xxxxxxxxx).' });
+    }
+
+    /* ── دو سطل محدودیت (ممیزی جعبه‌سیاه) ──
+       این مسیر داده شخصی می‌دهد و احراز هویت ندارد. بدون
+       محدودیت، پویش فهرستی از شماره‌ها نشانی منزل مشتریان را
+       بیرون می‌کشید.
+
+       ترتیب عمدی است: اول IP، چون مهاجم معمولاً از یک منبع
+       شماره‌های زیادی را می‌آزماید. */
+    const ipRl = rateLimit(`track-ip:${reqIP}`,
+      RL.trackIp.limit, RL.trackIp.window, RL.trackIp.block);
+    if (!ipRl.ok) {
+      appLog('WARN', 'security', 'پویش پیگیری سفارش', { ip: reqIP });
+      return sendJSON(429, {
+        error: `درخواست‌های بیش از حد. ${fa(Math.ceil(ipRl.retry_after / 60))} دقیقه دیگر تلاش کنید.`
+      });
+    }
+    const phRl = rateLimit(`track-ph:${mobile}`,
+      RL.trackPhone.limit, RL.trackPhone.window, RL.trackPhone.block);
+    if (!phRl.ok) {
+      return sendJSON(429, {
+        error: `درخواست‌های بیش از حد برای این شماره. ${fa(Math.ceil(phRl.retry_after / 60))} دقیقه دیگر تلاش کنید.`
+      });
+    }
+
     const rows = oid
       ? db.prepare('SELECT * FROM orders WHERE mobile=? AND order_id=?').all(mobile, oid)
       : db.prepare('SELECT * FROM orders WHERE mobile=? ORDER BY created_at DESC LIMIT 20').all(mobile);
+
+    /* ── فهرست سفید میدان‌ها ──
+       پیش‌تر `SELECT *` مستقیم برمی‌گشت و همراهش چیزهایی می‌آمد
+       که مشتری نباید ببیند:
+
+         admin_note     یادداشت داخلی کارکنان درباره سفارش
+         payment_ref    شناسه تراکنش درگاه
+         campaign_note  منطق داخلی تخفیف
+
+       مشتری برای پیگیری سفارشش به هیچ‌کدام نیاز ندارد. */
     const withItems = rows.map(o => ({
-      ...o,
-      items: db.prepare('SELECT * FROM order_items WHERE order_id=?').all(o.order_id)
+      order_id: o.order_id,
+      created_at: o.created_at,
+      updated_at: o.updated_at,
+      status: o.status,
+      customer_name: o.customer_name,
+      province: o.province,
+      city: o.city,
+      address: o.address,
+      postal_code: o.postal_code,
+      subtotal: o.subtotal,
+      shipping_fee: o.shipping_fee,
+      discount_amount: o.discount_amount,
+      campaign_discount: o.campaign_discount,
+      total_paid: o.total_paid,
+      tracking_code: o.tracking_code,
+      carrier: o.carrier,
+      customer_note: o.customer_note,
+      items: db.prepare(
+        'SELECT sku, product_name, quantity, unit_price, line_total FROM order_items WHERE order_id=?'
+      ).all(o.order_id)
     }));
     return sendJSON(200, { total: withItems.length, orders: withItems });
   }
