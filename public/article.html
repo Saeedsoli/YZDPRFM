@@ -90,6 +90,59 @@
     color: var(--gold); margin: 6px 0 0 10px;
   }
 
+  /* ═══ رسانه در متن مقاله ═══
+     نسبت ۱۶:۹ ثابت است، پس هنگام رسیدن تصویر چیدمان نمی‌پرد.
+     CLS این پروژه در همه سناریوها ۰٫۰۰۰۰ اندازه‌گیری شده و یک
+     تصویر مقاله نباید خرابش کند. */
+  .content figure {
+    margin: 30px 0; border-radius: var(--r); overflow: hidden;
+    background: var(--sand); border: 1px solid var(--border);
+  }
+  .content figure img {
+    display: block; width: 100%; height: auto;
+    aspect-ratio: 16 / 9; object-fit: cover;
+  }
+  .content figcaption {
+    font-size: .82rem; color: var(--muted); line-height: 1.95;
+    padding: 11px 15px; text-align: center;
+  }
+  .content .embed-wrap { border: none; background: none }
+  .content .embed {
+    position: relative; width: 100%; aspect-ratio: 16 / 9;
+    background: #111; border-radius: var(--r); overflow: hidden;
+    border: 1px solid var(--border);
+  }
+  .content .embed iframe {
+    position: absolute; inset: 0; width: 100%; height: 100%; border: 0;
+  }
+  /* نقل‌قول — از همان استایل «خلاصه مقاله» که در سایت هست */
+  .content blockquote {
+    margin: 28px 0; padding: 16px 18px 16px 16px;
+    background: var(--sand); border-right: 3px solid var(--gold);
+    border-radius: 12px; font-weight: 600; color: #3A3A3A;
+  }
+  .content blockquote p { margin: 0 }
+
+  /* ── ارتفاع رزروشده هنگام بارگذاری ──
+     آزمون مرورگر نشان داد CLS این صفحه ۰٫۸۵ است — نه به‌خاطر
+     رسانه، بلکه از روز اول. علت: `#loading` فقط ۳۴ پیکسل ارتفاع
+     دارد (اندازه اسپینر) و وقتی محتوای واقعی ۷۲۵ پیکسلی جایش
+     می‌نشیند، فوتر ۶۰۰ پیکسل پایین می‌پرد.
+
+     ردیابی دقیق: MAIN#main از [y129,h34] به [y119,h725] و
+     DIV#ftr از y227 بیرون از دید.
+
+     رزرو یک ارتفاع میانه، پرش را از ۰٫۸۵ به نزدیک صفر می‌رساند.
+     عدد از میانگین بلندی مقاله‌های موجود گرفته شده. */
+  #loading {
+    /* ۹۰vh نزدیک‌ترین مقدار به ارتفاع واقعی مقاله‌هاست. با ۷۰vh
+       هنوز ۱۳۵ پیکسل اختلاف می‌ماند و با ۱۰۰vh صفحه بی‌دلیل
+       بلند می‌شود. اندازه‌گیری‌شده روی سه مقاله. */
+    min-height: 90vh;
+    display: flex; align-items: flex-start; justify-content: center;
+    padding-top: 24vh;
+  }
+
   .art-share {
     display: flex; align-items: center; gap: 9px; flex-wrap: wrap;
     max-width: 720px; margin: var(--sp-6) auto 0; padding: var(--sp-5) 20px 0;
@@ -208,11 +261,108 @@ const slug = location.pathname.replace('/journal/', '').replace(/\/$/, '');
  * ترکیب از esc() عبور می‌کند. محتوای مقاله را کارمند با مجوز
  * content.write می‌نویسد، ولی به آن هم تکیه نمی‌کنیم.
  */
+/* ── رسانه در متن مقاله ──
+   محتوا عمداً متن ساده است و HTML پذیرفته نمی‌شود — این جلوی
+   تزریق اسکریپت را می‌گیرد. پس رسانه با نحو متنی می‌آید:
+
+     [عکس: نام-فایل | توضیح]
+     [ویدیو: شناسه-آپارات | توضیح]
+     [نقل: متن نقل‌قول]
+
+   هر خط که با این الگو نخواند، پاراگراف معمولی می‌ماند. یعنی
+   اگر کسی براکت را اشتباه بنویسد، صفحه نمی‌شکند — فقط متن خام
+   دیده می‌شود. */
+const MEDIA_RE = /^\[(عکس|ویدیو|نقل)\s*:\s*([\s\S]+)\]$/;
+
+/* نام فایل تصویر — فقط حرف، رقم، خط تیره و نقطه.
+   هر چیز دیگری یعنی تلاش برای بیرون رفتن از پوشه یا تزریق. */
+const SAFE_FILE = /^[A-Za-z0-9][A-Za-z0-9._-]{0,80}$/;
+
+/* شناسه آپارات — همان قاعده سرور. اگر مدیر نشانی کامل چسبانده
+   باشد، شناسه از آن بیرون کشیده می‌شود. */
+function aparatIdOf(raw) {
+  const s = String(raw || '').trim();
+  const pats = [
+    /aparat\.com\/v\/([A-Za-z0-9]+)/i,
+    /aparat\.com\/video\/video\/embed\/videohash\/([A-Za-z0-9]+)/i,
+    /^aparat\/([A-Za-z0-9]+)$/i,
+    /^([A-Za-z0-9]{5,20})$/
+  ];
+  for (const re of pats) { const m = s.match(re); if (m) return m[1]; }
+  return null;
+}
+
+/**
+ * یک بلوک رسانه را به HTML تبدیل می‌کند.
+ * @returns {string|null} null یعنی این بلوک رسانه نیست
+ */
+function renderMedia(line) {
+  const m = line.match(MEDIA_RE);
+  if (!m) return null;
+
+  const kind = m[1];
+  const parts = m[2].split('|').map(x => x.trim());
+  const value = parts[0];
+  const caption = parts.slice(1).join(' | ').trim();
+
+  if (kind === 'نقل') {
+    const t = m[2].trim();
+    return t ? `<blockquote><p>${esc(t)}</p></blockquote>` : null;
+  }
+
+  if (kind === 'عکس') {
+    if (!SAFE_FILE.test(value)) return null;
+    /* نام بدون پسوند هم پذیرفته می‌شود تا نوشتن آسان‌تر باشد؛
+       در آن حالت .jpg فرض می‌شود. */
+    const file = /\.(jpe?g|png|webp|gif)$/i.test(value) ? value : value + '.jpg';
+    /* دو پوشه ممکن: آپلودشده‌های مجله، و تصاویر خودِ پروژه.
+       `onerror` بین این دو جابه‌جا می‌شود و اگر هیچ‌کدام نبود،
+       کل قاب حذف می‌شود — تصویر شکسته بدتر از نبودنش است. */
+      const primary = `/images/journal/${file}`;
+    const fallback = `/images/products/${file}`;
+    const cap = caption ? `<figcaption>${esc(caption)}</figcaption>` : '';
+    return `<figure>`
+      + `<img src="${primary}" alt="${esc(caption || 'تصویر مقاله')}"`
+      + ` loading="lazy" decoding="async"`
+      + ` onerror="if(!this.dataset.alt){this.dataset.alt=1;this.src='${fallback}'}`
+      + `else{this.closest('figure').remove()}">`
+      + `${cap}</figure>`;
+  }
+
+  if (kind === 'ویدیو') {
+    const id = aparatIdOf(value);
+    if (!id) return null;
+    const cap = caption ? `<figcaption>${esc(caption)}</figcaption>` : '';
+    /* `loading=lazy` روی iframe: ویدیو معمولاً پایین مقاله است و
+       بار کردنش پیش از رسیدن کاربر، پهنای باند موبایل را هدر
+       می‌دهد. */
+    return `<figure class="embed-wrap">`
+      + `<div class="embed"><iframe src="https://www.aparat.com/video/video/embed/videohash/${id}/vt/frame"`
+      + ` title="${esc(caption || 'ویدیوی آموزشی')}" loading="lazy"`
+      + ` allowfullscreen webkitallowfullscreen mozallowfullscreen></iframe></div>`
+      + `${cap}</figure>`;
+  }
+  return null;
+}
+
 function renderArticle(text) {
   const blocks = String(text).split(/\n\s*\n/).map(b => b.trim()).filter(Boolean);
 
   return blocks.map(block => {
     const lines = block.split('\n').map(l => l.trim()).filter(Boolean);
+
+    /* بلوک رسانه — پیش از هر تفسیر دیگری بررسی می‌شود.
+       چند خط رسانه پشت‌سرهم در یک بلوک هم کار می‌کند.
+
+       ── چرا خط رسانهٔ نامعتبر حذف می‌شود، نه نمایش داده ──
+       آزمون مرورگر نشان داد `[عکس: ../../etc/passwd]` امن است
+       (رندر نمی‌شود) ولی به‌عنوان **متن خام** روی صفحه می‌ماند.
+       یعنی بازدیدکننده مسیر تلاش حمله را می‌بیند — زشت و
+       گیج‌کننده. حالا خطی که الگوی رسانه دارد ولی مقدارش معتبر
+       نیست، کلاً کنار گذاشته می‌شود. */
+    if (lines.every(l => MEDIA_RE.test(l))) {
+      return lines.map(renderMedia).filter(Boolean).join('');
+    }
 
     // پاراگراف چندخطی که خط اولش عنوان است
     if (lines.length > 1 && isHeading(lines[0])) {

@@ -39,6 +39,7 @@ const otp = require('./otp');
 const perms = require('./permissions');
 const notify = require('./notify');
 const alerts = require('./alerts');
+const media  = require('./media');
 const seo = require('./seo');
 
 /* ── مسیرهای جداشده ──
@@ -574,6 +575,14 @@ const server = http.createServer(async (req, res) => {
     "font-src 'self' data:",
     "connect-src 'self'",
     "form-action 'self'",
+    /* ── ویدیوی آپارات ──
+       تنها دامنه‌ای که اجازه iframe دارد. بدون این، ویدیوی
+       مقاله‌ها مسدود می‌شود و قاب سیاه می‌ماند.
+
+       `frame-src` فقط اجازه **نمایش** می‌دهد؛ اسکریپت آپارات
+       داخل iframe در بافت جدا اجرا می‌شود و به صفحه ما دسترسی
+       ندارد. بدترین حالت: ویدیو بار نمی‌شود. */
+    "frame-src 'self' https://www.aparat.com",
     "frame-ancestors 'self'",
     "base-uri 'self'",
     "object-src 'none'"
@@ -2004,8 +2013,20 @@ const server = http.createServer(async (req, res) => {
       if (!file && pathname.startsWith('/payment/sandbox')) file = 'payment-sandbox.html';
       if (!file) file = pathname.replace(/^\//, '');
 
-      const full = path.join(PUBLIC_DIR, file);
-      if (!full.startsWith(PUBLIC_DIR)) { res.writeHead(403); return res.end('Forbidden'); }
+      /* ── تصاویر آپلودشده مقالات ──
+         روی لیارا این‌ها در `/app/data/journal/` می‌نشینند نه در
+         `public/`، چون تنها آن مسیر دیسک پایدار دارد. پس ریشه
+         سرو برای همین یک پیشوند فرق می‌کند.
+
+         محلی هر دو یکی‌اند و این شاخه بی‌اثر است. */
+      let baseDir = PUBLIC_DIR;
+      if (file.startsWith('images/journal/')) {
+        baseDir = path.dirname(media.MEDIA_DIR);
+        file = 'journal/' + path.basename(file);
+      }
+
+      const full = path.join(baseDir, file);
+      if (!full.startsWith(baseDir)) { res.writeHead(403); return res.end('Forbidden'); }
 
       if (fs.existsSync(full) && fs.statSync(full).isFile()) {
         const ext = path.extname(full).toLowerCase();

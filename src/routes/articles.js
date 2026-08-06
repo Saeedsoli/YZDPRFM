@@ -25,6 +25,8 @@
 
 'use strict';
 
+const media = require('../media');
+
 /**
  * @param {object} ctx زمینه درخواست
  * @param {string} ctx.method    GET/POST/… (HEAD قبلاً به GET نگاشته شده)
@@ -43,6 +45,55 @@
 async function handle(ctx) {
   const { method, pathname, parsed, req, sendJSON, can,
           parseBody, db, appLog, slugify } = ctx;
+
+  /* ═══════════ رسانه مقاله ═══════════
+     آپلود تصویر، فهرست تصاویر موجود، و حذف.
+
+     ── چرا اینجا و نه ماژول جدا ──
+     این مسیرها فقط برای ویرایشگر مقاله وجود دارند و همان مجوز
+     `content.write` را می‌خواهند. ماژول جدا برای سه مسیر، بیشتر
+     پراکندگی می‌سازد تا نظم. */
+
+  /** فهرست تصاویر — آپلودشده و موجودِ پروژه */
+  if (method === 'GET' && pathname === '/api/admin/media') {
+    if (!can('content.write')) return true;
+    sendJSON(200, {
+      uploaded: media.list(),
+      stock: media.stockImages(),
+      max_mb: Math.round(media.MAX_BYTES / 1024 / 1024)
+    });
+    return true;
+  }
+
+  /* آپلود تصویر.
+
+     نام فایل در سرآیند می‌آید نه در بدنه، چون بدنه خودِ تصویر
+     است. `X-File-Name` با encodeURIComponent فرستاده می‌شود تا
+     نام فارسی سرآیند را نشکند. */
+  if (method === 'POST' && pathname === '/api/admin/media') {
+    if (!can('content.write')) return true;
+    let orig = '';
+    try { orig = decodeURIComponent(req.headers['x-file-name'] || ''); } catch { orig = ''; }
+
+    const r = await media.saveUpload(req, orig);
+    if (!r.ok) { sendJSON(400, { error: r.error }); return true; }
+
+    appLog('INFO', 'admin', 'تصویر مقاله آپلود شد',
+           { name: r.name, size: r.size, format: r.format });
+    sendJSON(201, { message: 'تصویر آپلود شد.', ...r });
+    return true;
+  }
+
+  /** حذف تصویر آپلودشده — فقط پوشه journal، نه تصاویر پروژه */
+  if (method === 'DELETE' && pathname.startsWith('/api/admin/media/')) {
+    if (!can('content.delete')) return true;
+    const name = decodeURIComponent(pathname.replace('/api/admin/media/', ''));
+    const r = media.remove(name);
+    if (!r.ok) { sendJSON(404, { error: r.error }); return true; }
+    appLog('INFO', 'admin', 'تصویر مقاله حذف شد', { name });
+    sendJSON(200, { message: 'تصویر حذف شد.' });
+    return true;
+  }
 
   // ═══════════ فهرست مقالات ═══════════
   if (method === 'GET' && pathname === '/api/articles') {

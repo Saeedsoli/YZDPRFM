@@ -63,12 +63,27 @@ async def main():
             pg.on("pageerror", lambda e, l=path: errs.append(f"{l}: {e}"))
             pg.on("console", lambda m, l=path:
                   errs.append(f"{l}: {m.text}") if m.type == "error" else None)
-            # ERR_ABORTED روی فونت یعنی مرورگر درخواست تکراری preload
-            # را لغو کرده؛ فونت واقعاً بارگذاری شده. خرابی نیست.
+            # دو استثنا که خرابی سایت نیستند:
+            #
+            #   ۱) ERR_ABORTED روی فونت — مرورگر درخواست تکراری
+            #      preload را لغو کرده؛ فونت واقعاً بار شده.
+            #
+            #   ۲) دامنه بیرونی (اینماد، آپارات) — در این سندباکس
+            #      دسترسی به اینترنت ایران نیست. سایت برای هر دو
+            #      جانشین دارد و آزمون‌های اختصاصی‌شان همان رفتار
+            #      را جدا می‌سنجند. شمردنشان به‌عنوان خرابی، هشدار
+            #      کاذب می‌سازد و به‌مرور اعتماد به ممیزی را می‌برد.
+            EXTERNAL = ("enamad.ir", "aparat.com")
+
+            def _skip(r):
+                if r.failure and "ERR_ABORTED" in r.failure \
+                   and re.search(r"\.(woff2?|ttf)$", r.url):
+                    return True
+                return any(dom in r.url for dom in EXTERNAL)
+
             pg.on("requestfailed", lambda r, l=path:
                   failed.append(f"{l}: {r.url.split('/')[-1]} ({r.failure})")
-                  if not (r.failure and "ERR_ABORTED" in r.failure
-                          and re.search(r"\.(woff2?|ttf)$", r.url)) else None)
+                  if not _skip(r) else None)
             try:
                 await pg.goto(BASE + path, wait_until="networkidle", timeout=30000)
                 await pg.wait_for_timeout(900)

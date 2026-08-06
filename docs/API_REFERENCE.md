@@ -572,6 +572,41 @@ GET /api/admin/export/csv
 **بی‌صدا** نتیجه غلط می‌دهد — جستجو محصول تازه را پیدا نمی‌کند و
 فیلتر نُت شمار اشتباه نشان می‌دهد.
 
+### رسانه مقالات
+
+```
+GET    /api/admin/media          فهرست تصاویر (آپلودشده + موجود سایت)
+POST   /api/admin/media          آپلود تصویر تازه
+DELETE /api/admin/media/:name    حذف تصویر آپلودشده
+```
+
+مجوز: `content.write` — و برای حذف `content.delete`.
+
+**آپلود** بدنه باینری خام می‌گیرد، نه `multipart`. نام اصلی فایل
+در سرآیند `X-File-Name` با `encodeURIComponent` می‌آید.
+
+```bash
+curl -X POST https://yazdperfume.ir/api/admin/media \
+  -H "Authorization: Bearer TOKEN" \
+  -H "Content-Type: image/jpeg" \
+  -H "X-File-Name: photo.jpg" \
+  --data-binary @photo.jpg
+```
+
+پاسخ موفق:
+
+```json
+{ "message": "تصویر آپلود شد.", "name": "photo-msh8gt-a1b2c3.jpg",
+  "url": "/images/journal/photo-msh8gt-a1b2c3.jpg",
+  "size": 84213, "format": "jpg" }
+```
+
+قالب از **امضای بایتی** فایل تشخیص داده می‌شود نه از پسوند. تنها
+JPG، PNG، WebP و GIF پذیرفته می‌شوند؛ SVG عمداً رد می‌شود چون
+می‌تواند اسکریپت داشته باشد. سقف پیش‌فرض ۳ مگابایت.
+
+جزئیات در `ARTICLE_MEDIA.md`.
+
 ### `GET /api/admin/me/activity?days=7`
 
 کارنامه و **کارت دسترسی** کارمند واردشده.

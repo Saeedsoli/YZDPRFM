@@ -814,7 +814,47 @@
           </select>
         </div>
         <div class="field"><label>خلاصه</label><textarea id="aExcerpt" rows="2"></textarea></div>
-        <div class="field"><label>متن کامل</label><textarea id="aContent" rows="6"></textarea></div>
+        <div class="field"><label>تصویر کاور</label>
+          <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+            <select id="aCover" style="flex:1;min-width:200px"></select>
+            <img id="aCoverPrev" alt="" style="width:64px;height:36px;object-fit:cover;
+                 border-radius:6px;border:1px solid var(--border);display:none">
+          </div>
+          <div style="font-size:.72rem;color:var(--muted);margin-top:4px">
+            تصویری که در فهرست مجله و بالای مقاله دیده می‌شود</div>
+        </div>
+
+        <div class="field"><label>متن کامل</label>
+          <textarea id="aContent" rows="10"></textarea>
+        </div>
+
+        <!-- ── نوار افزودن رسانه ──
+             سه دکمه که نحو درست را در محل مکان‌نما می‌گذارند.
+             هدف: مدیر لازم نباشد نحو را حفظ کند. -->
+        <div style="background:var(--bg2,#F7F4EE);border:1px solid var(--border);
+                    border-radius:10px;padding:12px 14px;margin:-6px 0 14px">
+          <div style="font-size:.78rem;font-weight:700;margin-bottom:9px">
+            افزودن به متن
+          </div>
+          <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center">
+            <button type="button" class="btn btn-outline" style="padding:7px 13px;font-size:.78rem"
+              onclick="document.getElementById('aFile').click()">آپلود تصویر</button>
+            <input type="file" id="aFile" accept="image/jpeg,image/png,image/webp,image/gif"
+                   style="display:none" onchange="uploadArticleImage(this)">
+
+            <button type="button" class="btn btn-outline" style="padding:7px 13px;font-size:.78rem"
+              onclick="insertPickedImage()">تصویر موجود</button>
+            <select id="aPick" style="max-width:190px;font-size:.78rem"></select>
+
+            <button type="button" class="btn btn-outline" style="padding:7px 13px;font-size:.78rem"
+              onclick="insertAparat()">ویدیوی آپارات</button>
+
+            <button type="button" class="btn btn-outline" style="padding:7px 13px;font-size:.78rem"
+              onclick="insertQuote()">نقل‌قول</button>
+          </div>
+          <div id="aUpMsg" style="font-size:.74rem;color:var(--muted);margin-top:8px"></div>
+        </div>
+
         <button class="btn" onclick="publish()" id="artSaveBtn">انتشار مقاله</button>
         <button class="btn btn-outline" onclick="cancelEditArticle()" id="artCancelBtn"
           style="margin-right:8px;display:none">انصراف</button>
@@ -1256,6 +1296,10 @@ async function safeGet(url, perm, fallback) {
 }
 
 async function loadAll() {
+  /* فهرست تصاویر — بدون await، چون کشوی رسانه برای دیدن داشبورد
+     لازم نیست و نباید بارگذاری پنل را کند کند. */
+  loadMedia().catch(() => {});
+
   const [o, t, a, h, c] = await Promise.all([
     safeGet('/api/orders', 'orders.view', { total: 0, orders: [] }),
     safeGet('/api/tickets', 'tickets.view', { tickets: [] }),
@@ -1464,6 +1508,8 @@ function editArticle(id) {
   document.getElementById('aCat').value = a.category || 'guide';
   document.getElementById('aExcerpt').value = a.excerpt || '';
   document.getElementById('aContent').value = a.content || '';
+  const cov = document.getElementById('aCover');
+  if (cov) { cov.value = a.cover_image || ''; previewCover(); }
   document.getElementById('artFormTitle').textContent = 'ویرایش مقاله';
   document.getElementById('artSaveBtn').textContent = 'ذخیره تغییرات';
   document.getElementById('artCancelBtn').style.display = 'inline-block';
@@ -1478,10 +1524,151 @@ function cancelEditArticle() {
   document.getElementById('artCancelBtn').style.display = 'none';
 }
 
+/* ══════════════════════════════════════════
+   رسانه مقاله
+   ══════════════════════════════════════════
+   سه دکمه که نحو درست را در محل مکان‌نما می‌گذارند. هدف این است
+   که مدیر لازم نباشد `[عکس: ...]` را حفظ کند — فقط دکمه بزند. */
+
+let _media = { uploaded: [], stock: [], max_mb: 3 };
+
+/** فهرست تصاویر را از سرور می‌گیرد و کشوها را پر می‌کند */
+async function loadMedia() {
+  if (!may('content.write')) return;
+  try {
+    const d = await fetch('/api/admin/media', { headers: H() }).then(r => r.json());
+    _media = d;
+  } catch { return; }
+
+  const opt = x => `<option value="${esc(x.url)}">${esc(x.name)}</option>`;
+  const group = (label, arr) =>
+    arr.length ? `<optgroup label="${label}">${arr.map(opt).join('')}</optgroup>` : '';
+
+  // کشوی کاور
+  const cov = document.getElementById('aCover');
+  if (cov) {
+    const cur = cov.value;
+    cov.innerHTML = group('آپلودشده', _media.uploaded) + group('تصاویر سایت', _media.stock);
+    if (cur) cov.value = cur;
+    cov.onchange = previewCover;
+    previewCover();
+  }
+
+  // کشوی درج در متن
+  const pick = document.getElementById('aPick');
+  if (pick) {
+    pick.innerHTML = group('آپلودشده', _media.uploaded) + group('تصاویر سایت', _media.stock);
+  }
+}
+
+function previewCover() {
+  const cov = document.getElementById('aCover');
+  const img = document.getElementById('aCoverPrev');
+  if (!cov || !img) return;
+  if (cov.value) { img.src = cov.value; img.style.display = 'block'; }
+  else img.style.display = 'none';
+}
+
+/**
+ * متن را در محل مکان‌نما درج می‌کند.
+ *
+ * چرا مکان‌نما و نه انتهای متن: مدیری که وسط مقاله است و تصویر
+ * می‌خواهد، نباید مجبور شود آن را از انتها به وسط بکشد.
+ */
+function insertAtCursor(text) {
+  const ta = document.getElementById('aContent');
+  if (!ta) return;
+  const start = ta.selectionStart ?? ta.value.length;
+  const end = ta.selectionEnd ?? ta.value.length;
+  const before = ta.value.slice(0, start);
+  const after = ta.value.slice(end);
+  /* خط خالی دو طرف: رندر مقاله بلوک‌ها را با خط خالی جدا می‌کند.
+     بدون این، رسانه به پاراگراف قبلی می‌چسبد و تفسیر نمی‌شود. */
+  const pre = before && !before.endsWith('\n\n') ? (before.endsWith('\n') ? '\n' : '\n\n') : '';
+  const post = after && !after.startsWith('\n\n') ? (after.startsWith('\n') ? '\n' : '\n\n') : '\n';
+  ta.value = before + pre + text + post + after;
+  const pos = (before + pre + text).length;
+  ta.focus();
+  ta.setSelectionRange(pos, pos);
+}
+
+/** آپلود تصویر تازه */
+async function uploadArticleImage(input) {
+  const file = input.files && input.files[0];
+  input.value = '';               // تا انتخاب دوباره همان فایل کار کند
+  if (!file) return;
+
+  const msg = document.getElementById('aUpMsg');
+  const mb = (file.size / 1024 / 1024).toFixed(1);
+  if (file.size > (_media.max_mb || 3) * 1024 * 1024) {
+    msg.textContent = `حجم فایل ${mb} مگابایت است — حداکثر ${_media.max_mb} مگابایت.`;
+    return;
+  }
+
+  msg.textContent = 'در حال آپلود…';
+  try {
+    const r = await fetch('/api/admin/media', {
+      method: 'POST',
+      headers: {
+        ...H(),
+        'Content-Type': file.type || 'application/octet-stream',
+        // نام فارسی سرآیند را می‌شکند، پس کدگذاری می‌شود
+        'X-File-Name': encodeURIComponent(file.name)
+      },
+      body: file
+    });
+    const d = await r.json().catch(() => ({}));
+    if (!r.ok) { msg.textContent = d.error || 'آپلود ناموفق بود.'; return; }
+
+    msg.textContent = `«${d.name}» آپلود و در متن درج شد.`;
+    insertAtCursor(`[عکس: ${d.name} | ]`);
+    await loadMedia();
+    // تصویر تازه، گزینه پیش‌فرض کاور شود اگر کاوری انتخاب نشده
+    const cov = document.getElementById('aCover');
+    if (cov && !cov.value) { cov.value = d.url; previewCover(); }
+  } catch (e) {
+    msg.textContent = 'آپلود ناموفق بود: ' + e.message;
+  }
+}
+
+/** درج تصویری که از کشو انتخاب شده */
+function insertPickedImage() {
+  const pick = document.getElementById('aPick');
+  if (!pick || !pick.value) return toast('تصویری انتخاب نشده');
+  const name = pick.value.split('/').pop();
+  insertAtCursor(`[عکس: ${name} | ]`);
+  document.getElementById('aUpMsg').textContent = 'تصویر درج شد — توضیح را بعد از «|» بنویسید.';
+}
+
+/** درج ویدیوی آپارات */
+function insertAparat() {
+  const raw = prompt('نشانی ویدیوی آپارات یا شناسه آن را بچسبانید:\n\nمثال:\nhttps://www.aparat.com/v/abc123');
+  if (!raw) return;
+  /* همان قاعده سرور — نشانی کامل، کد جاسازی، یا فقط شناسه. */
+  const pats = [
+    /aparat\.com\/v\/([A-Za-z0-9]+)/i,
+    /aparat\.com\/video\/video\/embed\/videohash\/([A-Za-z0-9]+)/i,
+    /^([A-Za-z0-9]{5,20})$/
+  ];
+  let id = null;
+  for (const re of pats) { const m = raw.trim().match(re); if (m) { id = m[1]; break; } }
+  if (!id) return toast('نشانی آپارات شناخته نشد');
+  insertAtCursor(`[ویدیو: ${id} | ]`);
+  document.getElementById('aUpMsg').textContent = 'ویدیو درج شد — توضیح را بعد از «|» بنویسید.';
+}
+
+/** درج نقل‌قول برجسته */
+function insertQuote() {
+  const t = prompt('متن نقل‌قول:');
+  if (!t || !t.trim()) return;
+  insertAtCursor(`[نقل: ${t.trim()}]`);
+}
+
 async function publish() {
   const title = document.getElementById('aTitle').value.trim();
   if (!title) return toast('عنوان الزامی است');
 
+  const cov = document.getElementById('aCover');
   const body = {
     title,
     category: document.getElementById('aCat').value,
@@ -1489,6 +1676,7 @@ async function publish() {
     excerpt: document.getElementById('aExcerpt').value,
     content: document.getElementById('aContent').value
   };
+  if (cov && cov.value) body.cover_image = cov.value;
 
   const r = editingArticle
     ? await fetch('/api/articles/' + editingArticle, {
