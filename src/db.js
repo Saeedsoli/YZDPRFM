@@ -443,6 +443,28 @@ function initSchema() {
     db.exec('CREATE INDEX IF NOT EXISTS idx_products_search ON products(search_blob)');
   }
 
+  /* ── قیمت دلاری پایه ──
+     فروشگاه فرمولی برای قیمت‌گذاری دارد که به نرخ دلار وابسته
+     است. هدف نهایی: با تغییر نرخ ارز، قیمت تومانی همه محصولات
+     خودکار به‌روز شود.
+
+     این ستون **گام اول** است — فقط نگهداری عدد. فرمول و محاسبه
+     خودکار بعداً روی همین می‌نشیند.
+
+     ── چرا REAL و نه INTEGER ──
+     قیمت تومان عدد صحیح است چون ریال اعشار ندارد. ولی قیمت
+     دلاری اسانس معمولاً اعشاری است (۱۲.۵ دلار برای ۱۰ گرم).
+     گرد کردنش در این مرحله یعنی خطای انباشته در فرمول نهایی.
+
+     ── چرا NULL مجاز است ──
+     امروز هیچ محصولی قیمت دلاری ندارد. اگر پیش‌فرض صفر بگذاریم،
+     بعداً نمی‌شود فهمید «صفر یعنی رایگان» یا «هنوز وارد نشده».
+     NULL صریح می‌گوید «نامشخص». */
+  const vcols = db.prepare('PRAGMA table_info(variants)').all().map(c => c.name);
+  if (!vcols.includes('price_usd')) {
+    db.exec('ALTER TABLE variants ADD COLUMN price_usd REAL');
+  }
+
   const tcols = db.prepare('PRAGMA table_info(tickets)').all().map(c => c.name);
   if (!tcols.includes('reply')) db.exec('ALTER TABLE tickets ADD COLUMN reply TEXT');
   if (!tcols.includes('mobile')) db.exec('ALTER TABLE tickets ADD COLUMN mobile TEXT');

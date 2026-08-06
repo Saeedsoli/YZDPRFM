@@ -2652,7 +2652,11 @@ async function showLowStock() {
 }
 
 async function editProduct(slug) {
-  const r = await fetch('/api/products/' + slug);
+  /* مسیر مدیریتی، نه عمومی: قیمت دلاری پایه محاسبه است و در
+     پاسخ عمومی نمی‌آید — وگرنه هر بازدیدکننده‌ای می‌توانست
+     حاشیه سود را حساب کند. */
+  const r = await fetch('/api/admin/products/' + encodeURIComponent(slug),
+                        { headers: H() });
   currentProduct = await r.json();
   const p = currentProduct;
   document.getElementById('pEditCard').classList.remove('hidden');
@@ -2688,12 +2692,18 @@ function renderVariants() {
   const total = p.variants.reduce((s, v) => s + v.stock, 0);
 
   document.getElementById('pVariants').innerHTML = `
-    <tr><th>نوع</th><th>حجم</th><th>SKU</th><th>قیمت (تومان)</th>
+    <tr><th>نوع</th><th>حجم</th><th>SKU</th>
+        <th>قیمت پایه ($)</th><th>قیمت (تومان)</th>
         <th style="text-align:center">موجودی</th><th></th></tr>
     ${p.variants.map(v => `<tr>
       <td style="font-size:.82rem">${v.type_label || v.type}</td>
       <td style="white-space:nowrap">${toFa(v.volume_ml)} میل</td>
       <td dir="ltr" style="font-size:.72rem;color:var(--muted)">${v.sku}</td>
+      <td><input id="usd_${v.sku}" type="number" step="any" min="0"
+        value="${v.price_usd ?? ''}" placeholder="—"
+        title="قیمت دلاری پایه — مبنای محاسبه خودکار قیمت تومانی"
+        style="width:92px;padding:7px;border:1px solid var(--border);border-radius:7px;
+        font-family:var(--font);direction:ltr;text-align:left"></td>
       <td><input id="pr_${v.sku}" type="number" value="${v.price_toman}"
         style="width:118px;padding:7px;border:1px solid var(--border);border-radius:7px;
         font-family:var(--font);direction:ltr;text-align:left"></td>
@@ -2778,9 +2788,15 @@ async function saveStockOnly(sku) {
 async function saveVariant(sku) {
   const price = document.getElementById('pr_' + sku).value;
   const stock = document.getElementById('st_' + sku).value;
+  /* رشته خالی عمداً همان‌طور فرستاده می‌شود — سرور آن را به NULL
+     تبدیل می‌کند یعنی «نامشخص». اگر اینجا به صفر تبدیلش کنیم،
+     بعداً نمی‌شود «رایگان» را از «وارد نشده» تشخیص داد. */
+  const usdEl = document.getElementById('usd_' + sku);
+  const usd = usdEl ? usdEl.value.trim() : undefined;
+
   const r = await fetch('/api/admin/variants/' + encodeURIComponent(sku), {
     method: 'PUT', headers: H(),
-    body: JSON.stringify({ price_toman: price, stock })
+    body: JSON.stringify({ price_toman: price, stock, price_usd: usd })
   });
   const d = await r.json();
   toast(r.ok ? 'ذخیره شد' : d.error);

@@ -1409,7 +1409,7 @@ const server = http.createServer(async (req, res) => {
        بازسازی ایندکس → `src/routes/admin-catalog.js` */
     if (await routeAdminCatalog.handle({
       method, pathname, parsed, req,
-      sendJSON, can, parseBody, logAudit, appLog, db,
+      sendJSON, can, who, parseBody, logAudit, appLog, db,
       parseProduct, attachVariants, notifyStockWatchers,
       releaseStaleOrders, buildSearchIndex, buildNotesIndex
     })) return;

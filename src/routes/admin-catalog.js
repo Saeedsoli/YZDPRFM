@@ -51,6 +51,7 @@
  * @param {Function} ctx.appLog
  * @param {object}   ctx.db
  * @param {Function} ctx.parseProduct
+ * @param {object}   ctx.who              کارمند واردشده (برای بررسی نرم مجوز)
  * @param {Function} ctx.attachVariants
  * @param {Function} ctx.notifyStockWatchers
  * @param {Function} ctx.releaseStaleOrders
@@ -62,7 +63,7 @@ async function handle(ctx) {
   const {
     method, pathname, parsed, req,
     can, parseBody, logAudit, appLog, db,
-    parseProduct, attachVariants, notifyStockWatchers,
+    who, parseProduct, attachVariants, notifyStockWatchers,
     releaseStaleOrders, buildSearchIndex, buildNotesIndex
   } = ctx;
 
@@ -103,14 +104,31 @@ async function handle(ctx) {
     const wantsPrice = b.price_toman != null && parseInt(b.price_toman) !== v.price_toman;
     const wantsStock = b.stock != null && parseInt(b.stock) !== v.stock;
 
-    if (!wantsPrice && !wantsStock) {
+    /* ── قیمت دلاری ──
+       گام اول از قیمت‌گذاری خودکار: فعلاً فقط ذخیره می‌شود.
+       فرمول (وزن × نرخ دلار + هزینه‌ها) بعداً روی همین می‌نشیند.
+
+       رشته خالی یعنی «پاک کن» و به NULL تبدیل می‌شود — نه صفر.
+       صفر یعنی «رایگان» که معنای دیگری است.
+
+       مقایسه با `!==` روی عدد اعشاری امن است چون هر دو طرف از
+       یک مسیر تبدیل می‌شوند. */
+    const usdRaw = b.price_usd;
+    const usdNew = (usdRaw === '' || usdRaw === null) ? null
+                 : (usdRaw === undefined ? undefined : parseFloat(usdRaw));
+    const wantsUsd = usdNew !== undefined && usdNew !== v.price_usd;
+
+    if (!wantsPrice && !wantsStock && !wantsUsd) {
       if (!can('products.view')) return true;
       return sendJSON(200, {
         message: 'تغییری اعمال نشد.',
-        sku, price_toman: v.price_toman, stock: v.stock, notified: 0
+        sku, price_toman: v.price_toman, price_usd: v.price_usd,
+        stock: v.stock, notified: 0
       });
     }
-    if (wantsPrice && !can('products.price')) return true;
+    /* قیمت دلاری همان حساسیت قیمت تومانی را دارد — پایه محاسبه
+       قیمت نهایی است، پس انباردار نباید بتواند عوضش کند. */
+    if ((wantsPrice || wantsUsd) && !can('products.price')) return true;
     if (wantsStock && !can('products.stock')) return true;
 
     const price = b.price_toman != null ? parseInt(b.price_toman) : v.price_toman;
@@ -118,14 +136,32 @@ async function handle(ctx) {
     if (!Number.isInteger(price) || price < 0) return sendJSON(400, { error: 'قیمت نامعتبر است.' });
     if (!Number.isInteger(stock) || stock < 0) return sendJSON(400, { error: 'موجودی نامعتبر است.' });
 
-    db.prepare('UPDATE variants SET price_toman=?, stock=? WHERE sku=?').run(price, stock, sku);
+    const usd = wantsUsd ? usdNew : v.price_usd;
+    if (usd !== null && usd !== undefined) {
+      if (!Number.isFinite(usd) || usd < 0) {
+        return sendJSON(400, { error: 'قیمت دلاری نامعتبر است.' });
+      }
+      /* سقف محافظتی: گران‌ترین اسانس جهان زیر ۱۰٬۰۰۰ دلار در
+         کیلوست. عدد بزرگ‌تر یعنی اشتباه تایپی — و چون قرار است
+         پایه محاسبه خودکار شود، اشتباه اینجا در قیمت هزاران
+         محصول تکثیر می‌شود. */
+      if (usd > 100000) {
+        return sendJSON(400, { error: 'قیمت دلاری بیش از حد بزرگ است.' });
+      }
+    }
+
+    db.prepare('UPDATE variants SET price_toman=?, stock=?, price_usd=? WHERE sku=?')
+      .run(price, stock, usd ?? null, sku);
     appLog('INFO', 'admin', 'ویرایش کالا', {
-      sku, price_from: v.price_toman, price_to: price, stock_from: v.stock, stock_to: stock
+      sku, price_from: v.price_toman, price_to: price,
+      stock_from: v.stock, stock_to: stock,
+      ...(wantsUsd ? { usd_from: v.price_usd, usd_to: usd } : {})
     });
-    logAudit(wantsPrice ? 'products.price' : 'products.stock', {
+    logAudit((wantsPrice || wantsUsd) ? 'products.price' : 'products.stock', {
       target: sku,
       detail: {
         ...(wantsPrice ? { price: [v.price_toman, price] } : {}),
+        ...(wantsUsd ? { usd: [v.price_usd, usd] } : {}),
         ...(wantsStock ? { stock: [v.stock, stock] } : {})
       }
     });
@@ -139,8 +175,39 @@ async function handle(ctx) {
       message: notified
         ? `کالا به‌روزرسانی شد و به ${notified} نفر اطلاع داده شد.`
         : 'کالا به‌روزرسانی شد.',
-      sku, price_toman: price, stock, notified
+      sku, price_toman: price, price_usd: usd ?? null, stock, notified
     });
+  }
+
+  /* ── خواندن محصول برای پنل ──
+     چرا مسیر جدا از `/api/products/:slug` عمومی:
+
+     قیمت دلاری **پایه محاسبه** است، نه اطلاعات محصول. اگر در
+     پاسخ عمومی بیاید، هر بازدیدکننده‌ای می‌تواند حاشیه سود
+     فروشگاه را حساب کند: قیمت تومانی تقسیم بر قیمت دلاری ضرب
+     در نرخ روز.
+
+     `attachVariants` فهرست سفید دارد و `price_usd` را نمی‌دهد —
+     همان‌طور که باید. پس پنل مسیر خودش را می‌خواهد. */
+  if (method === 'GET' && /^\/api\/admin\/products\/[^/]+$/.test(pathname)) {
+    if (!can('products.view')) return true;
+    const key = decodeURIComponent(pathname.replace('/api/admin/products/', ''));
+    const row = db.prepare('SELECT * FROM products WHERE id=? OR slug=?').get(key, key);
+    if (!row) return sendJSON(404, { error: 'محصول یافت نشد' });
+
+    const product = attachVariants(parseProduct(row));
+    /* قیمت دلاری فقط برای کسی که مجوز قیمت دارد. انباردار
+       محصول را می‌بیند ولی پایه قیمت‌گذاری را نه.
+
+       `can()` صدا زده نمی‌شود چون خودش ۴۰۳ می‌فرستد و اینجا
+       نبودِ مجوز خطا نیست — فقط یعنی این میدان را نبیند. */
+    if (who && who.permissions.includes('products.price')) {
+      const usd = db.prepare(
+        'SELECT sku, price_usd FROM variants WHERE product_id=?').all(row.id);
+      const map = Object.fromEntries(usd.map(x => [x.sku, x.price_usd]));
+      product.variants.forEach(v => { v.price_usd = map[v.sku] ?? null; });
+    }
+    return sendJSON(200, product);
   }
 
   // ویرایش گروهی متغیرهای یک محصول
