@@ -363,6 +363,27 @@
            font-size: .79rem; font-weight: 600; cursor: pointer; transition: all var(--t-fast); }
   .fchip:hover { border-color: var(--gold); }
   .fchip.on { background: var(--gold); color: var(--obsidian); border-color: var(--gold); font-weight: 800; }
+  .fchip:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
+
+  /* ── کلید «فقط موجودها» ──
+     کنار مرتب‌سازی می‌نشیند، نه در نوار اسکرولی فیلترها.
+
+     رنگ سبز عمدی است، نه طلایی: طلایی در این سایت یعنی «دسته
+     انتخاب‌شده»، و این از جنس دیگری است — وضعیت موجودی. کاربر
+     پیش از خواندن متن، تفاوت را حس می‌کند. */
+  .stock-toggle {
+    background: transparent; border: 1px solid var(--border);
+    color: var(--text); border-radius: 20px;
+    padding: 7px 14px; font: inherit; font-size: .78rem; font-weight: 700;
+    cursor: pointer; white-space: nowrap;
+    transition: all var(--t-fast);
+  }
+  .stock-toggle:hover { border-color: #3F7D4E; color: #3F7D4E; }
+  .stock-toggle:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
+  .stock-toggle[aria-pressed="true"] {
+    background: #3F7D4E; border-color: #3F7D4E; color: #FFF;
+  }
+  .stock-toggle[aria-pressed="true"]::before { content: '✓ '; }
 
   /* ── نوار نُت بویایی ──
      مشتری عطر با نُت فکر می‌کند، نه با خانواده بویایی. این نوار
@@ -630,6 +651,13 @@
     <h2 id="catTitle">کاتالوگ عطرها</h2>
     <div class="cat-tools">
       <span class="count" id="catCount"></span>
+      <!-- ── فیلتر «فقط موجودها» ──
+           جای اولش داخل نوار جنسیت بود؛ آزمون مرورگر نشان داد
+           آنجا در x=-108 می‌افتد — کاملاً بیرون از دید، چون نوار
+           اسکرول افقی دارد. مهم‌ترین فیلتر سایت نامرئی بود.
+           اینجا کنار مرتب‌سازی همیشه دیده می‌شود. -->
+      <button type="button" class="stock-toggle" id="stockChip"
+              aria-pressed="false">فقط موجودها</button>
       <label class="sr-only" for="sortSel">ترتیب نمایش</label>
       <select class="sort-sel" id="sortSel" aria-label="ترتیب نمایش">
         <option value="">مرتب‌سازی: پیش‌فرض</option>
@@ -658,7 +686,7 @@
 document.getElementById('hdr').innerHTML = renderHeader('home');
 document.getElementById('ftr').innerHTML = renderFooter();
 
-let state = { q: '', gender: '', family: '', brand: '', notes: [], sort: '', page: 1, limit: 24 };
+let state = { q: '', gender: '', family: '', brand: '', notes: [], sort: '', inStock: false, page: 1, limit: 24 };
 let timer = null;
 let familyNames = {};   // slug → نام فارسی، برای برچسب فیلتر فعال
 
@@ -676,6 +704,7 @@ function readURL() {
   state.notes  = (u.get('note') || '').split(',')
                    .map(x => x.trim()).filter(Boolean).slice(0, 4);
   state.sort   = u.get('sort')   || '';
+  state.inStock = u.get('in_stock') === '1';
   state.page   = Math.max(1, parseInt(u.get('page')) || 1);
 
   const qEl = document.getElementById('q');
@@ -694,6 +723,7 @@ function writeURL(push) {
   if (state.brand)  u.set('brand', state.brand);
   if (state.notes.length) u.set('note', state.notes.join(','));
   if (state.sort)   u.set('sort', state.sort);
+  if (state.inStock) u.set('in_stock', '1');
   if (state.page > 1) u.set('page', state.page);
   const url = u.toString() ? '/?' + u : '/';
   history[push ? 'pushState' : 'replaceState'](null, '', url);
@@ -705,6 +735,10 @@ function syncChips() {
     c.classList.toggle('on', (c.dataset.g || '') === state.gender));
   document.querySelectorAll('#familyBar .fchip').forEach(c =>
     c.classList.toggle('on', (c.dataset.f || '') === state.family));
+  /* ظاهر از `aria-pressed` می‌آید نه از کلاس جدا — یک منبع
+     حقیقت، پس ظاهر و وضعیت دسترس‌پذیری نمی‌توانند واگرا شوند. */
+  const sc = document.getElementById('stockChip');
+  if (sc) sc.setAttribute('aria-pressed', state.inStock ? 'true' : 'false');
   syncNoteChips();
 }
 
@@ -934,6 +968,7 @@ async function loadProducts() {
   if (state.brand)  p.set('brand', state.brand);
   if (state.notes.length) p.set('note', state.notes.join(','));
   if (state.sort)   p.set('sort', state.sort);
+  if (state.inStock) p.set('in_stock', '1');
 
   let d;
   try {
@@ -1164,11 +1199,28 @@ window.addEventListener('scroll', () => {
   if (Math.abs(window.scrollY - suggScrollY) > 40) closeSugg();
 }, { passive: true });
 
-document.querySelectorAll('#genderBar .fchip').forEach(c =>
+/* `[data-g]` عمدی است: چیپ «فقط موجودها» هم داخل همین نوار است
+   ولی `data-g` ندارد. بدون این قید، کلیک رویش `state.gender` را
+   `undefined` می‌کرد و فیلتر جنسیت بی‌صدا می‌شکست. */
+document.querySelectorAll('#genderBar .fchip[data-g]').forEach(c =>
   c.onclick = () => {
     state.gender = c.dataset.g; state.page = 1;
     syncChips(); loadProducts();
   });
+
+/* ── کلید «فقط موجودها» ──
+   `<button>` واقعی است، پس Enter و Space را مرورگر خودش
+   می‌دهد — نیازی به مدیریت دستی صفحه‌کلید نیست. */
+(function () {
+  const sc = document.getElementById('stockChip');
+  if (!sc) return;
+  sc.onclick = () => {
+    state.inStock = !state.inStock;
+    state.page = 1;
+    syncChips();
+    loadProducts();
+  };
+})();
 
 document.getElementById('sortSel').onchange = e => {
   state.sort = e.target.value; state.page = 1; loadProducts();

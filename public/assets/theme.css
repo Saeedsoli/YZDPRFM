@@ -362,6 +362,33 @@ h1, h2, h3, h4 { line-height: var(--lh-tight); letter-spacing: -.01em; }
 }
 .product-card:hover .card-peek { transform: none; }
 @media (pointer: coarse) { .card-peek, .card-badge { display: none; } }
+
+/* ═══ کالای ناموجود ═══
+   `card-peek` و `card-badge` روی لمسی پنهان می‌شوند (چون hover
+   ندارند)، پس نشان ناموجودی **نباید** به آن‌ها تکیه کند —
+   وگرنه روی موبایل که بیشتر ترافیک است، دیده نمی‌شود.
+
+   این برچسب همیشه پیداست. */
+.card-out {
+  position: absolute; top: 10px; left: 10px; z-index: 4;
+  background: rgba(90,90,90,.94); backdrop-filter: blur(8px);
+  color: #FFF; font-size: .66rem; font-weight: 700;
+  padding: 4px 11px; border-radius: var(--r-full);
+  letter-spacing: .2px;
+}
+/* تصویر کم‌رنگ — پیام بصری پیش از خواندن هر متنی.
+   ‏grayscale کامل نه: محصول باید هنوز جذاب بماند تا کاربر
+   «خبرم کن» بزند. */
+.product-card.is-out .img-wrap img {
+  filter: grayscale(.7) opacity(.62);
+}
+.product-card.is-out .price { color: var(--muted); }
+.product-card.is-out:hover { transform: translateY(-2px); }
+
+.card-go        { font-size: .74rem; color: var(--gold); font-weight: 700; }
+/* رنگ متفاوت عمدی: طلایی یعنی «بخر»، آبی خاکستری یعنی «منتظر بمان».
+   کاربر پیش از خواندن متن، تفاوت را حس می‌کند. */
+.card-go-notify { font-size: .74rem; color: #5A7FA8; font-weight: 700; }
 .product-card .img-wrap::after {
   content: ''; position: absolute; inset: 0;
   background: linear-gradient(to top, rgba(18,18,18,.07), transparent 42%);

@@ -108,7 +108,14 @@ function build(db, appLog) {
       SELECT p.id, p.slug, p.name_fa, p.name_en, p.brand_fa, p.gender,
              p.family_fa, p.family_slug, p.image_url,
              SUM(i.quantity) AS sold,
-             (SELECT MIN(price_toman) FROM variants v WHERE v.product_id = p.id) AS min_price
+             (SELECT MIN(price_toman) FROM variants v WHERE v.product_id = p.id) AS min_price,
+             /* ویترین هم باید وضعیت موجودی را بگوید.
+                بدون این، کارت‌های صفحه اصلی «مشاهده و خرید»
+                می‌نوشتند در حالی که کالا موجود نبود — همان
+                یافته‌ای که ممیزی جعبه‌سیاه در کاتالوگ گرفت،
+                اینجا از قلم افتاده بود. */
+             EXISTS (SELECT 1 FROM variants v2
+                     WHERE v2.product_id = p.id AND v2.stock > 0) AS in_stock
       FROM order_items i
       JOIN orders   o ON o.order_id = i.order_id
       JOIN variants v ON v.sku      = i.sku
@@ -127,7 +134,14 @@ function build(db, appLog) {
       SELECT p.id, p.slug, p.name_fa, p.name_en, p.brand_fa, p.gender,
              p.family_fa, p.family_slug, p.image_url,
              COUNT(*) AS saves,
-             (SELECT MIN(price_toman) FROM variants v WHERE v.product_id = p.id) AS min_price
+             (SELECT MIN(price_toman) FROM variants v WHERE v.product_id = p.id) AS min_price,
+             /* ویترین هم باید وضعیت موجودی را بگوید.
+                بدون این، کارت‌های صفحه اصلی «مشاهده و خرید»
+                می‌نوشتند در حالی که کالا موجود نبود — همان
+                یافته‌ای که ممیزی جعبه‌سیاه در کاتالوگ گرفت،
+                اینجا از قلم افتاده بود. */
+             EXISTS (SELECT 1 FROM variants v2
+                     WHERE v2.product_id = p.id AND v2.stock > 0) AS in_stock
       FROM wishlist w
       JOIN products p ON p.id = w.product_id
       GROUP BY p.id
@@ -142,7 +156,14 @@ function build(db, appLog) {
       SELECT p.id, p.slug, p.name_fa, p.name_en, p.brand_fa, p.gender,
              p.family_fa, p.family_slug, p.image_url,
              COUNT(DISTINCT e.visitor) AS viewers,
-             (SELECT MIN(price_toman) FROM variants v WHERE v.product_id = p.id) AS min_price
+             (SELECT MIN(price_toman) FROM variants v WHERE v.product_id = p.id) AS min_price,
+             /* ویترین هم باید وضعیت موجودی را بگوید.
+                بدون این، کارت‌های صفحه اصلی «مشاهده و خرید»
+                می‌نوشتند در حالی که کالا موجود نبود — همان
+                یافته‌ای که ممیزی جعبه‌سیاه در کاتالوگ گرفت،
+                اینجا از قلم افتاده بود. */
+             EXISTS (SELECT 1 FROM variants v2
+                     WHERE v2.product_id = p.id AND v2.stock > 0) AS in_stock
       FROM events e
       JOIN products p ON p.id = e.target
       WHERE e.kind = 'view'
@@ -180,7 +201,9 @@ function build(db, appLog) {
       )
       SELECT id, slug, name_fa, name_en, brand_fa, gender,
              family_fa, family_slug, image_url,
-             (SELECT MIN(price_toman) FROM variants v WHERE v.product_id = spread.id) AS min_price
+             (SELECT MIN(price_toman) FROM variants v WHERE v.product_id = spread.id) AS min_price,
+             EXISTS (SELECT 1 FROM variants v2
+                     WHERE v2.product_id = spread.id AND v2.stock > 0) AS in_stock
       FROM spread
       ORDER BY fam_rank, id
       LIMIT ?

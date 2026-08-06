@@ -304,13 +304,27 @@ function productCard(p) {
        </span>`
     : `<span class="price">از ${money(p.min_price)} <small>تومان</small></span>`;
 
+  /* ── نشان ناموجودی (ممیزی جعبه‌سیاه مرداد ۱۴۰۵) ──
+     پیش‌تر کارت هیچ نشانه‌ای از ناموجود بودن نداشت: «مشاهده و
+     خرید» می‌نوشت و قیمت نشان می‌داد. کاربر کلیک می‌کرد، به صفحه
+     محصول می‌رفت، و آنجا دکمه خاکستری می‌دید. با ۰٫۰۵٪ موجودی
+     این چند بار تکرار می‌شد تا برود.
+
+     `in_stock` از قبل در پاسخ API بود — فقط استفاده نمی‌شد.
+
+     سه نشانه همزمان: برچسب، تصویر کم‌رنگ، و دعوت به «خبرم کن»
+     به‌جای «مشاهده». صادقانه‌تر و کم‌هزینه‌تر از ناامیدی بعدی. */
+  const out = p.in_stock === false;
+
   return `
-  <a class="product-card fade-up" href="/perfume/${p.slug}" aria-label="${fullName(p)} — مشاهده جزئیات">
+  <a class="product-card fade-up${out ? ' is-out' : ''}" href="/perfume/${p.slug}"
+     aria-label="${fullName(p)} — ${out ? 'ناموجود، اطلاع از موجود شدن' : 'مشاهده جزئیات'}">
     <div class="img-wrap">
       <img src="${img}" alt="تصویر ${fullName(p)}" loading="lazy" width="300" height="300">
       ${genderLabel(p.gender) ? `<span class="card-badge">${genderLabel(p.gender)}</span>` : ''}
-      ${off > 0 ? `<span class="card-off"><bdi>${toFa(pct)}٪</bdi> تخفیف</span>` : ''}
-      <div class="card-peek">مشاهده و خرید</div>
+      ${out ? '<span class="card-out">ناموجود</span>' : ''}
+      ${off > 0 && !out ? `<span class="card-off"><bdi>${toFa(pct)}٪</bdi> تخفیف</span>` : ''}
+      <div class="card-peek">${out ? 'خبرم کن وقتی موجود شد' : 'مشاهده و خرید'}</div>
     </div>
     <div class="body">
       <div class="card-title">${fullName(p)} <span class="card-tag">«دست‌ساز»</span></div>
@@ -318,7 +332,9 @@ function productCard(p) {
       ${notes ? `<div class="card-notes">نُت‌های آغازین: ${notes}</div>` : ''}
       <div class="card-price-row">
         ${priceBlock}
-        <span style="font-size:.74rem;color:var(--gold);font-weight:700;">مشاهده ←</span>
+        ${out
+          ? '<span class="card-go-notify">خبرم کن ←</span>'
+          : '<span class="card-go">مشاهده ←</span>'}
       </div>
     </div>
   </a>`;

@@ -115,6 +115,8 @@ bash scripts/smoke_test.sh     # ۹۲ آزمون خودکار
 | `test_alerts.js` | ۳۹ اطلاع‌رسانی داخلی — مجوز، ساعت آرام، ضد سیل |
 | `test_article_media.js` | ۵۹ رسانه مقالات — امضای فایل، پیمایش مسیر، آپارات |
 | `test_audit_blackbox_fixes.js` | ۳۵ رفع ممیزی جعبه‌سیاه — نشت داده، محدودیت نرخ، سئو |
+| `test_stock_visibility.js` | ۴۳ نمایش موجودی — مرتب‌سازی، فیلتر، نشان کارت |
+| `test_stock_ui_browser.py` | ۲۲ رابط موجودی در مرورگر — دیده‌شدن واقعی برچسب |
 | `test_enamad_browser.py` | ۲۲ نشان در مرورگر واقعی — DOM، CLS، حالت قطعی |
 | `test_pwa.js` | ۵۳ پیکربندی PWA — manifest، آیکن، هدر سرویس‌ورکر |
 | `test_brand_names.js` | ۱۱ نگارش فارسی برندها |

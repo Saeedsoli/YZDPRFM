@@ -128,11 +128,35 @@ async function handle(ctx) {
     if (gender) { where.push('gender = @gender'); args.gender = gender.toUpperCase(); }
     if (brand)  { where.push('(brand_fa = @brand OR brand_en = @brand)'); args.brand = brand; }
 
+    /* ── فیلتر «فقط موجودها» (ممیزی جعبه‌سیاه مرداد ۱۴۰۵) ──
+       امروز فقط ۱ محصول از ۲۱۰۶ قابل خرید است. بدون این فیلتر،
+       کاربر باید تک‌تک کلیک کند تا چیزی پیدا کند که بشود خرید.
+
+       `EXISTS` به‌جای `JOIN` عمدی است: با JOIN اگر محصولی چند
+       واریانت موجود داشته باشد چند بار در نتیجه می‌آید و
+       صفحه‌بندی به هم می‌ریزد. */
+    if (parsed.query.in_stock === '1') {
+      where.push(`EXISTS (SELECT 1 FROM variants v
+                    WHERE v.product_id = products.id AND v.stock > 0)`);
+    }
+
     const clause = where.length ? 'WHERE ' + where.join(' AND ') : '';
 
     // مرتب‌سازی — فهرست سفید، هرگز رشته کاربر مستقیم در SQL نمی‌رود.
     // قیمت در جدول products نیست، پس از کمترین قیمت متغیرها گرفته می‌شود.
     const CHEAPEST = '(SELECT MIN(price_toman) FROM variants v WHERE v.product_id = products.id)';
+
+    /* ── موجودها اول (ممیزی جعبه‌سیاه مرداد ۱۴۰۵) ──
+       نخستین چیزی که کاربر می‌بیند باید قابل خرید باشد. با
+       ۰٫۰۵٪ موجودی، مرتب‌سازی بر پایه `id` یعنی صفحه اول پر است
+       از چیزهایی که نمی‌شود خرید.
+
+       `DESC` چون ۱ (موجود) باید پیش از ۰ بیاید.
+
+       این پیشوند به **همه** مرتب‌سازی‌ها اضافه می‌شود، نه فقط
+       پیش‌فرض: کسی که «ارزان‌ترین» را می‌خواهد، ارزان‌ترینِ
+       قابل خرید را می‌خواهد. */
+    const IN_STOCK = 'EXISTS (SELECT 1 FROM variants v2 WHERE v2.product_id = products.id AND v2.stock > 0) DESC';
     const SORTS = {
       default:    'id',
       price_asc:  `${CHEAPEST} ASC, id`,
@@ -140,7 +164,7 @@ async function handle(ctx) {
       name:       'name_fa COLLATE NOCASE, id',
       brand:      'brand_fa COLLATE NOCASE, name_fa COLLATE NOCASE'
     };
-    const orderBy = SORTS[parsed.query.sort] || SORTS.default;
+    const orderBy = `${IN_STOCK}, ${SORTS[parsed.query.sort] || SORTS.default}`;
 
     let total = db.prepare(`SELECT COUNT(*) c FROM products ${clause}`).get(args).c;
     let rows = db.prepare(
@@ -250,7 +274,13 @@ async function handle(ctx) {
     const scamps = activeCampaigns();
     const withPct = arr => (arr || []).map(x => ({
       ...x,
-      campaign_percent: scamps.length ? campaignPercentFor(x, scamps) : 0
+      campaign_percent: scamps.length ? campaignPercentFor(x, scamps) : 0,
+      /* SQLite برای `EXISTS` عدد ۰ یا ۱ می‌دهد، نه بولی. کارت
+         محصول `in_stock === false` را می‌سنجد و عدد ۰ از آن رد
+         می‌شد — یعنی همه‌چیز «موجود» به نظر می‌رسید.
+         `/api/products` این تبدیل را در `attachVariants` انجام
+         می‌دهد؛ ویترین مسیر دیگری دارد و باید صریح باشد. */
+      in_stock: !!x.in_stock
     }));
 
     return sendJSON(200, {
