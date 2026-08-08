@@ -119,6 +119,8 @@ bash scripts/smoke_test.sh     # ۹۲ آزمون خودکار
 | `test_stock_ui_browser.py` | ۲۲ رابط موجودی در مرورگر — دیده‌شدن واقعی برچسب |
 | `test_price_usd.js` | ۳۸ قیمت دلاری پایه — NULL/صفر، اعشار، مرز دسترسی |
 | `test_price_usd_browser.py` | ۸ فیلد قیمت دلاری در پنل — ذخیره واقعی |
+| `test_exports_browser.py` | ۱۲ دانلود خروجی از پنل — کلیک واقعی، BOM، بازه |
+| `make_samples.js` | ساخت نمونه خروجی‌ها در `docs/samples/` |
 | `test_enamad_browser.py` | ۲۲ نشان در مرورگر واقعی — DOM، CLS، حالت قطعی |
 | `test_pwa.js` | ۵۳ پیکربندی PWA — manifest، آیکن، هدر سرویس‌ورکر |
 | `test_brand_names.js` | ۱۱ نگارش فارسی برندها |
@@ -239,6 +241,7 @@ bash scripts/smoke_test.sh     # ۹۲ آزمون خودکار
 | `INTERNAL_ALERTS.md` | **خبر به کارکنان** — شش رویداد، ساعت آرام، ضد سیل |
 | `ARTICLE_MEDIA.md` | **رسانه مقالات** — تصویر، ویدیو، سه لایه محافظ آپلود |
 | `PRICING_USD.md` | **قیمت‌گذاری دلاری** — گام اول، پرسش‌های باز فرمول |
+| `samples/README.md` | **نمونه خروجی‌ها** — فاکتور، برچسب، CSV با توضیح هرکدام |
 | `NODE_VERSION.md` | **نسخه Node** — ارتقا به ۲۲ LTS، نگهبان هم‌راستایی |
 | `SERVER_MODULARIZATION.md` | **تفکیک server.js** — الگو، ترتیب، دو باگ کشف‌شده |
 | `AUDIT_INDEPENDENT.md` | **ممیزی مستقل** — نشت هش رمز، محدودیت نرخ، خطای بلعیده‌شده |

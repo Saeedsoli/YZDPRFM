@@ -397,6 +397,10 @@
             <button class="rng-btn on" data-d="7"  onclick="loadReports(7,this)">۷ روز</button>
             <button class="rng-btn"    data-d="30" onclick="loadReports(30,this)">۳۰ روز</button>
             <button class="rng-btn"    data-d="90" onclick="loadReports(90,this)">۹۰ روز</button>
+            <!-- حسابدار برای بستن دفتر ماهانه باید عددها را در
+                 اکسل داشته باشد، نه فقط روی صفحه. -->
+            <button class="rng-btn" onclick="downloadReport()"
+                    title="دانلود گزارش همین بازه به صورت CSV">دانلود CSV</button>
           </div>
         </div>
         <div id="repStats" class="stats" style="margin-top:16px"></div>
@@ -1840,6 +1844,32 @@ async function saveShopSettings() {
 
 /* ── گزارش فروش ── */
 let repDays = 7;
+
+/* دانلود گزارش همان بازه‌ای که روی صفحه دیده می‌شود.
+   توکن در سرآیند لازم است، پس نمی‌شود صرفاً لینک گذاشت —
+   فایل با fetch گرفته و از حافظه ذخیره می‌شود. */
+async function downloadReport() {
+  if (!may('reports.sales')) return toast('دسترسی ندارید');
+  toast('در حال آماده‌سازی…');
+  try {
+    const r = await fetch('/api/admin/reports/csv?days=' + repDays, { headers: H() });
+    if (!r.ok) { toast('خطا در دریافت گزارش'); return; }
+    const blob = await r.blob();
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `yazd-report-${repDays}d.csv`;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    /* آزادسازی حافظه — بدون این، هر دانلود چند صد کیلوبایت
+       در حافظه مرورگر می‌ماند تا بسته شدن تب. */
+    setTimeout(() => URL.revokeObjectURL(url), 1000);
+    toast('گزارش دانلود شد');
+  } catch (e) {
+    toast('خطا: ' + e.message);
+  }
+}
 
 async function loadReports(days, btn) {
   if (!may('reports.sales')) return;

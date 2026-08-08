@@ -398,6 +398,81 @@ async function handle(ctx) {
     return sendJSON(200, reports.full(days));
   }
 
+  /* ── خروجی گزارش فروش ──
+     گزارش تا امروز فقط در پنل دیده می‌شد. حسابدار برای بستن
+     دفتر ماهانه باید عددها را دستی رونویسی می‌کرد — کاری که
+     پرخطاست و انجام نمی‌شود.
+
+     ── چرا چند جدول در یک فایل ──
+     CSV استاندارد یک جدول است. ولی گزارش فروش شش نمای مختلف
+     دارد (روزانه، محصول، برند، استان، کوپن، مشتری) و شش فایل
+     جدا یعنی شش بار دانلود. اکسل با سطر خالی و عنوان، بلوک‌ها
+     را جدا نشان می‌دهد و همه در یک برگه می‌مانند. */
+  if (method === 'GET' && pathname === '/api/admin/reports/csv') {
+    if (!can('reports.sales')) return true;
+    const days = Math.min(365, Math.max(1, parseInt(parsed.query.days) || 30));
+    const rep = reports.full(days);
+
+    /* BOM لازم است وگرنه اکسل فارسی را «ØªÙˆÙ…Ø§Ù†» نشان می‌دهد.
+       این را یک بار در CSV سفارش‌ها یاد گرفتیم. */
+    const out = ['\uFEFF'];
+    const esc = v => {
+      const s = String(v ?? '');
+      return /[",\n]/.test(s) ? `"${s.replace(/"/g, '""')}"` : s;
+    };
+    const block = (title, headers, rows) => {
+      out.push(`\n${title}\n`);
+      out.push(headers.join(',') + '\n');
+      rows.forEach(r => out.push(r.map(esc).join(',') + '\n'));
+    };
+
+    const s = rep.summary;
+    block(`گزارش فروش ${days} روز اخیر`,
+      ['شاخص', 'مقدار'],
+      [
+        ['تعداد سفارش', s.orders],
+        ['درآمد (تومان)', s.revenue],
+        ['تخفیف‌ها (تومان)', s.discounts],
+        ['هزینه ارسال (تومان)', s.shipping],
+        ['میانگین سفارش (تومان)', s.avg_order],
+        ['تعداد کالای فروخته', s.units],
+        ['رشد سفارش (٪)', s.growth?.orders ?? 0],
+        ['رشد درآمد (٪)', s.growth?.revenue ?? 0]
+      ]);
+
+    block('فروش روزانه',
+      ['تاریخ', 'سفارش', 'درآمد'],
+      (rep.daily || []).map(d => [d.d, d.orders, d.revenue]));
+
+    /* نام میدان‌ها از پاسخ واقعی گرفته شده، نه حدس: `d` نه
+       `day`، و `name_fa`/`brand_fa` نه `name`. حدس اولیه سه
+       ستون خالی می‌داد. */
+    block('پرفروش‌ترین محصولات',
+      ['برند', 'محصول', 'تعداد', 'سفارش', 'درآمد'],
+      (rep.top_products || []).map(p =>
+        [p.brand_fa, p.name_fa, p.units, p.orders, p.revenue]));
+
+    block('فروش به تفکیک برند',
+      ['برند', 'تعداد', 'درآمد'],
+      (rep.by_brand || []).map(b => [b.brand, b.units, b.revenue]));
+
+    block('فروش به تفکیک استان',
+      ['استان', 'سفارش', 'درآمد'],
+      (rep.by_province || []).map(p => [p.province, p.orders, p.revenue]));
+
+    block('کدهای تخفیف',
+      ['کد', 'دفعات استفاده', 'تخفیف داده‌شده', 'درآمد حاصل'],
+      (rep.coupons || []).map(c => [c.code, c.uses, c.given, c.revenue]));
+
+    const stamp = new Date().toISOString().slice(0, 10);
+    res.writeHead(200, {
+      'Content-Type': 'text/csv; charset=utf-8',
+      'Content-Disposition': `attachment; filename="yazd-report-${days}d-${stamp}.csv"`
+    });
+    res.end(out.join(''));
+    return true;
+  }
+
   if (method === 'GET' && pathname === '/api/admin/analytics') {
     if (!can('reports.traffic')) return true;
     const days = Math.min(365, Math.max(1, parseInt(parsed.query.days) || 30));

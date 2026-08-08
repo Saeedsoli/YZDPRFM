@@ -283,7 +283,7 @@ node scripts/audit_permissions.js
 npm run check-node
 ```
 
-۹۱ اسکریپت در `scripts/` · ۶۳ سند در `docs/`
+۹۳ اسکریپت در `scripts/` · ۶۳ سند در `docs/`
 
 ---
 

@@ -311,8 +311,14 @@ const noTitle = allDocs.filter(x => !/^#\s+\S/m.test(x.txt));
 if (!noTitle.length) ok('هر سند عنوان سطح‌یک دارد');
 else { bad(`${noTitle.length} سند بدون عنوان`); noTitle.forEach(x => console.log(d('        ' + x.name))); }
 
-// فایل غیر md در docs
-const stray = fs.readdirSync(DOCS).filter(f => !f.endsWith('.md'));
+/* فایل غیر md در docs.
+   `samples/` استثناست: نمونه خروجی‌های پنل (فاکتور، برچسب، CSV)
+   عمداً کنار مستنداتشان می‌مانند تا کسی که `samples/README.md`
+   را می‌خواند، فایل‌ها را همان‌جا ببیند. */
+const ALLOWED_DIRS = ['samples'];
+const stray = fs.readdirSync(DOCS)
+  .filter(f => !f.endsWith('.md'))
+  .filter(f => !ALLOWED_DIRS.includes(f));
 if (!stray.length) ok('پوشه docs فقط سند دارد', 'تصویر و خروجی جای دیگر');
 else { warn(`${stray.length} فایل غیرسند در docs`); stray.forEach(f => console.log(d('        ' + f))); }
 
