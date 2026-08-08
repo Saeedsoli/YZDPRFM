@@ -17,18 +17,42 @@
 
 ---
 
-## ۲. بنرهای اصلی و ۶ پرامپت هوش مصنوعی جهت تولید تصویر (Generative Prompts)
+## ۲. بنرهای اصلی و پرامپت‌های تولید تصویر (Generative Prompts)
 
-تصاویر زیر تولیدشده و در پوشه `images/` پروژه جهت استفاده در بنرهای هیرو و دسته‌بندی‌ها قرار گرفته‌اند:
+> **به‌روزرسانی مرداد ۱۴۰۵ — پاک‌سازی ورک‌اسپیس:**
+> از شش بنر تولیدشده در دور اول، **پنج تای‌شان هرگز به هیچ صفحه‌ای
+> وصل نشدند** و ۱٫۶ مگابایت جا اشغال می‌کردند. فایل‌هایشان حذف شد
+> ولی پرامپت‌ها اینجا می‌مانند تا اگر روزی صفحه‌ای لازمشان داشت،
+> با همان زبان بصری دوباره ساخته شوند.
+>
+> فایل‌های حذف‌شده در تاریخچه گیت هستند و با دستور زیر برمی‌گردند:
+> ```bash
+> git checkout 3aa54f0 -- public/images/hero_banner.jpg
+> ```
 
-| شماره بنر | عنوان بنر | مسیر فایل در ورک‌استیس | پرامپت هوش مصنوعی (AI Prompt) |
-|---|---|---|---|
-| **۱** | **Hero Banner (صفحه اصلی)** | `images/hero_banner.jpg` | `Ultra-luxurious minimalist hero banner for high-end perfume brand Yazd Perfume. A clear glass artisan perfume bottle with custom gold metallic cap resting on warm sand textured surface. Soft warm amber rim lighting, dark velvet obsidian background, artistic editorial lighting, high resolution, 8k, photorealistic, cinematic depth of field. No text on image.` |
-| **۲** | **مجموعه سمپل‌ها و دکانت‌ها** | `images/samples_banner.jpg` | `Luxury minimalist display of three 3ml glass sample decant vials with gold spray nozzles, lined up neatly on dark slate stone. Elegant soft backlighting, subtle perfume droplets, high end perfume photography, 8k resolution, cinematic atmosphere. No text on image.` |
-| **۳** | **عطر مو (Hair Mist)** | `images/hair_mist_banner.jpg` | `Minimalist luxury hair mist perfume bottle surrounded by floating water droplets and delicate white jasmine flower petals. Clean nude background, warm ambient lighting, high fashion commercial product photography, sharp focus, 8k. No text on image.` |
-| **۴** | **بادی اسپلش (Body Splash)** | `images/body_splash_banner.jpg` | `Fresh luxury body splash perfume bottle with dynamic water spray splash, fresh bergamot slices and citrus in background. Clean bright minimalist aesthetic, golden hour sunlight reflections, ultra detailed, 8k. No text on image.` |
-| **۵** | **نُت‌ها و ترکیبات بویایی** | `images/ingredients_banner.jpg` | `Artistic arrangement of raw perfume ingredients: sandalwood block, natural vanilla beans, fresh bergamot, rose petals on textured stone pedestal. Dark moody minimalist lighting, luxury perfume notes visual, editorial photorealistic 8k. No text on image.` |
-| **۶** | **هنر بازآفرینی دست‌ساز** | `images/craftsmanship_banner.jpg` | `Artisan perfumer carefully pouring pure amber perfume essence into a clear luxury glass bottle using glass dropper. Warm candlelight amber glow, dark velvet workshop background, hands of master craftsman, elegant cinematic depth of field, 8k. No text on image.` |
+### بنرهای فعال
+
+| فایل | کجا استفاده می‌شود |
+|---|---|
+| `images/hero-cinematic.{jpg,webp}` + نسخه `-sm` | بنر هیرو صفحه اصلی — **جانشین `hero_banner`** شد |
+| `images/ingredients_banner.{jpg,webp}` | کاور پیش‌فرض مقاله‌های بدون تصویر (`src/routes/articles.js`) |
+
+### پرامپت‌ها — برای بازتولید در آینده
+
+| عنوان بنر | وضعیت فایل | پرامپت هوش مصنوعی (AI Prompt) |
+|---|---|---|
+| **Hero Banner (صفحه اصلی)** | ❌ حذف شد — `hero-cinematic` جایش را گرفت | `Ultra-luxurious minimalist hero banner for high-end perfume brand Yazd Perfume. A clear glass artisan perfume bottle with custom gold metallic cap resting on warm sand textured surface. Soft warm amber rim lighting, dark velvet obsidian background, artistic editorial lighting, high resolution, 8k, photorealistic, cinematic depth of field. No text on image.` |
+| **مجموعه سمپل‌ها و دکانت‌ها** | ❌ حذف شد — صفحه `/samples` بنر ندارد | `Luxury minimalist display of three 3ml glass sample decant vials with gold spray nozzles, lined up neatly on dark slate stone. Elegant soft backlighting, subtle perfume droplets, high end perfume photography, 8k resolution, cinematic atmosphere. No text on image.` |
+| **عطر مو (Hair Mist)** | ❌ حذف شد — دسته‌بندی صفحه اختصاصی ندارد | `Minimalist luxury hair mist perfume bottle surrounded by floating water droplets and delicate white jasmine flower petals. Clean nude background, warm ambient lighting, high fashion commercial product photography, sharp focus, 8k. No text on image.` |
+| **بادی اسپلش (Body Splash)** | ❌ حذف شد — دسته‌بندی صفحه اختصاصی ندارد | `Fresh luxury body splash perfume bottle with dynamic water spray splash, fresh bergamot slices and citrus in background. Clean bright minimalist aesthetic, golden hour sunlight reflections, ultra detailed, 8k. No text on image.` |
+| **نُت‌ها و ترکیبات بویایی** | ✅ **فعال** — کاور پیش‌فرض مقاله | `Artistic arrangement of raw perfume ingredients: sandalwood block, natural vanilla beans, fresh bergamot, rose petals on textured stone pedestal. Dark moody minimalist lighting, luxury perfume notes visual, editorial photorealistic 8k. No text on image.` |
+| **هنر بازآفرینی دست‌ساز** | ❌ حذف شد — صفحه `/why-us` متن‌محور است | `Artisan perfumer carefully pouring pure amber perfume essence into a clear luxury glass bottle using glass dropper. Warm candlelight amber glow, dark velvet workshop background, hands of master craftsman, elegant cinematic depth of field, 8k. No text on image.` |
+
+> **درسی که از این پاک‌سازی گرفته شد:** تصویر را وقتی بسازید که
+> صفحه‌اش آماده است، نه پیش از آن. شش بنر پیشاپیش تولید شد و
+> پنج‌تایشان هرگز جایی پیدا نکردند — چون صفحه‌های `/samples` و
+> `/why-us` در عمل متن‌محور طراحی شدند و دسته‌بندی «عطر مو» و
+> «بادی اسپلش» فقط نوع واریانت‌اند، نه صفحه مستقل.
 
 ---
 
