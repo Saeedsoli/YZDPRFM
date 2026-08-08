@@ -31,7 +31,7 @@ from PIL import Image
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 PUB = os.path.join(ROOT, "public")
-LOGO = os.path.join(PUB, "images", "brand_logo.png")
+LOGO = os.path.join(ROOT, "source", "brand", "logo-mark.png")
 
 # رنگ برند — همان مقدار theme_color در manifest
 BG = (18, 18, 18, 255)

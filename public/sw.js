@@ -37,7 +37,7 @@
 
 'use strict';
 
-const CACHE_VERSION = 'yazd-v4';
+const CACHE_VERSION = 'yazd-v5';
 const SHELL_CACHE = `${CACHE_VERSION}-shell`;
 const PAGE_CACHE  = `${CACHE_VERSION}-pages`;
 const IMG_CACHE   = `${CACHE_VERSION}-img`;
@@ -56,6 +56,7 @@ const SHELL = [
   '/fonts/Vazirmatn-Regular.woff2',
   '/fonts/Vazirmatn-Medium.woff2',
   '/fonts/Vazirmatn-Bold.woff2',
+  '/images/brand-mark-light.svg',
   '/images/brand_logo.png',
   '/icon-192.png',
   '/favicon.ico'

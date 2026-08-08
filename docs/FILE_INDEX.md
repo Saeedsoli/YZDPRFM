@@ -101,6 +101,7 @@ bash scripts/smoke_test.sh     # ۹۲ آزمون خودکار
 |---|---|
 | `smoke_test.sh` | **۱۰۰ بررسی — همه را اجرا می‌کند** |
 | `test_images.js` | ۱۳ تصاویر محصول |
+| `test_brand_logo.js` | ۲۹ هویت لوگو — دارایی‌ها، نسبت ابعاد، تضاد رنگ، کش |
 | `test_dynamics.js` | ۲۸ ویترین فصلی و «اخیراً دیدید» |
 | `test_taste.js` | ۵۵ پروفایل بویایی — پاک‌سازی ورودی، ذخیره، API |
 | `test_notes_filter.js` | ۳۴ فیلتر نُت بویایی — ایندکس، بن‌بست، تزریق |
@@ -168,7 +169,8 @@ bash scripts/smoke_test.sh     # ۹۲ آزمون خودکار
 | `gen_product_images.py` | نقشه تصاویر · `--plan` `--todo` `--check` |
 | `build_product_images.py` | **خط لوله کامل** — خام → برش → بایگانی → حکاکی → خروجی · `--dry` |
 | `process_product_images.py` | بهینه‌سازی به JPG/WebP + نسخه کوچک |
-| `emboss_logo.py` | حکاکی لوگو روی بطری |
+| `make_brand_assets.py` | 🎯 **از `source/brand/logo.png` همه مشتقات برند را می‌سازد** — نشان/نوشتار/لاک‌آپ، برداری‌سازی SVG، نسخه روشن و تیره |
+| `emboss_logo.py` | حکاکی نشان روی بطری (از `logo-mark.png`) |
 | `apply_logo_all.py` | اعمال لوگو روی همه تصاویر |
 | `reassign_images.js` | اتصال تصاویر به محصولات · `--dry` |
 
@@ -256,6 +258,7 @@ bash scripts/smoke_test.sh     # ۹۲ آزمون خودکار
 | `ROLES_AND_PERMISSIONS.md` | نقش‌ها، مجوزها، امنیت کارکنان |
 | `ANALYTICS_AND_SHOWCASE.md` | تحلیل داخلی، ویترین، شبکه اجتماعی |
 | `PRODUCT_IMAGERY.md` | سامانه تصاویر و حکاکی لوگو |
+| `BRAND_ASSETS.md` | 🎯 لوگو و آیکن‌ها — تعویض، نسخه‌های رنگی، دام‌ها |
 | `SITE_DYNAMICS.md` | ویترین فصلی و «اخیراً دیدید» — و آنچه عمداً ساخته نشد |
 | `PWA.md` | سرویس‌ورکر، آفلاین، نصب — و قاعده «هیچ API کش نمی‌شود» |
 | `BRAND_NAMING_FA.md` | نگارش فارسی نام برندها |
@@ -291,7 +294,7 @@ bash scripts/smoke_test.sh     # ۹۲ آزمون خودکار
 | `data/` | دیتابیس زنده و پشتیبان‌ها | ❌ خیر (دیسک Liara) |
 | `source/product-images/` | نسخه بدون لوگوی تصاویر (۶۱ فایل) | ❌ خیر |
 | `source/fonts/` | فونت‌های اصلی پیش از زیرمجموعه‌سازی | ❌ خیر |
-| `source/brand/` | لوگوی اصلی برند | ❌ خیر |
+| `source/brand/` | لوگوی مرجع + ۶ مشتق (نشان/نوشتار/لاک‌آپ × PNG/SVG) | ❌ خیر |
 | `source/dataset/` | دیتاست خام و CSVهای مرجع | ❌ خیر |
 
 > ⚠️ **هرگز `COPY data ./data` به Dockerfile اضافه نکنید** — دیسک

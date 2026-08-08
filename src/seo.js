@@ -182,7 +182,7 @@ function homePage(html, stats) {
     name: BRAND,
     alternateName: 'Yazd Perfume',
     url: SITE,
-    logo: `${SITE}/images/brand_logo.png`,
+    logo: `${SITE}/images/brand-logo-og.png`,
     description,
     /* حساب‌های رسمی — به گوگل می‌گوید این صفحه‌ها متعلق به همین
        فروشگاه‌اند. در پنل دانش گوگل کنار نتیجه نمایش داده می‌شوند
@@ -381,7 +381,7 @@ function articlePage(html, a) {
     author: { '@type': 'Organization', name: BRAND },
     publisher: {
       '@type': 'Organization', name: BRAND,
-      logo: { '@type': 'ImageObject', url: `${SITE}/images/brand_logo.png` }
+      logo: { '@type': 'ImageObject', url: `${SITE}/images/brand-logo-og.png` }
     },
     /* شمار واژه و متن مقاله — گوگل با این‌ها عمق محتوا را می‌سنجد.
        بدونشان مقاله «کم‌محتوا» ارزیابی می‌شود حتی اگر خوب نوشته

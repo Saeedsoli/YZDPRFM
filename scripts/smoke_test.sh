@@ -105,6 +105,10 @@ done
 WEBP=$(curl -s -H "Accept: image/webp,*/*" -o /dev/null -w '%{content_type}' http://localhost:3000/images/hero-cinematic.jpg)
 chk "$WEBP" "image/webp" "auto-webp serving"
 
+# هویت لوگو — باید اینجا اجرا شود چون به سرور زنده نیاز دارد
+# (بخش بعدی سرور را می‌کشد).
+run_test test_brand_logo.js "brand logo identity"
+
 echo "== backup endpoints"
 BK=$(curl -s http://localhost:3000/api/admin/backups -H "Authorization: Bearer $ATOK" \
   | node -e "let d='';process.stdin.on('data',c=>d+=c).on('end',()=>{try{const b=JSON.parse(d).backups[0];console.log(b?b.name:'none')}catch{console.log('err')}})")

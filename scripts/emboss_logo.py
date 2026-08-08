@@ -36,7 +36,17 @@ import numpy as np
 from PIL import Image, ImageFilter, ImageChops
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-LOGO = os.path.join(ROOT, "source", "brand", "logo.png")
+"""
+مرجع حکاکی: فقط **نشان**، نه لاک‌آپ کامل.
+
+فایل مرجع `logo.png` از مرداد ۱۴۰۵ لاک‌آپ کامل است (نشان + «عطر
+یزد» + YAZD PERFUME). حک کردن لاک‌آپ روی بطری نتیجه‌اش برچسب
+شلوغ می‌شود، نه حکاکی ظریف شیشه — و در اندازه کارت فهرست
+(۴۲۰px) نوشتار به لکه‌ای ناخوانا تبدیل می‌شود.
+
+`logo-mark.png` را scripts/make_brand_assets.py می‌سازد.
+"""
+LOGO = os.path.join(ROOT, "source", "brand", "logo-mark.png")
 IMG_DIR = os.path.join(ROOT, "public", "images", "products")
 RAW_DIR = os.path.join(ROOT, ".imgraw")
 

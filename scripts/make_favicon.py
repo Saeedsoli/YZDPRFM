@@ -27,7 +27,9 @@ import os
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 PUB = os.path.join(ROOT, 'public')
-LOGO = os.path.join(PUB, 'images', 'brand_logo.png')
+# مرجع: نشان تک‌رنگ. رنگش مهم نیست چون این اسکریپت با کانال
+# آلفا کار می‌کند و خودش نقش را ماسه‌ای می‌کند.
+LOGO = os.path.join(ROOT, 'source', 'brand', 'logo-mark.png')
 
 OBSIDIAN = (18, 18, 18, 255)      # --obsidian
 GOLD = (197, 155, 39, 255)        # --gold
@@ -119,28 +121,45 @@ def main():
         sizes=[(16, 16), (32, 32), (48, 48)])
     outputs.append(('favicon.ico', os.path.getsize(ico_path)))
 
-    # manifest
-    manifest = {
-        "name": "عطر یزد",
-        "short_name": "عطر یزد",
-        "description": "بازآفرینی دست‌ساز رایحه‌های ماندگار",
-        "start_url": "/",
-        "display": "standalone",
-        "background_color": "#121212",
-        "theme_color": "#121212",
-        "lang": "fa",
-        "dir": "rtl",
-        "icons": [
-            {"src": "/icon-192.png", "sizes": "192x192", "type": "image/png",
-             "purpose": "any maskable"},
-            {"src": "/icon-512.png", "sizes": "512x512", "type": "image/png",
-             "purpose": "any maskable"}
-        ]
-    }
+    """
+    manifest — فقط اگر وجود نداشته باشد ساخته می‌شود.
+
+    🔴 چرا این شرط حیاتی است (رگرسیون واقعی، مرداد ۱۴۰۵):
+        نسخه اول این اسکریپت مانیفست را بی‌قید بازنویسی می‌کرد. بعداً
+        مانیفست غنی شد — shortcuts، scope، id، categories، و از همه
+        مهم‌تر آیکن‌های maskable جدا (که scripts/make_pwa_icons.py
+        می‌سازد چون آیکن‌های `any` ناحیه امن اندروید را رعایت
+        نمی‌کنند). بار بعد که این اسکریپت برای تعویض لوگو اجرا شد،
+        همه آن‌ها پاک شد و مانیفست به نسخه ابتدایی برگشت.
+
+        اسکریپتی که آیکن می‌سازد نباید فراداده نصب را هم مالک باشد.
+        اینجا فقط اگر مانیفستی نباشد، یک نسخه حداقلی می‌گذارد.
+    """
     mpath = os.path.join(PUB, 'site.webmanifest')
-    with open(mpath, 'w', encoding='utf-8') as f:
-        json.dump(manifest, f, ensure_ascii=False, indent=2)
-    outputs.append(('site.webmanifest', os.path.getsize(mpath)))
+    if os.path.exists(mpath):
+        outputs.append(('site.webmanifest (دست‌نخورده)',
+                        os.path.getsize(mpath)))
+    else:
+        manifest = {
+            "name": "عطر یزد",
+            "short_name": "عطر یزد",
+            "description": "بازآفرینی دست‌ساز رایحه‌های ماندگار",
+            "start_url": "/",
+            "display": "standalone",
+            "background_color": "#121212",
+            "theme_color": "#121212",
+            "lang": "fa",
+            "dir": "rtl",
+            "icons": [
+                {"src": "/icon-192.png", "sizes": "192x192",
+                 "type": "image/png", "purpose": "any"},
+                {"src": "/icon-512.png", "sizes": "512x512",
+                 "type": "image/png", "purpose": "any"}
+            ]
+        }
+        with open(mpath, 'w', encoding='utf-8') as f:
+            json.dump(manifest, f, ensure_ascii=False, indent=2)
+        outputs.append(('site.webmanifest (تازه)', os.path.getsize(mpath)))
 
     print("  ساخته شد:")
     for name, size in outputs:

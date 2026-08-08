@@ -145,7 +145,14 @@ function toast(msg) {
 
 /* ── هدر مشترک ── */
 function renderHeader(active = '') {
-  const logo = '/images/brand_logo.png';
+  /* لوگو به‌شکل SVG برداری — ۱٫۶KB و در هر تراکم پیکسلی تیز.
+     نسخه light چون هدر پس‌زمینه ابسیدین دارد.
+     نسبت ابعاد واقعی نشان ۵۴۵×۱۵۶۵ = ۰٫۳۴۸۲ است؛ width/height
+     باید همین را بدهد وگرنه مرورگر جای اشتباه رزرو می‌کند و صفحه
+     در لحظه بارگذاری می‌پرد (CLS). پیش از این ۴۴×۴۴ نوشته شده بود
+     یعنی مربع — که هیچ ربطی به نشان کشیده ندارد.
+     ۱۵×۴۳ = ۰٫۳۴۸۸ → ۰٫۱۷٪ خطا. (۱۵×۴۲ خطای ۲٫۵٪ می‌داد.) */
+  const logo = '/images/brand-mark-light.svg';
   /* نوار بالای صفحه با جمله برند شروع می‌شود؛ اگر اعلان فعالی
      باشد، loadNotice() جایگزینش می‌کند. یک نوار، نه دو تا —
      فضای بالای صفحه گران‌ترین بخش سایت است. */
@@ -154,7 +161,8 @@ function renderHeader(active = '') {
   <header class="glass-header" role="banner">
     <div class="header-row">
       <a href="/" class="logo-brand" aria-label="عطر یزد — صفحه اصلی">
-        <img src="${logo}" alt="لوگوی عطر یزد" width="44" height="44">
+        <img src="${logo}" alt="لوگوی عطر یزد" width="15" height="43"
+             decoding="async">
         <div>
           <div class="brand-title">عطر یزد</div>
           <div class="brand-sub">YAZD PERFUME</div>
