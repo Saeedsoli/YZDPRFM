@@ -299,9 +299,27 @@ const CODE = 'TESTG3' + Math.random().toString(36).slice(2, 5).toUpperCase();
   add('هیچ can بدون return true نمانده', !/!can\('[^']+'\)\) return;/.test(mod));
   add('bustCampaignCache منتقل شد', /bustCampaignCache\(\)/.test(mod));
   add('server.js ماژول را صدا می‌زند', /routeAdminMarketing\.handle\(/.test(srv));
-  add('مسیرهای عمومی کوپن در server.js ماندند',
-      /pathname === '\/api\/coupons\/validate'/.test(srv) &&
-      /pathname === '\/api\/campaigns'/.test(srv));
+  /* مسیرهای عمومی نباید داخل ماژول مدیریتی بروند — ولی جای دقیقشان
+     با گام‌های بعدی تفکیک عوض شد:
+       • /api/coupons/validate  → هنوز در server.js
+       • /api/campaigns         → در گام کاتالوگ به catalog.js رفت
+       • /api/coupons/public    → همان‌جا، در catalog.js
+
+     آزمون قبلی هر دو را در server.js می‌خواست و پس از انتقال قرمز
+     شد — ولی جابه‌جایی عمدی و درست بود، نه خرابی. آنچه واقعاً
+     اهمیت دارد این است که مسیر عمومی **داخل ماژول مدیریتی نباشد**
+     (وگرنه پشت احراز هویت می‌افتد و مشتری نمی‌تواند کوپن بزند).
+     پس همان را می‌سنجیم، نه فایل میزبان را. */
+  const cat = fs.readFileSync(path.join(ROOT, 'src/routes/catalog.js'), 'utf8');
+  const publicRoutes = [
+    ['/api/coupons/validate', srv],
+    ['/api/campaigns', cat],
+    ['/api/coupons/public', cat]
+  ];
+  add('مسیرهای عمومی بیرون از ماژول مدیریتی‌اند',
+      publicRoutes.every(([p, host]) =>
+        host.includes(`pathname === '${p}'`) && !mod.includes(`pathname === '${p}'`)),
+      'کوپن عمومی پشت احراز هویت نیفتاده');
 
   const n = srv.split('\n').length;
   add('server.js کوچک‌تر شد', n < 3600, `${n} خط`);

@@ -233,18 +233,60 @@ const post = (p, obj, token) =>
   console.log();
   console.log(h('  ۵) مرتب‌سازی — فهرست سفید'));
 
+  /* ⚠️ قرارداد واقعی مرتب‌سازی — مرداد ۱۴۰۵
+     ─────────────────────────────────────
+     سرور به **همه** مرتب‌سازی‌ها یک پیشوند اضافه می‌کند:
+       `EXISTS(... stock > 0) DESC, <مرتب‌سازی کاربر>`
+     یعنی محصولات موجود همیشه اول می‌آیند، بعد ترتیب خواسته‌شده
+     اعمال می‌شود. منطقش این است: کسی که «ارزان‌ترین» را می‌خواهد،
+     ارزان‌ترینِ **قابل خرید** را می‌خواهد، نه چیزی که نمی‌تواند
+     بخرد. (src/routes/catalog.js — ثابت IN_STOCK)
+
+     این آزمون قبلاً ترتیب سراسری را می‌سنجید و پس از آن تغییر
+     قرمز شد — ولی کد درست بود، نه آزمون. اکنون درست‌تر می‌سنجد:
+     ترتیب را **درون هر گروه موجودی** بررسی می‌کند.
+
+     با یک محصول موجود از ۲۱۰۶ (وضعیت فعلی)، گروه «موجود» یک
+     عضو دارد و گروه «ناموجود» بقیه را. اگر انبار پر شود، همین
+     آزمون بدون تغییر باز هم درست کار می‌کند. */
   const asc  = await api('/api/products?sort=price_asc&limit=10');
   const desc = await api('/api/products?sort=price_desc&limit=10');
-  const ascP  = asc.json.products.map(p => p.min_price).filter(x => x != null);
-  const descP = desc.json.products.map(p => p.min_price).filter(x => x != null);
-  add('price_asc صعودی است',
-      ascP.every((v, i) => i === 0 || ascP[i - 1] <= v),
-      ascP.slice(0, 3).join(' ≤ '));
-  add('price_desc نزولی است',
-      descP.every((v, i) => i === 0 || descP[i - 1] >= v),
-      descP.slice(0, 3).join(' ≥ '));
-  add('ارزان‌ترین و گران‌ترین یکی نیستند',
-      ascP[0] !== descP[0], `${ascP[0]} ≠ ${descP[0]}`);
+
+  /** قیمت‌ها را به دو گروه موجود/ناموجود می‌شکند */
+  const byStock = res => {
+    const g = { inStock: [], outStock: [] };
+    for (const p of res.json.products) {
+      if (p.min_price == null) continue;
+      (p.in_stock ? g.inStock : g.outStock).push(p.min_price);
+    }
+    return g;
+  };
+  const isAsc  = a => a.every((v, i) => i === 0 || a[i - 1] <= v);
+  const isDesc = a => a.every((v, i) => i === 0 || a[i - 1] >= v);
+
+  const a = byStock(asc), d2 = byStock(desc);
+
+  add('موجودها پیش از ناموجودها می‌آیند',
+      asc.json.products.findIndex(p => !p.in_stock) === -1 ||
+      asc.json.products.every((p, i, arr) =>
+        i === 0 || !(p.in_stock && !arr[i - 1].in_stock)),
+      `${a.inStock.length} موجود، سپس ${a.outStock.length} ناموجود`);
+
+  add('price_asc درون هر گروه صعودی است',
+      isAsc(a.inStock) && isAsc(a.outStock),
+      `موجود: ${a.inStock.join(' ≤ ') || '—'} · ناموجود: ${a.outStock.slice(0, 3).join(' ≤ ')}`);
+
+  add('price_desc درون هر گروه نزولی است',
+      isDesc(d2.inStock) && isDesc(d2.outStock),
+      `موجود: ${d2.inStock.join(' ≥ ') || '—'} · ناموجود: ${d2.outStock.slice(0, 3).join(' ≥ ')}`);
+
+  /* ارزان‌ترین و گران‌ترین باید فرق کنند — ولی درون گروه ناموجود
+     سنجیده می‌شود، چون گروه موجود فعلاً یک عضو دارد و طبیعتاً در
+     هر دو مرتب‌سازی همان یکی است. */
+  add('ارزان‌ترین و گران‌ترین ناموجود یکی نیستند',
+      a.outStock.length > 0 && d2.outStock.length > 0 &&
+      a.outStock[0] !== d2.outStock[0],
+      `${a.outStock[0]} ≠ ${d2.outStock[0]}`);
 
   const byName = await api('/api/products?sort=name&limit=5');
   add('sort=name کار می‌کند', byName.status === 200 && byName.json.products.length === 5);
