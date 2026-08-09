@@ -117,7 +117,13 @@ def main():
         if new_brand != old_brand:
             p["inspired_brand_fa"] = new_brand
             # نام و عنوان هم نام برند را در خود دارند
-            for key in ("name_fa", "title_fa_display", "title_fa_base"):
+            # 🔴 `full_display_fa` هم باید اینجا باشد.
+            #     نبودنش یعنی seed از درون ناسازگار می‌شود: برند
+            #     «نیشان» ولی عنوان نمایشی «نیشانه - قره‌گوز».
+            #     test_cold_deploy این را گرفت — همان آزمونی که
+            #     استقرار از صفر روی لیارا را شبیه‌سازی می‌کند.
+            for key in ("name_fa", "title_fa_display", "title_fa_base",
+                        "full_display_fa"):
                 if p.get(key) and old_brand and old_brand in p[key]:
                     p[key] = p[key].replace(old_brand, new_brand)
 
@@ -128,12 +134,41 @@ def main():
             if nxt != nm:
                 if len(samples) < 6:
                     samples.append((f"{new_brand} — {nm}", f"{new_brand} — {nxt}"))
-                for key in ("title_fa_display", "title_fa_base"):
+                for key in ("title_fa_display", "title_fa_base",
+                            "full_display_fa"):
                     if p.get(key) and nm in p[key]:
                         p[key] = p[key].replace(nm, nxt)
                         title_fixed += 1
                 p["name_fa"] = nxt
                 name_fixed += 1
+
+    """
+    ── همگام‌سازی نهایی full_display_fa ──
+    🔴 چرا مرحله جدا لازم است:
+        `full_display_fa` قالبش «عطر دست‌ساز {برند} - {نام}» است و
+        در ساخت seed یک‌بار ساخته می‌شود. مرحله حذف تکرار بالا
+        `name_fa` را عوض می‌کند ولی این رشته را نه، چون متن قدیمی
+        داخلش با متن جدید تطبیق نمی‌خورد.
+
+        نتیجه ناسازگاری داخلی: name_fa «نامبر ۱۹ پودری» ولی
+        full_display_fa «شنل - شنل نامبر ۱۹ پودری».
+        test_cold_deploy این را گرفت.
+
+        راه امن: پس از همه اصلاح‌ها، این میدان از روی مقادیر
+        نهایی **بازساخته** شود، نه اینکه با replace وصله شود.
+    """
+    full_rebuilt = 0
+    for p_ in data:
+        brand = p_.get("inspired_brand_fa") or ""
+        nm = p_.get("name_fa") or ""
+        if not brand or not nm:
+            continue
+        # name_fa قالب «عطر دست‌ساز X» دارد؛ X را جدا می‌کنیم
+        bare = nm.replace("عطر دست‌ساز", "").strip()
+        want = f"عطر دست‌ساز {brand} - {bare}"
+        if p_.get("full_display_fa") != want:
+            p_["full_display_fa"] = want
+            full_rebuilt += 1
 
     for before, after in samples:
         print(f"  {D(before)}")
@@ -143,6 +178,7 @@ def main():
     print(f"  حذف حرکت     : {harakat_fixed}")
     print(f"  نام محصول    : {name_fixed}")
     print(f"  عنوان نمایشی : {title_fixed}")
+    print(f"  نمایش کامل   : {full_rebuilt}")
 
     if DRY:
         print(f"\n  برای اعمال بدون --dry اجرا کنید.\n")

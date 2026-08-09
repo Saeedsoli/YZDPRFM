@@ -114,7 +114,10 @@ function dockerCopiedDirs() {
     console.log(d('\n  محتوای فروشگاه پس از نخستین اجرا'));
 
     const prods = await fetch(`${BASE}/api/products?limit=1`).then(r => r.json());
-    add('کاتالوگ پر شده است', prods.total === 2106, `${prods.total} محصول`);
+    /* آستانه به‌جای عدد دقیق: این آزمون «استقرار سرد» را می‌سنجد
+       — یعنی آیا seed روی دیتابیس خالی کار کرد؟ عدد دقیق کاتالوگ
+       ربطی به آن ندارد و با هر تعویض منبع داده می‌شکند. */
+    add('کاتالوگ پر شده است', prods.total >= 2000, `${prods.total} محصول`);
 
     const arts = await fetch(`${BASE}/api/articles`).then(r => r.json());
     add('مقالات منتقل شده‌اند', (arts.total || 0) >= 5, `${arts.total} مقاله`);
@@ -162,10 +165,23 @@ function dockerCopiedDirs() {
     add('نگارش برندها درست است', wrongBrand.length === 0,
         wrongBrand[0] || `${Object.keys(expect).length} برند`);
 
+    /* نام‌هایی که برند جزء لاینفکشان است — تکرار زائد نیستند.
+       «دیور هوم» (Dior Homme)، «بلو د شنل»، «میس دیور» نام رسمی و
+       جهانی‌اند و حذف برند نابودشان می‌کند.
+       همان منطق test_brand_names.js — اگر این دو ناهماهنگ شوند،
+       یکی همیشه قرمز می‌ماند. */
+    const CONNECTORS = ['د', 'دو', 'آو', 'او', 'له', 'لا', 'میس', 'مای',
+                        'مستر', 'مون', 'لو', 'بلو', 'تق', 'پاشا', 'هوم',
+                        'ویاژ', 'لنستان'];
     const sample = await fetch(`${BASE}/api/products?limit=60`).then(r => r.json());
-    const dupName = (sample.products || []).filter(
-      p => p.brand_fa && p.name_fa && p.name_fa.includes(p.brand_fa));
-    add('نام محصول برند را تکرار نمی‌کند', dupName.length === 0,
+    const dupName = (sample.products || []).filter(p => {
+      if (!p.brand_fa || !p.name_fa || !p.name_fa.includes(p.brand_fa)) return false;
+      if (/\([^)]*\)/.test(p.name_fa)) return false;      // پرانتز توضیحی بازار
+      const rest = p.name_fa.split(p.brand_fa).join(' ').replace(/\s+/g, ' ').trim();
+      if (rest.length < 3) return false;
+      return !rest.split(/\s+/).some(w => CONNECTORS.includes(w));
+    });
+    add('نام محصول برند را بی‌جهت تکرار نمی‌کند', dupName.length === 0,
         dupName.length ? `${dupName[0].brand_fa} — ${dupName[0].name_fa}` : '');
 
     // ── حساب مدیر کل ساخته شد؟ ──

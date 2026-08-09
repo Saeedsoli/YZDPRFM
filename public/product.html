@@ -79,6 +79,22 @@
   .notes-box .hd b { font-weight: 800; font-size: .95rem }
   .notes-box .hd span { font-size: .74rem; color: var(--muted) }
 
+  /* شناسنامه رایحه اصلی — عطار، سال، کشور، غلظت، رده.
+     ظاهرش عمداً آرام‌تر از جعبه هرم بویایی است: اطلاعات پشتیبان
+     است نه محتوای اصلی، و نباید توجه را از خرید بدزدد. */
+  .origin-box { background: var(--bg); border: 1px solid var(--border);
+                border-radius: var(--r); padding: 18px 20px; margin: 18px 0; }
+  .origin-box .hd b { font-weight: 800; font-size: .9rem }
+  .origin-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+                 gap: 14px 18px; margin-top: 14px; }
+  .origin-grid .k { font-size: .7rem; color: var(--muted); margin-bottom: 3px }
+  .origin-grid .v { font-size: .84rem; font-weight: 700; line-height: 1.6 }
+  /* نام عطرساز لاتین است و در متن راست‌چین باید صریحاً چپ‌چین شود،
+     وگرنه «&» و نقطه در جای غلط می‌نشینند. */
+  .origin-grid .v.ltr { direction: ltr; text-align: right; unicode-bidi: isolate }
+  .origin-note { margin-top: 15px; padding-top: 13px; border-top: 1px solid var(--border);
+                 font-size: .74rem; color: var(--muted); line-height: 1.95 }
+
   .pyramid { position: relative; padding-right: 26px }
   /* خط عمودی که سه لایه را وصل می‌کند */
   .pyramid::before {
@@ -324,6 +340,20 @@
         <div class="pyramid" id="pyramid"></div>
       </div>
 
+      <!-- شناسنامه رایحه اصلی — مرداد ۱۴۰۵
+           عمداً پس از هرم بویایی و پیش از جعبه خرید: کسی که تا
+           اینجا خوانده، به جزئیات فنی اهمیت می‌دهد. جای خالی
+           می‌ماند اگر داده نباشد (hidden). -->
+      <div class="origin-box" id="originBox" hidden>
+        <div class="hd"><b>شناسنامه رایحه اصلی</b></div>
+        <div class="origin-grid" id="originGrid"></div>
+        <p class="origin-note">
+          این اطلاعات درباره <b>رایحه اصلی</b> است، نه محصول ما.
+          بازآفرینی دست‌ساز عطر یزد بر پایه همین ساختار بویایی
+          ساخته می‌شود.
+        </p>
+      </div>
+
       <div class="buy-box">
         <div id="campFlag"></div>
         <div style="font-weight:800;font-size:.9rem;margin-bottom:4px;">انتخاب حجم و نوع محصول</div>
@@ -521,13 +551,37 @@ function render() {
   ].filter(Boolean);
   document.getElementById('chips').innerHTML = chips.map(c => `<span class="chip">${c}</span>`).join('');
 
-  // جمع‌بندی سه‌تایی — چیزی که خریدار اول از همه می‌خواهد بداند
+  /* جمع‌بندی — چیزی که خریدار اول از همه می‌خواهد بداند.
+     «سال عرضه» از مرداد ۱۴۰۵ اضافه شد (منبع ۲٬۱۱۱ عطر اصیل).
+     چرا اینجا و نه پایین‌تر: سال عرضه به خریدار می‌گوید با یک
+     کلاسیک طرف است یا یک عرضه تازه — و این روی انتظارش از رایحه
+     اثر مستقیم دارد. عطر ۱۹۲۴ بوی امروزی ندارد. */
   document.getElementById('quick').innerHTML = [
     ['خانواده', p.family_fa],
     ['ماندگاری', p.longevity],
-    ['فصل', p.season]
+    ['فصل', p.season],
+    ['سال عرضه', p.release_year ? toFa(p.release_year) : null]
   ].filter(([, v]) => v)
    .map(([k, v]) => `<div><div class="k">${k}</div><div class="v">${v}</div></div>`).join('');
+
+  /* ── شناسنامه رایحه اصلی ──
+     از منبع ۲٬۱۱۱ عطر اصیل. اگر هیچ‌کدام از میدان‌ها نبود، کل
+     جعبه پنهان می‌ماند — جعبه خالی بدتر از نبودنش است. */
+  const originRows = [
+    ['عطرساز', p.perfumer, true],
+    ['سال عرضه', p.release_year ? toFa(p.release_year) : null, false],
+    ['کشور برند', p.country, false],
+    ['غلظت', p.concentration, true],
+    ['رده بازار', p.market_segment, false]
+  ].filter(([, v]) => v);
+
+  if (originRows.length) {
+    document.getElementById('originGrid').innerHTML = originRows
+      .map(([k, v, ltr]) =>
+        `<div><div class="k">${k}</div><div class="v${ltr ? ' ltr' : ''}">${esc(String(v))}</div></div>`)
+      .join('');
+    document.getElementById('originBox').hidden = false;
+  }
 
   // هرم بویایی — سه لایه روی خط زمانی
   const LAYERS = [

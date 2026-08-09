@@ -166,9 +166,48 @@ async function handle(ctx) {
     };
     const orderBy = `${IN_STOCK}, ${SORTS[parsed.query.sort] || SORTS.default}`;
 
+    /* ── رتبه‌بندی ربط برای جستجوی متنی ──
+       🔴 باگ واقعی که تعویض منبع داده آشکار کرد (مرداد ۱۴۰۵):
+
+       `search_blob` هم نام محصول را دارد، هم برند، هم نُت‌ها و هم
+       متن توصیفی. تطبیق در همه‌شان یکسان شمرده می‌شد و ترتیب
+       نهایی فقط `id` بود. نتیجه در عمل:
+
+           جستجوی «اونتوس» → نتیجه اول: «فراپین — ارکید من»
+                              چون توضیحش «مشابه اونتوس» دارد.
+           «کرید — اونتوس» رتبه دوم می‌شد.
+
+       این بدترین نوع باگ جستجوست: کاربر دقیقاً نام محصول را
+       می‌نویسد و چیز دیگری می‌بیند. اعتماد به جستجو یک‌باره
+       می‌رود و کاربر فرض می‌کند محصول را نداریم.
+
+       امتیازدهی سه‌لایه (فقط وقتی q هست):
+         ۳۰ — نام محصول با عبارت شروع می‌شود  (دقیق‌ترین)
+         ۲۰ — نام محصول شامل عبارت است
+         ۱۰ — نام برند شامل عبارت است
+       امتیاز به ترتیب موجودی **اضافه** نمی‌شود بلکه پس از آن
+       می‌آید: کالای موجود همچنان اول است، ولی درون هر گروه
+       مرتبط‌ترین بالاست.
+
+       چرا LIKE و نه FTS: کل جدول ۲٬۱۱۱ ردیف است و پرسمان زیر
+       ۱۰ms اجرا می‌شود. افزودن FTS5 پیچیدگی نگهداری می‌آورد بدون
+       سود محسوس در این مقیاس. */
+    let relevance = '0';
+    if (q) {
+      const nq = normalizeFa(q);
+      args.rel = `${nq}%`;
+      args.relAny = `%${nq}%`;
+      relevance = `(CASE WHEN name_fa LIKE @rel THEN 30
+                         WHEN name_fa LIKE @relAny THEN 20
+                         WHEN brand_fa LIKE @relAny THEN 10
+                         ELSE 0 END)`;
+    }
+    const finalOrder = q ? `${IN_STOCK}, ${relevance} DESC, ${SORTS[parsed.query.sort] || SORTS.default}`
+                         : orderBy;
+
     let total = db.prepare(`SELECT COUNT(*) c FROM products ${clause}`).get(args).c;
     let rows = db.prepare(
-      `SELECT * FROM products ${clause} ORDER BY ${orderBy} LIMIT @limit OFFSET @offset`
+      `SELECT * FROM products ${clause} ORDER BY ${finalOrder} LIMIT @limit OFFSET @offset`
     ).all({ ...args, limit, offset: (page - 1) * limit });
 
     /* ── اگر جستجوی چندکلمه‌ای هیچ نتیجه‌ای نداد ──

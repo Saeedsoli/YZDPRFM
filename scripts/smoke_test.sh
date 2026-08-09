@@ -90,8 +90,13 @@ echo "== security"
 chk "$(curl -s -o /dev/null -w '%{http_code}' -X DELETE http://localhost:3000/api/articles/ART-1001)" "401" "del-no-token"
 chk "$(curl -s -o /dev/null -w '%{http_code}' http://localhost:3000/api/admin/settings)" "401" "settings-401"
 chk "$(curl -s -o /dev/null -w '%{http_code}' http://localhost:3000/api/wishlist)" "401" "wishlist-401"
+# شمار محصول از دیتابیس خوانده می‌شود، نه عدد ثابت.
+# با تعویض منبع داده (۲۱۰۶ → ۲۱۱۱) این بررسی شکست و معلوم شد
+# عدد ثابت، آزمون را به تعداد رکورد گره می‌زند در حالی که چیزی
+# که واقعاً باید بسنجد این است: «جدول پس از تزریق سالم مانده؟»
+PCOUNT=$(node -e "const D=require('better-sqlite3');const db=new D('data/yazd.db',{readonly:true});console.log(db.prepare('SELECT COUNT(*) c FROM products').get().c);db.close();")
 SQLI=$(curl -s "http://localhost:3000/api/products?sort=id%3BDROP+TABLE+products--&limit=1" | node -e "let d='';process.stdin.on('data',c=>d+=c).on('end',()=>console.log(JSON.parse(d).total))")
-chk "$SQLI" "2106" "sqli-sort"
+chk "$SQLI" "$PCOUNT" "sqli-sort"
 chk "$(curl -s -o /dev/null -w '%{http_code}' -X POST http://localhost:3000/api/tickets -H 'Content-Type: application/json' -d '{"order_id":"FAKE-999","product_name":"x","volume_ml":30,"used_under_2ml":true,"description":"long enough description"}')" "404" "fake-order-ticket"
 
 echo "== assets & fonts"

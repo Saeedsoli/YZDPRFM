@@ -75,6 +75,8 @@ function initSchema() {
       sillage               TEXT,
       country               TEXT,
       market_segment        TEXT,
+      perfumer              TEXT,
+      release_year          INTEGER,
       transparency_notice   TEXT,
       image_url             TEXT,
       created_at            TEXT DEFAULT CURRENT_TIMESTAMP
@@ -443,6 +445,29 @@ function initSchema() {
     db.exec('CREATE INDEX IF NOT EXISTS idx_products_search ON products(search_blob)');
   }
 
+  /* ── شناسنامه عطر: عطار و سال عرضه (مرداد ۱۴۰۵) ──
+     با تعویض منبع داده به دیتاست ۲٬۱۱۱ عطر اصیل، دو اطلاعات
+     تازه در دسترس آمد که پیش‌تر نبود: نام عطرساز و سال عرضه.
+
+     چرا ارزش نمایش دارند:
+       این دو، ادعای «کار تخصصی» را از حرف به مدرک تبدیل می‌کنند.
+       مشتری که می‌بیند «عطار: François Demachy · عرضه: ۲۰۱۵»
+       می‌فهمد فروشنده می‌داند از چه حرف می‌زند. برای فروشگاهی که
+       بازآفرینی دست‌ساز می‌فروشد و نمی‌خواهد ادعای اورجینال کند،
+       همین دقت فنی مهم‌ترین سرمایه اعتماد است.
+
+     چرا release_year عدد صحیح است:
+       سال عرضه در منبع با کاما آمده («1,959») ولی ذاتاً عدد است.
+       ذخیره به‌صورت INTEGER اجازه مرتب‌سازی و بازه‌گیری می‌دهد —
+       مثلاً «کلاسیک‌های پیش از ۱۹۸۰». اگر متن بماند، «1959» و
+       «959» در مرتب‌سازی جابه‌جا می‌شوند. */
+  if (!pcols.includes('perfumer')) {
+    db.exec('ALTER TABLE products ADD COLUMN perfumer TEXT');
+  }
+  if (!pcols.includes('release_year')) {
+    db.exec('ALTER TABLE products ADD COLUMN release_year INTEGER');
+  }
+
   /* ── قیمت دلاری پایه ──
      فروشگاه فرمولی برای قیمت‌گذاری دارد که به نرخ دلار وابسته
      است. هدف نهایی: با تغییر نرخ ارز، قیمت تومانی همه محصولات
@@ -698,15 +723,55 @@ const GENDER_TAG = { MEN: 'm', WOMEN: 'w', UNISEX: 'u' };
 
 /**
  * تصویر واریانت‌دار «خانواده × جنسیت».
- * اگر برای این ترکیب هنوز تصویری تولید نشده باشد، null برمی‌گرداند.
+ *
+ * ── بازگشت به جنسیت دیگرِ همان خانواده (مرداد ۱۴۰۵) ──
+ * با تعویض منبع داده به دیتاست ۲٬۱۱۱ عطر اصیل، توزیع
+ * خانواده×جنسیت کاملاً عوض شد. ترکیب‌هایی ظاهر شدند که در کاتالوگ
+ * پیشین یا نبودند یا ناچیز بودند:
+ *
+ *     ambery-oriental|WOMEN   ۲۰۱ محصول   (پیش‌تر تصویر نداشت)
+ *     citrus|MEN               ۴۶ محصول
+ *     chypre|WOMEN             ۴۱ محصول
+ *     leather|MEN              ۳۹ محصول
+ *
+ * روی هم ۳۹۰ محصول — ۱۸٫۵٪ کاتالوگ — به تصویر تکیِ بی‌جنسیت
+ * `family-*.jpg` می‌افتادند. نتیجه: ۱۷۴ محصول با یک عکس یکسان،
+ * دقیقاً همان مشکلی که تصاویر واریانت‌دار برای حلش ساخته شده بود.
+ *
+ * دو راه بود:
+ *   ۱) تولید ~۵۰ تصویر تازه برای ترکیب‌های نو
+ *   ۲) اجازه دادن به اشتراک تصاویر **درون همان خانواده بویایی**
+ *
+ * راه دوم انتخاب شد. دلیلش زیبایی‌شناسی نیست، دقت است: تصاویر بر
+ * پایه **نُت‌های خانواده** ساخته شده‌اند (چوبی با تراشه سدر و سنگ،
+ * گلی با گل و ابریشم) و بطری‌ها بی‌نام و خنثی‌اند. یک بطری شیشه‌ای
+ * روی بستر چوب سدر، برای عطر چوبی زنانه هم درست است. تفکیک
+ * جنسیت در این تصاویر ترجیح است، نه ضرورت.
+ *
+ * ترتیب بازگشت: جنسیت خودش ← یونیسکس ← هر جنسیت دیگرِ همان
+ * خانواده. هش روی `productId` می‌ماند پس تخصیص **پایدار** است و
+ * کش مرورگر و ایندکس گوگل نمی‌شکند.
  */
-function variantImageFor(productId, familySlug, gender) {
-  const count = VARIANT_COUNTS[`${familySlug}|${gender}`];
-  if (!count || !productId) return null;
+const GENDER_FALLBACK = {
+  MEN:    ['MEN', 'UNISEX', 'WOMEN'],
+  WOMEN:  ['WOMEN', 'UNISEX', 'MEN'],
+  UNISEX: ['UNISEX', 'MEN', 'WOMEN']
+};
 
-  const idx = stableHash(String(productId)) % count;
-  const g = GENDER_TAG[gender] || 'u';
-  return `/images/products/fam-${familySlug}-${g}-${idx + 1}.jpg`;
+function variantImageFor(productId, familySlug, gender) {
+  if (!productId || !familySlug) return null;
+
+  for (const g of (GENDER_FALLBACK[gender] || GENDER_FALLBACK.UNISEX)) {
+    const count = VARIANT_COUNTS[`${familySlug}|${g}`];
+    if (!count) continue;
+    /* هش با جنسیتِ مقصد ترکیب می‌شود تا دو محصول هم‌خانواده که به
+       یک مجموعه تصویر می‌رسند، الگوی پخش متفاوتی بگیرند. بدون
+       این، محصولات زنانه و مردانهٔ یک خانواده روی همان اندیس‌ها
+       می‌افتادند و تنوع ظاهری کم می‌شد. */
+    const idx = stableHash(String(productId) + '|' + g) % count;
+    return `/images/products/fam-${familySlug}-${GENDER_TAG[g]}-${idx + 1}.jpg`;
+  }
+  return null;
 }
 
 /**
@@ -732,21 +797,21 @@ function imageForProduct(brandEn, familySlug, productId, gender) {
 // ═══════════════════════════════════════════
 // SEED — انتقال از JSON به SQLite (فقط بار اول)
 // ═══════════════════════════════════════════
-function seedIfEmpty() {
-  const count = db.prepare('SELECT COUNT(*) AS c FROM products').get().c;
-  if (count > 0) {
-    console.log(`[DB] SQLite آماده — ${count} محصول موجود.`);
-    return;
-  }
-
-  const seedFile = path.join(SEED_DIR, 'perfumes_catalogue_seed.json');
-  if (!fs.existsSync(seedFile)) {
-    console.warn('[DB] فایل seed یافت نشد؛ دیتابیس خالی ماند.');
-    return;
-  }
-
-  console.log('[DB] در حال انتقال داده به SQLite ...');
-  const products = JSON.parse(fs.readFileSync(seedFile, 'utf-8'));
+/**
+ * درج فهرست محصولات در دیتابیس.
+ *
+ * چرا از `seedIfEmpty` جدا شد (مرداد ۱۴۰۵):
+ *   تعویض منبع داده به دیتاست ۲٬۱۱۱ عطر اصیل نیاز داشت همین منطق
+ *   دوباره اجرا شود، ولی روی جدولی که خالی نیست.
+ *   `scripts/replace_catalog.js` این تابع را صدا می‌زند.
+ *
+ *   جایگزینش کپی کردن ~۸۰ خط منطق درج در اسکریپت بود — یعنی دو
+ *   نسخه که با هم واگرا می‌شوند. هر ستون تازه‌ای که بعداً اضافه
+ *   شود باید در دو جا ویرایش شود و یکی حتماً جا می‌ماند.
+ *
+ * @returns {{p:number, v:number}} شمار محصول و واریانت درج‌شده
+ */
+function insertProducts(products) {
 
   const insP = db.prepare(`
     INSERT INTO products (
@@ -755,20 +820,20 @@ function seedIfEmpty() {
       family_fa, family_en, family_slug, temperature, taste,
       notes_top, notes_middle, notes_base, accords,
       season, occasion, longevity, sillage, country, market_segment,
-      transparency_notice, image_url
+      perfumer, release_year, transparency_notice, image_url
     ) VALUES (
       @id, @slug, @name_fa, @name_en, @title_fa_display, @subtitle_en_display,
       @brand_fa, @brand_en, @gender, @concentration,
       @family_fa, @family_en, @family_slug, @temperature, @taste,
       @notes_top, @notes_middle, @notes_base, @accords,
       @season, @occasion, @longevity, @sillage, @country, @market_segment,
-      @transparency_notice, @image_url
+      @perfumer, @release_year, @transparency_notice, @image_url
     )
   `);
 
   const insV = db.prepare(`
-    INSERT INTO variants (sku, product_id, type, type_label, volume_ml, price_toman, stock)
-    VALUES (@sku, @product_id, @type, @type_label, @volume_ml, @price_toman, @stock)
+    INSERT INTO variants (sku, product_id, type, type_label, volume_ml, price_toman, stock, price_usd)
+    VALUES (@sku, @product_id, @type, @type_label, @volume_ml, @price_toman, @stock, @price_usd)
   `);
 
   const tx = db.transaction((rows) => {
@@ -803,6 +868,8 @@ function seedIfEmpty() {
         sillage: p.sillage_descriptive || null,
         country: p.country || null,
         market_segment: p.market_segment || null,
+        perfumer: p.perfumer || null,
+        release_year: Number.isInteger(p.release_year) ? p.release_year : null,
         transparency_notice: p.transclaimer_notice || null,
         image_url: imageForProduct(p.inspired_brand_en, p.family_slug,
                                    p.id, p.gender)
@@ -822,7 +889,14 @@ function seedIfEmpty() {
           type_label: v.type_label_fa || null,
           volume_ml: v.volume_ml || null,
           price_toman: v.price_toman || 0,
-          stock: v.stock == null ? 0 : v.stock
+          stock: v.stock == null ? 0 : v.stock,
+          /* قیمت دلاری هر گرم اسانس — از منبع داده می‌آید.
+             این **بهای اسانس اورجینال** است، نه قیمت فروش. قیمت
+             فروش (price_toman) با ضرایب دست‌ساز محاسبه می‌شود.
+             این عدد فقط برای فرمول خودکار آینده نگه داشته می‌شود
+             و هرگز به مشتری نشان داده نمی‌شود — attachVariants()
+             آن را از پاسخ عمومی حذف می‌کند. */
+          price_usd: typeof v.price_usd === 'number' ? v.price_usd : null
         });
       }
     }
@@ -832,6 +906,28 @@ function seedIfEmpty() {
 
   const pc = db.prepare('SELECT COUNT(*) AS c FROM products').get().c;
   const vc = db.prepare('SELECT COUNT(*) AS c FROM variants').get().c;
+  return { p: pc, v: vc };
+}
+
+// ═══════════════════════════════════════════
+// SEED — انتقال از JSON به SQLite (فقط بار اول)
+// ═══════════════════════════════════════════
+function seedIfEmpty() {
+  const count = db.prepare('SELECT COUNT(*) AS c FROM products').get().c;
+  if (count > 0) {
+    console.log(`[DB] SQLite آماده — ${count} محصول موجود.`);
+    return;
+  }
+
+  const seedFile = path.join(SEED_DIR, 'perfumes_catalogue_seed.json');
+  if (!fs.existsSync(seedFile)) {
+    console.warn('[DB] فایل seed یافت نشد؛ دیتابیس خالی ماند.');
+    return;
+  }
+
+  console.log('[DB] در حال انتقال داده به SQLite ...');
+  const products = JSON.parse(fs.readFileSync(seedFile, 'utf-8'));
+  const { p: pc, v: vc } = insertProducts(products);
   console.log(`[DB] ✅ انتقال کامل شد — ${pc} محصول، ${vc} متغیر.`);
 
   // انتقال مقالات
@@ -887,6 +983,12 @@ function parseProduct(row) {
     sillage: row.sillage,
     country: row.country,
     market_segment: row.market_segment,
+    /* شناسنامه فنی — عطار و سال عرضه.
+       این دو از منبع ۲٬۱۱۱ عطر اصیل می‌آیند و در صفحه محصول
+       نمایش داده می‌شوند. اطلاعات عمومی و افتخارآمیزند: هیچ
+       رازی نیستند و به تخصص فروشگاه اعتبار می‌دهند. */
+    perfumer: row.perfumer,
+    release_year: row.release_year,
     transparency_notice: row.transparency_notice,
     image_url: row.image_url
   };
@@ -1247,8 +1349,27 @@ function variantCampaignPercent(product, variant, camps) {
        درصد مؤثر همان چیزی است که در سبد اعمال می‌شود. */
     let amount = Math.floor(variant.price_toman * c.percent / 100);
     if (c.max_discount) amount = Math.min(amount, c.max_discount);
+    /* 🔴 گرد کردن باید **به پایین** باشد، نه نزدیک‌ترین.
+       ─────────────────────────────────────────────────
+       درصد نمایشی بعداً در attachCampaign دوباره روی قیمت اعمال
+       می‌شود تا final_price ساخته شود. اگر اینجا به بالا گرد شود،
+       تخفیف واقعی از سقف جشنواره رد می‌شود:
+
+           قیمت ۵۷۰٬۰۰۰ · سقف ۲۰٬۰۰۰
+           درصد خام: 20000/570000 = ۳٫۵۱٪
+           با round → ۴٪ → تخفیف ۲۲٬۸۰۰  ← ۲٬۸۰۰ بیشتر از سقف!
+           با floor → ۳٪ → تخفیف ۱۷٬۱۰۰  ← داخل سقف ✓
+
+       با کاتالوگ پیشین قیمت‌ها طوری بود که این هرگز رخ نداد؛ با
+       تعویض منبع داده (مرداد ۱۴۰۵) بیرون افتاد. باگ واقعی بود،
+       نه ایراد آزمون — سقفی که رعایت نشود یعنی ضرر مالی در هر
+       فروش جشنواره‌ای.
+
+       نتیجه: درصد نمایشی ممکن است کمی کمتر از حداکثر ممکن باشد،
+       ولی هرگز بیشتر از چیزی که واقعاً می‌دهیم نیست. کم‌فروشی در
+       تبلیغ بهتر از بیش‌وعده است. */
     const eff = variant.price_toman > 0
-      ? Math.round(amount / variant.price_toman * 100) : 0;
+      ? Math.floor(amount / variant.price_toman * 100) : 0;
     if (eff > best) best = eff;
   }
   return best;
@@ -1542,7 +1663,8 @@ function buildSearchIndex(force = false) {
   const rows = db.prepare(`SELECT id, name_fa, name_en, brand_fa, brand_en,
     family_fa, family_en, notes_top, notes_middle, notes_base, accords,
     season, occasion, concentration, gender, temperature, taste,
-    longevity, sillage, country, market_segment FROM products`).all();
+    longevity, sillage, country, market_segment, perfumer, release_year
+    FROM products`).all();
 
   const upd = db.prepare('UPDATE products SET search_blob=? WHERE id=?');
   const flat = j => { try { return JSON.parse(j || '[]').join(' '); } catch { return ''; } };
@@ -1554,6 +1676,12 @@ function buildSearchIndex(force = false) {
         r.family_fa, r.family_en, r.season, r.occasion, r.concentration,
         r.temperature, r.taste, r.longevity, r.sillage,
         r.country, r.market_segment,
+        /* عطار و سال عرضه — از منبع ۲٬۱۱۱ عطر اصیل.
+           جستجوی «دماشی» یا «۱۹۹۹» باید نتیجه بدهد؛ کاربر حرفه‌ای
+           عطر را با نام سازنده‌اش می‌شناسد. سال هم به رشته تبدیل
+           می‌شود چون blob متنی است. */
+        r.perfumer || '',
+        r.release_year ? String(r.release_year) : '',
         GENDER_WORDS[r.gender] || '',
         BRAND_ALIASES[r.brand_en] || '',
         flat(r.notes_top), flat(r.notes_middle), flat(r.notes_base), flat(r.accords),
@@ -2322,6 +2450,7 @@ module.exports = {
   createReviewInvite, readReviewInvite, consumeReviewInvite, INVITE_TTL_DAYS,
   getSettings, saveSettings, isValidSetting, nextInvoiceNo,
   buildSearchIndex, buildNotesIndex, listNotes, normalizeFa,
+  insertProducts,
   otpGet, otpSave, otpBumpAttempts, otpDelete, otpPurgeExpired,
   hashPassword, verifyPassword,
   getCustomer, getCustomerById, createCustomer,

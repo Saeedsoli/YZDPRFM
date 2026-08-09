@@ -338,7 +338,11 @@ const api = (p, opt = {}, tok = null) =>
 
       const pd = await api(`/api/products/${P.slug}`);
       const v = (pd.body.variants || []).find(x => x.sku === vEdp.sku);
-      const effective = Math.round(cap / vEdp.price_toman * 100);
+      /* گرد کردن به پایین — همان قاعده‌ای که src/db.js دارد.
+         آزمون قبلاً round می‌کرد و پس از رفع باگ سقف (مرداد
+         ۱۴۰۵) با کد ناهماهنگ شد. floor تضمین می‌کند تخفیف واقعی
+         هرگز از سقف جشنواره رد نشود. */
+      const effective = Math.floor(cap / vEdp.price_toman * 100);
       add('درصد نمایشی واریانت، درصد مؤثر است نه درصد خام',
         v && v.campaign_percent === effective && v.campaign_percent < 50,
         `${v && v.campaign_percent}٪ (خام ۵۰٪، مؤثر ${effective}٪)`);

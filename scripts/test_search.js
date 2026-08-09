@@ -136,9 +136,16 @@ const search = (q, extra = '') =>
   // ══ ۸) امنیت ══
   console.log(d('\n  تزریق SQL'));
 
+  /* شمار پیش از تزریق گرفته می‌شود، نه عدد ثابت.
+     آنچه باید سنجیده شود «جدول سالم مانده؟» است، نه «چند رکورد
+     داریم» — گره زدن به عدد ثابت یعنی هر تغییر کاتالوگ آزمون
+     امنیتی را قرمز می‌کند و توجه از خطر واقعی پرت می‌شود. */
+  const before = await fetch(`${BASE}/api/products?limit=1`).then(r => r.json());
   const sqli = await search("'; DROP TABLE products--");
   const after = await fetch(`${BASE}/api/products?limit=1`).then(r => r.json());
-  add('تزریق SQL بی‌اثر است', after.total === 2106, `${after.total} محصول سالم`);
+  add('تزریق SQL بی‌اثر است',
+      after.total === before.total && after.total > 0,
+      `${after.total} محصول سالم`);
   add('و خطای سرور نمی‌دهد', typeof sqli.total === 'number');
 
   finish();

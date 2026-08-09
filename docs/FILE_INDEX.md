@@ -169,6 +169,8 @@ bash scripts/smoke_test.sh     # ۹۲ آزمون خودکار
 | `gen_product_images.py` | نقشه تصاویر · `--plan` `--todo` `--check` |
 | `build_product_images.py` | **خط لوله کامل** — خام → برش → بایگانی → حکاکی → خروجی · `--dry` |
 | `process_product_images.py` | بهینه‌سازی به JPG/WebP + نسخه کوچک |
+| `import_dataset_v2.py` | 🎯 **واردسازی منبع ۲٬۱۱۱ عطر اصیل** — اعتبارسنجی، نگاشت خانواده، ضرایب قیمت · `--verify` |
+| `replace_catalog.js` | 🎯 **تعویض کامل کاتالوگ روی دیتابیس زنده** — داده تراکنشی حفظ می‌شود · `--dry-run` `--yes` |
 | `make_brand_assets.py` | 🎯 **از `source/brand/logo.png` همه مشتقات برند را می‌سازد** — نشان/نوشتار/لاک‌آپ، برداری‌سازی SVG، نسخه روشن و تیره |
 | `emboss_logo.py` | حکاکی نشان روی بطری (از `logo-mark.png`) |
 | `apply_logo_all.py` | اعمال لوگو روی همه تصاویر |
@@ -195,8 +197,6 @@ bash scripts/smoke_test.sh     # ۹۲ آزمون خودکار
 | `restore_backup.js` | بازیابی پشتیبان · `--list` |
 | `reset_for_launch.js` | **پاک‌سازی داده آزمونی پیش از افتتاح** · `--dry-run` / `--yes` |
 | `optimize_fonts.py` | زیرمجموعه‌سازی فونت |
-| `import_dataset.py` | ورود داده اولیه |
-| `convert_uploaded_md_dataset.py` | تبدیل دیتاست خام Markdown به JSON |
 | `make_favicon.py` | ساخت favicon و آیکن‌های نصب از لوگو |
 | `apply_stock_and_volume.js` | صفر کردن موجودی + حجم ۱۵۰ml · `--dry-run` |
 | `bench_checkout.js` | بنچمارک مسیر خرید — فقط محیط توسعه |
@@ -258,6 +258,7 @@ bash scripts/smoke_test.sh     # ۹۲ آزمون خودکار
 | `ROLES_AND_PERMISSIONS.md` | نقش‌ها، مجوزها، امنیت کارکنان |
 | `ANALYTICS_AND_SHOWCASE.md` | تحلیل داخلی، ویترین، شبکه اجتماعی |
 | `PRODUCT_IMAGERY.md` | سامانه تصاویر و حکاکی لوگو |
+| `DATASET_V2_MIGRATION.md` | 🎯 تعویض منبع داده به ۲٬۱۱۱ عطر اصیل — تصمیم‌ها، دام‌ها، بازتولید |
 | `BRAND_ASSETS.md` | 🎯 لوگو و آیکن‌ها — تعویض، نسخه‌های رنگی، دام‌ها |
 | `SITE_DYNAMICS.md` | ویترین فصلی و «اخیراً دیدید» — و آنچه عمداً ساخته نشد |
 | `PWA.md` | سرویس‌ورکر، آفلاین، نصب — و قاعده «هیچ API کش نمی‌شود» |

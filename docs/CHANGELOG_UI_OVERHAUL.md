@@ -7,6 +7,14 @@
 > `uploads/logo.png` → `source/brand/logo.png` ·
 > `assets/product-nologo/` → `source/product-images/` ·
 > `assets/fonts-original/` → `source/fonts/`
+>
+> **تعویض منبع داده (مرداد ۱۴۰۵):** دیتاست ۲٬۱۰۶ عطر کنار گذاشته
+> شد چون بیشتر نام‌هایش ساختگی بودند. اسکریپت‌های نام‌برده در این
+> سند حذف شده‌اند و جانشین دارند:
+> `import_dataset.py` → `import_dataset_v2.py` ·
+> `convert_uploaded_md_dataset.py` → (حذف، بی‌جانشین) ·
+> `source/dataset/perfume-dataset-2000plus.md` → `perfume-dataset-2111.md`
+> — شرح کامل: [`DATASET_V2_MIGRATION.md`](DATASET_V2_MIGRATION.md)
 
 این سند کارهای انجام‌شده در دور بازطراحی UI/UX را ثبت می‌کند: چه چیزی
 عوض شد، **چرا** عوض شد، و هر باگ چطور کشف و راستی‌آزمایی شد.
