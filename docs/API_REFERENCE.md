@@ -74,7 +74,7 @@ JSON با `charset=utf-8` و در صورت پشتیبانی مرورگر، فش�
 
 ```json
 {
-  "total": 2106, "page": 1, "limit": 24, "totalPages": 88,
+  "total": 2111, "page": 1, "limit": 24, "totalPages": 88,
   "products": [{
     "id": "YZD-PROD-0029", "slug": "creed-aventus",
     "name_fa": "اونتوس", "name_en": "CREED - Aventus",
@@ -125,7 +125,7 @@ JSON با `charset=utf-8` و در صورت پشتیبانی مرورگر، فش�
 
 **پاسخ:**
 ```json
-{ "total": 6, "results": [...], "total_products": 2106,
+{ "total": 6, "results": [...], "total_products": 2111,
   "profile": { "gender": "MEN", "family": "شرقی" },
   "profile_saved": true, "budget_relaxed": false }
 ```
@@ -562,8 +562,8 @@ GET /api/admin/export/csv
 بازسازی ایندکس جستجو و ایندکس نُت. مجوز `system.maintenance`.
 
 ```json
-{ "message": "ایندکس بازسازی شد — 2106 محصول، 22131 نسبت نُت.",
-  "products": 2106, "note_rows": 22131, "ms": 340 }
+{ "message": "ایندکس بازسازی شد — 2111 محصول، 22372 نسبت نُت.",
+  "products": 2111, "note_rows": 22372, "ms": 340 }
 ```
 
 هر دو ایندکس از ستون‌های محصول ساخته می‌شوند و فقط هنگام راه‌اندازی
@@ -657,7 +657,7 @@ Content-Disposition: attachment; filename="yazd-report-30d-2026-08-08.csv"
 
 ```json
 {
-  "status": "ok", "products": 2106, "variants": 14742,
+  "status": "ok", "products": 2111, "variants": 14777,
   "payment_gateway": "SANDBOX", "payment_live": false,
   "sms_provider": "console", "sessions": 0,
   "pending_orders": 0, "errors_24h": 0, "uptime": 3600
@@ -666,7 +666,7 @@ Content-Disposition: attachment; filename="yazd-report-30d-2026-08-08.csv"
 
 ### `GET /sitemap.xml` · `GET /robots.txt`
 
-۲٬۱۱۴ لینک: صفحات اصلی + ۲٬۱۰۶ محصول + مقالات.
+۲٬۱۱۴ لینک: صفحات اصلی + ۲٬۱۱۱ محصول + مقالات.
 با gzip از ۲۲۷ به ۱۰ کیلوبایت.
 
 ---

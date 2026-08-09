@@ -106,7 +106,14 @@ const post = (p, obj, token) =>
       Object.keys(list.json).join(','));
   add('limit رعایت می‌شود', list.json.products?.length === 5,
       `${list.json.products?.length} قلم`);
-  add('کل محصولات ۲۱۰۶ است', list.json.total === 2106, String(list.json.total));
+  /* شمار محصول از دیتابیس خوانده می‌شود، نه عدد ثابت.
+     آنچه باید سنجیده شود «API همان تعدادی را می‌دهد که در جدول
+     هست؟» است — نه «چند محصول داریم». عدد ثابت، آزمون را به
+     محتوای کاتالوگ گره می‌زند و هر به‌روزرسانی آن را می‌شکند. */
+  const CATALOG_TOTAL = db.prepare('SELECT COUNT(*) c FROM products').get().c;
+  add('کل محصولات با دیتابیس می‌خواند',
+      list.json.total === CATALOG_TOTAL,
+      `${list.json.total} از ${CATALOG_TOTAL}`);
 
   const card = list.json.products?.[0] || {};
   add('کارت سبک برگردانده می‌شود (بدون variants)',
@@ -130,7 +137,7 @@ const post = (p, obj, token) =>
       p1.json.products?.[0]?.id !== p2.json.products?.[0]?.id,
       `${p1.json.products?.[0]?.id} ≠ ${p2.json.products?.[0]?.id}`);
   add('totalPages درست حساب می‌شود',
-      p1.json.totalPages === Math.ceil(2106 / 3), String(p1.json.totalPages));
+      p1.json.totalPages === Math.ceil(CATALOG_TOTAL / 3), String(p1.json.totalPages));
 
   const over = await api('/api/products?limit=500');
   add('limit به ۶۰ مقید می‌شود', over.json.limit === 60,
@@ -226,7 +233,7 @@ const post = (p, obj, token) =>
 
   const inject = await api("/api/products?q=" + encodeURIComponent("' OR 1=1 --"));
   add('تزریق SQL در جستجو بی‌اثر است',
-      inject.status === 200 && inject.json.total < 2106,
+      inject.status === 200 && inject.json.total < CATALOG_TOTAL,
       `${inject.json.total} نتیجه — پارامتری بسته شده`);
 
   // ───────────────────────── ۵) مرتب‌سازی (فهرست سفید)
@@ -294,7 +301,7 @@ const post = (p, obj, token) =>
   const evil = await api('/api/products?sort=' + encodeURIComponent('id; DROP TABLE products--'));
   const stillThere = db.prepare('SELECT COUNT(*) c FROM products').get().c;
   add('مرتب‌سازی مخرب بی‌اثر است',
-      evil.status === 200 && stillThere === 2106,
+      evil.status === 200 && stillThere === CATALOG_TOTAL,
       'فهرست سفید — رشته کاربر هرگز در SQL نمی‌رود');
   add('sort ناشناخته به پیش‌فرض می‌افتد',
       (await api('/api/products?sort=hack')).status === 200);
@@ -402,7 +409,8 @@ const post = (p, obj, token) =>
   add('کوییز شش پیشنهاد می‌دهد', quiz.json.results?.length === 6,
       `${quiz.json.results?.length} قلم`);
   add('کوییز شمار کل محصولات را می‌گوید',
-      quiz.json.total_products === 2106, 'برای «از میان ۲۱۰۶ عطر»');
+      quiz.json.total_products === CATALOG_TOTAL,
+      `برای «از میان ${CATALOG_TOTAL} عطر»`);
   add('پروفایل برگردانده می‌شود', !!quiz.json.profile);
   add('مهمان پروفایلش ذخیره نمی‌شود',
       quiz.json.profile_saved === false, 'مرورگر خودش نگه می‌دارد');

@@ -52,7 +52,7 @@ const toEn = s => String(s)
   .replace(/[۰-۹]/g, c => '۰۱۲۳۴۵۶۷۸۹'.indexOf(c))
   .replace(/[٬,]/g, '');
 
-/** همه صورت‌های نوشتاری یک عدد: ۲۱۰۶ · ۲٬۱۰۶ · 2106 · 2,106 */
+/** همه صورت‌های نوشتاری یک عدد: ۲۱۱۱ · ۲٬۱۱۱ · 2111 · 2,111 */
 function numForms(n) {
   const en = String(n);
   const fa = en.replace(/\d/g, c => '۰۱۲۳۴۵۶۷۸۹'[c]);

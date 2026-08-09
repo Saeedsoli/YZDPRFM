@@ -33,7 +33,7 @@ roles ──1:N──▶ staff ──1:N──▶ audit_log
 
 ## کاتالوگ
 
-### `products` — ۲٬۱۰۶ ردیف
+### `products` — ۲٬۱۱۱ ردیف
 
 | ستون | نوع | توضیح |
 |---|---|---|
@@ -64,7 +64,7 @@ roles ──1:N──▶ staff ──1:N──▶ audit_log
 نُت‌ها به‌صورت JSON ذخیره می‌شوند چون هرگز جداگانه کوئری نمی‌شوند
 و فقط برای نمایش و جستجوی متنی لازم‌اند.
 
-### `variants` — ۱۴٬۷۴۲ ردیف
+### `variants` — ۱۴٬۷۷۷ ردیف
 
 | ستون | نوع | توضیح |
 |---|---|---|
@@ -206,7 +206,7 @@ EXPIRED               CANCELLED                  RETURNED
 
 ## کاوش و سلیقه
 
-### `product_notes` — ۲۲٬۱۳۱ ردیف
+### `product_notes` — ۲۲٬۳۷۲ ردیف
 
 نُت‌های بویایی هر محصول. کلید اصلی ترکیبی است:
 `(product_id, note_key, position)`.
@@ -361,7 +361,7 @@ EXPIRED               CANCELLED                  RETURNED
 
 افزودن ستون نیازی به اسکریپت دستی ندارد.
 
-**بار اول:** ۲٬۱۰۶ محصول از `perfumes_catalogue_seed.json` منتقل،
+**بار اول:** ۲٬۱۱۱ محصول از `perfumes_catalogue_seed.json` منتقل،
 عبارت `(Inspired by ...)` حذف، تصویر تخصیص، SKU بازسازی،
 `search_blob` ساخته می‌شود. حدود ۱۵ ثانیه.
 

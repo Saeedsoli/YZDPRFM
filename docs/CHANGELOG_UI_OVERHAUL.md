@@ -7,14 +7,7 @@
 > `uploads/logo.png` → `source/brand/logo.png` ·
 > `assets/product-nologo/` → `source/product-images/` ·
 > `assets/fonts-original/` → `source/fonts/`
->
-> **تعویض منبع داده (مرداد ۱۴۰۵):** دیتاست ۲٬۱۰۶ عطر کنار گذاشته
-> شد چون بیشتر نام‌هایش ساختگی بودند. اسکریپت‌های نام‌برده در این
-> سند حذف شده‌اند و جانشین دارند:
-> `import_dataset.py` → `import_dataset_v2.py` ·
-> `convert_uploaded_md_dataset.py` → (حذف، بی‌جانشین) ·
-> `source/dataset/perfume-dataset-2000plus.md` → `perfume-dataset-2111.md`
-> — شرح کامل: [`DATASET_V2_MIGRATION.md`](DATASET_V2_MIGRATION.md)
+
 
 این سند کارهای انجام‌شده در دور بازطراحی UI/UX را ثبت می‌کند: چه چیزی
 عوض شد، **چرا** عوض شد، و هر باگ چطور کشف و راستی‌آزمایی شد.
@@ -2034,8 +2027,7 @@ HSTS از `x-forwarded-proto` تشخیص داده می‌شود نه `req.socket
 
 هر ۱۴,۷۴۲ واریانت صفر شدند. **`seed/` هم هماهنگ شد** — وگرنه
 اولین استقرار روی سرور تازه، اعداد قدیمی را برمی‌گرداند.
-`import_dataset.py` و `convert_uploaded_md_dataset.py` هم اصلاح
-شدند تا اگر روزی داده از نو ساخته شود، پیش‌فرض صفر بماند.
+`import_dataset.py` هم اصلاح شد تا اگر روزی داده از نو ساخته شود، پیش‌فرض صفر بماند.
 
 صفحه محصول با موجودی صفر دکمه «ناموجود» غیرفعال نشان می‌دهد —
 با اسکرین‌شات تأیید شد.

@@ -101,7 +101,7 @@ liara deploy --app yazdperfume
 
 ```
 [DB] در حال انتقال داده به SQLite ...
-[DB] ✅ انتقال کامل شد — 2106 محصول، 14742 متغیر.
+[DB] ✅ انتقال کامل شد — 2111 محصول، 14777 متغیر.
 [DB] ✅ 5 مقاله منتقل شد.
 🌸  عطر یزد | Yazd Perfume
 ```
@@ -116,7 +116,7 @@ liara deploy --app yazdperfume
 در اجراهای بعدی، چون دیتابیس روی دیسک پایدار موجود است، مستقیم بالا می‌آید:
 
 ```
-[DB] SQLite آماده — 2106 محصول موجود.
+[DB] SQLite آماده — 2111 محصول موجود.
 ```
 
 ### پیش از استقرار، این را اجرا کنید
@@ -143,8 +143,8 @@ curl https://yazdperfume.liara.run/api/health
 {
   "status": "ok",
   "db": "/app/data/yazd.db",
-  "products": 2106,
-  "variants": 14742
+  "products": 2111,
+  "variants": 14777
 }
 ```
 

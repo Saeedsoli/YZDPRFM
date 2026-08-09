@@ -169,8 +169,8 @@ bash scripts/smoke_test.sh     # ۹۲ آزمون خودکار
 | `gen_product_images.py` | نقشه تصاویر · `--plan` `--todo` `--check` |
 | `build_product_images.py` | **خط لوله کامل** — خام → برش → بایگانی → حکاکی → خروجی · `--dry` |
 | `process_product_images.py` | بهینه‌سازی به JPG/WebP + نسخه کوچک |
-| `import_dataset_v2.py` | 🎯 **واردسازی منبع ۲٬۱۱۱ عطر اصیل** — اعتبارسنجی، نگاشت خانواده، ضرایب قیمت · `--verify` |
-| `replace_catalog.js` | 🎯 **تعویض کامل کاتالوگ روی دیتابیس زنده** — داده تراکنشی حفظ می‌شود · `--dry-run` `--yes` |
+| `import_dataset.py` | 🎯 **ساخت seed از دیتاست مرجع** — شش اعتبارسنجی، نگاشت خانواده، ضرایب قیمت · `--verify` |
+| `replace_catalog.js` | 🎯 **بازنویسی کاتالوگ روی دیتابیس زنده** — داده تراکنشی حفظ می‌شود · `--dry-run` `--yes` |
 | `make_brand_assets.py` | 🎯 **از `source/brand/logo.png` همه مشتقات برند را می‌سازد** — نشان/نوشتار/لاک‌آپ، برداری‌سازی SVG، نسخه روشن و تیره |
 | `emboss_logo.py` | حکاکی نشان روی بطری (از `logo-mark.png`) |
 | `apply_logo_all.py` | اعمال لوگو روی همه تصاویر |
@@ -258,7 +258,7 @@ bash scripts/smoke_test.sh     # ۹۲ آزمون خودکار
 | `ROLES_AND_PERMISSIONS.md` | نقش‌ها، مجوزها، امنیت کارکنان |
 | `ANALYTICS_AND_SHOWCASE.md` | تحلیل داخلی، ویترین، شبکه اجتماعی |
 | `PRODUCT_IMAGERY.md` | سامانه تصاویر و حکاکی لوگو |
-| `DATASET_V2_MIGRATION.md` | 🎯 تعویض منبع داده به ۲٬۱۱۱ عطر اصیل — تصمیم‌ها، دام‌ها، بازتولید |
+| `DATASET_IMPORT.md` | 🎯 واردسازی کاتالوگ — منبع، اعتبارسنجی، قیمت‌گذاری، نگاشت خانواده |
 | `BRAND_ASSETS.md` | 🎯 لوگو و آیکن‌ها — تعویض، نسخه‌های رنگی، دام‌ها |
 | `SITE_DYNAMICS.md` | ویترین فصلی و «اخیراً دیدید» — و آنچه عمداً ساخته نشد |
 | `PWA.md` | سرویس‌ورکر، آفلاین، نصب — و قاعده «هیچ API کش نمی‌شود» |
