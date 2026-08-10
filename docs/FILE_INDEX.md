@@ -122,6 +122,7 @@ bash scripts/smoke_test.sh     # ۹۲ آزمون خودکار
 | `test_price_usd.js` | ۳۸ قیمت دلاری پایه — NULL/صفر، اعشار، مرز دسترسی |
 | `test_price_usd_browser.py` | ۸ فیلد قیمت دلاری در پنل — ذخیره واقعی |
 | `test_exports_browser.py` | ۱۲ دانلود خروجی از پنل — کلیک واقعی، BOM، بازه |
+| `make_preview.py` | 🎯 **پیش‌نمای کامل ۴۰ نما** — موبایل و دسکتاپ، پنل، فاکتور · خروجی در پوشه `preview/` (در گیت نیست) |
 | `make_samples.js` | ساخت نمونه خروجی‌ها در `docs/samples/` |
 | `test_enamad_browser.py` | ۲۲ نشان در مرورگر واقعی — DOM، CLS، حالت قطعی |
 | `test_pwa.js` | ۵۳ پیکربندی PWA — manifest، آیکن، هدر سرویس‌ورکر |
@@ -202,9 +203,6 @@ bash scripts/smoke_test.sh     # ۹۲ آزمون خودکار
 | `apply_stock_and_volume.js` | صفر کردن موجودی + حجم ۱۵۰ml · `--dry-run` |
 | `bench_checkout.js` | بنچمارک مسیر خرید — فقط محیط توسعه |
 | `bench_pageload.py` | بنچمارک تجربه کاربر با مرورگر واقعی |
-| `add_favicon_links.py` | درج پیوند آیکن در هر ۲۳ صفحه |
-| `capture_all.py` | عکس‌برداری از همه صفحات · خروجی در `shots/` |
-| `capture_new.py` | عکس‌برداری از صفحات تازه · بخش‌بخش و خوانا |
 | `capture_campaign.py` | عکس جشنواره در فهرست/محصول/سبد + سنجش سرریز افقی |
 | `shot_cards.py` | عکس نزدیک کارت محصول و جعبه خرید — بازبینی چشمی |
 | `shot_dynamics.py` | سناریوی مرورگر: ویترین فصلی و تاریخچه بازدید |

@@ -258,15 +258,15 @@ async function boot() {
     console.log('\n  ── هر دو نسخه سرو می‌شوند ──');
 
     {
+      /* سفارش آزمونی خودمان را می‌سازیم، نه اینکه به داده موجود
+         تکیه کنیم. روی دیتابیس تازهٔ افتتاح هیچ سفارش پرداخت‌شده‌ای
+         نیست و آزمونی که به آشغال قبلی تکیه دارد آنجا قرمز می‌شود. */
       const db = new Database(DB);
-      const o = db.prepare(
-        `SELECT order_id FROM orders WHERE status IN
-         ('PAID','PROCESSING','SHIPPED','DELIVERED') ORDER BY rowid DESC LIMIT 1`).get();
-      db.close();
+      const { makePaidOrder, cleanupOrders } = require('./lib/test_order');
+      cleanupOrders(db);                       // بازمانده اجرای قبلی
+      const o = makePaidOrder(db, { giftWrap: 70000 });
 
-      if (!o) {
-        add('سفارش پرداخت‌شده برای آزمون هست', false);
-      } else {
+      {
         for (const [q, label] of [['', 'عادی'], ['&formal=1', 'رسمی']]) {
           const res = await fetch(`${BASE}/invoice?order=${o.order_id}${q}`);
           const html = await res.text();
@@ -274,6 +274,9 @@ async function boot() {
             res.status === 200 && html.includes('invoice'), `status ${res.status}`);
         }
       }
+
+      cleanupOrders(db, o.order_id);
+      db.close();
     }
 
   } catch (e) {

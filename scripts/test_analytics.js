@@ -93,7 +93,16 @@ const api = (p, opt = {}, token = null) =>
   // ══ ۱) ثبت رویداد ══
   console.log(d('  ثبت رویداد'));
 
-  const prods = await fetch(`${BASE}/api/products?limit=3`).then(r => r.json());
+  /* 🔴 پنج محصول، نه سه.
+     `refreshTrending` در src/analytics.js قاعده‌ای دارد:
+         if (hot.length < 4) hot = [];
+     یعنی ویترین با کمتر از چهار محصول خالی می‌ماند — قاعده درستی
+     است چون ویترین سه‌کارتی ناقص دیده می‌شود.
+
+     آزمون قبلاً سه محصول می‌ساخت و روی دیتابیس پر از رویدادِ
+     آزمون‌های دیگر سبز می‌شد. روی دیتابیس تازهٔ افتتاح قرمز
+     می‌شد — یعنی به آشغال قبلی تکیه داشت، نه به داده خودش. */
+  const prods = await fetch(`${BASE}/api/products?limit=5`).then(r => r.json());
   const slugs = prods.products.map(p => p.slug);
   const ids   = prods.products.map(p => p.id);
 
@@ -101,10 +110,12 @@ const api = (p, opt = {}, token = null) =>
      مقدار مطلق معنا ندارد — تفاضل سنجیده می‌شود. */
   const viewsBefore = db.prepare("SELECT COUNT(*) n FROM events WHERE kind='view'").get().n;
 
-  // سه بازدیدکننده جدا روی محصول اول، دو تا روی دومی، یکی روی سومی
+  /* بازدیدکننده نزولی: اولی بیشترین، آخری کمترین.
+     `slugs.length - i` تضمین می‌کند حتی با تغییر تعداد محصول
+     ترتیب نزولی حفظ شود. */
   let sent = 0;
   for (let i = 0; i < slugs.length; i++) {
-    for (let v = 0; v < 3 - i; v++) {
+    for (let v = 0; v < slugs.length - i; v++) {
       await fetch(`${BASE}/api/products/${slugs[i]}`,
         { headers: { 'User-Agent': `Mozilla/5.0 anuser${v}` } });
       sent++;

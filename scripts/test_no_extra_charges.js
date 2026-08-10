@@ -125,12 +125,17 @@ const api = (p, opt = {}, token = null) =>
     add('ورود مدیر برای دیدن فاکتور', !!TOK, 'وضعیت ' + login.status);
     if (!TOK) return finish();
 
-    // سفارش تسویه‌شده را مستقیم از دیتابیس بردار — به ترتیب صفحه‌بندی وابسته نباشیم
-    const paid = db.prepare(`
-      SELECT order_id, subtotal, discount_amount, shipping_fee, total_paid
-      FROM orders
-      WHERE status IN ('PAID','PROCESSING','SHIPPED','DELIVERED')
-      ORDER BY rowid DESC LIMIT 1`).get();
+    /* سفارش آزمونی خودمان — با کادو، تا معادله جمع کامل سنجیده شود.
+       تکیه بر داده موجود یعنی آزمون روی دیتابیس تازهٔ افتتاح
+       قرمز می‌شود، در حالی که کد سالم است. */
+    /* 🔴 `db` بالا عمداً readonly است تا آزمون به‌طور تصادفی داده
+       را عوض نکند — محافظ خوبی که باید بماند. برای ساخت سفارش
+       آزمونی اتصال نوشتنی **جدا** باز می‌شود و بلافاصله بسته. */
+    const { makePaidOrder, cleanupOrders } = require('./lib/test_order');
+    const dbw = new Database(DB);
+    cleanupOrders(dbw);                       // بازمانده اجرای قبلی
+    const paid = makePaidOrder(dbw, { giftWrap: 70000 });
+    dbw.close();
 
     add('سفارش تسویه‌شده برای آزمون فاکتور موجود است', !!paid);
     if (!paid) return finish();
@@ -218,6 +223,13 @@ const api = (p, opt = {}, token = null) =>
   } catch (e) {
     add('اجرای آزمون بدون خطا', false, e.message);
   }
+
+  try {
+    const { cleanupOrders } = require('./lib/test_order');
+    const dbc = new Database(DB);
+    cleanupOrders(dbc);
+    dbc.close();
+  } catch {}
 
   finish();
 })();
