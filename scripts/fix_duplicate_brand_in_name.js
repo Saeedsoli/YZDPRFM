@@ -35,8 +35,22 @@ const y = s => `\x1b[33m${s}\x1b[0m`;
 const d = s => `\x1b[2m${s}\x1b[0m`;
 
 /** حذف نام برند از نام محصول، با حفظ خوانایی */
+/* حرف‌های اضافه‌ای که برند را جزء لاینفک نام می‌کنند.
+   بدون این، «مون گرلن» به «مون» و «بلو د شنل» به «بلو د»
+   تبدیل می‌شود — نام محصول نابود می‌شود.
+   همان فهرست test_brand_names.js و fix_seed_brand_names.py؛
+   واگرا شدنشان یعنی دیتابیس و seed نام متفاوت می‌گیرند. */
+const CONNECTORS = new Set(['د', 'دو', 'دِ', 'آو', 'او', 'له', 'لا',
+  'میس', 'مای', 'مستر', 'مون', 'لو', 'بلو', 'تق',
+  'پاشا', 'ویاژ', 'لنستان', 'ماست', 'هوم']);
+
 function stripBrand(name, brand) {
   if (!name || !brand) return name;
+
+  // اگر واژه پیش از برند حرف اضافه باشد، برند بخشی از نام است
+  const words = String(name).split(/\s+/).filter(Boolean);
+  const bi = words.indexOf(brand);
+  if (bi > 0 && CONNECTORS.has(words[bi - 1])) return name;
 
   let out = name;
 

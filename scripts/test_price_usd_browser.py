@@ -76,27 +76,67 @@ async def main():
                 await usd.fill("18.25")
                 save = p.locator("#pVariants button[onclick^='saveVariant']").first
                 await save.click(); await p.wait_for_timeout(2600)
-                # بازخوانی از دیتابیس
-                import subprocess
+                # بازخوانی از دیتابیس — **همان SKU** که ویرایش شد.
+                #
+                # نسخه اول سه ردیف اول جدول را می‌گرفت و امید داشت
+                # مقدار تازه بینشان باشد. وقتی price_usd هنوز جایی
+                # پر نشده بود کار می‌کرد، ولی حالا هر ۱۴٬۷۷۷ واریانت
+                # از منبع داده مقدار دارند و سه ردیف اول ربطی به
+                # ویرایش ما ندارند.
+                #
+                # درست: شناسه دقیقِ فیلدی که پر کردیم را بخوان.
+                usd_id = await usd.get_attribute("id")      # usd_<SKU>
+                sku = usd_id.replace("usd_", "", 1)
+                import subprocess, json as _json
                 out = subprocess.run(["node","-e","""
 const {db}=require('/home/user/src/db');
-const r=db.prepare('SELECT sku,price_usd FROM variants WHERE price_usd IS NOT NULL LIMIT 3').all();
+const r=db.prepare('SELECT sku,price_usd FROM variants WHERE sku=?').get(process.argv[1]);
 console.log(JSON.stringify(r));
-"""], capture_output=True, text=True).stdout.strip().split("\n")[-1]
-                add("مقدار در دیتابیس ذخیره شد", "18.25" in out, out[:70])
+""", sku], capture_output=True, text=True).stdout.strip().split("\n")[-1]
+                try:
+                    row = _json.loads(out)
+                    saved = float(row.get("price_usd") or 0)
+                except Exception:
+                    saved = None
+                add("مقدار در دیتابیس ذخیره شد", saved == 18.25,
+                    f"{sku} → {saved}")
 
                 await p.reload(wait_until="domcontentloaded"); await p.wait_for_timeout(3000)
 
         add("هیچ خطای جاوااسکریپت", not errs, "; ".join(errs[:1]))
         await b.close()
 
-    # آزمون نباید داده واقعی بگذارد
+    # ── بازگرداندن مقدار اصلی، نه پاک کردن ──
+    #
+    # 🔴 نسخه اول `price_usd=NULL` می‌گذاشت. وقتی این ستون هنوز
+    #    جایی پر نشده بود بی‌ضرر بود، ولی حالا هر واریانت مقدار
+    #    واقعی از دیتاست مرجع دارد و NULL گذاشتن یعنی **نابود
+    #    کردن داده تولید** — آزمونی که داده را خراب کند از نبودنش
+    #    بدتر است.
+    #
+    #    مقدار درست از seed خوانده و برگردانده می‌شود.
     import subprocess
-    subprocess.run(["node","-e",
-        "const {db}=require('/home/user/src/db');"
-        "db.prepare('UPDATE variants SET price_usd=NULL WHERE price_usd=18.25').run();"],
-        capture_output=True)
-    print("  (مقدار آزمونی پاک شد)")
+    subprocess.run(["node","-e","""
+const fs=require('fs');
+const {db}=require('/home/user/src/db');
+const hit=db.prepare('SELECT sku FROM variants WHERE price_usd=18.25').all();
+if (!hit.length) process.exit(0);
+const seed=JSON.parse(fs.readFileSync('/home/user/seed/perfumes_catalogue_seed.json','utf8'));
+const bySku=new Map();
+for (const p of seed) for (const v of p.variants) bySku.set(v.sku, v.price_usd);
+const upd=db.prepare('UPDATE variants SET price_usd=? WHERE sku=?');
+let n=0;
+for (const r of hit) {
+  // SKU دیتابیس با شناسه عددی ساخته می‌شود؛ از روی محصول پیدایش کن
+  const row=db.prepare('SELECT product_id, type, volume_ml FROM variants WHERE sku=?').get(r.sku);
+  const prod=db.prepare('SELECT slug FROM products WHERE id=?').get(row.product_id);
+  const sp=seed.find(x=>x.slug===prod.slug);
+  const sv=sp && sp.variants.find(v=>v.type===row.type && v.volume_ml===row.volume_ml);
+  if (sv) { upd.run(sv.price_usd, r.sku); n++; }
+}
+console.log(n);
+"""], capture_output=True)
+    print("  (مقدار اصلی برگردانده شد)")
     f=sum(1 for c in checks if not c)
     print(f"\n  {'فیلد قیمت دلاری در پنل کار می‌کند.' if f==0 else str(f)+' ناموفق'}  {len(checks)-f}/{len(checks)}\n")
     sys.exit(0 if f==0 else 1)
