@@ -228,10 +228,11 @@ function render() {
 
      نسخه قبلی پس از جشنواره حساب می‌کرد و همان رفتار سرور بود،
      ولی هر دو یک اشتباه مشترک داشتند: جشنواره می‌توانست سبد را
-     زیر آستانه ببرد و کرایه ۳۵۰,۰۰۰ اضافه کند — یعنی تخفیف،
-     پرداختی را بالا می‌برد. */
-  const freeShip = subtotal >= 2500000;
-  const remain = 2500000 - subtotal;
+     زیر آستانه ببرد و کرایه اضافه کند — یعنی تخفیف، پرداختی را
+     بالا می‌برد. */
+  const FREE_SHIP_THRESHOLD = 2000000;
+  const freeShip = subtotal >= FREE_SHIP_THRESHOLD;
+  const remain = FREE_SHIP_THRESHOLD - subtotal;
 
   const outCount = items.filter(i => meta[i.sku]?.out).length;
 
@@ -289,7 +290,7 @@ function render() {
       </div>
       ${!freeShip && !freeShipCoupon ? `<div class="ship-goal">
         <div class="ship-goal-t">با <b>${money(remain)}</b> تومان خرید بیشتر، ارسال رایگان می‌شود</div>
-        <div class="ship-goal-bar"><i style="width:${Math.min(100, subtotal / 2500000 * 100).toFixed(1)}%"></i></div>
+        <div class="ship-goal-bar"><i style="width:${Math.min(100, subtotal / FREE_SHIP_THRESHOLD * 100).toFixed(1)}%"></i></div>
       </div>` : `<div class="ship-goal done">
         <svg viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg>
         ارسال این سفارش رایگان است

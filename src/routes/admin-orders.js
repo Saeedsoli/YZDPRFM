@@ -245,6 +245,10 @@ async function handle(ctx) {
         campaign_note: order.campaign_note || null,
         coupon: Math.max(0, (order.discount_amount || 0) - (order.campaign_discount || 0)),
         shipping: order.shipping_fee,
+        /* بسته‌بندی کادویی — سطر جدا در فاکتور.
+           سفارش‌های پیش از افزودن این ستون صفر می‌گیرند، پس
+           فاکتور قدیمی دقیقاً مثل قبل چاپ می‌شود. */
+        gift_wrap: order.gift_wrap_fee || 0,
         grand_total: order.total_paid
       }
     });
@@ -258,7 +262,7 @@ async function handle(ctx) {
     });
     res.write('\uFEFF');
     res.write('Order_ID,Date,Customer,Mobile,Province,City,SKU,Product,Unit_Price,Qty,'
-      + 'Line_Total,Discount_Code,Discount,Shipping,Order_Total,Status,Tracking\n');
+      + 'Line_Total,Discount_Code,Discount,Shipping,Gift_Wrap,Order_Total,Status,Tracking\n');
     const rows = db.prepare(`
       SELECT o.*, i.sku, i.product_name, i.unit_price, i.quantity, i.line_total
       FROM orders o LEFT JOIN order_items i ON i.order_id = o.order_id
@@ -268,7 +272,7 @@ async function handle(ctx) {
       res.write(`${r.order_id},${(r.created_at || '').split('T')[0]},"${r.customer_name}",${r.mobile},`
         + `${r.province || ''},${r.city || ''},${r.sku || ''},"${r.product_name || ''}",`
         + `${r.unit_price || 0},${r.quantity || 0},${r.line_total || 0},`
-        + `${r.discount_code || ''},${r.discount_amount || 0},${r.shipping_fee || 0},`
+        + `${r.discount_code || ''},${r.discount_amount || 0},${r.shipping_fee || 0},${r.gift_wrap_fee || 0},`
         + `${r.total_paid},${STATUS_FA[r.status] || r.status},${r.tracking_code || ''}\n`);
     });
     res.end();

@@ -36,6 +36,22 @@
                font-size: 1.1rem; font-weight: 800; }
   .mini-item { display: flex; gap: 9px; padding: 8px 0; border-bottom: 1px dashed var(--border); font-size: .8rem; }
   .mini-item:last-of-type { border: none; }
+
+  /* بسته‌بندی کادویی — گزینه اختیاری تسویه.
+     ناحیه لمسی کل کادر است نه فقط چک‌باکس، چون روی موبایل هدف
+     ۱۶ پیکسلی عملاً غیرقابل زدن است. */
+  .gift-opt { display: flex; gap: 11px; align-items: flex-start; cursor: pointer;
+      margin-top: 13px; padding: 12px 13px; border: 1px solid var(--border);
+      border-radius: 11px; background: var(--bg);
+      transition: border-color var(--t-fast), background var(--t-fast); }
+  .gift-opt:hover { border-color: var(--gold); }
+  .gift-opt:has(input:checked) { border-color: var(--gold);
+      background: rgba(197,155,39,.07); }
+  .gift-opt input { width: 18px; height: 18px; margin-top: 2px;
+      accent-color: var(--gold); flex-shrink: 0; cursor: pointer; }
+  .gift-txt { display: flex; flex-direction: column; gap: 3px; }
+  .gift-txt b { font-size: .84rem; font-weight: 700; }
+  .gift-txt i { font-size: .73rem; color: var(--muted); font-style: normal; line-height: 1.7; }
   .err { background: #FDECEA; border-right: 3px solid #C0392B; color: #922B21;
          padding: 11px 14px; border-radius: 9px; font-size: .84rem; margin-bottom: 14px; display: none; }
 </style>
@@ -171,16 +187,23 @@ document.getElementById('fProvince').innerHTML =
   '<option value="">انتخاب کنید…</option>' +
   PROVINCES.map(p => `<option>${p}</option>`).join('');
 
+/* نرخ ارسال یکسان برای همه شهرها.
+   این فقط برآورد اولیه پیش از پاسخ سرور است — مبلغ نهایی همیشه
+   از /api/cart/calculate می‌آید. */
+const FREE_SHIP_THRESHOLD = 2000000;
+const GIFT_WRAP_FEE = 70000;
+
 function shippingFee() {
   const sub = YazdCart.subtotal();
-  if (sub >= 2500000) return { fee: 0, label: 'رایگان (خرید بالای ۲٬۵۰۰٬۰۰۰)' };
-  const prov = document.getElementById('fProvince').value;
-  const city = document.getElementById('fCity').value.trim();
-  const isYazd = prov === 'یزد' || city === 'یزد';
-  return isYazd
-    ? { fee: 250000, label: 'شهر یزد' }
-    : { fee: 350000, label: 'پست / تیپاکس سراسری' };
+  if (sub >= FREE_SHIP_THRESHOLD) return { fee: 0, label: 'رایگان (خرید بالای ۲٬۰۰۰٬۰۰۰)' };
+  return { fee: 100000, label: 'پست / تیپاکس سراسری' };
 }
+
+/* بسته‌بندی کادویی — انتخاب کاربر در همین صفحه نگه داشته می‌شود.
+   در localStorage ذخیره نمی‌شود: تصمیمی مربوط به همین سفارش است،
+   نه ترجیح دائمی. اگر ذخیره می‌شد، مشتری دفعه بعد بدون اینکه
+   بخواهد ۷۰ هزار تومان اضافه می‌پرداخت. */
+let giftWrap = false;
 
 let couponCode = localStorage.getItem('yazd_coupon') || '';
 let serverCalc = null;
@@ -192,7 +215,9 @@ async function renderSummary() {
   const s = shippingFee();
 
   // محاسبه دقیق از سرور (شامل تخفیف)
-  let discount = 0, shipFee = s.fee, shipLabel = s.label, total = sub + s.fee, cErr = null;
+  let discount = 0, shipFee = s.fee, shipLabel = s.label, cErr = null;
+  let wrapFee = giftWrap ? GIFT_WRAP_FEE : 0;
+  let total = sub + s.fee + wrapFee;
   let campOff = 0, campLines = [];
   try {
     const r = await fetch('/api/cart/calculate', {
@@ -201,6 +226,7 @@ async function renderSummary() {
       body: JSON.stringify({
         items: items.map(i => ({ sku: i.sku, quantity: i.quantity })),
         coupon_code: couponCode || undefined,
+        gift_wrap: giftWrap,
         province: document.getElementById('fProvince').value,
         city: document.getElementById('fCity').value.trim()
       })
@@ -212,6 +238,7 @@ async function renderSummary() {
       campOff = d.campaign_discount || 0;
       campLines = d.campaign_lines || [];
       shipFee = d.shipping_fee; shipLabel = d.shipping_label;
+      wrapFee = d.gift_wrap_fee || 0;
       total = d.total_payable; cErr = d.coupon_error;
       if (cErr) { couponCode = ''; localStorage.removeItem('yazd_coupon'); }
     }
@@ -234,7 +261,17 @@ async function renderSummary() {
     ${discount > 0 ? `<div class="sum-row" style="color:#1E8449;font-weight:700">
       <span>تخفیف (${couponCode})</span><strong>− ${money(discount)}</strong></div>` : ''}
     <div class="sum-row"><span>ارسال — ${shipLabel}</span><strong>${shipFee ? money(shipFee) : 'رایگان'}</strong></div>
+    ${wrapFee > 0 ? `<div class="sum-row">
+      <span>بسته‌بندی کادویی</span><strong>${money(wrapFee)}</strong></div>` : ''}
     ${cErr ? `<div style="color:#C0392B;font-size:.76rem;padding:6px 0">${cErr}</div>` : ''}
+
+    <label class="gift-opt">
+      <input type="checkbox" id="fGift" ${giftWrap ? 'checked' : ''} onchange="toggleGift(this.checked)">
+      <span class="gift-txt">
+        <b>بسته‌بندی کادویی</b>
+        <i>جعبه هدیه، روبان و کارت پیام دست‌نویس — ${money(GIFT_WRAP_FEE)} تومان</i>
+      </span>
+    </label>
     <div class="sum-row sum-total"><span>قابل پرداخت</span><span>${money(total)} تومان</span></div>
     <button class="btn btn-block" style="margin-top:14px" id="payBtn" onclick="submitOrder()">
       پرداخت و ثبت نهایی سفارش
@@ -244,6 +281,11 @@ async function renderSummary() {
     </div>`;
 }
 function recalc() { renderSummary(); }
+
+function toggleGift(on) {
+  giftWrap = !!on;
+  renderSummary();
+}
 
 /* ── اعتبارسنجی درجا ──
    خطا کنار خود فیلد نشان داده می‌شود، نه بالای صفحه. کاربر روی موبایل
@@ -340,6 +382,7 @@ async function submitOrder() {
         postal_code: toEnDigits(document.getElementById('fPostal').value).trim(),
         customer_note: document.getElementById('fNote').value.trim() || undefined,
         coupon_code: couponCode || undefined,
+        gift_wrap: giftWrap,
         items: YazdCart.get().map(i => ({ sku: i.sku, quantity: i.quantity }))
       })
     });

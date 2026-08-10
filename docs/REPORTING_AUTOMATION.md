@@ -42,7 +42,7 @@
 | `Unit_Price_Toman` | قیمت واحد (قبل تخفیف) | `1,450,000` |
 | `Discount_Amount_Toman` | مبلغ تخفیف اعمال‌شده | `100,000` |
 | `Net_Amount_Toman` | مبلغ ناخالص پرداختی کالا | `2,800,000` |
-| `Shipping_Cost_Toman` | هزینه ارسال محاسبه شده | `350,000` |
+| `Shipping_Cost_Toman` | هزینه ارسال محاسبه شده | `100,000` |
 | `Total_Paid_Toman` | کل مبلغ پرداختی نهایی فاکتور | `3,150,000` |
 | `Payment_Gateway` | نام درگاه پرداخت | `Shaparak_Saman` |
 | `Gateway_Ref_Code` | شماره پیگیری/کد مرجع درگاه | `849201948102` |

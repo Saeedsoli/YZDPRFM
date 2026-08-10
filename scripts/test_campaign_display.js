@@ -506,10 +506,15 @@ const api = (p, opt = {}, tok = null) =>
       }
 
       const db3 = new Database(DB);
-      /* واریانتی کمی بالای آستانه که با ۱۰٪ تخفیف زیرش می‌رود */
+      /* واریانتی کمی بالای آستانه که با ۱۰٪ تخفیف زیرش می‌رود.
+         بازه از خودِ آستانه ساخته می‌شود تا با تغییر نرخ ارسال
+         آزمون نشکند: بالای آستانه، ولی نه آن‌قدر که ۱۰٪ تخفیف
+         هم زیرش نبردش (آستانه ÷ ۰٫۹). */
+      const FREE_SHIP = 2000000;
       const edge = db3.prepare(`
         SELECT sku, price_toman FROM variants
-        WHERE price_toman > 2500000 AND price_toman < 2777777 LIMIT 1`).get();
+        WHERE price_toman > ? AND price_toman < ? LIMIT 1`)
+        .get(FREE_SHIP, Math.floor(FREE_SHIP / 0.9));
       let edgePrev = null;
       if (edge) {
         edgePrev = db3.prepare('SELECT stock FROM variants WHERE sku=?').get(edge.sku).stock;
@@ -604,8 +609,12 @@ const api = (p, opt = {}, tok = null) =>
       add('سبد سطر جشنواره دارد', /camp-row/.test(cart) && /campOff/.test(cart));
       add('سبد از منبع واحد calculate می‌خواند', /calcTotals/.test(cart));
       add('تسویه سطر جشنواره دارد', /campaign_discount/.test(chk));
+      /* مهم این است که مبنا **جمع کالاها** باشد، نه عدد آستانه.
+         گره زدن آزمون به عدد یعنی هر تغییر نرخ ارسال آن را
+         می‌شکند، در حالی که چیزی که واقعاً باید تضمین شود
+         «تخفیف پرداختی را بالا نبرد» است. */
       add('آستانه ارسال رایگان در سبد روی جمع کالاها سنجیده می‌شود',
-        /const freeShip = subtotal >= 2500000/.test(cart));
+        /const freeShip = subtotal >= FREE_SHIP_THRESHOLD/.test(cart));
     }
 
   } catch (e) {

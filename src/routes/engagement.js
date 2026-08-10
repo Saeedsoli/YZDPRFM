@@ -439,6 +439,7 @@ async function handle(ctx) {
       postal_code: o.postal_code,
       subtotal: o.subtotal,
       shipping_fee: o.shipping_fee,
+      gift_wrap_fee: o.gift_wrap_fee || 0,
       discount_amount: o.discount_amount,
       campaign_discount: o.campaign_discount,
       total_paid: o.total_paid,

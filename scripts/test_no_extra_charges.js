@@ -153,6 +153,14 @@ const api = (p, opt = {}, token = null) =>
       'campaign_note',   // عنوان جشنواره، متنی
       'coupon',          // سهم کد تخفیف — زیرمجموعه discount
       'shipping',        // هزینه ارسال
+      /* بسته‌بندی کادویی — سرویس **انتخابی** مشتری، نه مبلغ
+         تحمیلی. تفاوتش با مالیات و کارمزد بنیادی است:
+           • پیش‌فرض خاموش است
+           • مشتری خودش تیک می‌زند و مبلغ را پیش از پرداخت می‌بیند
+           • در فاکتور سطر جدا دارد، پنهان نیست
+         قاعده برند «هیچ مبلغ اضافه‌ای» درباره چیزی است که مشتری
+         نخواسته و نمی‌بیند. سرویس اختیاریِ شفاف نقضش نمی‌کند. */
+      'gift_wrap',
       'grand_total'      // مبلغ پرداختی
     ]);
     const unknown = Object.keys(t).filter(k => !ALLOWED.has(k));
@@ -166,9 +174,15 @@ const api = (p, opt = {}, token = null) =>
     add('هیچ کلید مالیاتی در totals نیست',
       !Object.keys(t).some(k => /vat|tax|net_goods/i.test(k)));
 
-    add('جمع کالاها − تخفیف + ارسال = مبلغ پرداختی (بدون عدد پنهان)',
-      t.subtotal - t.discount + t.shipping === t.grand_total,
-      `${t.subtotal} − ${t.discount} + ${t.shipping} = ${t.grand_total}`);
+    /* معادله کامل — هر جزء مبلغ باید در آن باشد.
+       اگر جزء تازه‌ای اضافه شود ولی اینجا نیاید، آزمون سبز
+       می‌ماند در حالی که عدد پنهان وجود دارد. کادو هم به همین
+       دلیل صریح آمده، نه اینکه در grand_total حل شود. */
+    const wrap = t.gift_wrap || 0;
+    add('جمع کالاها − تخفیف + ارسال + کادو = مبلغ پرداختی (بدون عدد پنهان)',
+      t.subtotal - t.discount + t.shipping + wrap === t.grand_total,
+      `${t.subtotal} − ${t.discount} + ${t.shipping}` +
+      (wrap ? ` + ${wrap}` : '') + ` = ${t.grand_total}`);
 
     add('مبلغ فاکتور با مبلغی که مشتری واقعاً پرداخت کرده یکی است',
       t.grand_total === paid.total_paid);

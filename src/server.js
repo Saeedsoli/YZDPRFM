@@ -234,20 +234,34 @@ function newOrderId() {
 // ═══════════════════════════════════════════
 // قوانین ارسال (طبق توافق)
 // ═══════════════════════════════════════════
+/* نرخ ارسال یکسان است — بدون استثنا برای هیچ شهری.
+   پیش‌تر شهر یزد نرخ جدا داشت؛ حذف شد چون تفاوت قیمت برای مشتری
+   شهرستانی حس تبعیض می‌سازد و توضیح دادنش در هر صفحه هزینه
+   ارتباطی دارد. یک عدد، همه‌جا. */
 const SHIPPING = {
-  YAZD_CITY: 250000,
-  NATIONWIDE: 350000,
-  FREE_THRESHOLD: 2500000
+  FLAT: 100000,
+  FREE_THRESHOLD: 2000000
 };
 
-function calcShipping(subtotal, province, city) {
-  const isYazd = province === 'یزد' || city === 'یزد';
+/** بسته‌بندی کادویی — سرویس اختیاری در تسویه */
+const GIFT_WRAP_FEE = 70000;
+
+function calcShipping(subtotal) {
   if (subtotal >= SHIPPING.FREE_THRESHOLD) {
-    return { fee: 0, label: 'رایگان (خرید بالای ۲٬۵۰۰٬۰۰۰ تومان)' };
+    return { fee: 0, label: 'رایگان (خرید بالای ۲٬۰۰۰٬۰۰۰ تومان)' };
   }
-  return isYazd
-    ? { fee: SHIPPING.YAZD_CITY, label: 'ارسال شهر یزد (۲۵۰٬۰۰۰ تومان)' }
-    : { fee: SHIPPING.NATIONWIDE, label: 'پست / تیپاکس سراسری (۳۵۰٬۰۰۰ تومان)' };
+  return { fee: SHIPPING.FLAT, label: 'پست / تیپاکس سراسری (۱۰۰٬۰۰۰ تومان)' };
+}
+
+/**
+ * هزینه بسته‌بندی کادویی.
+ *
+ * ورودی از کاربر می‌آید، پس هرگز مستقیم به مبلغ تبدیل نمی‌شود —
+ * فقط «هست یا نیست». مبلغ همیشه از ثابت سرور خوانده می‌شود تا
+ * دستکاری سمت مشتری بی‌اثر بماند.
+ */
+function calcGiftWrap(wanted) {
+  return wanted ? GIFT_WRAP_FEE : 0;
 }
 
 /**
@@ -869,7 +883,7 @@ const server = http.createServer(async (req, res) => {
          تخفیفی که پرداختی را بالا ببرد، از هر جشنواره‌ای بدتر
          است. معیار درست «چقدر کالا خریده» است نه «چقدر پول داده»
          — همان‌طور که کوپن هم روی کرایه اثر نمی‌گذارد. */
-      const ship = calcShipping(v.subtotal, body.province, body.city);
+      const ship = calcShipping(v.subtotal);
       let shippingFee = ship.fee, shippingLabel = ship.label;
       let discount = 0, couponInfo = null, couponError = null;
 
@@ -895,6 +909,14 @@ const server = http.createServer(async (req, res) => {
         }
       }
 
+      /* بسته‌بندی کادویی — سرویس جدا از کالا.
+         عمداً **پس از** محاسبه تخفیف و آستانه ارسال اضافه می‌شود:
+           • کوپن نباید روی آن اثر بگذارد (تخفیف روی کالاست)
+           • نباید مشتری را به آستانه ارسال رایگان برساند
+         وگرنه کسی با افزودن کادو به ارسال رایگان می‌رسید و
+         فروشگاه هم کرایه می‌داد هم کادو. */
+      const giftWrap = calcGiftWrap(body.gift_wrap);
+
       return sendJSON(200, {
         items: v.items,
         subtotal: v.subtotal,
@@ -906,7 +928,9 @@ const server = http.createServer(async (req, res) => {
         shipping_fee: shippingFee,
         shipping_label: shippingLabel,
         is_free_shipping: shippingFee === 0,
-        total_payable: Math.max(0, v.subtotal - camp.total - discount + shippingFee)
+        gift_wrap: giftWrap > 0,
+        gift_wrap_fee: giftWrap,
+        total_payable: Math.max(0, v.subtotal - camp.total - discount + shippingFee) + giftWrap
       });
     }
 
@@ -928,7 +952,7 @@ const server = http.createServer(async (req, res) => {
       const afterCampaign = Math.max(0, v.subtotal - camp.total);
 
       // آستانه ارسال روی جمع کالاها — توضیح در /api/cart/calculate
-      const ship = calcShipping(v.subtotal, body.province, body.city);
+      const ship = calcShipping(v.subtotal);
       const mobile = otp.mobileFromToken(getCustomerToken(req)) || body.mobile || null;
       const cv = validateCoupon(body.code, afterCampaign, ship.fee, mobile, v.items);
       if (!cv.ok) return sendJSON(400, { error: cv.error });
@@ -981,7 +1005,7 @@ const server = http.createServer(async (req, res) => {
       const afterCampaign = Math.max(0, v.subtotal - camp.total);
 
       // آستانه ارسال روی جمع کالاها — توضیح در /api/cart/calculate
-      const ship = calcShipping(v.subtotal, body.province, body.city);
+      const ship = calcShipping(v.subtotal);
 
       /* شماره یکتا — با تضمین، نه با احتمال.
          بخش تصادفی برخورد را عملاً غیرممکن می‌کند، ولی «عملاً» کافی
@@ -1034,20 +1058,26 @@ const server = http.createServer(async (req, res) => {
       /* جشنواره و کوپن هر دو کم می‌شوند. discount_amount در
          دیتابیس مجموع هر دو است تا فاکتور با مبلغ پرداختی بخواند. */
       const totalDiscount = camp.total + discount;
-      const total = Math.max(0, v.subtotal - totalDiscount + shippingFee);
+
+      /* بسته‌بندی کادویی — مبلغ از ثابت سرور، نه از ورودی کاربر.
+         بیرون از تخفیف و آستانه ارسال می‌ماند (توضیح در
+         /api/cart/calculate). */
+      const giftWrapFee = calcGiftWrap(body.gift_wrap);
+
+      const total = Math.max(0, v.subtotal - totalDiscount + shippingFee) + giftWrapFee;
 
       const tx = db.transaction(() => {
         db.prepare(`
           INSERT INTO orders (order_id, created_at, customer_name, mobile,
             first_name, last_name, email,
             province, city, address, postal_code,
-            subtotal, shipping_fee, total_paid, payment_gateway, status,
+            subtotal, shipping_fee, gift_wrap_fee, total_paid, payment_gateway, status,
             discount_code, discount_amount,
             campaign_discount, campaign_note, customer_note, updated_at)
           VALUES (@order_id, @created_at, @customer_name, @mobile,
             @first_name, @last_name, @email,
             @province, @city, @address, @postal_code,
-            @subtotal, @shipping_fee, @total_paid, @gateway, 'PENDING',
+            @subtotal, @shipping_fee, @gift_wrap_fee, @total_paid, @gateway, 'PENDING',
             @discount_code, @discount_amount,
             @campaign_discount, @campaign_note, @customer_note, @created_at)
         `).run({
@@ -1082,6 +1112,7 @@ const server = http.createServer(async (req, res) => {
           postal_code: body.postal_code || null,
           subtotal: v.subtotal,
           shipping_fee: shippingFee,
+          gift_wrap_fee: giftWrapFee,
           total_paid: total,
           gateway: pay.gatewayName()
         });
@@ -1134,6 +1165,7 @@ const server = http.createServer(async (req, res) => {
         discount,
         discount_code: appliedCode,
         shipping_fee: shippingFee,
+        gift_wrap_fee: giftWrapFee,
         total_payable: total,
         payment_url: pr.redirect_url
       });

@@ -297,6 +297,8 @@ function render(d) {
           <td class="num">− ${money(t.coupon)}</td></tr>` : ''}
         <tr><td>هزینه ارسال</td>
           <td class="num">${t.shipping ? money(t.shipping) : 'رایگان'}</td></tr>
+        ${t.gift_wrap > 0 ? `<tr><td>بسته‌بندی کادویی</td>
+          <td class="num">${money(t.gift_wrap)}</td></tr>` : ''}
         <tr class="grand"><td>مبلغ قابل پرداخت</td>
           <td class="num">${money(t.grand_total)} تومان</td></tr>
       </table>

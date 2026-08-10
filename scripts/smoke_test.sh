@@ -113,6 +113,7 @@ chk "$WEBP" "image/webp" "auto-webp serving"
 # هویت لوگو — باید اینجا اجرا شود چون به سرور زنده نیاز دارد
 # (بخش بعدی سرور را می‌کشد).
 run_test test_brand_logo.js "brand logo identity"
+run_test test_shipping_gift.js "shipping rates and gift wrap"
 
 echo "== backup endpoints"
 BK=$(curl -s http://localhost:3000/api/admin/backups -H "Authorization: Bearer $ATOK" \

@@ -68,6 +68,15 @@
              padding:2.5mm 4mm; margin-top:3mm; font-size:.75rem;
              font-weight:700; text-align:center; color:#8A5A0B }
 
+  /* هشدار بسته‌بندی کادویی — برای انبار.
+     رنگ متفاوت از «شکستنی» تا در نگاه اول از هم جدا شوند؛
+     کسی که ده برچسب را پشت هم می‌بیند نباید دو هشدار را
+     یکی فرض کند. حاشیه ضخیم‌تر چون این یکی اقدام می‌خواهد
+     نه فقط احتیاط. */
+  .giftbox { background:#F3E8FF; border:2px solid #7E3AA8; border-radius:5px;
+             padding:2.5mm 4mm; margin-top:3mm; font-size:.78rem;
+             font-weight:800; text-align:center; color:#5B2480 }
+
   @media print {
     body { background:#FFF; padding:0 }
     .toolbar { display:none !important }
@@ -117,7 +126,7 @@ async function load() {
 }
 
 function render(d) {
-  const { order: o, items, settings: st } = d;
+  const { order: o, items, settings: st, totals: t } = d;
 
   /* ── بارکد: همیشه شماره سفارش، هرگز کد رهگیری ──
      خواسته مالک (مرداد ۱۴۰۵): «درج کد رهگیری پستی و مواردی
@@ -176,6 +185,10 @@ function render(d) {
           <b>${fa(new Date(o.created_at).toLocaleDateString('fa-IR'))}</b></div>
       </div>
     </div>
+
+    ${t && t.gift_wrap > 0 ? `<div class="giftbox">
+      🎁 بسته‌بندی کادویی — جعبه هدیه، روبان و کارت پیام
+    </div>` : ''}
 
     <div class="fragile">شکستنی — با احتیاط جابه‌جا شود • دور از نور و گرما</div>
 
