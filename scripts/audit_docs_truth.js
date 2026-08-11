@@ -185,6 +185,110 @@ for (const item of LIVE) {
 }
 
 /* ══════════════════════════════════════════
+   ۱٫۵) عددهای زنده در صفحات سایت
+   ══════════════════════════════════════════
+   🔴 شکافی که مالک پیدا کرد، نه ابزار.
+
+   بخش بالا فقط `docs/` را می‌سنجید. اعداد داخل `public/*.html`
+   هرگز بررسی نمی‌شدند — و دقیقاً همان‌جا بود که پس از تعویض
+   منبع داده، «۲٬۱۰۶ رایحه» و «۱۲۹ برند» ماند و به مشتری نشان
+   داده می‌شد.
+
+   سند غلط را فقط تیم می‌بیند؛ صفحه غلط را **هر بازدیدکننده**.
+   پس این بخش سخت‌گیرتر است: هیچ استثنای «تاریخی» ندارد.
+
+   چرا الگوها محافظه‌کارند: صفحه پر از عدد است (قیمت، حجم، روز
+   تحویل). فقط جایی سنجیده می‌شود که عدد **کنار واژه کلیدی**
+   آمده باشد و از آستانه بزرگ‌تر باشد. */
+console.log();
+console.log(h('  ۱٫۵) عددهای زنده در صفحات سایت'));
+console.log();
+
+const PUB = path.join(ROOT, 'public');
+
+/** فایل‌هایی که به کاربر نمایش داده می‌شوند */
+const pageFiles = [
+  ...fs.readdirSync(PUB).filter(f => f.endsWith('.html'))
+      .map(f => ({ name: f, txt: fs.readFileSync(path.join(PUB, f), 'utf8') })),
+  { name: 'assets/app.js',
+    txt: fs.readFileSync(path.join(PUB, 'assets', 'app.js'), 'utf8') },
+  { name: 'src/seo.js',
+    txt: fs.readFileSync(path.join(ROOT, 'src', 'seo.js'), 'utf8') }
+];
+
+const dbBrands = (() => {
+  try {
+    return require('../src/db').db
+      .prepare('SELECT COUNT(DISTINCT brand_en) c FROM products').get().c;
+  } catch { return 0; }
+})();
+
+const PAGE_LIVE = [
+  {
+    label: 'شمار محصول در صفحات',
+    real: dbProducts,
+    /* 🔴 `\b` پس از واژه فارسی کار نمی‌کند.
+       در JavaScript حرف فارسی «کاراکتر کلمه» نیست، پس مرز کلمه
+       بعد از «رایحه» هرگز تطبیق نمی‌خورد و الگو بی‌صدا صفر
+       نتیجه می‌داد — یعنی ممیزیِ سبزِ توخالی.
+       به‌جایش صراحتاً بررسی می‌شود که پس از واژه، حرف فارسی
+       دیگری نیامده باشد. */
+    re: /([\d۰-۹٬,]{4,})\s*(?:عطر|رایحه|محصول)(?![\u0600-\u06FF])/g,
+    min: 1000
+  },
+  {
+    label: 'شمار برند در صفحات',
+    real: dbBrands,
+    re: /([\d۰-۹٬,]{2,})\s*(?:برند|خانه عطر)(?![\u0600-\u06FF])/g,
+    min: 50
+  }
+];
+
+for (const item of PAGE_LIVE) {
+  if (!item.real) continue;
+  const okForms = new Set(numForms(item.real));
+  const wrong = [];
+
+  for (const { name, txt } of pageFiles) {
+    const lines = txt.split('\n');
+    let m;
+    item.re.lastIndex = 0;
+    while ((m = item.re.exec(txt))) {
+      const raw = m[1];
+      if (!raw) continue;
+      const val = parseInt(toEn(raw), 10);
+      if (isNaN(val) || (item.min && val < item.min)) continue;
+      if (okForms.has(raw.trim())) continue;
+
+      /* ── تقریبِ محافظه‌کارانه مجاز است ──
+         «بیش از ۲۱۰۰ رایحه» با ۲٬۱۱۱ محصول **درست** است — کم‌تر
+         از واقعیت گفتن اغراق نیست، احتیاط است. متن بازاریابی
+         نباید به عدد دقیق گره بخورد چون با هر محصول تازه کهنه
+         می‌شود.
+
+         شرط: عدد باید رُند باشد، کمتر از واقعیت، و با واژه‌ای
+         مثل «بیش از» همراه. اگر بیشتر از واقعیت بود — یعنی
+         اغراق — همچنان خطاست. */
+      const ln0 = txt.slice(0, m.index).split('\n').length;
+      const line = lines[ln0 - 1] || '';
+      const isRound = val % 100 === 0;
+      const hasHedge = /بیش از|بالغ بر|حدود|نزدیک به|\+/.test(line);
+      if (isRound && hasHedge && val < item.real) continue;
+
+      wrong.push(`${name}:${ln0}  «${line.trim().slice(0, 58)}»`);
+    }
+  }
+
+  if (!wrong.length) {
+    ok(`${item.label} = ${item.real}`);
+  } else {
+    bad(`${item.label} — واقعیت ${item.real}، ${wrong.length} مورد کهنه`);
+    wrong.slice(0, 4).forEach(w => console.log(d('        ' + w)));
+    if (wrong.length > 4) console.log(d(`        … و ${wrong.length - 4} مورد دیگر`));
+  }
+}
+
+/* ══════════════════════════════════════════
    ۲) ادعاهای وضعیت
    ══════════════════════════════════════════ */
 console.log();
