@@ -390,6 +390,22 @@ h1, h2, h3, h4 { line-height: var(--lh-tight); letter-spacing: -.01em; }
 .product-card.is-out .price { color: var(--muted); }
 .product-card.is-out:hover { transform: translateY(-2px); }
 
+/* ═══ «به سفارش ساخته می‌شود» ═══
+   حالت میانی: نه موجود، نه بن‌بست.
+
+   عمداً از «فعلاً نداریم» متمایز است — رنگ گرم طلایی به‌جای
+   خاکستری، و تصویر **کم‌رنگ نمی‌شود**. چون این محصول واقعاً
+   قابل سفارش است و نباید مثل کالای مرده دیده شود.
+
+   بیشتر کاتالوگ در همین حالت است: عنوان‌ها برای سفارش و
+   دیده‌شدن در جستجو می‌مانند، نه اینکه انبار پر باشد. */
+.card-out.mto {
+  background: rgba(197,155,39,.94);
+  color: #1A1A18;
+}
+.product-card.is-mto .img-wrap img { filter: none; }
+.product-card.is-mto .card-peek { background: rgba(197,155,39,.92); color: #1A1A18; }
+
 .card-go        { font-size: .74rem; color: var(--gold); font-weight: 700; }
 /* رنگ متفاوت عمدی: طلایی یعنی «بخر»، آبی خاکستری یعنی «منتظر بمان».
    کاربر پیش از خواندن متن، تفاوت را حس می‌کند. */

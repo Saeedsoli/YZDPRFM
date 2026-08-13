@@ -26,7 +26,8 @@ const {
   reviewSummary, hasPurchased,
   createReviewInvite, readReviewInvite, consumeReviewInvite, INVITE_TTL_DAYS,
   getSettings, saveSettings, nextInvoiceNo,
-  buildSearchIndex, buildNotesIndex, listNotes, normalizeFa
+  buildSearchIndex, buildNotesIndex, listNotes, normalizeFa,
+  storeStats, bustStatsCache
 } = require('./db');
 const reports = require('./reports').build(db);
 const analytics = require('./analytics').build(db, appLog);
@@ -408,7 +409,7 @@ function validateCart(items) {
   const stmt = db.prepare(`
     SELECT v.sku, v.price_toman, v.stock, v.volume_ml, v.type_label, v.type,
            p.name_fa, p.name_en, p.slug, p.brand_fa, p.id AS product_id,
-           p.family_slug, p.gender
+           p.family_slug, p.gender, p.supply_mode
     FROM variants v JOIN products p ON p.id = v.product_id
     WHERE v.sku = ?
   `);
@@ -431,8 +432,22 @@ function validateCart(items) {
     }
     const row = stmt.get(item.sku);
     if (!row) return { ok: false, error: `کالای «${item.sku}» یافت نشد.` };
-    if (row.stock < qty) {
-      return { ok: false, error: `موجودی «${row.name_fa}» کافی نیست (موجود: ${row.stock}).` };
+    /* ── سفارش کالای «به سفارش ساخته می‌شود» ──
+       موجودی انبار صفر است ولی سفارش مجاز — این واقعیت کار
+       دست‌ساز است. سقف ۵ عدد می‌گذاریم چون ساخت دستی زمان‌بر
+       است و سفارش ۵۰ تایی عملی نیست.
+
+       عطر UNAVAILABLE همچنان رد می‌شود: اگر نمی‌توانیم بسازیم،
+       پذیرفتن پول یعنی وعده‌ای که نگه نمی‌داریم. */
+    const madeToOrder = row.stock <= 0 && row.supply_mode === 'MADE_TO_ORDER';
+    if (madeToOrder && qty > 5) {
+      return { ok: false, error:
+        `«${row.name_fa}» به سفارش ساخته می‌شود؛ حداکثر ۵ عدد در هر سفارش.` };
+    }
+    if (!madeToOrder && row.stock < qty) {
+      return { ok: false, error: row.stock <= 0
+        ? `«${row.name_fa}» فعلاً قابل تهیه نیست.`
+        : `موجودی «${row.name_fa}» کافی نیست (موجود: ${row.stock}).` };
     }
     const lineTotal = row.price_toman * qty;   // قیمت از دیتابیس
     subtotal += lineTotal;
@@ -815,7 +830,8 @@ const server = http.createServer(async (req, res) => {
       parseBody, rateLimit, RL,
       sendJSON, parseProduct, attachVariants, attachCampaign,
       campaignPercentFor, activeCampaigns, listNotes, normalizeFa,
-      getCustomer, getCustomerToken, otp, taste, essences, analytics
+      getCustomer, getCustomerToken, otp, taste, essences, analytics,
+      res, storeStats
     })) return;
 
     /* ── تعامل مشتری ── (گام ۸ تفکیک)
@@ -1121,7 +1137,12 @@ const server = http.createServer(async (req, res) => {
           INSERT INTO order_items (order_id, sku, product_name, unit_price, quantity, line_total)
           VALUES (?, ?, ?, ?, ?, ?)
         `);
-        const decStock = db.prepare('UPDATE variants SET stock = stock - ? WHERE sku = ?');
+        /* 🔴 موجودی هرگز منفی نشود.
+           کالای «به سفارش» موجودی صفر دارد؛ کم کردن از صفر عدد
+           منفی می‌سازد که هم گزارش انبار را خراب می‌کند هم
+           آزادسازی هنگام لغو سفارش را. */
+        const decStock = db.prepare(
+          'UPDATE variants SET stock = MAX(0, stock - ?) WHERE sku = ?');
         for (const it of v.items) {
           insItem.run(orderId, it.sku, it.product_name, it.unit_price, it.quantity, it.line_total);
           decStock.run(it.quantity, it.sku);
@@ -1443,7 +1464,7 @@ const server = http.createServer(async (req, res) => {
       method, pathname, parsed, req,
       sendJSON, can, who, parseBody, logAudit, appLog, db,
       parseProduct, attachVariants, notifyStockWatchers,
-      releaseStaleOrders, buildSearchIndex, buildNotesIndex
+      releaseStaleOrders, buildSearchIndex, buildNotesIndex, bustStatsCache
     })) return;
     // اطلاعات تماس عمومی — تنها فیلدهای بی‌خطر.
     // کد اقتصادی و شناسه ملی عمداً بیرون گذاشته شده‌اند؛ آن‌ها

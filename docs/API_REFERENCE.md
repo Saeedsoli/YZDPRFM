@@ -758,6 +758,26 @@ Content-Disposition: attachment; filename="yazd-report-30d-2026-08-08.csv"
 ### `POST /api/track`
 ثبت رویداد بازدید از سمت مرورگر. بی‌نام؛ شناسه نشست تصادفی است.
 
+### `GET /api/stats`
+
+آمار زنده فروشگاه — **تنها منبع** عددهای کاتالوگ برای همه صفحات.
+
+هیچ صفحه‌ای نباید شمار محصول یا برند را سخت‌کد کند؛ با اضافه شدن
+یک عطر همه خودکار به‌روز می‌شوند. در رابط، هر عنصر با
+`data-stat="key"` خودکار پر می‌شود.
+
+```json
+{
+  "products": 2111, "brands": 124, "variants": 14777,
+  "in_stock": 1, "made_to_order": 2111, "orderable": 2111,
+  "perfumers": 426, "notes": 5008, "countries": 19,
+  "families": 8, "articles": 5,
+  "year_from": 1533, "year_to": 2024, "centuries": 5
+}
+```
+
+کش ۶۰ ثانیه سمت سرور و ۵ دقیقه در `sessionStorage` مرورگر.
+
 ### `GET /api/showcase`
 ویترین خودکار صفحه اصلی: پرفروش‌ها، پرطرفدارها، پرجستجوها.
 اگر داده فروش کافی نباشد، به `bestsellers_fallback` می‌افتد.

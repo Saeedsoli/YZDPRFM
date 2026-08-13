@@ -75,7 +75,7 @@ async function handle(ctx) {
     parseBody, rateLimit, RL,
     parseProduct, attachVariants, attachCampaign,
     campaignPercentFor, activeCampaigns, listNotes, normalizeFa,
-    getCustomer, getCustomerToken, otp, taste, essences, analytics
+    getCustomer, getCustomerToken, otp, taste, essences, analytics, res
   } = ctx;
 
   /* پوشش `sendJSON` — درس گام ۱.
@@ -264,6 +264,10 @@ async function handle(ctx) {
         min_price: p.min_price,
         campaign_percent: pct,
         in_stock: inStock,
+        /* وضعیت تأمین برای کارت — تفاوت «به سفارش ساخته می‌شود»
+           با «فعلاً نداریم» را کارت باید نشان دهد، نه فقط صفحه
+           محصول. مشتری در فهرست تصمیم می‌گیرد. */
+        supply_mode: p.supply_mode || 'MADE_TO_ORDER',
         variant_count: p.variants.length
       };
     });
@@ -300,6 +304,17 @@ async function handle(ctx) {
    * از جدول `trending` خوانده می‌شود که هر ساعت تازه می‌شود،
    * پس صفحه اصلی هیچ محاسبه سنگینی انجام نمی‌دهد.
    */
+  /* ── آمار زنده فروشگاه ──
+     تنها منبع عددهای کاتالوگ برای همه صفحات. هیچ صفحه‌ای نباید
+     شمار محصول یا برند را سخت‌کد کند؛ با اضافه شدن یک عطر همه
+     خودکار به‌روز می‌شوند.
+
+     کش HTTP یک دقیقه — همان عمر کش داخلی storeStats. */
+  if (method === 'GET' && pathname === '/api/stats') {
+    res.setHeader('Cache-Control', 'public, max-age=60');
+    return sendJSON(200, ctx.storeStats());
+  }
+
   if (method === 'GET' && pathname === '/api/showcase') {
     const best   = analytics.getTrending('bestsellers');
     const wanted = analytics.getTrending('most_wanted');

@@ -33,7 +33,7 @@ const d = s => `\x1b[2m${s}\x1b[0m`;
 
 const sleep = ms => new Promise(res => setTimeout(res, ms));
 
-function cleanDb(sku, restoreStock) {
+function cleanDb(sku, restoreStock, productId, restoreMode) {
   const db = new Database(DB);
   db.prepare(
     "DELETE FROM order_items WHERE order_id IN " +
@@ -43,6 +43,10 @@ function cleanDb(sku, restoreStock) {
   db.prepare('DELETE FROM rate_limits').run();
   if (sku && restoreStock != null) {
     db.prepare('UPDATE variants SET stock=? WHERE sku=?').run(restoreStock, sku);
+  }
+  // وضعیت تأمین هم برگردد وگرنه محصول برای همیشه IN_STOCK می‌ماند
+  if (productId && restoreMode) {
+    db.prepare('UPDATE products SET supply_mode=? WHERE id=?').run(restoreMode, productId);
   }
   db.close();
 }
@@ -63,9 +67,22 @@ async function waitForServer(tries = 40) {
 
   // ── آماده‌سازی: یک متغیر با موجودی دقیقاً ۱ ──
   const db = new Database(DB);
-  const v = db.prepare('SELECT sku, stock FROM variants LIMIT 1').get();
+  const v = db.prepare(
+    'SELECT v.sku, v.stock, v.product_id FROM variants v LIMIT 1').get();
   const originalStock = v.stock;
   db.prepare('UPDATE variants SET stock=1 WHERE sku=?').run(v.sku);
+
+  /* 🔴 محصول باید IN_STOCK باشد وگرنه آزمون بی‌معنا می‌شود.
+     با supply_mode = MADE_TO_ORDER سرور عمداً سفارش بدون موجودی
+     را می‌پذیرد (کار دست‌ساز به سفارش ساخته می‌شود). آن‌وقت هر ۸
+     درخواست موفق می‌شوند و آزمون «فروش بیش از موجودی» چیزی را
+     نمی‌سنجد.
+
+     این آزمون قفل موجودی انبار را می‌سنجد، پس محصولش باید
+     «فقط از انبار» باشد. */
+  const originalMode = db.prepare(
+    'SELECT supply_mode FROM products WHERE id=?').get(v.product_id).supply_mode;
+  db.prepare("UPDATE products SET supply_mode='IN_STOCK' WHERE id=?").run(v.product_id);
   db.close();
   cleanDb();
 
@@ -81,7 +98,7 @@ async function waitForServer(tries = 40) {
 
   const finish = (code) => {
     try { srv.kill('SIGKILL'); } catch {}
-    cleanDb(v.sku, originalStock);
+    cleanDb(v.sku, originalStock, v.product_id, originalMode);
     process.exit(code);
   };
 

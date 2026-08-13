@@ -65,7 +65,7 @@ async function handle(ctx) {
     can, parseBody, logAudit, appLog, db,
     who, parseProduct, attachVariants, notifyStockWatchers,
     releaseStaleOrders, buildSearchIndex, buildNotesIndex
-  } = ctx;
+  , bustStatsCache} = ctx;
 
   /* ── چرا sendJSON پوششی ──
      در `server.js` الگوی `return sendJSON(...)` یعنی «پاسخ بده و
@@ -234,6 +234,22 @@ async function handle(ctx) {
       if (!Number.isInteger(s) || s < 0) return sendJSON(400, { error: 'موجودی نامعتبر است.' });
       db.prepare('UPDATE variants SET stock=? WHERE product_id=?').run(s, p.id);
       appLog('INFO', 'admin', 'تنظیم گروهی موجودی', { product: p.id, stock: s });
+    }
+
+    /* ── وضعیت تأمین ──
+       سه حالت، با فهرست سفید. مقدار دلخواه پذیرفته نمی‌شود چون
+       رابط و منطق سبد فقط همین سه را می‌شناسند و مقدار ناشناخته
+       یعنی کالایی که نه خریدنی است نه پیام درستی دارد. */
+    if (b.supply_mode != null) {
+      const MODES = ['IN_STOCK', 'MADE_TO_ORDER', 'UNAVAILABLE'];
+      if (!MODES.includes(b.supply_mode)) {
+        return sendJSON(400, {
+          error: 'وضعیت تأمین نامعتبر است. مجاز: ' + MODES.join('، ') });
+      }
+      db.prepare('UPDATE products SET supply_mode=? WHERE id=?').run(b.supply_mode, p.id);
+      bustStatsCache && bustStatsCache();
+      appLog('INFO', 'admin', 'تغییر وضعیت تأمین',
+             { product: p.id, mode: b.supply_mode });
     }
 
     const fresh = attachVariants(parseProduct(

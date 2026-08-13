@@ -481,6 +481,29 @@ function initSchema() {
     db.exec('ALTER TABLE products ADD COLUMN release_year INTEGER');
   }
 
+  /* ── وضعیت تأمین: سه‌حالته، نه دوحالته ──
+     پیش‌تر فقط «موجود / ناموجود» داشتیم و این واقعیت کار دست‌ساز
+     را بد نشان می‌داد: عطری که همین حالا در قفسه نیست ولی
+     می‌توانیم بسازیم، با عطری که اصلاً نمی‌توانیم تهیه کنیم یکسان
+     دیده می‌شد — هر دو «ناموجود» و بن‌بست.
+
+       IN_STOCK      از انبار، ارسال فوری
+       MADE_TO_ORDER به سفارش ساخته می‌شود (چند روز کار)
+       UNAVAILABLE   فعلاً نمی‌توانیم — فقط «خبرم کن»
+
+     پیش‌فرض MADE_TO_ORDER است نه UNAVAILABLE: کاتالوگ از عطرهای
+     شناسنامه‌دار پر شده که فرمولشان در دسترس است. اگر موردی
+     واقعاً ساختنی نیست، مالک در پنل صریحاً علامت می‌زند.
+
+     🔴 این ستون **جای stock را نمی‌گیرد**. موجودی عددی همچنان
+     مرجع «ارسال فوری» است؛ این ستون فقط می‌گوید وقتی موجودی صفر
+     شد، مشتری چه پیامی ببیند. */
+  if (!pcols.includes('supply_mode')) {
+    db.exec(
+      "ALTER TABLE products ADD COLUMN supply_mode TEXT NOT NULL DEFAULT 'MADE_TO_ORDER'");
+    db.exec('CREATE INDEX IF NOT EXISTS idx_products_supply ON products(supply_mode)');
+  }
+
   /* ── قیمت دلاری پایه ──
      فروشگاه فرمولی برای قیمت‌گذاری دارد که به نرخ دلار وابسته
      است. هدف نهایی: با تغییر نرخ ارز، قیمت تومانی همه محصولات
@@ -1001,6 +1024,9 @@ function parseProduct(row) {
        رازی نیستند و به تخصص فروشگاه اعتبار می‌دهند. */
     perfumer: row.perfumer,
     release_year: row.release_year,
+    /* وضعیت تأمین — تعیین می‌کند وقتی موجودی صفر است چه پیامی
+       نشان داده شود: «به سفارش ساخته می‌شود» یا «فعلاً نداریم». */
+    supply_mode: row.supply_mode || 'MADE_TO_ORDER',
     transparency_notice: row.transparency_notice,
     image_url: row.image_url
   };
@@ -2445,8 +2471,76 @@ buildNotesIndex();
 
 startMaintenance();
 
+/* ══════════════════════════════════════════════════════════
+   آمار زنده فروشگاه — منبع واحد حقیقت
+   ══════════════════════════════════════════════════════════
+   🔴 چرا این تابع لازم شد:
+   اعداد کاتالوگ در ده جای مختلف **سخت‌کد** شده بودند: عنوان
+   صفحه اصلی، توضیح متا، صفحه سمپل، جدول مقایسه، کوییز. با هر
+   تغییر کاتالوگ باید ده جا دستی عوض می‌شد و همیشه یکی جا
+   می‌ماند — دقیقاً همان ۹ موردی که مالک در پیش‌نما دید.
+
+   حالا هر عددی که به کاتالوگ وابسته است **فقط از اینجا**
+   می‌آید. اضافه شدن یک محصول یعنی همه صفحات خودکار به‌روز
+   می‌شوند.
+
+   کش ۶۰ ثانیه‌ای: این پرسمان‌ها روی صفحه اصلی اجرا می‌شوند و
+   بدون کش هر بازدید چند GROUP BY می‌زند. یک دقیقه تأخیر در
+   نمایش آمار هیچ ضرری ندارد. */
+let _statsCache = null, _statsAt = 0;
+const STATS_TTL = 60_000;
+
+function storeStats(force = false) {
+  const now = Date.now();
+  if (!force && _statsCache && now - _statsAt < STATS_TTL) return _statsCache;
+
+  const one = sql => { try { return db.prepare(sql).get().c; } catch { return 0; } };
+
+  /* «قابل خرید» یعنی چیزی که مشتری همین حالا می‌تواند سفارش دهد:
+     یا موجودی انبار دارد، یا به سفارش ساخته می‌شود. عطر
+     UNAVAILABLE در این شمار نمی‌آید چون بن‌بست است. */
+  const stats = {
+    products:     one('SELECT COUNT(*) c FROM products'),
+    brands:       one('SELECT COUNT(DISTINCT brand_en) c FROM products'),
+    variants:     one('SELECT COUNT(*) c FROM variants'),
+
+    in_stock:     one(`SELECT COUNT(DISTINCT product_id) c FROM variants WHERE stock > 0`),
+    made_to_order: one(`SELECT COUNT(*) c FROM products
+                        WHERE supply_mode = 'MADE_TO_ORDER'`),
+    orderable:    one(`SELECT COUNT(*) c FROM products p
+                       WHERE p.supply_mode != 'UNAVAILABLE'`),
+
+    // ── عمق تخصصی: اعدادی که انتظار خرید نمی‌سازند ──
+    perfumers:    one(`SELECT COUNT(DISTINCT perfumer) c FROM products
+                       WHERE perfumer IS NOT NULL AND perfumer != ''`),
+    notes:        one('SELECT COUNT(DISTINCT note_key) c FROM product_notes'),
+    countries:    one(`SELECT COUNT(DISTINCT country) c FROM products
+                       WHERE country IS NOT NULL AND country != ''`),
+    families:     one('SELECT COUNT(DISTINCT family_slug) c FROM products'),
+    articles:     one('SELECT COUNT(*) c FROM articles')
+  };
+
+  const yr = (() => {
+    try {
+      return db.prepare(`SELECT MIN(release_year) a, MAX(release_year) b
+                         FROM products WHERE release_year IS NOT NULL`).get();
+    } catch { return {}; }
+  })();
+  stats.year_from = yr.a || null;
+  stats.year_to   = yr.b || null;
+  stats.centuries = (yr.a && yr.b) ? Math.round((yr.b - yr.a) / 100) : null;
+
+  _statsCache = stats;
+  _statsAt = now;
+  return stats;
+}
+
+/** پس از تغییر کاتالوگ یا موجودی صدا زده شود */
+function bustStatsCache() { _statsCache = null; }
+
 module.exports = {
   db, parseProduct, attachVariants, DB_PATH,
+  storeStats, bustStatsCache,
   imageForFamily, imageForProduct, variantImageFor,
   validateCoupon, recordCouponUse, releaseCouponUse, logStatus,
   // دامنه تخفیف و جشنواره

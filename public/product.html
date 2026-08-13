@@ -146,6 +146,8 @@
   .variant-btn .vp { font-size: .84rem; font-weight: 800; margin-top: 3px; }
   .variant-btn .vs { font-size: .66rem; color: var(--muted); margin-top: 2px; }
   .variant-btn.out { opacity: .42; cursor: not-allowed; }
+  /* «به سفارش» کم‌رنگ نمی‌شود — قابل انتخاب است، فقط زمان می‌برد */
+  .variant-btn .vs.mto { color: var(--gold); font-weight: 700; }
   /* قیمت پیش از جشنواره — کوچک و خط‌خورده بالای قیمت نهایی */
   .variant-btn .vo { font-size: .68rem; color: var(--muted); text-decoration: line-through;
       margin-top: 3px; line-height: 1.3; }
@@ -601,8 +603,19 @@ function render() {
   /* آیا درصد جشنواره بین واریانت‌ها فرق می‌کند؟ */
   const pcts = [...new Set(p.variants.map(v => v.campaign_percent || 0))];
   const mixedPct = pcts.length > 1;
+  /* وضعیت هر واریانت باید با دکمه خرید هم‌داستان باشد.
+     پیش‌تر کارت «ناموجود» می‌گفت و دکمه «سفارش ساخت» — تناقضی که
+     اعتماد را می‌برد. */
+  const supplyMode = p.supply_mode || 'MADE_TO_ORDER';
+  const canOrder = supplyMode !== 'UNAVAILABLE';
+
   vg.innerHTML = p.variants.map((v, i) => {
-    const out = v.stock <= 0;
+    const noStock = v.stock <= 0;
+    // «out» یعنی غیرقابل انتخاب — نه صرفاً بدون موجودی انبار
+    const out = noStock && !canOrder;
+    const vState = !noStock ? 'موجود'
+                 : canOrder ? 'به سفارش'
+                 : 'ناموجود';
     const label = typeLabel(v.type);
     /* `final_price` و `campaign_percent` را سرور می‌دهد. اگر
        جشنواره‌ای نباشد، `final_price` برابر خودِ قیمت است — پس
@@ -621,7 +634,7 @@ function render() {
       <div class="vt" style="color:var(--muted);font-size:.72rem">${toFa(v.volume_ml)} میل</div>
       ${pct > 0 ? `<div class="vo">${money(v.price_toman)}</div>` : ''}
       <div class="vp${pct > 0 ? ' sale' : ''}">${money(shown)}</div>
-      <div class="vs">${out ? 'ناموجود' : 'موجود'}</div>
+      <div class="vs${noStock && canOrder ? ' mto' : ''}">${vState}</div>
     </div>`;
   }).join('');
 
@@ -702,11 +715,30 @@ function updatePrice() {
 
   pEl.innerHTML = `${money(unit * qty)} <small>تومان</small>`;
   pEl.classList.remove('bump'); void pEl.offsetWidth; pEl.classList.add('bump');
+  /* ── سه حالت تأمین ──
+     «ناموجود» برای کار دست‌ساز پیام غلطی بود و مشتری را بن‌بست
+     می‌داد. عطری که در قفسه نیست ولی می‌سازیمش، باید بتواند
+     سفارش داده شود.
+
+       stock > 0            → افزودن به سبد، ارسال از انبار
+       MADE_TO_ORDER        → سفارش ساخت، تحویل چند روزه
+       UNAVAILABLE          → فقط «خبرم کن» */
   const s = selected.stock;
+  const mode = product.supply_mode || 'MADE_TO_ORDER';
+  const mto = s <= 0 && mode === 'MADE_TO_ORDER';
+  const dead = s <= 0 && !mto;
+
   document.getElementById('stockInfo').textContent =
-    s > 10 ? 'موجود در انبار' : s > 0 ? `تنها ${toFa(s)} عدد باقی مانده` : 'ناموجود';
+      s > 10 ? 'موجود در انبار — ارسال از امروز'
+    : s > 0  ? `تنها ${toFa(s)} عدد در انبار`
+    : mto    ? 'به سفارش ساخته می‌شود — آماده‌سازی ۳ تا ۷ روز کاری'
+    :          'فعلاً امکان تهیه نیست';
+
   const btn = document.getElementById('addBtn');
-  btn.disabled = s <= 0;
+  btn.disabled = dead;
+  btn.textContent = s > 0 ? 'افزودن به سبد'
+                  : mto   ? 'سفارش ساخت این رایحه'
+                  :         'فعلاً موجود نیست';
 
   // نوار چسبان موبایل
   const bp = document.getElementById('barPrice');
@@ -715,22 +747,37 @@ function updatePrice() {
     document.getElementById('barLabel').textContent =
       `${typeLabel(selected.type)} · ${toFa(selected.volume_ml)} میل`;
     const bb = document.getElementById('barBtn');
-    bb.disabled = s <= 0;
-    bb.textContent = s <= 0 ? 'ناموجود' : 'افزودن به سبد';
+    bb.disabled = dead;
+    bb.textContent = s > 0 ? 'افزودن به سبد'
+                   : mto   ? 'سفارش ساخت'
+                   :         'موجود نیست';
   }
+
   const old = document.getElementById('notifyBtn');
   if (old) old.remove();
-  if (s <= 0) {
+  /* «خبرم کن» فقط برای حالت بن‌بست. در حالت «به سفارش» مشتری
+     نباید منتظر بماند — می‌تواند همین حالا سفارش دهد. */
+  if (dead) {
     btn.insertAdjacentHTML('afterend',
       `<button id="notifyBtn" class="btn btn-outline btn-block" style="margin-top:9px"
-        onclick="notifyMe('${selected.sku}')">به من اطلاع بده وقتی موجود شد</button>`);
+        onclick="notifyMe('${selected.sku}')">به من اطلاع بده وقتی رسید</button>`);
+  }
+  if (mto) {
+    btn.insertAdjacentHTML('afterend',
+      `<div id="notifyBtn" style="margin-top:9px;font-size:.76rem;color:var(--muted);
+        line-height:1.9;text-align:center">
+        این رایحه پس از ثبت سفارش، دست‌ساز آماده می‌شود.
+      </div>`);
   }
 }
 
 function chQty(d) {
   if (!selected) return;
   const n = qty + d;
-  if (n < 1 || n > selected.stock) return;
+  /* در حالت «به سفارش» موجودی صفر است ولی سفارش مجاز؛ سقف
+     منطقی می‌گذاریم تا سفارش غیرواقعی ثبت نشود. */
+  const cap = selected.stock > 0 ? selected.stock : 5;
+  if (n < 1 || n > cap) return;
   qty = n;
   document.getElementById('qty').textContent = toFa(qty);
   updatePrice();

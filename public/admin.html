@@ -634,6 +634,25 @@
             <button class="btn" onclick="bulkStock()">اعمال</button>
           </div>
         </div>
+
+        <!-- وضعیت تأمین — تعیین می‌کند وقتی موجودی صفر است
+             مشتری چه پیامی ببیند و آیا می‌تواند سفارش دهد -->
+        <div class="card" style="margin-top:12px">
+          <div style="font-weight:800;font-size:.86rem;margin-bottom:4px">وضعیت تأمین</div>
+          <div style="font-size:.74rem;color:var(--muted);line-height:1.9;margin-bottom:10px">
+            وقتی موجودی انبار صفر است، مشتری چه ببیند؟
+          </div>
+          <div style="display:flex;gap:8px;flex-wrap:wrap">
+            <select id="supplyMode"
+              style="flex:1;min-width:200px;padding:9px;border:1px solid var(--border);border-radius:8px">
+              <option value="MADE_TO_ORDER">به سفارش ساخته می‌شود — قابل سفارش</option>
+              <option value="IN_STOCK">فقط از انبار — بدون موجودی قابل سفارش نیست</option>
+              <option value="UNAVAILABLE">فعلاً نمی‌توانیم تهیه کنیم — فقط «خبرم کن»</option>
+            </select>
+            <button class="btn" onclick="saveSupplyMode()">ذخیره</button>
+          </div>
+        </div>
+
         <div class="scroll"><table id="pVariants"></table></div>
       </div>
     </div>
@@ -2693,6 +2712,9 @@ async function editProduct(slug) {
   document.getElementById('pEditTitle').textContent =
     `${p.brand_fa || ''} — ${p.name_fa}`;
   renderVariants();
+  // وضعیت تأمین فعلی را در فهرست کشویی نشان بده
+  const sm = document.getElementById('supplyMode');
+  if (sm) sm.value = p.supply_mode || 'MADE_TO_ORDER';
   document.getElementById('pEditCard').scrollIntoView({ behavior: 'smooth' });
 }
 
@@ -2854,6 +2876,16 @@ async function bulkStock() {
   const d = await r.json();
   toast(r.ok ? d.message : d.error);
   if (r.ok) { document.getElementById('bulkStock').value = ''; editProduct(currentProduct.slug); }
+}
+
+async function saveSupplyMode() {
+  const mode = document.getElementById('supplyMode').value;
+  const r = await fetch('/api/admin/products/' + currentProduct.slug, {
+    method: 'PUT', headers: H(), body: JSON.stringify({ supply_mode: mode })
+  });
+  const d = await r.json();
+  toast(r.ok ? 'وضعیت تأمین ذخیره شد.' : d.error);
+  if (r.ok) editProduct(currentProduct.slug);
 }
 
 /* ── مدیریت وضعیت سفارش ── */

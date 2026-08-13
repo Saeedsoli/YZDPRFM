@@ -119,6 +119,60 @@ const YazdCart = {
   }
 };
 
+/* ── آمار زنده فروشگاه ──
+   هر عنصری با `data-stat="key"` خودکار از /api/stats پر می‌شود.
+
+   🔴 چرا این الگو:
+   پیش‌تر شمار محصول و برند در ده جای مختلف سخت‌کد بود و با هر
+   تغییر کاتالوگ یکی جا می‌ماند و عدد کهنه ماه‌ها روی سایت
+   ماند در حالی که کاتالوگ عوض شده بود.
+
+   حالا اضافه شدن یک عطر یعنی همه صفحات خودکار به‌روز می‌شوند.
+   مقدار اولیه در HTML «—» است نه عدد، تا اگر API کند بود عدد
+   غلط دیده نشود.
+
+   کش در sessionStorage: در یک نشست مرور، ده صفحه یعنی ده
+   درخواست تکراری برای عددی که تغییر نمی‌کند. */
+const YazdStats = {
+  KEY: 'yazd_stats_v1',
+  _data: null,
+
+  async load() {
+    if (this._data) return this._data;
+    try {
+      const cached = sessionStorage.getItem(this.KEY);
+      if (cached) {
+        const p = JSON.parse(cached);
+        if (Date.now() - p.at < 300000) { this._data = p.d; return p.d; }
+      }
+    } catch {}
+    try {
+      const r = await fetch('/api/stats');
+      if (!r.ok) return null;
+      const d = await r.json();
+      this._data = d;
+      try {
+        sessionStorage.setItem(this.KEY, JSON.stringify({ at: Date.now(), d }));
+      } catch {}
+      return d;
+    } catch { return null; }
+  },
+
+  /** پر کردن همه [data-stat] در صفحه */
+  async paint(root = document) {
+    const nodes = root.querySelectorAll('[data-stat]');
+    if (!nodes.length) return;
+    const d = await this.load();
+    if (!d) return;
+    nodes.forEach(el => {
+      const v = d[el.dataset.stat];
+      if (v == null) return;
+      /* پیشوند اختیاری: data-stat-prefix="بیش از " */
+      el.textContent = (el.dataset.statPrefix || '') + toFa(v);
+    });
+  }
+};
+
 /* ── ابزارها ── */
 function toFa(n) {
   return String(n).replace(/\d/g, d => '۰۱۲۳۴۵۶۷۸۹'[d]);
@@ -321,17 +375,40 @@ function productCard(p) {
 
      سه نشانه همزمان: برچسب، تصویر کم‌رنگ، و دعوت به «خبرم کن»
      به‌جای «مشاهده». صادقانه‌تر و کم‌هزینه‌تر از ناامیدی بعدی. */
-  const out = p.in_stock === false;
+  /* ── سه حالت تأمین، نه دو حالت ──
+     «ناموجود» برای کار دست‌ساز پیام غلطی بود: عطری که همین حالا
+     در قفسه نیست ولی می‌سازیمش، با عطری که اصلاً نمی‌توانیم تهیه
+     کنیم یکسان دیده می‌شد — هر دو بن‌بست.
+
+       موجود        → ارسال از انبار
+       به سفارش     → چند روز کار، ولی حتماً می‌رسد
+       فعلاً نداریم → فقط «خبرم کن»
+
+     این تفاوت مهم است چون بیشتر کاتالوگ عمداً بدون موجودی انبار
+     است: عنوان‌ها برای سفارش و دیده‌شدن در جستجو می‌مانند. */
+  const inStock = p.in_stock !== false;
+  const mode = p.supply_mode || 'MADE_TO_ORDER';
+  const madeToOrder = !inStock && mode === 'MADE_TO_ORDER';
+  const out = !inStock && !madeToOrder;
+
+  const stateLabel = inStock ? '' : (madeToOrder ? 'به سفارش' : 'فعلاً نداریم');
+  const peekText = inStock ? 'مشاهده و خرید'
+                 : madeToOrder ? 'به سفارش ساخته می‌شود'
+                 : 'خبرم کن وقتی رسید';
+  const aria = inStock ? 'مشاهده جزئیات'
+             : madeToOrder ? 'به سفارش ساخته می‌شود'
+             : 'فعلاً موجود نیست، اطلاع از موجود شدن';
 
   return `
-  <a class="product-card fade-up${out ? ' is-out' : ''}" href="/perfume/${p.slug}"
-     aria-label="${fullName(p)} — ${out ? 'ناموجود، اطلاع از موجود شدن' : 'مشاهده جزئیات'}">
+  <a class="product-card fade-up${out ? ' is-out' : ''}${madeToOrder ? ' is-mto' : ''}"
+     href="/perfume/${p.slug}"
+     aria-label="${fullName(p)} — ${aria}">
     <div class="img-wrap">
       <img src="${img}" alt="تصویر ${fullName(p)}" loading="lazy" width="300" height="300">
       ${genderLabel(p.gender) ? `<span class="card-badge">${genderLabel(p.gender)}</span>` : ''}
-      ${out ? '<span class="card-out">ناموجود</span>' : ''}
-      ${off > 0 && !out ? `<span class="card-off"><bdi>${toFa(pct)}٪</bdi> تخفیف</span>` : ''}
-      <div class="card-peek">${out ? 'خبرم کن وقتی موجود شد' : 'مشاهده و خرید'}</div>
+      ${stateLabel ? `<span class="card-out${madeToOrder ? ' mto' : ''}">${stateLabel}</span>` : ''}
+      ${off > 0 && inStock ? `<span class="card-off"><bdi>${toFa(pct)}٪</bdi> تخفیف</span>` : ''}
+      <div class="card-peek">${peekText}</div>
     </div>
     <div class="body">
       <div class="card-title">${fullName(p)} <span class="card-tag">«دست‌ساز»</span></div>
@@ -970,6 +1047,10 @@ document.addEventListener('DOMContentLoaded', async () => {
   window.addEventListener('load', () => whenIdle(() => YazdPWA.register(), 3000));
 
   YazdCart.updateBadge();
+
+  /* آمار زنده — بی‌درنگ، چون در هیرو دیده می‌شود و «—» ماندنش
+     بد است. سبک است: یک درخواست کش‌شده در هر نشست. */
+  YazdStats.paint();
 
   /* بررسی ورود هم به تعویق می‌افتد.
      فقط یک نقطه کوچک روی آیکن حساب را روشن می‌کند؛ هیچ محتوایی
