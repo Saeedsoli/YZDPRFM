@@ -69,9 +69,19 @@ const clearRl = () =>
   console.log(h('  آزمون رفع یافته‌های ممیزی جعبه‌سیاه'));
   console.log(d('  ─────────────────────────────────────────────'));
 
+  /* ── چرا سفارش را خودمان می‌سازیم ──
+     این آزمون سفارش را از دیتابیس برمی‌داشت. پس از اجرای
+     `reset_for_launch.js` جدول `orders` خالی شد و آزمون با
+     `TypeError: Cannot read properties of undefined` می‌افتاد —
+     یعنی به آشغال داده قبلی تکیه داشت.
+
+     همان الگویی که در `lib/test_order.js` برای بقیه آزمون‌ها
+     پذیرفته شد: داده خودت را بساز، آخر کار بردار. */
+  const { makePaidOrder, cleanupOrders } = require('./lib/test_order');
+  const made = makePaidOrder(db);
   const sample = db.prepare(
-    'SELECT mobile, order_id FROM orders WHERE mobile IS NOT NULL LIMIT 1'
-  ).get();
+    'SELECT mobile, order_id FROM orders WHERE order_id = ?'
+  ).get(made.order_id);
 
   // ─────────────── ۱) اعتبارسنجی ورودی
   console.log();
@@ -205,8 +215,28 @@ const clearRl = () =>
         prod.offers.lowPrice === minToman * 10,
         `${prod.offers.lowPrice} = ${minToman} × ۱۰`);
 
+    /* سه‌حالته: InStock (موجودی انبار) · BackOrder (به سفارش
+       ساخته می‌شود) · OutOfStock (علامت‌خورده UNAVAILABLE).
+       پیش‌تر فقط دو حالت پذیرفته می‌شد و چون موجودی انبار تقریباً
+       صفر است، همه صفحه‌ها به گوگل «ناموجود» اعلام می‌شدند در
+       حالی که دکمه خرید فعال بود — عدم تطابق صفحه با داده
+       ساختاریافته. */
     add('وضعیت موجودی درست است',
-        /InStock|OutOfStock/.test(prod.offers.availability));
+        /InStock|OutOfStock|BackOrder/.test(prod.offers.availability),
+        prod.offers.availability.replace('https://schema.org/', ''));
+
+    {
+      const row = db.prepare(
+        "SELECT supply_mode FROM products WHERE slug='creed-aventus'").get();
+      const stock = db.prepare(`
+        SELECT COALESCE(SUM(stock),0) s FROM variants v
+        JOIN products p ON p.id = v.product_id WHERE p.slug='creed-aventus'`).get().s;
+      const want = stock > 0 ? 'InStock'
+        : row.supply_mode === 'UNAVAILABLE' ? 'OutOfStock' : 'BackOrder';
+      add('وضعیت با supply_mode واقعی می‌خواند',
+          prod.offers.availability.endsWith(want),
+          `${row.supply_mode} + stock=${stock} → ${want}`);
+    }
     add('برند عمداً نام فروشگاه است',
         prod.brand.name === 'عطر یزد',
         'ادعای «محصول کرید» نمی‌کنیم');
@@ -264,6 +294,8 @@ const clearRl = () =>
   clearRl();
   const alive = await api('/api/health');
   add('سرور سالم است', alive.status === 200);
+
+  cleanupOrders(db, made.order_id);
 
   const failed = checks.filter(x => !x).length;
   console.log();

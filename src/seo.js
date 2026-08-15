@@ -63,21 +63,91 @@ function inject(html, { title, description, meta }) {
 /* ═══════════ صفحه محصول ═══════════ */
 function productPage(html, p) {
   const full = p.brand_fa ? `${p.brand_fa} — ${p.name_fa}` : p.name_fa;
-  const title = `خرید ${full} | عطر دست‌ساز ${BRAND}`;
+
+  /* عنوان هم نباید برای همه صفحه‌ها یک الگو باشد. خانواده بویایی
+     را داخل عنوان می‌آوریم چون هم متمایزکننده است و هم عبارتی
+     است که مشتری واقعاً جستجو می‌کند («عطر چوبی مردانه»). */
+  const famShort = String(p.family_fa || '').split(' ').slice(0, 2).join(' ');
+  const title = famShort
+    ? `${full} | عطر دست‌ساز ${famShort} — ${BRAND}`
+    : `${full} | عطر دست‌ساز — ${BRAND}`;
 
   const notes = [...(p.notes.top || []), ...(p.notes.middle || [])].slice(0, 5).join('، ');
   const gender = p.gender === 'MEN' ? 'مردانه' : p.gender === 'WOMEN' ? 'زنانه' : 'یونیسکس';
-  const description =
-    `${full} — عطر دست‌ساز ${gender} با رایحه ${p.family_fa || ''}. ` +
-    (notes ? `نُت‌های ${notes}. ` : '') +
-    `از ${faNum(Number(p.min_price).toLocaleString('en-US'))} تومان. ` +
-    `سمپل ۳ میلی‌لیتری موجود است.`;
+
+  /* ── چرا توضیح متا از داده اختصاصی هر عطر ساخته می‌شود ──
+     نسخه پیشین برای هر ۲٬۱۱۱ محصول یک جمله ثابت داشت:
+     «… از X تومان. سمپل ۳ میلی‌لیتری موجود است.» نمونه‌گیری از
+     ۲۵ صفحه نشان داد ۱۰۰٪ توضیح‌ها با همان جمله تمام می‌شوند و
+     ۱۰۰٪ عنوان‌ها الگوی «خرید … | عطر دست‌ساز عطر یزد» دارند.
+
+     برای خزنده این یعنی «صفحه‌ها از یک قالب پر شده‌اند» — همان
+     سیگنالی که سیاست محتوای انبوه دنبالش می‌گردد. مشکل، AI بودنِ
+     متن نیست؛ یکسان بودنِ ساختار است. متنِ دست‌نویسِ قالبی هم
+     همین امتیاز را می‌گرفت.
+
+     راه‌حل: به‌جای جمله ثابت، از فیلدهایی استفاده می‌کنیم که در
+     دیتابیس برای هر عطر متفاوت‌اند — `taste` (۲٬۰۷۷ مقدار یکتا)
+     و `occasion` (۱٬۷۰۱ مقدار یکتا). ترتیب جمله‌ها هم با هش
+     پایدارِ اسلاگ می‌چرخد تا حتی اسکلت جمله هم یکسان نماند.
+
+     پایدار بودن هش مهم است: اگر تصادفی بود، هر بار خزنده صفحه
+     را می‌خواند توضیح فرق می‌کرد و گوگل صفحه را «بی‌ثبات»
+     می‌دید. */
+  const seed = [...p.slug].reduce((h, ch) => (h * 31 + ch.charCodeAt(0)) >>> 0, 7);
+  const price = `از ${faNum(Number(p.min_price).toLocaleString('en-US'))} تومان`;
+
+  /* جمله دومِ اختصاصی — اولویت با یکتاترین فیلد موجود. */
+  const taste = String(p.taste || '').trim();
+  const occasion = String(p.occasion || '').trim();
+  const detail =
+      taste    ? `طبع ${p.temperature || ''}، ${taste}`.replace(/طبع ، /, '')
+    : occasion ? `مناسب ${occasion}`
+    : notes    ? `نُت‌های ${notes}`
+    : '';
+
+  /* سه اسکلت جمله؛ انتخاب با هش پایدار. */
+  const shapes = [
+    () => `${full} — بازآفرینی دست‌ساز ${gender}. ${detail}. ${price}.`,
+    () => `${detail ? detail + '. ' : ''}${full}، ${gender}، بازآفرینی دست‌ساز عطر یزد. ${price}.`,
+    () => `${full} (${p.family_fa || 'رایحه'}) ${gender} — ${detail}. ${price}.`
+  ];
+  const description = shapes[seed % shapes.length]()
+    .replace(/\s+/g, ' ').replace(/ ,/g, ',').replace(/\.\s*\./g, '.').trim()
+    .slice(0, 300);
 
   const url = `${SITE}/perfume/${p.slug}`;
   const image = SITE + p.image_url;
 
   const inStock = (p.variants || []).some(v => v.stock > 0);
   const prices = (p.variants || []).map(v => v.price_toman).filter(Boolean);
+
+  /* ── چرا availability سه‌حالته است، نه دوحالته ──
+     پیش‌تر این خط فقط `inStock ? InStock : OutOfStock` بود. چون
+     امروز فقط یک محصول از ۲٬۱۱۱ موجودی انبار دارد، عملاً همه
+     صفحه‌ها به گوگل می‌گفتند «ناموجود» — در حالی که صفحه به
+     مشتری می‌گوید «به سفارش ساخته می‌شود» و دکمه خرید فعال است.
+
+     این «عدم تطابق داده ساختاریافته با صفحه فرود» است؛ همان
+     چیزی که در مستندات مرچنت گوگل صراحتاً باعث رد شدن محصول
+     می‌شود. یعنی بدترین حالت: هم کارت غنی را از دست می‌دادیم،
+     هم به گوگل سیگنال «۲٬۱۱۰ صفحهٔ بی‌فایده» می‌فرستادیم.
+
+     نگاشت درست:
+       IN_STOCK  + موجودی    → InStock
+       MADE_TO_ORDER         → BackOrder  (سفارش می‌گیریم، بعداً
+                               می‌سازیم و می‌فرستیم — دقیقاً تعریف
+                               BackOrder در schema.org)
+       UNAVAILABLE           → OutOfStock
+
+     ⚠ BackOrder ایجاب می‌کند زمان ارسال روی صفحه دیده شود؛
+     صفحه محصول «ارسال ۳ تا ۷ روز کاری» را نشان می‌دهد، پس شرط
+     برقرار است. */
+  const mode = p.supply_mode || 'MADE_TO_ORDER';
+  const availability =
+    inStock                  ? 'https://schema.org/InStock'
+    : mode === 'UNAVAILABLE' ? 'https://schema.org/OutOfStock'
+    :                          'https://schema.org/BackOrder';
 
   // Schema.org — گوگل قیمت و موجودی را در نتایج نشان می‌دهد
   const schema = {
@@ -124,8 +194,7 @@ function productPage(html, p) {
       lowPrice: prices.length ? Math.min(...prices) * 10 : 0,
       highPrice: prices.length ? Math.max(...prices) * 10 : 0,
       offerCount: (p.variants || []).length,
-      availability: inStock
-        ? 'https://schema.org/InStock' : 'https://schema.org/OutOfStock',
+      availability,
       seller: { '@type': 'Organization', name: BRAND }
     }
   };

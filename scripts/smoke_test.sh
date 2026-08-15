@@ -260,6 +260,10 @@ run_test test_customer_note.js "customer note + label + real contact"
 run_test test_sms_provider.js "sms layer: any provider, no key leak"
 run_test test_audit_findings.js "audit: no hash leak, rate limits"
 
+# سیاست «محتوای انبوه» گوگل: متادیتای یکتا، تطابق اسکیما با صفحه،
+# مهار ایندکس. ربطی به AI بودن محتوا ندارد — الگوی قالبی را می‌گیرد.
+run_test test_seo_ai_safety.js "seo: scaled-content-abuse safeguards"
+
 # صفحات «چرا ما؟» و «سمپل» — پاسخ به شکاف‌های تحلیل رقابتی
 run_test test_new_pages.js "why-us / samples pages"
 
