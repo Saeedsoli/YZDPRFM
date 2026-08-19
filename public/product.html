@@ -95,6 +95,40 @@
   .origin-note { margin-top: 15px; padding-top: 13px; border-top: 1px solid var(--border);
                  font-size: .74rem; color: var(--muted); line-height: 1.95 }
 
+  /* ── یادداشت عطرساز ──
+     تنها بخش صفحه که حرف خودِ سازنده است، نه داده کاتالوگ. عمداً
+     از جعبه‌های دیگر متمایز است: پس‌زمینه گرم و نوار طلایی کنار،
+     تا چشم بفهمد اینجا لحن عوض می‌شود.
+
+     نقل‌قول با ::before ساخته می‌شود نه نویسه در متن — گیومه
+     نویسه‌ای در متن راست‌چین جایش جابه‌جا می‌شود، همان درسی که
+     در جداکننده زمان مطالعه مجله گرفتیم. */
+  .maker-box {
+    position: relative; margin: 18px 0; padding: 20px 22px 18px;
+    background: linear-gradient(180deg, rgba(197,155,39,.06), rgba(197,155,39,.02));
+    border: 1px solid rgba(197,155,39,.28); border-radius: var(--r);
+  }
+  .maker-box::before {
+    content: ''; position: absolute; top: 14px; bottom: 14px; right: 0; width: 3px;
+    background: linear-gradient(to bottom, var(--gold), rgba(197,155,39,.15));
+    border-radius: 3px 0 0 3px;
+  }
+  .maker-box .mk-hd {
+    display: flex; align-items: center; gap: 8px; margin-bottom: 10px;
+  }
+  .maker-box .mk-hd b { font-weight: 800; font-size: .88rem }
+  .maker-box .mk-hd svg { flex: none; opacity: .85 }
+  .maker-box p {
+    font-size: .87rem; line-height: 2.05; margin: 0; color: var(--fg);
+  }
+  .maker-box .mk-by {
+    margin-top: 12px; font-size: .73rem; color: var(--muted);
+    display: flex; align-items: center; gap: 6px;
+  }
+  .maker-box .mk-by::before {
+    content: ''; width: 16px; height: 1px; background: var(--gold); flex: none;
+  }
+
   .pyramid { position: relative; padding-right: 26px }
   /* خط عمودی که سه لایه را وصل می‌کند */
   .pyramid::before {
@@ -346,6 +380,24 @@
            عمداً پس از هرم بویایی و پیش از جعبه خرید: کسی که تا
            اینجا خوانده، به جزئیات فنی اهمیت می‌دهد. جای خالی
            می‌ماند اگر داده نباشد (hidden). -->
+      <!-- یادداشت عطرساز — پیش از شناسنامه.
+           ترتیب عمدی است: کسی که هرم بویایی را خوانده، آماده
+           شنیدن حرف سازنده است. شناسنامه (داده خشک) بعد از آن
+           می‌آید. -->
+      <div class="maker-box" id="makerBox" hidden>
+        <div class="mk-hd">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none"
+               stroke="var(--gold)" stroke-width="1.7" stroke-linecap="round"
+               stroke-linejoin="round" aria-hidden="true">
+            <path d="M9 3h6v3l-1 1v3l3.5 7A2 2 0 0 1 15.7 20H8.3a2 2 0 0 1-1.8-2.9L10 10V7L9 6z"/>
+            <path d="M8 15h8"/>
+          </svg>
+          <b>یادداشت عطرساز</b>
+        </div>
+        <p id="makerNote"></p>
+        <div class="mk-by" id="makerBy"></div>
+      </div>
+
       <div class="origin-box" id="originBox" hidden>
         <div class="hd"><b>شناسنامه رایحه اصلی</b></div>
         <div class="origin-grid" id="originGrid"></div>
@@ -566,9 +618,27 @@ function render() {
   ].filter(([, v]) => v)
    .map(([k, v]) => `<div><div class="k">${k}</div><div class="v">${v}</div></div>`).join('');
 
+  /* ── یادداشت عطرساز ──
+     تجربه دست‌اول سازنده. اگر نبود، جعبه اصلاً ساخته نمی‌شود.
+
+     چرا textContent و نه innerHTML: این متن از پنل مدیریت
+     ویرایش می‌شود، یعنی ورودی انسانی است. با innerHTML هر
+     تگی که مدیر (یا کسی که به پنل دسترسی گرفته) بنویسد اجرا
+     می‌شود. متن ساده لازم داریم، پس متن ساده می‌گذاریم. */
+  if (p.maker_note) {
+    document.getElementById('makerNote').textContent = p.maker_note;
+    document.getElementById('makerBy').textContent = p.maker_note_by || 'عطرساز عطر یزد';
+    document.getElementById('makerBox').hidden = false;
+  }
+
   /* ── شناسنامه رایحه اصلی ──
      از منبع ۲٬۱۱۱ عطر اصیل. اگر هیچ‌کدام از میدان‌ها نبود، کل
-     جعبه پنهان می‌ماند — جعبه خالی بدتر از نبودنش است. */
+     جعبه پنهان می‌ماند — جعبه خالی بدتر از نبودنش است.
+
+     ⚠ `perfumer` ممکن است null باشد حتی وقتی در دیتابیس مقدار
+     دارد: لایه db.js نام‌هایی را که صرفاً کپی نام برند بودند
+     فیلتر می‌کند (۳۸۲ مورد). سطر خودبه‌خود حذف می‌شود چون
+     filter پایین مقدار خالی را می‌اندازد. */
   const originRows = [
     ['عطرساز', p.perfumer, true],
     ['سال عرضه', p.release_year ? toFa(p.release_year) : null, false],

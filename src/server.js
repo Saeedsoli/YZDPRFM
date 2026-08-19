@@ -1937,9 +1937,27 @@ const server = http.createServer(async (req, res) => {
         xml += `  <url><loc>${base}${path}</loc>`
              + `<changefreq>${freq}</changefreq><priority>${pri}</priority></url>\n`;
       }
-      db.prepare('SELECT slug FROM products').all().forEach(p => {
+      /* ── فقط محصولاتی که واقعاً می‌شود سفارش داد ──
+         sitemap یعنی «این‌ها را ایندکس کن». معرفی صفحه‌ای که
+         محصولش را نمی‌توانیم تأمین کنیم، هم به بازدیدکننده
+         بدقولی است هم به گوگل سیگنال «انبوه صفحه بی‌پشتوانه».
+
+         محصولات UNAVAILABLE از سایت حذف نمی‌شوند — صفحه‌شان کار
+         می‌کند، جستجوی داخلی پیدایشان می‌کند، و دکمه «خبرم کن»
+         دارند. فقط به گوگل پیشنهادشان نمی‌دهیم.
+
+         اولویت هم پویا شد: کالای موجود در انبار (۰٫۹) از کالای
+         به‌سفارش (۰٫۷) مهم‌تر است. */
+      db.prepare(`
+        SELECT p.slug,
+               (SELECT COALESCE(SUM(v.stock),0) FROM variants v
+                 WHERE v.product_id = p.id) AS stock
+        FROM products p
+        WHERE p.supply_mode != 'UNAVAILABLE'
+      `).all().forEach(p => {
+        const pri = p.stock > 0 ? '0.9' : '0.7';
         xml += `  <url><loc>${base}/perfume/${p.slug}</loc>`
-             + `<changefreq>weekly</changefreq><priority>0.8</priority></url>\n`;
+             + `<changefreq>weekly</changefreq><priority>${pri}</priority></url>\n`;
       });
       db.prepare('SELECT slug, created_at FROM articles').all().forEach(a => {
         const mod = (a.created_at || '').slice(0, 10) || today;

@@ -227,14 +227,62 @@ function productPage(html, p) {
     ? `  <link rel="preload" as="image" href="${webp}" type="image/webp" fetchpriority="high">\n`
     : `  <link rel="preload" as="image" href="${p.image_url}" fetchpriority="high">\n`;
 
-  const extra = preload +
+  /* ── noindex برای محصولاتی که نمی‌توانیم تأمین کنیم ──
+     این‌ها از sitemap بیرون‌اند، ولی گوگل از راه لینک داخلی
+     (کارت‌های «رایحه‌های هم‌خانواده»، جستجوی داخلی) به آن‌ها
+     می‌رسد. حذف از sitemap فقط «پیشنهاد نکردن» است، نه «ایندکس
+     نکردن».
+
+     `follow` عمدی است و `nofollow` نیست: می‌خواهیم خزنده از
+     همین صفحه به محصولات قابل سفارشِ هم‌خانواده برود. صفحه
+     خودش ایندکس نشود، ولی مسیر عبور بماند.
+
+     صفحه برای بازدیدکننده کاملاً کار می‌کند — دکمه «خبرم کن»
+     دارد. این فقط دستور به خزنده است. */
+  const noindex = mode === 'UNAVAILABLE'
+    ? '  <meta name="robots" content="noindex, follow">\n' : '';
+
+  const extra = noindex + preload +
   `  <script type="application/ld+json">${JSON.stringify(schema)}</script>
   <script type="application/ld+json">${JSON.stringify(breadcrumb)}</script>`;
 
-  return inject(html, {
+  let out = inject(html, {
     title, description,
     meta: metaBlock({ title, description, url, image, type: 'product', extra })
   });
+
+  /* ── یادداشت عطرساز در HTML خام ──
+     چرا سمت سرور و نه فقط با جاوااسکریپت:
+
+     ممیزی سئو نشان داد HTML خام صفحه محصول تنها ۶۳۸ نویسه متن
+     خواندنی دارد. یادداشت عطرساز به‌طور میانگین ۲۹۵ نویسه است
+     و مهم‌تر: تنها بخشی از صفحه است که در هیچ صفحه دیگری تکرار
+     نمی‌شود. اگر فقط با JS ساخته شود، دقیقاً همان محتوایی که
+     صفحه را یکتا می‌کند از دید خزنده‌های بدون جاوااسکریپت پنهان
+     می‌ماند — و خزنده‌های موتورهای مولد معمولاً همین‌طورند.
+
+     همان الگوی مقاله شاخص در صفحه مجله: بلوک سمت سرور تزریق
+     می‌شود و JS بعداً همان را بازنویسی می‌کند. چون محتوا یکی
+     است، هیچ جابه‌جایی چیدمانی رخ نمی‌دهد.
+
+     `hidden` هم برداشته می‌شود وگرنه متن در HTML هست ولی
+     نمایش داده نمی‌شود — که خودش «متن پنهان» است و در سیاست
+     اسپم گوگل مصداق دارد. */
+  if (p.maker_note) {
+    const by = esc(p.maker_note_by || 'عطرساز عطر یزد');
+    out = out.replace(
+      '<div class="maker-box" id="makerBox" hidden>',
+      '<div class="maker-box" id="makerBox">'
+    ).replace(
+      '<p id="makerNote"></p>',
+      `<p id="makerNote">${esc(p.maker_note)}</p>`
+    ).replace(
+      '<div class="mk-by" id="makerBy"></div>',
+      `<div class="mk-by" id="makerBy">${by}</div>`
+    );
+  }
+
+  return out;
 }
 
 /* ═══════════ صفحه اصلی ═══════════ */

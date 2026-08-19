@@ -72,20 +72,34 @@ for (const p of products) {
   descCount.set(k, (descCount.get(k) || 0) + 1);
 }
 
+/* یادداشت‌های تکراری — اگر یک متن روی چند صفحه بنشیند، همان
+   مشکلی را می‌سازد که قرار بود حل کند. */
+const makerCount = new Map();
+for (const p of products) {
+  if (!p.maker_note) continue;
+  makerCount.set(p.maker_note, (makerCount.get(p.maker_note) || 0) + 1);
+}
+
 /* ═════════════ سنجه‌های هر محصول ═════════════ */
 
 function assess(p) {
   const notes = jsonArr(p.notes_top).length + jsonArr(p.notes_middle).length + jsonArr(p.notes_base).length;
   const accords = jsonArr(p.accords).join(' ');
-  const uniqueText = String(p.taste || '').length + accords.length;
+  /* یادداشت عطرساز بخشی از متن یکتاست — و مهم‌ترین بخشش، چون
+     برخلاف taste و accords از دیتاست نمی‌آید. */
+  const makerLen = String(p.maker_note || '').length;
+  const uniqueText = String(p.taste || '').length + accords.length + makerLen;
   const shared = imgUse.get(p.image_url) || 1;
   const dupDesc = (descCount.get(descKey(p)) || 1) > 1;
   const perfumerIsBrand = brandSet.has(String(p.perfumer || '').toLowerCase().trim());
+  const dupMaker = makerLen > 0 && (makerCount.get(p.maker_note) || 1) > 1;
 
   const flags = [];
   if (notes < 6)             flags.push('نُت کمتر از ۶');
-  if (uniqueText < 90)       flags.push('متن یکتای کوتاه');
+  if (uniqueText < 200)      flags.push('متن یکتای کوتاه');
   if (dupDesc)               flags.push('متن تکراری با محصول دیگر');
+  if (!makerLen)             flags.push('بدون یادداشت عطرساز');
+  if (dupMaker)              flags.push('یادداشت عطرساز تکراری');
   /* برچسب تصویر عمداً عددِ دقیق را در خود ندارد؛ وگرنه هر تصویر
      یک ردیف جدا در جدول تجمیع می‌سازد و گزارش خوانا نمی‌ماند. */
   if (shared > 20)           flags.push('تصویر مشترک با بیش از ۲۰ محصول');
@@ -103,11 +117,13 @@ function assess(p) {
         (موجود نیست یا تصویر عمومی) — با غنی‌سازی A می‌شود.
      C: صفحه‌ای که ایندکس شدنش به کل دامنه ضرر می‌زند. */
   let grade;
-  if (!buyable || notes < 6 || dupDesc || uniqueText < 60) grade = 'C';
-  else if (inStock && uniqueText >= 90 && shared <= 20 && !perfumerIsBrand && p.n_reviews > 0) grade = 'A';
+  if (!buyable || notes < 6 || dupDesc || uniqueText < 150) grade = 'C';
+  else if (inStock && uniqueText >= 300 && makerLen > 0 && !dupMaker
+           && shared <= 20 && !perfumerIsBrand) grade = 'A';
   else grade = 'B';
 
-  return { notes, uniqueText, shared, dupDesc, perfumerIsBrand, buyable, inStock, flags, grade };
+  return { notes, uniqueText, makerLen, shared, dupDesc, dupMaker,
+           perfumerIsBrand, buyable, inStock, flags, grade };
 }
 
 const rows = products.map(p => ({ p, a: assess(p) }));
@@ -140,6 +156,8 @@ const report = {
     buyable: buyableN,
     inStock: inStockN,
     withApprovedReview: reviewedN,
+    withMakerNote: rows.filter(r => r.a.makerLen > 0).length,
+    uniqueMakerNotes: new Set(products.map(x => x.maker_note).filter(Boolean)).size,
     uniqueImages: imgUse.size,
     maxProductsPerImage: Math.max(...imgUse.values()),
     avgProductsPerImage: Math.round(TOTAL / imgUse.size)
@@ -179,6 +197,8 @@ h('۳) دلیل وجود — چند صفحه واقعاً قابل خرید اس
 console.log(`  قابل سفارش .......... ${fa(buyableN)}  (${pct(buyableN, TOTAL)}٪)`);
 console.log(`  موجود در انبار ...... ${fa(inStockN)}  (${pct(inStockN, TOTAL)}٪)`);
 console.log(`  دارای نظر تأییدشده .. ${fa(reviewedN)}  (${pct(reviewedN, TOTAL)}٪)`);
+console.log(`  یادداشت عطرساز ...... ${fa(report.signals.withMakerNote)}  (${pct(report.signals.withMakerNote, TOTAL)}٪)`);
+console.log(`  یادداشت یکتا ........ ${fa(report.signals.uniqueMakerNotes)}`);
 
 h('۴) رتبه‌بندی آمادگی ایندکس');
 console.log(`  A — آماده ایندکس .......... ${fa(grades.A).padStart(5)}  (${pct(grades.A, TOTAL)}٪)`);

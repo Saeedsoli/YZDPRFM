@@ -267,7 +267,7 @@ async function handle(ctx) {
         /* وضعیت تأمین برای کارت — تفاوت «به سفارش ساخته می‌شود»
            با «فعلاً نداریم» را کارت باید نشان دهد، نه فقط صفحه
            محصول. مشتری در فهرست تصمیم می‌گیرد. */
-        supply_mode: p.supply_mode || 'MADE_TO_ORDER',
+        supply_mode: p.supply_mode || 'UNAVAILABLE',
         variant_count: p.variants.length
       };
     });

@@ -199,10 +199,21 @@ function dockerCopiedDirs() {
         `${login.user?.permissions?.length} مجوز`);
     add('رمز اولیه باید عوض شود', login.user?.must_change === true);
 
-    // ── sitemap با محتوای واقعی ──
+    /* ── sitemap با محتوای واقعی ──
+       آستانه پیشین `> 100` بود چون آن زمان همه محصولات در
+       sitemap می‌آمدند. حالا فقط محصولات قابل سفارش معرفی
+       می‌شوند و روی دیتابیس تازهٔ استقرار، پیش‌فرض همه
+       UNAVAILABLE است — یعنی sitemap عمداً فقط صفحات ثابت را
+       دارد. این درست است، نه خرابی.
+
+       چیزی که واقعاً باید بسنجیم: sitemap ساخته می‌شود، معتبر
+       است، و صفحات کلیدی در آن هستند. */
     const sm = await fetch(`${BASE}/sitemap.xml`).then(r => r.text());
     const urls = (sm.match(/<loc>/g) || []).length;
-    add('sitemap با نشانی‌های واقعی ساخته شد', urls > 100, `${urls} نشانی`);
+    add('sitemap ساخته شد و معتبر است',
+        urls > 0 && sm.includes('<urlset'), `${urls} نشانی`);
+    add('صفحات کلیدی در sitemap هستند',
+        ['/journal', '/samples', '/why-us', '/brands'].every(p => sm.includes(p)));
 
   } catch (e) {
     console.error(r('  خطای غیرمنتظره: ' + e.message));

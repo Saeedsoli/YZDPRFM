@@ -37,6 +37,18 @@ SIZE_CARD = 420
 Q_JPG = 84
 Q_WEBP = 82
 
+# ── چرا کارت کیفیت جداگانه دارد ──
+# تصاویر تازهٔ شهریور ۱۴۰۵ پرجزئیات‌تر از دستهٔ اول‌اند (گلبرگ،
+# رزین، بافت سنگ) و با همان کیفیت ۸۴، میانگین کارت را از ۲۳ به
+# ۲۵ کیلوبایت رساندند — درست روی سقفی که test_images می‌گیرد.
+#
+# کارت ۴۲۰ پیکسل روی موبایل حدود ۱۶۰ پیکسل دیده می‌شود، پس
+# کیفیت ۷۸ با چشم قابل تشخیص نیست ولی حجم را حدود ۲۰٪ کم می‌کند.
+# نسخهٔ کامل دست‌نخورده می‌ماند چون آنجا جزئیات واقعاً دیده
+# می‌شود.
+Q_JPG_CARD = 78
+Q_WEBP_CARD = 76
+
 
 def main():
     logo = load_logo()
@@ -85,9 +97,9 @@ def main():
         full.save(os.path.join(IMG, f"{stem}.webp"), "WEBP",
                   quality=Q_WEBP, method=6)
         card.save(os.path.join(IMG, f"{stem}-sm.jpg"), "JPEG",
-                  quality=Q_JPG, optimize=True, progressive=True)
+                  quality=Q_JPG_CARD, optimize=True, progressive=True)
         card.save(os.path.join(IMG, f"{stem}-sm.webp"), "WEBP",
-                  quality=Q_WEBP, method=6)
+                  quality=Q_WEBP_CARD, method=6)
 
         kb = os.path.getsize(os.path.join(IMG, f"{stem}-sm.webp")) // 1024
         print(f"  ✓ {n:32s} بدنه {box['width']}×{box['height']}  کارت {kb}KB")

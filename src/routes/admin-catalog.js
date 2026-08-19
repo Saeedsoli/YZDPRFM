@@ -252,6 +252,29 @@ async function handle(ctx) {
              { product: p.id, mode: b.supply_mode });
     }
 
+    /* ── یادداشت عطرساز ──
+       تجربه دست‌اول سازنده — تنها محتوای صفحه محصول که از
+       دیتاست نمی‌آید.
+
+       رشته خالی معنادار است و به NULL تبدیل می‌شود: مدیر باید
+       بتواند یادداشتی را حذف کند، نه فقط عوض کند. اگر خالی را
+       نادیده می‌گرفتیم، حذف غیرممکن می‌شد.
+
+       سقف ۱٬۵۰۰ نویسه: بلندتر از این دیگر «یادداشت» نیست و در
+       طراحی صفحه هم جا نمی‌شود. محدودیت سمت سرور لازم است چون
+       محدودیت سمت مرورگر قابل دور زدن است. */
+    if (b.maker_note !== undefined) {
+      const note = String(b.maker_note ?? '').trim();
+      if (note.length > 1500) {
+        return sendJSON(400, { error: 'یادداشت عطرساز نباید بیش از ۱۵۰۰ نویسه باشد.' });
+      }
+      const by = String(b.maker_note_by ?? '').trim().slice(0, 80);
+      db.prepare('UPDATE products SET maker_note=?, maker_note_by=? WHERE id=?')
+        .run(note || null, note ? (by || 'عطرساز عطر یزد') : null, p.id);
+      appLog('INFO', 'admin', note ? 'ویرایش یادداشت عطرساز' : 'حذف یادداشت عطرساز',
+             { product: p.id, chars: note.length });
+    }
+
     const fresh = attachVariants(parseProduct(
       db.prepare('SELECT * FROM products WHERE id=?').get(p.id)));
     return sendJSON(200, { message: 'محصول به‌روزرسانی شد.', product: fresh });

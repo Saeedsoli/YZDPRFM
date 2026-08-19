@@ -481,6 +481,28 @@ function initSchema() {
     db.exec('ALTER TABLE products ADD COLUMN release_year INTEGER');
   }
 
+  /* ── یادداشت عطرساز ──
+     تنها محتوایی در کل سایت که نه رقیب می‌تواند کپی کند نه از
+     دیتاست می‌آید: حرف کسی که واقعاً این رایحه را ساخته.
+
+     چرا اهمیت دارد: در معیارهای کیفیت گوگل حرف اول Experience
+     است — تجربه دست‌اول. صفحه محصولی که فقط نُت و قیمت دارد،
+     از هزار صفحه مشابه قابل تشخیص نیست. یک پاراگراف از زبان
+     عطرساز، همان صفحه را یکتا می‌کند.
+
+     دو ستون جدا، نه یکی:
+       maker_note      متن — تجربه ساخت یا استفاده
+       maker_note_by   امضا — «عطرساز عطر یزد» یا نام شخص
+
+     امضا جداست چون بعضی یادداشت‌ها تجربه شخصی مدیر است نه
+     عطرساز، و نسبت دادن غلط بدتر از نداشتن امضاست. */
+  if (!pcols.includes('maker_note')) {
+    db.exec('ALTER TABLE products ADD COLUMN maker_note TEXT');
+  }
+  if (!pcols.includes('maker_note_by')) {
+    db.exec('ALTER TABLE products ADD COLUMN maker_note_by TEXT');
+  }
+
   /* ── وضعیت تأمین: سه‌حالته، نه دوحالته ──
      پیش‌تر فقط «موجود / ناموجود» داشتیم و این واقعیت کار دست‌ساز
      را بد نشان می‌داد: عطری که همین حالا در قفسه نیست ولی
@@ -491,17 +513,51 @@ function initSchema() {
        MADE_TO_ORDER به سفارش ساخته می‌شود (چند روز کار)
        UNAVAILABLE   فعلاً نمی‌توانیم — فقط «خبرم کن»
 
-     پیش‌فرض MADE_TO_ORDER است نه UNAVAILABLE: کاتالوگ از عطرهای
-     شناسنامه‌دار پر شده که فرمولشان در دسترس است. اگر موردی
-     واقعاً ساختنی نیست، مالک در پنل صریحاً علامت می‌زند.
+     ── چرا پیش‌فرض UNAVAILABLE است (تصمیم مالک، شهریور ۱۴۰۵) ──
+     نسخه نخست پیش‌فرض را MADE_TO_ORDER گذاشت با این استدلال که
+     کاتالوگ از عطرهای شناسنامه‌دار پر شده است. در عمل غلط بود:
+     یعنی سایت ادعا می‌کرد هر ۲٬۱۱۱ عنوان ساختنی است، در حالی که
+     مالک می‌گوید حدود ۷۰۰ تا واقعاً ساختنی‌اند.
+
+     پیش‌فرض باید **محتاطانه** باشد نه خوش‌بینانه. ادعای نداشته
+     کردن، هم به مشتری بدقولی است هم به گوگل سیگنال «هزاران صفحه
+     بی‌پشتوانه» می‌دهد. حالا هر عنوان تا وقتی مالک صریحاً
+     تأییدش نکرده، «فعلاً نمی‌توانیم» است.
+
+     جهت خطا هم اهمیت دارد: اگر عطری ساختنی باشد و UNAVAILABLE
+     بماند، فقط یک فروش از دست می‌رود. اگر ساختنی نباشد و
+     MADE_TO_ORDER بماند، مشتری پول می‌دهد و ما نمی‌توانیم
+     تحویل دهیم — که خیلی گران‌تر است.
 
      🔴 این ستون **جای stock را نمی‌گیرد**. موجودی عددی همچنان
      مرجع «ارسال فوری» است؛ این ستون فقط می‌گوید وقتی موجودی صفر
      شد، مشتری چه پیامی ببیند. */
   if (!pcols.includes('supply_mode')) {
     db.exec(
-      "ALTER TABLE products ADD COLUMN supply_mode TEXT NOT NULL DEFAULT 'MADE_TO_ORDER'");
+      "ALTER TABLE products ADD COLUMN supply_mode TEXT NOT NULL DEFAULT 'UNAVAILABLE'");
     db.exec('CREATE INDEX IF NOT EXISTS idx_products_supply ON products(supply_mode)');
+  }
+
+  /* ── مهاجرت یک‌باره: هر آنچه هرگز دستی تأیید نشده → UNAVAILABLE ──
+     دیتابیس‌هایی که پیش از تغییر پیش‌فرض ساخته شده‌اند، ۲٬۱۱۱
+     عنوان MADE_TO_ORDER دارند. تغییر DEFAULT روی ستون موجود
+     اثری ندارد — فقط ردیف‌های تازه را می‌گیرد.
+
+     چرا با کلید تنظیمات محافظت می‌شود: بدون آن، هر بار سرور
+     بالا می‌آید محصولاتی را که مالک دستی روی MADE_TO_ORDER
+     گذاشته دوباره صفر می‌کند. یعنی کار مالک را پاک می‌کند —
+     دقیقاً همان رفتاری که یک بار در make_favicon.py دیدیم و
+     مانیفست PWA را بازنویسی می‌کرد. */
+  {
+    const KEY = 'supply_mode_default_migrated';
+    const done = db.prepare('SELECT value FROM settings WHERE key=?').get(KEY);
+    if (!done) {
+      const n = db.prepare(
+        "UPDATE products SET supply_mode='UNAVAILABLE' WHERE supply_mode='MADE_TO_ORDER'"
+      ).run().changes;
+      db.prepare('INSERT INTO settings (key,value) VALUES (?,?)').run(KEY, new Date().toISOString());
+      if (n) console.log(`[DB] وضعیت تأمین ${n} محصول به «فعلاً نمی‌توانیم» تغییر کرد — تأیید دستی لازم است.`);
+    }
   }
 
   /* ── قیمت دلاری پایه ──
@@ -729,21 +785,45 @@ function imageForFamily(slug) {
    شمار واریانت‌ها اینجا ثبت می‌شود و باید با فایل‌های موجود در
    public/images/products/ بخواند. اگر فایلی هنوز ساخته نشده،
    VARIANT_COUNTS به‌روز نمی‌شود تا تصویر شکسته سرو نشود. */
-const VARIANT_COUNTS = {
-  'floral|WOMEN':           10,
-  'floral|UNISEX':           1,
-  'ambery-oriental|UNISEX':  8,
-  'ambery-oriental|MEN':     3,
-  'woody|MEN':               6,
-  'woody|UNISEX':            3,
-  'aromatic-fresh|MEN':      5,
-  'aromatic-fresh|UNISEX':   3,
-  'citrus|UNISEX':           3,
-  'fruity-gourmand|UNISEX':  3,
-  'fruity-gourmand|WOMEN':   1,
-  'leather|UNISEX':          1,
-  'chypre|MEN':              1
-};
+/* ── چرا این جدول از روی دیسک ساخته می‌شود، نه دستی ──
+   نسخه پیشین فهرست ثابتی بود که باید با هر تصویر تازه دستی
+   به‌روز می‌شد. این دقیقاً همان الگوی خطاست که چند بار در این
+   پروژه دیدیم: دو منبع حقیقت که با هم واگرا می‌شوند.
+
+   خطرش دوطرفه بود:
+     • تصویر ساخته می‌شد ولی در جدول ثبت نمی‌شد → فایل بی‌استفاده
+     • عدد بالاتر از تعداد واقعی می‌ماند → تصویر ۴۰۴
+
+   حالا پوشه یک بار در زمان راه‌اندازی خوانده می‌شود و شمارش از
+   خود فایل‌ها می‌آید. افزودن تصویر تازه یعنی فقط گذاشتن فایل با
+   نام درست: fam-{خانواده}-{m|w|u}-{شماره}.jpg
+
+   شمارش «تا نخستین شکاف» است نه «تعداد کل»: اگر فایل‌های ۱ و ۲
+   و ۴ باشند، عدد ۲ می‌شود. چون تخصیص با باقی‌مانده هش انجام
+   می‌شود، وجود شکاف یعنی بعضی محصولات به فایل ناموجود اشاره
+   کنند. */
+const VARIANT_COUNTS = (() => {
+  const dir = path.join(__dirname, '..', 'public', 'images', 'products');
+  const out = {};
+  let names;
+  try { names = fs.readdirSync(dir); } catch { return out; }
+
+  const TAG2GENDER = { m: 'MEN', w: 'WOMEN', u: 'UNISEX' };
+  const seen = new Map();
+  for (const n of names) {
+    const m = /^fam-(.+)-([mwu])-(\d+)\.jpg$/.exec(n);
+    if (!m) continue;
+    const key = `${m[1]}|${TAG2GENDER[m[2]]}`;
+    if (!seen.has(key)) seen.set(key, new Set());
+    seen.get(key).add(Number(m[3]));
+  }
+  for (const [key, nums] of seen) {
+    let i = 1;
+    while (nums.has(i)) i++;
+    if (i > 1) out[key] = i - 1;
+  }
+  return out;
+})();
 
 /** هش پایدار و ارزان — همان الگوی FNV-1a */
 function stableHash(str) {
@@ -1022,14 +1102,55 @@ function parseProduct(row) {
        این دو از منبع ۲٬۱۱۱ عطر اصیل می‌آیند و در صفحه محصول
        نمایش داده می‌شوند. اطلاعات عمومی و افتخارآمیزند: هیچ
        رازی نیستند و به تخصص فروشگاه اعتبار می‌دهند. */
-    perfumer: row.perfumer,
+    perfumer: cleanPerfumer(row.perfumer, row.brand_en, row.brand_fa),
     release_year: row.release_year,
     /* وضعیت تأمین — تعیین می‌کند وقتی موجودی صفر است چه پیامی
-       نشان داده شود: «به سفارش ساخته می‌شود» یا «فعلاً نداریم». */
-    supply_mode: row.supply_mode || 'MADE_TO_ORDER',
+       نشان داده شود: «به سفارش ساخته می‌شود» یا «فعلاً نداریم».
+       پیش‌فرض محتاطانه است: تا مالک تأیید نکرده، ادعای ساخت
+       نمی‌کنیم. */
+    supply_mode: row.supply_mode || 'UNAVAILABLE',
     transparency_notice: row.transparency_notice,
+    /* یادداشت عطرساز — تجربه دست‌اول، تنها محتوای غیرقابل کپی. */
+    maker_note: row.maker_note || null,
+    maker_note_by: row.maker_note_by || null,
     image_url: row.image_url
   };
+}
+
+/**
+ * نام عطرساز را فقط وقتی برمی‌گرداند که واقعاً نام یک شخص باشد.
+ *
+ * ── چرا لازم شد (ممیزی سئو، شهریور ۱۴۰۵) ──
+ * در ۳۸۲ محصول از ۲٬۱۱۱، مقدار ستون `perfumer` دقیقاً برابر نام
+ * برند بود: «Roja Dove» برای عطرهای روژا داو، «Lattafa» برای
+ * لطافه، «Armaf» برای آرماف.
+ *
+ * برای چند مورد اتفاقاً درست است (روژا داو واقعاً عطرساز
+ * عطرهای خودش است)، ولی در بیشتر موارد صرفاً نامِ برند در
+ * ستون عطرساز کپی شده — یعنی داده‌ای که «شناسنامه رایحه اصلی»
+ * صدایش می‌کنیم، راستی‌آزمایی‌نشده است.
+ *
+ * خطرش دوگانه است و از آنچه به نظر می‌رسد بزرگ‌تر: اگر بازدیدکننده‌ای
+ * یک مورد را راستی‌آزمایی کند و غلط ببیند، اعتمادش به **کل
+ * سایت** می‌شکند — نه فقط آن یک صفحه. برای فروشگاهی که کل
+ * هویتش بر شفافیت بنا شده، این گران‌ترین نوع خطاست.
+ *
+ * تصمیم مالک: حذف شود. سطر «عطرساز» در جعبه شناسنامه برای این
+ * موارد اصلاً نمایش داده نمی‌شود — نه «نامشخص»، نه جای خالی.
+ *
+ * ── چرا در لایه خواندن و نه با UPDATE روی دیتابیس ──
+ * داده خام دست‌نخورده می‌ماند. اگر روزی منبع بهتری آمد یا مالک
+ * خواست موردی را تأیید کند، اصل داده هنوز هست. پاک کردنِ
+ * برگشت‌ناپذیر برای چیزی که فقط «مشکوک» است، زیاده‌روی است.
+ */
+function cleanPerfumer(perfumer, brandEn, brandFa) {
+  const p = String(perfumer || '').trim();
+  if (!p) return null;
+  const norm = s => String(s || '').toLowerCase().replace(/['’\s.-]/g, '');
+  const np = norm(p);
+  if (!np) return null;
+  if (np === norm(brandEn) || np === norm(brandFa)) return null;
+  return p;
 }
 
 function attachVariants(product) {

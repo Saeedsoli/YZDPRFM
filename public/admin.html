@@ -653,6 +653,29 @@
           </div>
         </div>
 
+        <!-- یادداشت عطرساز — تنها محتوای غیرقابل کپی صفحه محصول -->
+        <div class="card" style="margin-top:12px">
+          <div style="font-weight:800;font-size:.86rem;margin-bottom:4px">یادداشت عطرساز</div>
+          <div style="font-size:.74rem;color:var(--muted);line-height:1.9;margin-bottom:10px">
+            تجربه ساخت یا استفاده از این عطر، به زبان خودتان. این تنها بخشی از
+            صفحه است که هیچ رقیبی نمی‌تواند کپی کند و بیشترین اثر را روی اعتماد
+            مشتری و رتبه گوگل دارد.
+            <br>
+            متن فعلی پیش‌نویس است — آزادانه ویرایشش کنید. خالی گذاشتن یعنی
+            جعبه در صفحه محصول نمایش داده نشود.
+          </div>
+          <textarea id="makerNote" rows="5"
+            placeholder="مثال: آن حالت آناناس دودی با اسانس معمولی در نمی‌آید؛ سه بار فرمول را عوض کردیم تا به آن رسیدیم."
+            style="width:100%;padding:10px;border:1px solid var(--border);border-radius:8px;
+                   font:inherit;line-height:2;resize:vertical"></textarea>
+          <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-top:8px">
+            <input id="makerNoteBy" placeholder="امضا — مثلاً: عطرساز عطر یزد"
+              style="flex:1;min-width:200px;padding:9px;border:1px solid var(--border);border-radius:8px">
+            <button class="btn" onclick="saveMakerNote()">ذخیره یادداشت</button>
+            <span id="makerLen" style="font-size:.72rem;color:var(--muted)"></span>
+          </div>
+        </div>
+
         <div class="scroll"><table id="pVariants"></table></div>
       </div>
     </div>
@@ -2714,7 +2737,27 @@ async function editProduct(slug) {
   renderVariants();
   // وضعیت تأمین فعلی را در فهرست کشویی نشان بده
   const sm = document.getElementById('supplyMode');
-  if (sm) sm.value = p.supply_mode || 'MADE_TO_ORDER';
+  if (sm) sm.value = p.supply_mode || 'UNAVAILABLE';
+
+  /* یادداشت عطرساز — متن فعلی برای ویرایش */
+  const mn = document.getElementById('makerNote');
+  if (mn) {
+    mn.value = p.maker_note || '';
+    const by = document.getElementById('makerNoteBy');
+    if (by) by.value = p.maker_note_by || '';
+    const len = document.getElementById('makerLen');
+    const upd = () => {
+      if (!len) return;
+      const n = mn.value.trim().length;
+      /* آستانه ۱۲۰ نویسه از ممیزی سئو می‌آید: متن کوتاه‌تر از
+         این عملاً چیزی به تمایز صفحه اضافه نمی‌کند. */
+      len.textContent = n ? `${toFa(n)} نویسه${n < 120 ? ' — کوتاه است' : ''}` : '';
+      len.style.color = n && n < 120 ? 'var(--danger, #b4232a)' : 'var(--muted)';
+    };
+    mn.oninput = upd;
+    upd();
+  }
+
   document.getElementById('pEditCard').scrollIntoView({ behavior: 'smooth' });
 }
 
@@ -2885,6 +2928,21 @@ async function saveSupplyMode() {
   });
   const d = await r.json();
   toast(r.ok ? 'وضعیت تأمین ذخیره شد.' : d.error);
+  if (r.ok) editProduct(currentProduct.slug);
+}
+
+/* ── یادداشت عطرساز ──
+   رشته خالی معنادار است: یعنی «حذف کن». پس null نمی‌فرستیم،
+   رشته خالی می‌فرستیم و سرور آن را به NULL تبدیل می‌کند. */
+async function saveMakerNote() {
+  const note = document.getElementById('makerNote').value.trim();
+  const by = document.getElementById('makerNoteBy').value.trim();
+  const r = await fetch('/api/admin/products/' + currentProduct.slug, {
+    method: 'PUT', headers: H(),
+    body: JSON.stringify({ maker_note: note, maker_note_by: by })
+  });
+  const d = await r.json();
+  toast(r.ok ? (note ? 'یادداشت ذخیره شد.' : 'یادداشت حذف شد.') : d.error);
   if (r.ok) editProduct(currentProduct.slug);
 }
 

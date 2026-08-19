@@ -36,6 +36,10 @@ const PORT = 4917;
 const BASE = `http://127.0.0.1:${PORT}`;
 
 const db = new Database(DB_PATH, { readonly: true });
+/* اتصال نوشتنی جدا — آزمون باید وضعیت تأمین را موقتاً عوض کند.
+   خواندن و نوشتن جدا نگه داشته می‌شود تا اشتباهاً چیزی جز همین
+   تغییر کنترل‌شده نوشته نشود. */
+const dbw = new Database(DB_PATH);
 const sleep = ms => new Promise(res => setTimeout(res, ms));
 
 async function boot() {
@@ -96,6 +100,27 @@ const titleOf = html => {
   const slugs = db.prepare(
     'SELECT slug FROM products ORDER BY id LIMIT 40'
   ).all().map(x => x.slug);
+
+  /* ── چرا آزمون خودش محصول را قابل‌سفارش می‌کند ──
+     پیش‌فرض کاتالوگ UNAVAILABLE است (تصمیم مالک: تا تأیید
+     نشده، ادعای ساخت نمی‌کنیم). ولی چیزی که اینجا می‌سنجیم
+     رفتار صفحهٔ **قابل سفارش** است: کارت غنی، BackOrder،
+     حضور در sitemap.
+
+     اگر به وضعیت دیتابیس تکیه می‌کردیم، آزمون یا همیشه رد
+     می‌شد یا با تغییر یک سوئیچ در پنل بی‌صدا بی‌معنا می‌شد.
+     پس حالت لازم را خودمان می‌سازیم و در پایان دقیقاً به حالت
+     قبل برمی‌گردانیم. */
+  const prevModes = db.prepare(
+    `SELECT slug, supply_mode FROM products WHERE slug IN (${slugs.map(() => '?').join(',')})`
+  ).all(...slugs);
+  const setMode = dbw.prepare('UPDATE products SET supply_mode=? WHERE slug=?');
+  dbw.transaction(() => {
+    for (const s of slugs) setMode.run('MADE_TO_ORDER', s);
+  })();
+  const restoreModes = () => dbw.transaction(() => {
+    for (const r of prevModes) setMode.run(r.supply_mode, r.slug);
+  })();
 
   const pages = [];
   for (const s of slugs) pages.push(await get('/perfume/' + s));
@@ -179,13 +204,95 @@ const titleOf = html => {
 
   const sm = await get('/sitemap.xml');
   const urls = (sm.text.match(/<loc>/g) || []).length;
-  add('sitemap ساخته می‌شود', sm.status === 200 && urls > 100, `${urls} نشانی`);
+
+  /* ── چرا آستانه ثابت نیست ──
+     نسخه پیشین `urls > 100` را شرط می‌گذاشت، چون آن زمان هر
+     ۲٬۱۱۱ محصول در sitemap بودند. حالا فقط محصولات قابل سفارش
+     معرفی می‌شوند و این عدد کاملاً به تصمیم مالک وابسته است —
+     امروز ممکن است ۴۰ باشد، فردا ۷۰۰.
+
+     آزمون باید **قرارداد** را بسنجد نه یک عدد لحظه‌ای: تعداد
+     نشانی‌های محصول باید دقیقاً برابر تعداد محصولات قابل سفارش
+     باشد. این رابطه همیشه درست می‌ماند. */
+  const orderable = db.prepare(
+    "SELECT COUNT(*) c FROM products WHERE supply_mode != 'UNAVAILABLE'").get().c;
+  const productUrls = (sm.text.match(/\/perfume\//g) || []).length;
+
+  add('sitemap ساخته می‌شود', sm.status === 200 && urls > 0, `${urls} نشانی`);
+  add('فقط محصولات قابل سفارش در sitemap‌اند',
+      productUrls === orderable, `${productUrls} نشانی = ${orderable} محصول قابل سفارش`);
 
   /* صفحه‌های فنی نباید در sitemap باشند — همان صفحه‌هایی که
      robots هم بسته است. تناقض بین این دو، سیگنال بی‌دقتی است. */
   const leak = ['/cart', '/checkout', '/account', '/wishlist', '/login', '/invoice', '/label']
     .filter(p => sm.text.includes(`<loc>${process.env.SITE_URL || 'https://yazdperfume.ir'}${p}</loc>`));
   add('صفحه شخصی در sitemap نشت نکرده', leak.length === 0, leak.join(', ') || 'پاک');
+
+  /* ═══ ۳٫۵) یادداشت عطرساز — تجربه دست‌اول ═══ */
+  console.log();
+  console.log(b('  ۳٫۵) یادداشت عطرساز'));
+
+  const withNote = db.prepare(
+    "SELECT COUNT(*) c FROM products WHERE maker_note IS NOT NULL AND maker_note != ''").get().c;
+  const totalP = db.prepare('SELECT COUNT(*) c FROM products').get().c;
+  const uniqNote = db.prepare(
+    "SELECT COUNT(DISTINCT maker_note) c FROM products WHERE maker_note IS NOT NULL AND maker_note != ''").get().c;
+
+  add('همه محصولات یادداشت عطرساز دارند', withNote === totalP, `${withNote}/${totalP}`);
+  /* آستانه ۹۰٪: یادداشت تکراری همان مشکل «محتوای قالبی» را
+     می‌سازد که قرار بود حل کند. */
+  add('یادداشت‌ها عمدتاً یکتا هستند', uniqNote >= withNote * 0.9,
+      `${uniqNote} یکتا از ${withNote}`);
+
+  const shortNotes = db.prepare(
+    "SELECT COUNT(*) c FROM products WHERE maker_note IS NOT NULL AND LENGTH(maker_note) < 120").get().c;
+  add('یادداشت کوتاه‌تر از ۱۲۰ نویسه نداریم', shortNotes === 0, `${shortNotes} مورد`);
+
+  /* مهم‌ترین بررسی این بخش: یادداشت باید در HTML خام باشد.
+     اگر فقط با JS ساخته شود، همان محتوایی که صفحه را یکتا
+     می‌کند از دید خزنده پنهان می‌ماند. */
+  const noteRow = db.prepare(
+    "SELECT slug, maker_note FROM products WHERE maker_note IS NOT NULL AND maker_note != '' ORDER BY id LIMIT 1").get();
+  if (noteRow) {
+    const pg = await get('/perfume/' + noteRow.slug);
+    const snippet = noteRow.maker_note.slice(0, 40);
+    add('یادداشت در HTML خام سرو می‌شود', pg.text.includes(snippet),
+        'خزنده بدون اجرای جاوااسکریپت می‌بیندش');
+    /* متن در HTML باشد ولی جعبه hidden بماند، مصداق «متن پنهان»
+       در سیاست اسپم گوگل است — بدتر از نبودنش. */
+    add('جعبه یادداشت پنهان نمانده',
+        !/id="makerBox" hidden/.test(pg.text),
+        'متن پنهان مصداق اسپم است');
+  }
+
+  /* ═══ ۳٫۶) مهار ایندکس محصولات غیرقابل تأمین ═══ */
+  console.log();
+  console.log(b('  ۳٫۶) محصولات غیرقابل تأمین'));
+
+  const unav = db.prepare(
+    "SELECT slug FROM products WHERE supply_mode='UNAVAILABLE' ORDER BY id LIMIT 1").get();
+  if (unav) {
+    const pg = await get('/perfume/' + unav.slug);
+    add('صفحه غیرقابل تأمین noindex دارد',
+        /name="robots" content="noindex/.test(pg.text), unav.slug);
+    /* follow عمدی است: خزنده باید از این صفحه به محصولات
+       قابل سفارش هم‌خانواده برود. */
+    add('ولی follow باقی مانده',
+        /content="noindex,\s*follow"/.test(pg.text),
+        'مسیر عبور خزنده بسته نمی‌شود');
+    add('در sitemap نیست', !sm.text.includes(`/perfume/${unav.slug}<`), unav.slug);
+    add('صفحه‌اش برای بازدیدکننده کار می‌کند', pg.status === 200,
+        'حذف از ایندکس ≠ حذف از سایت');
+  } else {
+    add('محصول غیرقابل تأمین برای آزمون هست', false, 'هیچ محصول UNAVAILABLE نبود');
+  }
+
+  /* محصول قابل سفارش باید برعکسش باشد. */
+  const okPg = pages[0];
+  add('صفحه قابل سفارش noindex ندارد',
+      !/name="robots" content="noindex/.test(okPg.text));
+  add('صفحه قابل سفارش در sitemap هست',
+      sm.text.includes(`/perfume/${slugs[0]}<`), slugs[0]);
 
   /* ═══ ۴) شفافیت برای خزنده ═══ */
   console.log();
@@ -220,7 +327,9 @@ const titleOf = html => {
     ? g(`  ایمنی سئو تأیید شد.  ${checks.length}/${checks.length}\n`)
     : r(`  ${failed} بررسی ناموفق از ${checks.length}.\n`));
 
+  restoreModes();
   db.close();
+  dbw.close();
   server.kill();
   process.exit(failed === 0 ? 0 : 1);
 })();
