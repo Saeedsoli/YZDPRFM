@@ -6,6 +6,10 @@
  * عنوان و متادیتا را با داده واقعی محصول جایگزین می‌کند.
  */
 
+/* منبع واحد تبدیل متن مقاله به HTML — همان منطقی که
+   `public/article.html` سمت مرورگر اجرا می‌کند. */
+const { renderArticle } = require('./article-render');
+
 const SITE = process.env.SITE_URL || 'https://yazdperfume.ir';
 const BRAND = 'عطر یزد';
 
@@ -521,13 +525,59 @@ function articlePage(html, a) {
     ]
   };
 
-  const extra = `  <script type="application/ld+json">${JSON.stringify(schema)}</script>
+  /* پیش‌بارگذاری تصویر جلد — عنصر LCP این صفحه است و چون
+     سمت سرور تزریقش می‌کنیم، نشانی را از همین‌جا می‌دانیم. */
+  const coverPath = (a.cover_image && a.cover_image.startsWith('/images/products'))
+    ? a.cover_image : (covers[a.category] || covers.guide);
+  const coverWebp = coverPath.replace(/\.(jpe?g|png)$/i, '.webp');
+  const preload = coverWebp !== coverPath
+    ? `  <link rel="preload" as="image" href="${coverWebp}" type="image/webp" fetchpriority="high">\n`
+    : `  <link rel="preload" as="image" href="${coverPath}" fetchpriority="high">\n`;
+
+  const extra = preload
+    + `  <script type="application/ld+json">${JSON.stringify(schema)}</script>
   <script type="application/ld+json">${JSON.stringify(crumb)}</script>`;
 
-  return inject(html, {
+  let out = inject(html, {
     title, description,
     meta: metaBlock({ title, description, url, image: img, type: 'article', extra })
   });
+
+  /* ── رندر متن مقاله سمت سرور ──
+     مسئله: HTML خام این صفحه تنها ۱۱۱ نویسه متن داشت، در حالی
+     که مقاله‌ها ۲٬۰۰۰ تا ۲٬۴۰۰ نویسه محتوای واقعی دارند. کل
+     ارزش صفحه در متنی بود که خزنده بدون اجرای جاوااسکریپت
+     نمی‌دید.
+
+     ⚠ نکته‌ای که یک بار نادیده گرفتنش صفحه را خراب می‌کرد:
+     `<article id="content">` با `style="display:none"` شروع
+     می‌شود و JS پس از بارگذاری نمایشش می‌دهد. اگر فقط متن را
+     تزریق می‌کردیم، محتوا در HTML بود ولی **پنهان** —
+     که خودش مصداق «متن پنهان» در سیاست اسپم گوگل است. پس
+     display هم برداشته می‌شود و اسپینر بارگذاری حذف می‌گردد.
+
+     JS بعداً همین بلوک‌ها را بازنویسی می‌کند. چون از یک ماژول
+     مشترک می‌آیند، خروجی یکسان است و جابه‌جایی چیدمان رخ
+     نمی‌دهد. */
+  const bodyHTML = renderArticle(a.content || '');
+  if (bodyHTML) {
+    out = out
+      .replace('<article id="content" style="display:none">', '<article id="content">')
+      .replace(/<div id="loading" role="status">[\s\S]*?<\/div>\s*<\/div>/,
+               '<div id="loading" role="status" style="display:none"></div>')
+      .replace('<img id="cover" alt="" loading="eager">',
+               `<img id="cover" src="${coverPath}" alt="${esc(a.title)}" loading="eager" fetchpriority="high">`)
+      .replace('<h1 id="title"></h1>', `<h1 id="title">${esc(a.title)}</h1>`)
+      .replace('<div class="excerpt" id="excerpt"></div>',
+               `<div class="excerpt" id="excerpt">${esc(a.excerpt || '')}</div>`)
+      .replace('<div class="content" id="body"></div>',
+               `<div class="content" id="body">${bodyHTML}</div>`)
+      .replace('<div class="art-meta" id="meta"></div>',
+               `<div class="art-meta" id="meta"><span class="tag">${esc(a.category_label || CAT_FA[a.category] || 'مقاله')}</span>`
+               + (a.read_time ? `<span class="dot">·</span><span class="t">${esc(a.read_time)} مطالعه</span>` : '')
+               + '</div>');
+  }
+  return out;
 }
 
 /* ═══════════ صفحات ساده ═══════════ */
@@ -586,7 +636,72 @@ function simplePage(html, path) {
 
 function hasSimple(path) { return !!SIMPLE[path]; }
 
+/* ═══════════ صفحه خانه‌های عطر ═══════════ */
+
+/**
+ * فهرست برندها را سمت سرور تزریق می‌کند.
+ *
+ * چرا: HTML خام این صفحه تنها **۱۰۹ نویسه** متن داشت. کل
+ * ارزشش — نام و شمار ۱۲۴ خانه عطر — با جاوااسکریپت ساخته
+ * می‌شد و برای خزنده نامرئی بود.
+ *
+ * این فهرست برای سئو ارزش ویژه دارد: هر نام برند عبارتی است
+ * که مشتری واقعاً جستجو می‌کند («عطر دست‌ساز آمواج»). صفحه‌ای
+ * که این ۱۲۴ نام را در متن دارد، برای هر کدامشان نامزد نتیجه
+ * می‌شود.
+ *
+ * ⚠ خروجی باید با `draw()` در `public/brands.html` یکی باشد،
+ * وگرنه پس از اجرای JS چیدمان می‌پرد. آزمون مرورگر این را
+ * می‌سنجد.
+ *
+ * @param {string} html
+ * @param {Array<{brand_fa:string, brand_en:string, count:number}>} brands
+ */
+function brandsPage(html, brands) {
+  const c = SIMPLE['/brands'];
+  let out = inject(html, {
+    title: c.title, description: c.description,
+    meta: metaBlock({ title: c.title, description: c.description, url: SITE + '/brands' })
+  });
+
+  if (!brands || !brands.length) return out;
+
+  const cards = brands.map(b =>
+    `<a class="bcard" href="/?brand=${encodeURIComponent(b.brand_fa)}">`
+    + `<div class="en">${esc(String(b.brand_en || '').toUpperCase())}</div>`
+    + `<div class="fa">${esc(b.brand_fa)}</div>`
+    + `<div class="ct">${faNum(b.count)} رایحه</div></a>`).join('');
+
+  /* ── نوار الفبا هم باید سمت سرور بیاید ──
+     آزمون مرورگر CLS=۰٫۴۳ گرفت (حد «خوب» ۰٫۱ است). علتش این
+     نوار بود: خالی رندر می‌شد و پس از اجرای JS ناگهان یک ردیف
+     دکمه ظاهر می‌کرد که کل فهرست برندها را به پایین هل می‌داد.
+
+     تزریق کارت‌ها به‌تنهایی مشکل را حل نمی‌کرد — فقط جایش را
+     عوض می‌کرد. هر عنصری که پس از JS ارتفاع می‌گیرد، باید از
+     همان اول ارتفاع داشته باشد.
+
+     منطق باید مو‌به‌مو با `drawAlpha()` یکی بماند: حرف اول
+     نام لاتین، فقط A–Z، مرتب، با دکمه «همه» در ابتدا. */
+  const letters = [...new Set(brands
+    .map(b => String(b.brand_en || '?').trim().charAt(0).toUpperCase()))]
+    .filter(ch => /[A-Z]/.test(ch)).sort();
+  const alpha = '<button class="on" data-l="">همه</button>'
+    + letters.map(ch => `<button data-l="${ch}">${ch}</button>`).join('');
+
+  /* `min-height:100vh` رزرو جای اسکلت بارگذاری است. حالا که
+     محتوای واقعی از همان اول آنجاست، رزرو باید برداشته شود —
+     وگرنه زیر فهرست یک فضای خالی می‌ماند. همان کاری که
+     `draw()` سمت مرورگر می‌کند. */
+  return out
+    .replace('<div class="alpha" id="alpha"></div>',
+             `<div class="alpha" id="alpha">${alpha}</div>`)
+    .replace('<div class="bgrid stagger" id="bg" style="min-height:100vh"></div>',
+             `<div class="bgrid stagger" id="bg">${cards}</div>`);
+}
+
 module.exports = {
   productPage, homePage, journalPage, articlePage, simplePage, hasSimple,
+  brandsPage,
   coverOf, SITE
 };

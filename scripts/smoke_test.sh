@@ -239,6 +239,18 @@ except Exception: print(0)" 2>/dev/null)
     grep '✗' /tmp/browser.log | head -3 | sed 's/^/      /'
   fi
   kill $BRPID 2>/dev/null
+
+  # رندر سمت سرور مقاله و خانه‌های عطر + سنجش CLS.
+  # سرور خودش را روی درگاه جدا بالا می‌آورد، پس پس از kill بالا
+  # اجرا می‌شود و تداخلی ندارد.
+  sleep 2
+  if python3 scripts/test_ssr_pages.py >/tmp/ssr.log 2>&1; then
+    P=$((P+1))
+  else
+    F=$((F+1))
+    echo "  X server-side render (article / brands) — /tmp/ssr.log"
+    grep '✗' /tmp/ssr.log | head -3 | sed 's/^/      /'
+  fi
 else
   echo "  - browser test skipped (playwright not installed)"
 fi

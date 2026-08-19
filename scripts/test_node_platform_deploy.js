@@ -211,9 +211,21 @@ function copyRespectingIgnore(src, dst, patterns, base = src) {
     const na = (arts.body.articles || arts.body || []).length;
     add('مقالات از seed پر شدند', na >= 5, na + ' مقاله');
 
+    /* `/api/brands` فقط برندهای دارای محصول قابل سفارش را
+       می‌دهد. روی دیتابیس تازه همه UNAVAILABLE‌اند، پس فهرست
+       عمداً خالی است. تنوع کاتالوگ را از خود دیتابیس می‌پرسیم. */
     const brands = await j('/api/brands');
     const nb = (brands.body.brands || brands.body || []).length;
-    add('برندها ساخته شدند', nb > 100, nb + ' برند');
+    const coldDb = new (require('better-sqlite3'))(dbPath, { readonly: true });
+    const brandsInDb = coldDb.prepare(
+      'SELECT COUNT(DISTINCT brand_fa) c FROM products WHERE brand_fa IS NOT NULL').get().c;
+    const orderableBrands = coldDb.prepare(
+      "SELECT COUNT(DISTINCT brand_fa) c FROM products WHERE supply_mode != 'UNAVAILABLE'").get().c;
+    coldDb.close();
+
+    add('کاتالوگ تنوع برند دارد', brandsInDb > 100, brandsInDb + ' برند');
+    add('API فقط برندهای قابل سفارش را می‌دهد', nb === orderableBrands,
+        `${nb} = ${orderableBrands}`);
 
     const home = await fetch(BASE + '/');
     add('صفحه اصلی ۲۰۰ می‌دهد', home.status === 200);

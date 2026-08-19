@@ -131,9 +131,28 @@ function dockerCopiedDirs() {
       ? full.content.trim().split(/\s+/).filter(Boolean).length : 0;
     add('مقالات محتوای کامل دارند', words >= 300, `${words} واژه`);
 
+    /* ── چرا شمار برند از دیتابیس گرفته می‌شود، نه از API ──
+       `/api/brands` عمداً فقط برندهایی را برمی‌گرداند که محصول
+       قابل سفارش دارند. روی دیتابیس تازهٔ استقرار، پیش‌فرض همه
+       UNAVAILABLE است، پس این فهرست درست و انتظارآمیز خالی
+       است — نه خرابی.
+
+       چیزی که واقعاً باید بسنجیم این است که کاتالوگ با تنوع
+       برند پر شده باشد. آن را از خود دیتابیس می‌پرسیم. */
+    const cold = new (require('better-sqlite3'))(
+      path.join(stage, 'data', 'yazd.db'), { readonly: true });
+    const brandsInDb = cold.prepare(
+      'SELECT COUNT(DISTINCT brand_fa) c FROM products WHERE brand_fa IS NOT NULL').get().c;
+    const orderable = cold.prepare(
+      "SELECT COUNT(DISTINCT brand_fa) c FROM products WHERE supply_mode != 'UNAVAILABLE'").get().c;
+    cold.close();
+
+    add('کاتالوگ تنوع برند دارد', brandsInDb >= 100, `${brandsInDb} برند در دیتابیس`);
+
     const brands = await fetch(`${BASE}/api/brands`).then(r => r.json());
-    add('برندها ساخته شده‌اند', (brands.brands || []).length >= 100,
-        `${(brands.brands || []).length} برند`);
+    add('API فقط برندهای قابل سفارش را می‌دهد',
+        (brands.brands || []).length === orderable,
+        `${(brands.brands || []).length} = ${orderable}`);
 
     const one = await fetch(`${BASE}/api/products?limit=1&full=1`).then(r => r.json());
     const v = one.products?.[0]?.variants || [];

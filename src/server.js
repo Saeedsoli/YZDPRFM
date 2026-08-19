@@ -2153,6 +2153,20 @@ const server = http.createServer(async (req, res) => {
                 'SELECT * FROM articles ORDER BY created_at DESC, id LIMIT 1'
               ).get();
               html = seo.journalPage(html, top || null);
+            } else if (pathname === '/brands') {
+              /* همان پرس‌وجویی که `/api/brands` می‌زند — تا فهرست
+                 سمت سرور و سمت مرورگر یکی باشد و چیدمان نپرد.
+                 محصولات غیرقابل تأمین شمرده نمی‌شوند: عدد کنار
+                 نام برند باید همانی باشد که مشتری با کلیک
+                 می‌بیند. */
+              const brands = db.prepare(`
+                SELECT brand_fa, brand_en, COUNT(*) AS count
+                FROM products
+                WHERE supply_mode != 'UNAVAILABLE'
+                GROUP BY brand_fa, brand_en
+                ORDER BY count DESC, brand_fa
+              `).all();
+              html = seo.brandsPage(html, brands);
             } else if (seo.hasSimple(pathname)) {
               html = seo.simplePage(html, pathname);
             }

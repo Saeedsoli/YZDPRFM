@@ -352,10 +352,23 @@ async function handle(ctx) {
 
   // برندها
   if (method === 'GET' && pathname === '/api/brands') {
+    /* ── چرا محصولات غیرقابل تأمین شمرده نمی‌شوند ──
+       عدد کنار نام برند وعده‌ای است به مشتری: «اینجا ۶۰ رایحه
+       داری». اگر ۵۸ تایشان قابل سفارش نباشند، کلیک می‌کند و
+       فهرست تقریباً خالی می‌بیند — بدترین نوع بدقولی، چون
+       خودمان عدد را نوشته‌ایم.
+
+       ⚠ این پرس‌وجو باید **دقیقاً** با آنچه `seo.brandsPage`
+       سمت سرور می‌سازد یکی بماند. اگر واگرا شوند، جاوااسکریپت
+       فهرستِ سرور را با فهرست متفاوتی بازنویسی می‌کند و
+       چیدمان جلوی چشم کاربر می‌پرد. آزمون مرورگر این را
+       می‌گیرد. */
     const rows = db.prepare(`
       SELECT brand_fa, brand_en, COUNT(*) AS count
-      FROM products WHERE brand_fa IS NOT NULL
-      GROUP BY brand_fa, brand_en ORDER BY count DESC
+      FROM products
+      WHERE brand_fa IS NOT NULL AND supply_mode != 'UNAVAILABLE'
+      GROUP BY brand_fa, brand_en
+      ORDER BY count DESC, brand_fa
     `).all();
     return sendJSON(200, { total: rows.length, brands: rows });
   }
