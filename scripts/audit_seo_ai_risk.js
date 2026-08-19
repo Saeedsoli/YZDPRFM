@@ -143,7 +143,14 @@ const reviewedN = rows.filter(r => r.p.n_reviews > 0).length;
 
 const articles = db.prepare('SELECT slug, title, LENGTH(content) len FROM articles').all();
 const staticPages = 10; // فهرست STATIC در sitemap
-const indexable = staticPages + TOTAL + articles.length;
+
+/* ── فقط محصولات قابل سفارش در sitemap می‌آیند ──
+   نسخه پیشین همه محصولات را می‌شمرد و عدد ۲٬۱۲۶ می‌داد، در
+   حالی که sitemap واقعی فقط ۱۵ نشانی داشت. ممیزی‌ای که عدد
+   غلط بدهد بدتر از نبودنش است — اینجا دقیقاً همان منطق
+   `src/server.js` بازتولید می‌شود. */
+const orderable = products.filter(p => p.supply_mode !== 'UNAVAILABLE').length;
+const indexable = staticPages + orderable + articles.length;
 
 /* نسبت طلایی: چند درصد از صفحاتِ ایندکس‌شدنی، صفحهٔ «بی‌دلیل»اند */
 const thinRatio = Number(pct(grades.C, indexable));
@@ -181,11 +188,17 @@ console.log('║  ممیزی ریسک محتوای انبوه از دید گوگ
 console.log('╚' + '═'.repeat(62) + '╝');
 
 h('۱) مقیاس — چند نشانی به گوگل معرفی می‌کنیم');
-console.log(`  محصول ............... ${fa(TOTAL)}`);
+console.log(`  محصول در کاتالوگ .... ${fa(TOTAL)}`);
+console.log(`  از آن، قابل سفارش ... ${fa(orderable)}  (${pct(orderable, TOTAL)}٪)`);
 console.log(`  مقاله ............... ${fa(articles.length)}`);
 console.log(`  صفحه ثابت ........... ${fa(staticPages)}`);
 console.log(`  مجموع در sitemap .... ${fa(indexable)}`);
-console.log(`  → ${pct(TOTAL, indexable)}٪ از کل سایت، صفحه محصولِ تولیدشده از یک دیتاست است.`);
+if (orderable) {
+  console.log(`  → ${pct(orderable, indexable)}٪ از نشانی‌های معرفی‌شده، صفحه محصول است.`);
+} else {
+  console.log('  → هیچ محصولی هنوز تأیید نشده؛ sitemap فقط صفحات ثابت و مجله را دارد.');
+  console.log('    (این حالت درست است — پیش‌فرض تا تأیید مالک UNAVAILABLE است.)');
+}
 
 h('۲) تمایز — هر صفحه چقدر متن یکتا دارد');
 console.log(`  میانگین متن یکتا (taste + accords) ... ${fa(avgUnique)} نویسه`);
@@ -212,16 +225,18 @@ for (const [f, n] of report.flags) {
 
 h('۶) حکم');
 const verdict = [];
-if (grades.A === 0)
-  verdict.push('🔴 هیچ صفحه محصولی امروز واجد شرایط رتبه A نیست.');
-if (inStockN / TOTAL < 0.05)
+if (orderable && grades.A === 0)
+  verdict.push('🔴 هیچ صفحه محصولِ قابل سفارشی واجد شرایط رتبه A نیست.');
+if (orderable && inStockN / TOTAL < 0.05)
   verdict.push(`🔴 کمتر از ۵٪ محصولات موجودند (${fa(inStockN)} از ${fa(TOTAL)}). از دید گوگل یعنی هزاران صفحه بدون امکان معامله.`);
 if (report.signals.avgProductsPerImage > 20)
   verdict.push(`🔴 هر تصویر به‌طور میانگین روی ${fa(report.signals.avgProductsPerImage)} صفحه تکرار می‌شود — سیگنال قوی «صفحه قالبی».`);
 if (avgUnique < 200)
   verdict.push(`🟠 میانگین ${fa(avgUnique)} نویسه متن یکتا برای هر صفحه؛ آستانه امنِ عملی حدود ۳۰۰ نویسه است.`);
-if (thinRatio > 30)
+if (orderable && thinRatio > 30)
   verdict.push(`🔴 ${fa(thinRatio)}٪ از نشانی‌های sitemap در رتبه C هستند. این نسبت، سیگنال کیفیتِ کلِ دامنه را پایین می‌کشد.`);
+if (!orderable)
+  verdict.push('🟡 هیچ محصولی هنوز برای فروش تأیید نشده. تا آن زمان، ریسک سئویی صفر است چون صفحه‌ای به گوگل معرفی نمی‌شود — ولی فروشی هم نیست. راهنما: docs/ACTIVATING_PRODUCTS.md');
 if (!verdict.length) verdict.push('🟢 نسبت‌ها در محدوده امن است.');
 verdict.forEach(v => console.log('  ' + v));
 
