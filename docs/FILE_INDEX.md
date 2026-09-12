@@ -149,6 +149,7 @@ bash scripts/smoke_test.sh     # ۹۲ آزمون خودکار
 | `audit_seo_ai_risk.js` | ممیزی ریسک محتوای انبوه — رتبه‌بندی A/B/C صفحه‌ها |
 | `seed_maker_notes.js` | تولید پیش‌نویس یادداشت عطرساز از دانش مواد اولیه |
 | `test_ssr_pages.py` | ۱۳ بررسی — رندر سمت سرور مقاله و برندها + سنجش CLS |
+| `make_rescue_bundle.sh` | بستهٔ نجات ۲.۵MB — هستهٔ غیرقابل بازتولید |
 | `lib/test_stock.js` | کمک‌کننده — موجودی موقت برای آزمون‌ها |
 | `test_node_platform_deploy.js` | ۲۶ بررسی — استقرار روی «پلتفرم Node» لیارا |
 | `audit_links.js` | خزش هر لینک در هر صفحه (۱۲۶ لینک داخلی) |

@@ -1675,6 +1675,52 @@ const SHOP_DEFAULTS = {
   enamad_code:    ''
 };
 
+/**
+ * تنظیمات واقعی فروشگاه را در دیتابیس تازه می‌نشاند.
+ *
+ * ── چرا لازم شد (شهریور ۱۴۰۵) ──
+ * شماره تماس، نشانی، کد پستی و کد اینماد فقط در جدول
+ * `settings` زندگی می‌کردند. `data/yazd.db` در `.gitignore`
+ * است — درست هم هست، چون داده زنده مشتری دارد — پس این
+ * مقادیر هیچ پشتیبانی نداشتند.
+ *
+ * وقتی ورک‌اسپیس به سقف حجم خورد و دیتابیس حذف شد، همه‌شان
+ * رفتند و پنج آزمون قرمز شد: فاکتور بی‌نشانی، برچسب پستی
+ * بی‌فرستنده، فوتر بی‌اینماد.
+ *
+ * درس: هر داده‌ای که «فقط مالک دارد» و بازتولیدشدنی نیست،
+ * باید جایی خارج از دیتابیس هم باشد.
+ *
+ * ⚠ فقط مقادیر **خالی** پر می‌شوند. اگر مدیر از پنل چیزی را
+ * تغییر داده باشد، دست نمی‌خورد — وگرنه هر بار راه‌اندازی،
+ * کار او را پاک می‌کردیم.
+ */
+function seedShopSettings() {
+  const file = path.join(__dirname, '..', 'seed', 'shop_settings.json');
+  if (!fs.existsSync(file)) return;
+
+  let data;
+  try { data = JSON.parse(fs.readFileSync(file, 'utf-8')); }
+  catch (e) {
+    console.warn('[DB] ⚠ seed/shop_settings.json خوانده نشد:', e.message);
+    return;
+  }
+
+  const ins = db.prepare(
+    'INSERT INTO settings (key, value) VALUES (?,?) ON CONFLICT(key) DO NOTHING');
+  let n = 0;
+  db.transaction(() => {
+    for (const [k, v] of Object.entries(data)) {
+      if (k.startsWith('_')) continue;          // کلیدهای توضیحی
+      if (!(k in SHOP_DEFAULTS)) continue;      // فهرست سفید
+      const val = String(v ?? '').trim();
+      if (!val) continue;
+      n += ins.run(k, val).changes;
+    }
+  })();
+  if (n) console.log(`[DB] ✅ ${n} تنظیم فروشگاه از seed بارگذاری شد.`);
+}
+
 function getSettings() {
   const rows = db.prepare('SELECT key, value FROM settings').all();
   const saved = Object.fromEntries(rows.map(r => [r.key, r.value]));
@@ -2587,6 +2633,9 @@ seedRoles();
 seedOwner();
 seedIfEmpty();
 seedCoupons();
+/* تنظیمات واقعی فروشگاه — پس از ساخت جدول‌ها، پیش از سرو شدن
+   هر صفحه. فاکتور و برچسب پستی بدون این‌ها ناقص چاپ می‌شوند. */
+seedShopSettings();
 buildSearchIndex();
 buildNotesIndex();
 
