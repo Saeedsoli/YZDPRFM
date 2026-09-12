@@ -154,27 +154,46 @@ if (smalls.length) {
 // ══ ۶) هم‌خوانی VARIANT_COUNTS با فایل‌های روی دیسک ══
 console.log(d('\n  هم‌خوانی پیکربندی'));
 
-/* VARIANT_COUNTS در db.js دستی نگه داشته می‌شود. اگر عددی بزرگ‌تر
-   از تعداد فایل‌های واقعی باشد، صدها محصول به تصویر ناموجود اشاره
-   می‌کنند — دقیقاً همان اتفاقی که یک بار افتاد و ۷۲۴ محصول تصویر
-   شکسته گرفتند. این بررسی جلوی تکرارش را می‌گیرد. */
-const dbSrc = fs.readFileSync(path.join(ROOT, 'src', 'db.js'), 'utf8');
-const block = dbSrc.match(/const VARIANT_COUNTS = \{([\s\S]*?)\};/);
-let mismatch = [];
-if (block) {
-  const re = /'([a-z-]+)\|([A-Z]+)':\s*(\d+)/g;
-  let m;
-  while ((m = re.exec(block[1])) !== null) {
-    const [, fam, gen, cnt] = m;
-    const g = { MEN: 'm', WOMEN: 'w', UNISEX: 'u' }[gen];
-    for (let i = 1; i <= +cnt; i++) {
-      const f = `fam-${fam}-${g}-${i}.jpg`;
-      if (!fs.existsSync(path.join(IMG, f))) mismatch.push(f);
-    }
-  }
-}
-add('VARIANT_COUNTS با فایل‌های موجود می‌خواند', mismatch.length === 0,
-    mismatch.length ? `${mismatch.length} فایل نیست: ${mismatch[0]}` : '');
+/* ── چرا این بررسی عوض شد ──
+   VARIANT_COUNTS پیش‌تر فهرست ثابتی در db.js بود و باید دستی
+   به‌روز می‌شد؛ این بررسی مچ ناهماهنگی‌اش را می‌گرفت. حالا آن
+   جدول از روی دیسک ساخته می‌شود، پس ناهماهنگی از اساس ممکن
+   نیست و بررسی قدیمی همیشه سبز بود — یعنی بی‌فایده.
+
+   چیزی که همچنان می‌تواند خراب شود: تصویری که در دیتابیس ثبت
+   شده ولی فایلش روی دیسک نیست. این همان خطای واقعی است که یک
+   بار ۷۲۴ محصول را تصویر-شکسته کرد. */
+/* تصویر شکسته در بخش ۱ بررسی شده؛ اینجا تکرارش نمی‌کنیم. */
+
+/* ── شکاف پوششی ──
+   هر ترکیب «خانواده × جنسیت» که محصول دارد ولی تصویر ندارد، به
+   جنسیت دیگر پس می‌افتد (GENDER_FALLBACK). این خرابی نیست —
+   عمداً طراحی شده — ولی باید دیده شود، وگرنه بی‌صدا می‌ماند و
+   کسی یادش نمی‌رود تصویر بسازد.
+
+   گزارشی است، نه شکست: با کاتالوگ کوچک، بعضی ترکیب‌ها دو سه
+   محصول دارند و تصویر اختصاصی برایشان صرف نمی‌کند. */
+const combos = db.prepare(`
+  SELECT family_slug, gender, COUNT(*) n FROM products
+  GROUP BY family_slug, gender ORDER BY n DESC`).all();
+const TAG = { MEN: 'm', WOMEN: 'w', UNISEX: 'u' };
+const uncovered = combos.filter(c =>
+  !fs.existsSync(path.join(IMG, `fam-${c.family_slug}-${TAG[c.gender]}-1.jpg`)));
+const uncoveredBig = uncovered.filter(c => c.n >= 20);
+
+add('هیچ ترکیب پرجمعیتی بدون تصویر اختصاصی نمانده',
+    uncoveredBig.length === 0,
+    uncoveredBig.length
+      ? uncoveredBig.map(c => `${c.family_slug}|${c.gender}(${c.n})`).join('، ')
+      : `${uncovered.length} ترکیب کوچک با جایگزینی جنسیت پوشش داده می‌شود`);
+
+/* نسبت اشتراک — سنجه‌ای که مستقیم به سئو ربط دارد. آستانه ۴۰
+   سخت‌گیرانه نیست ولی از «صفحه قالبی» فاصله می‌دهد. */
+const perImage = new Map();
+for (const r of rows) perImage.set(r.image_url, (perImage.get(r.image_url) || 0) + 1);
+const worst = Math.max(...perImage.values());
+add('پرمصرف‌ترین تصویر زیر ۵۰ محصول است', worst < 50,
+    `${worst} محصول · میانگین ${Math.round(rows.length / perImage.size)}`);
 
 // ══ ۷) لوگوی برند ══
 console.log(d('\n  لوگوی برند روی بطری'));

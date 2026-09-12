@@ -50,6 +50,29 @@ Q_JPG_CARD = 78
 Q_WEBP_CARD = 76
 
 
+MAX_FULL_BYTES = 250 * 1024
+Q_FLOOR = 72
+
+
+def _save_capped(img, path, fmt, q0):
+    """
+    ذخیره با کاهش پله‌ای کیفیت تا زیر سقف حجم.
+
+    چرا حلقه و نه یک محاسبه: رابطهٔ کیفیت و حجم به محتوای تصویر
+    بستگی دارد و فرمول بسته‌ای ندارد. سه پله ۴تایی در عمل کافی
+    است و تفاوتش با چشم دیده نمی‌شود.
+    """
+    q = q0
+    while True:
+        if fmt == "JPEG":
+            img.save(path, fmt, quality=q, optimize=True, progressive=True)
+        else:
+            img.save(path, fmt, quality=q, method=6)
+        if os.path.getsize(path) <= MAX_FULL_BYTES or q <= Q_FLOOR:
+            return q
+        q -= 4
+
+
 def main():
     logo = load_logo()
     os.makedirs(BACKUP, exist_ok=True)
@@ -92,10 +115,18 @@ def main():
         card = stamped.resize((SIZE_CARD, SIZE_CARD), Image.LANCZOS)
         stem = os.path.splitext(n)[0]
 
-        full.save(os.path.join(IMG, f"{stem}.jpg"), "JPEG",
-                  quality=Q_JPG, optimize=True, progressive=True)
-        full.save(os.path.join(IMG, f"{stem}.webp"), "WEBP",
-                  quality=Q_WEBP, method=6)
+        # ── کیفیت تطبیقی برای نسخه کامل ──
+        # سقف ۲۵۰ کیلوبایت را test_images.js می‌گیرد. با کیفیت
+        # ثابت، تصاویر پرجزئیات (بلور تراش‌خورده، گلبرگ، بافت
+        # سنگ) از آن رد می‌شوند — یک بار روی
+        # fam-ambery-oriental-w-7 با ۲۸۰KB اتفاق افتاد.
+        #
+        # پایین آوردن کیفیت پایه برای همه، تصاویر ساده را هم
+        # بی‌جهت خراب می‌کند. به‌جایش فقط همان‌هایی که رد
+        # می‌شوند یک پله پایین می‌آیند. کف ۷۲ گذاشته شده چون
+        # زیر آن، آرتیفکت روی گرادیان پس‌زمینه دیده می‌شود.
+        _save_capped(full, os.path.join(IMG, f"{stem}.jpg"), "JPEG", Q_JPG)
+        _save_capped(full, os.path.join(IMG, f"{stem}.webp"), "WEBP", Q_WEBP)
         card.save(os.path.join(IMG, f"{stem}-sm.jpg"), "JPEG",
                   quality=Q_JPG_CARD, optimize=True, progressive=True)
         card.save(os.path.join(IMG, f"{stem}-sm.webp"), "WEBP",
