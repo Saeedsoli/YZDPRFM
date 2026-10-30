@@ -1153,11 +1153,13 @@ function cleanPerfumer(perfumer, brandEn, brandFa) {
   return p;
 }
 
-function attachVariants(product) {
+function attachVariants(product, options = {}) {
   if (!product) return null;
+  // Hair mist remains in the DB for historical orders/admin, but is not public.
+  const visibility = options.includeHidden ? '' : "AND type != 'HAIR_MIST'";
   product.variants = db.prepare(
     `SELECT sku, type, type_label, volume_ml, price_toman, stock
-     FROM variants WHERE product_id = ? ORDER BY
+     FROM variants WHERE product_id = ? ${visibility} ORDER BY
      CASE type WHEN 'SAMPLE' THEN 0 WHEN 'EDP' THEN 1 ELSE 2 END, volume_ml`
   ).all(product.id);
   const prices = product.variants.map(v => v.price_toman).filter(Boolean);

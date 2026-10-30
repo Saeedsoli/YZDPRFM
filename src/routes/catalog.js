@@ -137,14 +137,14 @@ async function handle(ctx) {
        صفحه‌بندی به هم می‌ریزد. */
     if (parsed.query.in_stock === '1') {
       where.push(`EXISTS (SELECT 1 FROM variants v
-                    WHERE v.product_id = products.id AND v.stock > 0)`);
+                    WHERE v.product_id = products.id AND v.type != 'HAIR_MIST' AND v.stock > 0)`);
     }
 
     const clause = where.length ? 'WHERE ' + where.join(' AND ') : '';
 
     // مرتب‌سازی — فهرست سفید، هرگز رشته کاربر مستقیم در SQL نمی‌رود.
     // قیمت در جدول products نیست، پس از کمترین قیمت متغیرها گرفته می‌شود.
-    const CHEAPEST = '(SELECT MIN(price_toman) FROM variants v WHERE v.product_id = products.id)';
+    const CHEAPEST = "(SELECT MIN(price_toman) FROM variants v WHERE v.product_id = products.id AND v.type != 'HAIR_MIST')";
 
     /* ── موجودها اول (ممیزی جعبه‌سیاه مرداد ۱۴۰۵) ──
        نخستین چیزی که کاربر می‌بیند باید قابل خرید باشد. با
@@ -156,7 +156,7 @@ async function handle(ctx) {
        این پیشوند به **همه** مرتب‌سازی‌ها اضافه می‌شود، نه فقط
        پیش‌فرض: کسی که «ارزان‌ترین» را می‌خواهد، ارزان‌ترینِ
        قابل خرید را می‌خواهد. */
-    const IN_STOCK = 'EXISTS (SELECT 1 FROM variants v2 WHERE v2.product_id = products.id AND v2.stock > 0) DESC';
+    const IN_STOCK = "EXISTS (SELECT 1 FROM variants v2 WHERE v2.product_id = products.id AND v2.type != 'HAIR_MIST' AND v2.stock > 0) DESC";
     const SORTS = {
       default:    'id',
       price_asc:  `${CHEAPEST} ASC, id`,

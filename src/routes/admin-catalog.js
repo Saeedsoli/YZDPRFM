@@ -195,7 +195,7 @@ async function handle(ctx) {
     const row = db.prepare('SELECT * FROM products WHERE id=? OR slug=?').get(key, key);
     if (!row) return sendJSON(404, { error: 'محصول یافت نشد' });
 
-    const product = attachVariants(parseProduct(row));
+    const product = attachVariants(parseProduct(row), { includeHidden: true });
     /* قیمت دلاری فقط برای کسی که مجوز قیمت دارد. انباردار
        محصول را می‌بیند ولی پایه قیمت‌گذاری را نه.
 
@@ -276,7 +276,7 @@ async function handle(ctx) {
     }
 
     const fresh = attachVariants(parseProduct(
-      db.prepare('SELECT * FROM products WHERE id=?').get(p.id)));
+      db.prepare('SELECT * FROM products WHERE id=?').get(p.id)), { includeHidden: true });
     return sendJSON(200, { message: 'محصول به‌روزرسانی شد.', product: fresh });
   }
 

@@ -294,7 +294,7 @@ function homePage(html, stats) {
   const title = `${BRAND} | بازآفرینی دست‌ساز رایحه‌های ماندگار`;
   const description =
     `فروشگاه ${BRAND} — ${faNum(stats.products)} رایحه دست‌ساز بازآفرینی‌شده از ` +
-    `${faNum(stats.brands)} خانه عطر معتبر جهان. سمپل ۳ میل، ادوپرفیوم، عطر مو و بادی اسپلش. ` +
+    `${faNum(stats.brands)} خانه عطر معتبر جهان. سمپل، ادوپرفیوم و بادی اسپلش دست‌ساز. ` +
     `ارسال به سراسر کشور.`;
 
   const org = {

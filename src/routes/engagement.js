@@ -351,7 +351,7 @@ async function handle(ctx) {
     if (!mobile || !otp.isValidMobile(mobile))
       return sendJSON(400, { error: 'شماره موبایل معتبر وارد کنید.' });
 
-    const v = db.prepare('SELECT sku, stock FROM variants WHERE sku=?').get(b.sku);
+    const v = db.prepare("SELECT sku, stock FROM variants WHERE sku=? AND type != 'HAIR_MIST'").get(b.sku);
     if (!v) return sendJSON(404, { error: 'کالا یافت نشد' });
     if (v.stock > 0) return sendJSON(400, { error: 'این کالا هم‌اکنون موجود است.' });
 

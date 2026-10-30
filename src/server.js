@@ -311,8 +311,8 @@ function notifyStockWatchers(skus, reason = 'موجودی') {
   let total = 0;
   for (const sku of list) {
     // تنها اگر واقعاً موجود شده باشد
-    const v = db.prepare('SELECT stock FROM variants WHERE sku=?').get(sku);
-    if (!v || v.stock <= 0) continue;
+    const v = db.prepare('SELECT stock, type FROM variants WHERE sku=?').get(sku);
+    if (!v || v.stock <= 0 || v.type === 'HAIR_MIST') continue;
 
     const waiting = db.prepare(
       'SELECT mobile FROM stock_alerts WHERE sku=? AND notified=0'
@@ -433,7 +433,7 @@ function validateCart(items) {
     const row = stmt.get(item.sku);
     if (!row) return { ok: false, error: `کالای «${item.sku}» یافت نشد.` };
     // Availability is authoritative even if stale physical stock is positive.
-    if (row.supply_mode === 'UNAVAILABLE') {
+    if (row.supply_mode === 'UNAVAILABLE' || row.type === 'HAIR_MIST') {
       return { ok: false, error: `«${row.name_fa}» فعلاً قابل تهیه نیست.` };
     }
     /* ── سفارش کالای «به سفارش ساخته می‌شود» ──
@@ -866,7 +866,7 @@ const server = http.createServer(async (req, res) => {
         SELECT v.sku, v.price_toman, v.stock, v.volume_ml, v.type_label,
                p.name_fa, p.brand_fa, p.slug, p.image_url
         FROM variants v JOIN products p ON p.id = v.product_id
-        WHERE v.sku IN (${marks})
+        WHERE v.sku IN (${marks}) AND v.type != 'HAIR_MIST'
       `).all(...skus);
 
       return sendJSON(200, {
