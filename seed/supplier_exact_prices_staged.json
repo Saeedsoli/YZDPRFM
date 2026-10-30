@@ -1,0 +1,384 @@
+{
+  "source": "uploads/لیست_قیمت_عمده.md",
+  "note": "Review-only lexical matches; do not activate or import automatically.",
+  "prices": [
+    {
+      "product_id": "YZD-PROD-0564",
+      "supplier_brand": "AMUAGE",
+      "supplier_model": "Purpose",
+      "supplier_gender": "Unisex",
+      "quality": "P",
+      "usd_per_kg": "269.5",
+      "status": "lexical_match_only"
+    },
+    {
+      "product_id": "YZD-PROD-0566",
+      "supplier_brand": "AMUAGE",
+      "supplier_model": "SEARCH",
+      "supplier_gender": "Unisex",
+      "quality": "P",
+      "usd_per_kg": "348.7",
+      "status": "lexical_match_only"
+    },
+    {
+      "product_id": "YZD-PROD-0688",
+      "supplier_brand": "By Kilian",
+      "supplier_model": "GOOD GIRL GONE BAD",
+      "supplier_gender": "Women",
+      "quality": "P",
+      "usd_per_kg": "300.3",
+      "status": "lexical_match_only"
+    },
+    {
+      "product_id": "YZD-PROD-0684",
+      "supplier_brand": "By Kilian",
+      "supplier_model": "Moonlight in Heaven",
+      "supplier_gender": "Unisex",
+      "quality": "H",
+      "usd_per_kg": "438.9",
+      "status": "lexical_match_only"
+    },
+    {
+      "product_id": "YZD-PROD-1744",
+      "supplier_brand": "CAROLINA HRRERA",
+      "supplier_model": "212 Vip MEN",
+      "supplier_gender": "Men",
+      "quality": "H",
+      "usd_per_kg": "114.4",
+      "status": "lexical_match_only"
+    },
+    {
+      "product_id": "YZD-PROD-0429",
+      "supplier_brand": "CREED",
+      "supplier_model": "Aventus",
+      "supplier_gender": "Men",
+      "quality": "T",
+      "usd_per_kg": "709.5",
+      "status": "lexical_match_only"
+    },
+    {
+      "product_id": "YZD-PROD-0439",
+      "supplier_brand": "CREED",
+      "supplier_model": "Erolfa",
+      "supplier_gender": "Men",
+      "quality": "P",
+      "usd_per_kg": "366.3",
+      "status": "lexical_match_only"
+    },
+    {
+      "product_id": "YZD-PROD-0430",
+      "supplier_brand": "CREED",
+      "supplier_model": "Green Irish Tweed",
+      "supplier_gender": "Men",
+      "quality": "H",
+      "usd_per_kg": "212.3",
+      "status": "lexical_match_only"
+    },
+    {
+      "product_id": "YZD-PROD-0431",
+      "supplier_brand": "CREED",
+      "supplier_model": "Silver Mountain Water",
+      "supplier_gender": "Unisex",
+      "quality": "T",
+      "usd_per_kg": "690.8",
+      "status": "lexical_match_only"
+    },
+    {
+      "product_id": "YZD-PROD-0436",
+      "supplier_brand": "CREED",
+      "supplier_model": "Viking",
+      "supplier_gender": "Men",
+      "quality": "T",
+      "usd_per_kg": "844.8",
+      "status": "lexical_match_only"
+    },
+    {
+      "product_id": "YZD-PROD-0089",
+      "supplier_brand": "JEAN PAUL GAULTIER",
+      "supplier_model": "KOKORICO",
+      "supplier_gender": "Men",
+      "quality": "H",
+      "usd_per_kg": "239.8",
+      "status": "lexical_match_only"
+    },
+    {
+      "product_id": "YZD-PROD-0993",
+      "supplier_brand": "LE LABO",
+      "supplier_model": "SANTAL 33",
+      "supplier_gender": "Unisex",
+      "quality": "H",
+      "usd_per_kg": "126.5",
+      "status": "lexical_match_only"
+    },
+    {
+      "product_id": "YZD-PROD-2081",
+      "supplier_brand": "MONT BLANC",
+      "supplier_model": "Legend Spirit",
+      "supplier_gender": "Men",
+      "quality": "H",
+      "usd_per_kg": "121",
+      "status": "lexical_match_only"
+    },
+    {
+      "product_id": "YZD-PROD-0921",
+      "supplier_brand": "NASOMATTO",
+      "supplier_model": "Baraonda",
+      "supplier_gender": "Unisex",
+      "quality": "H",
+      "usd_per_kg": "931.7",
+      "status": "lexical_match_only"
+    },
+    {
+      "product_id": "YZD-PROD-0919",
+      "supplier_brand": "NASOMATTO",
+      "supplier_model": "Black Afgano",
+      "supplier_gender": "Unisex",
+      "quality": "H",
+      "usd_per_kg": "407",
+      "status": "lexical_match_only"
+    },
+    {
+      "product_id": "YZD-PROD-0928",
+      "supplier_brand": "NASOMATTO",
+      "supplier_model": "Fantomas",
+      "supplier_gender": "Unisex",
+      "quality": "H",
+      "usd_per_kg": "530.2",
+      "status": "lexical_match_only"
+    },
+    {
+      "product_id": "YZD-PROD-0925",
+      "supplier_brand": "NASOMATTO",
+      "supplier_model": "Hindu Grass",
+      "supplier_gender": "Unisex",
+      "quality": "H",
+      "usd_per_kg": "474.1",
+      "status": "lexical_match_only"
+    },
+    {
+      "product_id": "YZD-PROD-0931",
+      "supplier_brand": "Orto Parisi",
+      "supplier_model": "Megamare",
+      "supplier_gender": "Unisex",
+      "quality": "T",
+      "usd_per_kg": "1118.7",
+      "status": "lexical_match_only"
+    },
+    {
+      "product_id": "YZD-PROD-0145",
+      "supplier_brand": "Paco rabanne",
+      "supplier_model": "Invictus Intense",
+      "supplier_gender": "Men",
+      "quality": "B",
+      "usd_per_kg": "101.2",
+      "status": "lexical_match_only"
+    },
+    {
+      "product_id": "YZD-PROD-0031",
+      "supplier_brand": "PARFUMS de MARLY",
+      "supplier_model": "Akaster",
+      "supplier_gender": "Unisex",
+      "quality": "H",
+      "usd_per_kg": "331.1",
+      "status": "lexical_match_only"
+    },
+    {
+      "product_id": "YZD-PROD-0651",
+      "supplier_brand": "PARFUMS de MARLY",
+      "supplier_model": "Galloway",
+      "supplier_gender": "Unisex",
+      "quality": "H",
+      "usd_per_kg": "191.4",
+      "status": "lexical_match_only"
+    },
+    {
+      "product_id": "YZD-PROD-0648",
+      "supplier_brand": "PARFUMS de MARLY",
+      "supplier_model": "GODOLPHIN",
+      "supplier_gender": "Men",
+      "quality": "H",
+      "usd_per_kg": "182.6",
+      "status": "lexical_match_only"
+    },
+    {
+      "product_id": "YZD-PROD-0647",
+      "supplier_brand": "PARFUMS de MARLY",
+      "supplier_model": "GREENLEY",
+      "supplier_gender": "Unisex",
+      "quality": "H",
+      "usd_per_kg": "314.6",
+      "status": "lexical_match_only"
+    },
+    {
+      "product_id": "YZD-PROD-0642",
+      "supplier_brand": "PARFUMS de MARLY",
+      "supplier_model": "Haltane",
+      "supplier_gender": "Men",
+      "quality": "H",
+      "usd_per_kg": "283.8",
+      "status": "lexical_match_only"
+    },
+    {
+      "product_id": "YZD-PROD-0639",
+      "supplier_brand": "PARFUMS de MARLY",
+      "supplier_model": "Herod",
+      "supplier_gender": "Men",
+      "quality": "H",
+      "usd_per_kg": "199.1",
+      "status": "lexical_match_only"
+    },
+    {
+      "product_id": "YZD-PROD-0650",
+      "supplier_brand": "PARFUMS de MARLY",
+      "supplier_model": "KALAN",
+      "supplier_gender": "Unisex",
+      "quality": "H",
+      "usd_per_kg": "322.3",
+      "status": "lexical_match_only"
+    },
+    {
+      "product_id": "YZD-PROD-0656",
+      "supplier_brand": "PARFUMS de MARLY",
+      "supplier_model": "VALAYA",
+      "supplier_gender": "Women",
+      "quality": "B",
+      "usd_per_kg": "123.2",
+      "status": "lexical_match_only"
+    },
+    {
+      "product_id": "YZD-PROD-0640",
+      "supplier_brand": "PARFUMS de MARLY",
+      "supplier_model": "Pegasus",
+      "supplier_gender": "Men",
+      "quality": "H",
+      "usd_per_kg": "191.4",
+      "status": "lexical_match_only"
+    },
+    {
+      "product_id": "YZD-PROD-0501",
+      "supplier_brand": "Penhaligons",
+      "supplier_model": "The tragedy of Lord George",
+      "supplier_gender": "Men",
+      "quality": "H",
+      "usd_per_kg": "423.5",
+      "status": "lexical_match_only"
+    },
+    {
+      "product_id": "YZD-PROD-1684",
+      "supplier_brand": "TOM FORD",
+      "supplier_model": "Fucking Fabulous",
+      "supplier_gender": "Unisex",
+      "quality": "H",
+      "usd_per_kg": "331.1",
+      "status": "lexical_match_only"
+    },
+    {
+      "product_id": "YZD-PROD-1676",
+      "supplier_brand": "TOM FORD",
+      "supplier_model": "OUD WOOD",
+      "supplier_gender": "Unisex",
+      "quality": "B",
+      "usd_per_kg": "187",
+      "status": "lexical_match_only"
+    },
+    {
+      "product_id": "YZD-PROD-1674",
+      "supplier_brand": "TOM FORD",
+      "supplier_model": "Tobacco Vanille",
+      "supplier_gender": "Unisex",
+      "quality": "H",
+      "usd_per_kg": "382.8",
+      "status": "lexical_match_only"
+    },
+    {
+      "product_id": "YZD-PROD-1675",
+      "supplier_brand": "TOM FORD",
+      "supplier_model": "Tuscan Leather",
+      "supplier_gender": "Unisex",
+      "quality": "H",
+      "usd_per_kg": "202.4",
+      "status": "lexical_match_only"
+    },
+    {
+      "product_id": "YZD-PROD-0990",
+      "supplier_brand": "BYREDO",
+      "supplier_model": "DE LOS SANTOS",
+      "supplier_gender": "Unisex",
+      "quality": "H",
+      "usd_per_kg": "410.3",
+      "status": "lexical_match_only"
+    },
+    {
+      "product_id": "YZD-PROD-0989",
+      "supplier_brand": "BYREDO",
+      "supplier_model": "ROUGE CHAOTIQUE",
+      "supplier_gender": "Unisex",
+      "quality": "H",
+      "usd_per_kg": "382.8",
+      "status": "lexical_match_only"
+    },
+    {
+      "product_id": "YZD-PROD-1706",
+      "supplier_brand": "VERSACE",
+      "supplier_model": "Bright Crystal",
+      "supplier_gender": "Women",
+      "quality": "H",
+      "usd_per_kg": "166.1",
+      "status": "lexical_match_only"
+    },
+    {
+      "product_id": "YZD-PROD-0591",
+      "supplier_brand": "XERJOFF",
+      "supplier_model": "TORINO22",
+      "supplier_gender": "Unisex",
+      "quality": "H",
+      "usd_per_kg": "277.2",
+      "status": "lexical_match_only"
+    },
+    {
+      "product_id": "YZD-PROD-0576",
+      "supplier_brand": "XERJOFF",
+      "supplier_model": "Alexandria II",
+      "supplier_gender": "Unisex",
+      "quality": "H",
+      "usd_per_kg": "333.3",
+      "status": "lexical_match_only"
+    },
+    {
+      "product_id": "YZD-PROD-1512",
+      "supplier_brand": "Yves Saint Laurent",
+      "supplier_model": "BABYCAT",
+      "supplier_gender": "Unisex",
+      "quality": "H",
+      "usd_per_kg": "292.6",
+      "status": "lexical_match_only"
+    },
+    {
+      "product_id": "YZD-PROD-1505",
+      "supplier_brand": "Yves Saint Laurent",
+      "supplier_model": "LIBRE INTENSE",
+      "supplier_gender": "Women",
+      "quality": "B",
+      "usd_per_kg": "119.9",
+      "status": "lexical_match_only"
+    },
+    {
+      "product_id": "YZD-PROD-1507",
+      "supplier_brand": "Yves Saint Laurent",
+      "supplier_model": "Mon Paris",
+      "supplier_gender": "Women",
+      "quality": "H",
+      "usd_per_kg": "388.3",
+      "status": "lexical_match_only"
+    },
+    {
+      "product_id": "YZD-PROD-0362",
+      "supplier_brand": "Yves Saint Laurent",
+      "supplier_model": "Supreme Bouquet",
+      "supplier_gender": "Women",
+      "quality": "H",
+      "usd_per_kg": "264",
+      "status": "lexical_match_only"
+    }
+  ]
+}
