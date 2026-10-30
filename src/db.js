@@ -2632,6 +2632,24 @@ initSchema();
 seedRoles();
 seedOwner();
 seedIfEmpty();
+// Verified supplement: insert missing products only; never overwrite owner edits.
+// Products without validated sellable variants remain UNAVAILABLE by default.
+function seedVerifiedSupplement() {
+  const file = path.join(SEED_DIR, 'supplier_verified_supplement.json');
+  if (!fs.existsSync(file)) return;
+  const rows = JSON.parse(fs.readFileSync(file, 'utf8'));
+  const exists = db.prepare('SELECT id, slug FROM products WHERE id = ? OR slug = ?');
+  for (const row of rows) {
+    const existing = exists.get(row.id, row.slug);
+    if (existing) {
+      if (existing.id !== row.id || existing.slug !== row.slug)
+        console.warn(`[DB] verified supplement collision; skipped: ${row.id}`);
+      continue;
+    }
+    insertProducts([row]);
+  }
+}
+seedVerifiedSupplement();
 seedCoupons();
 /* تنظیمات واقعی فروشگاه — پس از ساخت جدول‌ها، پیش از سرو شدن
    هر صفحه. فاکتور و برچسب پستی بدون این‌ها ناقص چاپ می‌شوند. */
