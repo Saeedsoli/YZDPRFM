@@ -2629,6 +2629,8 @@ function otpPurgeExpired() {
 }
 
 initSchema();
+// Storage only: rates do not change prices until an explicit, atomic reprice.
+require('./essence-pricing-store').migratePricing(db);
 seedRoles();
 seedOwner();
 seedIfEmpty();
