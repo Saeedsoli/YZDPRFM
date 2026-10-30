@@ -432,6 +432,10 @@ function validateCart(items) {
     }
     const row = stmt.get(item.sku);
     if (!row) return { ok: false, error: `کالای «${item.sku}» یافت نشد.` };
+    // Availability is authoritative even if stale physical stock is positive.
+    if (row.supply_mode === 'UNAVAILABLE') {
+      return { ok: false, error: `«${row.name_fa}» فعلاً قابل تهیه نیست.` };
+    }
     /* ── سفارش کالای «به سفارش ساخته می‌شود» ──
        موجودی انبار صفر است ولی سفارش مجاز — این واقعیت کار
        دست‌ساز است. سقف ۵ عدد می‌گذاریم چون ساخت دستی زمان‌بر
