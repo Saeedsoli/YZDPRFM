@@ -1,5 +1,5 @@
 'use strict';
-// Internal pricing infrastructure. Not connected to HTTP, storefront, or admin UI.
+// Internal pricing infrastructure; admin UI integration remains separate.
 const { priceFromUsdPerKg } = require('./essence-pricing');
 const RATE_KEY = 'essence_usd_rate_toman';
 function migratePricing(db) {
@@ -19,9 +19,14 @@ function allowedVariant(type, volume) {
 }
 // Atomic rate update + reprice: never rewrites orders or products with no verified input.
 // Unsupported legacy variants remain untouched and are counted for migration review.
-function updateExchangeRate(db, newRate) {
+function updateExchangeRate(db, newRate, expectedRate = null) {
   const rate=rateString(newRate);
+  const expected=expectedRate == null ? null : rateString(expectedRate);
   return db.transaction(() => {
+    const current=db.prepare('SELECT value FROM settings WHERE key=?').get(RATE_KEY)?.value;
+    if (expected !== null && current !== expected) {
+      const err = new Error('Exchange rate changed since preview'); err.code = 'RATE_CONFLICT'; throw err;
+    }
     const products=db.prepare('SELECT id, essence_usd_per_kg AS usd FROM products WHERE essence_usd_per_kg IS NOT NULL').all();
     const variants=db.prepare('SELECT sku,type,volume_ml FROM variants WHERE product_id=?');
     const update=db.prepare('UPDATE variants SET price_toman=? WHERE sku=?');
@@ -39,4 +44,23 @@ function updateExchangeRate(db, newRate) {
     return { rate_toman: Number(rate), products: products.length, variants_repriced: repriced, legacy_variants_skipped: skipped };
   })();
 }
-module.exports = { migratePricing, updateExchangeRate, allowedVariant, RATE_KEY };
+function previewExchangeRate(db, newRate) {
+  const rate=rateString(newRate);
+  const current=db.prepare('SELECT value FROM settings WHERE key=?').get(RATE_KEY)?.value;
+  if (!current) throw new Error('Missing exchange rate');
+  const products=db.prepare('SELECT id, essence_usd_per_kg AS usd FROM products WHERE essence_usd_per_kg IS NOT NULL').all();
+  const variants=db.prepare('SELECT sku,type,volume_ml,price_toman FROM variants WHERE product_id=?');
+  let repriced=0, skipped=0;
+  const examples=[];
+  for(const p of products) {
+    priceFromUsdPerKg(p.usd,rate,'EDP',10);
+    for(const v of variants.all(p.id)) {
+      if (!allowedVariant(v.type,v.volume_ml)) { skipped++; continue; }
+      const next=priceFromUsdPerKg(p.usd,rate,v.type,v.volume_ml);
+      repriced++;
+      if (examples.length<20) examples.push({product_id:p.id,sku:v.sku,volume_ml:v.volume_ml,type:v.type,old_price_toman:v.price_toman,new_price_toman:next});
+    }
+  }
+  return {current_rate_toman:Number(current),proposed_rate_toman:Number(rate),products:products.length,variants_repriced:repriced,legacy_variants_skipped:skipped,examples};
+}
+module.exports = { migratePricing, updateExchangeRate, previewExchangeRate, rateString, allowedVariant, RATE_KEY };

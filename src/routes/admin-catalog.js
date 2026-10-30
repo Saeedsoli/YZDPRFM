@@ -37,6 +37,7 @@
  */
 
 'use strict';
+const { RATE_KEY, rateString, previewExchangeRate, updateExchangeRate } = require('../essence-pricing-store');
 
 /**
  * @param {object}   ctx
@@ -87,6 +88,41 @@ async function handle(ctx) {
      معنادار کند. راه دوم انتخاب شد — خواناتر و بدون فرصت
      فراموشی. */
   const sendJSON = (code, data) => { ctx.sendJSON(code, data); return true; };
+
+  // Exchange-rate API only. No admin UI is exposed until a visual design is approved.
+  if (pathname === '/api/admin/essence-pricing/rate' && method === 'GET') {
+    if (!can('settings.view') || !can('products.price')) return true;
+    const rate = db.prepare('SELECT value FROM settings WHERE key=?').get(RATE_KEY);
+    return sendJSON(200, { rate_toman: Number(rate.value) });
+  }
+  if (pathname === '/api/admin/essence-pricing/preview' && method === 'POST') {
+    if (!can('settings.edit') || !can('products.price')) return true;
+    const body = await parseBody(req);
+    try { rateString(body.rate_toman); }
+    catch { return sendJSON(400, { error: 'نرخ دلار باید عدد صحیح مثبت به تومان باشد.' }); }
+    try { return sendJSON(200, previewExchangeRate(db, body.rate_toman)); }
+    catch (error) {
+      appLog('ERROR', 'pricing', 'خطا در پیش‌نمایش نرخ ارز', { error: error.message });
+      return sendJSON(500, { error: 'پیش‌نمایش قیمت‌ها ممکن نیست؛ داده‌های قیمت‌گذاری نیاز به بررسی دارند.' });
+    }
+  }
+  if (pathname === '/api/admin/essence-pricing/rate' && method === 'PUT') {
+    if (!can('settings.edit') || !can('products.price')) return true;
+    const body = await parseBody(req);
+    try { rateString(body.rate_toman); rateString(body.expected_rate_toman); }
+    catch { return sendJSON(400, { error: 'نرخ جدید و نرخ مشاهده‌شده باید عدد صحیح مثبت به تومان باشند.' }); }
+    let result;
+    try { result = updateExchangeRate(db, body.rate_toman, body.expected_rate_toman); }
+    catch (error) {
+      if (error.code === 'RATE_CONFLICT') return sendJSON(409, { error: 'نرخ دلار تغییر کرده است؛ دوباره پیش‌نمایش بگیرید.' });
+      appLog('ERROR', 'pricing', 'خطا در به‌روزرسانی نرخ ارز', { error: error.message });
+      return sendJSON(500, { error: 'قیمت‌ها تغییر نکردند؛ داده‌های قیمت‌گذاری نیاز به بررسی دارند.' });
+    }
+    // A logging failure cannot undo an already committed transaction.
+    try { logAudit('products.exchange_rate', { previous_rate: body.expected_rate_toman, ...result }); }
+    catch (error) { appLog('ERROR', 'pricing', 'ثبت سابقه تغییر نرخ ناموفق بود', { error: error.message }); }
+    return sendJSON(200, result);
+  }
 
   // ═══════════ مدیریت محصول و موجودی (ادمین) ═══════════
 
