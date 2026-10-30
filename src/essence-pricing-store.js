@@ -48,7 +48,7 @@ function previewExchangeRate(db, newRate) {
   const rate=rateString(newRate);
   const current=db.prepare('SELECT value FROM settings WHERE key=?').get(RATE_KEY)?.value;
   if (!current) throw new Error('Missing exchange rate');
-  const products=db.prepare('SELECT id, essence_usd_per_kg AS usd FROM products WHERE essence_usd_per_kg IS NOT NULL').all();
+  const products=db.prepare('SELECT id, name_fa, brand_fa, essence_usd_per_kg AS usd FROM products WHERE essence_usd_per_kg IS NOT NULL').all();
   const variants=db.prepare('SELECT sku,type,volume_ml,price_toman FROM variants WHERE product_id=?');
   let repriced=0, skipped=0;
   const examples=[];
@@ -58,7 +58,7 @@ function previewExchangeRate(db, newRate) {
       if (!allowedVariant(v.type,v.volume_ml)) { skipped++; continue; }
       const next=priceFromUsdPerKg(p.usd,rate,v.type,v.volume_ml);
       repriced++;
-      if (examples.length<20) examples.push({product_id:p.id,sku:v.sku,volume_ml:v.volume_ml,type:v.type,old_price_toman:v.price_toman,new_price_toman:next});
+      if (examples.length<20) examples.push({product_id:p.id,name_fa:p.name_fa,brand_fa:p.brand_fa,sku:v.sku,volume_ml:v.volume_ml,type:v.type,old_price_toman:v.price_toman,new_price_toman:next});
     }
   }
   return {current_rate_toman:Number(current),proposed_rate_toman:Number(rate),products:products.length,variants_repriced:repriced,legacy_variants_skipped:skipped,examples};
