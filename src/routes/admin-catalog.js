@@ -38,6 +38,7 @@
 
 'use strict';
 const { RATE_KEY, rateString, previewExchangeRate, updateExchangeRate } = require('../essence-pricing-store');
+const { gramToKg, productPriceState, previewProductPrice, applyProductPrice } = require('../product-essence-pricing');
 
 /**
  * @param {object}   ctx
@@ -122,6 +123,49 @@ async function handle(ctx) {
     try { logAudit('products.exchange_rate', { previous_rate: body.expected_rate_toman, ...result }); }
     catch (error) { appLog('ERROR', 'pricing', 'ثبت سابقه تغییر نرخ ناموفق بود', { error: error.message }); }
     return sendJSON(200, result);
+  }
+
+  // Product essence prices: USD per gram is entered; toman per gram is derived from the current rate.
+  const essenceProductMatch = pathname.match(/^\/api\/admin\/essence-pricing\/products\/([^/]+)(\/preview)?$/);
+  if (essenceProductMatch && ['GET','POST','PUT'].includes(method)) {
+    const preview = !!essenceProductMatch[2];
+    if ((method === 'POST') !== preview || (preview && method !== 'POST')) return false;
+    if (!can('products.price')) return true;
+    let key;
+    try { key = decodeURIComponent(essenceProductMatch[1]); }
+    catch { return sendJSON(400, { error: 'شناسه محصول نامعتبر است.' }); }
+    if (method === 'GET') {
+      try { return sendJSON(200, productPriceState(db,key)); }
+      catch (error) {
+        if (error.code === 'PRODUCT_NOT_FOUND') return sendJSON(404, { error: 'محصول یافت نشد.' });
+        appLog('ERROR','pricing','خطا در خواندن قیمت اسانس',{error:error.message});
+        return sendJSON(500,{error:'خواندن قیمت اسانس ممکن نیست.'});
+      }
+    }
+    const body = await parseBody(req);
+    try {
+      gramToKg(body.usd_per_gram);
+      if (method === 'PUT') {
+        rateString(body.expected_rate_toman);
+        if (!Object.prototype.hasOwnProperty.call(body,'expected_usd_per_kg') ||
+            (body.expected_usd_per_kg !== null && typeof body.expected_usd_per_kg !== 'string')) throw new Error('INVALID_EXPECTATION');
+      }
+    } catch { return sendJSON(400,{error:'قیمت هر گرم و مقادیر پیش‌نمایش نامعتبرند.'}); }
+    let result;
+    try {
+      result = preview ? previewProductPrice(db,key,body.usd_per_gram) :
+        applyProductPrice(db,key,body.usd_per_gram,body.expected_rate_toman,body.expected_usd_per_kg);
+    } catch (error) {
+      if (error.code === 'PRODUCT_NOT_FOUND') return sendJSON(404,{error:'محصول یافت نشد.'});
+      if (error.code === 'PRICE_CONFLICT') return sendJSON(409,{error:'نرخ دلار یا قیمت اسانس تغییر کرده؛ دوباره پیش‌نمایش بگیرید.'});
+      appLog('ERROR','pricing','خطا در قیمت‌گذاری محصول',{error:error.message});
+      return sendJSON(500,{error:'قیمت محصول تغییر نکرد؛ داده‌ها نیاز به بررسی دارند.'});
+    }
+    if (!preview) {
+      try { logAudit('products.essence_price',{product:result.product_id,usd_per_gram:result.usd_per_gram,rate_toman:result.rate_toman}); }
+      catch (error) { appLog('ERROR','pricing','ثبت سابقه قیمت اسانس ناموفق بود',{error:error.message}); }
+    }
+    return sendJSON(200,result);
   }
 
   // ═══════════ مدیریت محصول و موجودی (ادمین) ═══════════

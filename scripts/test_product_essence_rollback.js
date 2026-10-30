@@ -1,0 +1,12 @@
+'use strict';
+const assert=require('assert/strict'),crypto=require('crypto'),Database=require('better-sqlite3');
+const {gramToKg,kgToGram,tomanPerGram,applyProductPrice}=require('../src/product-essence-pricing');
+assert.equal(gramToKg('0.000123'),'0.123');assert.equal(kgToGram('0.123'),'0.000123');assert.equal(tomanPerGram('0.000123','300000'),'36.9');
+const db=new Database(':memory:');db.exec(`CREATE TABLE products(id TEXT PRIMARY KEY,slug TEXT,name_fa TEXT,brand_fa TEXT,essence_usd_per_kg TEXT);CREATE TABLE variants(sku TEXT PRIMARY KEY,product_id TEXT,type TEXT,type_label TEXT,volume_ml INTEGER,price_toman INTEGER,stock INTEGER,price_usd REAL);CREATE TABLE settings(key TEXT PRIMARY KEY,value TEXT);INSERT INTO settings VALUES('essence_usd_rate_toman','300000');INSERT INTO products VALUES('p1','p1','test','brand',NULL);INSERT INTO variants VALUES('EDP','p1','EDP','',100,123,0,NULL);`);
+const digest=crypto.createHash('sha256').update('p1').digest('hex').slice(0,20).toUpperCase();
+db.prepare('insert into variants values (?,?,?,?,?,?,?,?)').run(`ESS-${digest}-BS-120`,'other','EDP','',10,1,0,null);
+assert.throws(()=>applyProductPrice(db,'p1','0.286',300000,null));
+assert.equal(db.prepare('select essence_usd_per_kg from products where id=?').get('p1').essence_usd_per_kg,null);
+assert.equal(db.prepare("select price_toman from variants where sku='EDP'").get().price_toman,123);
+assert.equal(db.prepare("select count(*) n from variants where product_id='p1' and type='SAMPLE'").get().n,0);
+console.log('PASS fractional conversion and rollback on variant SKU collision');
