@@ -11,6 +11,7 @@ const path = require('path');
 const url = require('url');
 const crypto = require('crypto');
 const zlib = require('zlib');
+const { isPublicVariant, publicVariantSql } = require('./variant-visibility');
 
 const {
   db, parseProduct, attachVariants, DB_PATH,
@@ -311,8 +312,8 @@ function notifyStockWatchers(skus, reason = 'موجودی') {
   let total = 0;
   for (const sku of list) {
     // تنها اگر واقعاً موجود شده باشد
-    const v = db.prepare('SELECT stock, type FROM variants WHERE sku=?').get(sku);
-    if (!v || v.stock <= 0 || v.type === 'HAIR_MIST') continue;
+    const v = db.prepare('SELECT stock, type, volume_ml FROM variants WHERE sku=?').get(sku);
+    if (!v || v.stock <= 0 || !isPublicVariant(v.type, v.volume_ml)) continue;
 
     const waiting = db.prepare(
       'SELECT mobile FROM stock_alerts WHERE sku=? AND notified=0'
@@ -433,7 +434,7 @@ function validateCart(items) {
     const row = stmt.get(item.sku);
     if (!row) return { ok: false, error: `کالای «${item.sku}» یافت نشد.` };
     // Availability is authoritative even if stale physical stock is positive.
-    if (row.supply_mode === 'UNAVAILABLE' || row.type === 'HAIR_MIST') {
+    if (row.supply_mode === 'UNAVAILABLE' || !isPublicVariant(row.type, row.volume_ml)) {
       return { ok: false, error: `«${row.name_fa}» فعلاً قابل تهیه نیست.` };
     }
     /* ── سفارش کالای «به سفارش ساخته می‌شود» ──
@@ -866,7 +867,7 @@ const server = http.createServer(async (req, res) => {
         SELECT v.sku, v.price_toman, v.stock, v.volume_ml, v.type_label,
                p.name_fa, p.brand_fa, p.slug, p.image_url
         FROM variants v JOIN products p ON p.id = v.product_id
-        WHERE v.sku IN (${marks}) AND v.type != 'HAIR_MIST'
+        WHERE v.sku IN (${marks}) AND ${publicVariantSql('v')}
       `).all(...skus);
 
       return sendJSON(200, {

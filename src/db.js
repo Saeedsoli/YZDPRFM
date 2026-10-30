@@ -1155,11 +1155,11 @@ function cleanPerfumer(perfumer, brandEn, brandFa) {
 
 function attachVariants(product, options = {}) {
   if (!product) return null;
-  // Hair mist remains in the DB for historical orders/admin, but is not public.
-  const visibility = options.includeHidden ? '' : "AND type != 'HAIR_MIST'";
+  // Retired variants remain for history/admin, but never appear in public catalog.
+  const visibility = options.includeHidden ? '' : `AND ${require('./variant-visibility').publicVariantSql('v')}`;
   product.variants = db.prepare(
     `SELECT sku, type, type_label, volume_ml, price_toman, stock
-     FROM variants WHERE product_id = ? ${visibility} ORDER BY
+     FROM variants v WHERE product_id = ? ${visibility} ORDER BY
      CASE type WHEN 'SAMPLE' THEN 0 WHEN 'EDP' THEN 1 ELSE 2 END, volume_ml`
   ).all(product.id);
   const prices = product.variants.map(v => v.price_toman).filter(Boolean);

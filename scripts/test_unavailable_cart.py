@@ -9,7 +9,7 @@ with tempfile.TemporaryDirectory(prefix='yazd-unavailable-') as tmp:
     env={**os.environ,'DB_PATH':dbfile,'BACKUP_DISABLED':'1','PORT':str(port)}
     subprocess.run(['node','-e',"require('./src/db')"],cwd=root,env=env,check=True,stdout=subprocess.DEVNULL,timeout=120)
     con=sqlite3.connect(dbfile)
-    sku,pid=con.execute('SELECT sku,product_id FROM variants LIMIT 1').fetchone()
+    sku,pid=con.execute("SELECT sku,product_id FROM variants WHERE type='EDP' LIMIT 1").fetchone()
     con.execute("UPDATE products SET supply_mode='UNAVAILABLE' WHERE id=?",(pid,))
     con.execute('UPDATE variants SET stock=5 WHERE sku=?',(sku,));con.commit()
     server=subprocess.Popen(['node','src/server.js'],cwd=root,env=env,stdout=subprocess.DEVNULL,stderr=subprocess.PIPE)
