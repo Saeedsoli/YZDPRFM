@@ -1,0 +1,91 @@
+{
+  "version": "official_reference_prices_2026_10_v16",
+  "supplier_file_sha256": "bbe8f40610bc765bda0a7d2da9dbe78f4e397458a6991239c3c18d0853f33f5c",
+  "description": "Provisional name match; actual supplier essence identity is unverified; no activation.",
+  "items": [
+    {
+      "product_id": "SUP-LC-900023",
+      "slug": "lacoste-touch-of-pink",
+      "brand_en": "Lacoste",
+      "expected_name_en": "LACOSTE - Touch of Pink",
+      "reference_name": "Touch of Pink",
+      "official_url": "https://www.lacoste.com/fr/lacoste/femme/accessoires/parfums/LC015A02.html",
+      "supplier_brand": "LACOSTE",
+      "supplier_model": "TOUCH OF PINK",
+      "usd_per_kg": "84.7",
+      "quality": "I",
+      "match_status": "name_matched_supplier_identity_unverified",
+      "expected_edps": []
+    },
+    {
+      "product_id": "SUP-JC-900024",
+      "slug": "juicy-couture-viva-la-juicy",
+      "brand_en": "Juicy Couture",
+      "expected_name_en": "JUICY COUTURE - Viva La Juicy",
+      "reference_name": "Viva La Juicy",
+      "official_url": "https://juicycouture.com/products/juicy-couture-viva-la-juicy-eau-de-parfum-spray-3-4oz",
+      "supplier_brand": "JUICY COUTURE",
+      "supplier_model": "Viva La Juicy",
+      "usd_per_kg": "132",
+      "quality": "I",
+      "match_status": "name_matched_supplier_identity_unverified",
+      "expected_edps": []
+    },
+    {
+      "product_id": "SUP-JG-900025",
+      "slug": "jaguar-classic-black",
+      "brand_en": "Jaguar",
+      "expected_name_en": "JAGUAR - Classic Black",
+      "reference_name": "Classic Black",
+      "official_url": "https://jaguar-fragrances.com/en/classic-black",
+      "supplier_brand": "JAGUAR",
+      "supplier_model": "Classic Black",
+      "usd_per_kg": "106.7",
+      "quality": "B",
+      "match_status": "name_matched_supplier_identity_unverified",
+      "expected_edps": []
+    },
+    {
+      "product_id": "SUP-NT-900026",
+      "slug": "nautica-voyage",
+      "brand_en": "Nautica",
+      "expected_name_en": "NAUTICA - Voyage",
+      "reference_name": "Voyage",
+      "official_url": "https://www.nautica.com/nautica-voyage-3.4-oz.-eau-de-toilette/99350078119.html",
+      "supplier_brand": "NAUTICA",
+      "supplier_model": "Nautica Voyage",
+      "usd_per_kg": "92.4",
+      "quality": "B",
+      "match_status": "name_matched_supplier_identity_unverified",
+      "expected_edps": []
+    },
+    {
+      "product_id": "SUP-GL-900027",
+      "slug": "guy-laroche-drakkar-noir",
+      "brand_en": "Guy Laroche",
+      "expected_name_en": "GUY LAROCHE - Drakkar Noir",
+      "reference_name": "Drakkar Noir",
+      "official_url": "https://www.guylaroche.com/fragrances",
+      "supplier_brand": "Guy Laroche",
+      "supplier_model": "Drakkar Noir",
+      "usd_per_kg": "121",
+      "quality": "H",
+      "match_status": "name_matched_supplier_identity_unverified",
+      "expected_edps": []
+    },
+    {
+      "product_id": "SUP-JH-900028",
+      "slug": "juliette-has-a-gun-metal-chypre",
+      "brand_en": "Juliette Has A Gun",
+      "expected_name_en": "JULIETTE HAS A GUN - Metal Chypré",
+      "reference_name": "Metal Chypré",
+      "official_url": "https://us.juliettehasagun.com/products/metal-chypre",
+      "supplier_brand": "Juliette Has a Gun",
+      "supplier_model": "METAL CHIBR",
+      "usd_per_kg": "183.7",
+      "quality": "I",
+      "match_status": "name_matched_supplier_identity_unverified",
+      "expected_edps": []
+    }
+  ]
+}

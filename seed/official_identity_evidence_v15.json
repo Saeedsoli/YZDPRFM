@@ -1,0 +1,66 @@
+{
+  "version": "official_identity_evidence_v15",
+  "scope": "Official reference-original names only; supplier essence identity remains unverified.",
+  "items": [
+    {
+      "product_id": "SUP-LC-900023",
+      "slug": "lacoste-touch-of-pink",
+      "brand_en": "Lacoste",
+      "expected_name_en": "LACOSTE - Touch of Pink",
+      "reference_name": "Touch of Pink",
+      "official_url": "https://www.lacoste.com/fr/lacoste/femme/accessoires/parfums/LC015A02.html",
+      "status": "official_original_found_supplier_essence_unverified",
+      "checked_date": "2026-10-31"
+    },
+    {
+      "product_id": "SUP-JC-900024",
+      "slug": "juicy-couture-viva-la-juicy",
+      "brand_en": "Juicy Couture",
+      "expected_name_en": "JUICY COUTURE - Viva La Juicy",
+      "reference_name": "Viva La Juicy",
+      "official_url": "https://juicycouture.com/products/juicy-couture-viva-la-juicy-eau-de-parfum-spray-3-4oz",
+      "status": "official_original_found_supplier_essence_unverified",
+      "checked_date": "2026-10-31"
+    },
+    {
+      "product_id": "SUP-JG-900025",
+      "slug": "jaguar-classic-black",
+      "brand_en": "Jaguar",
+      "expected_name_en": "JAGUAR - Classic Black",
+      "reference_name": "Classic Black",
+      "official_url": "https://jaguar-fragrances.com/en/classic-black",
+      "status": "official_original_found_supplier_essence_unverified",
+      "checked_date": "2026-10-31"
+    },
+    {
+      "product_id": "SUP-NT-900026",
+      "slug": "nautica-voyage",
+      "brand_en": "Nautica",
+      "expected_name_en": "NAUTICA - Voyage",
+      "reference_name": "Voyage",
+      "official_url": "https://www.nautica.com/nautica-voyage-3.4-oz.-eau-de-toilette/99350078119.html",
+      "status": "official_original_found_supplier_essence_unverified",
+      "checked_date": "2026-10-31"
+    },
+    {
+      "product_id": "SUP-GL-900027",
+      "slug": "guy-laroche-drakkar-noir",
+      "brand_en": "Guy Laroche",
+      "expected_name_en": "GUY LAROCHE - Drakkar Noir",
+      "reference_name": "Drakkar Noir",
+      "official_url": "https://www.guylaroche.com/fragrances",
+      "status": "official_original_found_supplier_essence_unverified",
+      "checked_date": "2026-10-31"
+    },
+    {
+      "product_id": "SUP-JH-900028",
+      "slug": "juliette-has-a-gun-metal-chypre",
+      "brand_en": "Juliette Has A Gun",
+      "expected_name_en": "JULIETTE HAS A GUN - Metal Chypré",
+      "reference_name": "Metal Chypré",
+      "official_url": "https://us.juliettehasagun.com/products/metal-chypre",
+      "status": "official_original_found_supplier_essence_unverified",
+      "checked_date": "2026-10-31"
+    }
+  ]
+}

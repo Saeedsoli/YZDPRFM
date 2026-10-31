@@ -202,3 +202,20 @@ Mefisto با Mefisto Gentiluomo یکی نیست. در برخی صفحات قدی
 `Bombshel` و ``L`amour`` در فایل با املای رسمی متفاوت‌اند. نسخه‌های دیگر مانند Bombshell Intense و Zen Essence با این محصولات یکسان فرض نشده‌اند. منابع لاکوست برای Essential جزئیات نت ابتدایی را یکسان بیان نمی‌کنند، پس آکورد کلی مرکبات ثبت شد. دو صفحه رسمی Polo Black نیز درباره برخی جزئیات و جایگاه نت‌ها تفاوت دارند؛ فقط نت‌های مشترک با جایگاه روشن ثبت شدند. برای Bombshell نت‌های کلیدی بدون هرم، و برای Zen به دلیل نبود هرم رسمی در صفحه بررسی‌شده، نت‌ها خالی نگه داشته شدند. خالی بودن به معنی بی‌بو بودن نیست.
 
 جنسیت از فایل تأمین‌کننده استنتاج نشده است. نام و نت‌ها به عطر مرجع اصلی مربوط‌اند؛ تطبیق نوشتاری به‌تنهایی هویت، نسخه، ترکیب یا کیفیت اسانس واقعی تأمین‌کننده را تأیید نمی‌کند. مدارک و قیمت‌ها به ترتیب در `seed/official_identity_evidence_v14.json` و `seed/official_reference_prices_v15.json` ثبت شده‌اند.
+
+## شش نام تکمیلی دیگر
+
+| عطر مرجع | دلار/کیلو | کیفیت فایل | صفحه رسمی |
+|---|---:|---|---|
+| Lacoste Touch of Pink | 84.7 | I | https://www.lacoste.com/fr/lacoste/femme/accessoires/parfums/LC015A02.html |
+| Viva La Juicy | 132 | I | https://juicycouture.com/products/juicy-couture-viva-la-juicy-eau-de-parfum-spray-3-4oz |
+| Jaguar Classic Black | 106.7 | B | https://jaguar-fragrances.com/en/classic-black |
+| Nautica Voyage | 92.4 | B | https://www.nautica.com/nautica-voyage-3.4-oz.-eau-de-toilette/99350078119.html |
+| Guy Laroche Drakkar Noir | 121 | H | https://www.guylaroche.com/fragrances |
+| Juliette Has A Gun Metal Chypré | 183.7 | I | https://us.juliettehasagun.com/products/metal-chypre |
+
+این محصولات در جست‌وجوی کاتالوگ محلی پیدا نشدند و به‌صورت دست‌ساز، با موجودی صفر و وضعیت `UNAVAILABLE` اضافه شدند. برای Viva La Juicy دو ردیف با کیفیت I وجود داشت و قیمت مثبت بیشتر انتخاب شد. `METAL CHIBR` نگارش فایل است؛ تناظر آن با Metal Chypré موقت است و هویت اسانس را ثابت نمی‌کند. برای Drakkar Noir منبع رسمی نام و نوع مرجع را معرفی می‌کند ولی هرم نت منتشر نکرده است؛ نت‌ها خالی ماندند. نت‌های Metal Chypré از [صفحه رسمی مجموعه](https://us.juliettehasagun.com/pages/luxury-collection) هستند.
+
+دو صفحه رسمی برای Nautica Voyage درباره ترتیب و جزئیات نت‌ها یکسان نیستند؛ تنها نت‌های مشترک بدون هرم ثبت شدند. برای Touch of Pink نیز بخش مشترک نت‌های صفحات رسمی انتخاب شد. این نت‌ها متعلق به محصول مرجع اصلی‌اند، نه اثبات فرمول واقعی اسانس. برای هیچ‌کدام هویت، نسخه یا کیفیت اسانس تأمین‌کننده مستقلاً تأیید نشده است. داده‌ها در `seed/official_identity_evidence_v15.json` و `seed/official_reference_prices_v16.json` هستند.
+
+در اجرای نخست بعضی آزمون‌های این دسته، فضای موقت `/tmp` به علت انباشته‌شدن نسخه‌های بازیابی آزمایشی پر شد و راه‌اندازی دیتابیس آزمایشی شکست خورد. فایل‌های موقت ساخته‌شده برای بررسی‌های قبلی پاک شدند؛ سپس آزمون‌های قیمت، هویت، نصب تازه، پلتفرم Node، محافظ دسترسی و پشتیبان دوباره اجرا و موفق شدند. دیتابیس محلی از این مشکل موقت آسیب ندید و بررسی سلامت آن موفق بود.

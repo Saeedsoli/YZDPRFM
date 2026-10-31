@@ -687,5 +687,175 @@
     "source_url": "https://www.shiseido.com/us/en/zen-eau-de-parfum-0768614102007.html",
     "source_note": "Official Zen EDP; Zen Essence is separate. No complete official pyramid found in this source; supplier essence identity/version unverified.",
     "variants": []
+  },
+  {
+    "id": "SUP-LC-900023",
+    "slug": "lacoste-touch-of-pink",
+    "name_fa": "تاچ آو پینک",
+    "name_en": "Touch of Pink",
+    "title_fa_base": "تاچ آو پینک",
+    "full_display_fa": "لاکوست — تاچ آو پینک",
+    "inspired_brand_en": "Lacoste",
+    "inspired_brand_fa": "لاکوست",
+    "gender": null,
+    "notes": {
+      "top": [
+        "پرتقال",
+        "هل"
+      ],
+      "middle": [
+        "یاس",
+        "برگ بنفشه"
+      ],
+      "base": [
+        "چوب صندل",
+        "مشک"
+      ]
+    },
+    "accords": [],
+    "transclaimer_notice": "این محصول بازآفرینی دست‌ساز است و محصول اورجینال برند لاکوست نیست.",
+    "source_url": "https://www.lacoste.com/fr/lacoste/femme/accessoires/parfums/LC015A02.html",
+    "source_note": "Official EDT reference: other official regional product page lists additional notes; only common tiered notes retained. Supplier essence identity/version unverified.",
+    "variants": []
+  },
+  {
+    "id": "SUP-JC-900024",
+    "slug": "juicy-couture-viva-la-juicy",
+    "name_fa": "ویوا لا جویسی",
+    "name_en": "Viva La Juicy",
+    "title_fa_base": "ویوا لا جویسی",
+    "full_display_fa": "جویسی کوتور — ویوا لا جویسی",
+    "inspired_brand_en": "Juicy Couture",
+    "inspired_brand_fa": "جویسی کوتور",
+    "gender": null,
+    "notes": {
+      "top": [
+        "توت‌های وحشی",
+        "ماندارین"
+      ],
+      "middle": [
+        "پیچ امین‌الدوله",
+        "گاردنیا",
+        "یاس"
+      ],
+      "base": [
+        "کهربا",
+        "کارامل",
+        "وانیل",
+        "چوب صندل",
+        "پرالین"
+      ]
+    },
+    "accords": [],
+    "transclaimer_notice": "این محصول بازآفرینی دست‌ساز است و محصول اورجینال برند جویسی کوتور نیست.",
+    "source_url": "https://juicycouture.com/products/juicy-couture-viva-la-juicy-eau-de-parfum-spray-3-4oz",
+    "source_note": "Official original EDP notes; Elixir and Gold Couture are distinct; supplier essence identity unverified.",
+    "variants": []
+  },
+  {
+    "id": "SUP-JG-900025",
+    "slug": "jaguar-classic-black",
+    "name_fa": "کلاسیک بلک",
+    "name_en": "Classic Black",
+    "title_fa_base": "کلاسیک بلک",
+    "full_display_fa": "جگوار — کلاسیک بلک",
+    "inspired_brand_en": "Jaguar",
+    "inspired_brand_fa": "جگوار",
+    "gender": null,
+    "notes": {
+      "top": [
+        "سیب سبز",
+        "ماندارین",
+        "پرتقال"
+      ],
+      "middle": [
+        "هل",
+        "جوز هندی",
+        "چای سیاه"
+      ],
+      "base": [
+        "چوب صندل",
+        "مشک سفید",
+        "چوب سدر"
+      ]
+    },
+    "accords": [],
+    "transclaimer_notice": "این محصول بازآفرینی دست‌ساز است و محصول اورجینال برند جگوار نیست.",
+    "source_url": "https://jaguar-fragrances.com/en/classic-black",
+    "source_note": "Official original EDT note list; supplier essence identity unverified.",
+    "variants": []
+  },
+  {
+    "id": "SUP-NT-900026",
+    "slug": "nautica-voyage",
+    "name_fa": "وویاج",
+    "name_en": "Voyage",
+    "title_fa_base": "وویاج",
+    "full_display_fa": "ناتیکا — وویاج",
+    "inspired_brand_en": "Nautica",
+    "inspired_brand_fa": "ناتیکا",
+    "gender": null,
+    "notes": {
+      "top": [],
+      "middle": [],
+      "base": []
+    },
+    "accords": [
+      "سیب سبز",
+      "برگ سبز",
+      "لوتوس"
+    ],
+    "transclaimer_notice": "این محصول بازآفرینی دست‌ساز است و محصول اورجینال برند ناتیکا نیست.",
+    "source_url": "https://www.nautica.com/nautica-voyage-3.4-oz.-eau-de-toilette/99350078119.html",
+    "source_note": "Official EDT. Another official product page https://www.nautica.com/nautica-voyage-fragrance-1.7oz-123/32251060000.html differs on tiers and notes; only common notes unclassified. Supplier essence identity unverified.",
+    "variants": []
+  },
+  {
+    "id": "SUP-GL-900027",
+    "slug": "guy-laroche-drakkar-noir",
+    "name_fa": "دراکار نویر",
+    "name_en": "Drakkar Noir",
+    "title_fa_base": "دراکار نویر",
+    "full_display_fa": "گی لاروش — دراکار نویر",
+    "inspired_brand_en": "Guy Laroche",
+    "inspired_brand_fa": "گی لاروش",
+    "gender": null,
+    "notes": {
+      "top": [],
+      "middle": [],
+      "base": []
+    },
+    "accords": [],
+    "transclaimer_notice": "این محصول بازآفرینی دست‌ساز است و محصول اورجینال برند گی لاروش نیست.",
+    "source_url": "https://www.guylaroche.com/fragrances",
+    "source_note": "Official brand fragrance listing confirms original EDT; no official note pyramid in that source. Supplier essence identity unverified.",
+    "variants": []
+  },
+  {
+    "id": "SUP-JH-900028",
+    "slug": "juliette-has-a-gun-metal-chypre",
+    "name_fa": "متال شیپر",
+    "name_en": "Metal Chypré",
+    "title_fa_base": "متال شیپر",
+    "full_display_fa": "ژولیت هز ا گان — متال شیپر",
+    "inspired_brand_en": "Juliette Has A Gun",
+    "inspired_brand_fa": "ژولیت هز ا گان",
+    "gender": null,
+    "notes": {
+      "top": [
+        "ترنج"
+      ],
+      "middle": [
+        "فلفل صورتی"
+      ],
+      "base": [
+        "پچولی"
+      ]
+    },
+    "accords": [],
+    "transclaimer_notice": "این محصول بازآفرینی دست‌ساز است و محصول اورجینال برند ژولیت هز ا گان نیست.",
+    "source_url": "https://us.juliettehasagun.com/products/metal-chypre",
+    "source_note": "Official notes from https://us.juliettehasagun.com/pages/luxury-collection . Supplier spelling differs; supplier essence identity unverified.",
+    "variants": []
   }
 ]
