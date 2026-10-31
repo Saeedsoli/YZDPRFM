@@ -20,13 +20,14 @@ const VERSION_13='official_reference_prices_2026_10_v13';
 const VERSION_14='official_reference_prices_2026_10_v14';
 const VERSION_15='official_reference_prices_2026_10_v15';
 const VERSION_16='official_reference_prices_2026_10_v16';
+const VERSION_17='official_reference_prices_2026_10_v17';
 const V1_HOSTS=new Set(['lattafa.com','www.creedfragrance.com','www.atkinsons1799.com']);
 function applyReferencePrices(db,file){
  if(!fs.existsSync(file))return {applied:0,skipped:0,reason:'file_missing'};
  const data=JSON.parse(fs.readFileSync(file,'utf8'));
  const second=data.version===VERSION_2;
- const needsIdentity=[VERSION_2,VERSION_3,VERSION_4,VERSION_5,VERSION_6,VERSION_7,VERSION_8,VERSION_9,VERSION_10,VERSION_11,VERSION_12,VERSION_13,VERSION_14,VERSION_15,VERSION_16].includes(data.version);
- const counts={[VERSION]:4,[VERSION_2]:37,[VERSION_3]:6,[VERSION_4]:6,[VERSION_5]:8,[VERSION_6]:1,[VERSION_7]:5,[VERSION_8]:3,[VERSION_9]:1,[VERSION_10]:2,[VERSION_11]:6,[VERSION_12]:5,[VERSION_13]:5,[VERSION_14]:7,[VERSION_15]:6,[VERSION_16]:6};
+ const needsIdentity=[VERSION_2,VERSION_3,VERSION_4,VERSION_5,VERSION_6,VERSION_7,VERSION_8,VERSION_9,VERSION_10,VERSION_11,VERSION_12,VERSION_13,VERSION_14,VERSION_15,VERSION_16,VERSION_17].includes(data.version);
+ const counts={[VERSION]:4,[VERSION_2]:37,[VERSION_3]:6,[VERSION_4]:6,[VERSION_5]:8,[VERSION_6]:1,[VERSION_7]:5,[VERSION_8]:3,[VERSION_9]:1,[VERSION_10]:2,[VERSION_11]:6,[VERSION_12]:5,[VERSION_13]:5,[VERSION_14]:7,[VERSION_15]:6,[VERSION_16]:6,[VERSION_17]:2};
  if(!Object.hasOwn(counts,data.version)||!/^[a-f0-9]{64}$/.test(data.supplier_file_sha256||'')||!Array.isArray(data.items)||data.items.length!==counts[data.version])throw new Error('Invalid reference price manifest');
  const ids=new Set();
  for(const x of data.items){
@@ -79,4 +80,4 @@ function applyReferencePrices(db,file){
   return second ? {applied,backfilled,skipped:skipped.length,skipped_ids:skipped} : {applied,skipped:skipped.length,skipped_ids:skipped};
  })();
 }
-module.exports={applyReferencePrices,VERSION,VERSION_2,VERSION_3,VERSION_4,VERSION_5,VERSION_6,VERSION_7,VERSION_8,VERSION_9,VERSION_10,VERSION_11,VERSION_12,VERSION_13,VERSION_14,VERSION_15,VERSION_16};
+module.exports={applyReferencePrices,VERSION,VERSION_2,VERSION_3,VERSION_4,VERSION_5,VERSION_6,VERSION_7,VERSION_8,VERSION_9,VERSION_10,VERSION_11,VERSION_12,VERSION_13,VERSION_14,VERSION_15,VERSION_16,VERSION_17};

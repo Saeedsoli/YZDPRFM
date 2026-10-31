@@ -857,5 +857,66 @@
     "source_url": "https://us.juliettehasagun.com/products/metal-chypre",
     "source_note": "Official notes from https://us.juliettehasagun.com/pages/luxury-collection . Supplier spelling differs; supplier essence identity unverified.",
     "variants": []
+  },
+  {
+    "id": "SUP-GU-900029",
+    "slug": "guerlain-baiser-de-russie",
+    "name_fa": "بیزه د روسی",
+    "name_en": "Baiser de Russie",
+    "title_fa_base": "بیزه د روسی",
+    "full_display_fa": "گرلن — بیزه د روسی",
+    "inspired_brand_en": "Guerlain",
+    "inspired_brand_fa": "گرلن",
+    "gender": null,
+    "notes": {
+      "top": [
+        "ترنج",
+        "آلو",
+        "سوزن کاج",
+        "لیمو",
+        "ابسنت"
+      ],
+      "middle": [
+        "کرنبری",
+        "گلبرگ یاس"
+      ],
+      "base": [
+        "کارامل",
+        "چوب صندل",
+        "دانه تونکا",
+        "مشک سفید",
+        "وانیل"
+      ]
+    },
+    "accords": [],
+    "transclaimer_notice": "این محصول بازآفرینی دست‌ساز است و محصول اورجینال برند گرلن نیست.",
+    "source_url": "https://www.guerlain.com/us/en-us/p/les-parisiennes-baiser-de-russie---eau-de-parfum-P017774.html",
+    "source_note": "Official original EDP; supplier essence identity and version unverified.",
+    "variants": []
+  },
+  {
+    "id": "SUP-VS-900030",
+    "slug": "victorias-secret-very-sexy",
+    "name_fa": "وری سکسی",
+    "name_en": "Very Sexy",
+    "title_fa_base": "وری سکسی",
+    "full_display_fa": "ویکتوریا سکرت — وری سکسی",
+    "inspired_brand_en": "Victoria's Secret",
+    "inspired_brand_fa": "ویکتوریا سکرت",
+    "gender": null,
+    "notes": {
+      "top": [],
+      "middle": [],
+      "base": []
+    },
+    "accords": [
+      "فلفل صورتی",
+      "گل میموزا",
+      "ارکیده"
+    ],
+    "transclaimer_notice": "این محصول بازآفرینی دست‌ساز است و محصول اورجینال برند ویکتوریا سکرت نیست.",
+    "source_url": "https://www.victoriassecret.com/us/vs/beauty-catalog/5000010459/-/a/generic-11260424-choice-2068/very-sexy-eau-de-parfum-3.4-oz-floral",
+    "source_note": "Official original EDP key notes; other Very Sexy variants separate, supplier essence identity unverified.",
+    "variants": []
   }
 ]

@@ -219,3 +219,16 @@ Mefisto با Mefisto Gentiluomo یکی نیست. در برخی صفحات قدی
 دو صفحه رسمی برای Nautica Voyage درباره ترتیب و جزئیات نت‌ها یکسان نیستند؛ تنها نت‌های مشترک بدون هرم ثبت شدند. برای Touch of Pink نیز بخش مشترک نت‌های صفحات رسمی انتخاب شد. این نت‌ها متعلق به محصول مرجع اصلی‌اند، نه اثبات فرمول واقعی اسانس. برای هیچ‌کدام هویت، نسخه یا کیفیت اسانس تأمین‌کننده مستقلاً تأیید نشده است. داده‌ها در `seed/official_identity_evidence_v15.json` و `seed/official_reference_prices_v16.json` هستند.
 
 در اجرای نخست بعضی آزمون‌های این دسته، فضای موقت `/tmp` به علت انباشته‌شدن نسخه‌های بازیابی آزمایشی پر شد و راه‌اندازی دیتابیس آزمایشی شکست خورد. فایل‌های موقت ساخته‌شده برای بررسی‌های قبلی پاک شدند؛ سپس آزمون‌های قیمت، هویت، نصب تازه، پلتفرم Node، محافظ دسترسی و پشتیبان دوباره اجرا و موفق شدند. دیتابیس محلی از این مشکل موقت آسیب ندید و بررسی سلامت آن موفق بود.
+
+## دو تناظر جدید و کنارگذاری ابهام نسخه
+
+| عطر مرجع | دلار/کیلو | کیفیت فایل | صفحه رسمی |
+|---|---:|---|---|
+| Guerlain Baiser de Russie | 229.9 | H | https://www.guerlain.com/us/en-us/p/les-parisiennes-baiser-de-russie---eau-de-parfum-P017774.html |
+| Victoria’s Secret Very Sexy | 107.8 | P | https://www.victoriassecret.com/us/vs/beauty-catalog/5000010459/-/a/generic-11260424-choice-2068/very-sexy-eau-de-parfum-3.4-oz-floral |
+
+این دو نام در جست‌وجوی کاتالوگ محلی نبودند و به صورت دست‌ساز، با قیمت موقت و `UNAVAILABLE` اضافه شدند. نت‌های گرلن از هرم رسمی و نت‌های Very Sexy از فهرست کلیدی رسمی بدون دسته‌بندی حدسی ثبت شدند. این داده‌ها درباره عطر مرجع هستند، نه اثبات هویت یا کیفیت اسانس تأمین‌کننده.
+
+سه مورد عمداً قیمت‌گذاری نشدند: ردیف `HER` باربری بین نسخه‌های EDP و EDT و دیگر نسخه‌ها مشخص نیست؛ فهرست `JOOP HOMME (Red)` را با نام فارسی «جوپ سبز» نوشته و با ردیف مجاور تعارض دارد؛ و ردیف `BLACK MUSK / The Body Shop` علاوه بر جابه‌جایی نام و برند، نسخه EDP یا EDT را مشخص نمی‌کند. جنسیت یا رنگ فایل برای رفع قطعی این تعارض‌ها کافی نیست. منابع رسمی نسخه‌های [Her EDP](https://us.burberry.com/her-eau-de-parfum-100ml-p40804591) و [Her EDT](https://us.burberry.com/her-eau-de-toilette-50ml-p40826251)، و [Black Musk EDP](https://us.thebodyshop.com/products/black-musk-eau-de-parfum) و [EDT](https://global.thebodyshop.com/en-au/fragrance/eau-de-toilette/black-musk-eau-de-toilette/p/p053023) را جدا معرفی می‌کنند.
+
+منابع و قیمت‌ها در `seed/official_identity_evidence_v16.json` و `seed/official_reference_prices_v17.json` ثبت شده‌اند.

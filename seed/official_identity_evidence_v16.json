@@ -1,0 +1,26 @@
+{
+  "version": "official_identity_evidence_v16",
+  "scope": "Official original only; supplier essence identity remains unverified.",
+  "items": [
+    {
+      "product_id": "SUP-GU-900029",
+      "slug": "guerlain-baiser-de-russie",
+      "brand_en": "Guerlain",
+      "expected_name_en": "GUERLAIN - Baiser de Russie",
+      "reference_name": "Baiser de Russie",
+      "official_url": "https://www.guerlain.com/us/en-us/p/les-parisiennes-baiser-de-russie---eau-de-parfum-P017774.html",
+      "status": "official_original_found_supplier_essence_unverified",
+      "checked_date": "2026-10-31"
+    },
+    {
+      "product_id": "SUP-VS-900030",
+      "slug": "victorias-secret-very-sexy",
+      "brand_en": "Victoria's Secret",
+      "expected_name_en": "VICTORIA'S SECRET - Very Sexy",
+      "reference_name": "Very Sexy",
+      "official_url": "https://www.victoriassecret.com/us/vs/beauty-catalog/5000010459/-/a/generic-11260424-choice-2068/very-sexy-eau-de-parfum-3.4-oz-floral",
+      "status": "official_original_found_supplier_essence_unverified",
+      "checked_date": "2026-10-31"
+    }
+  ]
+}

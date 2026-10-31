@@ -514,3 +514,7 @@ node_modules/   با npm install برمی‌گردد
 ### شش محصول تکمیلی دیگر
 
 - `scripts/test_six_supplement_v16.js`
+
+### دو محصول تکمیلی و موارد مبهم
+
+- `scripts/test_two_supplement_v17.js`

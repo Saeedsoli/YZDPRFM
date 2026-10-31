@@ -1,0 +1,35 @@
+{
+  "version": "official_reference_prices_2026_10_v17",
+  "supplier_file_sha256": "bbe8f40610bc765bda0a7d2da9dbe78f4e397458a6991239c3c18d0853f33f5c",
+  "description": "Provisional name match; supplier essence identity unverified; no automatic activation.",
+  "items": [
+    {
+      "product_id": "SUP-GU-900029",
+      "slug": "guerlain-baiser-de-russie",
+      "brand_en": "Guerlain",
+      "expected_name_en": "GUERLAIN - Baiser de Russie",
+      "reference_name": "Baiser de Russie",
+      "official_url": "https://www.guerlain.com/us/en-us/p/les-parisiennes-baiser-de-russie---eau-de-parfum-P017774.html",
+      "supplier_brand": "GUERLAIN",
+      "supplier_model": "Baiser de Russie",
+      "usd_per_kg": "229.9",
+      "quality": "H",
+      "match_status": "name_matched_supplier_identity_unverified",
+      "expected_edps": []
+    },
+    {
+      "product_id": "SUP-VS-900030",
+      "slug": "victorias-secret-very-sexy",
+      "brand_en": "Victoria's Secret",
+      "expected_name_en": "VICTORIA'S SECRET - Very Sexy",
+      "reference_name": "Very Sexy",
+      "official_url": "https://www.victoriassecret.com/us/vs/beauty-catalog/5000010459/-/a/generic-11260424-choice-2068/very-sexy-eau-de-parfum-3.4-oz-floral",
+      "supplier_brand": "VICTORIA`S SECRET",
+      "supplier_model": "Very Sexy",
+      "usd_per_kg": "107.8",
+      "quality": "P",
+      "match_status": "name_matched_supplier_identity_unverified",
+      "expected_edps": []
+    }
+  ]
+}
