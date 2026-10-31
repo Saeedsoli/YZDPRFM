@@ -2675,15 +2675,16 @@ function correctSupplementGenderFromOfficial() {
   })();
 }
 correctSupplementGenderFromOfficial();
-const officialNotesResult = require('./official-notes').applyOfficialNotes(
-  db, path.join(SEED_DIR, 'official_note_corrections_v1.json'));
+const officialNoteManifests = ['official_note_corrections_v1.json', 'official_note_corrections_v2.json'];
+const officialNotesResults = officialNoteManifests.map(file =>
+  require('./official-notes').applyOfficialNotes(db, path.join(SEED_DIR, file)));
 seedCoupons();
 /* تنظیمات واقعی فروشگاه — پس از ساخت جدول‌ها، پیش از سرو شدن
    هر صفحه. فاکتور و برچسب پستی بدون این‌ها ناقص چاپ می‌شوند. */
 seedShopSettings();
 buildSearchIndex();
 // Rebuild note lookup after sourced notes change or new supplement products arrive.
-buildNotesIndex(supplementInserted > 0 || officialNotesResult.updated > 0);
+buildNotesIndex(supplementInserted > 0 || officialNotesResults.some(r => r.updated > 0));
 
 startMaintenance();
 

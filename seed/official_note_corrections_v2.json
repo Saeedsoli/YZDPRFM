@@ -1,0 +1,270 @@
+{
+  "version": "official_notes_2026_10_v2",
+  "description": "Brand-provided olfactive pyramids, not confirmation of supplier essence identity.",
+  "items": [
+    {
+      "product_id": "YZD-PROD-0639",
+      "product_slug": "parfums-de-marly-herod",
+      "official_brand": "Parfums de Marly",
+      "official_name": "Herod",
+      "source_url": "https://us.parfums-de-marly.com/products/herod",
+      "source_scope": "Notes as explicitly listed by official brand; formula or supplier-essence identity is not verified.",
+      "expected_old_notes": {
+        "top": [
+          "دارچین",
+          "دارفلفل"
+        ],
+        "middle": [
+          "برگ تنباکو",
+          "بخور کندر",
+          "گل اسمانتوس",
+          "لابدانیوم"
+        ],
+        "base": [
+          "وانیل ماداگاسکار",
+          "بلسان تولو",
+          "مشک",
+          "سدر",
+          "خس‌خس",
+          "ناگارموتا"
+        ]
+      },
+      "verified_notes": {
+        "top": [
+          "دارچین",
+          "فلفل"
+        ],
+        "middle": [
+          "برگ تنباکو",
+          "بخور",
+          "لادن صخره‌ای",
+          "اوسمانتوس"
+        ],
+        "base": [
+          "وانیل",
+          "مشک",
+          "چوب سدر"
+        ]
+      }
+    },
+    {
+      "product_id": "YZD-PROD-0640",
+      "product_slug": "parfums-de-marly-pegasus",
+      "official_brand": "Parfums de Marly",
+      "official_name": "Pegasus",
+      "source_url": "https://us.parfums-de-marly.com/products/pegasus",
+      "source_scope": "Notes as explicitly listed by official brand; formula or supplier-essence identity is not verified.",
+      "expected_old_notes": {
+        "top": [
+          "ترنج",
+          "گل آفتاب‌پرست",
+          "زیره سبز"
+        ],
+        "middle": [
+          "بادام تلخ",
+          "اسطوخودوس",
+          "گل یاس"
+        ],
+        "base": [
+          "وانیل",
+          "چوب صندل",
+          "کهربا"
+        ]
+      },
+      "verified_notes": {
+        "top": [
+          "بادیان رومی",
+          "ترنج",
+          "بادام"
+        ],
+        "middle": [
+          "سرو",
+          "برگ بنفشه",
+          "شکوفه پرتقال"
+        ],
+        "base": [
+          "آمبروکس",
+          "وانیل",
+          "چوب صندل"
+        ]
+      }
+    },
+    {
+      "product_id": "YZD-PROD-0642",
+      "product_slug": "parfums-de-marly-haltane",
+      "official_brand": "Parfums de Marly",
+      "official_name": "Haltane",
+      "source_url": "https://us.parfums-de-marly.com/products/haltane",
+      "source_scope": "Notes as explicitly listed by official brand; formula or supplier-essence identity is not verified.",
+      "expected_old_notes": {
+        "top": [
+          "مریم‌گلی اسکلاریا",
+          "اسطوخودوس",
+          "ترنج"
+        ],
+        "middle": [
+          "زعفران",
+          "پرالین (شکلات آجیلی)"
+        ],
+        "base": [
+          "چوب عود",
+          "چوب سدر",
+          "نعناع هندی",
+          "خس‌خس"
+        ]
+      },
+      "verified_notes": {
+        "top": [
+          "ترنج",
+          "فلفل صورتی"
+        ],
+        "middle": [
+          "زعفران",
+          "پرالین",
+          "اسطوخودوس",
+          "مریم‌گلی کلاری"
+        ],
+        "base": [
+          "عود",
+          "نعناع هندی",
+          "وتیور",
+          "چرم"
+        ]
+      }
+    },
+    {
+      "product_id": "YZD-PROD-0656",
+      "product_slug": "parfums-de-marly-valaya",
+      "official_brand": "Parfums de Marly",
+      "official_name": "Valaya",
+      "source_url": "https://us.parfums-de-marly.com/products/valaya",
+      "source_scope": "Notes as explicitly listed by official brand; formula or supplier-essence identity is not verified.",
+      "expected_old_notes": {
+        "top": [
+          "آلدهیدها",
+          "هلو سفید",
+          "ترنج",
+          "نارنگی ماندارین"
+        ],
+        "middle": [
+          "شکوفه پرتقال",
+          "زنبق دره",
+          "پتالیا",
+          "وتیور",
+          "ماهونیا"
+        ],
+        "base": [
+          "مشک سفید",
+          "آکیگالاوود",
+          "آمبروکسان",
+          "وانیل"
+        ]
+      },
+      "verified_notes": {
+        "top": [
+          "ترنج",
+          "نارنگی ماندارین",
+          "هلوی سفید"
+        ],
+        "middle": [
+          "شکوفه پرتقال",
+          "گل‌های سفید"
+        ],
+        "base": [
+          "مشک سفید",
+          "آکیگالاوود",
+          "وانیل",
+          "وتیور"
+        ]
+      }
+    },
+    {
+      "product_id": "YZD-PROD-0648",
+      "product_slug": "parfums-de-marly-godolphin",
+      "official_brand": "Parfums de Marly",
+      "official_name": "Godolphin",
+      "source_url": "https://us.parfums-de-marly.com/products/godolphin",
+      "source_scope": "Notes as explicitly listed by official brand; formula or supplier-essence identity is not verified.",
+      "expected_old_notes": {
+        "top": [
+          "زعفران",
+          "برگ چای ماته",
+          "آویشن",
+          "میوه‌های خشک",
+          "سرو"
+        ],
+        "middle": [
+          "گل رز",
+          "گل زنبق",
+          "یاس"
+        ],
+        "base": [
+          "چرم دست‌دوز",
+          "عنبر سائل",
+          "خس‌خس",
+          "سدر",
+          "وانیل"
+        ]
+      },
+      "verified_notes": {
+        "top": [
+          "آویشن",
+          "زعفران",
+          "تمشک"
+        ],
+        "middle": [
+          "رز",
+          "زنبق",
+          "یاس"
+        ],
+        "base": [
+          "چرم",
+          "آمبروکس",
+          "چوب‌های روشن"
+        ]
+      }
+    },
+    {
+      "product_id": "YZD-PROD-0650",
+      "product_slug": "parfums-de-marly-kalan",
+      "official_brand": "Parfums de Marly",
+      "official_name": "Kalan",
+      "source_url": "https://us.parfums-de-marly.com/products/kalan",
+      "source_scope": "Notes as explicitly listed by official brand; formula or supplier-essence identity is not verified.",
+      "expected_old_notes": {
+        "top": [
+          "ادویه‌جات",
+          "فلفل سیاه",
+          "پرتقال خونی"
+        ],
+        "middle": [
+          "اسطوخودوس",
+          "شکوفه پرتقال"
+        ],
+        "base": [
+          "روایح چوبی",
+          "خزه بلوط",
+          "دانه تونکا",
+          "چوب صندل",
+          "کهربا"
+        ]
+      },
+      "verified_notes": {
+        "top": [
+          "پرتقال خونی",
+          "فلفل سیاه"
+        ],
+        "middle": [
+          "اسطوخودوس",
+          "افسنطین",
+          "شکوفه پرتقال"
+        ],
+        "base": [
+          "دانه تونکا",
+          "چوب سدر",
+          "خزه"
+        ]
+      }
+    }
+  ]
+}
