@@ -1,0 +1,46 @@
+{
+  "version": "official_notes_2026_10_v11",
+  "description": "Official reference-original notes only; unclassified notes are not assigned to a tier.",
+  "items": [
+    {
+      "product_id": "YZD-PROD-0615",
+      "product_slug": "maison-francis-kurkdjian-baccarat-rouge-540-extrait-de-parfum",
+      "official_brand": "Maison Francis Kurkdjian",
+      "official_name": "Baccarat Rouge 540 Extrait de Parfum",
+      "source_url": "https://www.franciskurkdjian.com/int-en/p/baccarat-rouge-540-extrait-de-parfum-RA142321.html",
+      "source_scope": "Only jasmine is explicitly classified as heart; other original reference notes are unclassified. Supplier brand spelling differs. This does not verify supplier essence.",
+      "expected_old_notes": {
+        "top": [
+          "بادام تلخ مراکشی",
+          "زعفران خالص"
+        ],
+        "middle": [
+          "یاس سامباک مصر",
+          "چوب سدر"
+        ],
+        "base": [
+          "عنبر سائل",
+          "روایح چوبی",
+          "مشک"
+        ]
+      },
+      "verified_notes": {
+        "top": [],
+        "middle": [
+          "یاس گراندیفلوروم"
+        ],
+        "base": []
+      },
+      "expected_old_accords": [
+        "نسخه غلیظ‌تر در بطری قرمز یاقوتی",
+        "بادام تلخ اغواگر و ماندگاری ابدی"
+      ],
+      "verified_accords": [
+        "بادام تلخ",
+        "اتیل مالتول",
+        "آکورد عنبر سائل",
+        "آکورد چوبی، عنبری و مشکی"
+      ]
+    }
+  ]
+}

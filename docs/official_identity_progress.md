@@ -99,3 +99,13 @@ Torino24 پیش‌تر در کاتالوگ نبود و به‌صورت محصو�
 ردیف `PARADISE GARDEN` عمداً وارد این دسته نشد: برند دو محصول مستقل **Le Beau Paradise Garden** و **La Belle Paradise Garden** معرفی می‌کند و نام اختصاری فایل به‌تنهایی نسخه را روشن نمی‌کند. برای Tygar نیز صفحه رسمی نسخه EDP و Extrait را جداگانه نشان می‌دهد؛ ردیف بدون ذکر نسخه به‌طور قطعی به یکی از آن‌ها نسبت داده نشد.
 
 منابع و قیمت‌ها در `seed/official_identity_evidence_v7.json`، `seed/official_reference_prices_v8.json` و نت‌های مرجع در `seed/official_note_corrections_v10.json` نگهداری می‌شوند.
+
+## باکارات رژ ۵۴۰ اکستریت
+
+برای `YZD-PROD-0615` نام **Baccarat Rouge 540 Extrait de Parfum** با [صفحه رسمی برند](https://www.franciskurkdjian.com/int-en/p/baccarat-rouge-540-extrait-de-parfum-RA142321.html) تطبیق داده شد. ردیف `Baccarat Rouge 540 Extrait` در فایل، با بالاترین قیمت مثبت ۲۸۷٫۱ دلار/کیلو و کیفیت H، به‌صورت موقت نسبت داده شد. املای `Francic Kurkdjian` در فایل با نام رسمی برند تفاوت دارد؛ تطبیق، هویت یا کیفیت واقعی اسانس را اثبات نمی‌کند. محصول و همه واریانت‌ها همچنان غیرفعال و موجودی صفر دارند.
+
+صفحه رسمی فقط یاس گراندیفلوروم را صراحتاً در نت میانی جای می‌دهد؛ بادام تلخ، اتیل مالتول و آکوردهای توصیف‌شده بدون تعیین جایگاه ثبت شدند. هرم قدیمیِ تأییدنشده فقط در صورت دست‌نخورده بودن حذف می‌شود. مشخصات به عطر مرجع اصلی مربوط‌اند، نه فرمول اسانس تأمین‌کننده.
+
+برای `Platinium`، [صفحه رسمی Chanel Platinum Égoïste](https://www.chanel.com/gb/fragrance/p/124460/platinum-egoiste-eau-de-toilette-spray/) پیدا شد، اما ردیف فایل نام کامل Égoïste را ندارد؛ فعلاً نسبت قیمت صرفاً بر اساس نام ناقص انجام نشد. این وضعیت به معنی نبود محصول یا تأیید جنسیت ذکرشده در فایل نیست.
+
+منابع و قیمت در `seed/official_identity_evidence_v8.json` و `seed/official_reference_prices_v9.json`، و اصلاح نت‌ها در `seed/official_note_corrections_v11.json` نگهداری می‌شود.

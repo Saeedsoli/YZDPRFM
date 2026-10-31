@@ -1,0 +1,16 @@
+{
+  "version": "official_identity_evidence_v8",
+  "scope": "Official original only; supplier essence identity remains unverified.",
+  "items": [
+    {
+      "product_id": "YZD-PROD-0615",
+      "slug": "maison-francis-kurkdjian-baccarat-rouge-540-extrait-de-parfum",
+      "brand_en": "Maison Francis Kurkdjian",
+      "expected_name_en": "MAISON FRANCIS KURKDJIAN - Baccarat Rouge 540 Extrait de Parfum",
+      "reference_name": "Baccarat Rouge 540 Extrait de Parfum",
+      "official_url": "https://www.franciskurkdjian.com/int-en/p/baccarat-rouge-540-extrait-de-parfum-RA142321.html",
+      "status": "official_original_found_supplier_essence_unverified",
+      "checked_date": "2026-10-31"
+    }
+  ]
+}

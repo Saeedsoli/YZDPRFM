@@ -471,3 +471,7 @@ node_modules/   با npm install برمی‌گردد
 
 - `scripts/test_reference_prices_v8.js`
 - `scripts/test_official_notes_v10.js`
+
+### بررسی اکستریت باکارات رژ
+
+- `scripts/test_baccarat_extrait_reference.js`
