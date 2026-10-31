@@ -1,0 +1,43 @@
+{
+  "version": "secondary_reference_prices_2026_11_v6",
+  "supplier_file_sha256": "bbe8f40610bc765bda0a7d2da9dbe78f4e397458a6991239c3c18d0853f33f5c",
+  "description": "Independent source only; no manufacturer verification or supplier essence identification; no automatic availability.",
+  "items": [
+    {
+      "product_id": "SUP-TP-910021",
+      "slug": "roger-gallet-open",
+      "brand_en": "Roger & Gallet",
+      "expected_name_en": "ROGER & GALLET - Open",
+      "reference_name": "Open",
+      "source_url": "https://www.fragrantica.com/perfume/Roger-Gallet/Open-5973.html",
+      "provider": "Fragrantica",
+      "status": "secondary_original_found_supplier_essence_unverified",
+      "checked_date": "2026-11-01",
+      "supplier_brand": "ROGER&GALLET",
+      "supplier_model": "Open",
+      "usd_per_kg": "155.1",
+      "quality": "H",
+      "match_status": "name_matched_supplier_identity_unverified",
+      "expected_edps": [],
+      "legacy_backfill": false
+    },
+    {
+      "product_id": "SUP-TP-910022",
+      "slug": "john-richmond-for-men",
+      "brand_en": "John Richmond",
+      "expected_name_en": "John Richmond for Men",
+      "reference_name": "John Richmond for Men",
+      "source_url": "https://www.fragrantica.com/perfume/John-Richmond/John-Richmond-for-Men-9117.html",
+      "provider": "Fragrantica",
+      "status": "secondary_original_found_supplier_essence_unverified",
+      "checked_date": "2026-11-01",
+      "supplier_brand": "JOHN RICHMOND",
+      "supplier_model": "John Richmond for Men",
+      "usd_per_kg": "122.1",
+      "quality": "B",
+      "match_status": "name_matched_supplier_identity_unverified",
+      "expected_edps": [],
+      "legacy_backfill": false
+    }
+  ]
+}

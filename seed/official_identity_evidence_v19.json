@@ -1,0 +1,26 @@
+{
+  "version": "official_identity_evidence_v19",
+  "scope": "Official reference-original name only; actual supplier essence identity is unverified.",
+  "items": [
+    {
+      "product_id": "SUP-CR-900050",
+      "slug": "creed-absolu-aventus",
+      "brand_en": "Creed",
+      "expected_name_en": "CREED - Absolu Aventus",
+      "reference_name": "Absolu Aventus",
+      "official_url": "https://www.creedfragrance.com/p/absolu-aventus/16281794/",
+      "status": "official_original_found_supplier_essence_unverified",
+      "checked_date": "2026-11-01"
+    },
+    {
+      "product_id": "SUP-SP-900050",
+      "slug": "sapil-nice-feelings-black",
+      "brand_en": "Sapil",
+      "expected_name_en": "SAPIL - Nice Feeling Black",
+      "reference_name": "Nice Feeling Black",
+      "official_url": "https://sapil.com/products/nice_feeling_black",
+      "status": "official_original_found_supplier_essence_unverified",
+      "checked_date": "2026-11-01"
+    }
+  ]
+}

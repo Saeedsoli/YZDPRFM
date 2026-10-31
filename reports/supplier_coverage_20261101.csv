@@ -56,7 +56,7 @@ chloe,Narcisse,Women,نارسیس,1,161,88,P,secondary,قیمت موقت با م
 CLINIQUE,Happy,Men,هپی کلینیک,1,167,174.9,H,pending,هنوز قیمت مرجع منتسب نشده,,,
 Clive Christian,X FOR MEN,Men,ایکس فور من کلایو کریتسین,1,173,453.2,P,provisional,قیمت موقت با شاهد نام؛ هویت اسانس تأییدنشده,YZD-PROD-0485,https://us.clivechristian.com/products/x-masculine,official_reference_prices_v14.json
 CREED,Aventus,Men,اونتوس کرید,4,"179,180,181,182",709.5,T,provisional,قیمت موقت با شاهد نام؛ هویت اسانس تأییدنشده,YZD-PROD-0429,https://www.creedfragrance.com/p/aventus/12870029/,official_reference_prices_v2.json
-CREED,ABSOLUE AVENTUS,Men,اونتوس ابسولو,2,"183,184",499.4,H,pending,هنوز قیمت مرجع منتسب نشده,,,
+CREED,ABSOLUE AVENTUS,Men,اونتوس ابسولو,2,"183,184",499.4,H,provisional,قیمت موقت با شاهد نام؛ هویت اسانس تأییدنشده,SUP-CR-900050,https://www.creedfragrance.com/p/absolu-aventus/16281794/,official_reference_prices_v20.json
 CREED,Erolfa,Men,ارولفا کرید,1,185,366.3,P,provisional,قیمت موقت با شاهد نام؛ هویت اسانس تأییدنشده,YZD-PROD-0439,https://www.creedfragrance.com/p/erolfa/12870033/,official_reference_prices_v2.json
 CREED,Green Irish Tweed,Men,گرین آیریش کرید,1,186,212.3,H,provisional,قیمت موقت با شاهد نام؛ هویت اسانس تأییدنشده,YZD-PROD-0430,https://www.creedfragrance.com/p/green-irish-tweed/12870035/,official_reference_prices_v2.json
 CREED,MILLÉSIME IMPÉRIAL,Unisex,ایمپریال میلیسیوم کرید,1,187,453.2,H,provisional,قیمت موقت با شاهد نام؛ هویت اسانس تأییدنشده,YZD-PROD-0432,https://www.creedfragrance.com/p/millesime-imperial/12870041/,official_reference_prices_v1.json
@@ -204,12 +204,12 @@ Rasasi,Afshan,Unisex,افشان,1,682,92.4,B,secondary,قیمت موقت با م
 Rihanna,RIRI,Women,ری ری,1,688,169.4,H,secondary,قیمت موقت با منبع مستقل؛ هویت اسانس تأییدنشده,SUP-TP-910015,https://www.fragrantica.com/perfume/Rihanna/RiRi-31629.html,secondary_reference_prices_v4.json
 ROJA DOVE,ELYSIUM POUR HOMME,Men,الیزیوم پورهوم,1,694,403.7,H,pending,هنوز قیمت مرجع منتسب نشده,,,
 ROCHAS,Aquawoman,Women,آکوا وومن,1,700,168.3,H,secondary,قیمت موقت با منبع مستقل؛ هویت اسانس تأییدنشده,SUP-TP-910014,https://www.fragrantica.com/perfume/Rochas/Aquawoman-1427.html,secondary_reference_prices_v3.json
-ROGER&GALLET,Open,Men,اپن,1,706,155.1,H,pending,هنوز قیمت مرجع منتسب نشده,,,
+ROGER&GALLET,Open,Men,اپن,1,706,155.1,H,secondary,قیمت موقت با منبع مستقل؛ هویت اسانس تأییدنشده,SUP-TP-910021,https://www.fragrantica.com/perfume/Roger-Gallet/Open-5973.html,secondary_reference_prices_v6.json
 ROSE,ROSE,Unisex,رز,1,712,117.7,P,pending,هنوز قیمت مرجع منتسب نشده,,,
 Salvator Ferragamo,inconto,Women,اینکانتو,1,718,203.5,H,pending,هنوز قیمت مرجع منتسب نشده,,,
 Salvator Ferragamo,Signoria,Women,سیگنوریا( سیگنارینا),1,719,92.4,B,pending,هنوز قیمت مرجع منتسب نشده,,,
 Sapil,Chi Chi,Women,چی چی زنانه,1,725,75.9,I,pending,هنوز قیمت مرجع منتسب نشده,,,
-Sapil,NICE BLACK,Men,نایس بلک,1,726,86.9,B,pending,هنوز قیمت مرجع منتسب نشده,,,
+Sapil,NICE BLACK,Men,نایس بلک,1,726,86.9,B,provisional,قیمت موقت با شاهد نام؛ هویت اسانس تأییدنشده,SUP-SP-900050,https://sapil.com/products/nice_feeling_black,official_reference_prices_v20.json
 SENJED,SENJED,Unisex,سنجد,1,732,55,I,pending,هنوز قیمت مرجع منتسب نشده,,,
 SERIS,Splandor,Men,اسپلندور,2,"738,739",172.7,H,pending,هنوز قیمت مرجع منتسب نشده,,,
 SHISEIDO,Zen,Women,زن,1,745,176,H,provisional,قیمت موقت با شاهد نام؛ هویت اسانس تأییدنشده,SUP-SH-900022,https://www.shiseido.com/us/en/zen-eau-de-parfum-0768614102007.html,official_reference_prices_v15.json
@@ -243,7 +243,7 @@ VICTOR&ROLF,SPICEBOMB,Men,اسپایس بمب,1,833,217.8,P,pending,هنوز ق�
 VICTORIA`S SECRET,AQUA KISS,Women,آکوا کیس,1,839,108.9,P,provisional,قیمت موقت با شاهد نام؛ هویت اسانس تأییدنشده,SUP-VS-900032,https://www.victoriassecret.com/ca/vs/beauty-catalog/5000011041?genericId=11259203&choice=4760,official_reference_prices_v18.json
 VICTORIA`S SECRET,Bombshel,Women,بامب شل,1,840,174.9,H,provisional,قیمت موقت با شاهد نام؛ هویت اسانس تأییدنشده,SUP-VS-900021,https://www.victoriassecret.com/us/vs/beauty-catalog/5000010457,official_reference_prices_v15.json
 VICTORIA`S SECRET,Very Sexy,Women,وری سکسی,1,841,107.8,P,provisional,قیمت موقت با شاهد نام؛ هویت اسانس تأییدنشده,SUP-VS-900030,https://www.victoriassecret.com/us/vs/beauty-catalog/5000010459/-/a/generic-11260424-choice-2068/very-sexy-eau-de-parfum-3.4-oz-floral,official_reference_prices_v17.json
-JOHN RICHMOND,John Richmond for Men,Men,جان ریچموند,1,847,122.1,B,pending,هنوز قیمت مرجع منتسب نشده,,,
+JOHN RICHMOND,John Richmond for Men,Men,جان ریچموند,1,847,122.1,B,secondary,قیمت موقت با منبع مستقل؛ هویت اسانس تأییدنشده,SUP-TP-910022,https://www.fragrantica.com/perfume/John-Richmond/John-Richmond-for-Men-9117.html,secondary_reference_prices_v6.json
 JAGUAR,Classic Black,Unisex,جگوار کلاسیک بلک,1,853,106.7,B,provisional,قیمت موقت با شاهد نام؛ هویت اسانس تأییدنشده,SUP-JG-900025,https://jaguar-fragrances.com/en/classic-black,official_reference_prices_v16.json
 XERJOFF,TORINO 24,Unisex,تورینو 24,1,859,330,H,provisional,قیمت موقت با شاهد نام؛ هویت اسانس تأییدنشده,SUP-XJ-900007,https://www.xerjoff.com/en-us/products/torino24-eau-de-parfum-15ml,official_reference_prices_v4.json
 XERJOFF,TORINO22,Unisex,تورینو 22,1,860,277.2,H,provisional,قیمت موقت با شاهد نام؛ هویت اسانس تأییدنشده,YZD-PROD-0591,https://www.xerjoff.com/products/torino22-eau-de-parfum,official_reference_prices_v2.json

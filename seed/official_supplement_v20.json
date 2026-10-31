@@ -1,0 +1,66 @@
+[
+  {
+    "id": "SUP-CR-900050",
+    "slug": "creed-absolu-aventus",
+    "name_fa": "ابسولو اونتوس",
+    "name_en": "Absolu Aventus",
+    "title_fa_base": "ابسولو اونتوس",
+    "full_display_fa": "کرید — ابسولو اونتوس",
+    "inspired_brand_en": "Creed",
+    "inspired_brand_fa": "کرید",
+    "gender": null,
+    "notes": {
+      "top": [],
+      "middle": [],
+      "base": []
+    },
+    "accords": [
+      "ترنج",
+      "آناناس",
+      "هل",
+      "لابدانوم"
+    ],
+    "transclaimer_notice": "این محصول بازآفرینی دست‌ساز است و محصول اورجینال برند اصلی نیست. اطلاعات رایحه مرجع از وب‌سایت رسمی برند گرفته شده و هویت اسانس تأمین‌کننده مستقلاً تأیید نشده است.",
+    "source_url": "https://www.creedfragrance.com/p/absolu-aventus/16281794/",
+    "source_note": "Absolu Aventus is distinct from Aventus and Aventus Cologne; the supplier essence/version is unverified.",
+    "variants": []
+  },
+  {
+    "id": "SUP-SP-900050",
+    "slug": "sapil-nice-feelings-black",
+    "name_fa": "نایس فیلینگ بلک",
+    "name_en": "Nice Feeling Black",
+    "title_fa_base": "نایس فیلینگ بلک",
+    "full_display_fa": "ساپیل — نایس فیلینگ بلک",
+    "inspired_brand_en": "Sapil",
+    "inspired_brand_fa": "ساپیل",
+    "gender": null,
+    "notes": {
+      "top": [
+        "اسطوخودوس",
+        "مرکبات",
+        "ترنج",
+        "لیمو",
+        "نت‌های آروماتیک"
+      ],
+      "middle": [
+        "دارچین",
+        "میخک",
+        "یاس",
+        "گشنیز"
+      ],
+      "base": [
+        "پچولی",
+        "خزه بلوط",
+        "چوب سدر",
+        "چوب صندل",
+        "کهربا"
+      ]
+    },
+    "accords": [],
+    "transclaimer_notice": "این محصول بازآفرینی دست‌ساز است و محصول اورجینال برند اصلی نیست. اطلاعات رایحه مرجع از وب‌سایت رسمی برند گرفته شده و هویت اسانس تأمین‌کننده مستقلاً تأیید نشده است.",
+    "source_url": "https://sapil.com/products/nice_feeling_black",
+    "source_note": "Supplier Nice Black is an abbreviated name match to Nice Feeling Black; official page describes the reference, not supplier essence.",
+    "variants": []
+  }
+]

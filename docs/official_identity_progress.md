@@ -319,3 +319,17 @@ Mefisto با Mefisto Gentiluomo یکی نیست. در برخی صفحات قدی
 | Angel Passion Star — Mugler | 75.9 | I | مستقل | https://www.fragrantica.com/perfume/Mugler/Angel-Passion-Star-31849.html |
 
 Xeryus با Xeryus Rouge یکی نشده است؛ صفحه رسمی موجود درباره رایحه فعلی است و نسخه تاریخی اسانس را اثبات نمی‌کند. Boss Famme در فایل به‌عنوان املای نام Femme در نظر گرفته شده و نسخه‌های دیگر جدا هستند؛ صفحه رسمی هرم کامل ارائه نمی‌کند و فقط نت‌های بدون طبقه‌بندی ثبت شده‌اند. Tommy Jeans با Tommy Girl Jeans یکی نیست و منبع مستقل هرم ارائه نمی‌دهد. [مقاله مستقل فراگرانتیکا](https://www.fragrantica.com/news/Thierry-Mugler-ANGEL-Passion-Star-6986.html) Passion Star را بطری محدود Angel EDP اصلی توصیف می‌کند، اما این درباره اسانس تحویلی اثباتی نیست. منبع و محدودیت در توضیح عمومی هر محصول ثبت شده است.
+
+
+## چهار تناظر دیگر — ۱ نوامبر ۲۰۲۶
+
+این چهار قیمت موقت و نام‌محورند و محصولات همگی دست‌ساز و غیرقابل سفارش‌اند. هیچ‌یک کیفیت، نسخه یا هویت اسانس واقعی تأمین‌کننده را ثابت نمی‌کند.
+
+| رایحه مرجع | دلار/کیلو | کیفیت فایل | نوع منبع | صفحه مرجع |
+|---|---:|---|---|---|
+| Absolu Aventus — Creed | 499.4 | H | رسمی | https://www.creedfragrance.com/p/absolu-aventus/16281794/ |
+| Nice Feeling Black — Sapil | 86.9 | B | رسمی | https://sapil.com/products/nice_feeling_black |
+| Open — Roger & Gallet | 155.1 | H | مستقل | https://www.fragrantica.com/perfume/Roger-Gallet/Open-5973.html |
+| John Richmond for Men | 122.1 | B | مستقل | https://www.fragrantica.com/perfume/John-Richmond/John-Richmond-for-Men-9117.html |
+
+Absolu Aventus از Aventus و Aventus Cologne جداست؛ نت‌های صفحه رسمی به‌صورت بدون هرم ثبت شده‌اند. Nice Black فایل به‌عنوان تطبیق نام کوتاه‌شده Nice Feeling Black در نظر گرفته شده و نت‌ها از صفحه فعلی رسمی‌اند. Open با نسخه‌های Black، White و Gold یکی نشده است. صفحه فعلی رسمی [Classic for Him](https://www.johnrichmond.com/en/products/profumo-classic-uomo) نام و نت‌هایی متفاوت با مرجع مستقل John Richmond for Men دارد؛ برابری آنها فرض نشده و نت‌های محصول از مرجع مستقل و با ذکر منبع‌اند.

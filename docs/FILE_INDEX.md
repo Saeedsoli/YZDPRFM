@@ -574,3 +574,14 @@ node_modules/   با npm install برمی‌گردد
 - `seed/secondary_reference_prices_v5.json`
 - `scripts/test_official_reference_v19.js`
 - `scripts/test_secondary_reference_v5.js`
+
+
+### دسته بعدی منابع رسمی و مستقل
+
+- `seed/official_supplement_v20.json`
+- `seed/official_reference_prices_v20.json`
+- `seed/official_identity_evidence_v19.json`
+- `seed/secondary_supplement_v6.json`
+- `seed/secondary_reference_prices_v6.json`
+- `scripts/test_official_reference_v20.js`
+- `scripts/test_secondary_reference_v6.js`
