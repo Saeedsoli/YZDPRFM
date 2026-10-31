@@ -167,3 +167,21 @@ Mefisto با Mefisto Gentiluomo یکی نیست. در برخی صفحات قدی
 همه قیمت‌ها موقت و فقط بر اساس تطبیق نام‌اند؛ هیچ اسانسی مستقل از نظر هویت یا کیفیت تأیید نشده است و همه محصولات غیرقابل سفارش باقی می‌مانند. مدارک در `seed/official_identity_evidence_v12.json`، قیمت‌ها در `seed/official_reference_prices_v13.json` و اصلاح نت در `seed/official_note_corrections_v15.json` است.
 
 ردیف `Happy` از Clinique به نسخه زنانه یا مردانه خودکار نسبت داده نشد: [صفحه زنانه](https://www.clinique.com/product/1579/5188/fragrance/clinique-happy/clinique-happy-eau-de-parfum-spray) و [صفحه مردانه](https://www.clinique.com/product/1617/5190/mens/cologne/clinique-happy-for-men/clinique-happy-for-men-cologne-spray) محصولات متفاوت معرفی می‌کنند و برچسب جنسیت فایل مرجع قطعی هویت اسانس نیست.
+
+## هفت تناظر دیگر؛ گوچی، آرمانی، لالیک، بنتلی و کلایو کریسچن
+
+| نام عطر مرجع | دلار/کیلو | کیفیت فایل | منبع رسمی |
+|---|---:|---|---|
+| X Masculine | 453.2 | P | https://us.clivechristian.com/products/x-masculine |
+| Bentley For Men Intense | 184.8 | R | https://bentley-fragrances.com/en/for-men-intense |
+| My Way Eau de Parfum | 96.8 | H | https://www.giorgioarmanibeauty-usa.com/fragrances/womens-perfume/my-way/my-way-eau-de-parfum/A2259.html |
+| Sì Eau de Parfum | 227.7 | H | https://www.giorgioarmanibeauty-usa.com/fragrances/womens-perfume/si/si-eau-de-parfum/A218.html |
+| Encre Noire | 229.9 | H | https://us.lalique.com/products/encre-noire-eau-de-toilette-m13201-1-1/ |
+| Gucci Rush | 94.6 | B | https://www.gucci.com/us/en/pr/beauty/fragrances/fragrances-for-women/gucci-rush-75ml-eau-de-toilette-p-012769999990099 |
+| Gucci Bloom | 359.7 | H | https://www.gucci.com/us/en/pr/beauty/fragrances/fragrances-for-women/gucci-bloom-100ml-eau-de-parfum-p-488830999990099 |
+
+دو محصول Gucci Rush و Gucci Bloom در جست‌وجوی کاتالوگ محلی موجود نبودند و با شناسه‌های `SUP-GC-900015` و `SUP-GC-900016` به عنوان بازآفرینی دست‌ساز افزوده شدند. نت‌های Bloom، My Way و Sì در منابع مورد بررسی به صورت کلیدی و بدون هرم کامل عرضه شده‌اند؛ بدون ساختن هرم ثبت شدند. نت‌ها و مشخصات به عطر مرجع اصلی مربوط‌اند، نه اثبات فرمول اسانس تأمین‌کننده.
+
+نام‌های فایل `X FOR MEN`، `Bentley Intense` و `Encre Noir` با نام‌های رسمی جدول به صورت تطبیق موقت ثبت شدند. محصولات با نام‌های مشابه و نسخه‌های دیگر نباید با این موارد یکی تلقی شوند. صفحات معرفی‌شده برای Rush و Encre Noire نسخه EDT و برای Bloom و دو آرمانی نسخه EDP عطر اصلی را نشان می‌دهند؛ این به معنی اثبات نسخه اسانس تهیه‌شده یا غلظت محصول دست‌ساز نیست. همه محصولات `UNAVAILABLE` و واریانت‌های قیمت‌گذاری‌شده با موجودی صفرند.
+
+مدارک در `seed/official_identity_evidence_v13.json`، قیمت‌ها در `seed/official_reference_prices_v14.json` و اصلاح نت‌ها در `seed/official_note_corrections_v16.json` است.

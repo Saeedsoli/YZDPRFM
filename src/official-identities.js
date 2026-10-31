@@ -3,7 +3,7 @@
 // actual essence, stock, listed quality or price, and does not modify products.
 const fs=require('fs');
 const HOST_BY_BRAND={
-  'Ex Nihilo':'us.ex-nihilo-paris.com','Ariana Grande':'arianagrandefragrances.com','Atkinsons':'www.atkinsons1799.com','Creed':'www.creedfragrance.com','Amouage':'amouage.com','Kilian Paris':'www.bykilian.com',
+  'Gucci':'www.gucci.com','Clive Christian':'us.clivechristian.com','Bentley':'bentley-fragrances.com','Lalique':'us.lalique.com','Ex Nihilo':'us.ex-nihilo-paris.com','Ariana Grande':'arianagrandefragrances.com','Atkinsons':'www.atkinsons1799.com','Creed':'www.creedfragrance.com','Amouage':'amouage.com','Kilian Paris':'www.bykilian.com',
   'Christian Dior':'www.dior.com','Jean Paul Gaultier':'www.jeanpaulgaultier.com',
   'Maison Francis Kurkdjian':'www.franciskurkdjian.com','Mugler':'inter.mugler.com','Giorgio Armani':'www.giorgioarmanibeauty-usa.com','Givenchy':'www.givenchybeauty.com','Initio Parfums Prives':'us.initioparfums.com','Tiziana Terenzi':'tizianaterenzi.com',
   'Bvlgari':'www.bulgari.com','Escentric Molecules':'www.escentric.com','Lancôme':'www.lancome-usa.com',
@@ -16,12 +16,12 @@ const HOST_BY_BRAND={
 function seedOfficialIdentities(db,file){
  if(!fs.existsSync(file))return {added:0,skipped:0,reason:'file_missing'};
  const m=JSON.parse(fs.readFileSync(file,'utf8'));
- const counts={official_identity_evidence_v1:37,official_identity_evidence_v2:6,official_identity_evidence_v3:6,official_identity_evidence_v4:8,official_identity_evidence_v5:1,official_identity_evidence_v6:5,official_identity_evidence_v7:3,official_identity_evidence_v8:1,official_identity_evidence_v9:2,official_identity_evidence_v10:6,official_identity_evidence_v11:5,official_identity_evidence_v12:5};
+ const counts={official_identity_evidence_v1:37,official_identity_evidence_v2:6,official_identity_evidence_v3:6,official_identity_evidence_v4:8,official_identity_evidence_v5:1,official_identity_evidence_v6:5,official_identity_evidence_v7:3,official_identity_evidence_v8:1,official_identity_evidence_v9:2,official_identity_evidence_v10:6,official_identity_evidence_v11:5,official_identity_evidence_v12:5,official_identity_evidence_v13:7};
  if(!Object.hasOwn(counts,m.version)||!Array.isArray(m.items)||m.items.length!==counts[m.version])throw new Error('Invalid identity evidence manifest');
  const ids=new Set();
  for(const x of m.items){
   let url;try{url=new URL(x.official_url);}catch{throw new Error('Invalid official source URL');}
-  if(!/^(?:YZD-PROD-\d+|SUP-(?:XJ|AM|CR|MB|EX|AT|AG)-\d+)$/.test(x.product_id||'')||ids.has(x.product_id)||!x.slug||!x.reference_name||!x.expected_name_en||
+  if(!/^(?:YZD-PROD-\d+|SUP-(?:XJ|AM|CR|MB|EX|AT|AG|GC)-\d+)$/.test(x.product_id||'')||ids.has(x.product_id)||!x.slug||!x.reference_name||!x.expected_name_en||
     x.status!=='official_original_found_supplier_essence_unverified'||!/^\d{4}-\d{2}-\d{2}$/.test(x.checked_date||'')||
     !HOST_BY_BRAND[x.brand_en]||url.protocol!=='https:'||url.hostname!==HOST_BY_BRAND[x.brand_en]||url.username||url.password)throw new Error('Invalid identity evidence record');
   ids.add(x.product_id);

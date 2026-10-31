@@ -1,0 +1,229 @@
+{
+  "version": "official_notes_2026_10_v16",
+  "description": "Official reference-original notes only; unclassified notes are not assigned to a tier.",
+  "items": [
+    {
+      "product_id": "YZD-PROD-0485",
+      "product_slug": "clive-christian-x-men",
+      "official_brand": "Clive Christian",
+      "official_name": "X Masculine",
+      "source_url": "https://us.clivechristian.com/products/x-masculine",
+      "source_scope": "Official reference X Masculine; supplier spells X FOR MEN. Supplier essence identity is unverified.",
+      "expected_old_notes": {
+        "top": [
+          "ریواس",
+          "آناناس",
+          "نارنگی ماندارین",
+          "ترنج"
+        ],
+        "middle": [
+          "هل",
+          "فلفل پاپریکا",
+          "زنبق فلورانس",
+          "گل یاس"
+        ],
+        "base": [
+          "سدر ویرجینیا",
+          "دارچین",
+          "خزه بلوط",
+          "کهربا",
+          "خس‌خس",
+          "لادن",
+          "وانیل"
+        ]
+      },
+      "verified_notes": {
+        "top": [
+          "هل",
+          "فلفل صورتی",
+          "زنجبیل",
+          "ترنج"
+        ],
+        "middle": [
+          "زنبق",
+          "بنفشه",
+          "دارچین"
+        ],
+        "base": [
+          "خزه بلوط",
+          "وتیور",
+          "وانیل"
+        ]
+      },
+      "expected_old_accords": [
+        "ادویه‌ای اغواگر",
+        "هل سبز معطر",
+        "ریواس ترش و چوبی عمیق"
+      ],
+      "verified_accords": []
+    },
+    {
+      "product_id": "YZD-PROD-1814",
+      "product_slug": "bentley-bentley-for-men-intense",
+      "official_brand": "Bentley",
+      "official_name": "Bentley For Men Intense",
+      "source_url": "https://bentley-fragrances.com/en/for-men-intense",
+      "source_scope": "Current official reference pyramid; does not verify supplier essence composition.",
+      "expected_old_notes": {
+        "top": [
+          "فلفل سیاه",
+          "برگ بو",
+          "ترنج"
+        ],
+        "middle": [
+          "عرق نیشکر (رام)",
+          "چرم تیره",
+          "دارچین",
+          "مریم‌گلی",
+          "شمعدانی"
+        ],
+        "base": [
+          "بخور کندر",
+          "بنزوئین",
+          "نعناع هندی",
+          "چوب سدر"
+        ]
+      },
+      "verified_notes": {
+        "top": [
+          "شمعدانی آفریقایی",
+          "فلفل سیاه",
+          "بخور"
+        ],
+        "middle": [
+          "چرم",
+          "لابدانوم",
+          "مریم‌گلی"
+        ],
+        "base": [
+          "چوب سدر",
+          "پچولی",
+          "چوب صندل"
+        ]
+      },
+      "expected_old_accords": [
+        "مشهورترین عطر چرمی مشروبی ارزان‌قیمت جهان ساخته ناتالی لورسون با کیفیتی در حد عطرهای نیش چندصد دلاری"
+      ],
+      "verified_accords": []
+    },
+    {
+      "product_id": "YZD-PROD-1664",
+      "product_slug": "giorgio-armani-my-way-edp",
+      "official_brand": "Giorgio Armani",
+      "official_name": "My Way Eau de Parfum",
+      "source_url": "https://www.giorgioarmanibeauty-usa.com/fragrances/womens-perfume/my-way/my-way-eau-de-parfum/A2259.html",
+      "source_scope": "Official reference EDP key notes; other My Way versions distinct, supplier version not independently verified.",
+      "expected_old_notes": {
+        "top": [
+          "شکوفه پرتقال مصری",
+          "ترنج کالابریا"
+        ],
+        "middle": [
+          "گل مریم دست‌چین هندی",
+          "گل یاس سامباک"
+        ],
+        "base": [
+          "وانیل ماداگاسکار بوربون",
+          "مشک سفید",
+          "چوب سدر ویرجینیا"
+        ]
+      },
+      "verified_notes": {
+        "top": [],
+        "middle": [],
+        "base": []
+      },
+      "expected_old_accords": [
+        "درب سنگ آبی لاجوردی نماد کره زمین",
+        "پرفروش‌ترین عطر زنانه آرمانی با گل مریم آدامسی شاداب"
+      ],
+      "verified_accords": [
+        "ترنج",
+        "شکوفه پرتقال",
+        "گل مریم",
+        "یاس",
+        "وانیل",
+        "چوب سدر",
+        "مشک سفید"
+      ]
+    },
+    {
+      "product_id": "YZD-PROD-1662",
+      "product_slug": "giorgio-armani-armani-s-edp",
+      "official_brand": "Giorgio Armani",
+      "official_name": "Sì Eau de Parfum",
+      "source_url": "https://www.giorgioarmanibeauty-usa.com/fragrances/womens-perfume/si/si-eau-de-parfum/A218.html",
+      "source_scope": "Official reference EDP key notes; other Si editions distinct, supplier version unverified.",
+      "expected_old_notes": {
+        "top": [
+          "شهد انگور فرنگی سیاه (کاسیس)"
+        ],
+        "middle": [
+          "گل رز دمشقی",
+          "گل فریزیا سفید"
+        ],
+        "base": [
+          "وانیل ماداگاسکار",
+          "نعناع هندی اندونزی",
+          "چوب عنبر"
+        ]
+      },
+      "verified_notes": {
+        "top": [],
+        "middle": [],
+        "base": []
+      },
+      "expected_old_accords": [
+        "عطر نمادین با چهره کیت بلانشت",
+        "گفتن بله به رویاها با شیرینی انگور فرنگی و وانیل مخملی"
+      ],
+      "verified_accords": [
+        "انگور فرنگی سیاه",
+        "رز مِی",
+        "مشک سفید",
+        "فریزیا"
+      ]
+    },
+    {
+      "product_id": "YZD-PROD-1766",
+      "product_slug": "lalique-encre-noire",
+      "official_brand": "Lalique",
+      "official_name": "Encre Noire",
+      "source_url": "https://us.lalique.com/products/encre-noire-eau-de-toilette-m13201-1-1/",
+      "source_scope": "Official reference EDT pyramid; Noir is an omitted e in the supplier spelling; Sport and A L Extreme are distinct.",
+      "expected_old_notes": {
+        "top": [
+          "درخت سرو ایتالیایی"
+        ],
+        "middle": [
+          "خس‌خس هائیتی",
+          "خس‌خس بوربون"
+        ],
+        "base": [
+          "چوب کشمیر",
+          "مشک سیاه"
+        ]
+      },
+      "verified_notes": {
+        "top": [
+          "سرو",
+          "وتیوریل استات"
+        ],
+        "middle": [
+          "وتیور هائیتی",
+          "وتیور بوربون"
+        ],
+        "base": [
+          "چوب کشمیر",
+          "مشک"
+        ]
+      },
+      "expected_old_accords": [
+        "شیشه مکعب سیاه با درپوش چوب درخت زبان‌گنجشک",
+        "افسانه جوهر سیاه ناتالی لورسون",
+        "نماد پاییز و خاک باران‌خورده"
+      ],
+      "verified_accords": []
+    }
+  ]
+}

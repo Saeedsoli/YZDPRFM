@@ -501,3 +501,8 @@ node_modules/   با npm install برمی‌گردد
 ### پنج مرجع و چهار محصول تکمیلی
 
 - `scripts/test_five_added_reference.js`
+
+### هفت تناظر و دو محصول گوچی
+
+- `scripts/test_reference_prices_v14.js`
+- `scripts/test_official_notes_v16.js`

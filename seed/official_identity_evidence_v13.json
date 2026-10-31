@@ -1,0 +1,76 @@
+{
+  "version": "official_identity_evidence_v13",
+  "scope": "Official original only; supplier essence identity remains unverified.",
+  "items": [
+    {
+      "product_id": "YZD-PROD-0485",
+      "slug": "clive-christian-x-men",
+      "brand_en": "Clive Christian",
+      "expected_name_en": "CLIVE CHRISTIAN - X Men",
+      "reference_name": "X Masculine",
+      "official_url": "https://us.clivechristian.com/products/x-masculine",
+      "status": "official_original_found_supplier_essence_unverified",
+      "checked_date": "2026-10-31"
+    },
+    {
+      "product_id": "YZD-PROD-1814",
+      "slug": "bentley-bentley-for-men-intense",
+      "brand_en": "Bentley",
+      "expected_name_en": "Bentley for Men Intense",
+      "reference_name": "Bentley For Men Intense",
+      "official_url": "https://bentley-fragrances.com/en/for-men-intense",
+      "status": "official_original_found_supplier_essence_unverified",
+      "checked_date": "2026-10-31"
+    },
+    {
+      "product_id": "YZD-PROD-1664",
+      "slug": "giorgio-armani-my-way-edp",
+      "brand_en": "Giorgio Armani",
+      "expected_name_en": "GIORGIO ARMANI - My Way EDP",
+      "reference_name": "My Way Eau de Parfum",
+      "official_url": "https://www.giorgioarmanibeauty-usa.com/fragrances/womens-perfume/my-way/my-way-eau-de-parfum/A2259.html",
+      "status": "official_original_found_supplier_essence_unverified",
+      "checked_date": "2026-10-31"
+    },
+    {
+      "product_id": "YZD-PROD-1662",
+      "slug": "giorgio-armani-armani-s-edp",
+      "brand_en": "Giorgio Armani",
+      "expected_name_en": "GIORGIO ARMANI - Armani Sì EDP",
+      "reference_name": "Sì Eau de Parfum",
+      "official_url": "https://www.giorgioarmanibeauty-usa.com/fragrances/womens-perfume/si/si-eau-de-parfum/A218.html",
+      "status": "official_original_found_supplier_essence_unverified",
+      "checked_date": "2026-10-31"
+    },
+    {
+      "product_id": "YZD-PROD-1766",
+      "slug": "lalique-encre-noire",
+      "brand_en": "Lalique",
+      "expected_name_en": "LALIQUE - Encre Noire",
+      "reference_name": "Encre Noire",
+      "official_url": "https://us.lalique.com/products/encre-noire-eau-de-toilette-m13201-1-1/",
+      "status": "official_original_found_supplier_essence_unverified",
+      "checked_date": "2026-10-31"
+    },
+    {
+      "product_id": "SUP-GC-900015",
+      "slug": "gucci-rush",
+      "brand_en": "Gucci",
+      "expected_name_en": "GUCCI - Rush",
+      "reference_name": "Rush",
+      "official_url": "https://www.gucci.com/us/en/pr/beauty/fragrances/fragrances-for-women/gucci-rush-75ml-eau-de-toilette-p-012769999990099",
+      "status": "official_original_found_supplier_essence_unverified",
+      "checked_date": "2026-10-31"
+    },
+    {
+      "product_id": "SUP-GC-900016",
+      "slug": "gucci-bloom",
+      "brand_en": "Gucci",
+      "expected_name_en": "GUCCI - Bloom",
+      "reference_name": "Bloom",
+      "official_url": "https://www.gucci.com/us/en/pr/beauty/fragrances/fragrances-for-women/gucci-bloom-100ml-eau-de-parfum-p-488830999990099",
+      "status": "official_original_found_supplier_essence_unverified",
+      "checked_date": "2026-10-31"
+    }
+  ]
+}

@@ -462,5 +462,65 @@
     "source_url": "https://arianagrandefragrances.com/products/ari-by-ariana-grande",
     "source_note": "Official original notes; supplier essence identity remains unverified.",
     "variants": []
+  },
+  {
+    "id": "SUP-GC-900015",
+    "slug": "gucci-rush",
+    "name_fa": "راش",
+    "name_en": "Rush",
+    "title_fa_base": "راش",
+    "full_display_fa": "گوچی — راش",
+    "inspired_brand_en": "Gucci",
+    "inspired_brand_fa": "گوچی",
+    "gender": null,
+    "notes": {
+      "top": [
+        "فریزیا",
+        "آکورد هلو",
+        "گاردنیا"
+      ],
+      "middle": [
+        "رز",
+        "یاس",
+        "چوب کشمیر"
+      ],
+      "base": [
+        "آکورد پچولی",
+        "وانیل",
+        "خزه"
+      ]
+    },
+    "accords": [],
+    "transclaimer_notice": "این محصول بازآفرینی دست‌ساز است و محصول اورجینال برند گوچی نیست.",
+    "source_url": "https://www.gucci.com/us/en/pr/beauty/fragrances/fragrances-for-women/gucci-rush-75ml-eau-de-toilette-p-012769999990099",
+    "source_note": "Official original EDT; actual supplier essence identity is unverified. Gender not inferred from supplier file.",
+    "perfumer": "Michel Almairac",
+    "variants": []
+  },
+  {
+    "id": "SUP-GC-900016",
+    "slug": "gucci-bloom",
+    "name_fa": "بلوم",
+    "name_en": "Bloom",
+    "title_fa_base": "بلوم",
+    "full_display_fa": "گوچی — بلوم",
+    "inspired_brand_en": "Gucci",
+    "inspired_brand_fa": "گوچی",
+    "gender": null,
+    "notes": {
+      "top": [],
+      "middle": [],
+      "base": []
+    },
+    "accords": [
+      "گل مریم",
+      "یاس",
+      "رانگون کریپر"
+    ],
+    "transclaimer_notice": "این محصول بازآفرینی دست‌ساز است و محصول اورجینال برند گوچی نیست.",
+    "source_url": "https://www.gucci.com/us/en/pr/beauty/fragrances/fragrances-for-women/gucci-bloom-100ml-eau-de-parfum-p-488830999990099",
+    "source_note": "Official original EDP describes key notes without a tiered pyramid; supplier essence identity and version unverified.",
+    "perfumer": "Alberto Morillas",
+    "variants": []
   }
 ]
