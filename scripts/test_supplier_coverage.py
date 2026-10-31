@@ -44,13 +44,18 @@ assert not unmapped
 result,_=a.assess(groups,cs,products,ev,sha,False);assert next(r for r in result if r['brand']=='E')['state']=='conflict'
 changed={**products,'p':{'price':'99','mode':'UNAVAILABLE'}}
 result,_=a.assess(groups,cs,changed,ev,sha,True);assert next(r for r in result if r['brand']=='B' and r['supplier_gender']=='Men')['state']=='conflict'
+
+secondary_candidate={'supplier_brand':'E','supplier_model':'Y','supplier_gender':'Men','product_id':'legacy','quality':'H','usd_per_kg':'20','source_url':'https://www.fragrantica.com/perfume/Test/Test-123.html','secondary':True,'legacy':False}
+secondary_ev={'legacy':{'sha':sha,'price':'20','quality':'H','match_status':'name_matched_supplier_identity_unverified','url':secondary_candidate['source_url'],'provider':'Fragrantica','status':'secondary_original_found_supplier_essence_unverified'}}
+result,_=a.assess(groups,[secondary_candidate],products,{},sha,True,secondary_ev);assert next(r for r in result if r['brand']=='E')['state']=='secondary'
+result,_=a.assess(groups,[secondary_candidate],products,{},sha,True,{});assert next(r for r in result if r['brand']=='E')['state']=='conflict'
 actual,source_sha=a.read_rows(ROOT/a.SOURCE);assert len(actual)==342;assert len(a.group_rows(actual))==265
 # Minimal SQLite ensures reads never initialize application schema or mutate data.
 with tempfile.TemporaryDirectory(prefix='coverage-db-') as d:
     p=Path(d)/'test.sqlite';db=sqlite3.connect(p)
     db.executescript("CREATE TABLE products(id TEXT,essence_usd_per_kg TEXT,supply_mode TEXT); CREATE TABLE supplier_price_evidence(product_id TEXT,supplier_file_sha256 TEXT,usd_per_kg TEXT,quality TEXT,match_status TEXT,official_url TEXT); CREATE TABLE settings(key TEXT,value TEXT); INSERT INTO products VALUES('sentinel','1','UNAVAILABLE');")
     db.commit();db.close();before=hashlib.sha256(p.read_bytes()).digest()
-    out,evidence,marker=a.read_db(p);assert out['sentinel']['price']=='1' and not evidence and marker is False
+    out,evidence,marker,secondary=a.read_db(p);assert not secondary;assert out['sentinel']['price']=='1' and not evidence and marker is False
     assert hashlib.sha256(p.read_bytes()).digest()==before
     with sqlite3.connect(p) as db:assert db.execute("select count(*) from sqlite_master where name='orders'").fetchone()[0]==0
     out_csv=Path(d)/'report.csv';out_json=Path(d)/'report.json'

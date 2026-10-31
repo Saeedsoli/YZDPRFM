@@ -54,6 +54,8 @@ function applyReferencePrices(db,file){
   const currentNew=db.prepare("select count(*) n from variants where product_id=? and ((type='SAMPLE' and volume_ml=5) or (type='BODY_SPLASH' and volume_ml=120))");
   const total=db.prepare('select count(*) n from variants where product_id=?');
   const priorEvidence=db.prepare('select product_id from supplier_price_evidence where product_id=?');
+  const secondaryExists=db.prepare("select 1 from sqlite_master where type='table' and name='secondary_reference_evidence'").get();
+  const priorSecondary=secondaryExists?db.prepare('select product_id from secondary_reference_evidence where product_id=?'):null;
   const evidence=db.prepare('insert into supplier_price_evidence(product_id,supplier_file_sha256,official_url,usd_per_kg,quality,match_status) values(?,?,?,?,?,?)');
   const originalImport=second && !!db.prepare("select value from settings where key='supplier_exact_price_import_v1'").get();
   const official=needsIdentity ? db.prepare('select official_url,status from official_identity_evidence where product_id=?') : null;
@@ -61,7 +63,7 @@ function applyReferencePrices(db,file){
   for(const x of data.items){
    const p=find.get(x.product_id), e=needsIdentity ? official.get(x.product_id) : null;
    const identityOk=!needsIdentity || !!(p&&p.brand_en===x.brand_en&&p.name_en===x.expected_name_en&&e&&e.official_url===x.official_url&&e.status==='official_original_found_supplier_essence_unverified');
-   const already=priorEvidence.get(x.product_id);
+   const already=priorEvidence.get(x.product_id)||(priorSecondary&&priorSecondary.get(x.product_id));
    // For the previously imported 42, add provenance only when the value is
    // unchanged and the original one-time import marker exists. Never reprice.
    if(second&&p&&p.slug===x.slug&&p.supply_mode==='UNAVAILABLE'&&identityOk&&originalImport&&!already&&p.essence_usd_per_kg===x.usd_per_kg){

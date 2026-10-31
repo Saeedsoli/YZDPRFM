@@ -15,6 +15,20 @@ with tempfile.TemporaryDirectory(prefix='yazd-delta-test-') as td:
  info=create(live,base,delta);assert info['verified'] and info['changed_pages']>0 and info['target_sha256']==sha(expected)
  result=restore(base,delta,restored);assert result['target_sha256']==sha(expected) and sha(restored)==sha(expected)
  check=sqlite3.connect(restored);assert check.execute('pragma integrity_check').fetchone()[0]=='ok';assert check.execute('select amount from customers where id=5').fetchone()[0]==9876;assert check.execute('select count(*) from customers where id=8').fetchone()[0]==0;assert check.execute("select amount from customers where name='new'").fetchone()[0]==54321;check.close()
+ # Repacking the exact manifest and page records with ZIP-LZMA must retain
+ # a bit-identical restored database and all integrity guards.
+ compact=p/'compact-lzma.zip'
+ with zipfile.ZipFile(delta) as src,zipfile.ZipFile(compact,'w',compression=zipfile.ZIP_LZMA) as dst:
+  for name in src.namelist():dst.writestr(name,src.read(name))
+ compact_out=p/'compact-restored.sqlite';compact_info=restore(base,compact,compact_out)
+ assert compact_info['target_sha256']==sha(expected) and sha(compact_out)==sha(expected)
+ with zipfile.ZipFile(compact) as z:
+  man=z.read('manifest.json');pages=bytearray(z.read('pages.bin'));pages[-1]^=1
+ bad_lzma=p/'bad-lzma.zip'
+ with zipfile.ZipFile(bad_lzma,'w',compression=zipfile.ZIP_LZMA) as z:z.writestr('manifest.json',man);z.writestr('pages.bin',pages)
+ try:restore(base,bad_lzma,p/'bad-lzma-output.sqlite');raise AssertionError('tampered LZMA delta accepted')
+ except (ValueError,sqlite3.DatabaseError):pass
+ assert not (p/'bad-lzma-output.sqlite').exists()
  try:restore(base,delta,restored);raise AssertionError('overwrite accepted')
  except FileExistsError:pass
  assert sha(restored)==sha(expected)
@@ -30,4 +44,4 @@ with tempfile.TemporaryDirectory(prefix='yazd-delta-test-') as td:
  try:restore(base,bad,p/'tampered-output.sqlite');raise AssertionError('tampered delta accepted')
  except (ValueError,sqlite3.DatabaseError):pass
  assert not (p/'tampered-output.sqlite').exists();c.close()
- print('PASS: committed WAL snapshot, exact restore, SQLite integrity, wrong-base/tamper/overwrite rejection')
+ print('PASS: committed WAL snapshot, exact deflate/LZMA restore, SQLite integrity, wrong-base/tamper/overwrite rejection')

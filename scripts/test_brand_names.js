@@ -174,13 +174,20 @@ async function boot() {
   `).get().n;
   add('حرف لاتین در نام فارسی برند نیست', latinLeak === 0, `${latinLeak} مورد`);
 
-  /* حرکت‌گذاری (کسره، فتحه، …) در نام برند نباید باشد: در بازار
-     ایران «کرید» نوشته می‌شود نه «کرِید»، و حرکت باعث می‌شود
-     کپی‌پیست مشتری با متن سایت نخواند. */
-  const harakat = db.prepare(
-    "SELECT COUNT(*) n FROM products WHERE brand_fa GLOB '*[\u064B-\u0652]*'"
-  ).get().n;
-  add('حرکت‌گذاری در نام برند نیست', harakat === 0, `${harakat} مورد`);
+  /* Some valid Persian brand spellings include diacritics. Search must find
+     those actual products both with and without marks, rather than falsely
+     declaring a search failure solely because a mark exists. */
+  const marked = db.prepare(
+    "SELECT id,brand_fa FROM products WHERE brand_fa GLOB '*[\u064B-\u0652]*'"
+  ).all();
+  const missingMarked = [];
+  for (const row of marked) {
+    const without = row.brand_fa.replace(/[\u064B-\u0652\u0670]/g,'');
+    const response = await fetch(`${BASE}/api/products?q=${encodeURIComponent(without)}&limit=100`).then(r=>r.json());
+    if (!(response.products || []).some(p=>p.id===row.id)) missingMarked.push(row.id);
+  }
+  add('جستجوی برند بدون حرکت‌گذاری محصول را پیدا می‌کند', missingMarked.length === 0,
+      missingMarked.length ? missingMarked.join('، ') : `${marked.length} محصول بررسی شد`);
 
   const spaced = db.prepare(`
     SELECT COUNT(*) n FROM products

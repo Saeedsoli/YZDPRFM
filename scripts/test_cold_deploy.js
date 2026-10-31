@@ -148,10 +148,14 @@ function dockerCopiedDirs() {
     const obsoleteSamples = cold.prepare("SELECT COUNT(*) n FROM variants WHERE type='SAMPLE' AND volume_ml=3").get().n;
     const identitySources = cold.prepare("SELECT COUNT(*) n FROM official_identity_evidence WHERE status='official_original_found_supplier_essence_unverified'").get().n;
     const referencePrices = cold.prepare('SELECT COUNT(*) n FROM products WHERE essence_usd_per_kg IS NOT NULL').get().n;
+    const secondarySources = cold.prepare("SELECT COUNT(*) n FROM secondary_reference_evidence WHERE status='secondary_original_found_supplier_essence_unverified' AND provider='Fragrantica'").get().n;
     const refManifest = ['lv_reference_prices_v1.json','official_reference_prices_v1.json','official_reference_prices_v2.json','official_reference_prices_v3.json','official_reference_prices_v4.json','official_reference_prices_v5.json','official_reference_prices_v6.json','official_reference_prices_v7.json','official_reference_prices_v8.json','official_reference_prices_v9.json','official_reference_prices_v10.json','official_reference_prices_v11.json','official_reference_prices_v12.json','official_reference_prices_v13.json','official_reference_prices_v14.json','official_reference_prices_v15.json','official_reference_prices_v16.json','official_reference_prices_v17.json','official_reference_prices_v18.json'];
-    const expectedPrices = refManifest.reduce((n,f) => n + JSON.parse(fs.readFileSync(path.join(stage,'seed',f),'utf8')).items.length,0);
+    const officialPrices = refManifest.reduce((n,f) => n + JSON.parse(fs.readFileSync(path.join(stage,'seed',f),'utf8')).items.length,0);
+    const expectedSecondary = JSON.parse(fs.readFileSync(path.join(stage,'seed','secondary_reference_prices_v1.json'),'utf8')).items.length;
+    const expectedPrices = officialPrices + expectedSecondary;
     cold.close();
     add('قیمت‌های مرجع موقت در نصب تازه بازسازی می‌شوند', referencePrices === expectedPrices, `${referencePrices}/${expectedPrices}`);
+    add('منابع مستقل جدا از منابع رسمی بارگذاری شدند', secondarySources === expectedSecondary, `${secondarySources}/${expectedSecondary}`);
     add('سمپل ۳ میل در دیتابیس تازه ایجاد نمی‌شود', obsoleteSamples === 0, `${obsoleteSamples} ردیف`);
     const expectedIdentities = ['official_identity_evidence_v1.json','official_identity_evidence_v2.json','official_identity_evidence_v3.json','official_identity_evidence_v4.json','official_identity_evidence_v5.json','official_identity_evidence_v6.json','official_identity_evidence_v7.json','official_identity_evidence_v8.json','official_identity_evidence_v9.json','official_identity_evidence_v10.json','official_identity_evidence_v11.json','official_identity_evidence_v12.json','official_identity_evidence_v13.json','official_identity_evidence_v14.json','official_identity_evidence_v15.json','official_identity_evidence_v16.json','official_identity_evidence_v17.json'].reduce((n,f) => n + JSON.parse(fs.readFileSync(path.join(stage,'seed',f),'utf8')).items.length,0);
     add('منابع رسمی مرجع با برچسب عدم تأیید اسانس بارگذاری می‌شوند', identitySources === expectedIdentities, `${identitySources}/${expectedIdentities}`);

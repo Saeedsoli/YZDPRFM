@@ -238,3 +238,26 @@ Mefisto با Mefisto Gentiluomo یکی نیست. در برخی صفحات قدی
 ردیف `AQUA KISS` ویکتوریا سکرت پس از بررسی [صفحه رسمی Aqua Kiss Fragrance Mist](https://www.victoriassecret.com/ca/vs/beauty-catalog/5000011041?genericId=11259203&choice=4760) با قیمت موقت ۱۰۸٫۹ دلار/کیلو و کیفیت P ثبت شد. چون این رایحه در کاتالوگ محلی پیدا نشد، محصول دست‌ساز `SUP-VS-900032` به آن افزوده شد. **مرجع برند اسپری بدن است، نه عطر اورجینال**؛ این موضوع در متن شفافیت عمومی محصول ذکر شده است. نت‌های محصول مرجع از همان صفحه‌اند؛ نسخه‌های Shimmer و Vacation جدا هستند. این تناظر نام هویت، نسخه یا کیفیت واقعی اسانس تأمین‌کننده را اثبات نمی‌کند.
 
 محصول `UNAVAILABLE` و واریانت‌های قیمت‌گذاری‌شده آن صفرموجودی‌اند. مدارک در `seed/official_identity_evidence_v17.json` و قیمت در `seed/official_reference_prices_v18.json` ثبت شده‌اند.
+
+## مراجع مستقل با اجازه مالک — ۱ نوامبر ۲۰۲۶
+
+ابتدا منبع رسمی جست‌وجو شد؛ در این دسته، منابع رسمی کافی یا صفحات محصول در دسترس نبودند. با اجازه مالک، نام عطرهای مرجع زیر از فراگرانتیکا به عنوان **منبع مستقل، نه منبع رسمی برند** ثبت شد. هویت، نسخه و کیفیت واقعی اسانس تأمین‌کننده همچنان مستقل تأیید نشده است. همه محصولات غیرفعال‌اند.
+
+| رایحه مرجع | دلار/کیلو | کیفیت فایل | منبع مستقل |
+|---|---:|---|---|
+| Nisean | 303.6 | H | https://www.fragrantica.com/perfume/Parfums-de-Marly/Nisean-36540.html |
+| L'Eau Bleue d'Issey Pour Homme | 338.8 | H | https://www.fragrantica.com/perfume/Issey-Miyake/L-Eau-Bleue-d-Issey-Pour-Homme-724.html |
+| Kokorico | 239.8 | H | https://www.fragrantica.com/perfume/Jean-Paul-Gaultier/Kokorico-12711.html |
+| Hindu Grass | 474.1 | H | https://www.fragrantica.com/perfume/Nasomatto/Hindu-Grass-4294.html |
+| Akaster | 331.1 | H | https://www.fragrantica.com/perfume/Parfums-de-Marly/Akaster-33513.html |
+| Jamal's Palace | 467.5 | H | https://www.fragrantica.com/perfume/Memo-Paris/Jamal-s-Palace-60077.html |
+| Retba | 332.2 | H | https://www.fragrantica.com/perfume/Memo-Paris/Retba-60076.html |
+| He Wood Rocky Mountain Wood | 300.3 | P | https://www.fragrantica.com/perfume/DSQUARED2/He-Wood-Rocky-Mountain-Wood-5862.html |
+| Le Gemme Amarena | 218.9 | P | https://www.fragrantica.com/perfume/Bvlgari/Amarena-27387.html |
+| Marry Me | 172.7 | H | https://www.fragrantica.com/perfume/Lanvin/Marry-Me-9405.html |
+| Eclat d’Arpège | 177.1 | H | https://www.fragrantica.com/perfume/Lanvin/Eclat-d-Arpege-988.html |
+| Silver Scent | 128.7 | H | https://www.fragrantica.com/perfume/Jacques-Bogart/Silver-Scent-7794.html |
+
+از این دوازده مورد، **۹ قیمت جدید** در دیتابیس محلی ثبت و برای **۳ قیمت قدیمی** Kokorico، Hindu Grass و Akaster فقط شاهد مستقل افزوده شد؛ قیمت‌ها، واریانت‌ها و سفارش‌های قدیمی آن سه مورد تغییر نکردند. هفت نام در کاتالوگ نبودند و دست‌ساز افزوده شدند. نت پنج محصول موجود فقط در صورت دست‌نخورده‌بودن داده قبلی و متن شفافیت اصلاح شد؛ یادداشت عمومی به صراحت منبع مستقل را اعلام می‌کند. Hindu Grass هرم نت تأییدشده ندارد و فقط نت‌های بدون طبقه‌بندی ثبت شد.
+
+برای Retba، نت‌های رسمیِ نمایه‌شده و فراگرانتیکا با هم اختلاف دارند و صفحه رسمی بررسی‌شده به فهرست عمومی هدایت می‌شد؛ بنابراین نت‌ها خالی ماندند. برای Amarena نیز تنها نت‌های مشترک بدون هرم ثبت شدند. مبهم‌بودن نسخه Invictus Intense و Supreme Bouquet همچنان حل نشده و این دو خودکار به نسخه‌ای نسبت داده نشدند.

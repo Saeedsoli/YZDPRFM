@@ -1,0 +1,368 @@
+{
+  "version": "secondary_reference_prices_2026_11_v1",
+  "supplier_file_sha256": "bbe8f40610bc765bda0a7d2da9dbe78f4e397458a6991239c3c18d0853f33f5c",
+  "description": "Independent source only, not manufacturer or supplier essence verification; no automatic activation.",
+  "items": [
+    {
+      "product_id": "YZD-PROD-0032",
+      "slug": "parfums-de-marly-nisean",
+      "brand_en": "Parfums de Marly",
+      "expected_name_en": "PARFUMS DE MARLY - Nisean",
+      "reference_name": "Nisean",
+      "source_url": "https://www.fragrantica.com/perfume/Parfums-de-Marly/Nisean-36540.html",
+      "provider": "Fragrantica",
+      "status": "secondary_original_found_supplier_essence_unverified",
+      "checked_date": "2026-11-01",
+      "supplier_brand": "PARFUMS de MARLY",
+      "supplier_model": "Nisean",
+      "usd_per_kg": "303.6",
+      "quality": "H",
+      "match_status": "name_matched_supplier_identity_unverified",
+      "expected_edps": [
+        {
+          "sku": "YZD-0032-EDP-010",
+          "volume_ml": 10,
+          "price_toman": 639999,
+          "stock": 0,
+          "price_usd": 7.0
+        },
+        {
+          "sku": "YZD-0032-EDP-030",
+          "volume_ml": 30,
+          "price_toman": 1620000,
+          "stock": 0,
+          "price_usd": 7.0
+        },
+        {
+          "sku": "YZD-0032-EDP-050",
+          "volume_ml": 50,
+          "price_toman": 2600000,
+          "stock": 0,
+          "price_usd": 7.0
+        },
+        {
+          "sku": "YZD-0032-EDP-100",
+          "volume_ml": 100,
+          "price_toman": 5050000,
+          "stock": 0,
+          "price_usd": 7.0
+        }
+      ],
+      "legacy_backfill": false
+    },
+    {
+      "product_id": "YZD-PROD-0308",
+      "slug": "issey-miyake-leau-bleue-dissey-pour-homme",
+      "brand_en": "Issey Miyake",
+      "expected_name_en": "ISSEY MIYAKE - L'Eau Bleue d'Issey Pour Homme",
+      "reference_name": "L'Eau Bleue d'Issey Pour Homme",
+      "source_url": "https://www.fragrantica.com/perfume/Issey-Miyake/L-Eau-Bleue-d-Issey-Pour-Homme-724.html",
+      "provider": "Fragrantica",
+      "status": "secondary_original_found_supplier_essence_unverified",
+      "checked_date": "2026-11-01",
+      "supplier_brand": "ISSEY MIYAKE",
+      "supplier_model": "L`EAU Bleue D`Essay",
+      "usd_per_kg": "338.8",
+      "quality": "H",
+      "match_status": "name_matched_supplier_identity_unverified",
+      "expected_edps": [
+        {
+          "sku": "YZD-0308-EDP-010",
+          "volume_ml": 10,
+          "price_toman": 394999,
+          "stock": 0,
+          "price_usd": 3.5
+        },
+        {
+          "sku": "YZD-0308-EDP-030",
+          "volume_ml": 30,
+          "price_toman": 885000,
+          "stock": 0,
+          "price_usd": 3.5
+        },
+        {
+          "sku": "YZD-0308-EDP-050",
+          "volume_ml": 50,
+          "price_toman": 1375000,
+          "stock": 0,
+          "price_usd": 3.5
+        },
+        {
+          "sku": "YZD-0308-EDP-100",
+          "volume_ml": 100,
+          "price_toman": 2600000,
+          "stock": 0,
+          "price_usd": 3.5
+        }
+      ],
+      "legacy_backfill": false
+    },
+    {
+      "product_id": "YZD-PROD-0089",
+      "slug": "jean-paul-gaultier-kokorico",
+      "brand_en": "Jean Paul Gaultier",
+      "expected_name_en": "JEAN PAUL GAULTIER - Kokorico",
+      "reference_name": "Kokorico",
+      "source_url": "https://www.fragrantica.com/perfume/Jean-Paul-Gaultier/Kokorico-12711.html",
+      "provider": "Fragrantica",
+      "status": "secondary_original_found_supplier_essence_unverified",
+      "checked_date": "2026-11-01",
+      "supplier_brand": "JEAN PAUL GAULTIER",
+      "supplier_model": "KOKORICO",
+      "usd_per_kg": "239.8",
+      "quality": "H",
+      "match_status": "name_matched_supplier_identity_unverified",
+      "expected_edps": [
+        {
+          "sku": "YZD-0089-EDP-010",
+          "volume_ml": 10,
+          "price_toman": 430000,
+          "stock": 0,
+          "price_usd": 4.0
+        },
+        {
+          "sku": "YZD-0089-EDP-030",
+          "volume_ml": 30,
+          "price_toman": 990000,
+          "stock": 0,
+          "price_usd": 4.0
+        },
+        {
+          "sku": "YZD-0089-EDP-050",
+          "volume_ml": 50,
+          "price_toman": 1550000,
+          "stock": 0,
+          "price_usd": 4.0
+        },
+        {
+          "sku": "YZD-0089-EDP-100",
+          "volume_ml": 100,
+          "price_toman": 2950000,
+          "stock": 0,
+          "price_usd": 4.0
+        }
+      ],
+      "legacy_backfill": true
+    },
+    {
+      "product_id": "YZD-PROD-0925",
+      "slug": "nasomatto-hindu-grass",
+      "brand_en": "Nasomatto",
+      "expected_name_en": "NASOMATTO - Hindu Grass",
+      "reference_name": "Hindu Grass",
+      "source_url": "https://www.fragrantica.com/perfume/Nasomatto/Hindu-Grass-4294.html",
+      "provider": "Fragrantica",
+      "status": "secondary_original_found_supplier_essence_unverified",
+      "checked_date": "2026-11-01",
+      "supplier_brand": "NASOMATTO",
+      "supplier_model": "Hindu Grass",
+      "usd_per_kg": "474.1",
+      "quality": "H",
+      "match_status": "name_matched_supplier_identity_unverified",
+      "expected_edps": [
+        {
+          "sku": "YZD-0925-EDP-010",
+          "volume_ml": 10,
+          "price_toman": 710000,
+          "stock": 0,
+          "price_usd": 8.0
+        },
+        {
+          "sku": "YZD-0925-EDP-030",
+          "volume_ml": 30,
+          "price_toman": 1830000,
+          "stock": 0,
+          "price_usd": 8.0
+        },
+        {
+          "sku": "YZD-0925-EDP-050",
+          "volume_ml": 50,
+          "price_toman": 2950000,
+          "stock": 0,
+          "price_usd": 8.0
+        },
+        {
+          "sku": "YZD-0925-EDP-100",
+          "volume_ml": 100,
+          "price_toman": 5750000,
+          "stock": 0,
+          "price_usd": 8.0
+        }
+      ],
+      "legacy_backfill": true
+    },
+    {
+      "product_id": "YZD-PROD-0031",
+      "slug": "parfums-de-marly-akaster",
+      "brand_en": "Parfums de Marly",
+      "expected_name_en": "PARFUMS DE MARLY - Akaster",
+      "reference_name": "Akaster",
+      "source_url": "https://www.fragrantica.com/perfume/Parfums-de-Marly/Akaster-33513.html",
+      "provider": "Fragrantica",
+      "status": "secondary_original_found_supplier_essence_unverified",
+      "checked_date": "2026-11-01",
+      "supplier_brand": "PARFUMS de MARLY",
+      "supplier_model": "Akaster",
+      "usd_per_kg": "331.1",
+      "quality": "H",
+      "match_status": "name_matched_supplier_identity_unverified",
+      "expected_edps": [
+        {
+          "sku": "YZD-0031-EDP-010",
+          "volume_ml": 10,
+          "price_toman": 639999,
+          "stock": 0,
+          "price_usd": 7.0
+        },
+        {
+          "sku": "YZD-0031-EDP-030",
+          "volume_ml": 30,
+          "price_toman": 1620000,
+          "stock": 0,
+          "price_usd": 7.0
+        },
+        {
+          "sku": "YZD-0031-EDP-050",
+          "volume_ml": 50,
+          "price_toman": 2600000,
+          "stock": 0,
+          "price_usd": 7.0
+        },
+        {
+          "sku": "YZD-0031-EDP-100",
+          "volume_ml": 100,
+          "price_toman": 5050000,
+          "stock": 0,
+          "price_usd": 7.0
+        }
+      ],
+      "legacy_backfill": true
+    },
+    {
+      "product_id": "SUP-TP-910001",
+      "slug": "memo-paris-jamals-palace",
+      "brand_en": "Memo Paris",
+      "expected_name_en": "MEMO PARIS - Jamal's Palace",
+      "reference_name": "Jamal's Palace",
+      "source_url": "https://www.fragrantica.com/perfume/Memo-Paris/Jamal-s-Palace-60077.html",
+      "provider": "Fragrantica",
+      "status": "secondary_original_found_supplier_essence_unverified",
+      "checked_date": "2026-11-01",
+      "supplier_brand": "MEMO",
+      "supplier_model": "JAMAL`S PALACE",
+      "usd_per_kg": "467.5",
+      "quality": "H",
+      "match_status": "name_matched_supplier_identity_unverified",
+      "expected_edps": [],
+      "legacy_backfill": false
+    },
+    {
+      "product_id": "SUP-TP-910002",
+      "slug": "memo-paris-retba",
+      "brand_en": "Memo Paris",
+      "expected_name_en": "MEMO PARIS - Retba",
+      "reference_name": "Retba",
+      "source_url": "https://www.fragrantica.com/perfume/Memo-Paris/Retba-60076.html",
+      "provider": "Fragrantica",
+      "status": "secondary_original_found_supplier_essence_unverified",
+      "checked_date": "2026-11-01",
+      "supplier_brand": "MEMO",
+      "supplier_model": "RETBA",
+      "usd_per_kg": "332.2",
+      "quality": "H",
+      "match_status": "name_matched_supplier_identity_unverified",
+      "expected_edps": [],
+      "legacy_backfill": false
+    },
+    {
+      "product_id": "SUP-TP-910003",
+      "slug": "dsquared2-he-wood-rocky-mountain-wood",
+      "brand_en": "Dsquared2",
+      "expected_name_en": "DSQUARED2 - He Wood Rocky Mountain Wood",
+      "reference_name": "He Wood Rocky Mountain Wood",
+      "source_url": "https://www.fragrantica.com/perfume/DSQUARED2/He-Wood-Rocky-Mountain-Wood-5862.html",
+      "provider": "Fragrantica",
+      "status": "secondary_original_found_supplier_essence_unverified",
+      "checked_date": "2026-11-01",
+      "supplier_brand": "DSquared2",
+      "supplier_model": "HE WOOD ROCKY MOUNTAIN WOOD",
+      "usd_per_kg": "300.3",
+      "quality": "P",
+      "match_status": "name_matched_supplier_identity_unverified",
+      "expected_edps": [],
+      "legacy_backfill": false
+    },
+    {
+      "product_id": "SUP-TP-910004",
+      "slug": "bvlgari-le-gemme-amarena",
+      "brand_en": "Bvlgari",
+      "expected_name_en": "BVLGARI - Le Gemme Amarena",
+      "reference_name": "Le Gemme Amarena",
+      "source_url": "https://www.fragrantica.com/perfume/Bvlgari/Amarena-27387.html",
+      "provider": "Fragrantica",
+      "status": "secondary_original_found_supplier_essence_unverified",
+      "checked_date": "2026-11-01",
+      "supplier_brand": "BVLGARI",
+      "supplier_model": "Amarena",
+      "usd_per_kg": "218.9",
+      "quality": "P",
+      "match_status": "name_matched_supplier_identity_unverified",
+      "expected_edps": [],
+      "legacy_backfill": false
+    },
+    {
+      "product_id": "SUP-TP-910005",
+      "slug": "lanvin-marry-me",
+      "brand_en": "Lanvin",
+      "expected_name_en": "LANVIN - Marry Me",
+      "reference_name": "Marry Me",
+      "source_url": "https://www.fragrantica.com/perfume/Lanvin/Marry-Me-9405.html",
+      "provider": "Fragrantica",
+      "status": "secondary_original_found_supplier_essence_unverified",
+      "checked_date": "2026-11-01",
+      "supplier_brand": "LANVIN",
+      "supplier_model": "Marry me",
+      "usd_per_kg": "172.7",
+      "quality": "H",
+      "match_status": "name_matched_supplier_identity_unverified",
+      "expected_edps": [],
+      "legacy_backfill": false
+    },
+    {
+      "product_id": "SUP-TP-910006",
+      "slug": "lanvin-eclat-darpege",
+      "brand_en": "Lanvin",
+      "expected_name_en": "LANVIN - Eclat d’Arpège",
+      "reference_name": "Eclat d’Arpège",
+      "source_url": "https://www.fragrantica.com/perfume/Lanvin/Eclat-d-Arpege-988.html",
+      "provider": "Fragrantica",
+      "status": "secondary_original_found_supplier_essence_unverified",
+      "checked_date": "2026-11-01",
+      "supplier_brand": "LANVIN",
+      "supplier_model": "Eclat d`Arpege",
+      "usd_per_kg": "177.1",
+      "quality": "H",
+      "match_status": "name_matched_supplier_identity_unverified",
+      "expected_edps": [],
+      "legacy_backfill": false
+    },
+    {
+      "product_id": "SUP-TP-910007",
+      "slug": "jacques-bogart-silver-scent",
+      "brand_en": "Jacques Bogart",
+      "expected_name_en": "JACQUES BOGART - Silver Scent",
+      "reference_name": "Silver Scent",
+      "source_url": "https://www.fragrantica.com/perfume/Jacques-Bogart/Silver-Scent-7794.html",
+      "provider": "Fragrantica",
+      "status": "secondary_original_found_supplier_essence_unverified",
+      "checked_date": "2026-11-01",
+      "supplier_brand": "JAQCUES BOGART",
+      "supplier_model": "Silver Scent",
+      "usd_per_kg": "128.7",
+      "quality": "H",
+      "match_status": "name_matched_supplier_identity_unverified",
+      "expected_edps": [],
+      "legacy_backfill": false
+    }
+  ]
+}

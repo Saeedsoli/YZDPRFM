@@ -533,3 +533,12 @@ node_modules/   با npm install برمی‌گردد
 - `reports/supplier_coverage_20261101.csv`
 - `reports/supplier_coverage_20261101.json`
 - `docs/supplier_coverage_snapshot_20261101.md`
+
+### مراجع مستقل با اجازه مالک
+
+- `src/secondary-reference-import.js`
+- `src/secondary-notes.js`
+- `seed/secondary_supplement_v1.json`
+- `seed/secondary_reference_prices_v1.json`
+- `seed/secondary_note_corrections_v1.json`
+- `scripts/test_secondary_reference_batch.js`

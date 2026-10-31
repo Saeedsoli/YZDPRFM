@@ -27,6 +27,7 @@ LV_SOURCE = {
 }
 STATES = {
     'provisional': 'قیمت موقت با شاهد نام؛ هویت اسانس تأییدنشده',
+    'secondary': 'قیمت موقت با منبع مستقل؛ هویت اسانس تأییدنشده',
     'legacy': 'قیمت قدیمی فقط نام؛ شاهد رسمی مرجع کامل نیست',
     'ambiguous': 'دارای انتساب اما ردیف مبهم؛ بررسی دستی',
     'conflict': 'اختلاف قیمت یا سابقه؛ بررسی دستی',
@@ -80,13 +81,22 @@ def manifests(root, source_sha):
         b,model=LV_SOURCE[x['product_id']]
         if x['product_id'] in ids:raise ValueError('duplicate LV product reference')
         ids.add(x['product_id']);candidates.append({**x,'supplier_brand':b,'supplier_model':model,'origin':'lv_reference_prices_v1.json','legacy':False})
-    # Only the five previously imported but not yet officially sourced records.
+    # Independent references are separate from official evidence.
+    secondary=base/'secondary_reference_prices_v1.json'
+    if secondary.exists():
+        sm=json.loads(secondary.read_text(encoding='utf-8'))
+        if sm.get('supplier_file_sha256')!=source_sha:raise ValueError('independent-source supplier hash mismatch')
+        for x in sm['items']:
+            if x['product_id'] in ids:raise ValueError('duplicate independent product reference')
+            ids.add(x['product_id']);candidates.append({**x,'origin':secondary.name,'legacy':False,'secondary':True})
+    # Previously imported records without official or independent references.
     staged=json.loads((base/'supplier_exact_prices_staged.json').read_text(encoding='utf-8'))
     for x in staged['prices']:
         if x['product_id'] not in ids:candidates.append({**x,'origin':'supplier_exact_prices_staged.json','legacy':True})
     return candidates
 
-def assess(groups,candidates,products,evidence,source_sha,legacy_marker):
+def assess(groups,candidates,products,evidence,source_sha,legacy_marker,secondary_evidence=None):
+    secondary_evidence=secondary_evidence or {}
     assigned=collections.defaultdict(list);conflicts=collections.defaultdict(list);ambiguous=collections.defaultdict(list);unmapped=[]
     for x in candidates:
         pid=x['product_id'];p=products.get(pid)
@@ -100,6 +110,11 @@ def assess(groups,candidates,products,evidence,source_sha,legacy_marker):
         key=targets[0]
         if Decimal(str(p['price']))!=Decimal(x['usd_per_kg']):conflicts[key].append(pid);continue
         ev=evidence.get(pid)
+        if x.get('secondary'):
+            sev=secondary_evidence.get(pid)
+            if ev or not sev or sev['sha']!=source_sha or sev['status']!='secondary_original_found_supplier_essence_unverified' or sev['match_status']!='name_matched_supplier_identity_unverified' or sev['provider']!='Fragrantica' or Decimal(sev['price'])!=Decimal(x['usd_per_kg']) or sev['quality']!=x['quality'] or sev['url']!=x['source_url']:
+                conflicts[key].append(pid);continue
+            assigned[key].append((pid,'secondary',x));continue
         if x['legacy']:
             if ev or not legacy_marker: conflicts[key].append(pid);continue
             assigned[key].append((pid,'legacy',x));continue
@@ -126,7 +141,7 @@ def assess(groups,candidates,products,evidence,source_sha,legacy_marker):
                        'max_usd_per_kg':str(maximum) if maximum is not None else '',
                        'max_quality':','.join(top),'state':state,'status_fa':STATES[state],
                        'product_ids':' | '.join(sorted(set(ids))),
-                       'official_urls':' | '.join(dict.fromkeys(z[2].get('official_url','') for z in assigned[k] if z[2].get('official_url'))),
+                       'reference_urls':' | '.join(dict.fromkeys(z[2].get('source_url',z[2].get('official_url','')) for z in assigned[k] if z[2].get('source_url',z[2].get('official_url')))),
                        'source_manifests':' | '.join(dict.fromkeys(z[2].get('origin','') for z in assigned[k] if z[2].get('origin')))})
     return result,unmapped
 
@@ -139,12 +154,15 @@ def read_db(path):
         products={r[0]:{'price':r[1],'mode':r[2]} for r in db.execute('SELECT id,essence_usd_per_kg,supply_mode FROM products')}
         evidence={r[0]:{'sha':r[1],'price':r[2],'quality':r[3],'status':r[4],'url':r[5]} for r in db.execute('SELECT product_id,supplier_file_sha256,usd_per_kg,quality,match_status,official_url FROM supplier_price_evidence')}
         legacy_marker=bool(db.execute("SELECT 1 FROM settings WHERE key='supplier_exact_price_import_v1'").fetchone())
-        return products,evidence,legacy_marker
+        secondary={}
+        if db.execute("SELECT 1 FROM sqlite_master WHERE type='table' AND name='secondary_reference_evidence'").fetchone():
+            secondary={r[0]:{'sha':r[1],'price':r[2],'quality':r[3],'match_status':r[4],'url':r[5],'provider':r[6],'status':r[7]} for r in db.execute('SELECT product_id,supplier_file_sha256,usd_per_kg,quality,match_status,source_url,provider,status FROM secondary_reference_evidence')}
+        return products,evidence,legacy_marker,secondary
     finally:db.close()
 
 def audit(root,db_path):
-    rows,sha=read_rows(root/SOURCE);groups=group_rows(rows);products,evidence,legacy_marker=read_db(db_path)
-    candidates=manifests(root,sha);result,unmapped=assess(groups,candidates,products,evidence,sha,legacy_marker)
+    rows,sha=read_rows(root/SOURCE);groups=group_rows(rows);products,evidence,legacy_marker,secondary=read_db(db_path)
+    candidates=manifests(root,sha);result,unmapped=assess(groups,candidates,products,evidence,sha,legacy_marker,secondary)
     counts=collections.Counter(r['state'] for r in result)
     summary={'source_sha256':sha,'supplier_rows':len(rows),'supplier_groups':len(groups),
              'definition':'exact supplier brand + model + supplier gender; not proven unique fragrances',

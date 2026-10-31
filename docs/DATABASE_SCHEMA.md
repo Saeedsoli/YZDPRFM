@@ -435,3 +435,7 @@ GROUP BY d ORDER BY d;
 SELECT order_id FROM orders
 WHERE status='PENDING' AND created_at < datetime('now','-30 minutes');
 ```
+
+### `secondary_reference_evidence` — شاهد مستقل، نه رسمی
+
+هر ردیف فقط هویت عطر مرجع را طبق منبع مستقل مانند Fragrantica، همراه با URL، نام منبع، تاریخ، هش فایل تأمین‌کننده، کیفیت فایل و قیمت موقت ثبت می‌کند. وضعیت `secondary_original_found_supplier_essence_unverified` صریحاً می‌گوید هویت اسانس واقعی تأمین‌کننده اثبات نشده است. این جدول جدا از `official_identity_evidence` و `supplier_price_evidence` است؛ منبع مستقل به‌عنوان وب‌سایت رسمی برند نمایش داده نمی‌شود. ورود قیمت و اصلاح نت با محافظ تغییر مدیر، تراکنش و بدون فعال‌سازی خودکار انجام می‌شوند.
