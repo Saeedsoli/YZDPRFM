@@ -456,3 +456,8 @@ node_modules/   با npm install برمی‌گردد
 - `scripts/test_reference_prices_v5.js`
 - `scripts/test_official_notes_v8.js`
 - `scripts/test_unclassified_notes.py`
+
+### اوتلندز و ایمنی ممیزی
+
+- `scripts/test_outlands_reference.js`
+- `scripts/test_audit_docs_readonly.js`

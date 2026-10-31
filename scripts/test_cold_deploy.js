@@ -148,12 +148,12 @@ function dockerCopiedDirs() {
     const obsoleteSamples = cold.prepare("SELECT COUNT(*) n FROM variants WHERE type='SAMPLE' AND volume_ml=3").get().n;
     const identitySources = cold.prepare("SELECT COUNT(*) n FROM official_identity_evidence WHERE status='official_original_found_supplier_essence_unverified'").get().n;
     const referencePrices = cold.prepare('SELECT COUNT(*) n FROM products WHERE essence_usd_per_kg IS NOT NULL').get().n;
-    const refManifest = ['lv_reference_prices_v1.json','official_reference_prices_v1.json','official_reference_prices_v2.json','official_reference_prices_v3.json','official_reference_prices_v4.json','official_reference_prices_v5.json'];
+    const refManifest = ['lv_reference_prices_v1.json','official_reference_prices_v1.json','official_reference_prices_v2.json','official_reference_prices_v3.json','official_reference_prices_v4.json','official_reference_prices_v5.json','official_reference_prices_v6.json'];
     const expectedPrices = refManifest.reduce((n,f) => n + JSON.parse(fs.readFileSync(path.join(stage,'seed',f),'utf8')).items.length,0);
     cold.close();
     add('قیمت‌های مرجع موقت در نصب تازه بازسازی می‌شوند', referencePrices === expectedPrices, `${referencePrices}/${expectedPrices}`);
     add('سمپل ۳ میل در دیتابیس تازه ایجاد نمی‌شود', obsoleteSamples === 0, `${obsoleteSamples} ردیف`);
-    const expectedIdentities = ['official_identity_evidence_v1.json','official_identity_evidence_v2.json','official_identity_evidence_v3.json','official_identity_evidence_v4.json'].reduce((n,f) => n + JSON.parse(fs.readFileSync(path.join(stage,'seed',f),'utf8')).items.length,0);
+    const expectedIdentities = ['official_identity_evidence_v1.json','official_identity_evidence_v2.json','official_identity_evidence_v3.json','official_identity_evidence_v4.json','official_identity_evidence_v5.json'].reduce((n,f) => n + JSON.parse(fs.readFileSync(path.join(stage,'seed',f),'utf8')).items.length,0);
     add('منابع رسمی مرجع با برچسب عدم تأیید اسانس بارگذاری می‌شوند', identitySources === expectedIdentities, `${identitySources}/${expectedIdentities}`);
 
     add('کاتالوگ تنوع برند دارد', brandsInDb >= 100, `${brandsInDb} برند در دیتابیس`);

@@ -1,0 +1,16 @@
+{
+  "version": "official_identity_evidence_v5",
+  "scope": "Official reference-original names only; supplier essence identity and product availability remain independently unverified.",
+  "items": [
+    {
+      "product_id": "SUP-AM-900008",
+      "slug": "amouage-outlands",
+      "brand_en": "Amouage",
+      "expected_name_en": "AMOUAGE - Outlands",
+      "reference_name": "Outlands",
+      "official_url": "https://amouage.com/products/new-outlands",
+      "status": "official_original_found_supplier_essence_unverified",
+      "checked_date": "2026-10-31"
+    }
+  ]
+}

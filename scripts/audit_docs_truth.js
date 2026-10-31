@@ -94,9 +94,14 @@ console.log();
 
 const countLines = p => fs.readFileSync(path.join(ROOT, p), 'utf8').split('\n').length;
 
+// Auditing must never initialise the application or run migrations on store data.
+let auditDb = null;
 let dbTables = 0, dbProducts = 0, dbVariants = 0;
 try {
-  const { db } = require('../src/db');
+  const Database = require('better-sqlite3');
+  const dbPath = process.env.DB_PATH || path.join(ROOT, 'data', 'yazd.db');
+  auditDb = new Database(dbPath, { readonly: true, fileMustExist: true });
+  const db = auditDb;
   dbTables = db.prepare(
     "SELECT COUNT(*) c FROM sqlite_master WHERE type='table' AND name NOT LIKE 'sqlite_%'"
   ).get().c;
@@ -218,7 +223,7 @@ const pageFiles = [
 
 const dbBrands = (() => {
   try {
-    return require('../src/db').db
+    return auditDb
       .prepare('SELECT COUNT(DISTINCT brand_en) c FROM products').get().c;
   } catch { return 0; }
 })();
@@ -296,7 +301,7 @@ console.log(h('  ۲) ادعاهای وضعیت — آیا با واقعیت می
 console.log();
 
 let settings = {};
-try { settings = require('../src/db').getSettings(); } catch {}
+try { settings = Object.fromEntries(auditDb.prepare('SELECT key, value FROM settings').all().map(r => [r.key, r.value])); } catch {}
 
 /* هر قلم: شرطی که اگر **درست** باشد، ادعای «هنوز نشده» کهنه است */
 const STATE = [

@@ -227,5 +227,55 @@
     "supplier_usd_per_kg": "330",
     "supplier_quality": "H",
     "variants": []
+  },
+  {
+    "id": "SUP-AM-900008",
+    "slug": "amouage-outlands",
+    "name_fa": "اوتلندز",
+    "name_en": "Outlands",
+    "title_fa_base": "اوتلندز",
+    "full_display_fa": "آمواج — اوتلندز",
+    "inspired_brand_en": "Amouage",
+    "inspired_brand_fa": "آمواج",
+    "gender": null,
+    "notes": {
+      "top": [
+        "هل",
+        "ترنج",
+        "لیمو",
+        "فلفل سیچوان",
+        "الِمی",
+        "کندر"
+      ],
+      "middle": [
+        "پچولی",
+        "رز",
+        "شکوفه پرتقال",
+        "زیره",
+        "شمعدانی",
+        "داوانا",
+        "زعفران",
+        "بادیان",
+        "گشنیز"
+      ],
+      "base": [
+        "بنزوئین",
+        "لابدانوم",
+        "عنبر",
+        "عنبر سائل",
+        "کندر",
+        "اوپوپوناکس",
+        "وانیل",
+        "توس",
+        "مشک",
+        "عود"
+      ]
+    },
+    "accords": [],
+    "transclaimer_notice": "این محصول بازآفرینی دست‌ساز است و محصول اورجینال برند آمواج نیست.",
+    "source_url": "https://amouage.com/products/new-outlands",
+    "source_note": "Notes and perfumer describe the official reference original, not verified composition of the supplier essence. Supplier spelling OUTLADNS is a provisional name association.",
+    "perfumer": "Cécile Zarokian",
+    "variants": []
   }
 ]
