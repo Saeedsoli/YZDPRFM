@@ -1,7 +1,7 @@
 'use strict';
 const assert=require('assert/strict'),fs=require('fs'),os=require('os'),path=require('path'),{spawnSync}=require('child_process');
 const root=path.join(__dirname,'..'),tmp=fs.mkdtempSync(path.join(os.tmpdir(),'supplier-import-'));
-const env={...process.env,DB_PATH:path.join(tmp,'test.db'),BACKUP_DISABLED:'1'};
+const env={...process.env,DB_PATH:path.join(tmp,'test.db'),BACKUP_DISABLED:'1',REFERENCE_PRICE_V2_AUTOMIGRATE:'0'};
 const code=`
 const assert=require('assert/strict');
 const {db}=require('./src/db');

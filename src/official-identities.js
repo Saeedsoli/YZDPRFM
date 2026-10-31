@@ -41,4 +41,4 @@ function seedOfficialIdentities(db,file){
   return {added,skipped};
  })();
 }
-module.exports={seedOfficialIdentities};
+module.exports={seedOfficialIdentities,HOST_BY_BRAND};

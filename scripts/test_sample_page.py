@@ -10,6 +10,8 @@ with tempfile.TemporaryDirectory(prefix='yazd-sample-page-') as tmp:
     subprocess.run(['node','-e',"require('./src/db')"],cwd=root,env=env,check=True,stdout=subprocess.DEVNULL,timeout=120)
     con=sqlite3.connect(dbfile)
     con.execute('update variants set stock=0')
+    # Simulate a product without an existing valid sample when testing zero price.
+    con.execute("delete from variants where product_id='YZD-PROD-0436' and type='SAMPLE' and volume_ml=5")
     scenarios=[('YZD-PROD-0429','MADE_TO_ORDER',260000,0),('YZD-PROD-0430','IN_STOCK',310000,3),('YZD-PROD-0431','IN_STOCK',1000,0),('YZD-PROD-0432','UNAVAILABLE',2000,5),('YZD-PROD-0436','MADE_TO_ORDER',0,1)]
     for id,mode,price,stock in scenarios:
         con.execute('update products set supply_mode=? where id=?',(mode,id))

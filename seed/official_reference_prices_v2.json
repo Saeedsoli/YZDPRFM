@@ -1,0 +1,1598 @@
+{
+  "version": "official_reference_prices_2026_10_v2",
+  "supplier_file_sha256": "bbe8f40610bc765bda0a7d2da9dbe78f4e397458a6991239c3c18d0853f33f5c",
+  "description": "Reference-name and highest-price association only; supplier essence identity remains unverified. Never activate stock.",
+  "items": [
+    {
+      "product_id": "YZD-PROD-0564",
+      "slug": "amouage-purpose",
+      "official_url": "https://amouage.com/products/100ml-purpose",
+      "supplier_brand": "AMUAGE",
+      "supplier_model": "Purpose",
+      "usd_per_kg": "269.5",
+      "quality": "P",
+      "match_status": "name_matched_supplier_identity_unverified",
+      "expected_edps": [
+        {
+          "sku": "YZD-0564-EDP-010",
+          "volume_ml": 10,
+          "price_toman": 639999,
+          "stock": 0,
+          "price_usd": 7.0
+        },
+        {
+          "sku": "YZD-0564-EDP-030",
+          "volume_ml": 30,
+          "price_toman": 1620000,
+          "stock": 0,
+          "price_usd": 7.0
+        },
+        {
+          "sku": "YZD-0564-EDP-050",
+          "volume_ml": 50,
+          "price_toman": 2600000,
+          "stock": 0,
+          "price_usd": 7.0
+        },
+        {
+          "sku": "YZD-0564-EDP-100",
+          "volume_ml": 100,
+          "price_toman": 5050000,
+          "stock": 0,
+          "price_usd": 7.0
+        }
+      ],
+      "brand_en": "Amouage",
+      "expected_name_en": "AMOUAGE - Purpose",
+      "reference_name": "Purpose"
+    },
+    {
+      "product_id": "YZD-PROD-0566",
+      "slug": "amouage-search",
+      "official_url": "https://amouage.com/en-ch/products/100ml-search",
+      "supplier_brand": "AMUAGE",
+      "supplier_model": "SEARCH",
+      "usd_per_kg": "348.7",
+      "quality": "P",
+      "match_status": "name_matched_supplier_identity_unverified",
+      "expected_edps": [
+        {
+          "sku": "YZD-0566-EDP-010",
+          "volume_ml": 10,
+          "price_toman": 639999,
+          "stock": 0,
+          "price_usd": 7.0
+        },
+        {
+          "sku": "YZD-0566-EDP-030",
+          "volume_ml": 30,
+          "price_toman": 1620000,
+          "stock": 0,
+          "price_usd": 7.0
+        },
+        {
+          "sku": "YZD-0566-EDP-050",
+          "volume_ml": 50,
+          "price_toman": 2600000,
+          "stock": 0,
+          "price_usd": 7.0
+        },
+        {
+          "sku": "YZD-0566-EDP-100",
+          "volume_ml": 100,
+          "price_toman": 5050000,
+          "stock": 0,
+          "price_usd": 7.0
+        }
+      ],
+      "brand_en": "Amouage",
+      "expected_name_en": "AMOUAGE - Search",
+      "reference_name": "Search"
+    },
+    {
+      "product_id": "YZD-PROD-0688",
+      "slug": "kilian-paris-good-girl-gone-bad",
+      "official_url": "https://www.bykilian.com/product/19797/147603/perfume/good-girl-gone-bad-the-icon-set/the-narcotics",
+      "supplier_brand": "By Kilian",
+      "supplier_model": "GOOD GIRL GONE BAD",
+      "usd_per_kg": "300.3",
+      "quality": "P",
+      "match_status": "name_matched_supplier_identity_unverified",
+      "expected_edps": [
+        {
+          "sku": "YZD-0688-EDP-010",
+          "volume_ml": 10,
+          "price_toman": 639999,
+          "stock": 0,
+          "price_usd": 7.0
+        },
+        {
+          "sku": "YZD-0688-EDP-030",
+          "volume_ml": 30,
+          "price_toman": 1620000,
+          "stock": 0,
+          "price_usd": 7.0
+        },
+        {
+          "sku": "YZD-0688-EDP-050",
+          "volume_ml": 50,
+          "price_toman": 2600000,
+          "stock": 0,
+          "price_usd": 7.0
+        },
+        {
+          "sku": "YZD-0688-EDP-100",
+          "volume_ml": 100,
+          "price_toman": 5050000,
+          "stock": 0,
+          "price_usd": 7.0
+        }
+      ],
+      "brand_en": "Kilian Paris",
+      "expected_name_en": "KILIAN PARIS - Good Girl Gone Bad",
+      "reference_name": "Good Girl Gone Bad"
+    },
+    {
+      "product_id": "YZD-PROD-0684",
+      "slug": "kilian-paris-moonlight-in-heaven",
+      "official_url": "https://www.bykilian.com/product/19797/52771/perfume/moonlight-in-heaven/the-fresh",
+      "supplier_brand": "By Kilian",
+      "supplier_model": "Moonlight in Heaven",
+      "usd_per_kg": "438.9",
+      "quality": "H",
+      "match_status": "name_matched_supplier_identity_unverified",
+      "expected_edps": [
+        {
+          "sku": "YZD-0684-EDP-010",
+          "volume_ml": 10,
+          "price_toman": 639999,
+          "stock": 0,
+          "price_usd": 7.0
+        },
+        {
+          "sku": "YZD-0684-EDP-030",
+          "volume_ml": 30,
+          "price_toman": 1620000,
+          "stock": 0,
+          "price_usd": 7.0
+        },
+        {
+          "sku": "YZD-0684-EDP-050",
+          "volume_ml": 50,
+          "price_toman": 2600000,
+          "stock": 0,
+          "price_usd": 7.0
+        },
+        {
+          "sku": "YZD-0684-EDP-100",
+          "volume_ml": 100,
+          "price_toman": 5050000,
+          "stock": 0,
+          "price_usd": 7.0
+        }
+      ],
+      "brand_en": "Kilian Paris",
+      "expected_name_en": "KILIAN PARIS - Moonlight in Heaven",
+      "reference_name": "Moonlight in Heaven"
+    },
+    {
+      "product_id": "YZD-PROD-1744",
+      "slug": "carolina-herrera-212-vip-men",
+      "official_url": "https://www.carolinaherrera.com/ww/en/p-fragrance/212-vip-men",
+      "supplier_brand": "CAROLINA HRRERA",
+      "supplier_model": "212 Vip MEN",
+      "usd_per_kg": "114.4",
+      "quality": "H",
+      "match_status": "name_matched_supplier_identity_unverified",
+      "expected_edps": [
+        {
+          "sku": "YZD-1744-EDP-010",
+          "volume_ml": 10,
+          "price_toman": 430000,
+          "stock": 0,
+          "price_usd": 4.0
+        },
+        {
+          "sku": "YZD-1744-EDP-030",
+          "volume_ml": 30,
+          "price_toman": 990000,
+          "stock": 0,
+          "price_usd": 4.0
+        },
+        {
+          "sku": "YZD-1744-EDP-050",
+          "volume_ml": 50,
+          "price_toman": 1550000,
+          "stock": 0,
+          "price_usd": 4.0
+        },
+        {
+          "sku": "YZD-1744-EDP-100",
+          "volume_ml": 100,
+          "price_toman": 2950000,
+          "stock": 0,
+          "price_usd": 4.0
+        }
+      ],
+      "brand_en": "Carolina Herrera",
+      "expected_name_en": "CAROLINA HERRERA - 212 VIP Men",
+      "reference_name": "212 VIP Men"
+    },
+    {
+      "product_id": "YZD-PROD-0429",
+      "slug": "creed-aventus",
+      "official_url": "https://www.creedfragrance.com/p/aventus/12870029/",
+      "supplier_brand": "CREED",
+      "supplier_model": "Aventus",
+      "usd_per_kg": "709.5",
+      "quality": "T",
+      "match_status": "name_matched_supplier_identity_unverified",
+      "expected_edps": [
+        {
+          "sku": "YZD-0429-EDP-010",
+          "volume_ml": 10,
+          "price_toman": 605000,
+          "stock": 0,
+          "price_usd": 6.5
+        },
+        {
+          "sku": "YZD-0429-EDP-030",
+          "volume_ml": 30,
+          "price_toman": 1515000,
+          "stock": 0,
+          "price_usd": 6.5
+        },
+        {
+          "sku": "YZD-0429-EDP-050",
+          "volume_ml": 50,
+          "price_toman": 2425000,
+          "stock": 0,
+          "price_usd": 6.5
+        },
+        {
+          "sku": "YZD-0429-EDP-100",
+          "volume_ml": 100,
+          "price_toman": 4700000,
+          "stock": 0,
+          "price_usd": 6.5
+        }
+      ],
+      "brand_en": "Creed",
+      "expected_name_en": "CREED - Aventus",
+      "reference_name": "Aventus"
+    },
+    {
+      "product_id": "YZD-PROD-0439",
+      "slug": "creed-erolfa",
+      "official_url": "https://www.creedfragrance.com/p/erolfa/12870033/",
+      "supplier_brand": "CREED",
+      "supplier_model": "Erolfa",
+      "usd_per_kg": "366.3",
+      "quality": "P",
+      "match_status": "name_matched_supplier_identity_unverified",
+      "expected_edps": [
+        {
+          "sku": "YZD-0439-EDP-010",
+          "volume_ml": 10,
+          "price_toman": 570000,
+          "stock": 0,
+          "price_usd": 6.0
+        },
+        {
+          "sku": "YZD-0439-EDP-030",
+          "volume_ml": 30,
+          "price_toman": 1410000,
+          "stock": 0,
+          "price_usd": 6.0
+        },
+        {
+          "sku": "YZD-0439-EDP-050",
+          "volume_ml": 50,
+          "price_toman": 2250000,
+          "stock": 0,
+          "price_usd": 6.0
+        },
+        {
+          "sku": "YZD-0439-EDP-100",
+          "volume_ml": 100,
+          "price_toman": 4350000,
+          "stock": 0,
+          "price_usd": 6.0
+        }
+      ],
+      "brand_en": "Creed",
+      "expected_name_en": "CREED - Erolfa",
+      "reference_name": "Erolfa"
+    },
+    {
+      "product_id": "YZD-PROD-0430",
+      "slug": "creed-green-irish-tweed",
+      "official_url": "https://www.creedfragrance.com/p/green-irish-tweed/12870035/",
+      "supplier_brand": "CREED",
+      "supplier_model": "Green Irish Tweed",
+      "usd_per_kg": "212.3",
+      "quality": "H",
+      "match_status": "name_matched_supplier_identity_unverified",
+      "expected_edps": [
+        {
+          "sku": "YZD-0430-EDP-010",
+          "volume_ml": 10,
+          "price_toman": 570000,
+          "stock": 0,
+          "price_usd": 6.0
+        },
+        {
+          "sku": "YZD-0430-EDP-030",
+          "volume_ml": 30,
+          "price_toman": 1410000,
+          "stock": 0,
+          "price_usd": 6.0
+        },
+        {
+          "sku": "YZD-0430-EDP-050",
+          "volume_ml": 50,
+          "price_toman": 2250000,
+          "stock": 0,
+          "price_usd": 6.0
+        },
+        {
+          "sku": "YZD-0430-EDP-100",
+          "volume_ml": 100,
+          "price_toman": 4350000,
+          "stock": 0,
+          "price_usd": 6.0
+        }
+      ],
+      "brand_en": "Creed",
+      "expected_name_en": "CREED - Green Irish Tweed",
+      "reference_name": "Green Irish Tweed"
+    },
+    {
+      "product_id": "YZD-PROD-0431",
+      "slug": "creed-silver-mountain-water",
+      "official_url": "https://www.creedfragrance.com/p/silver-mountain-water/12870049/",
+      "supplier_brand": "CREED",
+      "supplier_model": "Silver Mountain Water",
+      "usd_per_kg": "690.8",
+      "quality": "T",
+      "match_status": "name_matched_supplier_identity_unverified",
+      "expected_edps": [
+        {
+          "sku": "YZD-0431-EDP-010",
+          "volume_ml": 10,
+          "price_toman": 570000,
+          "stock": 0,
+          "price_usd": 6.0
+        },
+        {
+          "sku": "YZD-0431-EDP-030",
+          "volume_ml": 30,
+          "price_toman": 1410000,
+          "stock": 0,
+          "price_usd": 6.0
+        },
+        {
+          "sku": "YZD-0431-EDP-050",
+          "volume_ml": 50,
+          "price_toman": 2250000,
+          "stock": 0,
+          "price_usd": 6.0
+        },
+        {
+          "sku": "YZD-0431-EDP-100",
+          "volume_ml": 100,
+          "price_toman": 4350000,
+          "stock": 0,
+          "price_usd": 6.0
+        }
+      ],
+      "brand_en": "Creed",
+      "expected_name_en": "CREED - Silver Mountain Water",
+      "reference_name": "Silver Mountain Water"
+    },
+    {
+      "product_id": "YZD-PROD-0436",
+      "slug": "creed-viking",
+      "official_url": "https://www.creedfragrance.com/p/viking/12870053/",
+      "supplier_brand": "CREED",
+      "supplier_model": "Viking",
+      "usd_per_kg": "844.8",
+      "quality": "T",
+      "match_status": "name_matched_supplier_identity_unverified",
+      "expected_edps": [
+        {
+          "sku": "YZD-0436-EDP-010",
+          "volume_ml": 10,
+          "price_toman": 605000,
+          "stock": 0,
+          "price_usd": 6.5
+        },
+        {
+          "sku": "YZD-0436-EDP-030",
+          "volume_ml": 30,
+          "price_toman": 1515000,
+          "stock": 0,
+          "price_usd": 6.5
+        },
+        {
+          "sku": "YZD-0436-EDP-050",
+          "volume_ml": 50,
+          "price_toman": 2425000,
+          "stock": 0,
+          "price_usd": 6.5
+        },
+        {
+          "sku": "YZD-0436-EDP-100",
+          "volume_ml": 100,
+          "price_toman": 4700000,
+          "stock": 0,
+          "price_usd": 6.5
+        }
+      ],
+      "brand_en": "Creed",
+      "expected_name_en": "CREED - Viking",
+      "reference_name": "Viking"
+    },
+    {
+      "product_id": "YZD-PROD-0993",
+      "slug": "le-labo-santal-33",
+      "official_url": "https://www.lelabofragrances.com/santal-33-147.html",
+      "supplier_brand": "LE LABO",
+      "supplier_model": "SANTAL 33",
+      "usd_per_kg": "126.5",
+      "quality": "H",
+      "match_status": "name_matched_supplier_identity_unverified",
+      "expected_edps": [
+        {
+          "sku": "YZD-0993-EDP-010",
+          "volume_ml": 10,
+          "price_toman": 570000,
+          "stock": 0,
+          "price_usd": 6.0
+        },
+        {
+          "sku": "YZD-0993-EDP-030",
+          "volume_ml": 30,
+          "price_toman": 1410000,
+          "stock": 0,
+          "price_usd": 6.0
+        },
+        {
+          "sku": "YZD-0993-EDP-050",
+          "volume_ml": 50,
+          "price_toman": 2250000,
+          "stock": 0,
+          "price_usd": 6.0
+        },
+        {
+          "sku": "YZD-0993-EDP-100",
+          "volume_ml": 100,
+          "price_toman": 4350000,
+          "stock": 0,
+          "price_usd": 6.0
+        }
+      ],
+      "brand_en": "Le Labo",
+      "expected_name_en": "LE LABO - Santal 33",
+      "reference_name": "Santal 33"
+    },
+    {
+      "product_id": "YZD-PROD-2081",
+      "slug": "montblanc-legend-spirit",
+      "official_url": "https://www.montblanc.com/en-cl/montblanc-legend-spirit-eau-de-toilette-50-ml-MB115366VG.html",
+      "supplier_brand": "MONT BLANC",
+      "supplier_model": "Legend Spirit",
+      "usd_per_kg": "121",
+      "quality": "H",
+      "match_status": "name_matched_supplier_identity_unverified",
+      "expected_edps": [
+        {
+          "sku": "YZD-2081-EDP-010",
+          "volume_ml": 10,
+          "price_toman": 360000,
+          "stock": 0,
+          "price_usd": 3.0
+        },
+        {
+          "sku": "YZD-2081-EDP-030",
+          "volume_ml": 30,
+          "price_toman": 780000,
+          "stock": 0,
+          "price_usd": 3.0
+        },
+        {
+          "sku": "YZD-2081-EDP-050",
+          "volume_ml": 50,
+          "price_toman": 1200000,
+          "stock": 0,
+          "price_usd": 3.0
+        },
+        {
+          "sku": "YZD-2081-EDP-100",
+          "volume_ml": 100,
+          "price_toman": 2250000,
+          "stock": 0,
+          "price_usd": 3.0
+        }
+      ],
+      "brand_en": "Montblanc",
+      "expected_name_en": "MONTBLANC - Legend Spirit",
+      "reference_name": "Legend Spirit"
+    },
+    {
+      "product_id": "YZD-PROD-0921",
+      "slug": "nasomatto-baraonda",
+      "official_url": "https://nasomatto.com/products/baraonda",
+      "supplier_brand": "NASOMATTO",
+      "supplier_model": "Baraonda",
+      "usd_per_kg": "931.7",
+      "quality": "H",
+      "match_status": "name_matched_supplier_identity_unverified",
+      "expected_edps": [
+        {
+          "sku": "YZD-0921-EDP-010",
+          "volume_ml": 10,
+          "price_toman": 710000,
+          "stock": 0,
+          "price_usd": 8.0
+        },
+        {
+          "sku": "YZD-0921-EDP-030",
+          "volume_ml": 30,
+          "price_toman": 1830000,
+          "stock": 0,
+          "price_usd": 8.0
+        },
+        {
+          "sku": "YZD-0921-EDP-050",
+          "volume_ml": 50,
+          "price_toman": 2950000,
+          "stock": 0,
+          "price_usd": 8.0
+        },
+        {
+          "sku": "YZD-0921-EDP-100",
+          "volume_ml": 100,
+          "price_toman": 5750000,
+          "stock": 0,
+          "price_usd": 8.0
+        }
+      ],
+      "brand_en": "Nasomatto",
+      "expected_name_en": "NASOMATTO - Baraonda",
+      "reference_name": "Baraonda"
+    },
+    {
+      "product_id": "YZD-PROD-0919",
+      "slug": "nasomatto-black-afgano",
+      "official_url": "https://nasomatto.com/products/black-afgano",
+      "supplier_brand": "NASOMATTO",
+      "supplier_model": "Black Afgano",
+      "usd_per_kg": "407",
+      "quality": "H",
+      "match_status": "name_matched_supplier_identity_unverified",
+      "expected_edps": [
+        {
+          "sku": "YZD-0919-EDP-010",
+          "volume_ml": 10,
+          "price_toman": 710000,
+          "stock": 0,
+          "price_usd": 8.0
+        },
+        {
+          "sku": "YZD-0919-EDP-030",
+          "volume_ml": 30,
+          "price_toman": 1830000,
+          "stock": 0,
+          "price_usd": 8.0
+        },
+        {
+          "sku": "YZD-0919-EDP-050",
+          "volume_ml": 50,
+          "price_toman": 2950000,
+          "stock": 0,
+          "price_usd": 8.0
+        },
+        {
+          "sku": "YZD-0919-EDP-100",
+          "volume_ml": 100,
+          "price_toman": 5750000,
+          "stock": 0,
+          "price_usd": 8.0
+        }
+      ],
+      "brand_en": "Nasomatto",
+      "expected_name_en": "NASOMATTO - Black Afgano",
+      "reference_name": "Black Afgano"
+    },
+    {
+      "product_id": "YZD-PROD-0928",
+      "slug": "nasomatto-fantomas",
+      "official_url": "https://nasomatto.com/products/fantomas",
+      "supplier_brand": "NASOMATTO",
+      "supplier_model": "Fantomas",
+      "usd_per_kg": "530.2",
+      "quality": "H",
+      "match_status": "name_matched_supplier_identity_unverified",
+      "expected_edps": [
+        {
+          "sku": "YZD-0928-EDP-010",
+          "volume_ml": 10,
+          "price_toman": 710000,
+          "stock": 0,
+          "price_usd": 8.0
+        },
+        {
+          "sku": "YZD-0928-EDP-030",
+          "volume_ml": 30,
+          "price_toman": 1830000,
+          "stock": 0,
+          "price_usd": 8.0
+        },
+        {
+          "sku": "YZD-0928-EDP-050",
+          "volume_ml": 50,
+          "price_toman": 2950000,
+          "stock": 0,
+          "price_usd": 8.0
+        },
+        {
+          "sku": "YZD-0928-EDP-100",
+          "volume_ml": 100,
+          "price_toman": 5750000,
+          "stock": 0,
+          "price_usd": 8.0
+        }
+      ],
+      "brand_en": "Nasomatto",
+      "expected_name_en": "NASOMATTO - Fantomas",
+      "reference_name": "Fantomas"
+    },
+    {
+      "product_id": "YZD-PROD-0931",
+      "slug": "orto-parisi-megamare",
+      "official_url": "https://ortoparisi.com/products/megamare",
+      "supplier_brand": "Orto Parisi",
+      "supplier_model": "Megamare",
+      "usd_per_kg": "1118.7",
+      "quality": "T",
+      "match_status": "name_matched_supplier_identity_unverified",
+      "expected_edps": [
+        {
+          "sku": "YZD-0931-EDP-010",
+          "volume_ml": 10,
+          "price_toman": 710000,
+          "stock": 0,
+          "price_usd": 8.0
+        },
+        {
+          "sku": "YZD-0931-EDP-030",
+          "volume_ml": 30,
+          "price_toman": 1830000,
+          "stock": 0,
+          "price_usd": 8.0
+        },
+        {
+          "sku": "YZD-0931-EDP-050",
+          "volume_ml": 50,
+          "price_toman": 2950000,
+          "stock": 0,
+          "price_usd": 8.0
+        },
+        {
+          "sku": "YZD-0931-EDP-100",
+          "volume_ml": 100,
+          "price_toman": 5750000,
+          "stock": 0,
+          "price_usd": 8.0
+        }
+      ],
+      "brand_en": "Orto Parisi",
+      "expected_name_en": "ORTO PARISI - Megamare",
+      "reference_name": "Megamare"
+    },
+    {
+      "product_id": "YZD-PROD-0651",
+      "slug": "parfums-de-marly-galloway",
+      "official_url": "https://us.parfums-de-marly.com/products/galloway",
+      "supplier_brand": "PARFUMS de MARLY",
+      "supplier_model": "Galloway",
+      "usd_per_kg": "191.4",
+      "quality": "H",
+      "match_status": "name_matched_supplier_identity_unverified",
+      "expected_edps": [
+        {
+          "sku": "YZD-0651-EDP-010",
+          "volume_ml": 10,
+          "price_toman": 535000,
+          "stock": 0,
+          "price_usd": 5.5
+        },
+        {
+          "sku": "YZD-0651-EDP-030",
+          "volume_ml": 30,
+          "price_toman": 1305000,
+          "stock": 0,
+          "price_usd": 5.5
+        },
+        {
+          "sku": "YZD-0651-EDP-050",
+          "volume_ml": 50,
+          "price_toman": 2074999,
+          "stock": 0,
+          "price_usd": 5.5
+        },
+        {
+          "sku": "YZD-0651-EDP-100",
+          "volume_ml": 100,
+          "price_toman": 3999999,
+          "stock": 0,
+          "price_usd": 5.5
+        }
+      ],
+      "brand_en": "Parfums de Marly",
+      "expected_name_en": "PARFUMS DE MARLY - Galloway",
+      "reference_name": "Galloway"
+    },
+    {
+      "product_id": "YZD-PROD-0648",
+      "slug": "parfums-de-marly-godolphin",
+      "official_url": "https://us.parfums-de-marly.com/products/godolphin",
+      "supplier_brand": "PARFUMS de MARLY",
+      "supplier_model": "GODOLPHIN",
+      "usd_per_kg": "182.6",
+      "quality": "H",
+      "match_status": "name_matched_supplier_identity_unverified",
+      "expected_edps": [
+        {
+          "sku": "YZD-0648-EDP-010",
+          "volume_ml": 10,
+          "price_toman": 535000,
+          "stock": 0,
+          "price_usd": 5.5
+        },
+        {
+          "sku": "YZD-0648-EDP-030",
+          "volume_ml": 30,
+          "price_toman": 1305000,
+          "stock": 0,
+          "price_usd": 5.5
+        },
+        {
+          "sku": "YZD-0648-EDP-050",
+          "volume_ml": 50,
+          "price_toman": 2074999,
+          "stock": 0,
+          "price_usd": 5.5
+        },
+        {
+          "sku": "YZD-0648-EDP-100",
+          "volume_ml": 100,
+          "price_toman": 3999999,
+          "stock": 0,
+          "price_usd": 5.5
+        }
+      ],
+      "brand_en": "Parfums de Marly",
+      "expected_name_en": "PARFUMS DE MARLY - Godolphin",
+      "reference_name": "Godolphin"
+    },
+    {
+      "product_id": "YZD-PROD-0647",
+      "slug": "parfums-de-marly-greenley",
+      "official_url": "https://us.parfums-de-marly.com/products/greenley",
+      "supplier_brand": "PARFUMS de MARLY",
+      "supplier_model": "GREENLEY",
+      "usd_per_kg": "314.6",
+      "quality": "H",
+      "match_status": "name_matched_supplier_identity_unverified",
+      "expected_edps": [
+        {
+          "sku": "YZD-0647-EDP-010",
+          "volume_ml": 10,
+          "price_toman": 535000,
+          "stock": 0,
+          "price_usd": 5.5
+        },
+        {
+          "sku": "YZD-0647-EDP-030",
+          "volume_ml": 30,
+          "price_toman": 1305000,
+          "stock": 0,
+          "price_usd": 5.5
+        },
+        {
+          "sku": "YZD-0647-EDP-050",
+          "volume_ml": 50,
+          "price_toman": 2074999,
+          "stock": 0,
+          "price_usd": 5.5
+        },
+        {
+          "sku": "YZD-0647-EDP-100",
+          "volume_ml": 100,
+          "price_toman": 3999999,
+          "stock": 0,
+          "price_usd": 5.5
+        }
+      ],
+      "brand_en": "Parfums de Marly",
+      "expected_name_en": "PARFUMS DE MARLY - Greenley",
+      "reference_name": "Greenley"
+    },
+    {
+      "product_id": "YZD-PROD-0642",
+      "slug": "parfums-de-marly-haltane",
+      "official_url": "https://us.parfums-de-marly.com/products/haltane",
+      "supplier_brand": "PARFUMS de MARLY",
+      "supplier_model": "Haltane",
+      "usd_per_kg": "283.8",
+      "quality": "H",
+      "match_status": "name_matched_supplier_identity_unverified",
+      "expected_edps": [
+        {
+          "sku": "YZD-0642-EDP-010",
+          "volume_ml": 10,
+          "price_toman": 605000,
+          "stock": 0,
+          "price_usd": 6.5
+        },
+        {
+          "sku": "YZD-0642-EDP-030",
+          "volume_ml": 30,
+          "price_toman": 1515000,
+          "stock": 0,
+          "price_usd": 6.5
+        },
+        {
+          "sku": "YZD-0642-EDP-050",
+          "volume_ml": 50,
+          "price_toman": 2425000,
+          "stock": 0,
+          "price_usd": 6.5
+        },
+        {
+          "sku": "YZD-0642-EDP-100",
+          "volume_ml": 100,
+          "price_toman": 4700000,
+          "stock": 0,
+          "price_usd": 6.5
+        }
+      ],
+      "brand_en": "Parfums de Marly",
+      "expected_name_en": "PARFUMS DE MARLY - Haltane",
+      "reference_name": "Haltane"
+    },
+    {
+      "product_id": "YZD-PROD-0639",
+      "slug": "parfums-de-marly-herod",
+      "official_url": "https://us.parfums-de-marly.com/products/herod",
+      "supplier_brand": "PARFUMS de MARLY",
+      "supplier_model": "Herod",
+      "usd_per_kg": "199.1",
+      "quality": "H",
+      "match_status": "name_matched_supplier_identity_unverified",
+      "expected_edps": [
+        {
+          "sku": "YZD-0639-EDP-010",
+          "volume_ml": 10,
+          "price_toman": 535000,
+          "stock": 0,
+          "price_usd": 5.5
+        },
+        {
+          "sku": "YZD-0639-EDP-030",
+          "volume_ml": 30,
+          "price_toman": 1305000,
+          "stock": 0,
+          "price_usd": 5.5
+        },
+        {
+          "sku": "YZD-0639-EDP-050",
+          "volume_ml": 50,
+          "price_toman": 2074999,
+          "stock": 0,
+          "price_usd": 5.5
+        },
+        {
+          "sku": "YZD-0639-EDP-100",
+          "volume_ml": 100,
+          "price_toman": 3999999,
+          "stock": 0,
+          "price_usd": 5.5
+        }
+      ],
+      "brand_en": "Parfums de Marly",
+      "expected_name_en": "PARFUMS DE MARLY - Herod",
+      "reference_name": "Herod"
+    },
+    {
+      "product_id": "YZD-PROD-0650",
+      "slug": "parfums-de-marly-kalan",
+      "official_url": "https://us.parfums-de-marly.com/products/kalan",
+      "supplier_brand": "PARFUMS de MARLY",
+      "supplier_model": "KALAN",
+      "usd_per_kg": "322.3",
+      "quality": "H",
+      "match_status": "name_matched_supplier_identity_unverified",
+      "expected_edps": [
+        {
+          "sku": "YZD-0650-EDP-010",
+          "volume_ml": 10,
+          "price_toman": 570000,
+          "stock": 0,
+          "price_usd": 6.0
+        },
+        {
+          "sku": "YZD-0650-EDP-030",
+          "volume_ml": 30,
+          "price_toman": 1410000,
+          "stock": 0,
+          "price_usd": 6.0
+        },
+        {
+          "sku": "YZD-0650-EDP-050",
+          "volume_ml": 50,
+          "price_toman": 2250000,
+          "stock": 0,
+          "price_usd": 6.0
+        },
+        {
+          "sku": "YZD-0650-EDP-100",
+          "volume_ml": 100,
+          "price_toman": 4350000,
+          "stock": 0,
+          "price_usd": 6.0
+        }
+      ],
+      "brand_en": "Parfums de Marly",
+      "expected_name_en": "PARFUMS DE MARLY - Kalan",
+      "reference_name": "Kalan"
+    },
+    {
+      "product_id": "YZD-PROD-0656",
+      "slug": "parfums-de-marly-valaya",
+      "official_url": "https://us.parfums-de-marly.com/products/valaya",
+      "supplier_brand": "PARFUMS de MARLY",
+      "supplier_model": "VALAYA",
+      "usd_per_kg": "123.2",
+      "quality": "B",
+      "match_status": "name_matched_supplier_identity_unverified",
+      "expected_edps": [
+        {
+          "sku": "YZD-0656-EDP-010",
+          "volume_ml": 10,
+          "price_toman": 605000,
+          "stock": 0,
+          "price_usd": 6.5
+        },
+        {
+          "sku": "YZD-0656-EDP-030",
+          "volume_ml": 30,
+          "price_toman": 1515000,
+          "stock": 0,
+          "price_usd": 6.5
+        },
+        {
+          "sku": "YZD-0656-EDP-050",
+          "volume_ml": 50,
+          "price_toman": 2425000,
+          "stock": 0,
+          "price_usd": 6.5
+        },
+        {
+          "sku": "YZD-0656-EDP-100",
+          "volume_ml": 100,
+          "price_toman": 4700000,
+          "stock": 0,
+          "price_usd": 6.5
+        }
+      ],
+      "brand_en": "Parfums de Marly",
+      "expected_name_en": "PARFUMS DE MARLY - Valaya",
+      "reference_name": "Valaya"
+    },
+    {
+      "product_id": "YZD-PROD-0640",
+      "slug": "parfums-de-marly-pegasus",
+      "official_url": "https://us.parfums-de-marly.com/products/pegasus",
+      "supplier_brand": "PARFUMS de MARLY",
+      "supplier_model": "Pegasus",
+      "usd_per_kg": "191.4",
+      "quality": "H",
+      "match_status": "name_matched_supplier_identity_unverified",
+      "expected_edps": [
+        {
+          "sku": "YZD-0640-EDP-010",
+          "volume_ml": 10,
+          "price_toman": 535000,
+          "stock": 0,
+          "price_usd": 5.5
+        },
+        {
+          "sku": "YZD-0640-EDP-030",
+          "volume_ml": 30,
+          "price_toman": 1305000,
+          "stock": 0,
+          "price_usd": 5.5
+        },
+        {
+          "sku": "YZD-0640-EDP-050",
+          "volume_ml": 50,
+          "price_toman": 2074999,
+          "stock": 0,
+          "price_usd": 5.5
+        },
+        {
+          "sku": "YZD-0640-EDP-100",
+          "volume_ml": 100,
+          "price_toman": 3999999,
+          "stock": 0,
+          "price_usd": 5.5
+        }
+      ],
+      "brand_en": "Parfums de Marly",
+      "expected_name_en": "PARFUMS DE MARLY - Pegasus",
+      "reference_name": "Pegasus"
+    },
+    {
+      "product_id": "YZD-PROD-0501",
+      "slug": "penhaligons-the-tragedy-of-lord-george",
+      "official_url": "https://www.penhaligons.com/uk/en/p/the-tragedy-of-lord-george-eau-de-parfum-75-ml--000000000065173406",
+      "supplier_brand": "Penhaligons",
+      "supplier_model": "The tragedy of Lord George",
+      "usd_per_kg": "423.5",
+      "quality": "H",
+      "match_status": "name_matched_supplier_identity_unverified",
+      "expected_edps": [
+        {
+          "sku": "YZD-0501-EDP-010",
+          "volume_ml": 10,
+          "price_toman": 605000,
+          "stock": 0,
+          "price_usd": 6.5
+        },
+        {
+          "sku": "YZD-0501-EDP-030",
+          "volume_ml": 30,
+          "price_toman": 1515000,
+          "stock": 0,
+          "price_usd": 6.5
+        },
+        {
+          "sku": "YZD-0501-EDP-050",
+          "volume_ml": 50,
+          "price_toman": 2425000,
+          "stock": 0,
+          "price_usd": 6.5
+        },
+        {
+          "sku": "YZD-0501-EDP-100",
+          "volume_ml": 100,
+          "price_toman": 4700000,
+          "stock": 0,
+          "price_usd": 6.5
+        }
+      ],
+      "brand_en": "Penhaligon's",
+      "expected_name_en": "PENHALIGON'S - The Tragedy of Lord George",
+      "reference_name": "The Tragedy of Lord George"
+    },
+    {
+      "product_id": "YZD-PROD-1684",
+      "slug": "tom-ford-fucking-fabulous",
+      "official_url": "https://www.tomfordbeauty.com/products/fucking-fabulous-eau-de-parfum",
+      "supplier_brand": "TOM FORD",
+      "supplier_model": "Fucking Fabulous",
+      "usd_per_kg": "331.1",
+      "quality": "H",
+      "match_status": "name_matched_supplier_identity_unverified",
+      "expected_edps": [
+        {
+          "sku": "YZD-1684-EDP-010",
+          "volume_ml": 10,
+          "price_toman": 675000,
+          "stock": 0,
+          "price_usd": 7.5
+        },
+        {
+          "sku": "YZD-1684-EDP-030",
+          "volume_ml": 30,
+          "price_toman": 1725000,
+          "stock": 0,
+          "price_usd": 7.5
+        },
+        {
+          "sku": "YZD-1684-EDP-050",
+          "volume_ml": 50,
+          "price_toman": 2775000,
+          "stock": 0,
+          "price_usd": 7.5
+        },
+        {
+          "sku": "YZD-1684-EDP-100",
+          "volume_ml": 100,
+          "price_toman": 5400000,
+          "stock": 0,
+          "price_usd": 7.5
+        }
+      ],
+      "brand_en": "Tom Ford",
+      "expected_name_en": "TOM FORD - Fucking Fabulous",
+      "reference_name": "Fucking Fabulous"
+    },
+    {
+      "product_id": "YZD-PROD-1676",
+      "slug": "tom-ford-oud-wood",
+      "official_url": "https://www.tomfordbeauty.com/products/oud-wood-eau-de-parfum",
+      "supplier_brand": "TOM FORD",
+      "supplier_model": "OUD WOOD",
+      "usd_per_kg": "187",
+      "quality": "B",
+      "match_status": "name_matched_supplier_identity_unverified",
+      "expected_edps": [
+        {
+          "sku": "YZD-1676-EDP-010",
+          "volume_ml": 10,
+          "price_toman": 639999,
+          "stock": 0,
+          "price_usd": 7.0
+        },
+        {
+          "sku": "YZD-1676-EDP-030",
+          "volume_ml": 30,
+          "price_toman": 1620000,
+          "stock": 0,
+          "price_usd": 7.0
+        },
+        {
+          "sku": "YZD-1676-EDP-050",
+          "volume_ml": 50,
+          "price_toman": 2600000,
+          "stock": 0,
+          "price_usd": 7.0
+        },
+        {
+          "sku": "YZD-1676-EDP-100",
+          "volume_ml": 100,
+          "price_toman": 5050000,
+          "stock": 0,
+          "price_usd": 7.0
+        }
+      ],
+      "brand_en": "Tom Ford",
+      "expected_name_en": "TOM FORD - Oud Wood",
+      "reference_name": "Oud Wood"
+    },
+    {
+      "product_id": "YZD-PROD-1674",
+      "slug": "tom-ford-tobacco-vanille",
+      "official_url": "https://www.tomfordbeauty.com/products/tobacco-vanille-eau-de-parfum",
+      "supplier_brand": "TOM FORD",
+      "supplier_model": "Tobacco Vanille",
+      "usd_per_kg": "382.8",
+      "quality": "H",
+      "match_status": "name_matched_supplier_identity_unverified",
+      "expected_edps": [
+        {
+          "sku": "YZD-1674-EDP-010",
+          "volume_ml": 10,
+          "price_toman": 639999,
+          "stock": 0,
+          "price_usd": 7.0
+        },
+        {
+          "sku": "YZD-1674-EDP-030",
+          "volume_ml": 30,
+          "price_toman": 1620000,
+          "stock": 0,
+          "price_usd": 7.0
+        },
+        {
+          "sku": "YZD-1674-EDP-050",
+          "volume_ml": 50,
+          "price_toman": 2600000,
+          "stock": 0,
+          "price_usd": 7.0
+        },
+        {
+          "sku": "YZD-1674-EDP-100",
+          "volume_ml": 100,
+          "price_toman": 5050000,
+          "stock": 0,
+          "price_usd": 7.0
+        }
+      ],
+      "brand_en": "Tom Ford",
+      "expected_name_en": "TOM FORD - Tobacco Vanille",
+      "reference_name": "Tobacco Vanille"
+    },
+    {
+      "product_id": "YZD-PROD-1675",
+      "slug": "tom-ford-tuscan-leather",
+      "official_url": "https://www.tomfordbeauty.com/products/tuscan-leather-eau-de-parfum",
+      "supplier_brand": "TOM FORD",
+      "supplier_model": "Tuscan Leather",
+      "usd_per_kg": "202.4",
+      "quality": "H",
+      "match_status": "name_matched_supplier_identity_unverified",
+      "expected_edps": [
+        {
+          "sku": "YZD-1675-EDP-010",
+          "volume_ml": 10,
+          "price_toman": 639999,
+          "stock": 0,
+          "price_usd": 7.0
+        },
+        {
+          "sku": "YZD-1675-EDP-030",
+          "volume_ml": 30,
+          "price_toman": 1620000,
+          "stock": 0,
+          "price_usd": 7.0
+        },
+        {
+          "sku": "YZD-1675-EDP-050",
+          "volume_ml": 50,
+          "price_toman": 2600000,
+          "stock": 0,
+          "price_usd": 7.0
+        },
+        {
+          "sku": "YZD-1675-EDP-100",
+          "volume_ml": 100,
+          "price_toman": 5050000,
+          "stock": 0,
+          "price_usd": 7.0
+        }
+      ],
+      "brand_en": "Tom Ford",
+      "expected_name_en": "TOM FORD - Tuscan Leather",
+      "reference_name": "Tuscan Leather"
+    },
+    {
+      "product_id": "YZD-PROD-0990",
+      "slug": "byredo-de-los-santos",
+      "official_url": "https://www.byredo.com/us_en/de-los-santos-50ml",
+      "supplier_brand": "BYREDO",
+      "supplier_model": "DE LOS SANTOS",
+      "usd_per_kg": "410.3",
+      "quality": "H",
+      "match_status": "name_matched_supplier_identity_unverified",
+      "expected_edps": [
+        {
+          "sku": "YZD-0990-EDP-010",
+          "volume_ml": 10,
+          "price_toman": 535000,
+          "stock": 0,
+          "price_usd": 5.5
+        },
+        {
+          "sku": "YZD-0990-EDP-030",
+          "volume_ml": 30,
+          "price_toman": 1305000,
+          "stock": 0,
+          "price_usd": 5.5
+        },
+        {
+          "sku": "YZD-0990-EDP-050",
+          "volume_ml": 50,
+          "price_toman": 2074999,
+          "stock": 0,
+          "price_usd": 5.5
+        },
+        {
+          "sku": "YZD-0990-EDP-100",
+          "volume_ml": 100,
+          "price_toman": 3999999,
+          "stock": 0,
+          "price_usd": 5.5
+        }
+      ],
+      "brand_en": "Byredo",
+      "expected_name_en": "BYREDO - De Los Santos",
+      "reference_name": "De Los Santos"
+    },
+    {
+      "product_id": "YZD-PROD-0989",
+      "slug": "byredo-rouge-chaotique",
+      "official_url": "https://www.byredo.com/us_en/p/rouge-chaotique-night-veils-perfume-extract-70ml",
+      "supplier_brand": "BYREDO",
+      "supplier_model": "ROUGE CHAOTIQUE",
+      "usd_per_kg": "382.8",
+      "quality": "H",
+      "match_status": "name_matched_supplier_identity_unverified",
+      "expected_edps": [
+        {
+          "sku": "YZD-0989-EDP-010",
+          "volume_ml": 10,
+          "price_toman": 675000,
+          "stock": 0,
+          "price_usd": 7.5
+        },
+        {
+          "sku": "YZD-0989-EDP-030",
+          "volume_ml": 30,
+          "price_toman": 1725000,
+          "stock": 0,
+          "price_usd": 7.5
+        },
+        {
+          "sku": "YZD-0989-EDP-050",
+          "volume_ml": 50,
+          "price_toman": 2775000,
+          "stock": 0,
+          "price_usd": 7.5
+        },
+        {
+          "sku": "YZD-0989-EDP-100",
+          "volume_ml": 100,
+          "price_toman": 5400000,
+          "stock": 0,
+          "price_usd": 7.5
+        }
+      ],
+      "brand_en": "Byredo",
+      "expected_name_en": "BYREDO - Rouge Chaotique",
+      "reference_name": "Rouge Chaotique"
+    },
+    {
+      "product_id": "YZD-PROD-1706",
+      "slug": "versace-bright-crystal",
+      "official_url": "https://www.versace.com/us/en/women/accessories/fragrances-body-care/bright-crystal/bright-crystal-edt-90-ml-pink/R510032-R090MLS_RNUL.html",
+      "supplier_brand": "VERSACE",
+      "supplier_model": "Bright Crystal",
+      "usd_per_kg": "166.1",
+      "quality": "H",
+      "match_status": "name_matched_supplier_identity_unverified",
+      "expected_edps": [
+        {
+          "sku": "YZD-1706-EDP-010",
+          "volume_ml": 10,
+          "price_toman": 394999,
+          "stock": 0,
+          "price_usd": 3.5
+        },
+        {
+          "sku": "YZD-1706-EDP-030",
+          "volume_ml": 30,
+          "price_toman": 885000,
+          "stock": 0,
+          "price_usd": 3.5
+        },
+        {
+          "sku": "YZD-1706-EDP-050",
+          "volume_ml": 50,
+          "price_toman": 1375000,
+          "stock": 0,
+          "price_usd": 3.5
+        },
+        {
+          "sku": "YZD-1706-EDP-100",
+          "volume_ml": 100,
+          "price_toman": 2600000,
+          "stock": 0,
+          "price_usd": 3.5
+        }
+      ],
+      "brand_en": "Versace",
+      "expected_name_en": "VERSACE - Bright Crystal",
+      "reference_name": "Bright Crystal"
+    },
+    {
+      "product_id": "YZD-PROD-0591",
+      "slug": "xerjoff-torino22",
+      "official_url": "https://www.xerjoff.com/products/torino22-eau-de-parfum",
+      "supplier_brand": "XERJOFF",
+      "supplier_model": "TORINO22",
+      "usd_per_kg": "277.2",
+      "quality": "H",
+      "match_status": "name_matched_supplier_identity_unverified",
+      "expected_edps": [
+        {
+          "sku": "YZD-0591-EDP-010",
+          "volume_ml": 10,
+          "price_toman": 605000,
+          "stock": 0,
+          "price_usd": 6.5
+        },
+        {
+          "sku": "YZD-0591-EDP-030",
+          "volume_ml": 30,
+          "price_toman": 1515000,
+          "stock": 0,
+          "price_usd": 6.5
+        },
+        {
+          "sku": "YZD-0591-EDP-050",
+          "volume_ml": 50,
+          "price_toman": 2425000,
+          "stock": 0,
+          "price_usd": 6.5
+        },
+        {
+          "sku": "YZD-0591-EDP-100",
+          "volume_ml": 100,
+          "price_toman": 4700000,
+          "stock": 0,
+          "price_usd": 6.5
+        }
+      ],
+      "brand_en": "Xerjoff",
+      "expected_name_en": "XERJOFF - Torino22",
+      "reference_name": "Torino22"
+    },
+    {
+      "product_id": "YZD-PROD-0576",
+      "slug": "xerjoff-alexandria-ii",
+      "official_url": "https://www.xerjoff.com/en-us/products/alexandria-ll-parfum",
+      "supplier_brand": "XERJOFF",
+      "supplier_model": "Alexandria II",
+      "usd_per_kg": "333.3",
+      "quality": "H",
+      "match_status": "name_matched_supplier_identity_unverified",
+      "expected_edps": [
+        {
+          "sku": "YZD-0576-EDP-010",
+          "volume_ml": 10,
+          "price_toman": 745000,
+          "stock": 0,
+          "price_usd": 8.5
+        },
+        {
+          "sku": "YZD-0576-EDP-030",
+          "volume_ml": 30,
+          "price_toman": 1935000,
+          "stock": 0,
+          "price_usd": 8.5
+        },
+        {
+          "sku": "YZD-0576-EDP-050",
+          "volume_ml": 50,
+          "price_toman": 3125000,
+          "stock": 0,
+          "price_usd": 8.5
+        },
+        {
+          "sku": "YZD-0576-EDP-100",
+          "volume_ml": 100,
+          "price_toman": 6100000,
+          "stock": 0,
+          "price_usd": 8.5
+        }
+      ],
+      "brand_en": "Xerjoff",
+      "expected_name_en": "XERJOFF - Alexandria II",
+      "reference_name": "Alexandria II"
+    },
+    {
+      "product_id": "YZD-PROD-1512",
+      "slug": "yves-saint-laurent-babycat",
+      "official_url": "https://www.yslbeautyus.com/fragrance/le-vestiaire-des-parfums/the-signature-collection/babycat---le-vestiaire-des-parfums/WW-50920YSL.html",
+      "supplier_brand": "Yves Saint Laurent",
+      "supplier_model": "BABYCAT",
+      "usd_per_kg": "292.6",
+      "quality": "H",
+      "match_status": "name_matched_supplier_identity_unverified",
+      "expected_edps": [
+        {
+          "sku": "YZD-1512-EDP-010",
+          "volume_ml": 10,
+          "price_toman": 780000,
+          "stock": 0,
+          "price_usd": 9.0
+        },
+        {
+          "sku": "YZD-1512-EDP-030",
+          "volume_ml": 30,
+          "price_toman": 2039999,
+          "stock": 0,
+          "price_usd": 9.0
+        },
+        {
+          "sku": "YZD-1512-EDP-050",
+          "volume_ml": 50,
+          "price_toman": 3300000,
+          "stock": 0,
+          "price_usd": 9.0
+        },
+        {
+          "sku": "YZD-1512-EDP-100",
+          "volume_ml": 100,
+          "price_toman": 6450000,
+          "stock": 0,
+          "price_usd": 9.0
+        }
+      ],
+      "brand_en": "Yves Saint Laurent",
+      "expected_name_en": "YVES SAINT LAURENT - Babycat",
+      "reference_name": "Babycat"
+    },
+    {
+      "product_id": "YZD-PROD-1505",
+      "slug": "yves-saint-laurent-libre-intense",
+      "official_url": "https://www.yslbeautyus.com/fragrance/womens-fragrances/libre/libre-eau-de-parfum-intense/306YSL.html",
+      "supplier_brand": "Yves Saint Laurent",
+      "supplier_model": "LIBRE INTENSE",
+      "usd_per_kg": "119.9",
+      "quality": "B",
+      "match_status": "name_matched_supplier_identity_unverified",
+      "expected_edps": [
+        {
+          "sku": "YZD-1505-EDP-010",
+          "volume_ml": 10,
+          "price_toman": 500000,
+          "stock": 0,
+          "price_usd": 5.0
+        },
+        {
+          "sku": "YZD-1505-EDP-030",
+          "volume_ml": 30,
+          "price_toman": 1200000,
+          "stock": 0,
+          "price_usd": 5.0
+        },
+        {
+          "sku": "YZD-1505-EDP-050",
+          "volume_ml": 50,
+          "price_toman": 1900000,
+          "stock": 0,
+          "price_usd": 5.0
+        },
+        {
+          "sku": "YZD-1505-EDP-100",
+          "volume_ml": 100,
+          "price_toman": 3650000,
+          "stock": 0,
+          "price_usd": 5.0
+        }
+      ],
+      "brand_en": "Yves Saint Laurent",
+      "expected_name_en": "YVES SAINT LAURENT - Libre Intense",
+      "reference_name": "Libre Intense"
+    },
+    {
+      "product_id": "YZD-PROD-1507",
+      "slug": "yves-saint-laurent-mon-paris",
+      "official_url": "https://www.yslbeautyus.com/fragrance/womens-fragrances/mon-paris/mon-paris-eau-de-parfum/4150YSL.html",
+      "supplier_brand": "Yves Saint Laurent",
+      "supplier_model": "Mon Paris",
+      "usd_per_kg": "388.3",
+      "quality": "H",
+      "match_status": "name_matched_supplier_identity_unverified",
+      "expected_edps": [
+        {
+          "sku": "YZD-1507-EDP-010",
+          "volume_ml": 10,
+          "price_toman": 465000,
+          "stock": 0,
+          "price_usd": 4.5
+        },
+        {
+          "sku": "YZD-1507-EDP-030",
+          "volume_ml": 30,
+          "price_toman": 1094999,
+          "stock": 0,
+          "price_usd": 4.5
+        },
+        {
+          "sku": "YZD-1507-EDP-050",
+          "volume_ml": 50,
+          "price_toman": 1725000,
+          "stock": 0,
+          "price_usd": 4.5
+        },
+        {
+          "sku": "YZD-1507-EDP-100",
+          "volume_ml": 100,
+          "price_toman": 3300000,
+          "stock": 0,
+          "price_usd": 4.5
+        }
+      ],
+      "brand_en": "Yves Saint Laurent",
+      "expected_name_en": "YVES SAINT LAURENT - Mon Paris",
+      "reference_name": "Mon Paris"
+    }
+  ]
+}

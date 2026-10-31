@@ -2673,6 +2673,10 @@ require('./lv-reference-prices').applyLvReferencePrices(db, path.join(SEED_DIR, 
 // A separate, guarded batch covers four further official-name matches; it only
 // updates unchanged unavailable products and records the provisional source.
 require('./reference-price-import').applyReferencePrices(db, path.join(SEED_DIR, 'official_reference_prices_v1.json'));
+// Restore sourced provisional references for untouched unavailable rows only.
+// Operators can defer this batch by setting REFERENCE_PRICE_V2_AUTOMIGRATE=0.
+if (process.env.REFERENCE_PRICE_V2_AUTOMIGRATE !== '0')
+  require('./reference-price-import').applyReferencePrices(db, path.join(SEED_DIR, 'official_reference_prices_v2.json'));
 // Correct earlier supplier-derived gender fields only for unchanged, unavailable
 // supplement rows. Never switch availability or overwrite a different value.
 function correctSupplementGenderFromOfficial() {

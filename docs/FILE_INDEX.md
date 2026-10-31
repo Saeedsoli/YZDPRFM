@@ -436,3 +436,7 @@ node_modules/   با npm install برمی‌گردد
 
 - `scripts/test_official_identity_evidence.js`
 - `src/official-identities.js`
+
+### بازسازی قیمت‌های مرجع منبع‌دار
+
+- `scripts/test_reference_prices_v2.js`
