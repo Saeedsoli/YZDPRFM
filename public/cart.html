@@ -155,16 +155,13 @@ async function syncCart() {
       });
     }
 
-    // موجودی کمتر از تعداد درخواستی
-    if (live.stock <= 0) {
+    // The server distinguishes physical stock from made-to-order availability.
+    if (live.state === 'UNAVAILABLE' || !Number.isInteger(live.max_quantity) || live.max_quantity <= 0) {
       it._out = true;
-      notes.push({ kind: 'bad', text: `«${it.name}» فعلاً ناموجود است.` });
-    } else if (live.stock < it.quantity) {
-      notes.push({
-        kind: 'warn',
-        text: `از «${it.name}» تنها ${toFa(live.stock)} عدد موجود است؛ تعداد اصلاح شد.`
-      });
-      it.quantity = live.stock;
+      notes.push({ kind: 'bad', text: `«${it.name}» فعلاً قابل تهیه نیست.` });
+    } else if (live.max_quantity < it.quantity) {
+      notes.push({ kind: 'warn', text: `حداکثر تعداد «${it.name}» ${toFa(live.max_quantity)} عدد است؛ تعداد اصلاح شد.` });
+      it.quantity = live.max_quantity;
     }
 
     kept.push(it);
@@ -258,6 +255,7 @@ function render() {
             ${m.oldPrice ? `<span class="ci-flag ${i.price > m.oldPrice ? 'up' : 'down'}">
               ${i.price > m.oldPrice ? 'قیمت افزایش یافت' : 'قیمت کاهش یافت'}</span>` : ''}
             ${m.out ? '<span class="ci-flag out">ناموجود</span>'
+              : live?.state === 'MADE_TO_ORDER' ? '<span class="ci-flag">به سفارش ساخته می‌شود</span>'
               : low ? `<span class="ci-flag low">تنها ${toFa(live.stock)} عدد باقی مانده</span>` : ''}
             <button class="rm-btn" onclick="rm('${i.sku}')">حذف از سبد</button>
           </div>
@@ -329,7 +327,14 @@ function render() {
 }
 
 function rm(sku) { YazdCart.remove(sku); render(); toast('کالا حذف شد'); }
-function q(sku, n) { YazdCart.setQty(sku, n); revalidateCoupon(); }
+function q(sku, n) {
+  const live = liveMap[sku];
+  if (n > 0 && live && (live.state === 'UNAVAILABLE' || n > live.max_quantity)) {
+    toast(live.state === 'UNAVAILABLE' ? 'این کالا فعلاً قابل تهیه نیست.' : 'حداکثر تعداد مجاز ' + toFa(live.max_quantity) + ' عدد است.');
+    return;
+  }
+  YazdCart.setQty(sku, n); revalidateCoupon();
+}
 
 /* ── منبع واحد حقیقت برای مبالغ ──
    یک مسیر واحد (`/api/cart/calculate`) هم جشنواره را حساب می‌کند

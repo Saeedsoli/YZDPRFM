@@ -247,7 +247,7 @@ async function handle(ctx) {
     });
 
     // اطلاع‌رسانی به منتظران در صورت موجود شدن
-    const notified = (v.stock === 0 && stock > 0)
+    const notified = (stock > 0 && price > 0 && (v.stock <= 0 || v.price_toman <= 0))
       ? notifyStockWatchers([sku], 'ویرایش ادمین')
       : 0;
 
@@ -327,6 +327,10 @@ async function handle(ctx) {
           error: 'وضعیت تأمین نامعتبر است. مجاز: ' + MODES.join('، ') });
       }
       db.prepare('UPDATE products SET supply_mode=? WHERE id=?').run(b.supply_mode, p.id);
+      if (p.supply_mode === 'UNAVAILABLE' && b.supply_mode !== 'UNAVAILABLE') {
+        const skus = db.prepare('SELECT sku FROM variants WHERE product_id=? AND stock>0').all(p.id).map(v => v.sku);
+        if (skus.length) notifyStockWatchers(skus, 'تغییر وضعیت تأمین');
+      }
       bustStatsCache && bustStatsCache();
       appLog('INFO', 'admin', 'تغییر وضعیت تأمین',
              { product: p.id, mode: b.supply_mode });

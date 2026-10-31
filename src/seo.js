@@ -122,8 +122,8 @@ function productPage(html, p) {
   const url = `${SITE}/perfume/${p.slug}`;
   const image = SITE + p.image_url;
 
-  const inStock = (p.variants || []).some(v => v.stock > 0);
-  const prices = (p.variants || []).map(v => v.price_toman).filter(Boolean);
+  const inStock = (p.variants || []).some(v => v.stock > 0 && v.price_toman > 0);
+  const prices = (p.variants || []).map(v => v.price_toman).filter(v => Number.isFinite(v) && v > 0);
 
   /* ── چرا availability سه‌حالته است، نه دوحالته ──
      پیش‌تر این خط فقط `inStock ? InStock : OutOfStock` بود. چون
@@ -146,11 +146,13 @@ function productPage(html, p) {
      ⚠ BackOrder ایجاب می‌کند زمان ارسال روی صفحه دیده شود؛
      صفحه محصول «ارسال ۳ تا ۷ روز کاری» را نشان می‌دهد، پس شرط
      برقرار است. */
-  const mode = p.supply_mode || 'MADE_TO_ORDER';
-  const availability =
-    inStock                  ? 'https://schema.org/InStock'
-    : mode === 'UNAVAILABLE' ? 'https://schema.org/OutOfStock'
-    :                          'https://schema.org/BackOrder';
+  const mode = p.supply_mode || 'UNAVAILABLE';
+  const hasPricedVariant = (p.variants || []).some(v => v.price_toman > 0);
+  const availability = !['IN_STOCK','MADE_TO_ORDER'].includes(mode) || !hasPricedVariant
+    ? 'https://schema.org/OutOfStock'
+    : inStock ? 'https://schema.org/InStock'
+    : mode === 'MADE_TO_ORDER' ? 'https://schema.org/BackOrder'
+    : 'https://schema.org/OutOfStock';
 
   // Schema.org — گوگل قیمت و موجودی را در نتایج نشان می‌دهد
   const schema = {
@@ -178,7 +180,7 @@ function productPage(html, p) {
        ترافیک کمتر، ادعای درست. */
     brand: { '@type': 'Brand', name: BRAND },
     category: p.family_fa,
-    offers: {
+    offers: prices.length ? {
       '@type': 'AggregateOffer',
       /* ── چرا IRR و ضرب در ۱۰ (ممیزی جعبه‌سیاه مرداد ۱۴۰۵) ──
          پیش‌تر `IRT` نوشته شده بود. این کد در استاندارد
@@ -196,10 +198,10 @@ function productPage(html, p) {
       priceCurrency: 'IRR',
       lowPrice: prices.length ? Math.min(...prices) * 10 : 0,
       highPrice: prices.length ? Math.max(...prices) * 10 : 0,
-      offerCount: (p.variants || []).length,
+      offerCount: prices.length,
       availability,
       seller: { '@type': 'Organization', name: BRAND }
-    }
+    } : undefined
   };
 
   const breadcrumb = {
@@ -242,7 +244,7 @@ function productPage(html, p) {
 
      صفحه برای بازدیدکننده کاملاً کار می‌کند — دکمه «خبرم کن»
      دارد. این فقط دستور به خزنده است. */
-  const noindex = mode === 'UNAVAILABLE'
+  const noindex = availability === 'https://schema.org/OutOfStock'
     ? '  <meta name="robots" content="noindex, follow">\n' : '';
 
   const extra = noindex + preload +

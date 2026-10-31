@@ -1,0 +1,10 @@
+'use strict';
+const assert=require('assert/strict');const {variantAvailability:a}=require('../src/availability');
+assert.deepEqual(a('UNAVAILABLE',10,1000),{state:'UNAVAILABLE',max_quantity:0});
+assert.deepEqual(a('IN_STOCK',0,1000),{state:'UNAVAILABLE',max_quantity:0});
+assert.deepEqual(a('IN_STOCK',2,1000),{state:'IN_STOCK',max_quantity:2});
+assert.deepEqual(a('IN_STOCK',100,1000),{state:'IN_STOCK',max_quantity:50});
+assert.deepEqual(a('MADE_TO_ORDER',0,1000),{state:'MADE_TO_ORDER',max_quantity:5});
+assert.deepEqual(a('MADE_TO_ORDER',2,1000),{state:'IN_STOCK',max_quantity:2});
+for(const [mode,stock,price] of [['MADE_TO_ORDER',0,0],['IN_STOCK',2,0],['BAD',2,1000],['IN_STOCK',-1,1000],['IN_STOCK',0.5,1000],['IN_STOCK',1,12.5]])assert.deepEqual(a(mode,stock,price),{state:'UNAVAILABLE',max_quantity:0});
+console.log('PASS availability rules: stock, made-to-order cap, hidden products, zero price and invalid data');

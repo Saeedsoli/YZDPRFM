@@ -358,8 +358,11 @@ function productCard(p) {
      درصد را حساب می‌کند، پس اختلاف گرد کردن پیش نمی‌آید. */
   const pct = p.campaign_percent || 0;
   const off = pct > 0 ? Math.floor(p.min_price * pct / 100) : 0;
-  const priceBlock = off > 0
-    ? `<span class="price">
+  const priceBlock = p.availability_unknown
+    ? `<span class="price">مشاهده قیمت روز</span>`
+    : Number(p.min_price) <= 0 || !Number.isFinite(Number(p.min_price))
+    ? `<span class="price">قیمت در دسترس نیست</span>`
+    : off > 0 ? `<span class="price">
          <s class="price-old">${money(p.min_price)}</s>
          از ${money(p.min_price - off)} <small>تومان</small>
        </span>`
@@ -386,16 +389,17 @@ function productCard(p) {
 
      این تفاوت مهم است چون بیشتر کاتالوگ عمداً بدون موجودی انبار
      است: عنوان‌ها برای سفارش و دیده‌شدن در جستجو می‌مانند. */
-  const inStock = p.in_stock !== false;
-  const mode = p.supply_mode || 'MADE_TO_ORDER';
-  const madeToOrder = !inStock && mode === 'MADE_TO_ORDER';
-  const out = !inStock && !madeToOrder;
+  const mode = p.supply_mode || 'UNAVAILABLE';
+  const inStock = (p.in_stock === true || p.in_stock === 1) && ['IN_STOCK','MADE_TO_ORDER'].includes(mode);
+  const unknownState = p.availability_unknown === true;
+  const madeToOrder = !unknownState && !inStock && mode === 'MADE_TO_ORDER' && Number(p.min_price) > 0;
+  const out = !unknownState && !inStock && !madeToOrder;
 
-  const stateLabel = inStock ? '' : (madeToOrder ? 'به سفارش' : 'فعلاً نداریم');
-  const peekText = inStock ? 'مشاهده و خرید'
+  const stateLabel = unknownState || inStock ? '' : (madeToOrder ? 'به سفارش' : 'فعلاً نداریم');
+  const peekText = unknownState ? 'مشاهده جزئیات' : inStock ? 'مشاهده و خرید'
                  : madeToOrder ? 'به سفارش ساخته می‌شود'
                  : 'خبرم کن وقتی رسید';
-  const aria = inStock ? 'مشاهده جزئیات'
+  const aria = unknownState || inStock ? 'مشاهده جزئیات'
              : madeToOrder ? 'به سفارش ساخته می‌شود'
              : 'فعلاً موجود نیست، اطلاع از موجود شدن';
 
@@ -513,7 +517,7 @@ const YazdRecent = {
          <button type="button" class="recent-clear">پاک کردن</button>
        </div>
        <div class="product-grid">
-         ${items.map(p => productCard({ ...p, notes: { top: [] } })).join('')}
+         ${items.map(p => productCard({ ...p, notes: { top: [] }, availability_unknown: true })).join('')}
        </div>`;
 
     box.querySelector('.recent-clear').onclick = () => {

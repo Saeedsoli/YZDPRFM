@@ -48,6 +48,7 @@
 
 'use strict';
 const { publicVariantSql } = require('../variant-visibility');
+const { variantAvailability } = require('../availability');
 
 /**
  * @param {object}   ctx
@@ -352,9 +353,11 @@ async function handle(ctx) {
     if (!mobile || !otp.isValidMobile(mobile))
       return sendJSON(400, { error: 'شماره موبایل معتبر وارد کنید.' });
 
-    const v = db.prepare(`SELECT sku, stock FROM variants v WHERE sku=? AND ${publicVariantSql('v')}`).get(b.sku);
+    const v = db.prepare(`SELECT v.sku, v.stock, v.price_toman, p.supply_mode FROM variants v
+      JOIN products p ON p.id=v.product_id WHERE v.sku=? AND ${publicVariantSql('v')}`).get(b.sku);
     if (!v) return sendJSON(404, { error: 'کالا یافت نشد' });
-    if (v.stock > 0) return sendJSON(400, { error: 'این کالا هم‌اکنون موجود است.' });
+    if (variantAvailability(v.supply_mode,v.stock,v.price_toman).state === 'IN_STOCK')
+      return sendJSON(400, { error: 'این کالا هم‌اکنون موجود است.' });
 
     db.prepare('INSERT OR IGNORE INTO stock_alerts (sku, mobile) VALUES (?,?)')
       .run(b.sku, mobile);

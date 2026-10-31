@@ -676,16 +676,14 @@ function render() {
   /* وضعیت هر واریانت باید با دکمه خرید هم‌داستان باشد.
      پیش‌تر کارت «ناموجود» می‌گفت و دکمه «سفارش ساخت» — تناقضی که
      اعتماد را می‌برد. */
-  const supplyMode = p.supply_mode || 'MADE_TO_ORDER';
-  const canOrder = supplyMode !== 'UNAVAILABLE';
+  const supplyMode = p.supply_mode || 'UNAVAILABLE';
 
   vg.innerHTML = p.variants.map((v, i) => {
     const noStock = v.stock <= 0;
-    // «out» یعنی غیرقابل انتخاب — نه صرفاً بدون موجودی انبار
-    const out = noStock && !canOrder;
-    const vState = !noStock ? 'موجود'
-                 : canOrder ? 'به سفارش'
-                 : 'ناموجود';
+    const allowed = ['IN_STOCK','MADE_TO_ORDER'].includes(supplyMode) && v.price_toman > 0;
+    const madeToOrder = allowed && noStock && supplyMode === 'MADE_TO_ORDER';
+    const out = !allowed || (noStock && !madeToOrder);
+    const vState = out ? 'ناموجود' : madeToOrder ? 'به سفارش' : 'موجود';
     const label = typeLabel(v.type);
     /* `final_price` و `campaign_percent` را سرور می‌دهد. اگر
        جشنواره‌ای نباشد، `final_price` برابر خودِ قیمت است — پس
@@ -703,8 +701,8 @@ function render() {
       <div class="vt">${label}</div>
       <div class="vt" style="color:var(--muted);font-size:.72rem">${toFa(v.volume_ml)} میل</div>
       ${pct > 0 ? `<div class="vo">${money(v.price_toman)}</div>` : ''}
-      <div class="vp${pct > 0 ? ' sale' : ''}">${money(shown)}</div>
-      <div class="vs${noStock && canOrder ? ' mto' : ''}">${vState}</div>
+      <div class="vp${pct > 0 ? ' sale' : ''}">${v.price_toman > 0 ? money(shown) : 'قیمت نامشخص'}</div>
+      <div class="vs${madeToOrder ? ' mto' : ''}">${vState}</div>
     </div>`;
   }).join('');
 
@@ -722,8 +720,9 @@ function render() {
        </div>`
     : '';
 
-  const firstAvailable = p.variants.findIndex(v => v.stock > 0);
-  pick(firstAvailable >= 0 ? firstAvailable : 0);
+  const firstAvailable = p.variants.findIndex(v => ['IN_STOCK','MADE_TO_ORDER'].includes(supplyMode) && v.stock > 0 && v.price_toman > 0);
+  const firstMadeToOrder = p.variants.findIndex(v => supplyMode === 'MADE_TO_ORDER' && v.price_toman > 0);
+  pick(firstAvailable >= 0 ? firstAvailable : firstMadeToOrder >= 0 ? firstMadeToOrder : 0);
 
   /* نمایش صفحه.
      `#content` با display:none شروع می‌شود تا کاربر محتوای
@@ -748,7 +747,8 @@ function render() {
   YazdRecent.render('#recent', { exclude: p.slug, limit: 4 });
   YazdRecent.push({
     slug: p.slug, id: p.id, name_fa: p.name_fa, name_en: p.name_en,
-    brand_fa: p.brand_fa, gender: p.gender,
+    brand_fa: p.brand_fa, gender: p.gender, supply_mode: p.supply_mode,
+    in_stock: ['IN_STOCK','MADE_TO_ORDER'].includes(p.supply_mode) && p.variants.some(v => v.stock > 0 && v.price_toman > 0),
     image_url: p.image_url, min_price: p.min_price
   });
 }
@@ -767,7 +767,15 @@ const typeLabel = t => t === 'SAMPLE' ? 'سمپل'
   : t === 'BODY_SPLASH' ? 'بادی اسپلش' : 'ادوپرفیوم';
 
 function updatePrice() {
-  if (!selected) return;
+  if (!selected) {
+    document.getElementById('price').textContent = 'قیمت در دسترس نیست';
+    document.getElementById('stockInfo').textContent = 'فعلاً امکان تهیه نیست';
+    document.getElementById('addBtn').disabled = true;
+    document.getElementById('addBtn').textContent = 'فعلاً موجود نیست';
+    document.getElementById('barBtn').disabled = true;
+    document.getElementById('barBtn').textContent = 'موجود نیست';
+    return;
+  }
   const pEl = document.getElementById('price');
 
   /* قیمت نمایشی همان قیمت پس از جشنواره است. قیمت پیش از تخفیف
@@ -783,7 +791,7 @@ function updatePrice() {
     wasEl.hidden = true;
   }
 
-  pEl.innerHTML = `${money(unit * qty)} <small>تومان</small>`;
+  pEl.innerHTML = selected.price_toman > 0 ? `${money(unit * qty)} <small>تومان</small>` : 'قیمت در دسترس نیست';
   pEl.classList.remove('bump'); void pEl.offsetWidth; pEl.classList.add('bump');
   /* ── سه حالت تأمین ──
      «ناموجود» برای کار دست‌ساز پیام غلطی بود و مشتری را بن‌بست
@@ -794,33 +802,32 @@ function updatePrice() {
        MADE_TO_ORDER        → سفارش ساخت، تحویل چند روزه
        UNAVAILABLE          → فقط «خبرم کن» */
   const s = selected.stock;
-  const mode = product.supply_mode || 'MADE_TO_ORDER';
-  const mto = s <= 0 && mode === 'MADE_TO_ORDER';
-  const dead = s <= 0 && !mto;
+  const mode = product.supply_mode || 'UNAVAILABLE';
+  const valid = ['IN_STOCK','MADE_TO_ORDER'].includes(mode) && selected.price_toman > 0;
+  const mto = valid && s <= 0 && mode === 'MADE_TO_ORDER';
+  const dead = !valid || (s <= 0 && !mto);
 
   document.getElementById('stockInfo').textContent =
-      s > 10 ? 'موجود در انبار — ارسال از امروز'
+      dead   ? 'فعلاً امکان تهیه نیست'
+    : s > 10 ? 'موجود در انبار — آماده ارسال'
     : s > 0  ? `تنها ${toFa(s)} عدد در انبار`
-    : mto    ? 'به سفارش ساخته می‌شود — آماده‌سازی ۳ تا ۷ روز کاری'
-    :          'فعلاً امکان تهیه نیست';
+    :          'به سفارش ساخته می‌شود — آماده‌سازی ۳ تا ۷ روز کاری';
 
   const btn = document.getElementById('addBtn');
   btn.disabled = dead;
-  btn.textContent = s > 0 ? 'افزودن به سبد'
-                  : mto   ? 'سفارش ساخت این رایحه'
-                  :         'فعلاً موجود نیست';
+  btn.textContent = dead ? 'فعلاً موجود نیست'
+                  : mto ? 'سفارش ساخت این رایحه'
+                  :       'افزودن به سبد';
 
   // نوار چسبان موبایل
   const bp = document.getElementById('barPrice');
   if (bp) {
-    bp.textContent = money(unit * qty);
+    bp.textContent = selected.price_toman > 0 ? money(unit * qty) : '—';
     document.getElementById('barLabel').textContent =
       `${typeLabel(selected.type)} · ${toFa(selected.volume_ml)} میل`;
     const bb = document.getElementById('barBtn');
     bb.disabled = dead;
-    bb.textContent = s > 0 ? 'افزودن به سبد'
-                   : mto   ? 'سفارش ساخت'
-                   :         'موجود نیست';
+    bb.textContent = dead ? 'موجود نیست' : mto ? 'سفارش ساخت' : 'افزودن به سبد';
   }
 
   const old = document.getElementById('notifyBtn');
@@ -855,6 +862,9 @@ function chQty(d) {
 
 function addToCart() {
   if (!selected) return;
+  const mode = product.supply_mode || 'UNAVAILABLE';
+  if (!['IN_STOCK','MADE_TO_ORDER'].includes(mode) || selected.price_toman <= 0 ||
+      (selected.stock <= 0 && mode !== 'MADE_TO_ORDER')) return;
   const label = typeLabel(selected.type);
   const full = product.brand_fa ? `${product.brand_fa} — ${product.name_fa}` : product.name_fa;
   /* حجم با رقم فارسی — نام قلم در سبد، تسویه و فاکتور چاپ می‌شود

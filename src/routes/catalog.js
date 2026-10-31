@@ -137,8 +137,8 @@ async function handle(ctx) {
        واریانت موجود داشته باشد چند بار در نتیجه می‌آید و
        صفحه‌بندی به هم می‌ریزد. */
     if (parsed.query.in_stock === '1') {
-      where.push(`EXISTS (SELECT 1 FROM variants v
-                    WHERE v.product_id = products.id AND ${publicVariantSql('v')} AND v.stock > 0)`);
+      where.push(`products.supply_mode IN ('IN_STOCK','MADE_TO_ORDER') AND EXISTS (SELECT 1 FROM variants v
+                    WHERE v.product_id = products.id AND ${publicVariantSql('v')} AND v.stock > 0 AND v.price_toman>0)`);
     }
     // Sample listings must refer to an actual sellable 5ml SKU, not min product price.
     const samplesOnly = parsed.query.sample_5 === '1';
@@ -165,7 +165,8 @@ async function handle(ctx) {
        این پیشوند به **همه** مرتب‌سازی‌ها اضافه می‌شود، نه فقط
        پیش‌فرض: کسی که «ارزان‌ترین» را می‌خواهد، ارزان‌ترینِ
        قابل خرید را می‌خواهد. */
-    const IN_STOCK = `EXISTS (SELECT 1 FROM variants v2 WHERE v2.product_id = products.id AND ${publicVariantSql('v2')} AND v2.stock > 0) DESC`;
+    const IN_STOCK = `(products.supply_mode IN ('IN_STOCK','MADE_TO_ORDER') AND EXISTS
+      (SELECT 1 FROM variants v2 WHERE v2.product_id = products.id AND ${publicVariantSql('v2')} AND v2.stock > 0 AND v2.price_toman>0)) DESC`;
     const SAMPLE_PRICE = `(SELECT MIN(sv.price_toman) FROM variants sv WHERE sv.product_id=products.id
       AND sv.type='SAMPLE' AND sv.volume_ml=5 AND sv.price_toman>0
       AND (sv.stock>0 OR products.supply_mode='MADE_TO_ORDER'))`;
@@ -272,7 +273,7 @@ async function handle(ctx) {
       }
       if (wantFull) { p.campaign_percent = pct; return p; }
       // نسخه سبک برای کارت محصول — حدود نصف حجم
-      const inStock = p.variants.some(v => v.stock > 0);
+      const inStock = ['IN_STOCK','MADE_TO_ORDER'].includes(p.supply_mode) && p.variants.some(v => v.stock > 0 && v.price_toman > 0);
       return {
         id: p.id, slug: p.slug,
         name_fa: p.name_fa, name_en: p.name_en,
@@ -346,16 +347,18 @@ async function handle(ctx) {
        جشنواره‌ای که ظهر شروع شود تا یک ساعت روی صفحه اصلی دیده
        نمی‌شود. اینجا در لحظه محاسبه می‌شود (سبک، بدون کوئری). */
     const scamps = activeCampaigns();
-    const withPct = arr => (arr || []).map(x => ({
-      ...x,
-      campaign_percent: scamps.length ? campaignPercentFor(x, scamps) : 0,
-      /* SQLite برای `EXISTS` عدد ۰ یا ۱ می‌دهد، نه بولی. کارت
-         محصول `in_stock === false` را می‌سنجد و عدد ۰ از آن رد
-         می‌شد — یعنی همه‌چیز «موجود» به نظر می‌رسید.
-         `/api/products` این تبدیل را در `attachVariants` انجام
-         می‌دهد؛ ویترین مسیر دیگری دارد و باید صریح باشد. */
-      in_stock: !!x.in_stock
-    }));
+    // Cached analytics cannot be trusted for current price/availability.
+    const liveCard = db.prepare(`SELECT p.supply_mode,
+      (SELECT MIN(v.price_toman) FROM variants v WHERE v.product_id=p.id AND ${publicVariantSql('v')} AND v.price_toman>0) AS min_price,
+      EXISTS(SELECT 1 FROM variants v WHERE v.product_id=p.id AND ${publicVariantSql('v')} AND v.stock>0 AND v.price_toman>0) AS in_stock
+      FROM products p WHERE p.id=?`);
+    const withPct = arr => (arr || []).map(x => {
+      const live = liveCard.get(x.id);
+      if (!live) return null;
+      return { ...x, supply_mode: live.supply_mode, min_price: live.min_price || 0,
+        campaign_percent: scamps.length ? campaignPercentFor(x, scamps) : 0,
+        in_stock: ['IN_STOCK','MADE_TO_ORDER'].includes(live.supply_mode) && !!live.in_stock };
+    }).filter(Boolean);
 
     return sendJSON(200, {
       bestsellers: withPct(best.items),

@@ -12,6 +12,7 @@ const url = require('url');
 const crypto = require('crypto');
 const zlib = require('zlib');
 const { isPublicVariant, publicVariantSql } = require('./variant-visibility');
+const { variantAvailability } = require('./availability');
 
 const {
   db, parseProduct, attachVariants, DB_PATH,
@@ -312,8 +313,10 @@ function notifyStockWatchers(skus, reason = 'موجودی') {
   let total = 0;
   for (const sku of list) {
     // تنها اگر واقعاً موجود شده باشد
-    const v = db.prepare('SELECT stock, type, volume_ml FROM variants WHERE sku=?').get(sku);
-    if (!v || v.stock <= 0 || !isPublicVariant(v.type, v.volume_ml)) continue;
+    const v = db.prepare(`SELECT v.stock, v.type, v.volume_ml, v.price_toman, p.supply_mode
+      FROM variants v JOIN products p ON p.id=v.product_id WHERE v.sku=?`).get(sku);
+    if (!v || !isPublicVariant(v.type, v.volume_ml) ||
+        variantAvailability(v.supply_mode, v.stock, v.price_toman).state !== 'IN_STOCK') continue;
 
     const waiting = db.prepare(
       'SELECT mobile FROM stock_alerts WHERE sku=? AND notified=0'
@@ -433,27 +436,16 @@ function validateCart(items) {
     }
     const row = stmt.get(item.sku);
     if (!row) return { ok: false, error: `کالای «${item.sku}» یافت نشد.` };
-    // Availability is authoritative even if stale physical stock is positive.
-    if (row.supply_mode === 'UNAVAILABLE' || !isPublicVariant(row.type, row.volume_ml)) {
+    const availability = variantAvailability(row.supply_mode, row.stock, row.price_toman);
+    if (!isPublicVariant(row.type, row.volume_ml) || availability.state === 'UNAVAILABLE') {
       return { ok: false, error: `«${row.name_fa}» فعلاً قابل تهیه نیست.` };
     }
-    /* ── سفارش کالای «به سفارش ساخته می‌شود» ──
-       موجودی انبار صفر است ولی سفارش مجاز — این واقعیت کار
-       دست‌ساز است. سقف ۵ عدد می‌گذاریم چون ساخت دستی زمان‌بر
-       است و سفارش ۵۰ تایی عملی نیست.
-
-       عطر UNAVAILABLE همچنان رد می‌شود: اگر نمی‌توانیم بسازیم،
-       پذیرفتن پول یعنی وعده‌ای که نگه نمی‌داریم. */
-    const madeToOrder = row.stock <= 0 && row.supply_mode === 'MADE_TO_ORDER';
-    if (madeToOrder && qty > 5) {
-      return { ok: false, error:
-        `«${row.name_fa}» به سفارش ساخته می‌شود؛ حداکثر ۵ عدد در هر سفارش.` };
-    }
-    if (!madeToOrder && row.stock < qty) {
-      return { ok: false, error: row.stock <= 0
-        ? `«${row.name_fa}» فعلاً قابل تهیه نیست.`
+    if (qty > availability.max_quantity) {
+      return { ok: false, error: availability.state === 'MADE_TO_ORDER'
+        ? `«${row.name_fa}» به سفارش ساخته می‌شود؛ حداکثر ۵ عدد در هر سفارش.`
         : `موجودی «${row.name_fa}» کافی نیست (موجود: ${row.stock}).` };
     }
+    const madeToOrder = availability.state === 'MADE_TO_ORDER';
     const lineTotal = row.price_toman * qty;   // قیمت از دیتابیس
     subtotal += lineTotal;
     validated.push({
@@ -865,7 +857,7 @@ const server = http.createServer(async (req, res) => {
       const marks = skus.map(() => '?').join(',');
       const rows = db.prepare(`
         SELECT v.sku, v.price_toman, v.stock, v.volume_ml, v.type_label,
-               p.name_fa, p.brand_fa, p.slug, p.image_url
+               p.name_fa, p.brand_fa, p.slug, p.image_url, p.supply_mode
         FROM variants v JOIN products p ON p.id = v.product_id
         WHERE v.sku IN (${marks}) AND ${publicVariantSql('v')}
       `).all(...skus);
@@ -875,6 +867,7 @@ const server = http.createServer(async (req, res) => {
           sku: r.sku,
           price: r.price_toman,
           stock: r.stock,
+          ...variantAvailability(r.supply_mode, r.stock, r.price_toman),
           slug: r.slug,
           image_url: r.image_url,
           name: variantFullName(r)
@@ -1956,9 +1949,12 @@ const server = http.createServer(async (req, res) => {
       db.prepare(`
         SELECT p.slug,
                (SELECT COALESCE(SUM(v.stock),0) FROM variants v
-                 WHERE v.product_id = p.id) AS stock
+                 WHERE v.product_id = p.id AND ${publicVariantSql('v')} AND v.price_toman>0) AS stock
         FROM products p
-        WHERE p.supply_mode != 'UNAVAILABLE'
+        WHERE p.supply_mode IN ('IN_STOCK','MADE_TO_ORDER') AND EXISTS (
+          SELECT 1 FROM variants v WHERE v.product_id=p.id AND ${publicVariantSql('v')}
+          AND v.price_toman>0 AND (v.stock>0 OR p.supply_mode='MADE_TO_ORDER')
+        )
       `).all().forEach(p => {
         const pri = p.stock > 0 ? '0.9' : '0.7';
         xml += `  <url><loc>${base}/perfume/${p.slug}</loc>`

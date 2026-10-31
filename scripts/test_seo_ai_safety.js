@@ -27,6 +27,7 @@
 const { spawn } = require('child_process');
 const path = require('path');
 const Database = require('better-sqlite3');
+const { publicVariantSql } = require('../src/variant-visibility');
 
 const ROOT = path.dirname(__dirname);
 const DB_PATH = process.env.DB_PATH || path.join(ROOT, 'data', 'yazd.db');
@@ -163,13 +164,12 @@ const titleOf = html => {
     prodSchemas++;
 
     const row = db.prepare('SELECT supply_mode FROM products WHERE slug=?').get(slugs[i]);
-    const stock = db.prepare(`
-      SELECT COALESCE(SUM(stock),0) s FROM variants v
-      JOIN products p ON p.id=v.product_id WHERE p.slug=?`).get(slugs[i]).s;
-
-    const want = stock > 0 ? 'InStock'
-      : row.supply_mode === 'UNAVAILABLE' ? 'OutOfStock' : 'BackOrder';
-    const got = String(prod.offers?.availability || '').replace('https://schema.org/', '');
+    const v = db.prepare(`SELECT COUNT(*) n, COALESCE(SUM(v.stock),0) s FROM variants v
+      JOIN products p ON p.id=v.product_id WHERE p.slug=? AND ${publicVariantSql('v')} AND v.price_toman>0`).get(slugs[i]);
+    const mode=row.supply_mode;
+    const want = !v.n ? 'NoOffer' : !['IN_STOCK','MADE_TO_ORDER'].includes(mode) ? 'OutOfStock'
+      : v.s>0 ? 'InStock' : mode==='MADE_TO_ORDER' ? 'BackOrder' : 'OutOfStock';
+    const got = prod.offers ? String(prod.offers.availability || '').replace('https://schema.org/', '') : 'NoOffer';
     if (got === want) availOk++; else badAvail.push(`${slugs[i]}: ${got}≠${want}`);
   }
 
@@ -214,8 +214,10 @@ const titleOf = html => {
      آزمون باید **قرارداد** را بسنجد نه یک عدد لحظه‌ای: تعداد
      نشانی‌های محصول باید دقیقاً برابر تعداد محصولات قابل سفارش
      باشد. این رابطه همیشه درست می‌ماند. */
-  const orderable = db.prepare(
-    "SELECT COUNT(*) c FROM products WHERE supply_mode != 'UNAVAILABLE'").get().c;
+  const orderable = db.prepare(`SELECT COUNT(*) c FROM products p
+    WHERE p.supply_mode IN ('IN_STOCK','MADE_TO_ORDER') AND EXISTS (
+      SELECT 1 FROM variants v WHERE v.product_id=p.id AND ${publicVariantSql('v')}
+      AND v.price_toman>0 AND (v.stock>0 OR p.supply_mode='MADE_TO_ORDER'))`).get().c;
   const productUrls = (sm.text.match(/\/perfume\//g) || []).length;
 
   add('sitemap ساخته می‌شود', sm.status === 200 && urls > 0, `${urls} نشانی`);
@@ -286,12 +288,16 @@ const titleOf = html => {
     add('محصول غیرقابل تأمین برای آزمون هست', false, 'هیچ محصول UNAVAILABLE نبود');
   }
 
-  /* محصول قابل سفارش باید برعکسش باشد. */
-  const okPg = pages[0];
+  /* Pick an actually sellable product, not an active row with no priced variants. */
+  const sellable = db.prepare(`SELECT p.slug FROM products p WHERE p.slug IN (${slugs.map(() => '?').join(',')})
+    AND p.supply_mode IN ('IN_STOCK','MADE_TO_ORDER') AND EXISTS (
+      SELECT 1 FROM variants v WHERE v.product_id=p.id AND ${publicVariantSql('v')}
+      AND v.price_toman>0 AND (v.stock>0 OR p.supply_mode='MADE_TO_ORDER')) LIMIT 1`).get(...slugs);
+  const okPg = sellable ? await get('/perfume/' + sellable.slug) : null;
   add('صفحه قابل سفارش noindex ندارد',
-      !/name="robots" content="noindex/.test(okPg.text));
+      !!okPg && !/name="robots" content="noindex/.test(okPg.text));
   add('صفحه قابل سفارش در sitemap هست',
-      sm.text.includes(`/perfume/${slugs[0]}<`), slugs[0]);
+      !!sellable && sm.text.includes(`/perfume/${sellable.slug}<`), sellable?.slug || 'مورد قابل سفارش یافت نشد');
 
   /* ═══ ۴) شفافیت برای خزنده ═══ */
   console.log();
