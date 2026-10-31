@@ -40,7 +40,7 @@ CAROLINA HRRERA,CH,Men,سی اچ,1,109,210.1,H,pending,هنوز قیمت مرج�
 CAROLINA HRRERA,Good Girl,Women,گودگرل,4,"110,111,112,113",221.1,H,provisional,قیمت موقت با شاهد نام؛ هویت اسانس تأییدنشده,YZD-PROD-1737,https://www.carolinaherrera.com/us/en/p-fragrance/good-girl-eau-de-parfum,official_reference_prices_v23.json
 CAROLINA HRRERA,212 Sexy,Men,212 مردانه,1,114,133.1,H,pending,هنوز قیمت مرجع منتسب نشده,,,
 CAROLINA HRRERA,212 Sexy,Women,212 زنانه,2,"115,116",188.1,H,pending,هنوز قیمت مرجع منتسب نشده,,,
-CAROLINA HRRERA,212 Vip WOMEN,Women,وی آی پی زنانه,1,117,177.1,H,pending,هنوز قیمت مرجع منتسب نشده,,,
+CAROLINA HRRERA,212 Vip WOMEN,Women,وی آی پی زنانه,1,117,177.1,H,provisional,قیمت موقت با شاهد نام؛ هویت اسانس تأییدنشده,SUP-CH-900001,https://www.carolinaherrera.com/br/en/p-fragrance/212-vip,official_reference_prices_v25.json
 CAROLINA HRRERA,212 Vip MEN,Men,وی آی پی مردانه,1,118,114.4,H,provisional,قیمت موقت با شاهد نام؛ هویت اسانس تأییدنشده,YZD-PROD-1744,https://www.carolinaherrera.com/ww/en/p-fragrance/212-vip-men,official_reference_prices_v2.json
 D&G,DGVIB3,Men,دی جی وی آی بی 3,1,124,148.5,R,pending,هنوز قیمت مرجع منتسب نشده,,,
 D&G,KING,Men,کینگ,1,125,130.9,R,pending,هنوز قیمت مرجع منتسب نشده,,,
@@ -239,7 +239,7 @@ VERSACE,Crysral Noir,Women,کریستال نویر,2,"822,823",220,I,pending,ه�
 VERSACE,Eros,Men,اروس مردانه,1,824,243.1,H,pending,هنوز قیمت مرجع منتسب نشده,,,
 VERSACE,Eros pour Femme,Women,اروس زنانه,1,825,286,H,pending,هنوز قیمت مرجع منتسب نشده,,,
 VERSACE,Pour Homme,Men,ورساچه پورهوم,2,"826,827",330,T,provisional,قیمت موقت با شاهد نام؛ هویت اسانس تأییدنشده,YZD-PROD-1702,https://www.versace.com/us/en/men/accessories/fragrances-body-care/pour-homme/pour-homme-edt-100-ml-blue/R720010-R100MLS_RNUL.html,official_reference_prices_v11.json
-VICTOR&ROLF,SPICEBOMB,Men,اسپایس بمب,1,833,217.8,P,pending,هنوز قیمت مرجع منتسب نشده,,,
+VICTOR&ROLF,SPICEBOMB,Men,اسپایس بمب,1,833,217.8,P,provisional,قیمت موقت با شاهد نام؛ هویت اسانس تأییدنشده,YZD-PROD-1748,https://us.viktor-rolf.com/fragrance/spicebomb-eau-de-toilette-VKR_030.html,official_reference_prices_v25.json
 VICTORIA`S SECRET,AQUA KISS,Women,آکوا کیس,1,839,108.9,P,provisional,قیمت موقت با شاهد نام؛ هویت اسانس تأییدنشده,SUP-VS-900032,https://www.victoriassecret.com/ca/vs/beauty-catalog/5000011041?genericId=11259203&choice=4760,official_reference_prices_v18.json
 VICTORIA`S SECRET,Bombshel,Women,بامب شل,1,840,174.9,H,provisional,قیمت موقت با شاهد نام؛ هویت اسانس تأییدنشده,SUP-VS-900021,https://www.victoriassecret.com/us/vs/beauty-catalog/5000010457,official_reference_prices_v15.json
 VICTORIA`S SECRET,Very Sexy,Women,وری سکسی,1,841,107.8,P,provisional,قیمت موقت با شاهد نام؛ هویت اسانس تأییدنشده,SUP-VS-900030,https://www.victoriassecret.com/us/vs/beauty-catalog/5000010459/-/a/generic-11260424-choice-2068/very-sexy-eau-de-parfum-3.4-oz-floral,official_reference_prices_v17.json
@@ -254,7 +254,7 @@ XERJOFF,Lira,Women,لیرا,1,864,180.4,H,provisional,قیمت موقت با ش�
 XERJOFF,GRAN BALLO,Women,گرن بالو,1,865,221.1,H,provisional,قیمت موقت با شاهد نام؛ هویت اسانس تأییدنشده,YZD-PROD-0611,https://www.xerjoff.com/en-us/products/gran-ballo-eau-de-parfum,official_reference_prices_v12.json
 XERJOFF,Mefisto Casamorati,Unisex,مفیستو,1,866,178.2,H,provisional,قیمت موقت با شاهد نام؛ هویت اسانس تأییدنشده,YZD-PROD-0604,https://www.xerjoff.com/en-us/products/mefisto-eau-de-parfum,official_reference_prices_v12.json
 XERJOFF,XJ 1861 NAXOS,Unisex,ناکسوس,1,867,354.2,H,provisional,قیمت موقت با شاهد نام؛ هویت اسانس تأییدنشده,YZD-PROD-0575,https://www.xerjoff.com/products/naxos-eau-de-parfum,official_reference_prices_v3.json
-Yves Saint Laurent,Black Opium,Women,بلک اپیوم,1,873,245.3,H,pending,هنوز قیمت مرجع منتسب نشده,,,
+Yves Saint Laurent,Black Opium,Women,بلک اپیوم,1,873,245.3,H,provisional,قیمت موقت با شاهد نام؛ هویت اسانس تأییدنشده,YZD-PROD-1501,https://www.yslbeautyus.com/fragrance/womens-fragrances/black-opium/black-opium-eau-de-parfum/252YSL.html,official_reference_prices_v25.json
 Yves Saint Laurent,BABYCAT,Unisex,بیبی کت,1,874,292.6,H,provisional,قیمت موقت با شاهد نام؛ هویت اسانس تأییدنشده,YZD-PROD-1512,https://www.yslbeautyus.com/fragrance/le-vestiaire-des-parfums/the-signature-collection/babycat---le-vestiaire-des-parfums/WW-50920YSL.html,official_reference_prices_v2.json
 Yves Saint Laurent,LIBRE,Unisex,لیبر,1,875,256.3,H,provisional,قیمت موقت با شاهد نام؛ هویت اسانس تأییدنشده,YZD-PROD-1504,https://www.yslbeautyus.com/fragrance/womens-fragrances/libre/libre-eau-de-parfum/109YSL.html,official_reference_prices_v23.json
 Yves Saint Laurent,LIBRE INTENSE,Women,لیبر اینتنس,1,876,119.9,B,provisional,قیمت موقت با شاهد نام؛ هویت اسانس تأییدنشده,YZD-PROD-1505,https://www.yslbeautyus.com/fragrance/womens-fragrances/libre/libre-eau-de-parfum-intense/306YSL.html,official_reference_prices_v2.json

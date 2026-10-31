@@ -629,3 +629,12 @@ node_modules/   با npm install برمی‌گردد
 - `seed/secondary_reference_prices_v9.json`
 - `seed/secondary_note_corrections_v3.json`
 - `scripts/test_dunhill_reference_batch.js`
+
+
+### سه تناظر رسمی دیگر
+
+- `seed/official_supplement_v22.json`
+- `seed/official_identity_evidence_v24.json`
+- `seed/official_reference_prices_v25.json`
+- `seed/official_note_corrections_v20.json`
+- `scripts/test_official_reference_v25.js`

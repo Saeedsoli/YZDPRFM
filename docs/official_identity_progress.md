@@ -405,3 +405,16 @@ Yara مرجع با Yara Tous، Moi و Candy یکی نیست. Tygar مرجع با
 | Desire Blue — Dunhill | 139.7 | H | مستقل | https://www.fragrantica.com/perfume/Alfred-Dunhill/Desire-Blue-1937.html |
 
 Icon اصلی با Absolute، Racing و Elite یکی نشده است و نت‌های صفحه رسمی بدون هرم ثبت شدند. Desire Blue منبع مستقل فراگرانتیکا دارد، نه شاهد رسمی برند؛ از Desire Blue Ocean مجزا است. در هر دو مورد منبع و دست‌ساز بودن در متن عمومی مشخص شده و قیمت، نسخه واقعی اسانس را اثبات نمی‌کند.
+
+
+## سه تناظر دیگر با منبع رسمی — ۱ نوامبر ۲۰۲۶
+
+قیمت موقت نام‌محور برای دو محصول موجود و یک محصول مکمل دست‌ساز ثبت شد. هر سه غیرفعال‌اند و هیچ شاهدی هویت و نسخه اسانس واقعی تأمین‌کننده را ثابت نمی‌کند.
+
+| رایحه مرجع | دلار/کیلو | کیفیت فایل | منبع رسمی |
+|---|---:|---|---|
+| Black Opium Eau de Parfum — YSL | 245.3 | H | https://www.yslbeautyus.com/fragrance/womens-fragrances/black-opium/black-opium-eau-de-parfum/252YSL.html |
+| Spicebomb Eau de Toilette — Viktor & Rolf | 217.8 | P | https://us.viktor-rolf.com/fragrance/spicebomb-eau-de-toilette-VKR_030.html |
+| 212 VIP Eau de Parfum — Carolina Herrera | 177.1 | H | https://www.carolinaherrera.com/br/en/p-fragrance/212-vip |
+
+این مراجع به نسخه‌های اصلی معرفی‌شده توسط برند اشاره می‌کنند و با Black Opium Le Parfum، Spicebomb Extreme یا 212 VIP Rosé و VIP Men یکی نشده‌اند. فایل قیمت نسخه واقعی اسانس را مشخص یا اثبات نمی‌کند. نت‌ها در دو محصول موجود با محافظ ویرایش مدیر اصلاح و نت‌های بدون هرم در مورد 212 VIP ثبت شدند؛ آکورد رام درباره رایحه مرجع است، نه اثبات ماده در اسانس تحویلی.

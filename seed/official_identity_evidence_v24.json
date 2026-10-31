@@ -1,0 +1,36 @@
+{
+  "version": "official_identity_evidence_v24",
+  "scope": "Official reference-original name only; actual supplier essence identity is unverified.",
+  "items": [
+    {
+      "product_id": "YZD-PROD-1501",
+      "slug": "yves-saint-laurent-black-opium-edp",
+      "brand_en": "Yves Saint Laurent",
+      "expected_name_en": "YVES SAINT LAURENT - Black Opium EDP",
+      "reference_name": "Black Opium Eau de Parfum",
+      "official_url": "https://www.yslbeautyus.com/fragrance/womens-fragrances/black-opium/black-opium-eau-de-parfum/252YSL.html",
+      "status": "official_original_found_supplier_essence_unverified",
+      "checked_date": "2026-11-01"
+    },
+    {
+      "product_id": "YZD-PROD-1748",
+      "slug": "viktor-rolf-spicebomb-edt",
+      "brand_en": "Viktor & Rolf",
+      "expected_name_en": "VIKTOR & ROLF - Spicebomb EDT",
+      "reference_name": "Spicebomb Eau de Toilette",
+      "official_url": "https://us.viktor-rolf.com/fragrance/spicebomb-eau-de-toilette-VKR_030.html",
+      "status": "official_original_found_supplier_essence_unverified",
+      "checked_date": "2026-11-01"
+    },
+    {
+      "product_id": "SUP-CH-900001",
+      "slug": "carolina-herrera-212-vip-women",
+      "brand_en": "Carolina Herrera",
+      "expected_name_en": "CAROLINA HERRERA - 212 VIP",
+      "reference_name": "212 VIP Eau de Parfum",
+      "official_url": "https://www.carolinaherrera.com/br/en/p-fragrance/212-vip",
+      "status": "official_original_found_supplier_essence_unverified",
+      "checked_date": "2026-11-01"
+    }
+  ]
+}

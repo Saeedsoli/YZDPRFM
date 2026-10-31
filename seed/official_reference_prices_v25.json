@@ -1,0 +1,107 @@
+{
+  "version": "official_reference_prices_2026_11_v25",
+  "supplier_file_sha256": "bbe8f40610bc765bda0a7d2da9dbe78f4e397458a6991239c3c18d0853f33f5c",
+  "description": "Provisional name-based prices; supplier essence is unverified; no activation.",
+  "items": [
+    {
+      "product_id": "YZD-PROD-1501",
+      "slug": "yves-saint-laurent-black-opium-edp",
+      "brand_en": "Yves Saint Laurent",
+      "expected_name_en": "YVES SAINT LAURENT - Black Opium EDP",
+      "reference_name": "Black Opium Eau de Parfum",
+      "official_url": "https://www.yslbeautyus.com/fragrance/womens-fragrances/black-opium/black-opium-eau-de-parfum/252YSL.html",
+      "supplier_brand": "Yves Saint Laurent",
+      "supplier_model": "Black Opium",
+      "usd_per_kg": "245.3",
+      "quality": "H",
+      "match_status": "name_matched_supplier_identity_unverified",
+      "expected_edps": [
+        {
+          "sku": "YZD-1501-EDP-010",
+          "volume_ml": 10,
+          "price_toman": 465000,
+          "stock": 0,
+          "price_usd": 4.5
+        },
+        {
+          "sku": "YZD-1501-EDP-030",
+          "volume_ml": 30,
+          "price_toman": 1094999,
+          "stock": 0,
+          "price_usd": 4.5
+        },
+        {
+          "sku": "YZD-1501-EDP-050",
+          "volume_ml": 50,
+          "price_toman": 1725000,
+          "stock": 0,
+          "price_usd": 4.5
+        },
+        {
+          "sku": "YZD-1501-EDP-100",
+          "volume_ml": 100,
+          "price_toman": 3300000,
+          "stock": 0,
+          "price_usd": 4.5
+        }
+      ]
+    },
+    {
+      "product_id": "YZD-PROD-1748",
+      "slug": "viktor-rolf-spicebomb-edt",
+      "brand_en": "Viktor & Rolf",
+      "expected_name_en": "VIKTOR & ROLF - Spicebomb EDT",
+      "reference_name": "Spicebomb Eau de Toilette",
+      "official_url": "https://us.viktor-rolf.com/fragrance/spicebomb-eau-de-toilette-VKR_030.html",
+      "supplier_brand": "VICTOR&ROLF",
+      "supplier_model": "SPICEBOMB",
+      "usd_per_kg": "217.8",
+      "quality": "P",
+      "match_status": "name_matched_supplier_identity_unverified",
+      "expected_edps": [
+        {
+          "sku": "YZD-1748-EDP-010",
+          "volume_ml": 10,
+          "price_toman": 465000,
+          "stock": 0,
+          "price_usd": 4.5
+        },
+        {
+          "sku": "YZD-1748-EDP-030",
+          "volume_ml": 30,
+          "price_toman": 1094999,
+          "stock": 0,
+          "price_usd": 4.5
+        },
+        {
+          "sku": "YZD-1748-EDP-050",
+          "volume_ml": 50,
+          "price_toman": 1725000,
+          "stock": 0,
+          "price_usd": 4.5
+        },
+        {
+          "sku": "YZD-1748-EDP-100",
+          "volume_ml": 100,
+          "price_toman": 3300000,
+          "stock": 0,
+          "price_usd": 4.5
+        }
+      ]
+    },
+    {
+      "product_id": "SUP-CH-900001",
+      "slug": "carolina-herrera-212-vip-women",
+      "brand_en": "Carolina Herrera",
+      "expected_name_en": "CAROLINA HERRERA - 212 VIP",
+      "reference_name": "212 VIP Eau de Parfum",
+      "official_url": "https://www.carolinaherrera.com/br/en/p-fragrance/212-vip",
+      "supplier_brand": "CAROLINA HRRERA",
+      "supplier_model": "212 Vip WOMEN",
+      "usd_per_kg": "177.1",
+      "quality": "H",
+      "match_status": "name_matched_supplier_identity_unverified",
+      "expected_edps": []
+    }
+  ]
+}

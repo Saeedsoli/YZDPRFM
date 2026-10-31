@@ -1,0 +1,102 @@
+{
+  "version": "official_notes_2026_11_v20",
+  "description": "Guarded official reference notes and transparency, never supplier identity verification.",
+  "items": [
+    {
+      "product_id": "YZD-PROD-1501",
+      "product_slug": "yves-saint-laurent-black-opium-edp",
+      "official_brand": "Yves Saint Laurent",
+      "official_name": "Black Opium Eau de Parfum",
+      "source_url": "https://www.yslbeautyus.com/fragrance/womens-fragrances/black-opium/black-opium-eau-de-parfum/252YSL.html",
+      "source_scope": "Original Black Opium EDP reference; not Le Parfum, Over Red or Illicit Green; supplier essence and its version unverified.",
+      "expected_old_notes": {
+        "top": [
+          "گلابی آبدار",
+          "فلفل صورتی",
+          "شکوفه پرتقال"
+        ],
+        "middle": [
+          "قهوه سیاه اسپرسو",
+          "گل یاس سامباک",
+          "بادام تلخ",
+          "شیرین‌بیان"
+        ],
+        "base": [
+          "وانیل ماداگاسکار",
+          "نعناع هندی",
+          "چوب سدر",
+          "چوب کشمیر"
+        ]
+      },
+      "verified_notes": {
+        "top": [],
+        "middle": [],
+        "base": []
+      },
+      "expected_old_accords": [
+        "پدیده‌سازترین عطر زنانه راک اند رول با بطری سیاه اکلیلی",
+        "شات قهوه داغ با وانیل در کلاب‌های شبانه"
+      ],
+      "verified_accords": [
+        "قهوه",
+        "گل‌های سفید",
+        "وانیل"
+      ],
+      "requires_unavailable": true,
+      "expected_old_notice": "این محصول، بازآفرینی دست‌ساز با عصاره خالص اولیه و فرمولاسیون اختصاصی عطر یزد است.",
+      "verified_notice": "این محصول بازآفرینی دست‌ساز است و محصول اورجینال برند اصلی نیست. اطلاعات رایحه مرجع از وب‌سایت رسمی برند گرفته شده و هویت اسانس تأمین‌کننده مستقلاً تأیید نشده است."
+    },
+    {
+      "product_id": "YZD-PROD-1748",
+      "product_slug": "viktor-rolf-spicebomb-edt",
+      "official_brand": "Viktor & Rolf",
+      "official_name": "Spicebomb Eau de Toilette",
+      "source_url": "https://us.viktor-rolf.com/fragrance/spicebomb-eau-de-toilette-VKR_030.html",
+      "source_scope": "Original Spicebomb EDT reference; not Extreme, Infrared, Night Vision or other flankers; supplier essence and its version unverified.",
+      "expected_old_notes": {
+        "top": [
+          "فلفل صورتی",
+          "صمغ لامی",
+          "ترنج",
+          "گریپ‌فروت"
+        ],
+        "middle": [
+          "دارچین سیلان",
+          "زعفران",
+          "فلفل پاپریکا"
+        ],
+        "base": [
+          "برگ تنباکو",
+          "چرم تیره",
+          "خس‌خس"
+        ]
+      },
+      "verified_notes": {
+        "top": [
+          "فلفل صورتی",
+          "صمغ المی",
+          "ترنج",
+          "گریپ‌فروت"
+        ],
+        "middle": [
+          "دارچین",
+          "زعفران",
+          "فلفل پاپریکا"
+        ],
+        "base": [
+          "آکورد چرم",
+          "تنباکو",
+          "وتیور"
+        ]
+      },
+      "expected_old_accords": [
+        "بطری نمادین به شکل نارنجک دستی با ضامن فلزی",
+        "بمب ادویه‌جات دارچینی و تنباکو برای آقایان"
+      ],
+      "verified_accords": [],
+      "requires_unavailable": true,
+      "expected_old_notice": "این محصول، بازآفرینی دست‌ساز با عصاره خالص اولیه و فرمولاسیون اختصاصی عطر یزد است.",
+      "verified_notice": "این محصول بازآفرینی دست‌ساز است و محصول اورجینال برند اصلی نیست. اطلاعات رایحه مرجع از وب‌سایت رسمی برند گرفته شده و هویت اسانس تأمین‌کننده مستقلاً تأیید نشده است."
+    }
+  ]
+}
