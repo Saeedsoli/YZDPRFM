@@ -31,7 +31,8 @@ function previewProductPrice(db,id,usdPerGram) {
   priceFromUsdPerKg(kg,state.rate_toman,'EDP',100);
   const rows=db.prepare('SELECT sku,type,volume_ml,price_toman FROM variants WHERE product_id=? ORDER BY type,volume_ml,sku').all(state.product_id);
   const changes=rows.filter(v=>allowedVariant(v.type,v.volume_ml)).map(v=>({...v,new_price_toman:priceFromUsdPerKg(kg,state.rate_toman,v.type,v.volume_ml)}));
-  for(const [type,volume] of [['SAMPLE',5],['BODY_SPLASH',120]]) {
+  // New catalog products may not yet have any variants at all.
+  for(const [type,volume] of [['SAMPLE',5],['EDP',10],['EDP',30],['EDP',50],['EDP',100],['BODY_SPLASH',120]]) {
     if (!changes.some(v=>v.type===type&&v.volume_ml===volume)) changes.push({sku:null,type,volume_ml:volume,price_toman:null,new_price_toman:priceFromUsdPerKg(kg,state.rate_toman,type,volume)});
   }
   return {...state,proposed_usd_per_gram:kgToGram(kg),proposed_usd_per_kg:kg,proposed_toman_per_gram:tomanPerGram(kgToGram(kg),state.rate_toman),changes};
@@ -48,8 +49,10 @@ function applyProductPrice(db,id,usdPerGram,expectedRate,expectedOldKg) {
     for(const v of p.changes) {
       if(v.sku) {update.run(v.new_price_toman,v.sku);updated++;}
       else {
-        const isSample=v.type==='SAMPLE';const sku=`ESS-${digest}-${isSample?'SMP-005':'BS-120'}`;
-        insert.run(sku,p.product_id,v.type,isSample?'سمپل ۵ میل':'بادی اسپلش دست‌ساز',v.volume_ml,v.new_price_toman);created++;
+        const code=v.type==='SAMPLE'?'SMP':v.type==='BODY_SPLASH'?'BS':'EDP';
+        const label=v.type==='SAMPLE'?'سمپل ۵ میل':v.type==='BODY_SPLASH'?'بادی اسپلش دست‌ساز':'ادو پرفیوم دست‌ساز';
+        const sku=`ESS-${digest}-${code}-${String(v.volume_ml).padStart(3,'0')}`;
+        insert.run(sku,p.product_id,v.type,label,v.volume_ml,v.new_price_toman);created++;
       }
     }
     db.prepare('UPDATE products SET essence_usd_per_kg=? WHERE id=?').run(p.proposed_usd_per_kg,p.product_id);

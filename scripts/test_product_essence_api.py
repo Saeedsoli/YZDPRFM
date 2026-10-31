@@ -51,6 +51,15 @@ with tempfile.TemporaryDirectory(prefix='yazd-product-essence-') as tmp:
         assert api('PUT',route,data,token)[0]==409
         status,state=api('GET',route,token=token);assert state['usd_per_gram']=='0.286' and state['toman_per_gram']=='85800',state
         assert con.execute("select count(*) from audit_log where action='products.essence_price'").fetchone()[0]==1
+        # New sourced catalog product initially has no variants: generate all six with one price update.
+        new_id='SUP-LV-900001';new_route='/api/admin/essence-pricing/products/'+new_id
+        status,new_preview=api('POST',new_route+'/preview',{'usd_per_gram':'0.4037'},token)
+        assert status==200 and len(new_preview['changes'])==6,(status,new_preview)
+        status,new_result=api('PUT',new_route,{'usd_per_gram':'0.4037','expected_rate_toman':300000,'expected_usd_per_kg':None},token)
+        assert status==200 and new_result['variants_created']==6,(status,new_result)
+        assert con.execute('select count(*) from variants where product_id=?',(new_id,)).fetchone()[0]==6
+        assert con.execute("select price_toman from variants where product_id=? and type='EDP' and volume_ml=100",(new_id,)).fetchone()[0]==7267000
+        assert con.execute('select supply_mode from products where id=?',(new_id,)).fetchone()[0]=='UNAVAILABLE'
         print('PASS HTTP: per-gram USD/toman, safe preview, validation, conflict, new volumes, repricing, unchanged availability and audit')
     finally:
         con.close();server.terminate()

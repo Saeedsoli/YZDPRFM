@@ -4,7 +4,7 @@
     "slug": "atkinsons-oud-save-the-king",
     "name_fa": "عود سیو د کینگ",
     "name_en": "Oud Save the King",
-    "full_display_fa": "اتکینسونز — عود سیو د کینگ «دست‌ساز»",
+    "full_display_fa": "اتکینسونز — عود سیو د کینگ",
     "inspired_brand_en": "Atkinsons",
     "inspired_brand_fa": "اتکینسونز",
     "gender": "MEN",
@@ -12,12 +12,193 @@
     "family_en": "Oriental",
     "family_slug": "oriental",
     "notes": {
-      "top": ["آکورد چای ارل‌گری و ترنج"],
-      "middle": ["زنبق", "آکورد چرم جیر"],
-      "base": ["چوب صندل", "آکورد عود"]
+      "top": [
+        "آکورد چای ارل‌گری و ترنج"
+      ],
+      "middle": [
+        "زنبق",
+        "آکورد چرم جیر"
+      ],
+      "base": [
+        "چوب صندل",
+        "آکورد عود"
+      ]
     },
     "transclaimer_notice": "این محصول، بازآفرینی دست‌ساز است و محصول اورجینال برند اتکینسونز نیست.",
     "source_url": "https://www.atkinsons1799.com/products/oud-save-the-king",
-    "variants": []
+    "variants": [],
+    "title_fa_base": "عود سیو د کینگ"
+  },
+  {
+    "id": "SUP-LV-900001",
+    "slug": "louis-vuitton-afternoon-swim",
+    "name_fa": "افترنون سوئیم",
+    "name_en": "Afternoon Swim",
+    "full_display_fa": "لویی ویتون — افترنون سوئیم",
+    "inspired_brand_en": "Louis Vuitton",
+    "inspired_brand_fa": "لویی ویتون",
+    "gender": "UNISEX",
+    "notes": {
+      "top": [],
+      "middle": [],
+      "base": []
+    },
+    "accords": [
+      "ترنج",
+      "پرتقال",
+      "زنجبیل"
+    ],
+    "transclaimer_notice": "این محصول بازآفرینی دست‌ساز است و محصول اورجینال برند لویی ویتون نیست.",
+    "source_url": "https://us.louisvuitton.com/eng-us/products/afternoon-swim-nvprod7330060v/LP0487",
+    "source_note": "Key notes as published by brand; note pyramid not specified; gender from supplier list.",
+    "supplier_usd_per_kg": "403.7",
+    "supplier_quality": "H",
+    "variants": [],
+    "perfumer": "Jacques Cavallier Belletrud",
+    "title_fa_base": "افترنون سوئیم"
+  },
+  {
+    "id": "SUP-LV-900002",
+    "slug": "louis-vuitton-imagination",
+    "name_fa": "ایمجینیشن",
+    "name_en": "Imagination",
+    "full_display_fa": "لویی ویتون — ایمجینیشن",
+    "inspired_brand_en": "Louis Vuitton",
+    "inspired_brand_fa": "لویی ویتون",
+    "gender": "MEN",
+    "notes": {
+      "top": [],
+      "middle": [],
+      "base": []
+    },
+    "accords": [
+      "آمبروکس",
+      "چای سیاه چینی",
+      "نرولی تونسی",
+      "سدر سیسیلی",
+      "ترنج کالابریا",
+      "زنجبیل نیجریه",
+      "دارچین سیلان"
+    ],
+    "transclaimer_notice": "این محصول بازآفرینی دست‌ساز است و محصول اورجینال برند لویی ویتون نیست.",
+    "source_url": "https://en.louisvuitton.com/eng-nl/products/Imagination-nvprod7340011v/LP0476",
+    "source_note": "Key notes as published by brand; note pyramid not specified; gender from supplier list.",
+    "supplier_usd_per_kg": "618.2",
+    "supplier_quality": "H",
+    "variants": [],
+    "perfumer": "Jacques Cavallier Belletrud",
+    "title_fa_base": "ایمجینیشن"
+  },
+  {
+    "id": "SUP-LV-900003",
+    "slug": "louis-vuitton-limmensite",
+    "name_fa": "ال ایمنسیت",
+    "name_en": "L'Immensité",
+    "full_display_fa": "لویی ویتون — ال ایمنسیت",
+    "inspired_brand_en": "Louis Vuitton",
+    "inspired_brand_fa": "لویی ویتون",
+    "gender": "MEN",
+    "notes": {
+      "top": [],
+      "middle": [],
+      "base": []
+    },
+    "accords": [
+      "زنجبیل",
+      "گریپ‌فروت",
+      "وتیور"
+    ],
+    "transclaimer_notice": "این محصول بازآفرینی دست‌ساز است و محصول اورجینال برند لویی ویتون نیست.",
+    "source_url": "https://us.louisvuitton.com/eng-us/products/limmensite-nvprod1030132v/LP0062",
+    "source_note": "Key notes as published by brand; note pyramid not specified; gender from supplier list.",
+    "supplier_usd_per_kg": "478.5",
+    "supplier_quality": "H",
+    "variants": [],
+    "perfumer": "Jacques Cavallier Belletrud",
+    "title_fa_base": "ال ایمنسیت"
+  },
+  {
+    "id": "SUP-LV-900004",
+    "slug": "louis-vuitton-ombre-nomade",
+    "name_fa": "امبر نومد",
+    "name_en": "Ombre Nomade",
+    "full_display_fa": "لویی ویتون — امبر نومد",
+    "inspired_brand_en": "Louis Vuitton",
+    "inspired_brand_fa": "لویی ویتون",
+    "gender": "UNISEX",
+    "notes": {
+      "top": [],
+      "middle": [],
+      "base": []
+    },
+    "accords": [
+      "چوب عود",
+      "بنزوئین",
+      "بخور",
+      "تمشک"
+    ],
+    "transclaimer_notice": "این محصول بازآفرینی دست‌ساز است و محصول اورجینال برند لویی ویتون نیست.",
+    "source_url": "https://me.louisvuitton.com/eng-ae/products/Ombre-Nomade-nvprod990245v/LP0096",
+    "source_note": "Key notes as published by brand; note pyramid not specified; gender from supplier list.",
+    "supplier_usd_per_kg": "425.7",
+    "supplier_quality": "H",
+    "variants": [],
+    "perfumer": "Jacques Cavallier Belletrud",
+    "title_fa_base": "امبر نومد"
+  },
+  {
+    "id": "SUP-LV-900005",
+    "slug": "louis-vuitton-stellar-times",
+    "name_fa": "استلار تایمز",
+    "name_en": "Stellar Times",
+    "full_display_fa": "لویی ویتون — استلار تایمز",
+    "inspired_brand_en": "Louis Vuitton",
+    "inspired_brand_fa": "لویی ویتون",
+    "gender": "UNISEX",
+    "notes": {
+      "top": [],
+      "middle": [],
+      "base": []
+    },
+    "accords": [
+      "عنبر سفید",
+      "شکوفه پرتقال",
+      "بالم پرو"
+    ],
+    "transclaimer_notice": "این محصول بازآفرینی دست‌ساز است و محصول اورجینال برند لویی ویتون نیست.",
+    "source_url": "https://my.louisvuitton.com/eng-my/products/stellar-times-nvprod7340023v/LP0526",
+    "source_note": "Key notes as published by brand; note pyramid not specified; gender from supplier list.",
+    "supplier_usd_per_kg": "429",
+    "supplier_quality": "H",
+    "variants": [],
+    "title_fa_base": "استلار تایمز"
+  },
+  {
+    "id": "SUP-LV-900006",
+    "slug": "louis-vuitton-california-dream",
+    "name_fa": "کالیفرنیا دریم",
+    "name_en": "California Dream",
+    "full_display_fa": "لویی ویتون — کالیفرنیا دریم",
+    "inspired_brand_en": "Louis Vuitton",
+    "inspired_brand_fa": "لویی ویتون",
+    "gender": "MEN",
+    "notes": {
+      "top": [],
+      "middle": [],
+      "base": []
+    },
+    "accords": [
+      "ماندارین",
+      "دانه آمبرت",
+      "بالم بنزوئین"
+    ],
+    "transclaimer_notice": "این محصول بازآفرینی دست‌ساز است و محصول اورجینال برند لویی ویتون نیست.",
+    "source_url": "https://uk.louisvuitton.com/eng-gb/products/california-dream-nvprod2210033v/LP0175",
+    "source_note": "Key notes as published by brand; note pyramid not specified; gender from supplier list.",
+    "supplier_usd_per_kg": "126.5",
+    "supplier_quality": "I",
+    "variants": [],
+    "perfumer": "Jacques Cavallier Belletrud",
+    "title_fa_base": "کالیفرنیا دریم"
   }
 ]
