@@ -261,3 +261,20 @@ Mefisto با Mefisto Gentiluomo یکی نیست. در برخی صفحات قدی
 از این دوازده مورد، **۹ قیمت جدید** در دیتابیس محلی ثبت و برای **۳ قیمت قدیمی** Kokorico، Hindu Grass و Akaster فقط شاهد مستقل افزوده شد؛ قیمت‌ها، واریانت‌ها و سفارش‌های قدیمی آن سه مورد تغییر نکردند. هفت نام در کاتالوگ نبودند و دست‌ساز افزوده شدند. نت پنج محصول موجود فقط در صورت دست‌نخورده‌بودن داده قبلی و متن شفافیت اصلاح شد؛ یادداشت عمومی به صراحت منبع مستقل را اعلام می‌کند. Hindu Grass هرم نت تأییدشده ندارد و فقط نت‌های بدون طبقه‌بندی ثبت شد.
 
 برای Retba، نت‌های رسمیِ نمایه‌شده و فراگرانتیکا با هم اختلاف دارند و صفحه رسمی بررسی‌شده به فهرست عمومی هدایت می‌شد؛ بنابراین نت‌ها خالی ماندند. برای Amarena نیز تنها نت‌های مشترک بدون هرم ثبت شدند. مبهم‌بودن نسخه Invictus Intense و Supreme Bouquet همچنان حل نشده و این دو خودکار به نسخه‌ای نسبت داده نشدند.
+
+## شش تناظر دیگر با منبع مستقل — ۱ نوامبر ۲۰۲۶
+
+قیمت‌ها بر مبنای بیشترین ردیف مثبت فایل و تناظر نام، موقت و غیرقابل سفارش ثبت شدند. فراگرانتیکا منبع مستقل است، نه منبع رسمی برند و نه تأیید هویت، نسخه یا کیفیت واقعی اسانس تأمین‌کننده.
+
+| رایحه مرجع | دلار/کیلو | کیفیت فایل | منبع مستقل |
+|---|---:|---|---|
+| Aqva Pour Homme | 224.4 | H | https://www.fragrantica.com/perfume/Bvlgari/Aqva-Pour-Homme-153.html |
+| Opera | 240.9 | H | https://www.fragrantica.com/perfume/Sospiro-Perfumes/Opera-26282.html |
+| Accento | 491.7 | T | https://www.fragrantica.com/perfume/Sospiro-Perfumes/Accento-13816.html |
+| Champion | 276.1 | H | https://www.fragrantica.com/perfume/Davidoff/Champion-9109.html |
+| Smoke for the Soul | 270.6 | P | https://www.fragrantica.com/perfume/By-Kilian/Smoke-for-the-Soul-25993.html |
+| Halloween | 190.3 | H | https://www.fragrantica.com/perfume/Halloween/Halloween-1444.html |
+
+چهار محصول Accento، Champion، Smoke for the Soul و Halloween که در کاتالوگ پیدا نشدند، به‌صورت دست‌ساز اضافه شدند؛ دو محصول Aqva Pour Homme و Opera از پیش در کاتالوگ بودند. نسخه‌های Accento Viola، Champion Energy و Opera Grande جدا هستند و با ردیف‌های فوق یکی نشده‌اند. درباره Halloween، نام تاریخی بر اساس منبع مستقل و نت‌ها از [صفحه رسمی فعلی برند](https://halloweenperfumes.com/en/helloween-woman/161-halloween-eau-de-toilettea.html) ثبت شده است؛ منبع در توضیح عمومی محصول روشن است. نت‌های دو محصول موجود فقط در صورت نبود ویرایش مدیر و با ذکر منبع مستقل اصلاح شدند.
+
+مدارک در `seed/secondary_reference_prices_v2.json`، محصولات در `seed/secondary_supplement_v2.json` و نت‌های محافظت‌شده در `seed/secondary_note_corrections_v2.json` نگهداری می‌شوند.

@@ -1,0 +1,130 @@
+[
+  {
+    "id": "SUP-TP-910008",
+    "slug": "sospiro-accento",
+    "name_fa": "اکسنتو",
+    "name_en": "Accento",
+    "title_fa_base": "اکسنتو",
+    "full_display_fa": "سوسپیرو — اکسنتو",
+    "inspired_brand_en": "Sospiro Perfumes",
+    "inspired_brand_fa": "سوسپیرو",
+    "gender": null,
+    "notes": {
+      "top": [
+        "آناناس",
+        "سنبل"
+      ],
+      "middle": [
+        "فلفل صورتی",
+        "یاس",
+        "زنبق"
+      ],
+      "base": [
+        "مشک",
+        "کهربا",
+        "وتیور",
+        "پچولی",
+        "وانیل"
+      ]
+    },
+    "accords": [],
+    "transclaimer_notice": "این محصول بازآفرینی دست‌ساز است و محصول اورجینال برند اصلی نیست. اطلاعات رایحه مرجع از فراگرانتیکا، یک منبع مستقل، گرفته شده و هویت اسانس تأمین‌کننده مستقلاً تأیید نشده است.",
+    "source_url": "https://www.fragrantica.com/perfume/Sospiro-Perfumes/Accento-13816.html",
+    "source_note": "Independent reference for Accento; Accento Viola and Xerjoff Accento are not silently equated. Supplier essence identity unverified.",
+    "variants": []
+  },
+  {
+    "id": "SUP-TP-910009",
+    "slug": "davidoff-champion",
+    "name_fa": "چمپیون",
+    "name_en": "Champion",
+    "title_fa_base": "چمپیون",
+    "full_display_fa": "دیویدوف — چمپیون",
+    "inspired_brand_en": "Davidoff",
+    "inspired_brand_fa": "دیویدوف",
+    "gender": null,
+    "notes": {
+      "top": [
+        "ترنج",
+        "لیمو"
+      ],
+      "middle": [
+        "مریم‌گلی",
+        "گالبانوم"
+      ],
+      "base": [
+        "خزه بلوط",
+        "چوب سدر"
+      ]
+    },
+    "accords": [],
+    "transclaimer_notice": "این محصول بازآفرینی دست‌ساز است و محصول اورجینال برند اصلی نیست. اطلاعات رایحه مرجع از فراگرانتیکا، یک منبع مستقل، گرفته شده و هویت اسانس تأمین‌کننده مستقلاً تأیید نشده است.",
+    "source_url": "https://www.fragrantica.com/perfume/Davidoff/Champion-9109.html",
+    "source_note": "Independent reference for Champion; Champion Energy is distinct. Supplier essence identity unverified.",
+    "variants": []
+  },
+  {
+    "id": "SUP-TP-910010",
+    "slug": "kilian-smoke-for-the-soul",
+    "name_fa": "اسموک فور د سول",
+    "name_en": "Smoke for the Soul",
+    "title_fa_base": "اسموک فور د سول",
+    "full_display_fa": "کیلیان — اسموک فور د سول",
+    "inspired_brand_en": "Kilian Paris",
+    "inspired_brand_fa": "کیلیان",
+    "gender": null,
+    "notes": {
+      "top": [],
+      "middle": [],
+      "base": []
+    },
+    "accords": [
+      "آکورد شاهدانه",
+      "اکالیپتوس",
+      "ماته",
+      "توس",
+      "تنباکو",
+      "هل",
+      "گریپ‌فروت",
+      "چوب کشمیر"
+    ],
+    "transclaimer_notice": "این محصول بازآفرینی دست‌ساز است و محصول اورجینال برند اصلی نیست. اطلاعات رایحه مرجع از فراگرانتیکا، یک منبع مستقل، گرفته شده و هویت اسانس تأمین‌کننده مستقلاً تأیید نشده است.",
+    "source_url": "https://www.fragrantica.com/perfume/By-Kilian/Smoke-for-the-Soul-25993.html",
+    "source_note": "Independent unclassified reference notes; official page redirected to homepage. Notes describe the reference scent, not actual substances in supplier essence.",
+    "variants": []
+  },
+  {
+    "id": "SUP-TP-910011",
+    "slug": "halloween-halloween",
+    "name_fa": "هالووین",
+    "name_en": "Halloween",
+    "title_fa_base": "هالووین",
+    "full_display_fa": "هالووین — هالووین",
+    "inspired_brand_en": "Halloween",
+    "inspired_brand_fa": "هالووین",
+    "gender": null,
+    "notes": {
+      "top": [
+        "بنفشه",
+        "لایم",
+        "موز"
+      ],
+      "middle": [
+        "ماگنولیا",
+        "بنفشه",
+        "گل مریم",
+        "فلفل صورتی"
+      ],
+      "base": [
+        "چوب صندل",
+        "بخور",
+        "وانیل"
+      ]
+    },
+    "accords": [],
+    "transclaimer_notice": "این محصول بازآفرینی دست‌ساز است و محصول اورجینال برند اصلی نیست. نام رایحه مرجع با فراگرانتیکا و نت‌ها با وب‌سایت رسمی برند بررسی شده‌اند؛ هویت اسانس تأمین‌کننده مستقلاً تأیید نشده است.",
+    "source_url": "https://www.fragrantica.com/perfume/Halloween/Halloween-1444.html",
+    "source_note": "Independent Fragrantica identity associates the historic Jesus Del Pozo labeling with Halloween. Reference note pyramid from https://halloweenperfumes.com/en/helloween-woman/161-halloween-eau-de-toilettea.html; current brand site displays Halloween.",
+    "variants": []
+  }
+]

@@ -1,0 +1,173 @@
+{
+  "version": "secondary_reference_prices_2026_11_v2",
+  "supplier_file_sha256": "bbe8f40610bc765bda0a7d2da9dbe78f4e397458a6991239c3c18d0853f33f5c",
+  "description": "Independent source only; no manufacturer verification or supplier essence identification; no automatic availability.",
+  "items": [
+    {
+      "product_id": "YZD-PROD-1758",
+      "slug": "bvlgari-bvlgari-aqva-pour-homme",
+      "brand_en": "Bvlgari",
+      "expected_name_en": "Bvlgari Aqva Pour Homme",
+      "reference_name": "Aqva Pour Homme",
+      "source_url": "https://www.fragrantica.com/perfume/Bvlgari/Aqva-Pour-Homme-153.html",
+      "provider": "Fragrantica",
+      "status": "secondary_original_found_supplier_essence_unverified",
+      "checked_date": "2026-11-01",
+      "supplier_brand": "BVLGARI",
+      "supplier_model": "Aqva Pour Homme",
+      "usd_per_kg": "224.4",
+      "quality": "H",
+      "match_status": "name_matched_supplier_identity_unverified",
+      "expected_edps": [
+        {
+          "sku": "YZD-1758-EDP-010",
+          "volume_ml": 10,
+          "price_toman": 430000,
+          "stock": 0,
+          "price_usd": 4.0
+        },
+        {
+          "sku": "YZD-1758-EDP-030",
+          "volume_ml": 30,
+          "price_toman": 990000,
+          "stock": 0,
+          "price_usd": 4.0
+        },
+        {
+          "sku": "YZD-1758-EDP-050",
+          "volume_ml": 50,
+          "price_toman": 1550000,
+          "stock": 0,
+          "price_usd": 4.0
+        },
+        {
+          "sku": "YZD-1758-EDP-100",
+          "volume_ml": 100,
+          "price_toman": 2950000,
+          "stock": 0,
+          "price_usd": 4.0
+        }
+      ],
+      "legacy_backfill": false
+    },
+    {
+      "product_id": "YZD-PROD-1328",
+      "slug": "sospiro-perfumes-opera",
+      "brand_en": "Sospiro Perfumes",
+      "expected_name_en": "SOSPIRO PERFUMES - Opera",
+      "reference_name": "Opera",
+      "source_url": "https://www.fragrantica.com/perfume/Sospiro-Perfumes/Opera-26282.html",
+      "provider": "Fragrantica",
+      "status": "secondary_original_found_supplier_essence_unverified",
+      "checked_date": "2026-11-01",
+      "supplier_brand": "SOSPIRO",
+      "supplier_model": "Opera",
+      "usd_per_kg": "240.9",
+      "quality": "H",
+      "match_status": "name_matched_supplier_identity_unverified",
+      "expected_edps": [
+        {
+          "sku": "YZD-1328-EDP-010",
+          "volume_ml": 10,
+          "price_toman": 639999,
+          "stock": 0,
+          "price_usd": 7.0
+        },
+        {
+          "sku": "YZD-1328-EDP-030",
+          "volume_ml": 30,
+          "price_toman": 1620000,
+          "stock": 0,
+          "price_usd": 7.0
+        },
+        {
+          "sku": "YZD-1328-EDP-050",
+          "volume_ml": 50,
+          "price_toman": 2600000,
+          "stock": 0,
+          "price_usd": 7.0
+        },
+        {
+          "sku": "YZD-1328-EDP-100",
+          "volume_ml": 100,
+          "price_toman": 5050000,
+          "stock": 0,
+          "price_usd": 7.0
+        }
+      ],
+      "legacy_backfill": false
+    },
+    {
+      "product_id": "SUP-TP-910008",
+      "slug": "sospiro-accento",
+      "brand_en": "Sospiro Perfumes",
+      "expected_name_en": "SOSPIRO PERFUMES - Accento",
+      "reference_name": "Accento",
+      "source_url": "https://www.fragrantica.com/perfume/Sospiro-Perfumes/Accento-13816.html",
+      "provider": "Fragrantica",
+      "status": "secondary_original_found_supplier_essence_unverified",
+      "checked_date": "2026-11-01",
+      "supplier_brand": "SOSPIRO",
+      "supplier_model": "Accento",
+      "usd_per_kg": "491.7",
+      "quality": "T",
+      "match_status": "name_matched_supplier_identity_unverified",
+      "expected_edps": [],
+      "legacy_backfill": false
+    },
+    {
+      "product_id": "SUP-TP-910009",
+      "slug": "davidoff-champion",
+      "brand_en": "Davidoff",
+      "expected_name_en": "DAVIDOFF - Champion",
+      "reference_name": "Champion",
+      "source_url": "https://www.fragrantica.com/perfume/Davidoff/Champion-9109.html",
+      "provider": "Fragrantica",
+      "status": "secondary_original_found_supplier_essence_unverified",
+      "checked_date": "2026-11-01",
+      "supplier_brand": "DAVIDOFF",
+      "supplier_model": "Champion",
+      "usd_per_kg": "276.1",
+      "quality": "H",
+      "match_status": "name_matched_supplier_identity_unverified",
+      "expected_edps": [],
+      "legacy_backfill": false
+    },
+    {
+      "product_id": "SUP-TP-910010",
+      "slug": "kilian-smoke-for-the-soul",
+      "brand_en": "Kilian Paris",
+      "expected_name_en": "KILIAN PARIS - Smoke for the Soul",
+      "reference_name": "Smoke for the Soul",
+      "source_url": "https://www.fragrantica.com/perfume/By-Kilian/Smoke-for-the-Soul-25993.html",
+      "provider": "Fragrantica",
+      "status": "secondary_original_found_supplier_essence_unverified",
+      "checked_date": "2026-11-01",
+      "supplier_brand": "By Kilian",
+      "supplier_model": "Smoke for The Soul",
+      "usd_per_kg": "270.6",
+      "quality": "P",
+      "match_status": "name_matched_supplier_identity_unverified",
+      "expected_edps": [],
+      "legacy_backfill": false
+    },
+    {
+      "product_id": "SUP-TP-910011",
+      "slug": "halloween-halloween",
+      "brand_en": "Halloween",
+      "expected_name_en": "Halloween",
+      "reference_name": "Halloween",
+      "source_url": "https://www.fragrantica.com/perfume/Halloween/Halloween-1444.html",
+      "provider": "Fragrantica",
+      "status": "secondary_original_found_supplier_essence_unverified",
+      "checked_date": "2026-11-01",
+      "supplier_brand": "JESUS DEL POZO",
+      "supplier_model": "Halloween",
+      "usd_per_kg": "190.3",
+      "quality": "H",
+      "match_status": "name_matched_supplier_identity_unverified",
+      "expected_edps": [],
+      "legacy_backfill": false
+    }
+  ]
+}

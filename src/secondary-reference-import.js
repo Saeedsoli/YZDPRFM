@@ -4,11 +4,12 @@
 const fs=require('fs');
 const {kgToGram,productPriceState,applyProductPrice}=require('./product-essence-pricing');
 const VERSION='secondary_reference_prices_2026_11_v1';
+const VERSION_2='secondary_reference_prices_2026_11_v2';
 const STATUS='secondary_original_found_supplier_essence_unverified';
 function applySecondaryReferences(db,file){
  if(!fs.existsSync(file))return {applied:0,backfilled:0,skipped:0,reason:'file_missing'};
  const data=JSON.parse(fs.readFileSync(file,'utf8'));
- if(data.version!==VERSION||!/^[a-f0-9]{64}$/.test(data.supplier_file_sha256||'')||!Array.isArray(data.items)||data.items.length!==12)throw new Error('Invalid independent reference manifest');
+ if(!Object.hasOwn({[VERSION]:12,[VERSION_2]:6},data.version)||!/^[a-f0-9]{64}$/.test(data.supplier_file_sha256||'')||!Array.isArray(data.items)||data.items.length!==({[VERSION]:12,[VERSION_2]:6})[data.version])throw new Error('Invalid independent reference manifest');
  const seen=new Set();
  for(const x of data.items){
   let url;try{url=new URL(x.source_url);}catch{throw new Error('Invalid independent reference URL');}
@@ -20,7 +21,7 @@ function applySecondaryReferences(db,file){
   kgToGram(x.usd_per_kg);seen.add(x.product_id);
  }
  return db.transaction(()=>{
-  if(db.prepare('select value from settings where key=?').get(VERSION))return {applied:0,backfilled:0,skipped:0,reason:'already_applied'};
+  if(db.prepare('select value from settings where key=?').get(data.version))return {applied:0,backfilled:0,skipped:0,reason:'already_applied'};
   db.exec(`CREATE TABLE IF NOT EXISTS secondary_reference_evidence (
     product_id TEXT PRIMARY KEY, reference_name TEXT NOT NULL, source_url TEXT NOT NULL,
     provider TEXT NOT NULL, status TEXT NOT NULL, supplier_file_sha256 TEXT NOT NULL,
@@ -50,8 +51,8 @@ function applySecondaryReferences(db,file){
    const state=productPriceState(db,p.id);applyProductPrice(db,p.id,kgToGram(x.usd_per_kg),state.rate_toman,null);
    insert.run(p.id,x.reference_name,x.source_url,x.provider,x.status,data.supplier_file_sha256,x.usd_per_kg,x.quality,x.match_status,x.checked_date);applied++;
   }
-  db.prepare('insert into settings(key,value) values(?,?)').run(VERSION,JSON.stringify({applied,backfilled,skipped,at:new Date().toISOString()}));
+  db.prepare('insert into settings(key,value) values(?,?)').run(data.version,JSON.stringify({applied,backfilled,skipped,at:new Date().toISOString()}));
   return {applied,backfilled,skipped:skipped.length,skipped_ids:skipped};
  })();
 }
-module.exports={applySecondaryReferences,VERSION,STATUS};
+module.exports={applySecondaryReferences,VERSION,VERSION_2,STATUS};

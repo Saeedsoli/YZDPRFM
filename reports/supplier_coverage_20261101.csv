@@ -19,7 +19,7 @@ BURBERRY,Weekend,Women,باربری ویکند,1,54,97.9,P,pending,هنوز قی
 BURBERRY,HER,Women,باربری هر,1,55,117.7,P,pending,هنوز قیمت مرجع منتسب نشده,,,
 BVLGARI,Ambero,Men,بولگاری آمبرو,1,61,663.3,P,provisional,قیمت موقت با شاهد نام؛ هویت اسانس تأییدنشده,YZD-PROD-2019,https://www.bulgari.com/en-int/52104.html,official_reference_prices_v5.json
 BVLGARI,Amarena,Women,بولگاری آمارنا,1,62,218.9,P,secondary,قیمت موقت با منبع مستقل؛ هویت اسانس تأییدنشده,SUP-TP-910004,https://www.fragrantica.com/perfume/Bvlgari/Amarena-27387.html,secondary_reference_prices_v1.json
-BVLGARI,Aqva Pour Homme,Men,بولگاری آکوا,1,63,224.4,H,pending,هنوز قیمت مرجع منتسب نشده,,,
+BVLGARI,Aqva Pour Homme,Men,بولگاری آکوا,1,63,224.4,H,secondary,قیمت موقت با منبع مستقل؛ هویت اسانس تأییدنشده,YZD-PROD-1758,https://www.fragrantica.com/perfume/Bvlgari/Aqva-Pour-Homme-153.html,secondary_reference_prices_v2.json
 BVLGARI,FALKAR,Men,بولگاری فالکار,1,64,852.5,P,provisional,قیمت موقت با شاهد نام؛ هویت اسانس تأییدنشده,YZD-PROD-2016,https://www.bulgari.com/en-gb/fragrances/bvlgari-le-gemme/bvlgari-le-gemme-falkar-eau-de-parfum-42178,official_reference_prices_v5.json
 BVLGARI,Jasmin Noir,Women,بولگاری جاسمین نویر,1,65,234.3,H,pending,هنوز قیمت مرجع منتسب نشده,,,
 BVLGARI,Onekh,Men,بولگاری اونخ,1,66,690.8,P,provisional,قیمت موقت با شاهد نام؛ هویت اسانس تأییدنشده,YZD-PROD-2017,https://www.bulgari.com/en-int/52105.html,official_reference_prices_v5.json
@@ -29,7 +29,7 @@ By Kilian,APPLE BRANDY,Unisex,اپل برندی,1,76,222.2,P,pending,هنوز ق
 By Kilian,BLACK PHANTOM,Unisex,بلک فانتوم,1,77,256.3,P,provisional,قیمت موقت با شاهد نام؛ هویت اسانس تأییدنشده,YZD-PROD-0679,https://www.bykilian.com/product/19797/141058/perfume/black-phantom--memento-mori-icon-set,official_reference_prices_v8.json
 By Kilian,GOOD GIRL GONE BAD,Women,گودگرل گان بد,1,78,300.3,P,provisional,قیمت موقت با شاهد نام؛ هویت اسانس تأییدنشده,YZD-PROD-0688,https://www.bykilian.com/product/19797/147603/perfume/good-girl-gone-bad-the-icon-set/the-narcotics,official_reference_prices_v2.json
 By Kilian,Moonlight in Heaven,Unisex,مون لایت,1,79,438.9,H,provisional,قیمت موقت با شاهد نام؛ هویت اسانس تأییدنشده,YZD-PROD-0684,https://www.bykilian.com/product/19797/52771/perfume/moonlight-in-heaven/the-fresh,official_reference_prices_v2.json
-By Kilian,Smoke for The Soul,Unisex,اسموک فور د سول,1,80,270.6,P,pending,هنوز قیمت مرجع منتسب نشده,,,
+By Kilian,Smoke for The Soul,Unisex,اسموک فور د سول,1,80,270.6,P,secondary,قیمت موقت با منبع مستقل؛ هویت اسانس تأییدنشده,SUP-TP-910010,https://www.fragrantica.com/perfume/By-Kilian/Smoke-for-the-Soul-25993.html,secondary_reference_prices_v2.json
 cacharel,Amor Amor,Women,آمور آمور,1,86,97.9,B,pending,هنوز قیمت مرجع منتسب نشده,,,
 Calvin Klein,Eternity,Men,ایترنتی,1,92,73.7,I,pending,هنوز قیمت مرجع منتسب نشده,,,
 Calvin Klein,Euphoria,Men,ایفوریا مردانه,1,93,151.8,P,pending,هنوز قیمت مرجع منتسب نشده,,,
@@ -67,7 +67,7 @@ CREED,Viking,Men,وایکینگ,2,"192,193",844.8,T,provisional,قیمت موق�
 CREED,White Flowers,Women,وایت فلاورز,1,194,427.9,H,provisional,قیمت موقت با شاهد نام؛ هویت اسانس تأییدنشده,SUP-CR-900009,https://www.creedfragrance.com/p/royales-exclusives-white-flowers/12900138/,official_reference_prices_v10.json
 CHOPARD,MADAGASCAR,Unisex,ماداگاسکار,1,200,86.9,B,pending,هنوز قیمت مرجع منتسب نشده,,,
 Fakhamat Al Sharq,Feroon,Men,فرعون,1,206,319,I,pending,هنوز قیمت مرجع منتسب نشده,,,
-DAVIDOFF,Champion,Men,چمپیون دیویدوف,2,"212,213",276.1,H,pending,هنوز قیمت مرجع منتسب نشده,,,
+DAVIDOFF,Champion,Men,چمپیون دیویدوف,2,"212,213",276.1,H,secondary,قیمت موقت با منبع مستقل؛ هویت اسانس تأییدنشده,SUP-TP-910009,https://www.fragrantica.com/perfume/Davidoff/Champion-9109.html,secondary_reference_prices_v2.json
 DAVIDOFF,Cool Water,Women,کول واتر دیویدوف,2,"214,215",99,E,pending,هنوز قیمت مرجع منتسب نشده,,,
 Dior,Fahrenheit,Men,فارنهایت دیور,1,221,287.1,H,pending,هنوز قیمت مرجع منتسب نشده,,,
 Dior,HOMME INTENSE,Men,هوم اینتنس دیور,2,"222,223",424.6,H,provisional,قیمت موقت با شاهد نام؛ هویت اسانس تأییدنشده,YZD-PROD-1427,https://www.dior.com/en_int/beauty/products/dior-homme-intense-Y0479201.html,official_reference_prices_v3.json
@@ -125,7 +125,7 @@ JEAN PAUL GAULTIER,PARADISE GARDEN,Men,پارادایز گاردن,1,406,108.9,B
 JEAN PAUL GAULTIER,Le Male Elixier,Men,ل مل الکسیر,1,407,169.4,H,provisional,قیمت موقت با شاهد نام؛ هویت اسانس تأییدنشده,YZD-PROD-1581,https://www.jeanpaulgaultier.com/nl/nl/p/assortiment-le-male/le-male-elixir-parfum-000000000065188980,official_reference_prices_v4.json
 Billie Eilish,Eilish,Women,بیلی آیلیش,1,413,115.5,P,pending,هنوز قیمت مرجع منتسب نشده,,,
 JENNIFER LOPEZ,Still,Women,استیل جنیفر,3,"419,420,421",190.3,H,pending,هنوز قیمت مرجع منتسب نشده,,,
-JESUS DEL POZO,Halloween,Women,هالووین,2,"427,428",190.3,H,pending,هنوز قیمت مرجع منتسب نشده,,,
+JESUS DEL POZO,Halloween,Women,هالووین,2,"427,428",190.3,H,secondary,قیمت موقت با منبع مستقل؛ هویت اسانس تأییدنشده,SUP-TP-910011,https://www.fragrantica.com/perfume/Halloween/Halloween-1444.html,secondary_reference_prices_v2.json
 JOOP,JOOP HOMME (Red),Men,جوپ سبز,1,434,113.3,H,pending,هنوز قیمت مرجع منتسب نشده,,,
 JOOP,Joop Night Flight (Green),Men,جوپ قرمز,1,435,83.6,H,pending,هنوز قیمت مرجع منتسب نشده,,,
 JOOP,Joop yellow,Men,جوپ زرد,1,436,77,H,pending,هنوز قیمت مرجع منتسب نشده,,,
@@ -213,9 +213,9 @@ Sapil,NICE BLACK,Men,نایس بلک,1,726,86.9,B,pending,هنوز قیمت مر
 SENJED,SENJED,Unisex,سنجد,1,732,55,I,pending,هنوز قیمت مرجع منتسب نشده,,,
 SERIS,Splandor,Men,اسپلندور,2,"738,739",172.7,H,pending,هنوز قیمت مرجع منتسب نشده,,,
 SHISEIDO,Zen,Women,زن,1,745,176,H,provisional,قیمت موقت با شاهد نام؛ هویت اسانس تأییدنشده,SUP-SH-900022,https://www.shiseido.com/us/en/zen-eau-de-parfum-0768614102007.html,official_reference_prices_v15.json
-SOSPIRO,Accento,Unisex,اکسنتو,3,"751,752,753",491.7,T,pending,هنوز قیمت مرجع منتسب نشده,,,
+SOSPIRO,Accento,Unisex,اکسنتو,3,"751,752,753",491.7,T,secondary,قیمت موقت با منبع مستقل؛ هویت اسانس تأییدنشده,SUP-TP-910008,https://www.fragrantica.com/perfume/Sospiro-Perfumes/Accento-13816.html,secondary_reference_prices_v2.json
 SOSPIRO,Erba Pura,Unisex,ارباپورا,2,"754,755",267.3,H,pending,هنوز قیمت مرجع منتسب نشده,,,
-SOSPIRO,Opera,Unisex,اُپرا,1,756,240.9,H,pending,هنوز قیمت مرجع منتسب نشده,,,
+SOSPIRO,Opera,Unisex,اُپرا,1,756,240.9,H,secondary,قیمت موقت با منبع مستقل؛ هویت اسانس تأییدنشده,YZD-PROD-1328,https://www.fragrantica.com/perfume/Sospiro-Perfumes/Opera-26282.html,secondary_reference_prices_v2.json
 SULTAN,Sultan,Unisex,سلطان,3,"762,763,764",584.1,P,pending,هنوز قیمت مرجع منتسب نشده,,,
 Thiery Mugler,Alien,Women,الین,1,770,294.8,H,pending,هنوز قیمت مرجع منتسب نشده,,,
 Thiery Mugler,Angel Passion Star,Women,آنجل قرمز,1,771,75.9,I,pending,هنوز قیمت مرجع منتسب نشده,,,

@@ -82,8 +82,7 @@ def manifests(root, source_sha):
         if x['product_id'] in ids:raise ValueError('duplicate LV product reference')
         ids.add(x['product_id']);candidates.append({**x,'supplier_brand':b,'supplier_model':model,'origin':'lv_reference_prices_v1.json','legacy':False})
     # Independent references are separate from official evidence.
-    secondary=base/'secondary_reference_prices_v1.json'
-    if secondary.exists():
+    for secondary in sorted(base.glob('secondary_reference_prices_v*.json'),key=lambda p:int(re.search(r'v(\d+)\.json$',p.name).group(1))):
         sm=json.loads(secondary.read_text(encoding='utf-8'))
         if sm.get('supplier_file_sha256')!=source_sha:raise ValueError('independent-source supplier hash mismatch')
         for x in sm['items']:

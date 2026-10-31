@@ -2665,7 +2665,8 @@ function seedVerifiedSupplement(filename) {
   return inserted;
 }
 const supplementInserted = (seedVerifiedSupplement('supplier_verified_supplement.json') || 0) +
-  (seedVerifiedSupplement('secondary_supplement_v1.json') || 0);
+  (seedVerifiedSupplement('secondary_supplement_v1.json') || 0) +
+  (seedVerifiedSupplement('secondary_supplement_v2.json') || 0);
 // This records reference-original evidence only; it never verifies supplier essence.
 for (const file of ['official_identity_evidence_v1.json','official_identity_evidence_v2.json','official_identity_evidence_v3.json','official_identity_evidence_v4.json','official_identity_evidence_v5.json','official_identity_evidence_v6.json','official_identity_evidence_v7.json','official_identity_evidence_v8.json','official_identity_evidence_v9.json','official_identity_evidence_v10.json','official_identity_evidence_v11.json','official_identity_evidence_v12.json','official_identity_evidence_v13.json','official_identity_evidence_v14.json','official_identity_evidence_v15.json','official_identity_evidence_v16.json','official_identity_evidence_v17.json'])
   require('./official-identities').seedOfficialIdentities(db, path.join(SEED_DIR, file));
@@ -2683,7 +2684,8 @@ if (process.env.REFERENCE_PRICE_V2_AUTOMIGRATE !== '0')
 for (const file of ['official_reference_prices_v3.json','official_reference_prices_v4.json','official_reference_prices_v5.json','official_reference_prices_v6.json','official_reference_prices_v7.json','official_reference_prices_v8.json','official_reference_prices_v9.json','official_reference_prices_v10.json','official_reference_prices_v11.json','official_reference_prices_v12.json','official_reference_prices_v13.json','official_reference_prices_v14.json','official_reference_prices_v15.json','official_reference_prices_v16.json','official_reference_prices_v17.json','official_reference_prices_v18.json'])
   require('./reference-price-import').applyReferencePrices(db, path.join(SEED_DIR, file));
 // Independent sources never enter the official evidence table.
-require('./secondary-reference-import').applySecondaryReferences(db, path.join(SEED_DIR, 'secondary_reference_prices_v1.json'));
+for (const file of ['secondary_reference_prices_v1.json','secondary_reference_prices_v2.json'])
+  require('./secondary-reference-import').applySecondaryReferences(db, path.join(SEED_DIR, file));
 // Correct earlier supplier-derived gender fields only for unchanged, unavailable
 // supplement rows. Never switch availability or overwrite a different value.
 function correctSupplementGenderFromOfficial() {
@@ -2707,14 +2709,15 @@ for (const file of ['official_gender_corrections_v1.json', 'official_gender_corr
 const officialNoteManifests = ['official_note_corrections_v1.json', 'official_note_corrections_v2.json', 'official_note_corrections_v3.json', 'official_note_corrections_v4.json', 'official_note_corrections_v5.json', 'official_note_corrections_v6.json', 'official_note_corrections_v7.json', 'official_note_corrections_v8.json', 'official_note_corrections_v9.json', 'official_note_corrections_v10.json', 'official_note_corrections_v11.json', 'official_note_corrections_v12.json', 'official_note_corrections_v13.json', 'official_note_corrections_v14.json', 'official_note_corrections_v15.json', 'official_note_corrections_v16.json'];
 const officialNotesResults = officialNoteManifests.map(file =>
   require('./official-notes').applyOfficialNotes(db, path.join(SEED_DIR, file)));
-const secondaryNotesResult = require('./secondary-notes').applySecondaryNotes(db, path.join(SEED_DIR, 'secondary_note_corrections_v1.json'));
+const secondaryNotesResults = ['secondary_note_corrections_v1.json','secondary_note_corrections_v2.json'].map(file =>
+  require('./secondary-notes').applySecondaryNotes(db, path.join(SEED_DIR, file)));
 seedCoupons();
 /* تنظیمات واقعی فروشگاه — پس از ساخت جدول‌ها، پیش از سرو شدن
    هر صفحه. فاکتور و برچسب پستی بدون این‌ها ناقص چاپ می‌شوند. */
 seedShopSettings();
 buildSearchIndex();
 // Rebuild note lookup after sourced notes change or new supplement products arrive.
-buildNotesIndex(supplementInserted > 0 || secondaryNotesResult.updated > 0 || officialNotesResults.some(r => r.updated > 0));
+buildNotesIndex(supplementInserted > 0 || secondaryNotesResults.some(r => r.updated > 0) || officialNotesResults.some(r => r.updated > 0));
 
 startMaintenance();
 
