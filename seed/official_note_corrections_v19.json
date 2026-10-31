@@ -1,0 +1,58 @@
+{
+  "version": "official_notes_2026_11_v19",
+  "description": "Guarded official reference notes and transparency; no supplier identity verification.",
+  "items": [
+    {
+      "product_id": "YZD-PROD-1936",
+      "product_slug": "alfred-dunhill-icon",
+      "official_brand": "Alfred Dunhill",
+      "official_name": "Dunhill London Icon",
+      "source_url": "https://www.dunhill.com/il/icon_cod46530312ax.html",
+      "source_scope": "Reference original Icon; not Icon Racing, Absolute or Elite. Actual supplier essence identity unverified.",
+      "expected_old_notes": {
+        "top": [
+          "بهارنارنج",
+          "ترنج کالابریا",
+          "فلفل سیاه",
+          "برگ درخت نارنج"
+        ],
+        "middle": [
+          "فلفل سیاه",
+          "اسطوخودوس",
+          "هل",
+          "مریم‌گلی",
+          "زنبق"
+        ],
+        "base": [
+          "خس‌خس هائیتی",
+          "چوب عود",
+          "چرم",
+          "چوب درخت بلوط",
+          "زنبق"
+        ]
+      },
+      "verified_notes": {
+        "top": [],
+        "middle": [],
+        "base": []
+      },
+      "expected_old_accords": [
+        "شیشه سیلندری سنگین موتورسیلندری فلزی نقره‌ای",
+        "شاهکار کارلوس بنایم در سال ۲۰۱۵",
+        "اوج شیک‌پوشی اداری"
+      ],
+      "verified_accords": [
+        "اسطوخودوس",
+        "عود",
+        "ترنج",
+        "نرولی",
+        "فلفل سیاه",
+        "هل",
+        "آکورد چرم"
+      ],
+      "requires_unavailable": true,
+      "expected_old_notice": "این محصول، بازآفرینی دست‌ساز با عصاره خالص اولیه و فرمولاسیون اختصاصی عطر یزد است.",
+      "verified_notice": "این محصول بازآفرینی دست‌ساز است و محصول اورجینال برند اصلی نیست. اطلاعات رایحه مرجع از وب‌سایت رسمی برند گرفته شده و هویت اسانس تأمین‌کننده مستقلاً تأیید نشده است."
+    }
+  ]
+}

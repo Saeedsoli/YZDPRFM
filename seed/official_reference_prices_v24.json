@@ -1,0 +1,50 @@
+{
+  "version": "official_reference_prices_2026_11_v24",
+  "supplier_file_sha256": "bbe8f40610bc765bda0a7d2da9dbe78f4e397458a6991239c3c18d0853f33f5c",
+  "description": "Provisional name-based prices; supplier essence is unverified; no activation.",
+  "items": [
+    {
+      "product_id": "YZD-PROD-1936",
+      "slug": "alfred-dunhill-icon",
+      "brand_en": "Alfred Dunhill",
+      "expected_name_en": "ALFRED DUNHILL - Icon",
+      "reference_name": "Dunhill London Icon",
+      "official_url": "https://www.dunhill.com/il/icon_cod46530312ax.html",
+      "supplier_brand": "dunhıll",
+      "supplier_model": "Icon",
+      "usd_per_kg": "245.3",
+      "quality": "H",
+      "match_status": "name_matched_supplier_identity_unverified",
+      "expected_edps": [
+        {
+          "sku": "YZD-1936-EDP-010",
+          "volume_ml": 10,
+          "price_toman": 430000,
+          "stock": 0,
+          "price_usd": 4.0
+        },
+        {
+          "sku": "YZD-1936-EDP-030",
+          "volume_ml": 30,
+          "price_toman": 990000,
+          "stock": 0,
+          "price_usd": 4.0
+        },
+        {
+          "sku": "YZD-1936-EDP-050",
+          "volume_ml": 50,
+          "price_toman": 1550000,
+          "stock": 0,
+          "price_usd": 4.0
+        },
+        {
+          "sku": "YZD-1936-EDP-100",
+          "volume_ml": 100,
+          "price_toman": 2950000,
+          "stock": 0,
+          "price_usd": 4.0
+        }
+      ]
+    }
+  ]
+}

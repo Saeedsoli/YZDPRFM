@@ -27,13 +27,14 @@ const VERSION_20='official_reference_prices_2026_11_v20';
 const VERSION_21='official_reference_prices_2026_11_v21';
 const VERSION_22='official_reference_prices_2026_11_v22';
 const VERSION_23='official_reference_prices_2026_11_v23';
+const VERSION_24='official_reference_prices_2026_11_v24';
 const V1_HOSTS=new Set(['lattafa.com','www.creedfragrance.com','www.atkinsons1799.com']);
 function applyReferencePrices(db,file){
  if(!fs.existsSync(file))return {applied:0,skipped:0,reason:'file_missing'};
  const data=JSON.parse(fs.readFileSync(file,'utf8'));
  const second=data.version===VERSION_2;
- const needsIdentity=[VERSION_2,VERSION_3,VERSION_4,VERSION_5,VERSION_6,VERSION_7,VERSION_8,VERSION_9,VERSION_10,VERSION_11,VERSION_12,VERSION_13,VERSION_14,VERSION_15,VERSION_16,VERSION_17,VERSION_18,VERSION_19,VERSION_20,VERSION_21,VERSION_22,VERSION_23].includes(data.version);
- const counts={[VERSION]:4,[VERSION_2]:37,[VERSION_3]:6,[VERSION_4]:6,[VERSION_5]:8,[VERSION_6]:1,[VERSION_7]:5,[VERSION_8]:3,[VERSION_9]:1,[VERSION_10]:2,[VERSION_11]:6,[VERSION_12]:5,[VERSION_13]:5,[VERSION_14]:7,[VERSION_15]:6,[VERSION_16]:6,[VERSION_17]:2,[VERSION_18]:1,[VERSION_19]:2,[VERSION_20]:2,[VERSION_21]:4,[VERSION_22]:2,[VERSION_23]:3};
+ const needsIdentity=[VERSION_2,VERSION_3,VERSION_4,VERSION_5,VERSION_6,VERSION_7,VERSION_8,VERSION_9,VERSION_10,VERSION_11,VERSION_12,VERSION_13,VERSION_14,VERSION_15,VERSION_16,VERSION_17,VERSION_18,VERSION_19,VERSION_20,VERSION_21,VERSION_22,VERSION_23,VERSION_24].includes(data.version);
+ const counts={[VERSION]:4,[VERSION_2]:37,[VERSION_3]:6,[VERSION_4]:6,[VERSION_5]:8,[VERSION_6]:1,[VERSION_7]:5,[VERSION_8]:3,[VERSION_9]:1,[VERSION_10]:2,[VERSION_11]:6,[VERSION_12]:5,[VERSION_13]:5,[VERSION_14]:7,[VERSION_15]:6,[VERSION_16]:6,[VERSION_17]:2,[VERSION_18]:1,[VERSION_19]:2,[VERSION_20]:2,[VERSION_21]:4,[VERSION_22]:2,[VERSION_23]:3,[VERSION_24]:1};
  if(!Object.hasOwn(counts,data.version)||!/^[a-f0-9]{64}$/.test(data.supplier_file_sha256||'')||!Array.isArray(data.items)||data.items.length!==counts[data.version])throw new Error('Invalid reference price manifest');
  const ids=new Set();
  for(const x of data.items){

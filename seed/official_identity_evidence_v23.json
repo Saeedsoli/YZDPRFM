@@ -1,0 +1,16 @@
+{
+  "version": "official_identity_evidence_v23",
+  "scope": "Official reference-original name only; actual supplier essence identity is unverified.",
+  "items": [
+    {
+      "product_id": "YZD-PROD-1936",
+      "slug": "alfred-dunhill-icon",
+      "brand_en": "Alfred Dunhill",
+      "expected_name_en": "ALFRED DUNHILL - Icon",
+      "reference_name": "Dunhill London Icon",
+      "official_url": "https://www.dunhill.com/il/icon_cod46530312ax.html",
+      "status": "official_original_found_supplier_essence_unverified",
+      "checked_date": "2026-11-01"
+    }
+  ]
+}
