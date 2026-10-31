@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """Isolated backup/restore test; no live DB is modified."""
-import gzip,hashlib,json,os,shutil,sqlite3,sys,tempfile,zipfile
+import gzip,hashlib,json,lzma,os,shutil,sqlite3,sys,tempfile,zipfile
 from pathlib import Path
 sys.path.insert(0,str(Path(__file__).resolve().parent))
 from sqlite_delta_backup import create,restore,sha
@@ -14,6 +14,15 @@ with tempfile.TemporaryDirectory(prefix='yazd-delta-test-') as td:
  d=sqlite3.connect(expected);c.backup(d);d.close()
  info=create(live,base,delta);assert info['verified'] and info['changed_pages']>0 and info['target_sha256']==sha(expected)
  result=restore(base,delta,restored);assert result['target_sha256']==sha(expected) and sha(restored)==sha(expected)
+ # Different compression of the exact same base bytes must be interchangeable.
+ xzbase=p/'base.sqlite.xz'
+ with open(base_raw,'rb') as f,lzma.open(xzbase,'wb',preset=9) as z:shutil.copyfileobj(f,z)
+ xzrestored=p/'xz-restored.sqlite';assert restore(xzbase,delta,xzrestored)['target_sha256']==sha(expected);assert sha(xzrestored)==sha(expected)
+ xzdelta=p/'xz-backup.zip';assert create(live,xzbase,xzdelta)['verified'];xzround=p/'xz-round.sqlite';restore(base,xzdelta,xzround);assert sha(xzround)==sha(expected)
+ bogus=p/'not-compressed';bogus.write_bytes(b'not a compressed base')
+ try:restore(bogus,delta,p/'bad-base-output.sqlite');raise AssertionError('unknown base accepted')
+ except ValueError:pass
+ assert not (p/'bad-base-output.sqlite').exists()
  check=sqlite3.connect(restored);assert check.execute('pragma integrity_check').fetchone()[0]=='ok';assert check.execute('select amount from customers where id=5').fetchone()[0]==9876;assert check.execute('select count(*) from customers where id=8').fetchone()[0]==0;assert check.execute("select amount from customers where name='new'").fetchone()[0]==54321;check.close()
  # Repacking the exact manifest and page records with ZIP-LZMA must retain
  # a bit-identical restored database and all integrity guards.
@@ -44,4 +53,4 @@ with tempfile.TemporaryDirectory(prefix='yazd-delta-test-') as td:
  try:restore(base,bad,p/'tampered-output.sqlite');raise AssertionError('tampered delta accepted')
  except (ValueError,sqlite3.DatabaseError):pass
  assert not (p/'tampered-output.sqlite').exists();c.close()
- print('PASS: committed WAL snapshot, exact deflate/LZMA restore, SQLite integrity, wrong-base/tamper/overwrite rejection')
+ print('PASS: WAL snapshot, interchangeable gzip/XZ bases, deflate/LZMA restore, SQLite integrity, wrong-base/tamper/overwrite rejection')

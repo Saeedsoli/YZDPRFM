@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
-"""Verified page-delta SQLite backups. A matching full .sqlite.gz base is required.
+"""Verified page-delta SQLite backups. A matching gzip or XZ full base is required.
 
 Neither create nor restore ever overwrites an existing file. Backups may contain
 private customer data and must remain outside Git. Restore writes a NEW database;
 never point it at a running database. Python standard library only.
 """
-import argparse, gzip, hashlib, json, os, shutil, sqlite3, struct, tempfile, zipfile
+import argparse, gzip, hashlib, json, lzma, os, shutil, sqlite3, struct, tempfile, zipfile
 from pathlib import Path
 VERSION='yazd-sqlite-page-delta-v1'
 MAX_BYTES=1024*1024*1024
@@ -29,7 +29,11 @@ def validate_sqlite(path):
     return page,size
 
 def expand_base(base,out):
-    with gzip.open(base,'rb') as src,open(out,'wb') as dst:
+    with open(base,'rb') as f: magic=f.read(6)
+    if magic.startswith(b'\x1f\x8b'): opener=gzip.open
+    elif magic==b'\xfd7zXZ\x00': opener=lzma.open
+    else: raise ValueError('Unsupported base compression')
+    with opener(base,'rb') as src,open(out,'wb') as dst:
         total=0
         while chunk:=src.read(1024*1024):
             total+=len(chunk)
