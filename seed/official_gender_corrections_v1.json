@@ -1,0 +1,20 @@
+{
+  "version": "official_gender_2026_10_v1",
+  "description": "Brand-described categories of reference originals, not restrictions on use.",
+  "items": [
+    {
+      "product_id": "YZD-PROD-0639",
+      "product_slug": "parfums-de-marly-herod",
+      "expected_old_gender": "MEN",
+      "official_gender": "UNISEX",
+      "source_url": "https://us.parfums-de-marly.com/products/herod"
+    },
+    {
+      "product_id": "YZD-PROD-0651",
+      "product_slug": "parfums-de-marly-galloway",
+      "expected_old_gender": "UNISEX",
+      "official_gender": "MEN",
+      "source_url": "https://us.parfums-de-marly.com/products/galloway"
+    }
+  ]
+}

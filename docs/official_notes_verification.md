@@ -45,3 +45,12 @@
 ### پیش‌نویس‌های یادداشت عطرساز
 
 در بررسی کد مشخص شد متن‌های اولیه با اسکریپت تولید شده بودند اما به صورت تجربه دست‌اول در صفحه عمومی نمایش می‌یافتند. چون از منشأ واقعی هر یادداشت در دیتابیس موجود نمی‌توان مطمئن شد، از جمله متن‌هایی که ممکن است بعداً دستی ویرایش شده باشند، همه یادداشت‌های موجود تا تأیید دستی به‌صورت پیش‌نویس باقی می‌مانند. خود متن‌ها حذف نشده‌اند. مدیر می‌تواند پس از بررسی صحت تجربه، در پنل یادداشت را ذخیره و صریحاً تأیید کند؛ فقط یادداشت تأییدشده در API عمومی و HTML قابل‌نمایش است. تولید مجدد پیش‌نویس نیز تأیید قبلی آن را برمی‌دارد.
+
+## نوبت چهارم — Galloway، Babycat و Bright Crystal
+
+- Parfums de Marly Galloway: https://us.parfums-de-marly.com/products/galloway — نت‌ها و دسته‌بندی مردانه مطابق صفحه رسمی مرجع ثبت شد.
+- YSL Babycat: https://www.yslbeautyus.com/fragrance/le-vestiaire-des-parfums/the-signature-collection/babycat---le-vestiaire-des-parfums/WW-50920YSL.html — نت‌های آغازین، میانی و پایه طبق صفحه رسمی ثبت شد.
+- Versace Bright Crystal Eau de Toilette: https://www.versace.com/us/en/women/accessories/fragrances-body-care/bright-crystal/bright-crystal-edt-90-ml-pink/R510032-R090MLS_RNUL.html — نت‌های نسخه EDT طبق صفحه رسمی ثبت شد. انتساب قیمت فهرست به این نسخه هنوز مستقلاً تأیید نشده است.
+- Parfums de Marly Herod: https://us.parfums-de-marly.com/products/herod — صفحه رسمی مورد بررسی آن را unisex معرفی می‌کند؛ دسته‌بندی قبلی مرجع در دیتابیس محلی با محافظت در برابر تغییرات مالک به‌روزرسانی شد. دسته‌بندی محصول اصلی به معنی محدودیت استفاده از بازآفرینی دست‌ساز نیست و ممکن است بین بازارهای رسمی تغییر کند.
+
+سه اصلاح نت در `seed/official_note_corrections_v4.json` و دو اصلاح دسته‌بندی در `seed/official_gender_corrections_v1.json` ثبت شده‌اند. برای دسته‌بندی، به‌روزرسانی فقط روی محصولات `UNAVAILABLE` با مقدار قبلیِ بدون تغییر اجرا می‌شود؛ موارد متفاوت یا فعال به‌طور خودکار تغییر نمی‌کنند. هیچ قیمت یا وضعیتی در این مرحله تغییر نکرد.

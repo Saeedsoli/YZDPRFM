@@ -1,0 +1,126 @@
+{
+  "version": "official_notes_2026_10_v4",
+  "description": "Official original-fragrance pyramids; not verification of supplier essence or pricing.",
+  "items": [
+    {
+      "product_id": "YZD-PROD-0651",
+      "product_slug": "parfums-de-marly-galloway",
+      "official_brand": "Parfums de Marly",
+      "official_name": "Galloway",
+      "source_url": "https://us.parfums-de-marly.com/products/galloway",
+      "source_scope": "Official page; scent of reference original, not formula of handmade product.",
+      "expected_old_notes": {
+        "top": [
+          "فلفل صورتی",
+          "مرکبات تازه"
+        ],
+        "middle": [
+          "گل زنبق",
+          "شکوفه پرتقال"
+        ],
+        "base": [
+          "مشک سفید",
+          "کهربا"
+        ]
+      },
+      "verified_notes": {
+        "top": [
+          "لیمو",
+          "فلفل",
+          "المی"
+        ],
+        "middle": [
+          "هل",
+          "زنبق"
+        ],
+        "base": [
+          "مشک",
+          "آمبروکس",
+          "سیپریول"
+        ]
+      }
+    },
+    {
+      "product_id": "YZD-PROD-1512",
+      "product_slug": "yves-saint-laurent-babycat",
+      "official_brand": "Yves Saint Laurent",
+      "official_name": "Babycat",
+      "source_url": "https://www.yslbeautyus.com/fragrance/le-vestiaire-des-parfums/the-signature-collection/babycat---le-vestiaire-des-parfums/WW-50920YSL.html",
+      "source_scope": "Official page; scent of reference original, not formula of handmade product.",
+      "expected_old_notes": {
+        "top": [
+          "فلفل سیاه",
+          "فلفل صورتی",
+          "صمغ المی"
+        ],
+        "middle": [
+          "صمغ کندر عمان",
+          "گل زعفران"
+        ],
+        "base": [
+          "وانیل ماداگاسکار بوربون خالص",
+          "چرم جیر",
+          "سدر ویرجینیا"
+        ]
+      },
+      "verified_notes": {
+        "top": [
+          "فلفل صورتی",
+          "فلفل سیاه",
+          "المی"
+        ],
+        "middle": [
+          "کندر",
+          "زعفران"
+        ],
+        "base": [
+          "وانیل",
+          "چوب سدر",
+          "آکورد جیر"
+        ]
+      }
+    },
+    {
+      "product_id": "YZD-PROD-1706",
+      "product_slug": "versace-bright-crystal",
+      "official_brand": "Versace",
+      "official_name": "Bright Crystal",
+      "source_url": "https://www.versace.com/us/en/women/accessories/fragrances-body-care/bright-crystal/bright-crystal-edt-90-ml-pink/R510032-R090MLS_RNUL.html",
+      "source_scope": "Official page; scent of reference original, not formula of handmade product.",
+      "expected_old_notes": {
+        "top": [
+          "میوه انار",
+          "یوزو ژاپنی",
+          "نت‌های یخی"
+        ],
+        "middle": [
+          "گل صدتومانی صورتی",
+          "لوتوس آبی",
+          "گل مگنولیا"
+        ],
+        "base": [
+          "مشک سفید",
+          "چوب ماهون",
+          "کهربا"
+        ]
+      },
+      "verified_notes": {
+        "top": [
+          "یوزو",
+          "آکورد یخی",
+          "انار"
+        ],
+        "middle": [
+          "صدتومانی",
+          "مگنولیا",
+          "گل نیلوفر"
+        ],
+        "base": [
+          "چوب ماهون",
+          "کهربای گیاهی",
+          "مشک"
+        ]
+      }
+    }
+  ]
+}

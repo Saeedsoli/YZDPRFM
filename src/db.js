@@ -2681,7 +2681,8 @@ function correctSupplementGenderFromOfficial() {
   })();
 }
 correctSupplementGenderFromOfficial();
-const officialNoteManifests = ['official_note_corrections_v1.json', 'official_note_corrections_v2.json', 'official_note_corrections_v3.json'];
+require('./official-gender').applyOfficialGender(db, path.join(SEED_DIR, 'official_gender_corrections_v1.json'));
+const officialNoteManifests = ['official_note_corrections_v1.json', 'official_note_corrections_v2.json', 'official_note_corrections_v3.json', 'official_note_corrections_v4.json'];
 const officialNotesResults = officialNoteManifests.map(file =>
   require('./official-notes').applyOfficialNotes(db, path.join(SEED_DIR, file)));
 seedCoupons();

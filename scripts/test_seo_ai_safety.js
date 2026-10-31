@@ -232,37 +232,36 @@ const titleOf = html => {
   console.log();
   console.log(b('  ۳٫۵) یادداشت عطرساز'));
 
+  // Generated draft text must not be presented as first-hand experience.
+  // A genuinely reviewed note can be short; never fabricate one to meet a length quota.
   const withNote = db.prepare(
-    "SELECT COUNT(*) c FROM products WHERE maker_note IS NOT NULL AND maker_note != ''").get().c;
-  const totalP = db.prepare('SELECT COUNT(*) c FROM products').get().c;
+    "SELECT COUNT(*) c FROM products WHERE maker_note_approved=1 AND maker_note IS NOT NULL AND maker_note != ''").get().c;
+  const invalidApproved = db.prepare(
+    "SELECT COUNT(*) c FROM products WHERE maker_note_approved=1 AND (maker_note IS NULL OR TRIM(maker_note)='')").get().c;
+  const drafts = db.prepare(
+    "SELECT COUNT(*) c FROM products WHERE maker_note_approved=0 AND maker_note IS NOT NULL AND maker_note != ''").get().c;
   const uniqNote = db.prepare(
-    "SELECT COUNT(DISTINCT maker_note) c FROM products WHERE maker_note IS NOT NULL AND maker_note != ''").get().c;
+    "SELECT COUNT(DISTINCT maker_note) c FROM products WHERE maker_note_approved=1 AND maker_note IS NOT NULL AND maker_note != ''").get().c;
+  add('یادداشت تأییدشده خالی نیست', invalidApproved === 0, `${withNote} تأییدشده · ${drafts} پیش‌نویس`);
+  add('یادداشت‌های منتشرشده عمدتاً یکتا هستند', uniqNote >= withNote * 0.9, `${uniqNote} یکتا از ${withNote}`);
+  const tooLong = db.prepare(
+    "SELECT COUNT(*) c FROM products WHERE maker_note_approved=1 AND LENGTH(maker_note) > 1500").get().c;
+  add('یادداشت‌های منتشرشده محدودیت طول را رعایت می‌کنند', tooLong === 0, `${tooLong} مورد`);
 
-  add('همه محصولات یادداشت عطرساز دارند', withNote === totalP, `${withNote}/${totalP}`);
-  /* آستانه ۹۰٪: یادداشت تکراری همان مشکل «محتوای قالبی» را
-     می‌سازد که قرار بود حل کند. */
-  add('یادداشت‌ها عمدتاً یکتا هستند', uniqNote >= withNote * 0.9,
-      `${uniqNote} یکتا از ${withNote}`);
-
-  const shortNotes = db.prepare(
-    "SELECT COUNT(*) c FROM products WHERE maker_note IS NOT NULL AND LENGTH(maker_note) < 120").get().c;
-  add('یادداشت کوتاه‌تر از ۱۲۰ نویسه نداریم', shortNotes === 0, `${shortNotes} مورد`);
-
-  /* مهم‌ترین بررسی این بخش: یادداشت باید در HTML خام باشد.
-     اگر فقط با JS ساخته شود، همان محتوایی که صفحه را یکتا
-     می‌کند از دید خزنده پنهان می‌ماند. */
+  const draftRow = db.prepare(
+    "SELECT slug, maker_note FROM products WHERE maker_note_approved=0 AND maker_note IS NOT NULL AND maker_note != '' ORDER BY id LIMIT 1").get();
+  if (draftRow) {
+    const pg = await get('/perfume/' + draftRow.slug);
+    add('پیش‌نویس در HTML عمومی نشت نمی‌کند', !pg.text.includes(draftRow.maker_note.slice(0, 40)), draftRow.slug);
+  }
+  // Published-note rendering is tested over HTTP when an approved note exists.
+  // The dedicated test_maker_note_review.py exercises publication on an isolated DB even when none exist here.
   const noteRow = db.prepare(
-    "SELECT slug, maker_note FROM products WHERE maker_note IS NOT NULL AND maker_note != '' ORDER BY id LIMIT 1").get();
+    "SELECT slug, maker_note FROM products WHERE maker_note_approved=1 AND maker_note IS NOT NULL AND maker_note != '' ORDER BY id LIMIT 1").get();
   if (noteRow) {
     const pg = await get('/perfume/' + noteRow.slug);
-    const snippet = noteRow.maker_note.slice(0, 40);
-    add('یادداشت در HTML خام سرو می‌شود', pg.text.includes(snippet),
-        'خزنده بدون اجرای جاوااسکریپت می‌بیندش');
-    /* متن در HTML باشد ولی جعبه hidden بماند، مصداق «متن پنهان»
-       در سیاست اسپم گوگل است — بدتر از نبودنش. */
-    add('جعبه یادداشت پنهان نمانده',
-        !/id="makerBox" hidden/.test(pg.text),
-        'متن پنهان مصداق اسپم است');
+    add('یادداشت تأییدشده در HTML خام سرو می‌شود', pg.text.includes(noteRow.maker_note.slice(0, 40)), noteRow.slug);
+    add('جعبه یادداشت تأییدشده پنهان نمانده', !/id="makerBox" hidden/.test(pg.text), noteRow.slug);
   }
 
   /* ═══ ۳٫۶) مهار ایندکس محصولات غیرقابل تأمین ═══ */
