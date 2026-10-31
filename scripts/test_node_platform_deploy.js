@@ -253,12 +253,12 @@ function copyRespectingIgnore(src, dst, patterns, base = src) {
     const legacySamples = fresh.prepare("SELECT COUNT(*) c FROM variants WHERE type='SAMPLE' AND volume_ml=3").get().c;
     const identitySources = fresh.prepare("SELECT COUNT(*) c FROM official_identity_evidence WHERE status='official_original_found_supplier_essence_unverified'").get().c;
     const referencePrices = fresh.prepare('SELECT COUNT(*) c FROM products WHERE essence_usd_per_kg IS NOT NULL').get().c;
-    const refManifest = ['lv_reference_prices_v1.json','official_reference_prices_v1.json','official_reference_prices_v2.json','official_reference_prices_v3.json'];
+    const refManifest = ['lv_reference_prices_v1.json','official_reference_prices_v1.json','official_reference_prices_v2.json','official_reference_prices_v3.json','official_reference_prices_v4.json'];
     const expectedPrices = refManifest.reduce((n,f) => n + JSON.parse(fs.readFileSync(path.join(STAGE,'seed',f),'utf8')).items.length,0);
     fresh.close();
     add('قیمت‌های مرجع موقت در نصب تازه بازسازی می‌شوند', referencePrices === expectedPrices, `${referencePrices}/${expectedPrices}`);
     add('سمپل ۳ میل در نصب تازه نیست', legacySamples === 0, legacySamples + ' واریانت');
-    const expectedIdentities = ['official_identity_evidence_v1.json','official_identity_evidence_v2.json'].reduce((n,f) => n + JSON.parse(fs.readFileSync(path.join(STAGE,'seed',f),'utf8')).items.length,0);
+    const expectedIdentities = ['official_identity_evidence_v1.json','official_identity_evidence_v2.json','official_identity_evidence_v3.json'].reduce((n,f) => n + JSON.parse(fs.readFileSync(path.join(STAGE,'seed',f),'utf8')).items.length,0);
     add('مدارک هویت رایحه مرجع بارگذاری شدند', identitySources === expectedIdentities, `${identitySources}/${expectedIdentities}`);
     add('فروشگاه تازه صفر سفارش دارد', nOrders === 0, nOrders + ' سفارش');
     add('فقط حساب مدیر اولیه ساخته شد', nStaff === 1, nStaff + ' کارمند');

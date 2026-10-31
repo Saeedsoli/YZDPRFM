@@ -444,3 +444,9 @@ node_modules/   با npm install برمی‌گردد
 ### شش تناظر منبع‌دار جدید
 
 - `scripts/test_reference_prices_v3.js`
+
+### پشتیبان افزایشی و شش تناظر مرجع
+
+- `scripts/sqlite_delta_backup.py`
+- `scripts/test_sqlite_delta_backup.py`
+- `scripts/test_reference_prices_v4.js`

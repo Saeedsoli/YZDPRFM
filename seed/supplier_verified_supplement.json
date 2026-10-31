@@ -203,5 +203,29 @@
     "variants": [],
     "perfumer": "Jacques Cavallier Belletrud",
     "title_fa_base": "کالیفرنیا دریم"
+  },
+  {
+    "id": "SUP-XJ-900007",
+    "slug": "xerjoff-torino24",
+    "name_fa": "تورینو ۲۴",
+    "name_en": "Torino24",
+    "title_fa_base": "تورینو ۲۴",
+    "full_display_fa": "زرژوف — تورینو ۲۴",
+    "inspired_brand_en": "Xerjoff",
+    "inspired_brand_fa": "زرژوف",
+    "gender": null,
+    "concentration": "EDP",
+    "notes": {
+      "top": [],
+      "middle": [],
+      "base": []
+    },
+    "accords": [],
+    "transclaimer_notice": "این محصول بازآفرینی دست‌ساز است و محصول اورجینال برند زرژوف نیست.",
+    "source_url": "https://www.xerjoff.com/en-us/products/torino24-eau-de-parfum-15ml",
+    "source_note": "Official product name confirmed; official pages conflict about a note pyramid. Gender is not inferred from supplier data.",
+    "supplier_usd_per_kg": "330",
+    "supplier_quality": "H",
+    "variants": []
   }
 ]

@@ -1,0 +1,66 @@
+{
+  "version": "official_identity_evidence_v3",
+  "scope": "Reference original existence only; supplier essence, price, gender and quality remain independently unverified.",
+  "items": [
+    {
+      "product_id": "YZD-PROD-1581",
+      "slug": "jean-paul-gaultier-le-male-elixir",
+      "brand_en": "Jean Paul Gaultier",
+      "expected_name_en": "JEAN PAUL GAULTIER - Le Male Elixir",
+      "reference_name": "Le Male Elixir",
+      "official_url": "https://www.jeanpaulgaultier.com/nl/nl/p/assortiment-le-male/le-male-elixir-parfum-000000000065188980",
+      "status": "official_original_found_supplier_essence_unverified",
+      "checked_date": "2026-10-31"
+    },
+    {
+      "product_id": "YZD-PROD-0677",
+      "slug": "kilian-paris-angels-share",
+      "brand_en": "Kilian Paris",
+      "expected_name_en": "KILIAN PARIS - Angels' Share",
+      "reference_name": "Angels' Share",
+      "official_url": "https://www.bykilian.com/product/19797/82905/perfume/angels-share/the-liquors",
+      "status": "official_original_found_supplier_essence_unverified",
+      "checked_date": "2026-10-31"
+    },
+    {
+      "product_id": "YZD-PROD-1688",
+      "slug": "tom-ford-vanilla-sex-2024",
+      "brand_en": "Tom Ford",
+      "expected_name_en": "TOM FORD - Vanilla Sex 2024",
+      "reference_name": "Vanilla Sex 2024",
+      "official_url": "https://www.tomfordbeauty.com/products/vanilla-sex-eau-de-parfum",
+      "status": "official_original_found_supplier_essence_unverified",
+      "checked_date": "2026-10-31"
+    },
+    {
+      "product_id": "YZD-PROD-0645",
+      "slug": "parfums-de-marly-percival",
+      "brand_en": "Parfums de Marly",
+      "expected_name_en": "PARFUMS DE MARLY - Percival",
+      "reference_name": "Percival",
+      "official_url": "https://us.parfums-de-marly.com/products/percival",
+      "status": "official_original_found_supplier_essence_unverified",
+      "checked_date": "2026-10-31"
+    },
+    {
+      "product_id": "YZD-PROD-0646",
+      "slug": "parfums-de-marly-sedley",
+      "brand_en": "Parfums de Marly",
+      "expected_name_en": "PARFUMS DE MARLY - Sedley",
+      "reference_name": "Sedley",
+      "official_url": "https://us.parfums-de-marly.com/products/sedley",
+      "status": "official_original_found_supplier_essence_unverified",
+      "checked_date": "2026-10-31"
+    },
+    {
+      "product_id": "SUP-XJ-900007",
+      "slug": "xerjoff-torino24",
+      "brand_en": "Xerjoff",
+      "expected_name_en": "XERJOFF - Torino24",
+      "reference_name": "Torino24",
+      "official_url": "https://www.xerjoff.com/en-us/products/torino24-eau-de-parfum-15ml",
+      "status": "official_original_found_supplier_essence_unverified",
+      "checked_date": "2026-10-31"
+    }
+  ]
+}
