@@ -1,0 +1,93 @@
+{
+  "version": "official_reference_prices_2026_11_v22",
+  "supplier_file_sha256": "bbe8f40610bc765bda0a7d2da9dbe78f4e397458a6991239c3c18d0853f33f5c",
+  "description": "Provisional name-based prices; supplier essence is unverified; no activation.",
+  "items": [
+    {
+      "product_id": "YZD-PROD-1824",
+      "slug": "lattafa-perfumes-yara-pink",
+      "brand_en": "Lattafa Perfumes",
+      "expected_name_en": "LATTAFA PERFUMES - Yara Pink",
+      "reference_name": "Yara",
+      "official_url": "https://lattafa.com/product/yara/",
+      "supplier_brand": "Lattafa",
+      "supplier_model": "Yara",
+      "usd_per_kg": "154",
+      "quality": "H",
+      "match_status": "name_matched_supplier_identity_unverified",
+      "expected_edps": [
+        {
+          "sku": "YZD-1824-EDP-010",
+          "volume_ml": 10,
+          "price_toman": 185000,
+          "stock": 0,
+          "price_usd": 0.5
+        },
+        {
+          "sku": "YZD-1824-EDP-030",
+          "volume_ml": 30,
+          "price_toman": 255000,
+          "stock": 0,
+          "price_usd": 0.5
+        },
+        {
+          "sku": "YZD-1824-EDP-050",
+          "volume_ml": 50,
+          "price_toman": 325000,
+          "stock": 0,
+          "price_usd": 0.5
+        },
+        {
+          "sku": "YZD-1824-EDP-100",
+          "volume_ml": 100,
+          "price_toman": 500000,
+          "stock": 0,
+          "price_usd": 0.5
+        }
+      ]
+    },
+    {
+      "product_id": "YZD-PROD-1763",
+      "slug": "bvlgari-le-gemme-tygar",
+      "brand_en": "Bvlgari",
+      "expected_name_en": "BVLGARI - Le Gemme Tygar",
+      "reference_name": "Le Gemme Tygar Eau de Parfum",
+      "official_url": "https://www.bulgari.com/en-int/fragrances/bvlgari-le-gemme/42183.html",
+      "supplier_brand": "BVLGARI",
+      "supplier_model": "Tygar",
+      "usd_per_kg": "378.4",
+      "quality": "P",
+      "match_status": "name_matched_supplier_identity_unverified",
+      "expected_edps": [
+        {
+          "sku": "YZD-1763-EDP-010",
+          "volume_ml": 10,
+          "price_toman": 745000,
+          "stock": 0,
+          "price_usd": 8.5
+        },
+        {
+          "sku": "YZD-1763-EDP-030",
+          "volume_ml": 30,
+          "price_toman": 1935000,
+          "stock": 0,
+          "price_usd": 8.5
+        },
+        {
+          "sku": "YZD-1763-EDP-050",
+          "volume_ml": 50,
+          "price_toman": 3125000,
+          "stock": 0,
+          "price_usd": 8.5
+        },
+        {
+          "sku": "YZD-1763-EDP-100",
+          "volume_ml": 100,
+          "price_toman": 6100000,
+          "stock": 0,
+          "price_usd": 8.5
+        }
+      ]
+    }
+  ]
+}

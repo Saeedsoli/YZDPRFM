@@ -1,0 +1,90 @@
+{
+  "version": "official_notes_2026_11_v17",
+  "description": "Guarded official reference notes and transparency, never supplier identity verification.",
+  "items": [
+    {
+      "product_id": "YZD-PROD-1824",
+      "product_slug": "lattafa-perfumes-yara-pink",
+      "official_brand": "Lattafa Perfumes",
+      "official_name": "Yara",
+      "source_url": "https://lattafa.com/product/yara/",
+      "source_scope": "Original Yara EDP, not Yara Tous, Moi or Candy; source does not verify supplier essence.",
+      "expected_old_notes": {
+        "top": [
+          "گل ارکیده",
+          "گل آفتاب‌پرست",
+          "نارنگی ماندارین"
+        ],
+        "middle": [
+          "آکورد میوه‌های استوایی گورماند"
+        ],
+        "base": [
+          "وانیل ماداگاسکار",
+          "چوب صندل",
+          "مشک سفید"
+        ]
+      },
+      "verified_notes": {
+        "top": [
+          "نارنگی",
+          "هلیوتروپ",
+          "ارکیده"
+        ],
+        "middle": [
+          "نت‌های استوایی",
+          "آکورد گورماند"
+        ],
+        "base": [
+          "وانیل",
+          "چوب صندل",
+          "مشک"
+        ]
+      },
+      "expected_old_accords": [
+        "ترندترین عطر زنانه تیک‌تاک جهان در بطری صورتی مات",
+        "شبیه میلک‌شیک توت‌فرنگی وانیلی خنک"
+      ],
+      "verified_accords": [],
+      "requires_unavailable": true,
+      "expected_old_notice": "این محصول، بازآفرینی دست‌ساز با عصاره خالص اولیه و فرمولاسیون اختصاصی عطر یزد است.",
+      "verified_notice": "این محصول بازآفرینی دست‌ساز است و محصول اورجینال برند اصلی نیست. اطلاعات رایحه مرجع از وب‌سایت رسمی برند گرفته شده و هویت اسانس تأمین‌کننده مستقلاً تأیید نشده است."
+    },
+    {
+      "product_id": "YZD-PROD-1763",
+      "product_slug": "bvlgari-le-gemme-tygar",
+      "official_brand": "Bvlgari",
+      "official_name": "Le Gemme Tygar Eau de Parfum",
+      "source_url": "https://www.bulgari.com/en-int/fragrances/bvlgari-le-gemme/42183.html",
+      "source_scope": "Reference Tygar EDP; distinct from Tygar Extrait and x Refik Anadol; source does not verify supplier essence.",
+      "expected_old_notes": {
+        "top": [
+          "گریپ‌فروت سیسیلی بسیار باکیفیت"
+        ],
+        "middle": [
+          "زنجبیل تازه تند"
+        ],
+        "base": [
+          "امبروکسان خالص",
+          "روایح چوبی",
+          "کهربای خاکستری"
+        ]
+      },
+      "verified_notes": {
+        "top": [],
+        "middle": [],
+        "base": []
+      },
+      "expected_old_accords": [
+        "پرفروش‌ترین و گران‌ترین عطر لاین ل جم با درب سنگ چشم ببر",
+        "الگوی طراحی ده‌ها عطر نیش جهان"
+      ],
+      "verified_accords": [
+        "آکورد گریپ‌فروت",
+        "آکورد کهربای خاکستری"
+      ],
+      "requires_unavailable": true,
+      "expected_old_notice": "این محصول، بازآفرینی دست‌ساز با عصاره خالص اولیه و فرمولاسیون اختصاصی عطر یزد است.",
+      "verified_notice": "این محصول بازآفرینی دست‌ساز است و محصول اورجینال برند اصلی نیست. اطلاعات رایحه مرجع از وب‌سایت رسمی برند گرفته شده و هویت اسانس تأمین‌کننده مستقلاً تأیید نشده است."
+    }
+  ]
+}

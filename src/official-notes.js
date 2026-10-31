@@ -15,6 +15,10 @@ function applyOfficialNotes(db,file) {
       if(!Array.isArray(item.expected_old_notes?.[key]) || !Array.isArray(item.verified_notes?.[key])) throw new Error('Invalid note list');
       if(!item.verified_notes[key].every(s=>typeof s==='string' && s.trim() && s.length<=60)) throw new Error('Invalid verified note');
     }
+    if (item.requires_unavailable !== undefined && typeof item.requires_unavailable !== 'boolean') throw new Error('Invalid availability guard');
+    if (item.expected_old_notice !== undefined || item.verified_notice !== undefined) {
+      if (typeof item.expected_old_notice !== 'string' || typeof item.verified_notice !== 'string' || !item.verified_notice.trim()) throw new Error('Invalid transparency notice');
+    }
     if (item.expected_old_accords !== undefined || item.verified_accords !== undefined) {
       if (!Array.isArray(item.expected_old_accords) || !Array.isArray(item.verified_accords) ||
           !item.verified_accords.every(s=>typeof s==='string' && s.trim() && s.length<=60))
@@ -23,13 +27,14 @@ function applyOfficialNotes(db,file) {
   }
   return db.transaction(()=>{
     if(db.prepare('SELECT value FROM settings WHERE key=?').get(marker))return {updated:0,skipped:0,reason:'already_applied'};
-    const get=db.prepare('SELECT id,slug,notes_top,notes_middle,notes_base,accords FROM products WHERE id=?');
+    const get=db.prepare('SELECT id,slug,notes_top,notes_middle,notes_base,accords,supply_mode,transparency_notice FROM products WHERE id=?');
+    const updateNotice=db.prepare('UPDATE products SET transparency_notice=? WHERE id=?');
     const update=db.prepare('UPDATE products SET notes_top=?,notes_middle=?,notes_base=?,search_blob=NULL WHERE id=?');
     const updateWithAccords=db.prepare('UPDATE products SET notes_top=?,notes_middle=?,notes_base=?,accords=?,search_blob=NULL WHERE id=?');
     let updated=0,skipped=0;
     for(const item of data.items) {
       const row=get.get(item.product_id);
-      if(!row || row.slug!==item.product_slug) { skipped++; continue; }
+      if(!row || row.slug!==item.product_slug || (item.requires_unavailable && row.supply_mode!=='UNAVAILABLE') || (item.expected_old_notice !== undefined && row.transparency_notice!==item.expected_old_notice)) { skipped++; continue; }
       let unchanged;
       try {
         unchanged=['top','middle','base'].every(k=>JSON.stringify(JSON.parse(row['notes_'+k]||'[]'))===JSON.stringify(item.expected_old_notes[k]));
@@ -40,6 +45,7 @@ function applyOfficialNotes(db,file) {
       const values=[JSON.stringify(item.verified_notes.top),JSON.stringify(item.verified_notes.middle),JSON.stringify(item.verified_notes.base)];
       if(item.verified_accords !== undefined) updateWithAccords.run(...values,JSON.stringify(item.verified_accords),item.product_id);
       else update.run(...values,item.product_id);
+      if(item.verified_notice !== undefined) updateNotice.run(item.verified_notice,item.product_id);
       updated++;
     }
     db.prepare('INSERT INTO settings(key,value) VALUES (?,?)').run(marker,JSON.stringify({at:new Date().toISOString(),updated,skipped}));

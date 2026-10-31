@@ -347,3 +347,19 @@ Absolu Aventus از Aventus و Aventus Cologne جداست؛ نت‌های صفح
 | Whisky Silver — Evaflor | 126.5 | R | https://www.evaflor.com/en/products/whisky-silver-coffret-parfum-homme-serviette-money-clip |
 
 صفحات منطقه‌ای رسمی امپر برای [Epic Adventure](https://emperperfumes.com/products/epic-adventure) و [Chifon](https://emperperfumes.com/products/chifon) در برخی نت‌ها با صفحات دیگر برند اختلاف دارند؛ فقط نت‌های مشترک بدون هرم ثبت شدند. املای Chifoon و Wisky فایل اصلاح نام‌محور شده است. Santal 35 فایل به Velvet Santal 35 مربوط دانسته شده، نه Silk Santal 36 یا Santal 33. منبع اوافلور صفحه بسته حاوی ادوتویلت Whisky Silver است، نه اثبات نسخه اسانس تأمین‌کننده؛ کالای فروشگاه همان بازآفرینی دست‌ساز است، نه آن بسته یا محصول اصلی.
+
+
+## دو تطبیق و اصلاح شناسنامه با منبع رسمی — ۱ نوامبر ۲۰۲۶
+
+قیمت موقت نام‌محور برای دو محصول موجود ثبت و نت‌های تأییدنشده و متن شفافیت آنها با محافظ عدم تغییر مدیر اصلاح شد. هر دو همچنان غیرقابل سفارش‌اند. هویت یا کیفیت اسانس تحویلی با این مدارک ثابت نمی‌شود.
+
+| رایحه مرجع | دلار/کیلو | کیفیت فایل | منبع رسمی |
+|---|---:|---|---|
+| Yara — Lattafa | 154 | H | https://lattafa.com/product/yara/ |
+| Le Gemme Tygar EDP — Bvlgari | 378.4 | P | https://www.bulgari.com/en-int/fragrances/bvlgari-le-gemme/42183.html |
+
+Yara مرجع با Yara Tous، Moi و Candy یکی نیست. Tygar مرجع با Extrait یا نسخه Refik Anadol یکی نشده؛ نت‌های صفحه رسمی بدون طبقه‌بندی ذخیره شدند. تطبیق نام به معنای تأیید نسخه واقعی اسانس نیست. محافظ جدید تا وقتی نت‌ها، آکوردها، متن شفافیت و وضعیت غیرفعال دست‌نخورده باشند اصلاح می‌کند؛ سفارش‌ها و ویرایش‌های مدیر حفظ می‌شوند.
+
+### مورد کنارگذاشته‌شده
+
+نام محصول محلی `AMOUAGE - Decision 2024` با اطلاعات بررسی‌شده درباره عرضه Decision در ۲۰۲۵ تعارض سال دارد؛ منبع رسمی [Decision](https://amouage.com/products/new-decision) عطر مرجع و [منبع مستقل Parfumo](https://www.parfumo.com/Perfumes/Amouage/decision) سال ۲۰۲۵ را ذکر می‌کند. Decision 42 هم نسخه جداست. تا بررسی بیشتر هیچ قیمت یا تصحیح حدسی برای این مورد ثبت نشده است.

@@ -1,0 +1,26 @@
+{
+  "version": "official_identity_evidence_v21",
+  "scope": "Official reference-original name only; actual supplier essence identity is unverified.",
+  "items": [
+    {
+      "product_id": "YZD-PROD-1824",
+      "slug": "lattafa-perfumes-yara-pink",
+      "brand_en": "Lattafa Perfumes",
+      "expected_name_en": "LATTAFA PERFUMES - Yara Pink",
+      "reference_name": "Yara",
+      "official_url": "https://lattafa.com/product/yara/",
+      "status": "official_original_found_supplier_essence_unverified",
+      "checked_date": "2026-11-01"
+    },
+    {
+      "product_id": "YZD-PROD-1763",
+      "slug": "bvlgari-le-gemme-tygar",
+      "brand_en": "Bvlgari",
+      "expected_name_en": "BVLGARI - Le Gemme Tygar",
+      "reference_name": "Le Gemme Tygar Eau de Parfum",
+      "official_url": "https://www.bulgari.com/en-int/fragrances/bvlgari-le-gemme/42183.html",
+      "status": "official_original_found_supplier_essence_unverified",
+      "checked_date": "2026-11-01"
+    }
+  ]
+}

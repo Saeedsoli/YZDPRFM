@@ -593,3 +593,11 @@ node_modules/   با npm install برمی‌گردد
 - `seed/official_reference_prices_v21.json`
 - `seed/official_identity_evidence_v20.json`
 - `scripts/test_official_reference_v21.js`
+
+
+### دو اصلاح شناسنامه رسمی محافظت‌شده
+
+- `seed/official_reference_prices_v22.json`
+- `seed/official_identity_evidence_v21.json`
+- `seed/official_note_corrections_v17.json`
+- `scripts/test_official_reference_v22.js`
