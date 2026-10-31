@@ -1,0 +1,61 @@
+{
+  "version": "secondary_reference_prices_2026_11_v3",
+  "supplier_file_sha256": "bbe8f40610bc765bda0a7d2da9dbe78f4e397458a6991239c3c18d0853f33f5c",
+  "description": "Independent source only; no manufacturer verification or supplier essence identification; no automatic availability.",
+  "items": [
+    {
+      "product_id": "SUP-TP-910012",
+      "slug": "chloe-chloe-narcisse",
+      "brand_en": "Chloé",
+      "expected_name_en": "Chloé Narcisse",
+      "reference_name": "Chloé Narcisse",
+      "source_url": "https://www.fragrantica.com/perfume/Chloe/Chloe-Narcisse-344.html",
+      "provider": "Fragrantica",
+      "status": "secondary_original_found_supplier_essence_unverified",
+      "checked_date": "2026-11-01",
+      "supplier_brand": "chloe",
+      "supplier_model": "Narcisse",
+      "usd_per_kg": "88",
+      "quality": "P",
+      "match_status": "name_matched_supplier_identity_unverified",
+      "expected_edps": [],
+      "legacy_backfill": false
+    },
+    {
+      "product_id": "SUP-TP-910013",
+      "slug": "jennifer-lopez-still",
+      "brand_en": "Jennifer Lopez",
+      "expected_name_en": "JENNIFER LOPEZ - Still",
+      "reference_name": "Still",
+      "source_url": "https://www.fragrantica.com/perfume/Jennifer-Lopez/Still-868.html",
+      "provider": "Fragrantica",
+      "status": "secondary_original_found_supplier_essence_unverified",
+      "checked_date": "2026-11-01",
+      "supplier_brand": "JENNIFER LOPEZ",
+      "supplier_model": "Still",
+      "usd_per_kg": "190.3",
+      "quality": "H",
+      "match_status": "name_matched_supplier_identity_unverified",
+      "expected_edps": [],
+      "legacy_backfill": false
+    },
+    {
+      "product_id": "SUP-TP-910014",
+      "slug": "rochas-aquawoman",
+      "brand_en": "Rochas",
+      "expected_name_en": "ROCHAS - Aquawoman",
+      "reference_name": "Aquawoman",
+      "source_url": "https://www.fragrantica.com/perfume/Rochas/Aquawoman-1427.html",
+      "provider": "Fragrantica",
+      "status": "secondary_original_found_supplier_essence_unverified",
+      "checked_date": "2026-11-01",
+      "supplier_brand": "ROCHAS",
+      "supplier_model": "Aquawoman",
+      "usd_per_kg": "168.3",
+      "quality": "H",
+      "match_status": "name_matched_supplier_identity_unverified",
+      "expected_edps": [],
+      "legacy_backfill": false
+    }
+  ]
+}

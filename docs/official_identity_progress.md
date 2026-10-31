@@ -278,3 +278,16 @@ Mefisto با Mefisto Gentiluomo یکی نیست. در برخی صفحات قدی
 چهار محصول Accento، Champion، Smoke for the Soul و Halloween که در کاتالوگ پیدا نشدند، به‌صورت دست‌ساز اضافه شدند؛ دو محصول Aqva Pour Homme و Opera از پیش در کاتالوگ بودند. نسخه‌های Accento Viola، Champion Energy و Opera Grande جدا هستند و با ردیف‌های فوق یکی نشده‌اند. درباره Halloween، نام تاریخی بر اساس منبع مستقل و نت‌ها از [صفحه رسمی فعلی برند](https://halloweenperfumes.com/en/helloween-woman/161-halloween-eau-de-toilettea.html) ثبت شده است؛ منبع در توضیح عمومی محصول روشن است. نت‌های دو محصول موجود فقط در صورت نبود ویرایش مدیر و با ذکر منبع مستقل اصلاح شدند.
 
 مدارک در `seed/secondary_reference_prices_v2.json`، محصولات در `seed/secondary_supplement_v2.json` و نت‌های محافظت‌شده در `seed/secondary_note_corrections_v2.json` نگهداری می‌شوند.
+
+
+## سه تناظر دیگر با منبع مستقل — ۱ نوامبر ۲۰۲۶
+
+سه محصول دست‌ساز جدید، غیرفعال و با قیمت موقت نام‌محور اضافه شد. منابع زیر مستقل‌اند؛ هویت یا نسخه اسانس تأمین‌کننده تأیید نشده است.
+
+| رایحه مرجع | دلار/کیلو | کیفیت | منبع مستقل |
+|---|---:|---|---|
+| Chloé Narcisse | 88 | P | https://www.fragrantica.com/perfume/Chloe/Chloe-Narcisse-344.html |
+| Still Jennifer Lopez | 190.3 | H | https://www.fragrantica.com/perfume/Jennifer-Lopez/Still-868.html |
+| Aquawoman Rochas | 168.3 | H | https://www.fragrantica.com/perfume/Rochas/Aquawoman-1427.html |
+
+نت‌های مرجع از همان صفحات مستقل‌اند و منبع در توضیح عمومی ذکر شده است. جستجوی صفحات رسمی مربوط برای این سه نام نتیجه کافی نداد؛ این به معنای نبود قطعی صفحه رسمی نیست. نسخه‌های Fleur de Narcisse و Aquaman با موارد فوق یکی نشده‌اند. جزئیات دیگر موارد بررسی‌شده و تعارض‌ها در `docs/supplier_research_batch_20261101.md` است.

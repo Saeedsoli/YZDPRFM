@@ -2666,7 +2666,8 @@ function seedVerifiedSupplement(filename) {
 }
 const supplementInserted = (seedVerifiedSupplement('supplier_verified_supplement.json') || 0) +
   (seedVerifiedSupplement('secondary_supplement_v1.json') || 0) +
-  (seedVerifiedSupplement('secondary_supplement_v2.json') || 0);
+  (seedVerifiedSupplement('secondary_supplement_v2.json') || 0) +
+  (seedVerifiedSupplement('secondary_supplement_v3.json') || 0);
 // This records reference-original evidence only; it never verifies supplier essence.
 for (const file of ['official_identity_evidence_v1.json','official_identity_evidence_v2.json','official_identity_evidence_v3.json','official_identity_evidence_v4.json','official_identity_evidence_v5.json','official_identity_evidence_v6.json','official_identity_evidence_v7.json','official_identity_evidence_v8.json','official_identity_evidence_v9.json','official_identity_evidence_v10.json','official_identity_evidence_v11.json','official_identity_evidence_v12.json','official_identity_evidence_v13.json','official_identity_evidence_v14.json','official_identity_evidence_v15.json','official_identity_evidence_v16.json','official_identity_evidence_v17.json'])
   require('./official-identities').seedOfficialIdentities(db, path.join(SEED_DIR, file));
@@ -2684,7 +2685,7 @@ if (process.env.REFERENCE_PRICE_V2_AUTOMIGRATE !== '0')
 for (const file of ['official_reference_prices_v3.json','official_reference_prices_v4.json','official_reference_prices_v5.json','official_reference_prices_v6.json','official_reference_prices_v7.json','official_reference_prices_v8.json','official_reference_prices_v9.json','official_reference_prices_v10.json','official_reference_prices_v11.json','official_reference_prices_v12.json','official_reference_prices_v13.json','official_reference_prices_v14.json','official_reference_prices_v15.json','official_reference_prices_v16.json','official_reference_prices_v17.json','official_reference_prices_v18.json'])
   require('./reference-price-import').applyReferencePrices(db, path.join(SEED_DIR, file));
 // Independent sources never enter the official evidence table.
-for (const file of ['secondary_reference_prices_v1.json','secondary_reference_prices_v2.json'])
+for (const file of ['secondary_reference_prices_v1.json','secondary_reference_prices_v2.json','secondary_reference_prices_v3.json'])
   require('./secondary-reference-import').applySecondaryReferences(db, path.join(SEED_DIR, file));
 // Correct earlier supplier-derived gender fields only for unchanged, unavailable
 // supplement rows. Never switch availability or overwrite a different value.

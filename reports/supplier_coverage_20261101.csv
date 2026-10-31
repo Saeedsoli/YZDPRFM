@@ -52,7 +52,7 @@ CHANEL,Coco Mademoiselle,Women,کوکو شنل,1,146,132,H,pending,هنوز قی
 CHANEL,Chance,Women,چنس شنل,2,"147,148",388.3,H,pending,هنوز قیمت مرجع منتسب نشده,,,
 CHANEL,Platinium,Unisex,پلاتینیوم,1,149,92.4,P,pending,هنوز قیمت مرجع منتسب نشده,,,
 EVAFLOR,WISKY SILVER,Unisex,ویسکی سیلور,1,155,126.5,R,pending,هنوز قیمت مرجع منتسب نشده,,,
-chloe,Narcisse,Women,نارسیس,1,161,88,P,pending,هنوز قیمت مرجع منتسب نشده,,,
+chloe,Narcisse,Women,نارسیس,1,161,88,P,secondary,قیمت موقت با منبع مستقل؛ هویت اسانس تأییدنشده,SUP-TP-910012,https://www.fragrantica.com/perfume/Chloe/Chloe-Narcisse-344.html,secondary_reference_prices_v3.json
 CLINIQUE,Happy,Men,هپی کلینیک,1,167,174.9,H,pending,هنوز قیمت مرجع منتسب نشده,,,
 Clive Christian,X FOR MEN,Men,ایکس فور من کلایو کریتسین,1,173,453.2,P,provisional,قیمت موقت با شاهد نام؛ هویت اسانس تأییدنشده,YZD-PROD-0485,https://us.clivechristian.com/products/x-masculine,official_reference_prices_v14.json
 CREED,Aventus,Men,اونتوس کرید,4,"179,180,181,182",709.5,T,provisional,قیمت موقت با شاهد نام؛ هویت اسانس تأییدنشده,YZD-PROD-0429,https://www.creedfragrance.com/p/aventus/12870029/,official_reference_prices_v2.json
@@ -124,7 +124,7 @@ JEAN PAUL GAULTIER,KOKORICO,Men,کوکوریکو,1,405,239.8,H,secondary,قیم�
 JEAN PAUL GAULTIER,PARADISE GARDEN,Men,پارادایز گاردن,1,406,108.9,B,pending,هنوز قیمت مرجع منتسب نشده,,,
 JEAN PAUL GAULTIER,Le Male Elixier,Men,ل مل الکسیر,1,407,169.4,H,provisional,قیمت موقت با شاهد نام؛ هویت اسانس تأییدنشده,YZD-PROD-1581,https://www.jeanpaulgaultier.com/nl/nl/p/assortiment-le-male/le-male-elixir-parfum-000000000065188980,official_reference_prices_v4.json
 Billie Eilish,Eilish,Women,بیلی آیلیش,1,413,115.5,P,pending,هنوز قیمت مرجع منتسب نشده,,,
-JENNIFER LOPEZ,Still,Women,استیل جنیفر,3,"419,420,421",190.3,H,pending,هنوز قیمت مرجع منتسب نشده,,,
+JENNIFER LOPEZ,Still,Women,استیل جنیفر,3,"419,420,421",190.3,H,secondary,قیمت موقت با منبع مستقل؛ هویت اسانس تأییدنشده,SUP-TP-910013,https://www.fragrantica.com/perfume/Jennifer-Lopez/Still-868.html,secondary_reference_prices_v3.json
 JESUS DEL POZO,Halloween,Women,هالووین,2,"427,428",190.3,H,secondary,قیمت موقت با منبع مستقل؛ هویت اسانس تأییدنشده,SUP-TP-910011,https://www.fragrantica.com/perfume/Halloween/Halloween-1444.html,secondary_reference_prices_v2.json
 JOOP,JOOP HOMME (Red),Men,جوپ سبز,1,434,113.3,H,pending,هنوز قیمت مرجع منتسب نشده,,,
 JOOP,Joop Night Flight (Green),Men,جوپ قرمز,1,435,83.6,H,pending,هنوز قیمت مرجع منتسب نشده,,,
@@ -203,7 +203,7 @@ Rasasi,Blue For Men,Men,بلو فورمن,2,"680,681",112.2,H,pending,هنوز �
 Rasasi,Afshan,Unisex,افشان,1,682,92.4,B,pending,هنوز قیمت مرجع منتسب نشده,,,
 Rihanna,RIRI,Women,ری ری,1,688,169.4,H,pending,هنوز قیمت مرجع منتسب نشده,,,
 ROJA DOVE,ELYSIUM POUR HOMME,Men,الیزیوم پورهوم,1,694,403.7,H,pending,هنوز قیمت مرجع منتسب نشده,,,
-ROCHAS,Aquawoman,Women,آکوا وومن,1,700,168.3,H,pending,هنوز قیمت مرجع منتسب نشده,,,
+ROCHAS,Aquawoman,Women,آکوا وومن,1,700,168.3,H,secondary,قیمت موقت با منبع مستقل؛ هویت اسانس تأییدنشده,SUP-TP-910014,https://www.fragrantica.com/perfume/Rochas/Aquawoman-1427.html,secondary_reference_prices_v3.json
 ROGER&GALLET,Open,Men,اپن,1,706,155.1,H,pending,هنوز قیمت مرجع منتسب نشده,,,
 ROSE,ROSE,Unisex,رز,1,712,117.7,P,pending,هنوز قیمت مرجع منتسب نشده,,,
 Salvator Ferragamo,inconto,Women,اینکانتو,1,718,203.5,H,pending,هنوز قیمت مرجع منتسب نشده,,,

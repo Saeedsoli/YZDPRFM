@@ -549,3 +549,10 @@ node_modules/   با npm install برمی‌گردد
 - `seed/secondary_reference_prices_v2.json`
 - `seed/secondary_note_corrections_v2.json`
 - `scripts/test_secondary_reference_v2.js`
+
+### دسته سوم منابع مستقل
+
+- `seed/secondary_reference_prices_v3.json`
+- `seed/secondary_supplement_v3.json`
+- `scripts/test_secondary_reference_v3.js`
+- `docs/supplier_research_batch_20261101.md`
