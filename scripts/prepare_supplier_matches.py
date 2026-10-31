@@ -7,11 +7,21 @@ from pathlib import Path
 root=Path(__file__).resolve().parent.parent
 text=(root/'uploads/لیست_قیمت_عمده.md').read_text(encoding='utf-8')
 products=json.loads((root/'seed/perfumes_catalogue_seed.json').read_text(encoding='utf-8'))
+supplement=root/'seed/supplier_verified_supplement.json'
+if supplement.exists(): products += json.loads(supplement.read_text(encoding='utf-8'))
 def norm(s):
-    s=unicodedata.normalize('NFKC',s).casefold().replace('ي','ی').replace('ك','ک')
-    return ''.join(c for c in s if c.isalnum())
-# Supplier-specific spelling aliases only; do not assert that similar models are identical.
-aliases = {'amuage':'amouage', 'bykilian':'kilianparis', 'carolinahrrera':'carolinaherrera', 'dg':'dolcegabbana'}
+    s=unicodedata.normalize('NFKD',str(s or '')).casefold().replace('ي','ی').replace('ك','ک').replace('ı','i')
+    return ''.join(c for c in s if c.isalnum() and not unicodedata.combining(c))
+# Brand spelling/official house aliases identify candidates only, not verified identity.
+# Supplier gender is a matching hint, never a source for public product metadata.
+aliases = {
+    'amuage':'amouage', 'bykilian':'kilianparis', 'carolinahrrera':'carolinaherrera',
+    'dg':'dolcegabbana', 'dior':'christiandior', 'georgioarmani':'giorgioarmani',
+    'lattafa':'lattafaperfumes', 'dunhill':'alfreddunhill', 'escentric':'escentricmolecules',
+    'memo':'memoparis', 'sospiro':'sospiroperfumes', 'initio':'initioparfumsprives',
+    'thierymugler':'mugler', 'victorrolf':'viktorrolf',
+    'francickurkdjian':'maisonfranciskurkdjian', 'caron':'caronparis'
+}
 def brandkey(s):
     v=norm(s)
     return aliases.get(v,v)
@@ -33,7 +43,7 @@ for key,rows in groups.items():
     if not positive:
         r=rows[0]; out.append(['بدون قیمت مثبت',*r[:5],str(r[5]),'', '', '', '']); continue
     r=max(positive,key=lambda x:x[5]); matches=index.get(key,[])
-    status='تطبیق دقیق' if len(matches)==1 else ('تطبیق تکراری - بررسی' if matches else 'بدون تطبیق دقیق - بررسی')
+    status='تطبیق نوشتاری - نیازمند بررسی رسمی' if len(matches)==1 else ('تطبیق تکراری - بررسی' if matches else 'بدون تطبیق دقیق - بررسی')
     candidates=matches
     if not candidates:
         pool=[p for p in products if brandkey(p.get('inspired_brand_en',''))==key[0]]
@@ -46,7 +56,7 @@ for key,rows in groups.items():
         candidates=sorted(pool,key=score,reverse=True)[:4]
         candidates=[p for p in candidates if score(p)>=.62]
         if not pool: status='برند در کاتالوگ پیدا نشد - بررسی'
-    out.append([status,*r[:5],str(r[5]),str(r[5]/1000),str(r[5]*300), ' | '.join(p['id'] for p in candidates), ' | '.join(p.get('full_display_en','') for p in candidates)])
+    out.append([status,*r[:5],str(r[5]),str(r[5]/1000),str(r[5]*300), ' | '.join(p['id'] for p in candidates), ' | '.join(p.get('full_display_en') or (p.get('inspired_brand_en','') + ' - ' + p.get('name_en','')) for p in candidates)])
 path=root/'supplier_match_review.csv'
 with path.open('w',encoding='utf-8-sig',newline='') as f:
     w=csv.writer(f);w.writerow(['وضعیت','برند فایل','نام فارسی','مدل','جنسیت','کیفیت انتخابی','دلار بر کیلو','دلار بر گرم','تومان بر گرم با دلار ۳۰۰۰۰۰','شناسه محصول / پیشنهاد','نام محصول / پیشنهاد']);w.writerows(out)

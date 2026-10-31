@@ -7,7 +7,7 @@
     "full_display_fa": "اتکینسونز — عود سیو د کینگ",
     "inspired_brand_en": "Atkinsons",
     "inspired_brand_fa": "اتکینسونز",
-    "gender": "MEN",
+    "gender": null,
     "family_fa": "شرقی",
     "family_en": "Oriental",
     "family_slug": "oriental",
@@ -37,7 +37,7 @@
     "full_display_fa": "لویی ویتون — افترنون سوئیم",
     "inspired_brand_en": "Louis Vuitton",
     "inspired_brand_fa": "لویی ویتون",
-    "gender": "UNISEX",
+    "gender": null,
     "notes": {
       "top": [],
       "middle": [],
@@ -50,7 +50,7 @@
     ],
     "transclaimer_notice": "این محصول بازآفرینی دست‌ساز است و محصول اورجینال برند لویی ویتون نیست.",
     "source_url": "https://us.louisvuitton.com/eng-us/products/afternoon-swim-nvprod7330060v/LP0487",
-    "source_note": "Key notes as published by brand; note pyramid not specified; gender from supplier list.",
+    "source_note": "Key notes published by the brand; note pyramid not specified. Gender is omitted unless explicitly verified from an official page.",
     "supplier_usd_per_kg": "403.7",
     "supplier_quality": "H",
     "variants": [],
@@ -65,7 +65,7 @@
     "full_display_fa": "لویی ویتون — ایمجینیشن",
     "inspired_brand_en": "Louis Vuitton",
     "inspired_brand_fa": "لویی ویتون",
-    "gender": "MEN",
+    "gender": "UNISEX",
     "notes": {
       "top": [],
       "middle": [],
@@ -82,12 +82,13 @@
     ],
     "transclaimer_notice": "این محصول بازآفرینی دست‌ساز است و محصول اورجینال برند لویی ویتون نیست.",
     "source_url": "https://en.louisvuitton.com/eng-nl/products/Imagination-nvprod7340011v/LP0476",
-    "source_note": "Key notes as published by brand; note pyramid not specified; gender from supplier list.",
+    "source_note": "Key notes published by the brand; note pyramid not specified. Gender is omitted unless explicitly verified from an official page.",
     "supplier_usd_per_kg": "618.2",
     "supplier_quality": "H",
     "variants": [],
     "perfumer": "Jacques Cavallier Belletrud",
-    "title_fa_base": "ایمجینیشن"
+    "title_fa_base": "ایمجینیشن",
+    "gender_source_url": "https://us.louisvuitton.com/eng-us/products/imagination-nvprod2970067v/LP0221"
   },
   {
     "id": "SUP-LV-900003",
@@ -110,12 +111,13 @@
     ],
     "transclaimer_notice": "این محصول بازآفرینی دست‌ساز است و محصول اورجینال برند لویی ویتون نیست.",
     "source_url": "https://us.louisvuitton.com/eng-us/products/limmensite-nvprod1030132v/LP0062",
-    "source_note": "Key notes as published by brand; note pyramid not specified; gender from supplier list.",
+    "source_note": "Key notes published by the brand; note pyramid not specified. Gender is omitted unless explicitly verified from an official page.",
     "supplier_usd_per_kg": "478.5",
     "supplier_quality": "H",
     "variants": [],
     "perfumer": "Jacques Cavallier Belletrud",
-    "title_fa_base": "ال ایمنسیت"
+    "title_fa_base": "ال ایمنسیت",
+    "gender_source_url": "https://us.louisvuitton.com/eng-us/products/limmensite-nvprod1030132v/LP0062"
   },
   {
     "id": "SUP-LV-900004",
@@ -139,12 +141,13 @@
     ],
     "transclaimer_notice": "این محصول بازآفرینی دست‌ساز است و محصول اورجینال برند لویی ویتون نیست.",
     "source_url": "https://me.louisvuitton.com/eng-ae/products/Ombre-Nomade-nvprod990245v/LP0096",
-    "source_note": "Key notes as published by brand; note pyramid not specified; gender from supplier list.",
+    "source_note": "Key notes published by the brand; note pyramid not specified. Gender is omitted unless explicitly verified from an official page.",
     "supplier_usd_per_kg": "425.7",
     "supplier_quality": "H",
     "variants": [],
     "perfumer": "Jacques Cavallier Belletrud",
-    "title_fa_base": "امبر نومد"
+    "title_fa_base": "امبر نومد",
+    "gender_source_url": "https://ca.louisvuitton.com/eng-ca/products/ombre-nomade-nvprod990245v/LP0095"
   },
   {
     "id": "SUP-LV-900005",
@@ -154,7 +157,7 @@
     "full_display_fa": "لویی ویتون — استلار تایمز",
     "inspired_brand_en": "Louis Vuitton",
     "inspired_brand_fa": "لویی ویتون",
-    "gender": "UNISEX",
+    "gender": null,
     "notes": {
       "top": [],
       "middle": [],
@@ -167,7 +170,7 @@
     ],
     "transclaimer_notice": "این محصول بازآفرینی دست‌ساز است و محصول اورجینال برند لویی ویتون نیست.",
     "source_url": "https://my.louisvuitton.com/eng-my/products/stellar-times-nvprod7340023v/LP0526",
-    "source_note": "Key notes as published by brand; note pyramid not specified; gender from supplier list.",
+    "source_note": "Key notes published by the brand; note pyramid not specified. Gender is omitted unless explicitly verified from an official page.",
     "supplier_usd_per_kg": "429",
     "supplier_quality": "H",
     "variants": [],
@@ -181,7 +184,7 @@
     "full_display_fa": "لویی ویتون — کالیفرنیا دریم",
     "inspired_brand_en": "Louis Vuitton",
     "inspired_brand_fa": "لویی ویتون",
-    "gender": "MEN",
+    "gender": null,
     "notes": {
       "top": [],
       "middle": [],
@@ -194,7 +197,7 @@
     ],
     "transclaimer_notice": "این محصول بازآفرینی دست‌ساز است و محصول اورجینال برند لویی ویتون نیست.",
     "source_url": "https://uk.louisvuitton.com/eng-gb/products/california-dream-nvprod2210033v/LP0175",
-    "source_note": "Key notes as published by brand; note pyramid not specified; gender from supplier list.",
+    "source_note": "Key notes published by the brand; note pyramid not specified. Gender is omitted unless explicitly verified from an official page.",
     "supplier_usd_per_kg": "126.5",
     "supplier_quality": "I",
     "variants": [],

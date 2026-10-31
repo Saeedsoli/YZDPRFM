@@ -555,7 +555,7 @@ function render() {
 
   // نشان جنسیت روی گالری
   document.getElementById('gBadge').textContent =
-    p.gender === 'MEN' ? 'مردانه' : p.gender === 'WOMEN' ? 'زنانه' : 'یونیسکس';
+    p.gender === 'MEN' ? 'مردانه' : p.gender === 'WOMEN' ? 'زنانه' : p.gender === 'UNISEX' ? 'یونیسکس' : 'نامشخص';
 
   // گالری (سه نمای یکسان تا عکاسی واقعی جایگزین شود)
   const imgs = [p.image_url, p.image_url, '/images/products/variant-sample.jpg'];
@@ -598,7 +598,7 @@ function render() {
     p.transparency_notice || 'این محصول بازآفرینی دست‌ساز با عصاره خالص اولیه و فرمولاسیون اختصاصی عطر یزد است و ادعای اورجینال بودن ندارد.';
 
   const chips = [
-    p.gender === 'MEN' ? 'مردانه' : p.gender === 'WOMEN' ? 'زنانه' : 'یونیسکس',
+    p.gender === 'MEN' ? 'مردانه' : p.gender === 'WOMEN' ? 'زنانه' : p.gender === 'UNISEX' ? 'یونیسکس' : null,
     p.family_fa, p.season, p.occasion, p.temperature,
     p.longevity ? 'ماندگاری: ' + p.longevity : null,
     p.sillage ? 'پخش بو: ' + p.sillage : null

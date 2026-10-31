@@ -77,7 +77,7 @@ function productPage(html, p) {
     : `${full} | عطر دست‌ساز — ${BRAND}`;
 
   const notes = [...(p.notes.top || []), ...(p.notes.middle || [])].slice(0, 5).join('، ');
-  const gender = p.gender === 'MEN' ? 'مردانه' : p.gender === 'WOMEN' ? 'زنانه' : 'یونیسکس';
+  const gender = p.gender === 'MEN' ? 'مردانه' : p.gender === 'WOMEN' ? 'زنانه' : p.gender === 'UNISEX' ? 'یونیسکس' : '';
 
   /* ── چرا توضیح متا از داده اختصاصی هر عطر ساخته می‌شود ──
      نسخه پیشین برای هر ۲٬۱۱۱ محصول یک جمله ثابت داشت:
@@ -99,7 +99,7 @@ function productPage(html, p) {
      را می‌خواند توضیح فرق می‌کرد و گوگل صفحه را «بی‌ثبات»
      می‌دید. */
   const seed = [...p.slug].reduce((h, ch) => (h * 31 + ch.charCodeAt(0)) >>> 0, 7);
-  const price = `از ${faNum(Number(p.min_price).toLocaleString('en-US'))} تومان`;
+  const price = Number(p.min_price) > 0 ? `از ${faNum(Number(p.min_price).toLocaleString('en-US'))} تومان` : '';
 
   /* جمله دومِ اختصاصی — اولویت با یکتاترین فیلد موجود. */
   const taste = String(p.taste || '').trim();
@@ -112,13 +112,12 @@ function productPage(html, p) {
 
   /* سه اسکلت جمله؛ انتخاب با هش پایدار. */
   const shapes = [
-    () => `${full} — بازآفرینی دست‌ساز ${gender}. ${detail}. ${price}.`,
-    () => `${detail ? detail + '. ' : ''}${full}، ${gender}، بازآفرینی دست‌ساز عطر یزد. ${price}.`,
-    () => `${full} (${p.family_fa || 'رایحه'}) ${gender} — ${detail}. ${price}.`
+    () => [ `${full} — بازآفرینی دست‌ساز${gender ? ' ' + gender : ''}`, detail, price ],
+    () => [ detail, `${full}${gender ? `، ${gender}` : ''}، بازآفرینی دست‌ساز عطر یزد`, price ],
+    () => [ `${full} (${p.family_fa || 'رایحه'})${gender ? ' ' + gender : ''}${detail ? ' — ' + detail : ''}`, price ]
   ];
-  const description = shapes[seed % shapes.length]()
-    .replace(/\s+/g, ' ').replace(/ ,/g, ',').replace(/\.\s*\./g, '.').trim()
-    .slice(0, 300);
+  const description = (shapes[seed % shapes.length]().filter(Boolean).join('. ') + '.')
+    .replace(/\s+/g, ' ').trim().slice(0, 300);
 
   const url = `${SITE}/perfume/${p.slug}`;
   const image = SITE + p.image_url;

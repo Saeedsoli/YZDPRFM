@@ -2654,6 +2654,24 @@ function seedVerifiedSupplement() {
   }
 }
 seedVerifiedSupplement();
+// Correct earlier supplier-derived gender fields only for unchanged, unavailable
+// supplement rows. Never switch availability or overwrite a different value.
+function correctSupplementGenderFromOfficial() {
+  const key = 'supplement_gender_official_v1';
+  db.transaction(() => {
+    if (db.prepare('SELECT value FROM settings WHERE key=?').get(key)) return;
+    const fix = db.prepare("UPDATE products SET gender=?, search_blob=NULL WHERE id=? AND gender=? AND supply_mode='UNAVAILABLE'");
+    for (const [id, oldGender, officialGender] of [
+      ['SUP-ATKINSONS-OUD-SAVE-THE-KING','MEN',null],
+      ['SUP-LV-900001','UNISEX',null],
+      ['SUP-LV-900002','MEN','UNISEX'],
+      ['SUP-LV-900005','UNISEX',null],
+      ['SUP-LV-900006','MEN',null]
+    ]) fix.run(officialGender,id,oldGender);
+    db.prepare('INSERT INTO settings(key,value) VALUES(?,?)').run(key,new Date().toISOString());
+  })();
+}
+correctSupplementGenderFromOfficial();
 seedCoupons();
 /* تنظیمات واقعی فروشگاه — پس از ساخت جدول‌ها، پیش از سرو شدن
    هر صفحه. فاکتور و برچسب پستی بدون این‌ها ناقص چاپ می‌شوند. */
