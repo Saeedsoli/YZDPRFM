@@ -1,0 +1,135 @@
+[
+  {
+    "id": "SUP-EP-900001",
+    "slug": "emper-epic-adventure",
+    "name_fa": "اپیک ادونچر",
+    "name_en": "Epic Adventure",
+    "title_fa_base": "اپیک ادونچر",
+    "full_display_fa": "امپر — اپیک ادونچر",
+    "inspired_brand_en": "Emper",
+    "inspired_brand_fa": "امپر",
+    "gender": null,
+    "notes": {
+      "top": [],
+      "middle": [],
+      "base": []
+    },
+    "accords": [
+      "خیار",
+      "خربزه",
+      "نارنگی",
+      "ترنج",
+      "لیمو",
+      "درمنه",
+      "زیره",
+      "ریحان",
+      "مریم‌گلی",
+      "شمعدانی",
+      "کاج",
+      "پچولی",
+      "چوب صندل",
+      "میخک",
+      "سیکلامن",
+      "یاس",
+      "جیر",
+      "مشک",
+      "خزه بلوط",
+      "تنباکو",
+      "چرم",
+      "کهربا"
+    ],
+    "transclaimer_notice": "این محصول بازآفرینی دست‌ساز است و محصول اورجینال برند اصلی نیست. اطلاعات رایحه مرجع از وب‌سایت رسمی برند گرفته شده و هویت اسانس تأمین‌کننده مستقلاً تأیید نشده است.",
+    "source_url": "https://uae.emperperfumes.com/products/epic-adventure",
+    "source_note": "Official Emper regional pages list partly different note pyramids; only shared notes retained without pyramid. Epic Adventure Bleu is distinct.",
+    "variants": []
+  },
+  {
+    "id": "SUP-EP-900002",
+    "slug": "emper-chifon",
+    "name_fa": "چیفون",
+    "name_en": "Chifon",
+    "title_fa_base": "چیفون",
+    "full_display_fa": "امپر — چیفون",
+    "inspired_brand_en": "Emper",
+    "inspired_brand_fa": "امپر",
+    "gender": null,
+    "notes": {
+      "top": [],
+      "middle": [],
+      "base": []
+    },
+    "accords": [
+      "ترنج",
+      "نارنگی",
+      "یاس",
+      "رز",
+      "مشک",
+      "چوب صندل"
+    ],
+    "transclaimer_notice": "این محصول بازآفرینی دست‌ساز است و محصول اورجینال برند اصلی نیست. اطلاعات رایحه مرجع از وب‌سایت رسمی برند گرفته شده و هویت اسانس تأمین‌کننده مستقلاً تأیید نشده است.",
+    "source_url": "https://uae.emperperfumes.com/products/chifon",
+    "source_note": "Chifoon is a supplier spelling of Chifon; official regional pages have conflicting pyramids; shared notes only, unclassified.",
+    "variants": []
+  },
+  {
+    "id": "SUP-KY-900001",
+    "slug": "kayali-wedding-velvet-santal-35",
+    "name_fa": "ولت سانتال ۳۵",
+    "name_en": "The Wedding Velvet Santal 35",
+    "title_fa_base": "ولت سانتال ۳۵",
+    "full_display_fa": "کیالی — ولت سانتال ۳۵",
+    "inspired_brand_en": "Kayali",
+    "inspired_brand_fa": "کیالی",
+    "gender": null,
+    "notes": {
+      "top": [],
+      "middle": [],
+      "base": []
+    },
+    "accords": [
+      "یاس",
+      "برگ چای",
+      "مشک سفید",
+      "بنزوئین",
+      "چوب صندل",
+      "چوب سدر"
+    ],
+    "transclaimer_notice": "این محصول بازآفرینی دست‌ساز است و محصول اورجینال برند اصلی نیست. اطلاعات رایحه مرجع از وب‌سایت رسمی برند گرفته شده و هویت اسانس تأمین‌کننده مستقلاً تأیید نشده است.",
+    "source_url": "https://us.kayali.com/products/the-wedding-velvet-santal-35",
+    "source_note": "Santal 35 is a name-based reference to Velvet Santal 35, distinct from Kayali Silk Santal 36 and Le Labo Santal 33; no supplier identity verification.",
+    "variants": []
+  },
+  {
+    "id": "SUP-EV-900001",
+    "slug": "evaflor-whisky-silver",
+    "name_fa": "ویسکی سیلور",
+    "name_en": "Whisky Silver",
+    "title_fa_base": "ویسکی سیلور",
+    "full_display_fa": "اوافلور — ویسکی سیلور",
+    "inspired_brand_en": "Evaflor",
+    "inspired_brand_fa": "اوافلور",
+    "gender": null,
+    "notes": {
+      "top": [
+        "شاه‌پسند",
+        "آویشن",
+        "نارنگی"
+      ],
+      "middle": [
+        "بنفشه",
+        "رز",
+        "سنبل"
+      ],
+      "base": [
+        "نت‌های دریایی",
+        "خزه",
+        "پچولی"
+      ]
+    },
+    "accords": [],
+    "transclaimer_notice": "این محصول بازآفرینی دست‌ساز است و محصول اورجینال برند اصلی نیست. اطلاعات رایحه مرجع از وب‌سایت رسمی برند گرفته شده و هویت اسانس تأمین‌کننده مستقلاً تأیید نشده است.",
+    "source_url": "https://www.evaflor.com/en/products/whisky-silver-coffret-parfum-homme-serviette-money-clip",
+    "source_note": "Official source describes Whisky Silver EDT in gift set; supplier essence version, identity and quality unverified.",
+    "variants": []
+  }
+]

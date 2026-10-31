@@ -1,0 +1,46 @@
+{
+  "version": "official_identity_evidence_v20",
+  "scope": "Official reference-original name only; actual supplier essence identity is unverified.",
+  "items": [
+    {
+      "product_id": "SUP-EP-900001",
+      "slug": "emper-epic-adventure",
+      "brand_en": "Emper",
+      "expected_name_en": "EMPER - Epic Adventure",
+      "reference_name": "Epic Adventure",
+      "official_url": "https://uae.emperperfumes.com/products/epic-adventure",
+      "status": "official_original_found_supplier_essence_unverified",
+      "checked_date": "2026-11-01"
+    },
+    {
+      "product_id": "SUP-EP-900002",
+      "slug": "emper-chifon",
+      "brand_en": "Emper",
+      "expected_name_en": "EMPER - Chifon",
+      "reference_name": "Chifon",
+      "official_url": "https://uae.emperperfumes.com/products/chifon",
+      "status": "official_original_found_supplier_essence_unverified",
+      "checked_date": "2026-11-01"
+    },
+    {
+      "product_id": "SUP-KY-900001",
+      "slug": "kayali-wedding-velvet-santal-35",
+      "brand_en": "Kayali",
+      "expected_name_en": "KAYALI - The Wedding Velvet Santal 35",
+      "reference_name": "The Wedding Velvet Santal 35",
+      "official_url": "https://us.kayali.com/products/the-wedding-velvet-santal-35",
+      "status": "official_original_found_supplier_essence_unverified",
+      "checked_date": "2026-11-01"
+    },
+    {
+      "product_id": "SUP-EV-900001",
+      "slug": "evaflor-whisky-silver",
+      "brand_en": "Evaflor",
+      "expected_name_en": "EVAFLOR - Whisky Silver",
+      "reference_name": "Whisky Silver",
+      "official_url": "https://www.evaflor.com/en/products/whisky-silver-coffret-parfum-homme-serviette-money-clip",
+      "status": "official_original_found_supplier_essence_unverified",
+      "checked_date": "2026-11-01"
+    }
+  ]
+}

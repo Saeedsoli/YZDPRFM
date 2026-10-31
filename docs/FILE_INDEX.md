@@ -585,3 +585,11 @@ node_modules/   با npm install برمی‌گردد
 - `seed/secondary_reference_prices_v6.json`
 - `scripts/test_official_reference_v20.js`
 - `scripts/test_secondary_reference_v6.js`
+
+
+### چهار تناظر جدید رسمی
+
+- `seed/official_supplement_v21.json`
+- `seed/official_reference_prices_v21.json`
+- `seed/official_identity_evidence_v20.json`
+- `scripts/test_official_reference_v21.js`

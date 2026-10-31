@@ -333,3 +333,17 @@ Xeryus با Xeryus Rouge یکی نشده است؛ صفحه رسمی موجود �
 | John Richmond for Men | 122.1 | B | مستقل | https://www.fragrantica.com/perfume/John-Richmond/John-Richmond-for-Men-9117.html |
 
 Absolu Aventus از Aventus و Aventus Cologne جداست؛ نت‌های صفحه رسمی به‌صورت بدون هرم ثبت شده‌اند. Nice Black فایل به‌عنوان تطبیق نام کوتاه‌شده Nice Feeling Black در نظر گرفته شده و نت‌ها از صفحه فعلی رسمی‌اند. Open با نسخه‌های Black، White و Gold یکی نشده است. صفحه فعلی رسمی [Classic for Him](https://www.johnrichmond.com/en/products/profumo-classic-uomo) نام و نت‌هایی متفاوت با مرجع مستقل John Richmond for Men دارد؛ برابری آنها فرض نشده و نت‌های محصول از مرجع مستقل و با ذکر منبع‌اند.
+
+
+## چهار تناظر دیگر با منبع رسمی — ۱ نوامبر ۲۰۲۶
+
+چهار محصول دست‌ساز تازه با قیمت نام‌محور موقت ثبت شدند؛ همگی غیرفعال‌اند. شاهد نام عطر مرجع، هویت یا کیفیت اسانس تحویلی را اثبات نمی‌کند.
+
+| رایحه مرجع | دلار/کیلو | کیفیت فایل | منبع رسمی |
+|---|---:|---|---|
+| Epic Adventure — Emper | 126.5 | P | https://uae.emperperfumes.com/products/epic-adventure |
+| Chifon — Emper | 123.2 | P | https://uae.emperperfumes.com/products/chifon |
+| The Wedding Velvet Santal 35 — Kayali | 101.2 | H | https://us.kayali.com/products/the-wedding-velvet-santal-35 |
+| Whisky Silver — Evaflor | 126.5 | R | https://www.evaflor.com/en/products/whisky-silver-coffret-parfum-homme-serviette-money-clip |
+
+صفحات منطقه‌ای رسمی امپر برای [Epic Adventure](https://emperperfumes.com/products/epic-adventure) و [Chifon](https://emperperfumes.com/products/chifon) در برخی نت‌ها با صفحات دیگر برند اختلاف دارند؛ فقط نت‌های مشترک بدون هرم ثبت شدند. املای Chifoon و Wisky فایل اصلاح نام‌محور شده است. Santal 35 فایل به Velvet Santal 35 مربوط دانسته شده، نه Silk Santal 36 یا Santal 33. منبع اوافلور صفحه بسته حاوی ادوتویلت Whisky Silver است، نه اثبات نسخه اسانس تأمین‌کننده؛ کالای فروشگاه همان بازآفرینی دست‌ساز است، نه آن بسته یا محصول اصلی.

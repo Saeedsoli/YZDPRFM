@@ -51,7 +51,7 @@ CHANEL,BLEU de chanel,Men,بلو د شنل,2,"144,145",227.7,H,pending,هنوز 
 CHANEL,Coco Mademoiselle,Women,کوکو شنل,1,146,132,H,pending,هنوز قیمت مرجع منتسب نشده,,,
 CHANEL,Chance,Women,چنس شنل,2,"147,148",388.3,H,pending,هنوز قیمت مرجع منتسب نشده,,,
 CHANEL,Platinium,Unisex,پلاتینیوم,1,149,92.4,P,pending,هنوز قیمت مرجع منتسب نشده,,,
-EVAFLOR,WISKY SILVER,Unisex,ویسکی سیلور,1,155,126.5,R,pending,هنوز قیمت مرجع منتسب نشده,,,
+EVAFLOR,WISKY SILVER,Unisex,ویسکی سیلور,1,155,126.5,R,provisional,قیمت موقت با شاهد نام؛ هویت اسانس تأییدنشده,SUP-EV-900001,https://www.evaflor.com/en/products/whisky-silver-coffret-parfum-homme-serviette-money-clip,official_reference_prices_v21.json
 chloe,Narcisse,Women,نارسیس,1,161,88,P,secondary,قیمت موقت با منبع مستقل؛ هویت اسانس تأییدنشده,SUP-TP-910012,https://www.fragrantica.com/perfume/Chloe/Chloe-Narcisse-344.html,secondary_reference_prices_v3.json
 CLINIQUE,Happy,Men,هپی کلینیک,1,167,174.9,H,pending,هنوز قیمت مرجع منتسب نشده,,,
 Clive Christian,X FOR MEN,Men,ایکس فور من کلایو کریتسین,1,173,453.2,P,provisional,قیمت موقت با شاهد نام؛ هویت اسانس تأییدنشده,YZD-PROD-0485,https://us.clivechristian.com/products/x-masculine,official_reference_prices_v14.json
@@ -81,8 +81,8 @@ dunhıll,DUNHILL Brown,Men,دانهیل قهوه‌ای,2,"250,251",128.7,H,pend
 dunhıll,Icon,Men,دانهیل آیکون,1,252,245.3,H,pending,هنوز قیمت مرجع منتسب نشده,,,
 DERRICK,DERRICK,Men,درک,1,258,105.6,H,pending,هنوز قیمت مرجع منتسب نشده,,,
 EMPER,MERCEDES BENZ,Men,مرسدس بنز,1,264,124.3,P,pending,هنوز قیمت مرجع منتسب نشده,,,
-EMPER,Epic ADVANTURE,Men,اپیک ادونجر,1,265,126.5,P,pending,هنوز قیمت مرجع منتسب نشده,,,
-EMPER,Chifoon,Men,چیفون,1,266,123.2,P,pending,هنوز قیمت مرجع منتسب نشده,,,
+EMPER,Epic ADVANTURE,Men,اپیک ادونجر,1,265,126.5,P,provisional,قیمت موقت با شاهد نام؛ هویت اسانس تأییدنشده,SUP-EP-900001,https://uae.emperperfumes.com/products/epic-adventure,official_reference_prices_v21.json
+EMPER,Chifoon,Men,چیفون,1,266,123.2,P,provisional,قیمت موقت با شاهد نام؛ هویت اسانس تأییدنشده,SUP-EP-900002,https://uae.emperperfumes.com/products/chifon,official_reference_prices_v21.json
 Nikos,Sculpture,Men,اسکالیپچر,1,272,89.1,I,pending,هنوز قیمت مرجع منتسب نشده,,,
 Escentric,Molecule 01,Unisex,مولکول 01,1,278,283.8,P,provisional,قیمت موقت با شاهد نام؛ هویت اسانس تأییدنشده,YZD-PROD-1245,https://www.escentric.com/en-us/products/molecule-01-100ml,official_reference_prices_v5.json
 Escentric,Molecule 02,Unisex,مولکول 02,2,"279,280",322.3,H,provisional,قیمت موقت با شاهد نام؛ هویت اسانس تأییدنشده,YZD-PROD-1246,https://www.escentric.com/en-us/products/molecule-02-100ml,official_reference_prices_v5.json
@@ -147,7 +147,7 @@ Lattafa,Shaikh al Shuyukh,Unisex,شیخ الشیوخ,1,492,381.7,H,pending,هن�
 Lattafa,Yara,Women,یارا,2,"493,494",154,H,pending,هنوز قیمت مرجع منتسب نشده,,,
 Ajmal Layali,Saffron,Women,احلام (زعفران) / اجمل لیالی,2,"500,501",115.5,B,pending,هنوز قیمت مرجع منتسب نشده,,,
 LE LABO,SANTAL 33,Unisex,سانتال 33,1,507,126.5,H,provisional,قیمت موقت با شاهد نام؛ هویت اسانس تأییدنشده,YZD-PROD-0993,https://www.lelabofragrances.com/santal-33-147.html,official_reference_prices_v2.json
-KAYALI,SANTAL 35,Unisex,سانتال 35,1,513,101.2,H,pending,هنوز قیمت مرجع منتسب نشده,,,
+KAYALI,SANTAL 35,Unisex,سانتال 35,1,513,101.2,H,provisional,قیمت موقت با شاهد نام؛ هویت اسانس تأییدنشده,SUP-KY-900001,https://us.kayali.com/products/the-wedding-velvet-santal-35,official_reference_prices_v21.json
 LOEWE,Quizas,Women,کوئیزاس,1,519,382.8,H,pending,هنوز قیمت مرجع منتسب نشده,,,
 LOUIS VUITTON,Afternoon swim,Unisex,افترنون سوییم,1,525,403.7,H,provisional,قیمت موقت با شاهد نام؛ هویت اسانس تأییدنشده,SUP-LV-900001,https://us.louisvuitton.com/eng-us/products/afternoon-swim-nvprod7330060v/LP0487,lv_reference_prices_v1.json
 LOUIS VUITTON,IMAGINATION,Men,ایمجینیشن,2,"526,527",618.2,H,provisional,قیمت موقت با شاهد نام؛ هویت اسانس تأییدنشده,SUP-LV-900002,https://en.louisvuitton.com/eng-nl/products/Imagination-nvprod7340011v/LP0476,lv_reference_prices_v1.json
