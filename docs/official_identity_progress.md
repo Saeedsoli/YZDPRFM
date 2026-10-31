@@ -69,3 +69,19 @@ Torino24 پیش‌تر در کاتالوگ نبود و به‌صورت محصو�
 - نت‌ها یا نت‌های کلیدی بدون دسته‌بندی در `seed/official_note_corrections_v8.json`.
 - صفحات رسمی Molecule 01/02/04 به‌ترتیب یک مولکول بویایی را بیان می‌کنند؛ هرم سه‌مرحله‌ای مصنوعی برای آن‌ها ثبت نشده است. نبود هرم به معنی بی‌بو بودن عطر نیست.
 - در صفحه رسمی Miracle، جایگاه یاس در متن و فهرست تفکیکی یکسان نیست. برای پرهیز از حدس، جایگاه اختلافی یاس در هرم ثبت نشده است.
+
+## پنج تناظر دیگر؛ آرمانی، ژیوانشی، اینیشیو و تیزیانا ترنزی
+
+پنج انتساب قیمت موقت بر اساس نام و بالاترین قیمت مثبت همان نام در فایل ثبت شد؛ هویت و کیفیت واقعی اسانس تأمین‌کننده مستقل تأیید نشده‌اند و هیچ‌کدام قابل سفارش نشده‌اند:
+
+| عطر مرجع | دلار/کیلو | کیفیت فایل | منبع رسمی |
+|---|---:|---|---|
+| Stronger With You | 119.9 | B | https://www.giorgioarmanibeauty-usa.com/fragrances/view-all-fragrances/stronger-with-you-eau-de-toilette/A2061.html |
+| Ange Ou Démon Le Secret | 220 | H | https://www.givenchybeauty.com/us/p/ange-ou-demon-le-secret-F10100004.html |
+| Oud for Greatness | 352 | H | https://us.initioparfums.com/products/oud-for-greatness |
+| Side Effect | 137.5 | P | https://us.initioparfums.com/products/side-effect |
+| Kirkè | 355.3 | H | https://tizianaterenzi.com/en/fragrance-wheel/ |
+
+صفحه آرمانی درباره نسخه اصلی **Eau de Toilette** است و غلظت محصول دست‌ساز را تعیین نمی‌کند. نسخه‌های Oud for Greatness NEO و Kirkè Overdose محصولات متفاوت‌اند و با ردیف‌های این دسته یکی نشده‌اند. در صفحه‌های آرمانی، اینیشیو و تیزیانا ترنزی نت‌های تأییدشده به‌صورت کلیدی و بدون هرم آمده‌اند؛ برای آن‌ها هرم سه‌مرحله‌ای حدسی حذف شده است. برای ژیوانشی تنها نت‌های طبقه‌بندی‌شده خود صفحه رسمی ثبت شده‌اند. نت‌ها مربوط به عطرهای مرجع‌اند، نه گواه فرمول اسانس تأمین‌کننده.
+
+مدارک در `seed/official_identity_evidence_v6.json`، قیمت‌ها در `seed/official_reference_prices_v7.json` و اصلاح نت‌ها در `seed/official_note_corrections_v9.json` ثبت شده‌اند. تغییرات با محافظ ویرایش مدیر و در حالت غیرقابل سفارش اعمال می‌شوند.

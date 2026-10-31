@@ -1,0 +1,218 @@
+{
+  "version": "official_notes_2026_10_v9",
+  "description": "Official reference-original notes only; unclassified notes are not assigned to a tier.",
+  "items": [
+    {
+      "product_id": "YZD-PROD-1658",
+      "product_slug": "giorgio-armani-stronger-with-you",
+      "official_brand": "Giorgio Armani",
+      "official_name": "Stronger With You",
+      "source_url": "https://www.giorgioarmanibeauty-usa.com/fragrances/view-all-fragrances/stronger-with-you-eau-de-toilette/A2061.html",
+      "source_scope": "Official key notes; source describes original Eau de Toilette, not concentration of handmade product.",
+      "expected_old_notes": {
+        "top": [
+          "هل",
+          "فلفل صورتی",
+          "نعناع",
+          "برگ بنفشه"
+        ],
+        "middle": [
+          "آناناس",
+          "شاه‌بلوط بوداده",
+          "مریم‌گلی",
+          "خربزه"
+        ],
+        "base": [
+          "وانیل ماداگاسکار",
+          "چوب سدر",
+          "کهربا",
+          "چوب گایاک"
+        ]
+      },
+      "verified_notes": {
+        "top": [],
+        "middle": [],
+        "base": []
+      },
+      "expected_old_accords": [
+        "محبوب‌ترین لاین جوانان جهان با حلقه عشق روی درپوش",
+        "شاه‌بلوط شیرین با هل و وانیل"
+      ],
+      "verified_accords": [
+        "فلفل صورتی",
+        "مریم‌گلی",
+        "شاه‌بلوط شیرین"
+      ]
+    },
+    {
+      "product_id": "YZD-PROD-1576",
+      "product_slug": "givenchy-ange-ou-dmon-le-secret",
+      "official_brand": "Givenchy",
+      "official_name": "Ange Ou Démon Le Secret",
+      "source_url": "https://www.givenchybeauty.com/us/p/ange-ou-demon-le-secret-F10100004.html",
+      "source_scope": "Official structured notes.",
+      "expected_old_notes": {
+        "top": [
+          "چای سفید",
+          "لیمو سیسیلی",
+          "زغال‌اخته (کرنبری)"
+        ],
+        "middle": [
+          "گل یاس سامباک",
+          "گل صدتومانی",
+          "نیلوفر آبی"
+        ],
+        "base": [
+          "روایح چوبی",
+          "نعناع هندی",
+          "مشک سفید"
+        ]
+      },
+      "verified_notes": {
+        "top": [
+          "کرنبری"
+        ],
+        "middle": [
+          "چای",
+          "یاس"
+        ],
+        "base": [
+          "چوب روشن"
+        ]
+      },
+      "expected_old_accords": [
+        "راز فرشتگان در بطری صورتی کم‌رنگ",
+        "چای سفید میوه‌ای باطراوت",
+        "دخترانه و بسیار پربازخورد"
+      ],
+      "verified_accords": []
+    },
+    {
+      "product_id": "YZD-PROD-0662",
+      "product_slug": "initio-parfums-prives-oud-for-greatness",
+      "official_brand": "Initio Parfums Prives",
+      "official_name": "Oud for Greatness",
+      "source_url": "https://us.initioparfums.com/products/oud-for-greatness",
+      "source_scope": "Official key notes without tiers; NEO is a separate version.",
+      "expected_old_notes": {
+        "top": [
+          "زعفران",
+          "جوز هندی",
+          "اسطوخودوس"
+        ],
+        "middle": [
+          "چوب عود آگار طبیعی"
+        ],
+        "base": [
+          "نعناع هندی",
+          "مشک"
+        ]
+      },
+      "verified_notes": {
+        "top": [],
+        "middle": [],
+        "base": []
+      },
+      "expected_old_accords": [
+        "هندسه مقدس جهان",
+        "تاریک‌ترین و باشکوه‌ترین ترکیب زعفران و عود مدرن"
+      ],
+      "verified_accords": [
+        "عود",
+        "روغن چوب آگار",
+        "اسطوخودوس",
+        "زعفران",
+        "پچولی",
+        "مشک",
+        "جوز هندی"
+      ]
+    },
+    {
+      "product_id": "YZD-PROD-0665",
+      "product_slug": "initio-parfums-prives-side-effect",
+      "official_brand": "Initio Parfums Prives",
+      "official_name": "Side Effect",
+      "source_url": "https://us.initioparfums.com/products/side-effect",
+      "source_scope": "Official main notes without tiers; vanilla mentioned in descriptive text.",
+      "expected_old_notes": {
+        "top": [
+          "رام کارائیبی",
+          "برگ تنباکو"
+        ],
+        "middle": [
+          "دارچین سیلان",
+          "وانیل ماداگاسکار"
+        ],
+        "base": [
+          "چوب صندل",
+          "چرم",
+          "زعفران"
+        ]
+      },
+      "verified_notes": {
+        "top": [],
+        "middle": [],
+        "base": []
+      },
+      "expected_old_accords": [
+        "اثر جانبی هوس‌انگیز و مقاومت‌ناپذیر",
+        "مستی دارچین و رام با تنباکو"
+      ],
+      "verified_accords": [
+        "دارچین",
+        "رام",
+        "تنباکو",
+        "زعفران",
+        "چوب صندل",
+        "هدیون"
+      ]
+    },
+    {
+      "product_id": "YZD-PROD-1351",
+      "product_slug": "tiziana-terenzi-kirke",
+      "official_brand": "Tiziana Terenzi",
+      "official_name": "Kirkè",
+      "source_url": "https://tizianaterenzi.com/en/fragrance-wheel/",
+      "source_scope": "Official description without tiers; Kirkè Overdose is a separate version.",
+      "expected_old_notes": {
+        "top": [
+          "میوه گل ساعتی (پشن فروت)",
+          "هلو",
+          "تمشک",
+          "گلابی",
+          "برگ مویز"
+        ],
+        "middle": [
+          "گل برف (زنبق دره)"
+        ],
+        "base": [
+          "مشک سفید خالص",
+          "گل آفتاب‌پرست",
+          "وانیل",
+          "صندل",
+          "پچولی"
+        ]
+      },
+      "verified_notes": {
+        "top": [],
+        "middle": [],
+        "base": []
+      },
+      "expected_old_accords": [
+        "محبوب‌ترین عطر تاریخ تیزیانا ترنزی",
+        "معجون جادویی الهه کیرکه در ادیسه هومر با خط بوی بمب میوه‌ای"
+      ],
+      "verified_accords": [
+        "میوه گل ساعتی",
+        "هلو",
+        "گلابی",
+        "تمشک",
+        "انگور سیاه",
+        "گل برف",
+        "هلیوتروپین",
+        "پچولی",
+        "مشک"
+      ]
+    }
+  ]
+}

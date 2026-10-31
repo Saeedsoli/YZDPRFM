@@ -1,0 +1,56 @@
+{
+  "version": "official_identity_evidence_v6",
+  "scope": "Official original only; supplier essence identity remains unverified.",
+  "items": [
+    {
+      "product_id": "YZD-PROD-1658",
+      "slug": "giorgio-armani-stronger-with-you",
+      "brand_en": "Giorgio Armani",
+      "expected_name_en": "GIORGIO ARMANI - Stronger With You",
+      "reference_name": "Stronger With You",
+      "official_url": "https://www.giorgioarmanibeauty-usa.com/fragrances/view-all-fragrances/stronger-with-you-eau-de-toilette/A2061.html",
+      "status": "official_original_found_supplier_essence_unverified",
+      "checked_date": "2026-10-31"
+    },
+    {
+      "product_id": "YZD-PROD-1576",
+      "slug": "givenchy-ange-ou-dmon-le-secret",
+      "brand_en": "Givenchy",
+      "expected_name_en": "GIVENCHY - Ange ou Démon Le Secret",
+      "reference_name": "Ange Ou Démon Le Secret",
+      "official_url": "https://www.givenchybeauty.com/us/p/ange-ou-demon-le-secret-F10100004.html",
+      "status": "official_original_found_supplier_essence_unverified",
+      "checked_date": "2026-10-31"
+    },
+    {
+      "product_id": "YZD-PROD-0662",
+      "slug": "initio-parfums-prives-oud-for-greatness",
+      "brand_en": "Initio Parfums Prives",
+      "expected_name_en": "INITIO PARFUMS PRIVES - Oud for Greatness",
+      "reference_name": "Oud for Greatness",
+      "official_url": "https://us.initioparfums.com/products/oud-for-greatness",
+      "status": "official_original_found_supplier_essence_unverified",
+      "checked_date": "2026-10-31"
+    },
+    {
+      "product_id": "YZD-PROD-0665",
+      "slug": "initio-parfums-prives-side-effect",
+      "brand_en": "Initio Parfums Prives",
+      "expected_name_en": "INITIO PARFUMS PRIVES - Side Effect",
+      "reference_name": "Side Effect",
+      "official_url": "https://us.initioparfums.com/products/side-effect",
+      "status": "official_original_found_supplier_essence_unverified",
+      "checked_date": "2026-10-31"
+    },
+    {
+      "product_id": "YZD-PROD-1351",
+      "slug": "tiziana-terenzi-kirke",
+      "brand_en": "Tiziana Terenzi",
+      "expected_name_en": "TIZIANA TERENZI - Kirke",
+      "reference_name": "Kirkè",
+      "official_url": "https://tizianaterenzi.com/en/fragrance-wheel/",
+      "status": "official_original_found_supplier_essence_unverified",
+      "checked_date": "2026-10-31"
+    }
+  ]
+}

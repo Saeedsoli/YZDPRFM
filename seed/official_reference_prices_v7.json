@@ -1,0 +1,222 @@
+{
+  "version": "official_reference_prices_2026_10_v7",
+  "supplier_file_sha256": "bbe8f40610bc765bda0a7d2da9dbe78f4e397458a6991239c3c18d0853f33f5c",
+  "description": "Provisional name match; supplier essence identity unverified; no automatic activation.",
+  "items": [
+    {
+      "product_id": "YZD-PROD-1658",
+      "slug": "giorgio-armani-stronger-with-you",
+      "brand_en": "Giorgio Armani",
+      "expected_name_en": "GIORGIO ARMANI - Stronger With You",
+      "reference_name": "Stronger With You",
+      "official_url": "https://www.giorgioarmanibeauty-usa.com/fragrances/view-all-fragrances/stronger-with-you-eau-de-toilette/A2061.html",
+      "supplier_brand": "GEORGIO ARMANI",
+      "supplier_model": "Stronger With You",
+      "usd_per_kg": "119.9",
+      "quality": "B",
+      "match_status": "name_matched_supplier_identity_unverified",
+      "expected_edps": [
+        {
+          "sku": "YZD-1658-EDP-010",
+          "volume_ml": 10,
+          "price_toman": 430000,
+          "stock": 0,
+          "price_usd": 4.0
+        },
+        {
+          "sku": "YZD-1658-EDP-030",
+          "volume_ml": 30,
+          "price_toman": 990000,
+          "stock": 0,
+          "price_usd": 4.0
+        },
+        {
+          "sku": "YZD-1658-EDP-050",
+          "volume_ml": 50,
+          "price_toman": 1550000,
+          "stock": 0,
+          "price_usd": 4.0
+        },
+        {
+          "sku": "YZD-1658-EDP-100",
+          "volume_ml": 100,
+          "price_toman": 2950000,
+          "stock": 0,
+          "price_usd": 4.0
+        }
+      ]
+    },
+    {
+      "product_id": "YZD-PROD-1576",
+      "slug": "givenchy-ange-ou-dmon-le-secret",
+      "brand_en": "Givenchy",
+      "expected_name_en": "GIVENCHY - Ange ou Démon Le Secret",
+      "reference_name": "Ange Ou Démon Le Secret",
+      "official_url": "https://www.givenchybeauty.com/us/p/ange-ou-demon-le-secret-F10100004.html",
+      "supplier_brand": "GIVENCHY",
+      "supplier_model": "ange ou demon le secret",
+      "usd_per_kg": "220",
+      "quality": "H",
+      "match_status": "name_matched_supplier_identity_unverified",
+      "expected_edps": [
+        {
+          "sku": "YZD-1576-EDP-010",
+          "volume_ml": 10,
+          "price_toman": 465000,
+          "stock": 0,
+          "price_usd": 4.5
+        },
+        {
+          "sku": "YZD-1576-EDP-030",
+          "volume_ml": 30,
+          "price_toman": 1094999,
+          "stock": 0,
+          "price_usd": 4.5
+        },
+        {
+          "sku": "YZD-1576-EDP-050",
+          "volume_ml": 50,
+          "price_toman": 1725000,
+          "stock": 0,
+          "price_usd": 4.5
+        },
+        {
+          "sku": "YZD-1576-EDP-100",
+          "volume_ml": 100,
+          "price_toman": 3300000,
+          "stock": 0,
+          "price_usd": 4.5
+        }
+      ]
+    },
+    {
+      "product_id": "YZD-PROD-0662",
+      "slug": "initio-parfums-prives-oud-for-greatness",
+      "brand_en": "Initio Parfums Prives",
+      "expected_name_en": "INITIO PARFUMS PRIVES - Oud for Greatness",
+      "reference_name": "Oud for Greatness",
+      "official_url": "https://us.initioparfums.com/products/oud-for-greatness",
+      "supplier_brand": "Initio",
+      "supplier_model": "OUD FOR GREATNESS",
+      "usd_per_kg": "352",
+      "quality": "H",
+      "match_status": "name_matched_supplier_identity_unverified",
+      "expected_edps": [
+        {
+          "sku": "YZD-0662-EDP-010",
+          "volume_ml": 10,
+          "price_toman": 605000,
+          "stock": 0,
+          "price_usd": 6.5
+        },
+        {
+          "sku": "YZD-0662-EDP-030",
+          "volume_ml": 30,
+          "price_toman": 1515000,
+          "stock": 0,
+          "price_usd": 6.5
+        },
+        {
+          "sku": "YZD-0662-EDP-050",
+          "volume_ml": 50,
+          "price_toman": 2425000,
+          "stock": 0,
+          "price_usd": 6.5
+        },
+        {
+          "sku": "YZD-0662-EDP-100",
+          "volume_ml": 100,
+          "price_toman": 4700000,
+          "stock": 0,
+          "price_usd": 6.5
+        }
+      ]
+    },
+    {
+      "product_id": "YZD-PROD-0665",
+      "slug": "initio-parfums-prives-side-effect",
+      "brand_en": "Initio Parfums Prives",
+      "expected_name_en": "INITIO PARFUMS PRIVES - Side Effect",
+      "reference_name": "Side Effect",
+      "official_url": "https://us.initioparfums.com/products/side-effect",
+      "supplier_brand": "Initio",
+      "supplier_model": "SIDE EFFECT",
+      "usd_per_kg": "137.5",
+      "quality": "P",
+      "match_status": "name_matched_supplier_identity_unverified",
+      "expected_edps": [
+        {
+          "sku": "YZD-0665-EDP-010",
+          "volume_ml": 10,
+          "price_toman": 605000,
+          "stock": 0,
+          "price_usd": 6.5
+        },
+        {
+          "sku": "YZD-0665-EDP-030",
+          "volume_ml": 30,
+          "price_toman": 1515000,
+          "stock": 0,
+          "price_usd": 6.5
+        },
+        {
+          "sku": "YZD-0665-EDP-050",
+          "volume_ml": 50,
+          "price_toman": 2425000,
+          "stock": 0,
+          "price_usd": 6.5
+        },
+        {
+          "sku": "YZD-0665-EDP-100",
+          "volume_ml": 100,
+          "price_toman": 4700000,
+          "stock": 0,
+          "price_usd": 6.5
+        }
+      ]
+    },
+    {
+      "product_id": "YZD-PROD-1351",
+      "slug": "tiziana-terenzi-kirke",
+      "brand_en": "Tiziana Terenzi",
+      "expected_name_en": "TIZIANA TERENZI - Kirke",
+      "reference_name": "Kirkè",
+      "official_url": "https://tizianaterenzi.com/en/fragrance-wheel/",
+      "supplier_brand": "Tiziana Terenzi",
+      "supplier_model": "KIRKÈ",
+      "usd_per_kg": "355.3",
+      "quality": "H",
+      "match_status": "name_matched_supplier_identity_unverified",
+      "expected_edps": [
+        {
+          "sku": "YZD-1351-EDP-010",
+          "volume_ml": 10,
+          "price_toman": 535000,
+          "stock": 0,
+          "price_usd": 5.5
+        },
+        {
+          "sku": "YZD-1351-EDP-030",
+          "volume_ml": 30,
+          "price_toman": 1305000,
+          "stock": 0,
+          "price_usd": 5.5
+        },
+        {
+          "sku": "YZD-1351-EDP-050",
+          "volume_ml": 50,
+          "price_toman": 2074999,
+          "stock": 0,
+          "price_usd": 5.5
+        },
+        {
+          "sku": "YZD-1351-EDP-100",
+          "volume_ml": 100,
+          "price_toman": 3999999,
+          "stock": 0,
+          "price_usd": 5.5
+        }
+      ]
+    }
+  ]
+}
