@@ -9,7 +9,7 @@ with tempfile.TemporaryDirectory(prefix='yazd-rate-ui-') as tmp:
     env={**os.environ,'DB_PATH':dbfile,'BACKUP_DISABLED':'1','PORT':str(port),'ADMIN_USERNAME':'owner','ADMIN_PASSWORD':'test-rate-secret-123','REFERENCE_PRICE_V2_AUTOMIGRATE':'0'}
     init="const {db}=require('./src/db');require('./src/import-supplier-prices').importSupplierPrices(db,require('./seed/supplier_exact_prices_staged.json'));"
     subprocess.run(['node','-e',init],cwd=root,env=env,check=True,stdout=subprocess.DEVNULL,timeout=120)
-    expected_products=(len(json.loads((root/'seed/supplier_exact_prices_staged.json').read_text(encoding='utf8'))['prices'])+len(json.loads((root/'seed/lv_reference_prices_v1.json').read_text(encoding='utf8'))['items'])+len(json.loads((root/'seed/official_reference_prices_v1.json').read_text(encoding='utf8'))['items']))
+    expected_products=(len(json.loads((root/'seed/supplier_exact_prices_staged.json').read_text(encoding='utf8'))['prices'])+len(json.loads((root/'seed/lv_reference_prices_v1.json').read_text(encoding='utf8'))['items'])+len(json.loads((root/'seed/official_reference_prices_v1.json').read_text(encoding='utf8'))['items'])+len(json.loads((root/'seed/official_reference_prices_v3.json').read_text(encoding='utf8'))['items']))
     expected_fa=str(expected_products*6).translate(str.maketrans('0123456789','۰۱۲۳۴۵۶۷۸۹'))
     server=subprocess.Popen(['node','src/server.js'],cwd=root,env=env,stdout=subprocess.DEVNULL,stderr=subprocess.PIPE)
     try:

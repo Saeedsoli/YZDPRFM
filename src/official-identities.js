@@ -4,6 +4,7 @@
 const fs=require('fs');
 const HOST_BY_BRAND={
   'Creed':'www.creedfragrance.com','Amouage':'amouage.com','Kilian Paris':'www.bykilian.com',
+  'Christian Dior':'www.dior.com',
   'Carolina Herrera':'www.carolinaherrera.com','Le Labo':'www.lelabofragrances.com',
   'Montblanc':'www.montblanc.com','Nasomatto':'nasomatto.com','Orto Parisi':'ortoparisi.com',
   'Parfums de Marly':'us.parfums-de-marly.com',"Penhaligon's":'www.penhaligons.com',
@@ -13,7 +14,8 @@ const HOST_BY_BRAND={
 function seedOfficialIdentities(db,file){
  if(!fs.existsSync(file))return {added:0,skipped:0,reason:'file_missing'};
  const m=JSON.parse(fs.readFileSync(file,'utf8'));
- if(m.version!=='official_identity_evidence_v1'||!Array.isArray(m.items)||m.items.length!==37)throw new Error('Invalid identity evidence manifest');
+ const counts={official_identity_evidence_v1:37,official_identity_evidence_v2:6};
+ if(!Object.hasOwn(counts,m.version)||!Array.isArray(m.items)||m.items.length!==counts[m.version])throw new Error('Invalid identity evidence manifest');
  const ids=new Set();
  for(const x of m.items){
   let url;try{url=new URL(x.official_url);}catch{throw new Error('Invalid official source URL');}

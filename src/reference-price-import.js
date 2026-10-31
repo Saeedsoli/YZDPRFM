@@ -6,19 +6,22 @@ const {kgToGram,productPriceState,applyProductPrice}=require('./product-essence-
 const {HOST_BY_BRAND}=require('./official-identities');
 const VERSION='official_reference_prices_2026_10_v1';
 const VERSION_2='official_reference_prices_2026_10_v2';
+const VERSION_3='official_reference_prices_2026_10_v3';
 const V1_HOSTS=new Set(['lattafa.com','www.creedfragrance.com','www.atkinsons1799.com']);
 function applyReferencePrices(db,file){
  if(!fs.existsSync(file))return {applied:0,skipped:0,reason:'file_missing'};
  const data=JSON.parse(fs.readFileSync(file,'utf8'));
  const second=data.version===VERSION_2;
- if(![VERSION,VERSION_2].includes(data.version)||!/^[a-f0-9]{64}$/.test(data.supplier_file_sha256||'')||!Array.isArray(data.items)||data.items.length!==(second?37:4))throw new Error('Invalid reference price manifest');
+ const needsIdentity=[VERSION_2,VERSION_3].includes(data.version);
+ const counts={[VERSION]:4,[VERSION_2]:37,[VERSION_3]:6};
+ if(!Object.hasOwn(counts,data.version)||!/^[a-f0-9]{64}$/.test(data.supplier_file_sha256||'')||!Array.isArray(data.items)||data.items.length!==counts[data.version])throw new Error('Invalid reference price manifest');
  const ids=new Set();
  for(const x of data.items){
   let url;try{url=new URL(x.official_url);}catch{throw new Error('Invalid source URL');}
-  const allowedHost=second ? HOST_BY_BRAND[x.brand_en]===url.hostname : V1_HOSTS.has(url.hostname);
+  const allowedHost=needsIdentity ? HOST_BY_BRAND[x.brand_en]===url.hostname : V1_HOSTS.has(url.hostname);
   if(!x.product_id||!x.slug||ids.has(x.product_id)||url.protocol!=='https:'||!allowedHost||url.username||url.password||
     x.match_status!=='name_matched_supplier_identity_unverified'||!/^[A-Za-z]$/.test(x.quality||'')||!Array.isArray(x.expected_edps)||
-    (second&&(!x.brand_en||!x.expected_name_en||!x.reference_name)))throw new Error('Invalid reference price entry');
+    (needsIdentity&&(!x.brand_en||!x.expected_name_en||!x.reference_name)))throw new Error('Invalid reference price entry');
   for(const v of x.expected_edps)if(!v.sku||![10,30,50,100].includes(v.volume_ml)||!Number.isInteger(v.price_toman)||v.price_toman<=0||v.stock!==0||!(v.price_usd===null||typeof v.price_usd==='number'))throw new Error('Invalid baseline variant');
   kgToGram(x.usd_per_kg);ids.add(x.product_id);
  }
@@ -29,7 +32,7 @@ function applyReferencePrices(db,file){
     usd_per_kg TEXT NOT NULL, quality TEXT NOT NULL, match_status TEXT NOT NULL,
     imported_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
   )`);
-  const find=db.prepare(second
+  const find=db.prepare(needsIdentity
     ? 'select id,slug,brand_en,name_en,supply_mode,essence_usd_per_kg from products where id=?'
     : 'select id,slug,supply_mode,essence_usd_per_kg from products where id=?');
   const edps=db.prepare("select sku,volume_ml,price_toman,stock,price_usd from variants where product_id=? and type='EDP' order by volume_ml,sku");
@@ -38,11 +41,11 @@ function applyReferencePrices(db,file){
   const priorEvidence=db.prepare('select product_id from supplier_price_evidence where product_id=?');
   const evidence=db.prepare('insert into supplier_price_evidence(product_id,supplier_file_sha256,official_url,usd_per_kg,quality,match_status) values(?,?,?,?,?,?)');
   const originalImport=second && !!db.prepare("select value from settings where key='supplier_exact_price_import_v1'").get();
-  const official=second ? db.prepare('select official_url,status from official_identity_evidence where product_id=?') : null;
+  const official=needsIdentity ? db.prepare('select official_url,status from official_identity_evidence where product_id=?') : null;
   let applied=0,backfilled=0;const skipped=[];
   for(const x of data.items){
-   const p=find.get(x.product_id), e=second ? official.get(x.product_id) : null;
-   const identityOk=!second || !!(p&&p.brand_en===x.brand_en&&p.name_en===x.expected_name_en&&e&&e.official_url===x.official_url&&e.status==='official_original_found_supplier_essence_unverified');
+   const p=find.get(x.product_id), e=needsIdentity ? official.get(x.product_id) : null;
+   const identityOk=!needsIdentity || !!(p&&p.brand_en===x.brand_en&&p.name_en===x.expected_name_en&&e&&e.official_url===x.official_url&&e.status==='official_original_found_supplier_essence_unverified');
    const already=priorEvidence.get(x.product_id);
    // For the previously imported 42, add provenance only when the value is
    // unchanged and the original one-time import marker exists. Never reprice.
@@ -63,4 +66,4 @@ function applyReferencePrices(db,file){
   return second ? {applied,backfilled,skipped:skipped.length,skipped_ids:skipped} : {applied,skipped:skipped.length,skipped_ids:skipped};
  })();
 }
-module.exports={applyReferencePrices,VERSION,VERSION_2};
+module.exports={applyReferencePrices,VERSION,VERSION_2,VERSION_3};

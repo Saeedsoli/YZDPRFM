@@ -35,7 +35,7 @@ with tempfile.TemporaryDirectory(prefix='yazd-rate-api-') as tmp:
         status,login=api('POST','/api/admin/login',{'username':'owner','password':'test-rate-secret-123'});assert status==200 and login.get('token'),login
         token=login['token'];assert api('GET',route,token=token)==(200,{'rate_toman':300000})
         status,view=api('POST',preview,{'rate_toman':250000},token);assert status==200,(status,view)
-        expected_products=(len(json.loads((root/'seed/supplier_exact_prices_staged.json').read_text(encoding='utf8'))['prices'])+len(json.loads((root/'seed/lv_reference_prices_v1.json').read_text(encoding='utf8'))['items'])+len(json.loads((root/'seed/official_reference_prices_v1.json').read_text(encoding='utf8'))['items']))
+        expected_products=(len(json.loads((root/'seed/supplier_exact_prices_staged.json').read_text(encoding='utf8'))['prices'])+len(json.loads((root/'seed/lv_reference_prices_v1.json').read_text(encoding='utf8'))['items'])+len(json.loads((root/'seed/official_reference_prices_v1.json').read_text(encoding='utf8'))['items'])+len(json.loads((root/'seed/official_reference_prices_v3.json').read_text(encoding='utf8'))['items']))
         assert view['products']==expected_products and view['variants_repriced']==expected_products*6 and view['current_rate_toman']==300000,view
         old=con.execute("select price_toman from variants where product_id='YZD-PROD-0429' and type='EDP' and volume_ml=100").fetchone()[0];assert old==12771000
         assert api('PUT',route,{'rate_toman':250000,'expected_rate_toman':123456},token)[0]==409

@@ -1,0 +1,66 @@
+{
+  "version": "official_identity_evidence_v2",
+  "scope": "Reference original identity only; supplier essence remains unverified.",
+  "items": [
+    {
+      "product_id": "YZD-PROD-0442",
+      "slug": "creed-original-vetiver",
+      "brand_en": "Creed",
+      "expected_name_en": "CREED - Original Vetiver",
+      "reference_name": "Original Vetiver",
+      "official_url": "https://www.creedfragrance.com/p/original-vetiver/12870044/",
+      "status": "official_original_found_supplier_essence_unverified",
+      "checked_date": "2026-10-31"
+    },
+    {
+      "product_id": "YZD-PROD-1427",
+      "slug": "christian-dior-dior-homme-intense",
+      "brand_en": "Christian Dior",
+      "expected_name_en": "CHRISTIAN DIOR - Dior Homme Intense",
+      "reference_name": "Dior Homme Intense",
+      "official_url": "https://www.dior.com/en_int/beauty/products/dior-homme-intense-Y0479201.html",
+      "status": "official_original_found_supplier_essence_unverified",
+      "checked_date": "2026-10-31"
+    },
+    {
+      "product_id": "YZD-PROD-1425",
+      "slug": "christian-dior-sauvage-elixir",
+      "brand_en": "Christian Dior",
+      "expected_name_en": "CHRISTIAN DIOR - Sauvage Elixir",
+      "reference_name": "Sauvage Elixir",
+      "official_url": "https://www.dior.com/en_cz/beauty/products/sauvage-elixir-Y0996460.html",
+      "status": "official_original_found_supplier_essence_unverified",
+      "checked_date": "2026-10-31"
+    },
+    {
+      "product_id": "YZD-PROD-0575",
+      "slug": "xerjoff-naxos",
+      "brand_en": "Xerjoff",
+      "expected_name_en": "XERJOFF - Naxos",
+      "reference_name": "Naxos",
+      "official_url": "https://www.xerjoff.com/products/naxos-eau-de-parfum",
+      "status": "official_original_found_supplier_essence_unverified",
+      "checked_date": "2026-10-31"
+    },
+    {
+      "product_id": "YZD-PROD-1677",
+      "slug": "tom-ford-lost-cherry",
+      "brand_en": "Tom Ford",
+      "expected_name_en": "TOM FORD - Lost Cherry",
+      "reference_name": "Lost Cherry",
+      "official_url": "https://www.tomfordbeauty.com/products/lost-cherry-eau-de-parfum-set",
+      "status": "official_original_found_supplier_essence_unverified",
+      "checked_date": "2026-10-31"
+    },
+    {
+      "product_id": "YZD-PROD-1511",
+      "slug": "yves-saint-laurent-tuxedo",
+      "brand_en": "Yves Saint Laurent",
+      "expected_name_en": "YVES SAINT LAURENT - Tuxedo",
+      "reference_name": "Tuxedo",
+      "official_url": "https://www.yslbeautyus.com/fragrance/le-vestiaire-des-parfums/the-signature-collection/tuxedo---le-vestiaire-des-parfums/809YSL.html",
+      "status": "official_original_found_supplier_essence_unverified",
+      "checked_date": "2026-10-31"
+    }
+  ]
+}

@@ -440,3 +440,7 @@ node_modules/   با npm install برمی‌گردد
 ### بازسازی قیمت‌های مرجع منبع‌دار
 
 - `scripts/test_reference_prices_v2.js`
+
+### شش تناظر منبع‌دار جدید
+
+- `scripts/test_reference_prices_v3.js`
