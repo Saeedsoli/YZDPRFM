@@ -617,6 +617,17 @@
 
       <div class="card hidden" id="pEditCard">
         <h3 id="pEditTitle"></h3>
+        <div id="essencePriceCard" class="card hidden" style="margin:12px 0 16px">
+          <div style="display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap"><strong>قیمت اسانس خام</strong><span id="essenceRate" style="font-size:.77rem;color:var(--muted)"></span></div>
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin:14px 0">
+            <div class="field" style="margin:0"><label for="essenceUsd">قیمت دلاری هر گرم اسانس</label><input id="essenceUsd" type="text" inputmode="decimal" dir="ltr" autocomplete="off" oninput="invalidateEssencePreview()"><div style="font-size:.72rem;color:var(--muted);margin-top:4px">برای قیمت هر کیلو، ابتدا بر ۱٬۰۰۰ تقسیم کنید.</div></div>
+            <div class="field" style="margin:0"><label for="essenceToman">قیمت تومانی هر گرم اسانس</label><input id="essenceToman" type="text" readonly aria-readonly="true"><div style="font-size:.72rem;color:var(--muted);margin-top:4px">بر اساس نرخ دلار محاسبه می‌شود و مستقیم ویرایش نمی‌شود.</div></div>
+          </div>
+          <button id="essencePreviewBtn" class="btn btn-outline" onclick="previewProductEssenceUI()">پیش‌نمایش قیمت‌های محصول</button>
+          <div id="essenceMessage" role="status" aria-live="polite" style="font-size:.8rem;color:var(--muted);margin-top:8px"></div>
+          <div id="essencePreview" class="hidden" style="background:var(--sand);border:1px solid var(--border);border-radius:10px;padding:15px;margin-top:14px"></div>
+          <button id="essenceApplyBtn" class="btn hidden" style="margin-top:14px" onclick="applyProductEssenceUI()">تأیید و ذخیره قیمت اسانس</button>
+        </div>
         <div style="background:var(--sand);border-radius:10px;padding:14px;margin-bottom:16px">
           <div style="font-size:.86rem;font-weight:700;margin-bottom:10px">تغییر گروهی</div>
           <div style="display:flex;gap:9px;flex-wrap:wrap;align-items:flex-end">
@@ -2833,10 +2844,97 @@ async function showLowStock() {
        </tr>`).join('')}</table></div>`;
 }
 
+let essencePreview = null;
+let essencePreviewSeq = 0;
+function invalidateEssencePreview() {
+  essencePreview = null; essencePreviewSeq++;
+  document.getElementById('essencePreview').classList.add('hidden');
+  document.getElementById('essenceApplyBtn').classList.add('hidden');
+  document.getElementById('essenceToman').value = '';
+}
+function essenceDecimal(raw) {
+  return String(raw).trim().replace(/[۰-۹]/g, c => String('۰۱۲۳۴۵۶۷۸۹'.indexOf(c)))
+    .replace(/[٠-٩]/g, c => String('٠١٢٣٤٥٦٧٨٩'.indexOf(c)))
+    .replace(/٫/g,'.').replace(/[,٬\s]/g,'');
+}
+function essenceMoneyExact(raw) {
+  const parts=String(raw).split('.');
+  return toFa(parts[0].replace(/\B(?=(\d{3})+(?!\d))/g,'٬') + (parts[1] ? '٫'+parts[1] : ''));
+}
+function essenceMessage(text) { document.getElementById('essenceMessage').textContent=text; }
+function essenceBusy(busy) {
+  ['essenceUsd','essencePreviewBtn','essenceApplyBtn'].forEach(id => document.getElementById(id).disabled=busy);
+}
+async function loadProductEssenceUI(id) {
+  const card=document.getElementById('essencePriceCard');
+  const allowed=may('products.price');
+  card.classList.toggle('hidden',!allowed);
+  invalidateEssencePreview();
+  document.getElementById('essenceUsd').value='';
+  document.getElementById('essenceRate').textContent='';
+  essenceMessage('');
+  if (!allowed) return;
+  const seq=essencePreviewSeq;
+  essenceMessage('در حال دریافت قیمت اسانس…');
+  try {
+    const r=await fetch('/api/admin/essence-pricing/products/'+encodeURIComponent(id),{headers:H()});
+    const d=await r.json();
+    if(seq!==essencePreviewSeq || !currentProduct || currentProduct.id!==id) return;
+    if(!r.ok) throw new Error(d.error || 'دریافت قیمت اسانس ناموفق بود.');
+    document.getElementById('essenceRate').textContent='نرخ دلار: '+exchangeMoney(d.rate_toman)+' تومان';
+    document.getElementById('essenceUsd').value=d.usd_per_gram || '';
+    document.getElementById('essenceToman').value=d.toman_per_gram == null ? '' : essenceMoneyExact(d.toman_per_gram)+' تومان';
+    essenceMessage(d.usd_per_gram == null ? 'قیمت اسانس این محصول هنوز ثبت نشده است.' : '');
+  } catch(error) { if(seq===essencePreviewSeq) essenceMessage(error.message || 'خطا در ارتباط با سرور.'); }
+}
+async function previewProductEssenceUI() {
+  if(!may('products.price') || !currentProduct) return;
+  const id=currentProduct.id;
+  invalidateEssencePreview();
+  const usd=essenceDecimal(document.getElementById('essenceUsd').value);
+  if (!/^(?:0|[1-9]\d*)(?:\.\d{1,12})?$/.test(usd) || !/[1-9]/.test(usd) || usd.length>32)
+    return essenceMessage('قیمت دلاری هر گرم را به صورت عدد مثبت وارد کنید.');
+  const seq=essencePreviewSeq; essenceBusy(true); essenceMessage('در حال محاسبه پیش‌نمایش…');
+  try {
+    const r=await fetch('/api/admin/essence-pricing/products/'+encodeURIComponent(id)+'/preview',{
+      method:'POST',headers:H(),body:JSON.stringify({usd_per_gram:usd})
+    });
+    const d=await r.json();
+    if(seq!==essencePreviewSeq || !currentProduct || currentProduct.id!==id) return;
+    if(!r.ok) throw new Error(d.error || 'پیش‌نمایش ناموفق بود.');
+    essencePreview=d;
+    document.getElementById('essenceToman').value=essenceMoneyExact(d.proposed_toman_per_gram)+' تومان';
+    document.getElementById('essenceRate').textContent='نرخ دلار: '+exchangeMoney(d.rate_toman)+' تومان';
+    const labels={SAMPLE:'سمپل',EDP:'پرفیوم',BODY_SPLASH:'بادی‌اسپلش'};
+    const rows=d.changes.map(v=>`<tr><td>${esc(labels[v.type] || v.type)} · ${toFa(v.volume_ml)} میل</td><td>${v.price_toman==null ? 'واریانت جدید' : exchangeMoney(v.price_toman)+' تومان'}</td><td>${exchangeMoney(v.new_price_toman)} تومان</td></tr>`).join('');
+    const box=document.getElementById('essencePreview');
+    box.innerHTML=`<b>پیش‌نمایش قیمت‌های فروش</b><div style="overflow-x:auto"><table><thead><tr><th>نوع و حجم</th><th>قیمت فعلی</th><th>قیمت جدید</th></tr></thead><tbody>${rows}</tbody></table></div><p style="font-size:.76rem;color:var(--muted);line-height:1.9">وضعیت سفارش‌پذیری و سوابق سفارش‌ها تغییر نمی‌کند؛ حجم‌های جدید با موجودی صفر ساخته می‌شوند.</p>`;
+    box.classList.remove('hidden');document.getElementById('essenceApplyBtn').classList.remove('hidden');essenceMessage('');
+  } catch(error) { if(seq===essencePreviewSeq) essenceMessage(error.message || 'خطا در ارتباط با سرور.'); }
+  finally { essenceBusy(false); }
+}
+async function applyProductEssenceUI() {
+  if(!essencePreview || !currentProduct || !may('products.price')) return;
+  const p=essencePreview, slug=currentProduct.slug;
+  if(currentProduct.id!==p.product_id) return invalidateEssencePreview();
+  if(!confirm('قیمت اسانس و قیمت‌های محاسبه‌شده این محصول ثبت شود؟')) return;
+  essenceBusy(true);essenceMessage('در حال ثبت قیمت…');
+  try {
+    const r=await fetch('/api/admin/essence-pricing/products/'+encodeURIComponent(p.product_id),{
+      method:'PUT',headers:H(),body:JSON.stringify({usd_per_gram:p.proposed_usd_per_gram,expected_rate_toman:p.rate_toman,expected_usd_per_kg:p.usd_per_kg})
+    });
+    const d=await r.json();
+    if(!r.ok) { invalidateEssencePreview();essenceMessage(d.error || 'ثبت ناموفق بود؛ دوباره پیش‌نمایش بگیرید.');return; }
+    invalidateEssencePreview();
+    if(currentProduct && currentProduct.id===p.product_id) await editProduct(slug);
+    toast('قیمت اسانس و واریانت‌ها ثبت شد.');
+  } catch { invalidateEssencePreview();essenceMessage('نتیجه نامشخص است؛ محصول را دوباره باز کنید.'); }
+  finally { essenceBusy(false); }
+}
+
 async function editProduct(slug) {
-  /* مسیر مدیریتی، نه عمومی: قیمت دلاری پایه محاسبه است و در
-     پاسخ عمومی نمی‌آید — وگرنه هر بازدیدکننده‌ای می‌توانست
-     حاشیه سود را حساب کند. */
+  /* ویرایش محصول از مسیر مدیریتی است؛ قیمت اسانس جداگانه و
+     فقط با مجوز قیمت از API محافظت‌شده دریافت می‌شود. */
   const r = await fetch('/api/admin/products/' + encodeURIComponent(slug),
                         { headers: H() });
   currentProduct = await r.json();
@@ -2845,6 +2943,7 @@ async function editProduct(slug) {
   document.getElementById('pEditTitle').textContent =
     `${p.brand_fa || ''} — ${p.name_fa}`;
   renderVariants();
+  loadProductEssenceUI(p.id);
   // وضعیت تأمین فعلی را در فهرست کشویی نشان بده
   const sm = document.getElementById('supplyMode');
   if (sm) sm.value = p.supply_mode || 'UNAVAILABLE';
@@ -2898,17 +2997,12 @@ function renderVariants() {
 
   document.getElementById('pVariants').innerHTML = `
     <tr><th>نوع</th><th>حجم</th><th>SKU</th>
-        <th>قیمت پایه ($)</th><th>قیمت (تومان)</th>
+        <th>قیمت (تومان)</th>
         <th style="text-align:center">موجودی</th><th></th></tr>
     ${p.variants.map(v => `<tr>
       <td style="font-size:.82rem">${v.type_label || v.type}</td>
       <td style="white-space:nowrap">${toFa(v.volume_ml)} میل</td>
       <td dir="ltr" style="font-size:.72rem;color:var(--muted)">${v.sku}</td>
-      <td><input id="usd_${v.sku}" type="number" step="any" min="0"
-        value="${v.price_usd ?? ''}" placeholder="—"
-        title="قیمت دلاری پایه — مبنای محاسبه خودکار قیمت تومانی"
-        style="width:92px;padding:7px;border:1px solid var(--border);border-radius:7px;
-        font-family:var(--font);direction:ltr;text-align:left"></td>
       <td><input id="pr_${v.sku}" type="number" value="${v.price_toman}"
         style="width:118px;padding:7px;border:1px solid var(--border);border-radius:7px;
         font-family:var(--font);direction:ltr;text-align:left"></td>
@@ -2993,15 +3087,9 @@ async function saveStockOnly(sku) {
 async function saveVariant(sku) {
   const price = document.getElementById('pr_' + sku).value;
   const stock = document.getElementById('st_' + sku).value;
-  /* رشته خالی عمداً همان‌طور فرستاده می‌شود — سرور آن را به NULL
-     تبدیل می‌کند یعنی «نامشخص». اگر اینجا به صفر تبدیلش کنیم،
-     بعداً نمی‌شود «رایگان» را از «وارد نشده» تشخیص داد. */
-  const usdEl = document.getElementById('usd_' + sku);
-  const usd = usdEl ? usdEl.value.trim() : undefined;
-
   const r = await fetch('/api/admin/variants/' + encodeURIComponent(sku), {
     method: 'PUT', headers: H(),
-    body: JSON.stringify({ price_toman: price, stock, price_usd: usd })
+    body: JSON.stringify({ price_toman: price, stock })
   });
   const d = await r.json();
   toast(r.ok ? 'ذخیره شد' : d.error);
