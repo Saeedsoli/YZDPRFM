@@ -16,12 +16,12 @@ const HOST_BY_BRAND={
 function seedOfficialIdentities(db,file){
  if(!fs.existsSync(file))return {added:0,skipped:0,reason:'file_missing'};
  const m=JSON.parse(fs.readFileSync(file,'utf8'));
- const counts={official_identity_evidence_v1:37,official_identity_evidence_v2:6,official_identity_evidence_v3:6,official_identity_evidence_v4:8,official_identity_evidence_v5:1,official_identity_evidence_v6:5,official_identity_evidence_v7:3,official_identity_evidence_v8:1};
+ const counts={official_identity_evidence_v1:37,official_identity_evidence_v2:6,official_identity_evidence_v3:6,official_identity_evidence_v4:8,official_identity_evidence_v5:1,official_identity_evidence_v6:5,official_identity_evidence_v7:3,official_identity_evidence_v8:1,official_identity_evidence_v9:2};
  if(!Object.hasOwn(counts,m.version)||!Array.isArray(m.items)||m.items.length!==counts[m.version])throw new Error('Invalid identity evidence manifest');
  const ids=new Set();
  for(const x of m.items){
   let url;try{url=new URL(x.official_url);}catch{throw new Error('Invalid official source URL');}
-  if(!/^(?:YZD-PROD-\d+|SUP-(?:XJ|AM)-\d+)$/.test(x.product_id||'')||ids.has(x.product_id)||!x.slug||!x.reference_name||!x.expected_name_en||
+  if(!/^(?:YZD-PROD-\d+|SUP-(?:XJ|AM|CR)-\d+)$/.test(x.product_id||'')||ids.has(x.product_id)||!x.slug||!x.reference_name||!x.expected_name_en||
     x.status!=='official_original_found_supplier_essence_unverified'||!/^\d{4}-\d{2}-\d{2}$/.test(x.checked_date||'')||
     !HOST_BY_BRAND[x.brand_en]||url.protocol!=='https:'||url.hostname!==HOST_BY_BRAND[x.brand_en]||url.username||url.password)throw new Error('Invalid identity evidence record');
   ids.add(x.product_id);

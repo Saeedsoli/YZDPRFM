@@ -277,5 +277,38 @@
     "source_note": "Notes and perfumer describe the official reference original, not verified composition of the supplier essence. Supplier spelling OUTLADNS is a provisional name association.",
     "perfumer": "Cécile Zarokian",
     "variants": []
+  },
+  {
+    "id": "SUP-CR-900009",
+    "slug": "creed-white-flowers",
+    "name_fa": "وایت فلاورز",
+    "name_en": "White Flowers",
+    "title_fa_base": "وایت فلاورز",
+    "full_display_fa": "کرید — وایت فلاورز",
+    "inspired_brand_en": "Creed",
+    "inspired_brand_fa": "کرید",
+    "gender": null,
+    "notes": {
+      "top": [
+        "سیب سبز",
+        "بنفشه",
+        "لیمو"
+      ],
+      "middle": [
+        "یاس",
+        "شمعدانی",
+        "رز"
+      ],
+      "base": [
+        "مشک",
+        "نرگس",
+        "چوب سدر"
+      ]
+    },
+    "accords": [],
+    "transclaimer_notice": "این محصول بازآفرینی دست‌ساز است و محصول اورجینال برند کرید نیست.",
+    "source_url": "https://www.creedfragrance.com/p/royales-exclusives-white-flowers/12900138/",
+    "source_note": "Notes are for the official reference original, from https://creedfragrance.com/journal/floral-fragrances.list; not proof of supplier essence identity or composition. Gender is not inferred from supplier list.",
+    "variants": []
   }
 ]

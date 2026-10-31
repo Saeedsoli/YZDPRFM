@@ -483,3 +483,7 @@ node_modules/   با npm install برمی‌گردد
 ### کنترل رمز واقعی مدیر در آمادگی
 
 - `scripts/test_readiness_password_state.js`
+
+### کرید و آرمانی — دو قیمت مرجع
+
+- `scripts/test_creed_armani_reference.js`

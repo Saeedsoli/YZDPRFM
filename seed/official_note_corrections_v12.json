@@ -1,0 +1,43 @@
+{
+  "version": "official_notes_2026_10_v12",
+  "description": "Official reference-original notes only; unclassified notes are not assigned to a tier.",
+  "items": [
+    {
+      "product_id": "YZD-PROD-1651",
+      "product_slug": "giorgio-armani-acqua-di-gi-profumo",
+      "official_brand": "Giorgio Armani",
+      "official_name": "Acqua Di Giò Profumo",
+      "source_url": "https://www.giorgioarmanibeauty-usa.com/discontinued/acqua-di-gio-profumo/A019.html",
+      "source_scope": "Official original is listed discontinued in US; source describes key notes without tiered pyramid. No inference about supplier essence or all markets.",
+      "expected_old_notes": {
+        "top": [
+          "نت‌های دریایی",
+          "ترنج کالابریا"
+        ],
+        "middle": [
+          "رزماری",
+          "مریم‌گلی اسکلاریا",
+          "گل شمعدانی"
+        ],
+        "base": [
+          "بخور کندر عمان",
+          "نعناع هندی اندونزی"
+        ]
+      },
+      "verified_notes": {
+        "top": [],
+        "middle": [],
+        "base": []
+      },
+      "expected_old_accords": [
+        "شاهکار افسانه‌ای آلبرتو موریلاس در شیشه مشکی با خطوط نقره‌ای",
+        "تلاقی آب خنک دریا با بخور دودی معابد"
+      ],
+      "verified_accords": [
+        "ترنج",
+        "آکورد دریایی",
+        "بخور"
+      ]
+    }
+  ]
+}

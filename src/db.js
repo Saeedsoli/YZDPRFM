@@ -2666,7 +2666,7 @@ function seedVerifiedSupplement() {
 }
 const supplementInserted = seedVerifiedSupplement() || 0;
 // This records reference-original evidence only; it never verifies supplier essence.
-for (const file of ['official_identity_evidence_v1.json','official_identity_evidence_v2.json','official_identity_evidence_v3.json','official_identity_evidence_v4.json','official_identity_evidence_v5.json','official_identity_evidence_v6.json','official_identity_evidence_v7.json','official_identity_evidence_v8.json'])
+for (const file of ['official_identity_evidence_v1.json','official_identity_evidence_v2.json','official_identity_evidence_v3.json','official_identity_evidence_v4.json','official_identity_evidence_v5.json','official_identity_evidence_v6.json','official_identity_evidence_v7.json','official_identity_evidence_v8.json','official_identity_evidence_v9.json'])
   require('./official-identities').seedOfficialIdentities(db, path.join(SEED_DIR, file));
 // Exact-name price associations remain explicitly unverified and unavailable;
 // only untouched supplement rows receive prices and zero-stock variants.
@@ -2679,7 +2679,7 @@ require('./reference-price-import').applyReferencePrices(db, path.join(SEED_DIR,
 if (process.env.REFERENCE_PRICE_V2_AUTOMIGRATE !== '0')
   require('./reference-price-import').applyReferencePrices(db, path.join(SEED_DIR, 'official_reference_prices_v2.json'));
 // Additional official-name matches, guarded against all owner-edited prices.
-for (const file of ['official_reference_prices_v3.json','official_reference_prices_v4.json','official_reference_prices_v5.json','official_reference_prices_v6.json','official_reference_prices_v7.json','official_reference_prices_v8.json','official_reference_prices_v9.json'])
+for (const file of ['official_reference_prices_v3.json','official_reference_prices_v4.json','official_reference_prices_v5.json','official_reference_prices_v6.json','official_reference_prices_v7.json','official_reference_prices_v8.json','official_reference_prices_v9.json','official_reference_prices_v10.json'])
   require('./reference-price-import').applyReferencePrices(db, path.join(SEED_DIR, file));
 // Correct earlier supplier-derived gender fields only for unchanged, unavailable
 // supplement rows. Never switch availability or overwrite a different value.
@@ -2701,7 +2701,7 @@ function correctSupplementGenderFromOfficial() {
 correctSupplementGenderFromOfficial();
 for (const file of ['official_gender_corrections_v1.json', 'official_gender_corrections_v2.json'])
   require('./official-gender').applyOfficialGender(db, path.join(SEED_DIR, file));
-const officialNoteManifests = ['official_note_corrections_v1.json', 'official_note_corrections_v2.json', 'official_note_corrections_v3.json', 'official_note_corrections_v4.json', 'official_note_corrections_v5.json', 'official_note_corrections_v6.json', 'official_note_corrections_v7.json', 'official_note_corrections_v8.json', 'official_note_corrections_v9.json', 'official_note_corrections_v10.json', 'official_note_corrections_v11.json'];
+const officialNoteManifests = ['official_note_corrections_v1.json', 'official_note_corrections_v2.json', 'official_note_corrections_v3.json', 'official_note_corrections_v4.json', 'official_note_corrections_v5.json', 'official_note_corrections_v6.json', 'official_note_corrections_v7.json', 'official_note_corrections_v8.json', 'official_note_corrections_v9.json', 'official_note_corrections_v10.json', 'official_note_corrections_v11.json', 'official_note_corrections_v12.json'];
 const officialNotesResults = officialNoteManifests.map(file =>
   require('./official-notes').applyOfficialNotes(db, path.join(SEED_DIR, file)));
 seedCoupons();

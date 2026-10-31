@@ -109,3 +109,12 @@ Torino24 پیش‌تر در کاتالوگ نبود و به‌صورت محصو�
 برای `Platinium`، [صفحه رسمی Chanel Platinum Égoïste](https://www.chanel.com/gb/fragrance/p/124460/platinum-egoiste-eau-de-toilette-spray/) پیدا شد، اما ردیف فایل نام کامل Égoïste را ندارد؛ فعلاً نسبت قیمت صرفاً بر اساس نام ناقص انجام نشد. این وضعیت به معنی نبود محصول یا تأیید جنسیت ذکرشده در فایل نیست.
 
 منابع و قیمت در `seed/official_identity_evidence_v8.json` و `seed/official_reference_prices_v9.json`، و اصلاح نت‌ها در `seed/official_note_corrections_v11.json` نگهداری می‌شود.
+
+## وایت فلاورز کرید و آکوا دی جیو پرفومو
+
+- **White Flowers**: محصول مرجع در [صفحه رسمی کرید](https://www.creedfragrance.com/p/royales-exclusives-white-flowers/12900138/) تأیید شد و چون در کاتالوگ محلی پیدا نشد، محصول دست‌ساز `SUP-CR-900009` به داده اولیه اضافه شد. قیمت مرجع ردیف فایل ۴۲۷٫۹ دلار/کیلو، کیفیت H است. نت‌ها از [مقاله رسمی کرید](https://creedfragrance.com/journal/floral-fragrances.list) هستند؛ جنسیت از فایل تأمین‌کننده استنتاج نشده است.
+- **Acqua Di Giò Profumo**: نام عطر مرجع با [صفحه رسمی آرمانی آمریکا](https://www.giorgioarmanibeauty-usa.com/discontinued/acqua-di-gio-profumo/A019.html) بررسی و قیمت مرجع ۲۲۵٫۵ دلار/کیلو، کیفیت H، به‌صورت موقت ثبت شد. صفحه رسمی آمریکا عطر اصلی را متوقف‌شده معرفی می‌کند؛ این نتیجه را به همه بازارها یا اسانس دست‌ساز تعمیم نمی‌دهیم. صفحه ترکیب را بدون هرم سه‌مرحله‌ای توصیف می‌کند، بنابراین تنها نت‌های کلیدی آن ثبت شدند.
+
+هر دو انتساب صرفاً بر اساس نام‌اند؛ اصالت، هویت و کیفیت اسانس واقعی تأمین‌کننده مستقل تأیید نشده است. وضعیت هر دو محصول `UNAVAILABLE` است و واریانت‌های قیمت‌گذاری‌شده موجودی صفر دارند. مدارک در `seed/official_identity_evidence_v9.json`، قیمت‌ها در `seed/official_reference_prices_v10.json` و اصلاح نت آرمانی در `seed/official_note_corrections_v12.json` ثبت شده‌اند.
+
+نام `ABSOLUE AVENTUS` در فهرست را به Aventus معمولی نسبت ندادیم؛ صفحه رسمی، Absolu Aventus را محصول متمایز معرفی می‌کند و صفحات رسمی آن توصیف‌های متفاوتی برای نسخه‌های کنونی و محدود دارند. نسخه واقعی اسانس هنوز تأیید نشده است.

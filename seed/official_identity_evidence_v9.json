@@ -1,0 +1,26 @@
+{
+  "version": "official_identity_evidence_v9",
+  "scope": "Official original only; supplier essence identity remains unverified.",
+  "items": [
+    {
+      "product_id": "YZD-PROD-1651",
+      "slug": "giorgio-armani-acqua-di-gi-profumo",
+      "brand_en": "Giorgio Armani",
+      "expected_name_en": "GIORGIO ARMANI - Acqua di Giò Profumo",
+      "reference_name": "Acqua Di Giò Profumo",
+      "official_url": "https://www.giorgioarmanibeauty-usa.com/discontinued/acqua-di-gio-profumo/A019.html",
+      "status": "official_original_found_supplier_essence_unverified",
+      "checked_date": "2026-10-31"
+    },
+    {
+      "product_id": "SUP-CR-900009",
+      "slug": "creed-white-flowers",
+      "brand_en": "Creed",
+      "expected_name_en": "CREED - White Flowers",
+      "reference_name": "White Flowers",
+      "official_url": "https://www.creedfragrance.com/p/royales-exclusives-white-flowers/12900138/",
+      "status": "official_original_found_supplier_essence_unverified",
+      "checked_date": "2026-10-31"
+    }
+  ]
+}
