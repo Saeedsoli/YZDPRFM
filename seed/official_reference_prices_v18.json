@@ -1,0 +1,21 @@
+{
+  "version": "official_reference_prices_2026_10_v18",
+  "supplier_file_sha256": "bbe8f40610bc765bda0a7d2da9dbe78f4e397458a6991239c3c18d0853f33f5c",
+  "description": "Reference original is a body mist; supplier essence identity is unverified; no automatic stock or activation.",
+  "items": [
+    {
+      "product_id": "SUP-VS-900032",
+      "slug": "victorias-secret-aqua-kiss",
+      "brand_en": "Victoria's Secret",
+      "expected_name_en": "VICTORIA'S SECRET - Aqua Kiss",
+      "reference_name": "Aqua Kiss Fragrance Mist",
+      "official_url": "https://www.victoriassecret.com/ca/vs/beauty-catalog/5000011041?genericId=11259203&choice=4760",
+      "supplier_brand": "VICTORIA`S SECRET",
+      "supplier_model": "AQUA KISS",
+      "usd_per_kg": "108.9",
+      "quality": "P",
+      "match_status": "name_matched_supplier_identity_unverified",
+      "expected_edps": []
+    }
+  ]
+}

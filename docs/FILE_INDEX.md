@@ -526,3 +526,10 @@ node_modules/   با npm install برمی‌گردد
 - `reports/supplier_coverage_20261031.csv`
 - `reports/supplier_coverage_20261031.json`
 - `docs/supplier_coverage_snapshot.md`
+
+### آکوا کیس و گزارش پوشش جدید
+
+- `scripts/test_aqua_kiss_reference.js`
+- `reports/supplier_coverage_20261101.csv`
+- `reports/supplier_coverage_20261101.json`
+- `docs/supplier_coverage_snapshot_20261101.md`

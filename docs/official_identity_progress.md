@@ -232,3 +232,9 @@ Mefisto با Mefisto Gentiluomo یکی نیست. در برخی صفحات قدی
 سه مورد عمداً قیمت‌گذاری نشدند: ردیف `HER` باربری بین نسخه‌های EDP و EDT و دیگر نسخه‌ها مشخص نیست؛ فهرست `JOOP HOMME (Red)` را با نام فارسی «جوپ سبز» نوشته و با ردیف مجاور تعارض دارد؛ و ردیف `BLACK MUSK / The Body Shop` علاوه بر جابه‌جایی نام و برند، نسخه EDP یا EDT را مشخص نمی‌کند. جنسیت یا رنگ فایل برای رفع قطعی این تعارض‌ها کافی نیست. منابع رسمی نسخه‌های [Her EDP](https://us.burberry.com/her-eau-de-parfum-100ml-p40804591) و [Her EDT](https://us.burberry.com/her-eau-de-toilette-50ml-p40826251)، و [Black Musk EDP](https://us.thebodyshop.com/products/black-musk-eau-de-parfum) و [EDT](https://global.thebodyshop.com/en-au/fragrance/eau-de-toilette/black-musk-eau-de-toilette/p/p053023) را جدا معرفی می‌کنند.
 
 منابع و قیمت‌ها در `seed/official_identity_evidence_v16.json` و `seed/official_reference_prices_v17.json` ثبت شده‌اند.
+
+## آکوا کیس؛ مرجع اسپری بدن — ۱ نوامبر ۲۰۲۶
+
+ردیف `AQUA KISS` ویکتوریا سکرت پس از بررسی [صفحه رسمی Aqua Kiss Fragrance Mist](https://www.victoriassecret.com/ca/vs/beauty-catalog/5000011041?genericId=11259203&choice=4760) با قیمت موقت ۱۰۸٫۹ دلار/کیلو و کیفیت P ثبت شد. چون این رایحه در کاتالوگ محلی پیدا نشد، محصول دست‌ساز `SUP-VS-900032` به آن افزوده شد. **مرجع برند اسپری بدن است، نه عطر اورجینال**؛ این موضوع در متن شفافیت عمومی محصول ذکر شده است. نت‌های محصول مرجع از همان صفحه‌اند؛ نسخه‌های Shimmer و Vacation جدا هستند. این تناظر نام هویت، نسخه یا کیفیت واقعی اسانس تأمین‌کننده را اثبات نمی‌کند.
+
+محصول `UNAVAILABLE` و واریانت‌های قیمت‌گذاری‌شده آن صفرموجودی‌اند. مدارک در `seed/official_identity_evidence_v17.json` و قیمت در `seed/official_reference_prices_v18.json` ثبت شده‌اند.

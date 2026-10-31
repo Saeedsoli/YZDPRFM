@@ -918,5 +918,35 @@
     "source_url": "https://www.victoriassecret.com/us/vs/beauty-catalog/5000010459/-/a/generic-11260424-choice-2068/very-sexy-eau-de-parfum-3.4-oz-floral",
     "source_note": "Official original EDP key notes; other Very Sexy variants separate, supplier essence identity unverified.",
     "variants": []
+  },
+  {
+    "id": "SUP-VS-900032",
+    "slug": "victorias-secret-aqua-kiss",
+    "name_fa": "آکوا کیس",
+    "name_en": "Aqua Kiss",
+    "title_fa_base": "آکوا کیس",
+    "full_display_fa": "ویکتوریا سکرت — آکوا کیس",
+    "inspired_brand_en": "Victoria's Secret",
+    "inspired_brand_fa": "ویکتوریا سکرت",
+    "gender": null,
+    "notes": {
+      "top": [
+        "گریپ‌فروت صورتی",
+        "فریزیا"
+      ],
+      "middle": [
+        "نیلوفر آبی",
+        "گلابی"
+      ],
+      "base": [
+        "کهربای سفید",
+        "مشک معدنی"
+      ]
+    },
+    "accords": [],
+    "transclaimer_notice": "رایحه مرجع معرفی‌شده اسپری بدن است؛ این محصول بازآفرینی دست‌ساز است و محصول اورجینال برند ویکتوریا سکرت نیست.",
+    "source_url": "https://www.victoriassecret.com/ca/vs/beauty-catalog/5000011041?genericId=11259203&choice=4760",
+    "source_note": "Official reference is a fragrance mist, not an eau de parfum. Aqua Kiss Vacation and Shimmer are different variants. Supplier essence identity and version remain unverified.",
+    "variants": []
   }
 ]

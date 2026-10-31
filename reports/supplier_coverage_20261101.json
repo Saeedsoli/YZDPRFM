@@ -1,0 +1,30 @@
+{
+  "source_sha256": "bbe8f40610bc765bda0a7d2da9dbe78f4e397458a6991239c3c18d0853f33f5c",
+  "supplier_rows": 342,
+  "supplier_groups": 265,
+  "definition": "exact supplier brand + model + supplier gender; not proven unique fragrances",
+  "groups_by_state": {
+    "provisional": 117,
+    "legacy": 5,
+    "ambiguous": 0,
+    "conflict": 0,
+    "pending": 143,
+    "no_positive": 0
+  },
+  "rows_by_state": {
+    "provisional": 144,
+    "legacy": 5,
+    "ambiguous": 0,
+    "conflict": 0,
+    "pending": 193,
+    "no_positive": 0
+  },
+  "local_products": 2143,
+  "local_priced_products": 122,
+  "local_modes": {
+    "UNAVAILABLE": 2143
+  },
+  "unmapped_priced_manifest_ids": [],
+  "priced_products_without_manifest": [],
+  "disclaimer": "Price/file and name evidence are not supplier essence identity verification or availability."
+}

@@ -1,0 +1,16 @@
+{
+  "version": "official_identity_evidence_v17",
+  "scope": "Official reference-original name only; actual supplier essence identity is unverified.",
+  "items": [
+    {
+      "product_id": "SUP-VS-900032",
+      "slug": "victorias-secret-aqua-kiss",
+      "brand_en": "Victoria's Secret",
+      "expected_name_en": "VICTORIA'S SECRET - Aqua Kiss",
+      "reference_name": "Aqua Kiss Fragrance Mist",
+      "official_url": "https://www.victoriassecret.com/ca/vs/beauty-catalog/5000011041?genericId=11259203&choice=4760",
+      "status": "official_original_found_supplier_essence_unverified",
+      "checked_date": "2026-11-01"
+    }
+  ]
+}
