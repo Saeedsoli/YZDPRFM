@@ -283,11 +283,12 @@ async function login(port, pw) {
       const res = await api(P3, '/api/admin/readiness?deep=1', {}, T3);
       const b = res.body;
 
-      add('رمز پیش‌فرض خطا می‌دهد',
-        b.items.find(i => i.key === 'admin_password')?.level === 'error');
-      add('راهنمای تغییر رمز داده می‌شود',
-        /liara env set ADMIN_PASSWORD/.test(
-          b.items.find(i => i.key === 'admin_password')?.hint || ''));
+      // Existing owner was changed in the isolated smoke setup; a default
+      // environment variable must not override the actual database credential.
+      add('وضعیت رمز از حساب ذخیره‌شده می‌آید، نه مقدار محیط',
+        b.items.find(i => i.key === 'admin_password')?.level === 'ok');
+      add('رمز واقعی یا هش در خروجی نمایش داده نمی‌شود',
+        !res.text.includes(process.env.ADMIN_PASSWORD || 'SmokeFixture-8372'));
       add('درگاه آزمایشی هشدار می‌دهد',
         b.items.find(i => i.key === 'payment')?.level !== 'ok');
       add('پیامک در حالت لاگ هشدار می‌دهد',

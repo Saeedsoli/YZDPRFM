@@ -479,3 +479,7 @@ node_modules/   با npm install برمی‌گردد
 ### ایزوله‌سازی آزمون دود
 
 - `scripts/test_smoke_isolation.py`
+
+### کنترل رمز واقعی مدیر در آمادگی
+
+- `scripts/test_readiness_password_state.js`

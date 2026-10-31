@@ -1430,7 +1430,7 @@ const server = http.createServer(async (req, res) => {
       method, pathname, parsed, req, res,
       sendJSON, can, parseBody, logAudit, appLog, rateLimit, who, db,
       DB_PATH, otp, notify, pay, getSettings, normalizeDigits,
-      reports, analytics, ADMIN_PASSWORD
+      reports, analytics, verifyPassword
     })) return;
 
     /* ── بازاریابی مدیریتی ── (گام ۳ تفکیک)

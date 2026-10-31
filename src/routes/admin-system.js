@@ -57,7 +57,7 @@ const path = require('path');
  * @param {Function} ctx.normalizeDigits
  * @param {object}   ctx.reports
  * @param {object}   ctx.analytics
- * @param {string}   ctx.ADMIN_PASSWORD  برای هشدار رمز پیش‌فرض
+ * @param {Function} ctx.verifyPassword  برای بررسی امن هش رمز حساب مدیر
  * @returns {Promise<boolean>}
  */
 async function handle(ctx) {
@@ -65,7 +65,7 @@ async function handle(ctx) {
     method, pathname, parsed, req, res,
     can, parseBody, logAudit, appLog, rateLimit, who, db,
     DB_PATH, otp, notify, pay, getSettings, normalizeDigits,
-    reports, analytics, ADMIN_PASSWORD
+    reports, analytics, verifyPassword
   } = ctx;
 
   /* پوشش `sendJSON` — درس گام ۱.
@@ -275,13 +275,23 @@ async function handle(ctx) {
           : undefined);
     }
 
-    // ── رمز مدیر ──
-    const weak = ADMIN_PASSWORD === 'yazd1404';
+    // The environment initializes a new owner, but is NOT the credential used
+    // for an existing account. Inspect active owner records without exposing
+    // their hashes, names, or passwords; also honor pending password changes.
+    const owners = db.prepare("SELECT pass_hash,pass_salt,must_change FROM staff WHERE role_key='owner' AND active=1").all();
+    let ownerRisk = !owners.length;
+    for (const owner of owners) {
+      try {
+        if (owner.must_change || !/^[0-9a-f]{128}$/i.test(owner.pass_hash || '') || !owner.pass_salt ||
+            verifyPassword('yazd1404', owner.pass_hash, owner.pass_salt)) ownerRisk = true;
+      } catch { ownerRisk = true; } // invalid credentials must not appear safe
+    }
     push('admin_password', 'رمز مدیر کل',
-      weak ? 'error' : 'ok',
-      weak ? 'رمز هنوز مقدار پیش‌فرض است و در مستندات عمومی نوشته شده.'
-           : 'رمز پیش‌فرض تغییر کرده است.',
-      weak ? 'liara env set ADMIN_PASSWORD="..." --app yazdperfume' : undefined);
+      ownerRisk ? 'error' : 'ok',
+      !owners.length ? 'حساب مدیر کل فعال پیدا نشد.'
+        : ownerRisk ? 'دست‌کم یک مدیر کل فعال رمز پیش‌فرض دارد یا باید رمز خود را تغییر دهد.'
+        : 'رمز پیش‌فرض و الزام تغییر رمز در حساب‌های فعال مدیر کل دیده نشد.',
+      ownerRisk ? 'از حساب مدیر کل وارد شوید و رمز اولیه را در پنل تغییر دهید.' : undefined);
 
     /* ── نماد اعتماد ──
        نشان **دو بخش** دارد و با یکی کار نمی‌کند: نشانی تصویر هم
