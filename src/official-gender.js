@@ -8,7 +8,7 @@ function applyOfficialGender(db,file) {
   if (!/^official_gender_\d{4}_\d{2}_v[1-9]\d*$/.test(data.version||'') || !Array.isArray(data.items) || !data.items.length) throw new Error('Invalid official gender manifest');
   const ids=new Set();
   for(const x of data.items) {
-    if(!x.product_id || !x.product_slug || ids.has(x.product_id) || !['MEN','WOMEN','UNISEX'].includes(x.expected_old_gender) || !['MEN','WOMEN','UNISEX'].includes(x.official_gender) || !/^https:\/\/us\.parfums-de-marly\.com\/products\//.test(x.source_url)) throw new Error('Invalid official gender entry');
+    if(!x.product_id || !x.product_slug || ids.has(x.product_id) || !['MEN','WOMEN','UNISEX'].includes(x.expected_old_gender) || !(x.official_gender === null || ['MEN','WOMEN','UNISEX'].includes(x.official_gender)) || !/^https:\/\/(?:us\.parfums-de-marly\.com\/products|lattafa\.com\/product)\//.test(x.source_url)) throw new Error('Invalid official gender entry');
     ids.add(x.product_id);
   }
   return db.transaction(()=>{

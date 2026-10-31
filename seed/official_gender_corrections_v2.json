@@ -1,0 +1,14 @@
+{
+  "version": "official_gender_2026_10_v2",
+  "description": "Official source has contradictory gender labels; unknown is safer than asserting either.",
+  "items": [
+    {
+      "product_id": "YZD-PROD-1840",
+      "product_slug": "lattafa-perfumes-hayaati",
+      "expected_old_gender": "MEN",
+      "official_gender": null,
+      "source_url": "https://lattafa.com/product/hayaati/",
+      "reason": "Fragrance type says Men but product information says for women and men."
+    }
+  ]
+}

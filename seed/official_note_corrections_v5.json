@@ -1,0 +1,178 @@
+{
+  "version": "official_notes_2026_10_v5",
+  "description": "Official product/reference notes only; no implied supplier-stock or formula verification.",
+  "items": [
+    {
+      "product_id": "YZD-PROD-1820",
+      "product_slug": "lattafa-perfumes-khamrah",
+      "official_brand": "Lattafa Perfumes",
+      "official_name": "Khamrah",
+      "source_url": "https://lattafa.com/product/khamrah/",
+      "source_scope": "Manufacturer-provided notes of the reference fragrance, not a claim about the handmade formula.",
+      "expected_old_notes": {
+        "top": [
+          "دارچین سیلان",
+          "جوز هندی",
+          "ترنج"
+        ],
+        "middle": [
+          "خرما شیرین",
+          "پرالین شکلاتی",
+          "گل مریم",
+          "ماهونیا"
+        ],
+        "base": [
+          "وانیل ماداگاسکار",
+          "دانه تونکا",
+          "بنزوئین",
+          "صمغ مر",
+          "چوب عنبر"
+        ]
+      },
+      "verified_notes": {
+        "top": [
+          "ترنج",
+          "دارچین",
+          "جوز هندی"
+        ],
+        "middle": [
+          "آکورد خرما",
+          "گل برف",
+          "پرالین",
+          "گل مریم"
+        ],
+        "base": [
+          "تونکا برشته",
+          "بنزوئین لائوس",
+          "صمغ مر",
+          "آکیگالاوود",
+          "وانیل",
+          "چوب عنبری"
+        ]
+      }
+    },
+    {
+      "product_id": "YZD-PROD-1821",
+      "product_slug": "lattafa-perfumes-khamrah-qahwa",
+      "official_brand": "Lattafa Perfumes",
+      "official_name": "Khamrah Qahwa",
+      "source_url": "https://lattafa.com/product/khamrah-qahwa/",
+      "source_scope": "Manufacturer-provided notes of the reference fragrance, not a claim about the handmade formula.",
+      "expected_old_notes": {
+        "top": [
+          "هل گواتمالا",
+          "زنجبیل",
+          "دارچین"
+        ],
+        "middle": [
+          "قهوه بو داده تلخ",
+          "پرالین",
+          "گل سفید",
+          "میوه‌های قندی"
+        ],
+        "base": [
+          "وانیل بوربون",
+          "دانه تونکا",
+          "بنزوئین",
+          "چوب کشمیر"
+        ]
+      },
+      "verified_notes": {
+        "top": [
+          "زنجبیل",
+          "دارچین",
+          "هل"
+        ],
+        "middle": [
+          "پرالین",
+          "میوه قندی",
+          "گل‌های سفید"
+        ],
+        "base": [
+          "قهوه عربیکا",
+          "دانه تونکا",
+          "مشک",
+          "بنزوئین",
+          "وانیل"
+        ]
+      }
+    },
+    {
+      "product_id": "YZD-PROD-1840",
+      "product_slug": "lattafa-perfumes-hayaati",
+      "official_brand": "Lattafa Perfumes",
+      "official_name": "Hayaati",
+      "source_url": "https://lattafa.com/product/hayaati/",
+      "source_scope": "Manufacturer-provided notes of the reference fragrance, not a claim about the handmade formula.",
+      "expected_old_notes": {
+        "top": [
+          "سیب سبز",
+          "ترنج کالابریا"
+        ],
+        "middle": [
+          "دارچین سیلان",
+          "روایح چوبی"
+        ],
+        "base": [
+          "مشک سفید",
+          "وانیل",
+          "نعناع هندی"
+        ]
+      },
+      "verified_notes": {
+        "top": [
+          "سیب",
+          "ترنج"
+        ],
+        "middle": [
+          "پوست دارچین",
+          "نت‌های چوبی"
+        ],
+        "base": [
+          "مشک",
+          "وانیل"
+        ]
+      }
+    },
+    {
+      "product_id": "YZD-PROD-1827",
+      "product_slug": "lattafa-perfumes-yara-candy-2024",
+      "official_brand": "Lattafa Perfumes",
+      "official_name": "Yara Candy 2024",
+      "source_url": "https://lattafa.com/product/anniversary-edition-yara-and-yara-candy/",
+      "source_scope": "Manufacturer-provided notes of the reference fragrance, not a claim about the handmade formula.",
+      "expected_old_notes": {
+        "top": [
+          "نارنگی ماندارین",
+          "تمشک سیاه"
+        ],
+        "middle": [
+          "پاستیل شکری",
+          "گل گاردنیا"
+        ],
+        "base": [
+          "شربت توت فرنگی",
+          "وانیل ماداگاسکار",
+          "چوب صندل",
+          "مشک"
+        ]
+      },
+      "verified_notes": {
+        "top": [
+          "نارنگی سبز",
+          "انگور فرنگی سیاه"
+        ],
+        "middle": [
+          "آکورد آبنبات گازدار توت‌فرنگی",
+          "گاردنیا"
+        ],
+        "base": [
+          "چوب صندل",
+          "شربت وانیل",
+          "مشک",
+          "کهربا"
+        ]
+      }
+    }
+  ]
+}
