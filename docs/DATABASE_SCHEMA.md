@@ -1,6 +1,6 @@
 # شمای دیتابیس — عطر یزد
 
-SQLite با حالت WAL · ۲۷ جدول · ۳۲ ایندکس · مهاجرت خودکار
+SQLite با حالت WAL · جدول‌ها، ایندکس‌ها و مهاجرت‌های نسخه‌بندی‌شده
 
 مسیر: `data/yazd.db` (روی لیارا: `/app/data/yazd.db`)
 
@@ -33,7 +33,7 @@ roles ──1:N──▶ staff ──1:N──▶ audit_log
 
 ## کاتالوگ
 
-### `products` — ۲٬۱۱۱ ردیف
+### `products` — محصولات
 
 | ستون | نوع | توضیح |
 |---|---|---|
@@ -54,6 +54,10 @@ roles ──1:N──▶ staff ──1:N──▶ audit_log
 | `transparency_notice` | TEXT | متن شفافیت |
 | `image_url` | TEXT | مسیر تصویر |
 | `search_blob` | TEXT | **ستون جستجو** |
+| `supply_mode` | TEXT | `UNAVAILABLE`، `IN_STOCK` یا `MADE_TO_ORDER` |
+| `essence_usd_per_kg` | TEXT / NULL | قیمت مبنای اسانس به دلار بر کیلوگرم؛ NULL یعنی ثبت‌نشده |
+| `maker_note` / `maker_note_by` | TEXT / NULL | متن و امضای یادداشت سازنده |
+| `maker_note_approved` | INTEGER | فقط مقدار ۱ اجازه نمایش عمومی یادداشت را می‌دهد |
 
 **ایندکس:** `slug` `family_slug` `gender` `brand_fa` `search_blob`
 
@@ -61,10 +65,10 @@ roles ──1:N──▶ staff ──1:N──▶ audit_log
 نگه می‌دارد — اعراب حذف، ی/ک عربی تبدیل. جستجو به‌جای هشت `LIKE`
 روی یک ستون ایندکس‌شده اجرا می‌شود.
 
-نُت‌ها به‌صورت JSON ذخیره می‌شوند چون هرگز جداگانه کوئری نمی‌شوند
-و فقط برای نمایش و جستجوی متنی لازم‌اند.
+نُت‌ها به‌صورت آرایه‌های JSON در محصول نگهداری می‌شوند؛ برای فیلتر و
+جستجوی جداگانه، جدول `product_notes` نیز از آن‌ها شاخص‌سازی می‌شود.
 
-### `variants` — ۱۴٬۷۷۷ ردیف
+### `variants` — واریانت‌های فعال و قدیمیِ مخفی
 
 | ستون | نوع | توضیح |
 |---|---|---|
@@ -75,12 +79,19 @@ roles ──1:N──▶ staff ──1:N──▶ audit_log
 | `volume_ml` | INTEGER | حجم |
 | `price_toman` | INTEGER | **منبع یکتای قیمت** |
 | `stock` | INTEGER | موجودی |
+| `price_usd` | REAL / NULL | داده قدیمی هر واریانت؛ مبنای قیمت‌گذاری جدید نیست |
 
 **فرمول SKU:** `YZD-{شماره محصول}-{نوع}-{حجم}`
 
 نسخه اول سه حرف اول برند را می‌گرفت، پس Carolina و Caron و
 Cartier همه `CAR` می‌شدند — ۱٬۲۶۷ تصادم. قید `UNIQUE` این را
 هنگام مهاجرت آشکار کرد.
+
+### `variant_archive` و نمای `order_variant_history`
+
+واریانت‌های ۳ میل مرتبط با سفارش یا موجودی تاریخی از جدول فروش خارج و در
+`variant_archive` بایگانی می‌شوند. نمای `order_variant_history` شناسه‌های فعال و
+بایگانی‌شده را برای گزارش‌های تاریخی یکپارچه می‌کند. این نما قابل سفارش نیست.
 
 ---
 
@@ -322,8 +333,8 @@ EXPIRED               CANCELLED                  RETURNED
 
 ### `settings`
 
-کلید-مقدار برای تنظیمات فروشگاه، `invoice_seq` و
-`invoice_no:{order_id}`.
+کلید-مقدار برای تنظیمات فروشگاه، `invoice_seq`، `invoice_no:{order_id}` و
+`essence_usd_rate_toman` (نرخ دلار به تومان).
 
 ### `otp_codes` — کد یکبارمصرف
 
@@ -361,7 +372,7 @@ EXPIRED               CANCELLED                  RETURNED
 
 افزودن ستون نیازی به اسکریپت دستی ندارد.
 
-**بار اول:** ۲٬۱۱۱ محصول از `perfumes_catalogue_seed.json` منتقل،
+**بار اول:** محصولات از `perfumes_catalogue_seed.json` و داده تکمیلی منتقل،
 عبارت `(Inspired by ...)` حذف، تصویر تخصیص، SKU بازسازی،
 `search_blob` ساخته می‌شود. حدود ۱۵ ثانیه.
 

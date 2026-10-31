@@ -46,6 +46,7 @@ const add = (label, ok, note) => {
 const MARK = 'TSTNOTE';
 const SKU = 'YZD-0001-EDP-030';
 let prevStock = 0;
+let prevSupply = null;
 
 function cleanup() {
   const db = new Database(DB);
@@ -88,7 +89,9 @@ const api = (p, opt = {}, tok = null) =>
   {
     const db = new Database(DB);
     prevStock = db.prepare('SELECT stock FROM variants WHERE sku=?').get(SKU).stock;
+    prevSupply = db.prepare('SELECT p.id,p.supply_mode FROM products p JOIN variants v ON v.product_id=p.id WHERE v.sku=?').get(SKU);
     db.prepare('UPDATE variants SET stock=10 WHERE sku=?').run(SKU);
+    db.prepare("UPDATE products SET supply_mode='IN_STOCK' WHERE id=?").run(prevSupply.id);
     db.close();
   }
 
@@ -99,6 +102,7 @@ const api = (p, opt = {}, tok = null) =>
     try {
       const db = new Database(DB);
       db.prepare('UPDATE variants SET stock=? WHERE sku=?').run(prevStock, SKU);
+      if (prevSupply) db.prepare('UPDATE products SET supply_mode=? WHERE id=?').run(prevSupply.supply_mode, prevSupply.id);
       db.close();
     } catch {}
     cleanup();

@@ -19,6 +19,7 @@ const { spawn } = require('child_process');
 const path = require('path');
 const Database = require('better-sqlite3');
 const { makeStaff, cleanupStaff, nidFor, mobileFor } = require('./lib/test_staff');
+const { withStock } = require('./lib/test_stock');
 
 const ROOT = path.dirname(__dirname);
 const DB = path.join(ROOT, 'data', 'yazd.db');
@@ -71,6 +72,8 @@ const login = (username, password) =>
   cleanup();
 
   const srv = await boot();
+  // First catalog result must be a sellable fixture, not a newly sourced draft.
+  const stockLease = withStock(DB, 4, 20);
   const checks = [];
   const add = (label, pass) => {
     console.log(`  ${pass ? g('✓') : r('✗')} ${label}`);
@@ -78,6 +81,7 @@ const login = (username, password) =>
   };
   const finish = () => {
     try { srv.kill('SIGKILL'); } catch {}
+    try { stockLease.restore(); } catch {}
     cleanup();
     const failed = checks.filter(x => !x).length;
     console.log();

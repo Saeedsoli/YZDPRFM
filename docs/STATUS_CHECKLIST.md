@@ -283,7 +283,7 @@ node scripts/audit_permissions.js
 npm run check-node
 ```
 
-۹۹ اسکریپت در `scripts/` · ۶۸ سند در `docs/`
+فهرست اسکریپت‌ها در `scripts/` و مستندات در `docs/` نگهداری می‌شود.
 
 ---
 

@@ -31,6 +31,7 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
 
 let SKU = null;
 let originalStock = null;
+let originalSupply = null;
 
 function cleanup() {
   const db = new Database(DB);
@@ -48,6 +49,7 @@ function cleanup() {
   if (SKU && originalStock != null) {
     db.prepare('UPDATE variants SET stock=? WHERE sku=?').run(originalStock, SKU);
   }
+  if (originalSupply) db.prepare('UPDATE products SET supply_mode=? WHERE id=?').run(originalSupply.supply_mode, originalSupply.id);
   db.close();
 }
 
@@ -100,13 +102,18 @@ function setStock(n) {
     process.exit(code);
   };
 
-  const cat = await (await fetch(`${BASE}/api/products?limit=1&full=1`)).json();
-  const v = cat.products[0].variants[0];
+  const product = await (await fetch(`${BASE}/api/products/creed-jasmal`)).json();
+  const v = product.variants.find(x => x.type === 'EDP' && x.volume_ml === 30);
+  if (!v) { console.error('Test fixture variant is missing'); return finish(1); }
   SKU = v.sku;
   const db0 = new Database(DB, { readonly: true });
   originalStock = db0.prepare('SELECT stock FROM variants WHERE sku=?').get(SKU).stock;
+  originalSupply = db0.prepare('SELECT p.id,p.supply_mode FROM products p JOIN variants v ON v.product_id=p.id WHERE v.sku=?').get(SKU);
   db0.close();
   cleanup();
+  const db1 = new Database(DB);
+  db1.prepare("UPDATE products SET supply_mode='IN_STOCK' WHERE id=?").run(originalSupply.id);
+  db1.close();
 
   const token = (await (await fetch(`${BASE}/api/admin/login`, {
     method: 'POST',

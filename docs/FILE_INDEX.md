@@ -363,3 +363,61 @@ node_modules/   با npm install برمی‌گردد
 ```
 
 بررسی حجم: `du -sh . && du -sh */ | sort -rh | head`
+
+
+## فایل‌های تکمیلی قیمت‌گذاری، ایمنی و آزمون
+
+این فهرست مسیر فایل‌ها را ثبت می‌کند؛ وجود آزمون به معنی اجرای موفق آن نیست.
+
+### اسکریپت‌ها
+
+- `scripts/apply_supplier_prices.js`
+- `scripts/build_exact_supplier_prices.py`
+- `scripts/prepare_supplier_matches.py`
+- `scripts/retire_sample3.js`
+- `scripts/test_availability_consistency.py`
+- `scripts/test_availability_rules.js`
+- `scripts/test_essence_pricing.js`
+- `scripts/test_essence_pricing_store.js`
+- `scripts/test_exchange_rate_api.py`
+- `scripts/test_exchange_rate_ui.py`
+- `scripts/test_hidden_hair_mist.py`
+- `scripts/test_louis_vuitton_supplement.js`
+- `scripts/test_maker_draft_generation.js`
+- `scripts/test_maker_note_review.py`
+- `scripts/test_maker_note_ui.py`
+- `scripts/test_official_gender_migration.js`
+- `scripts/test_official_gender_v1.js`
+- `scripts/test_official_gender_v2.js`
+- `scripts/test_official_notes.js`
+- `scripts/test_official_notes_v2.js`
+- `scripts/test_official_notes_v3.js`
+- `scripts/test_official_notes_v4.js`
+- `scripts/test_official_notes_v5.js`
+- `scripts/test_official_notes_v6.js`
+- `scripts/test_official_notes_v7.js`
+- `scripts/test_product_essence_api.py`
+- `scripts/test_product_essence_rollback.js`
+- `scripts/test_product_essence_ui.py`
+- `scripts/test_retire_sample3.js`
+- `scripts/test_sample_page.py`
+- `scripts/test_source_gender.py`
+- `scripts/test_stock_fixture_isolation.js`
+- `scripts/test_supplier_price_import.js`
+- `scripts/test_unavailable_cart.py`
+- `scripts/test_variant_visibility.py`
+- `scripts/test_verified_supplement.js`
+- `scripts/test_wishlist_availability.py`
+
+### ماژول‌های سرور
+
+- `src/availability.js`
+- `src/essence-pricing-store.js`
+- `src/essence-pricing.js`
+- `src/import-supplier-prices.js`
+- `src/official-gender.js`
+- `src/official-notes.js`
+- `src/product-essence-pricing.js`
+- `src/retire-sample3-cli.js`
+- `src/variant-history.js`
+- `src/variant-visibility.js`

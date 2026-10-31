@@ -109,12 +109,19 @@ const api = (p, opt = {}, tok = null) =>
 
     const prev = [A.sku, B.sku].map(sku =>
       ({ sku, stock: db.prepare('SELECT stock FROM variants WHERE sku=?').get(sku).stock }));
-    db.prepare('UPDATE variants SET stock=20 WHERE sku IN (?,?)').run(A.sku, B.sku);
+    const prevModes = [A.id,B.id].map(id => db.prepare('SELECT id,supply_mode FROM products WHERE id=?').get(id));
+    db.transaction(() => {
+      db.prepare('UPDATE variants SET stock=20 WHERE sku IN (?,?)').run(A.sku, B.sku);
+      db.prepare("UPDATE products SET supply_mode='IN_STOCK' WHERE id IN (?,?)").run(A.id,B.id);
+    })();
     db.close();
 
     restoreStock = () => {
       const d2 = new Database(DB);
-      prev.forEach(p => d2.prepare('UPDATE variants SET stock=? WHERE sku=?').run(p.stock, p.sku));
+      d2.transaction(() => {
+        prev.forEach(p => d2.prepare('UPDATE variants SET stock=? WHERE sku=?').run(p.stock, p.sku));
+        prevModes.forEach(p => d2.prepare('UPDATE products SET supply_mode=? WHERE id=?').run(p.supply_mode,p.id));
+      })();
       d2.close();
     };
 
