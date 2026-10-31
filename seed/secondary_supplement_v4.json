@@ -1,0 +1,128 @@
+[
+  {
+    "id": "SUP-TP-910015",
+    "slug": "rihanna-riri",
+    "name_fa": "ری‌ری",
+    "name_en": "RiRi",
+    "title_fa_base": "ری‌ری",
+    "full_display_fa": "ریحانا — ری‌ری",
+    "inspired_brand_en": "Rihanna",
+    "inspired_brand_fa": "ریحانا",
+    "gender": null,
+    "notes": {
+      "top": [
+        "میوه گل ساعتی",
+        "رام",
+        "نارنگی",
+        "انگور فرنگی سیاه"
+      ],
+      "middle": [
+        "پیچ امین‌الدوله",
+        "فریزیا صورتی",
+        "یاس",
+        "شکوفه پرتقال"
+      ],
+      "base": [
+        "وانیل",
+        "مشک",
+        "بنزوئین سیام",
+        "چوب صندل"
+      ]
+    },
+    "accords": [],
+    "transclaimer_notice": "این محصول بازآفرینی دست‌ساز است و محصول اورجینال برند اصلی نیست. اطلاعات رایحه مرجع از فراگرانتیکا، یک منبع مستقل، گرفته شده و هویت اسانس تأمین‌کننده مستقلاً تأیید نشده است.",
+    "source_url": "https://www.fragrantica.com/perfume/Rihanna/RiRi-31629.html",
+    "source_note": "Reference RiRi, distinct from Crush and Kiss; notes describe scent accords, not proof of ingredients.",
+    "variants": []
+  },
+  {
+    "id": "SUP-TP-910016",
+    "slug": "malizia-uomo-vetyver",
+    "name_fa": "اومو وتیور",
+    "name_en": "Malizia Uomo Vetyver",
+    "title_fa_base": "اومو وتیور",
+    "full_display_fa": "مالیزیا — اومو وتیور",
+    "inspired_brand_en": "Malizia",
+    "inspired_brand_fa": "مالیزیا",
+    "gender": null,
+    "notes": {
+      "top": [],
+      "middle": [],
+      "base": []
+    },
+    "accords": [
+      "وتیور"
+    ],
+    "transclaimer_notice": "این محصول بازآفرینی دست‌ساز است و محصول اورجینال برند اصلی نیست. اطلاعات رایحه مرجع از فراگرانتیکا، یک منبع مستقل، گرفته شده و هویت اسانس تأمین‌کننده مستقلاً تأیید نشده است.",
+    "source_url": "https://www.fragrantica.com/perfume/Malizia/Malizia-Uomo-Vetyver-12997.html",
+    "source_note": "Fragrantica identifies Malizia Uomo Vetyver and lists vetiver without a pyramid; Mirato identifies Malizia as its brand.",
+    "variants": []
+  },
+  {
+    "id": "SUP-TP-910017",
+    "slug": "rasasi-afshan",
+    "name_fa": "افشان",
+    "name_en": "Afshan",
+    "title_fa_base": "افشان",
+    "full_display_fa": "رصاصی — افشان",
+    "inspired_brand_en": "Rasasi",
+    "inspired_brand_fa": "رصاصی",
+    "gender": null,
+    "notes": {
+      "top": [
+        "نت‌های گلی",
+        "زعفران",
+        "نت‌های سبز"
+      ],
+      "middle": [
+        "یلانگ یلانگ",
+        "رز",
+        "نت‌های ادویه‌ای"
+      ],
+      "base": [
+        "مشک",
+        "کهربا",
+        "نت‌های چوبی",
+        "چوب سدر"
+      ]
+    },
+    "accords": [],
+    "transclaimer_notice": "این محصول بازآفرینی دست‌ساز است و محصول اورجینال برند اصلی نیست. اطلاعات رایحه مرجع از فراگرانتیکا، یک منبع مستقل، گرفته شده و هویت اسانس تأمین‌کننده مستقلاً تأیید نشده است.",
+    "source_url": "https://www.fragrantica.com/perfume/Rasasi/Afshan-19525.html",
+    "source_note": "Independent reference; Rasasi product list mentions Afshan and Afshan Conc Perfume, but available details did not establish equivalence of formats.",
+    "variants": []
+  },
+  {
+    "id": "SUP-TP-910018",
+    "slug": "rasasi-blue-for-men",
+    "name_fa": "بلو فور من",
+    "name_en": "Blue For Men",
+    "title_fa_base": "بلو فور من",
+    "full_display_fa": "رصاصی — بلو فور من",
+    "inspired_brand_en": "Rasasi",
+    "inspired_brand_fa": "رصاصی",
+    "gender": null,
+    "notes": {
+      "top": [
+        "نعناع",
+        "نارنگی"
+      ],
+      "middle": [
+        "فلفل",
+        "گشنیز",
+        "رز",
+        "یاس",
+        "شمعدانی"
+      ],
+      "base": [
+        "نت‌های چوبی",
+        "کهربا"
+      ]
+    },
+    "accords": [],
+    "transclaimer_notice": "این محصول بازآفرینی دست‌ساز است و محصول اورجینال برند اصلی نیست. اطلاعات رایحه مرجع از فراگرانتیکا، یک منبع مستقل، گرفته شده و هویت اسانس تأمین‌کننده مستقلاً تأیید نشده است.",
+    "source_url": "https://www.fragrantica.com/perfume/Rasasi/Blue-For-Men-8630.html",
+    "source_note": "Blue For Men reference, distinct from Blue Lady, Blue 2 and Deep Blue.",
+    "variants": []
+  }
+]

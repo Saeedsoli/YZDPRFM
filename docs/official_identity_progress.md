@@ -291,3 +291,17 @@ Mefisto با Mefisto Gentiluomo یکی نیست. در برخی صفحات قدی
 | Aquawoman Rochas | 168.3 | H | https://www.fragrantica.com/perfume/Rochas/Aquawoman-1427.html |
 
 نت‌های مرجع از همان صفحات مستقل‌اند و منبع در توضیح عمومی ذکر شده است. جستجوی صفحات رسمی مربوط برای این سه نام نتیجه کافی نداد؛ این به معنای نبود قطعی صفحه رسمی نیست. نسخه‌های Fleur de Narcisse و Aquaman با موارد فوق یکی نشده‌اند. جزئیات دیگر موارد بررسی‌شده و تعارض‌ها در `docs/supplier_research_batch_20261101.md` است.
+
+
+## چهار تناظر مستقل دیگر — ۱ نوامبر ۲۰۲۶
+
+چهار محصول دست‌ساز و غیرقابل سفارش، با قیمت موقت و بیشترین کیفیت قیمت‌دار فایل اضافه شده‌اند. فراگرانتیکا منبع مستقل است و هویت یا کیفیت اسانس تأمین‌کننده را اثبات نمی‌کند.
+
+| رایحه مرجع | دلار/کیلو | کیفیت فایل | منبع مستقل |
+|---|---:|---|---|
+| RiRi — Rihanna | 169.4 | H | https://www.fragrantica.com/perfume/Rihanna/RiRi-31629.html |
+| Malizia Uomo Vetyver | 174.9 | H | https://www.fragrantica.com/perfume/Malizia/Malizia-Uomo-Vetyver-12997.html |
+| Afshan — Rasasi | 92.4 | B | https://www.fragrantica.com/perfume/Rasasi/Afshan-19525.html |
+| Blue For Men — Rasasi | 112.2 | H | https://www.fragrantica.com/perfume/Rasasi/Blue-For-Men-8630.html |
+
+در منابع رسمی بررسی‌شده، [میراتو مالک برند مالیزیا](https://mirato.it/en/malizia/) را معرفی می‌کند اما مشخصات Vetyver در آن صفحه نیست؛ نت وتیور در منبع مستقل بدون هرم آمده و هرم ساختگی ایجاد نشده است. [فهرست رسمی رصاصی](https://www.rasasi.com/products) نام Afshan و Afshan Conc Perfume را نشان می‌دهد اما جزئیات کافی برای اثبات برابری نسخه‌ها ندارد. Blue For Men با Blue Lady، Blue 2 و Deep Blue یکی نشده است؛ RiRi نیز با Crush و Kiss یکی نشده است. جستجوی صفحه رسمی کافی برای این چهار مورد به نتیجه نرسید و به معنی نبود قطعی آن نیست.

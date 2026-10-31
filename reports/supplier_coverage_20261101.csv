@@ -159,7 +159,7 @@ MAXI,MAXI,Men,مکسی,1,538,116.6,I,pending,هنوز قیمت مرجع منتس
 MEMO,Irish Leader,Unisex,آیریش لدر,1,544,265.1,H,provisional,قیمت موقت با شاهد نام؛ هویت اسانس تأییدنشده,YZD-PROD-1159,https://us.memoparis.com/products/irish-leather-eau-de-parfum-30ml,official_reference_prices_v11.json
 MEMO,JAMAL`S PALACE,Men,جمال پالاس,1,545,467.5,H,secondary,قیمت موقت با منبع مستقل؛ هویت اسانس تأییدنشده,SUP-TP-910001,https://www.fragrantica.com/perfume/Memo-Paris/Jamal-s-Palace-60077.html,secondary_reference_prices_v1.json
 MEMO,RETBA,Unisex,رتبا,1,546,332.2,H,secondary,قیمت موقت با منبع مستقل؛ هویت اسانس تأییدنشده,SUP-TP-910002,https://www.fragrantica.com/perfume/Memo-Paris/Retba-60076.html,secondary_reference_prices_v1.json
-MIRATO,Malizia Uomo Vetyver,Men,مالزیا,1,552,174.9,H,pending,هنوز قیمت مرجع منتسب نشده,,,
+MIRATO,Malizia Uomo Vetyver,Men,مالزیا,1,552,174.9,H,secondary,قیمت موقت با منبع مستقل؛ هویت اسانس تأییدنشده,SUP-TP-910016,https://www.fragrantica.com/perfume/Malizia/Malizia-Uomo-Vetyver-12997.html,secondary_reference_prices_v4.json
 MOHAMMADI,MOHAMMADI,Unisex,غنچه محمدی / محمدی قمصر,3,"558,559,560",99,H,pending,هنوز قیمت مرجع منتسب نشده,,,
 MOHAMMADI,RED ROSE,Unisex,گل سرخ,1,561,77,B,pending,هنوز قیمت مرجع منتسب نشده,,,
 American Perfume,TEA ROSE,Unisex,تی رز,1,567,86.9,B,pending,هنوز قیمت مرجع منتسب نشده,,,
@@ -199,9 +199,9 @@ PARFUMS de MARLY,Sedley,Men,سدلی,1,661,300.3,H,provisional,قیمت موقت
 Penhaligons,The tragedy of Lord George,Men,تراژدی آو لرد جورج,1,667,423.5,H,provisional,قیمت موقت با شاهد نام؛ هویت اسانس تأییدنشده,YZD-PROD-0501,https://www.penhaligons.com/uk/en/p/the-tragedy-of-lord-george-eau-de-parfum-75-ml--000000000065173406,official_reference_prices_v2.json
 Penhaligons,MR Sam,Men,مستر سم,1,668,289.3,H,provisional,قیمت موقت با شاهد نام؛ هویت اسانس تأییدنشده,YZD-PROD-0502,https://www.penhaligons.com/fr/en/p/the-blazing-mister-sam-eau-de-parfum-75ml--000000000065173422,official_reference_prices_v8.json
 Ralph Lauren,POLO BLACK,Men,پولو بلک,1,674,251.9,H,provisional,قیمت موقت با شاهد نام؛ هویت اسانس تأییدنشده,SUP-RL-900020,https://www.ralphlaurenfragrances.com/en_US/men/polo-black/polo-black-eau-de-toilette/RLFE012.html,official_reference_prices_v15.json
-Rasasi,Blue For Men,Men,بلو فورمن,2,"680,681",112.2,H,pending,هنوز قیمت مرجع منتسب نشده,,,
-Rasasi,Afshan,Unisex,افشان,1,682,92.4,B,pending,هنوز قیمت مرجع منتسب نشده,,,
-Rihanna,RIRI,Women,ری ری,1,688,169.4,H,pending,هنوز قیمت مرجع منتسب نشده,,,
+Rasasi,Blue For Men,Men,بلو فورمن,2,"680,681",112.2,H,secondary,قیمت موقت با منبع مستقل؛ هویت اسانس تأییدنشده,SUP-TP-910018,https://www.fragrantica.com/perfume/Rasasi/Blue-For-Men-8630.html,secondary_reference_prices_v4.json
+Rasasi,Afshan,Unisex,افشان,1,682,92.4,B,secondary,قیمت موقت با منبع مستقل؛ هویت اسانس تأییدنشده,SUP-TP-910017,https://www.fragrantica.com/perfume/Rasasi/Afshan-19525.html,secondary_reference_prices_v4.json
+Rihanna,RIRI,Women,ری ری,1,688,169.4,H,secondary,قیمت موقت با منبع مستقل؛ هویت اسانس تأییدنشده,SUP-TP-910015,https://www.fragrantica.com/perfume/Rihanna/RiRi-31629.html,secondary_reference_prices_v4.json
 ROJA DOVE,ELYSIUM POUR HOMME,Men,الیزیوم پورهوم,1,694,403.7,H,pending,هنوز قیمت مرجع منتسب نشده,,,
 ROCHAS,Aquawoman,Women,آکوا وومن,1,700,168.3,H,secondary,قیمت موقت با منبع مستقل؛ هویت اسانس تأییدنشده,SUP-TP-910014,https://www.fragrantica.com/perfume/Rochas/Aquawoman-1427.html,secondary_reference_prices_v3.json
 ROGER&GALLET,Open,Men,اپن,1,706,155.1,H,pending,هنوز قیمت مرجع منتسب نشده,,,
