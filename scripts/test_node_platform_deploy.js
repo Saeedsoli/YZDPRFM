@@ -163,7 +163,7 @@ function copyRespectingIgnore(src, dst, patterns, base = src) {
   add('پیش‌نمایش طراحی در بسته نیست',
     !staged.some(f => f.startsWith('design-preview')));
 
-  for (const need of ['package.json', 'src/server.js', 'seed/perfumes_catalogue_seed.json',
+  for (const need of ['package.json', 'src/server.js', 'src/retire-sample3-cli.js', 'seed/perfumes_catalogue_seed.json',
                       'seed/articles_db.json', 'public/index.html', 'public/assets/app.js']) {
     add(`${need} در بسته هست`, staged.includes(need));
   }
@@ -187,12 +187,18 @@ function copyRespectingIgnore(src, dst, patterns, base = src) {
   const proc = spawn('npm', ['start'], {
     cwd: STAGE,
     env: { ...process.env, PORT: String(PORT), BACKUP_DISABLED: '1', DB_PATH: dbPath },
-    stdio: 'ignore'
+    stdio: 'ignore', detached: process.platform !== 'win32'
   });
+  // npm spawns a shell and node child; terminate the whole test process group.
+  const stopServer = () => {
+    try { if (process.platform !== 'win32') process.kill(-proc.pid, 'SIGTERM'); else proc.kill('SIGTERM'); } catch {}
+  };
+  process.once('exit', stopServer);
 
   let up = false;
   for (let i = 0; i < 120; i++) {
-    try { if ((await fetch(`${BASE}/api/health`)).ok) { up = true; break; } } catch {}
+    if (proc.exitCode !== null) break;
+    try { if (fs.existsSync(dbPath) && (await fetch(`${BASE}/api/health`)).ok) { up = true; break; } } catch {}
     await sleep(500);
   }
   add('سرور با `npm start` بالا آمد (همان دستور لیارا)', up);
@@ -244,12 +250,16 @@ function copyRespectingIgnore(src, dst, patterns, base = src) {
     const fresh = new Database(dbPath, { readonly: true });
     const nOrders = fresh.prepare('SELECT COUNT(*) c FROM orders').get().c;
     const nStaff = fresh.prepare('SELECT COUNT(*) c FROM staff').get().c;
+    const legacySamples = fresh.prepare("SELECT COUNT(*) c FROM variants WHERE type='SAMPLE' AND volume_ml=3").get().c;
     fresh.close();
+    add('سمپل ۳ میل در نصب تازه نیست', legacySamples === 0, legacySamples + ' واریانت');
     add('فروشگاه تازه صفر سفارش دارد', nOrders === 0, nOrders + ' سفارش');
     add('فقط حساب مدیر اولیه ساخته شد', nStaff === 1, nStaff + ' کارمند');
   }
 
-  try { proc.kill('SIGKILL'); } catch {}
+  stopServer();
+  process.removeListener('exit', stopServer);
+  await sleep(200);
   fs.rmSync(STAGE, { recursive: true, force: true });
 
   const pass = checks.filter(Boolean).length;

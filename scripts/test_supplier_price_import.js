@@ -8,6 +8,8 @@ const {db}=require('./src/db');
 const {importSupplierPrices,MARKER}=require('./src/import-supplier-prices');
 const data=require('./seed/supplier_exact_prices_staged.json');
 const id='YZD-PROD-0429';
+// Simulate a deployment that still contains a historic 3ml SKU.
+db.prepare('insert into variants(sku,product_id,type,type_label,volume_ml,price_toman,stock) values(?,?,?,?,?,?,?)').run('OLD-SAMPLE-3',id,'SAMPLE','قدیمی',3,123000,0);
 const old=db.prepare('select count(*) n from variants where product_id=?').get(id).n;
 const before=db.prepare("select price_toman from variants where product_id=? and type='EDP' and volume_ml=100").get(id).price_toman;
 const bad=JSON.parse(JSON.stringify(data));bad.prices[1].product_id='YZD-PROD-999999';

@@ -144,12 +144,12 @@ const login = (username, password) =>
   const supReports = await api('/api/admin/reports', {}, sup);
   add('پشتیبان گزارش فروش را نمی‌بیند (۴۰۳)', supReports.status === 403);
 
-  const supPrice = await api('/api/admin/variants/YZD-0001-SMP-003', {
+  const supPrice = await api('/api/admin/variants/YZD-0001-EDP-010', {
     method: 'PUT', body: JSON.stringify({ price_toman: 1 })
   }, sup);
   add('پشتیبان قیمت را عوض نمی‌کند (۴۰۳)', supPrice.status === 403);
 
-  const whStock = await api('/api/admin/variants/YZD-0001-SMP-003', {
+  const whStock = await api('/api/admin/variants/YZD-0001-EDP-010', {
     method: 'PUT', body: JSON.stringify({ stock: 42 })
   }, wh);
   add('انباردار موجودی را عوض می‌کند', whStock.status === 200);

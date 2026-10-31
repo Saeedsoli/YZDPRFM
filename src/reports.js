@@ -95,7 +95,7 @@ function build(db) {
              COUNT(DISTINCT o.order_id) orders
       FROM order_items i
       JOIN orders   o ON o.order_id = i.order_id
-      JOIN variants v ON v.sku = i.sku
+      JOIN order_variant_history v ON v.sku = i.sku
       JOIN products p ON p.id = v.product_id
       WHERE o.status IN ${PAID_STATES}
         AND o.created_at >= datetime('now','-${parseInt(days)} days')
@@ -109,7 +109,7 @@ function build(db) {
       SELECT p.brand_fa brand, SUM(i.quantity) units, SUM(i.line_total) revenue
       FROM order_items i
       JOIN orders   o ON o.order_id = i.order_id
-      JOIN variants v ON v.sku = i.sku
+      JOIN order_variant_history v ON v.sku = i.sku
       JOIN products p ON p.id = v.product_id
       WHERE o.status IN ${PAID_STATES}
         AND o.created_at >= datetime('now','-${parseInt(days)} days')
@@ -124,7 +124,7 @@ function build(db) {
       SELECT v.type, v.type_label, SUM(i.quantity) units, SUM(i.line_total) revenue
       FROM order_items i
       JOIN orders   o ON o.order_id = i.order_id
-      JOIN variants v ON v.sku = i.sku
+      JOIN order_variant_history v ON v.sku = i.sku
       WHERE o.status IN ${PAID_STATES}
         AND o.created_at >= datetime('now','-${parseInt(days)} days')
       GROUP BY v.type ORDER BY revenue DESC

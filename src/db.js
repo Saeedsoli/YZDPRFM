@@ -2099,7 +2099,7 @@ function hasPurchased(mobile, productId) {
   return !!db.prepare(`
     SELECT 1 FROM order_items i
     JOIN orders   o ON o.order_id = i.order_id
-    JOIN variants v ON v.sku = i.sku
+    JOIN order_variant_history v ON v.sku = i.sku
     WHERE o.mobile=? AND v.product_id=?
       AND o.status IN ('PAID','PROCESSING','SHIPPED','DELIVERED') LIMIT 1
   `).get(mobile, productId);
@@ -2637,6 +2637,8 @@ function otpPurgeExpired() {
 }
 
 initSchema();
+// Historical order reporting remains valid after retired SKUs leave the catalog.
+require('./variant-history').ensureVariantHistory(db);
 // Storage only: rates do not change prices until an explicit, atomic reprice.
 require('./essence-pricing-store').migratePricing(db);
 seedRoles();

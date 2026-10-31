@@ -4,7 +4,7 @@
  *
  *   ۱) موجودی همه کالاها پیش‌فرض صفر (ناموجود) باشد
  *   ۲) پنل کارمندان کنترل موجودی با ± و تایپ دستی داشته باشد
- *   ۳) حجم عطر مو و بادی اسپلش ۱۵۰ میل باشد
+ *   ۳) سمپل ۳ میل حذف و عطر مو پنهان؛ بادی اسپلش فقط ۱۲۰ میل باشد
  *   ۴) جستجو با چند حرف، پیشنهاد خودکار نشان دهد
  *
  * بخش رابط کاربری با مرورگر واقعی سنجیده می‌شود، نه با خواندن
@@ -51,30 +51,13 @@ async function boot() {
 (async () => {
   console.log('\n  آزمون موجودی، حجم و پیشنهاد جستجو\n');
 
-  /* ── ۳) حجم — مستقیم از دیتابیس ── */
+  /* ── حجم: قدیمی‌ها حفظ نمی‌شوند؛ واریانت‌های فعال فقط اندازه جدید دارند ── */
   {
     const db = new Database(DB, { readonly: true });
-
-    const hair = db.prepare(
-      "SELECT COUNT(*) c FROM variants WHERE type='HAIR_MIST' AND volume_ml=150").get().c;
-    const hairAll = db.prepare(
-      "SELECT COUNT(*) c FROM variants WHERE type='HAIR_MIST'").get().c;
-    add('عطر مو ۱۵۰ میل است', hair === hairAll && hairAll > 0, `${hair}/${hairAll}`);
-
-    const body = db.prepare(
-      "SELECT COUNT(*) c FROM variants WHERE type='BODY_SPLASH' AND volume_ml=150").get().c;
-    const bodyAll = db.prepare(
-      "SELECT COUNT(*) c FROM variants WHERE type='BODY_SPLASH'").get().c;
-    add('بادی اسپلش ۱۵۰ میل است', body === bodyAll && bodyAll > 0, `${body}/${bodyAll}`);
-
-    // SKU باید با حجم بخواند، وگرنه کد و محتوا نمی‌خوانند
-    const badSku = db.prepare(`
-      SELECT COUNT(*) c FROM variants
-      WHERE type IN ('HAIR_MIST','BODY_SPLASH')
-        AND sku NOT LIKE '%-150' AND sku NOT LIKE '%-HM-050'
-        AND sku NOT LIKE '%-BS-100'`).get().c;
-    add('SKU با حجم تازه هم‌خوان است', badSku === 0, badSku ? `${badSku} ناهم‌خوان` : 'همه');
-
+    const legacy = db.prepare("SELECT COUNT(*) c FROM variants WHERE type='SAMPLE' AND volume_ml=3").get().c;
+    add('سمپل ۳ میل در کاتالوگ فعال وجود ندارد', legacy === 0, `${legacy} ردیف`);
+    const badBody = db.prepare("SELECT COUNT(*) c FROM variants WHERE type='BODY_SPLASH' AND volume_ml=120 AND sku NOT LIKE '%-120'").get().c;
+    add('شناسه بادی‌اسپلش‌های جدید با ۱۲۰ میل سازگار است', badBody === 0, `${badBody} ناسازگار`);
     db.close();
   }
 
@@ -101,13 +84,13 @@ async function boot() {
     if (fs.existsSync(seedPath)) {
       const raw = JSON.parse(fs.readFileSync(seedPath, 'utf8'));
       const items = Array.isArray(raw) ? raw : (raw.products || raw.items || []);
-      let nz = 0, wrongVol = 0;
+      let nz = 0, legacySamples = 0;
       for (const p of items) for (const v of (p.variants || [])) {
         if (v.stock !== 0) nz++;
-        if ((v.type === 'HAIR_MIST' || v.type === 'BODY_SPLASH') && v.volume_ml !== 150) wrongVol++;
+        if (v.type === 'SAMPLE' && v.volume_ml === 3) legacySamples++;
       }
       add('seed موجودی صفر دارد', nz === 0, nz ? `${nz} غیرصفر` : 'پاک');
-      add('seed حجم ۱۵۰ دارد', wrongVol === 0, wrongVol ? `${wrongVol} اشتباه` : 'درست');
+      add('seed سمپل ۳ میل ندارد', legacySamples === 0, `${legacySamples} ردیف`);
     }
   }
 
@@ -118,17 +101,19 @@ async function boot() {
     const fail = checks.length - pass;
     console.log(fail
       ? `\n  ${r(`${fail} بررسی ناموفق`)}  ${pass}/${checks.length}\n`
-      : `\n  ${g('هر چهار خواسته برقرار است.')}  ${pass}/${checks.length}\n`);
+      : `\n  ${g('بررسی‌های اجراشده موفق بودند.')}  ${pass}/${checks.length}\n`);
     process.exit(fail ? 1 : 0);
   };
 
   try {
     /* ── حجم در API عمومی ── */
     const p = await fetch(`${BASE}/api/products/creed-aventus`).then(x => x.json());
-    const hm = (p.variants || []).find(v => v.type === 'HAIR_MIST');
-    const bs = (p.variants || []).find(v => v.type === 'BODY_SPLASH');
-    add('API عطر مو را ۱۵۰ میل می‌دهد', hm && hm.volume_ml === 150, hm && hm.volume_ml + 'ml');
-    add('API بادی اسپلش را ۱۵۰ میل می‌دهد', bs && bs.volume_ml === 150, bs && bs.volume_ml + 'ml');
+    const hm = (p.variants || []).filter(v => v.type === 'HAIR_MIST');
+    const bs = (p.variants || []).filter(v => v.type === 'BODY_SPLASH');
+    const samples = (p.variants || []).filter(v => v.type === 'SAMPLE');
+    add('عطر مو در API عمومی پنهان است', hm.length === 0, `${hm.length} ردیف`);
+    add('فقط بادی‌اسپلش ۱۲۰ میل نمایش داده می‌شود', bs.every(v => v.volume_ml === 120), `${bs.length} ردیف موجود`);
+    add('فقط سمپل ۵ میل نمایش داده می‌شود', samples.every(v => v.volume_ml === 5), `${samples.length} ردیف موجود`);
 
     /* ── مرورگر واقعی ── */
     let chromium = null;

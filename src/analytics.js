@@ -118,7 +118,7 @@ function build(db, appLog) {
                      WHERE v2.product_id = p.id AND v2.stock > 0) AS in_stock
       FROM order_items i
       JOIN orders   o ON o.order_id = i.order_id
-      JOIN variants v ON v.sku      = i.sku
+      JOIN order_variant_history v ON v.sku      = i.sku
       JOIN products p ON p.id       = v.product_id
       WHERE o.status IN ${PAID}
         AND o.created_at >= datetime('now', ?)
@@ -515,7 +515,7 @@ function build(db, appLog) {
              COALESCE((
                SELECT SUM(i.quantity) FROM order_items i
                JOIN orders o  ON o.order_id = i.order_id
-               JOIN variants v ON v.sku     = i.sku
+               JOIN order_variant_history v ON v.sku     = i.sku
                WHERE v.product_id = p.id AND o.status IN ${PAID}
                  AND o.created_at >= datetime('now', ?)
              ),0) sold

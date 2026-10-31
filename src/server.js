@@ -370,7 +370,7 @@ function trackPurchase(order, req) {
   try {
     const items = db.prepare(`
       SELECT v.product_id pid, i.quantity q
-      FROM order_items i JOIN variants v ON v.sku = i.sku
+      FROM order_items i JOIN order_variant_history v ON v.sku = i.sku
       WHERE i.order_id = ?
     `).all(order.order_id);
 

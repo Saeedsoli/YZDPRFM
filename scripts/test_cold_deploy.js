@@ -145,7 +145,9 @@ function dockerCopiedDirs() {
       'SELECT COUNT(DISTINCT brand_fa) c FROM products WHERE brand_fa IS NOT NULL').get().c;
     const orderable = cold.prepare(
       "SELECT COUNT(DISTINCT brand_fa) c FROM products WHERE supply_mode != 'UNAVAILABLE'").get().c;
+    const obsoleteSamples = cold.prepare("SELECT COUNT(*) n FROM variants WHERE type='SAMPLE' AND volume_ml=3").get().n;
     cold.close();
+    add('سمپل ۳ میل در دیتابیس تازه ایجاد نمی‌شود', obsoleteSamples === 0, `${obsoleteSamples} ردیف`);
 
     add('کاتالوگ تنوع برند دارد', brandsInDb >= 100, `${brandsInDb} برند در دیتابیس`);
 
@@ -154,8 +156,9 @@ function dockerCopiedDirs() {
         (brands.brands || []).length === orderable,
         `${(brands.brands || []).length} = ${orderable}`);
 
-    const one = await fetch(`${BASE}/api/products?limit=1&full=1`).then(r => r.json());
-    const v = one.products?.[0]?.variants || [];
+    // The first row can legitimately be a newly sourced draft with no prices.
+    const one = await fetch(`${BASE}/api/products/creed-jasmal`).then(r => r.json());
+    const v = one.variants || [];
     add('متغیرها و قیمت‌ها ساخته شده‌اند', v.length > 0 && v[0].price_toman > 0,
         `${v.length} متغیر`);
 
@@ -163,7 +166,7 @@ function dockerCopiedDirs() {
     const home = await fetch(`${BASE}/`).then(r => r.text());
     add('صفحه اصلی بالا می‌آید', home.includes('عطر یزد'));
 
-    const pdp = await fetch(`${BASE}/perfume/${one.products[0].slug}`)
+    const pdp = await fetch(`${BASE}/perfume/${one.slug}`)
       .then(r => r.status);
     add('صفحه محصول باز می‌شود', pdp === 200, `کد ${pdp}`);
 

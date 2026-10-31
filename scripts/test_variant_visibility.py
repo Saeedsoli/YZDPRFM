@@ -9,7 +9,8 @@ with tempfile.TemporaryDirectory(prefix='yazd-volumes-') as tmp:
     env={**os.environ,'DB_PATH':dbfile,'BACKUP_DISABLED':'1','PORT':str(port)}
     subprocess.run(['node','-e',"require('./src/db')"],cwd=root,env=env,check=True,stdout=subprocess.DEVNULL,timeout=120)
     con=sqlite3.connect(dbfile)
-    old,pid=con.execute("select sku,product_id from variants where type='SAMPLE' and volume_ml=3 limit 1").fetchone()
+    pid='YZD-PROD-0429';old='TEST-OLD-SAMPLE-3'
+    con.execute('insert into variants(sku,product_id,type,type_label,volume_ml,price_toman,stock) values(?,?,?,?,?,?,?)',(old,pid,'SAMPLE','قدیمی',3,123000,0))
     oldbody=con.execute("select sku from variants where product_id=? and type='BODY_SPLASH' and volume_ml=150",(pid,)).fetchone()[0]
     con.execute("update products set supply_mode='MADE_TO_ORDER' where id=?",(pid,))
     con.execute("update variants set stock=5 where product_id=?",(pid,))

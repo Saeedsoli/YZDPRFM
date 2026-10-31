@@ -8,6 +8,8 @@ with tempfile.TemporaryDirectory(prefix='yazd-product-essence-') as tmp:
     env={**os.environ,'DB_PATH':dbfile,'BACKUP_DISABLED':'1','PORT':str(port),'ADMIN_USERNAME':'owner','ADMIN_PASSWORD':'test-secret-123'}
     subprocess.run(['node','-e',"require('./src/db')"],cwd=root,env=env,check=True,stdout=subprocess.DEVNULL,timeout=120)
     con=sqlite3.connect(dbfile)
+    # Simulate an existing deployment that still contains a retired 3ml SKU.
+    con.execute("insert into variants(sku,product_id,type,type_label,volume_ml,price_toman,stock) values('OLD-SAMPLE-3','YZD-PROD-0429','SAMPLE','قدیمی',3,123000,0)")
     con.execute("INSERT INTO roles(key,name,permissions) VALUES('stock_test','Stock test',?)",(json.dumps(['products.view','products.stock']),))
     cur=con.execute("INSERT INTO staff(username,display_name,role_key,pass_hash,pass_salt,must_change,active) VALUES('stock_test','Stock test','stock_test','x','x',0,1)")
     con.execute("INSERT INTO sessions(token,kind,subject,expires_at) VALUES(?,?,?,?)",('b'*48,'ADMIN',str(cur.lastrowid),int(time.time()*1000)+600000));con.commit()
