@@ -1,0 +1,139 @@
+{
+  "version": "official_notes_2026_11_v18",
+  "description": "Guarded official reference notes and transparency, never supplier identity verification.",
+  "items": [
+    {
+      "product_id": "YZD-PROD-1804",
+      "product_slug": "burberry-burberry-goddess-edp",
+      "official_brand": "Burberry",
+      "official_name": "Burberry Goddess Eau de Parfum",
+      "source_url": "https://us.burberry.com/burberry-goddess-eau-de-parfum-for-women-50ml-p40835971",
+      "source_scope": "Original Goddess EDP, distinct from Intense and Parfum; identity and version of supplier essence are unverified.",
+      "expected_old_notes": {
+        "top": [
+          "وانیل بوربون ماداگاسکار",
+          "اسطوخودوس",
+          "زنجبیل",
+          "کاکائو"
+        ],
+        "middle": [
+          "خاویار وانیل (عصاره انحصاری)"
+        ],
+        "base": [
+          "وانیل خالص ماداگاسکار"
+        ]
+      },
+      "verified_notes": {
+        "top": [],
+        "middle": [],
+        "base": []
+      },
+      "expected_old_accords": [
+        "پرفروش‌ترین و محبوب‌ترین عطر زنانه سال ۲۰۲۳ جهان با نشان مدال طلای شیر روی بطری",
+        "معجزه سه گانه وانیل"
+      ],
+      "verified_accords": [
+        "وانیل",
+        "اسطوخودوس"
+      ],
+      "requires_unavailable": true,
+      "expected_old_notice": "این محصول، بازآفرینی دست‌ساز با عصاره خالص اولیه و فرمولاسیون اختصاصی عطر یزد است.",
+      "verified_notice": "این محصول بازآفرینی دست‌ساز است و محصول اورجینال برند اصلی نیست. اطلاعات رایحه مرجع از وب‌سایت رسمی برند گرفته شده و هویت اسانس تأمین‌کننده مستقلاً تأیید نشده است."
+    },
+    {
+      "product_id": "YZD-PROD-1737",
+      "product_slug": "carolina-herrera-good-girl-edp",
+      "official_brand": "Carolina Herrera",
+      "official_name": "Good Girl Eau de Parfum",
+      "source_url": "https://www.carolinaherrera.com/us/en/p-fragrance/good-girl-eau-de-parfum",
+      "source_scope": "Original Good Girl EDP, distinct from Very Good Girl, Blush and Supreme; supplier essence identity and version are unverified.",
+      "expected_old_notes": {
+        "top": [
+          "بادام تلخ",
+          "قهوه",
+          "ترنج",
+          "لیمو"
+        ],
+        "middle": [
+          "گل مریم هندی",
+          "گل یاس سامباک",
+          "شکوفه پرتقال",
+          "رز"
+        ],
+        "base": [
+          "دانه تونکا برزیل",
+          "کاکائو تلخ",
+          "وانیل",
+          "پرالین",
+          "صندل",
+          "پچولی"
+        ]
+      },
+      "verified_notes": {
+        "top": [],
+        "middle": [],
+        "base": []
+      },
+      "expected_old_accords": [
+        "پدیده‌سازترین بطری تاریخ به شکل کفش پاشنه‌سوزنی لاجوردی با پاشنه طلایی",
+        "شاهکار لوئیز ترنر با کاکائو و مریم"
+      ],
+      "verified_accords": [
+        "بادام تلخ",
+        "یاس سامباک",
+        "گل مریم",
+        "دانه تونکا",
+        "کاکائو"
+      ],
+      "requires_unavailable": true,
+      "expected_old_notice": "این محصول، بازآفرینی دست‌ساز با عصاره خالص اولیه و فرمولاسیون اختصاصی عطر یزد است.",
+      "verified_notice": "این محصول بازآفرینی دست‌ساز است و محصول اورجینال برند اصلی نیست. اطلاعات رایحه مرجع از وب‌سایت رسمی برند گرفته شده و هویت اسانس تأمین‌کننده مستقلاً تأیید نشده است."
+    },
+    {
+      "product_id": "YZD-PROD-1504",
+      "product_slug": "yves-saint-laurent-libre-edp",
+      "official_brand": "Yves Saint Laurent",
+      "official_name": "Libre Eau de Parfum",
+      "source_url": "https://www.yslbeautyus.com/fragrance/womens-fragrances/libre/libre-eau-de-parfum/109YSL.html",
+      "source_scope": "Original Libre EDP, distinct from Intense and Le Parfum; supplier essence identity and version are unverified.",
+      "expected_old_notes": {
+        "top": [
+          "اسطوخودوس فرانسوی",
+          "نارنگی ماندارین",
+          "انگور فرنگی سیاه",
+          "برگ نارنج"
+        ],
+        "middle": [
+          "اسطوخودوس",
+          "شکوفه پرتقال مراکشی",
+          "گل یاس سامباک"
+        ],
+        "base": [
+          "وانیل ماداگاسکار",
+          "چوب سدر",
+          "دانه تونکا",
+          "عنبر سائل",
+          "مشک"
+        ]
+      },
+      "verified_notes": {
+        "top": [],
+        "middle": [],
+        "base": []
+      },
+      "expected_old_accords": [
+        "عطر نماد آزادی با لوگوی طلایی کج ایو سن لوران",
+        "انتقال اسطوخودوس مردانه به دنیای زنانگی با شکوه فراوان"
+      ],
+      "verified_accords": [
+        "اسطوخودوس",
+        "شکوفه پرتقال",
+        "آکورد مشک",
+        "وانیل"
+      ],
+      "requires_unavailable": true,
+      "expected_old_notice": "این محصول، بازآفرینی دست‌ساز با عصاره خالص اولیه و فرمولاسیون اختصاصی عطر یزد است.",
+      "verified_notice": "این محصول بازآفرینی دست‌ساز است و محصول اورجینال برند اصلی نیست. اطلاعات رایحه مرجع از وب‌سایت رسمی برند گرفته شده و هویت اسانس تأمین‌کننده مستقلاً تأیید نشده است."
+    }
+  ]
+}

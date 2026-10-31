@@ -363,3 +363,18 @@ Yara مرجع با Yara Tous، Moi و Candy یکی نیست. Tygar مرجع با
 ### مورد کنارگذاشته‌شده
 
 نام محصول محلی `AMOUAGE - Decision 2024` با اطلاعات بررسی‌شده درباره عرضه Decision در ۲۰۲۵ تعارض سال دارد؛ منبع رسمی [Decision](https://amouage.com/products/new-decision) عطر مرجع و [منبع مستقل Parfumo](https://www.parfumo.com/Perfumes/Amouage/decision) سال ۲۰۲۵ را ذکر می‌کند. Decision 42 هم نسخه جداست. تا بررسی بیشتر هیچ قیمت یا تصحیح حدسی برای این مورد ثبت نشده است.
+
+
+## پنج تناظر بیشتر — ۱ نوامبر ۲۰۲۶
+
+سه محصول موجود بر اساس منبع رسمی و دو محصول مکمل بر اساس منبع مستقل ثبت شدند. قیمت‌ها موقت و صرفاً نام‌محورند؛ همه غیرفعال و دست‌سازند و هویت اسانس واقعی تأمین‌کننده تأیید نشده است.
+
+| رایحه مرجع | دلار/کیلو | کیفیت فایل | نوع منبع | صفحه مرجع |
+|---|---:|---|---|---|
+| Goddess EDP — Burberry | 201.3 | P | رسمی | https://us.burberry.com/burberry-goddess-eau-de-parfum-for-women-50ml-p40835971 |
+| Good Girl EDP — Carolina Herrera | 221.1 | H | رسمی | https://www.carolinaherrera.com/us/en/p-fragrance/good-girl-eau-de-parfum |
+| Libre EDP — Yves Saint Laurent | 256.3 | H | رسمی | https://www.yslbeautyus.com/fragrance/womens-fragrances/libre/libre-eau-de-parfum/109YSL.html |
+| Absolutely Irresistible — Givenchy | 150.7 | H | مستقل | https://www.fragrantica.com/perfume/Givenchy/Absolutely-Irresistible-4613.html |
+| Erba Pura — Sospiro | 267.3 | H | مستقل | https://www.fragrantica.com/perfume/Sospiro-Perfumes/Erba-Pura-18652.html |
+
+سه منبع رسمی به نسخه اصلی معرفی‌شده برند مربوط‌اند و با نسخه‌های Intense، Parfum، Blush، Suprême یا Le Parfum یکی نشده‌اند؛ برچسب فایل به‌تنهایی نسخه اسانس را تأیید نمی‌کند. نت‌های رسمیِ معرفی‌شده بدون هرم ساختگی و با محافظ ویرایش مدیر ثبت شدند. در فایل، نام Givenchy به «Absolutely» کوتاه شده؛ منبع مستقل آن را Absolutely Irresistible 2008 معرفی می‌کند و با Irresistible فعلی یکی نشده است. منبع مستقل Sospiro Erba Pura 2013 را معرفی می‌کند؛ برابری با Xerjoff Erba Pura یا Erba Pura Magica فرض نشده است.

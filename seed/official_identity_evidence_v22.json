@@ -1,0 +1,36 @@
+{
+  "version": "official_identity_evidence_v22",
+  "scope": "Official reference-original name only; actual supplier essence identity is unverified.",
+  "items": [
+    {
+      "product_id": "YZD-PROD-1804",
+      "slug": "burberry-burberry-goddess-edp",
+      "brand_en": "Burberry",
+      "expected_name_en": "Burberry Goddess EDP",
+      "reference_name": "Burberry Goddess Eau de Parfum",
+      "official_url": "https://us.burberry.com/burberry-goddess-eau-de-parfum-for-women-50ml-p40835971",
+      "status": "official_original_found_supplier_essence_unverified",
+      "checked_date": "2026-11-01"
+    },
+    {
+      "product_id": "YZD-PROD-1737",
+      "slug": "carolina-herrera-good-girl-edp",
+      "brand_en": "Carolina Herrera",
+      "expected_name_en": "CAROLINA HERRERA - Good Girl EDP",
+      "reference_name": "Good Girl Eau de Parfum",
+      "official_url": "https://www.carolinaherrera.com/us/en/p-fragrance/good-girl-eau-de-parfum",
+      "status": "official_original_found_supplier_essence_unverified",
+      "checked_date": "2026-11-01"
+    },
+    {
+      "product_id": "YZD-PROD-1504",
+      "slug": "yves-saint-laurent-libre-edp",
+      "brand_en": "Yves Saint Laurent",
+      "expected_name_en": "YVES SAINT LAURENT - Libre EDP",
+      "reference_name": "Libre Eau de Parfum",
+      "official_url": "https://www.yslbeautyus.com/fragrance/womens-fragrances/libre/libre-eau-de-parfum/109YSL.html",
+      "status": "official_original_found_supplier_essence_unverified",
+      "checked_date": "2026-11-01"
+    }
+  ]
+}

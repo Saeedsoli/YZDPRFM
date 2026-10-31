@@ -1,0 +1,43 @@
+{
+  "version": "secondary_reference_prices_2026_11_v7",
+  "supplier_file_sha256": "bbe8f40610bc765bda0a7d2da9dbe78f4e397458a6991239c3c18d0853f33f5c",
+  "description": "Independent source only; no manufacturer verification or supplier essence identification; no automatic availability.",
+  "items": [
+    {
+      "product_id": "SUP-TP-910023",
+      "slug": "givenchy-absolutely-irresistible",
+      "brand_en": "Givenchy",
+      "expected_name_en": "GIVENCHY - Absolutely Irresistible",
+      "reference_name": "Absolutely Irresistible",
+      "source_url": "https://www.fragrantica.com/perfume/Givenchy/Absolutely-Irresistible-4613.html",
+      "provider": "Fragrantica",
+      "status": "secondary_original_found_supplier_essence_unverified",
+      "checked_date": "2026-11-01",
+      "supplier_brand": "GIVENCHY",
+      "supplier_model": "Absolutely",
+      "usd_per_kg": "150.7",
+      "quality": "H",
+      "match_status": "name_matched_supplier_identity_unverified",
+      "expected_edps": [],
+      "legacy_backfill": false
+    },
+    {
+      "product_id": "SUP-TP-910024",
+      "slug": "sospiro-erba-pura-original",
+      "brand_en": "Sospiro Perfumes",
+      "expected_name_en": "SOSPIRO PERFUMES - Erba Pura",
+      "reference_name": "Erba Pura",
+      "source_url": "https://www.fragrantica.com/perfume/Sospiro-Perfumes/Erba-Pura-18652.html",
+      "provider": "Fragrantica",
+      "status": "secondary_original_found_supplier_essence_unverified",
+      "checked_date": "2026-11-01",
+      "supplier_brand": "SOSPIRO",
+      "supplier_model": "Erba Pura",
+      "usd_per_kg": "267.3",
+      "quality": "H",
+      "match_status": "name_matched_supplier_identity_unverified",
+      "expected_edps": [],
+      "legacy_backfill": false
+    }
+  ]
+}

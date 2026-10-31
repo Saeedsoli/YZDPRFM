@@ -13,7 +13,7 @@ ATKINSONS,Oud Save The King,Men,عود سیو د کینگ,1,33,314.6,H,provision
 ATKINSONS,HER MAJESTY THE OUD,Women,هرمجستی,1,34,190.3,H,provisional,قیمت موقت با شاهد نام؛ هویت اسانس تأییدنشده,SUP-AT-900013,https://www.atkinsons1799.com/en_eu/custom-sample-set,official_reference_prices_v13.json
 AZZARO,Chrome,Men,آزارو کروم,1,40,139.7,H,pending,هنوز قیمت مرجع منتسب نشده,,,
 BDK Parfums,GRIS CHARNEL,Unisex,گریس چارنل,1,46,467.5,P,pending,هنوز قیمت مرجع منتسب نشده,,,
-BURBERRY,GODDESS,Women,باربری گادس,1,52,201.3,P,pending,هنوز قیمت مرجع منتسب نشده,,,
+BURBERRY,GODDESS,Women,باربری گادس,1,52,201.3,P,provisional,قیمت موقت با شاهد نام؛ هویت اسانس تأییدنشده,YZD-PROD-1804,https://us.burberry.com/burberry-goddess-eau-de-parfum-for-women-50ml-p40835971,official_reference_prices_v23.json
 BURBERRY,London,Women,باربری لندن,1,53,89.1,P,pending,هنوز قیمت مرجع منتسب نشده,,,
 BURBERRY,Weekend,Women,باربری ویکند,1,54,97.9,P,pending,هنوز قیمت مرجع منتسب نشده,,,
 BURBERRY,HER,Women,باربری هر,1,55,117.7,P,pending,هنوز قیمت مرجع منتسب نشده,,,
@@ -37,7 +37,7 @@ Calvin Klein,Euphoria,Women,ایفوریا زنانه,3,"94,95,96",155.1,H,pendi
 Captain Black,Black,Men,کاپیتان بلک,1,102,147.4,H,pending,هنوز قیمت مرجع منتسب نشده,,,
 Captain Black,Yellow,Men,کاپیتان بلک,1,103,97.9,B,pending,هنوز قیمت مرجع منتسب نشده,,,
 CAROLINA HRRERA,CH,Men,سی اچ,1,109,210.1,H,pending,هنوز قیمت مرجع منتسب نشده,,,
-CAROLINA HRRERA,Good Girl,Women,گودگرل,4,"110,111,112,113",221.1,H,pending,هنوز قیمت مرجع منتسب نشده,,,
+CAROLINA HRRERA,Good Girl,Women,گودگرل,4,"110,111,112,113",221.1,H,provisional,قیمت موقت با شاهد نام؛ هویت اسانس تأییدنشده,YZD-PROD-1737,https://www.carolinaherrera.com/us/en/p-fragrance/good-girl-eau-de-parfum,official_reference_prices_v23.json
 CAROLINA HRRERA,212 Sexy,Men,212 مردانه,1,114,133.1,H,pending,هنوز قیمت مرجع منتسب نشده,,,
 CAROLINA HRRERA,212 Sexy,Women,212 زنانه,2,"115,116",188.1,H,pending,هنوز قیمت مرجع منتسب نشده,,,
 CAROLINA HRRERA,212 Vip WOMEN,Women,وی آی پی زنانه,1,117,177.1,H,pending,هنوز قیمت مرجع منتسب نشده,,,
@@ -97,7 +97,7 @@ GEORGIO ARMANI,Stronger With You,Men,استرانگر ویت یو,1,309,119.9,B,
 GEORGIO ARMANI,Acqua di Gio Perfumo,Men,آکوا دی جیو پرفومو,1,310,225.5,H,provisional,قیمت موقت با شاهد نام؛ هویت اسانس تأییدنشده,YZD-PROD-1651,https://www.giorgioarmanibeauty-usa.com/discontinued/acqua-di-gio-profumo/A019.html,official_reference_prices_v10.json
 GEORGIO ARMANI,Si,Women,اس آی آرمانی,1,311,227.7,H,provisional,قیمت موقت با شاهد نام؛ هویت اسانس تأییدنشده,YZD-PROD-1662,https://www.giorgioarmanibeauty-usa.com/fragrances/womens-perfume/si/si-eau-de-parfum/A218.html,official_reference_prices_v14.json
 GEORGIO ARMANI,MY WAY,Women,مای وی,1,312,96.8,H,provisional,قیمت موقت با شاهد نام؛ هویت اسانس تأییدنشده,YZD-PROD-1664,https://www.giorgioarmanibeauty-usa.com/fragrances/womens-perfume/my-way/my-way-eau-de-parfum/A2259.html,official_reference_prices_v14.json
-GIVENCHY,Absolutely,Women,ابسولوتلی,1,318,150.7,H,pending,هنوز قیمت مرجع منتسب نشده,,,
+GIVENCHY,Absolutely,Women,ابسولوتلی,1,318,150.7,H,secondary,قیمت موقت با منبع مستقل؛ هویت اسانس تأییدنشده,SUP-TP-910023,https://www.fragrantica.com/perfume/Givenchy/Absolutely-Irresistible-4613.html,secondary_reference_prices_v7.json
 GIVENCHY,Prestige,Unisex,پرستیژ,1,319,204.6,I,pending,هنوز قیمت مرجع منتسب نشده,,,
 GIVENCHY,ange ou demon le secret,Women,آنجیو لسکرت,1,320,220,H,provisional,قیمت موقت با شاهد نام؛ هویت اسانس تأییدنشده,YZD-PROD-1576,https://www.givenchybeauty.com/us/p/ange-ou-demon-le-secret-F10100004.html,official_reference_prices_v7.json
 GIVENCHY,MMW,Unisex,ام ام دبلیو,1,321,269.5,P,pending,هنوز قیمت مرجع منتسب نشده,,,
@@ -214,7 +214,7 @@ SENJED,SENJED,Unisex,سنجد,1,732,55,I,pending,هنوز قیمت مرجع من
 SERIS,Splandor,Men,اسپلندور,2,"738,739",172.7,H,pending,هنوز قیمت مرجع منتسب نشده,,,
 SHISEIDO,Zen,Women,زن,1,745,176,H,provisional,قیمت موقت با شاهد نام؛ هویت اسانس تأییدنشده,SUP-SH-900022,https://www.shiseido.com/us/en/zen-eau-de-parfum-0768614102007.html,official_reference_prices_v15.json
 SOSPIRO,Accento,Unisex,اکسنتو,3,"751,752,753",491.7,T,secondary,قیمت موقت با منبع مستقل؛ هویت اسانس تأییدنشده,SUP-TP-910008,https://www.fragrantica.com/perfume/Sospiro-Perfumes/Accento-13816.html,secondary_reference_prices_v2.json
-SOSPIRO,Erba Pura,Unisex,ارباپورا,2,"754,755",267.3,H,pending,هنوز قیمت مرجع منتسب نشده,,,
+SOSPIRO,Erba Pura,Unisex,ارباپورا,2,"754,755",267.3,H,secondary,قیمت موقت با منبع مستقل؛ هویت اسانس تأییدنشده,SUP-TP-910024,https://www.fragrantica.com/perfume/Sospiro-Perfumes/Erba-Pura-18652.html,secondary_reference_prices_v7.json
 SOSPIRO,Opera,Unisex,اُپرا,1,756,240.9,H,secondary,قیمت موقت با منبع مستقل؛ هویت اسانس تأییدنشده,YZD-PROD-1328,https://www.fragrantica.com/perfume/Sospiro-Perfumes/Opera-26282.html,secondary_reference_prices_v2.json
 SULTAN,Sultan,Unisex,سلطان,3,"762,763,764",584.1,P,pending,هنوز قیمت مرجع منتسب نشده,,,
 Thiery Mugler,Alien,Women,الین,1,770,294.8,H,pending,هنوز قیمت مرجع منتسب نشده,,,
@@ -256,7 +256,7 @@ XERJOFF,Mefisto Casamorati,Unisex,مفیستو,1,866,178.2,H,provisional,قیم�
 XERJOFF,XJ 1861 NAXOS,Unisex,ناکسوس,1,867,354.2,H,provisional,قیمت موقت با شاهد نام؛ هویت اسانس تأییدنشده,YZD-PROD-0575,https://www.xerjoff.com/products/naxos-eau-de-parfum,official_reference_prices_v3.json
 Yves Saint Laurent,Black Opium,Women,بلک اپیوم,1,873,245.3,H,pending,هنوز قیمت مرجع منتسب نشده,,,
 Yves Saint Laurent,BABYCAT,Unisex,بیبی کت,1,874,292.6,H,provisional,قیمت موقت با شاهد نام؛ هویت اسانس تأییدنشده,YZD-PROD-1512,https://www.yslbeautyus.com/fragrance/le-vestiaire-des-parfums/the-signature-collection/babycat---le-vestiaire-des-parfums/WW-50920YSL.html,official_reference_prices_v2.json
-Yves Saint Laurent,LIBRE,Unisex,لیبر,1,875,256.3,H,pending,هنوز قیمت مرجع منتسب نشده,,,
+Yves Saint Laurent,LIBRE,Unisex,لیبر,1,875,256.3,H,provisional,قیمت موقت با شاهد نام؛ هویت اسانس تأییدنشده,YZD-PROD-1504,https://www.yslbeautyus.com/fragrance/womens-fragrances/libre/libre-eau-de-parfum/109YSL.html,official_reference_prices_v23.json
 Yves Saint Laurent,LIBRE INTENSE,Women,لیبر اینتنس,1,876,119.9,B,provisional,قیمت موقت با شاهد نام؛ هویت اسانس تأییدنشده,YZD-PROD-1505,https://www.yslbeautyus.com/fragrance/womens-fragrances/libre/libre-eau-de-parfum-intense/306YSL.html,official_reference_prices_v2.json
 Yves Saint Laurent,Mon Paris,Women,مون پاریس,1,877,388.3,H,provisional,قیمت موقت با شاهد نام؛ هویت اسانس تأییدنشده,YZD-PROD-1507,https://www.yslbeautyus.com/fragrance/womens-fragrances/mon-paris/mon-paris-eau-de-parfum/4150YSL.html,official_reference_prices_v2.json
 Yves Saint Laurent,Supreme Bouquet,Women,سوپریم بوکت,1,878,264,H,legacy,قیمت قدیمی فقط نام؛ شاهد رسمی مرجع کامل نیست,YZD-PROD-0362,,supplier_exact_prices_staged.json

@@ -601,3 +601,14 @@ node_modules/   با npm install برمی‌گردد
 - `seed/official_identity_evidence_v21.json`
 - `seed/official_note_corrections_v17.json`
 - `scripts/test_official_reference_v22.js`
+
+
+### پنج تطبیق رسمی و مستقل
+
+- `seed/official_reference_prices_v23.json`
+- `seed/official_identity_evidence_v22.json`
+- `seed/official_note_corrections_v18.json`
+- `seed/secondary_reference_prices_v7.json`
+- `seed/secondary_supplement_v7.json`
+- `scripts/test_official_reference_v23.js`
+- `scripts/test_secondary_reference_v7.js`

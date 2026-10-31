@@ -1,0 +1,136 @@
+{
+  "version": "official_reference_prices_2026_11_v23",
+  "supplier_file_sha256": "bbe8f40610bc765bda0a7d2da9dbe78f4e397458a6991239c3c18d0853f33f5c",
+  "description": "Provisional name-based prices; supplier essence is unverified; no activation.",
+  "items": [
+    {
+      "product_id": "YZD-PROD-1804",
+      "slug": "burberry-burberry-goddess-edp",
+      "brand_en": "Burberry",
+      "expected_name_en": "Burberry Goddess EDP",
+      "reference_name": "Burberry Goddess Eau de Parfum",
+      "official_url": "https://us.burberry.com/burberry-goddess-eau-de-parfum-for-women-50ml-p40835971",
+      "supplier_brand": "BURBERRY",
+      "supplier_model": "GODDESS",
+      "usd_per_kg": "201.3",
+      "quality": "P",
+      "match_status": "name_matched_supplier_identity_unverified",
+      "expected_edps": [
+        {
+          "sku": "YZD-1804-EDP-010",
+          "volume_ml": 10,
+          "price_toman": 500000,
+          "stock": 0,
+          "price_usd": 5.0
+        },
+        {
+          "sku": "YZD-1804-EDP-030",
+          "volume_ml": 30,
+          "price_toman": 1200000,
+          "stock": 0,
+          "price_usd": 5.0
+        },
+        {
+          "sku": "YZD-1804-EDP-050",
+          "volume_ml": 50,
+          "price_toman": 1900000,
+          "stock": 0,
+          "price_usd": 5.0
+        },
+        {
+          "sku": "YZD-1804-EDP-100",
+          "volume_ml": 100,
+          "price_toman": 3650000,
+          "stock": 0,
+          "price_usd": 5.0
+        }
+      ]
+    },
+    {
+      "product_id": "YZD-PROD-1737",
+      "slug": "carolina-herrera-good-girl-edp",
+      "brand_en": "Carolina Herrera",
+      "expected_name_en": "CAROLINA HERRERA - Good Girl EDP",
+      "reference_name": "Good Girl Eau de Parfum",
+      "official_url": "https://www.carolinaherrera.com/us/en/p-fragrance/good-girl-eau-de-parfum",
+      "supplier_brand": "CAROLINA HRRERA",
+      "supplier_model": "Good Girl",
+      "usd_per_kg": "221.1",
+      "quality": "H",
+      "match_status": "name_matched_supplier_identity_unverified",
+      "expected_edps": [
+        {
+          "sku": "YZD-1737-EDP-010",
+          "volume_ml": 10,
+          "price_toman": 465000,
+          "stock": 0,
+          "price_usd": 4.5
+        },
+        {
+          "sku": "YZD-1737-EDP-030",
+          "volume_ml": 30,
+          "price_toman": 1094999,
+          "stock": 0,
+          "price_usd": 4.5
+        },
+        {
+          "sku": "YZD-1737-EDP-050",
+          "volume_ml": 50,
+          "price_toman": 1725000,
+          "stock": 0,
+          "price_usd": 4.5
+        },
+        {
+          "sku": "YZD-1737-EDP-100",
+          "volume_ml": 100,
+          "price_toman": 3300000,
+          "stock": 0,
+          "price_usd": 4.5
+        }
+      ]
+    },
+    {
+      "product_id": "YZD-PROD-1504",
+      "slug": "yves-saint-laurent-libre-edp",
+      "brand_en": "Yves Saint Laurent",
+      "expected_name_en": "YVES SAINT LAURENT - Libre EDP",
+      "reference_name": "Libre Eau de Parfum",
+      "official_url": "https://www.yslbeautyus.com/fragrance/womens-fragrances/libre/libre-eau-de-parfum/109YSL.html",
+      "supplier_brand": "Yves Saint Laurent",
+      "supplier_model": "LIBRE",
+      "usd_per_kg": "256.3",
+      "quality": "H",
+      "match_status": "name_matched_supplier_identity_unverified",
+      "expected_edps": [
+        {
+          "sku": "YZD-1504-EDP-010",
+          "volume_ml": 10,
+          "price_toman": 465000,
+          "stock": 0,
+          "price_usd": 4.5
+        },
+        {
+          "sku": "YZD-1504-EDP-030",
+          "volume_ml": 30,
+          "price_toman": 1094999,
+          "stock": 0,
+          "price_usd": 4.5
+        },
+        {
+          "sku": "YZD-1504-EDP-050",
+          "volume_ml": 50,
+          "price_toman": 1725000,
+          "stock": 0,
+          "price_usd": 4.5
+        },
+        {
+          "sku": "YZD-1504-EDP-100",
+          "volume_ml": 100,
+          "price_toman": 3300000,
+          "stock": 0,
+          "price_usd": 4.5
+        }
+      ]
+    }
+  ]
+}
