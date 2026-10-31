@@ -1,0 +1,36 @@
+{
+  "version": "official_identity_evidence_v7",
+  "scope": "Official original only; supplier essence identity remains unverified.",
+  "items": [
+    {
+      "product_id": "YZD-PROD-0679",
+      "slug": "kilian-paris-black-phantom-memento-mori",
+      "brand_en": "Kilian Paris",
+      "expected_name_en": "KILIAN PARIS - Black Phantom - Memento Mori",
+      "reference_name": "Black Phantom - Memento Mori",
+      "official_url": "https://www.bykilian.com/product/19797/141058/perfume/black-phantom--memento-mori-icon-set",
+      "status": "official_original_found_supplier_essence_unverified",
+      "checked_date": "2026-10-31"
+    },
+    {
+      "product_id": "YZD-PROD-0502",
+      "slug": "penhaligons-the-blazing-mr-sam",
+      "brand_en": "Penhaligon's",
+      "expected_name_en": "PENHALIGON'S - The Blazing Mr Sam",
+      "reference_name": "The Blazing Mister Sam",
+      "official_url": "https://www.penhaligons.com/fr/en/p/the-blazing-mister-sam-eau-de-parfum-75ml--000000000065173422",
+      "status": "official_original_found_supplier_essence_unverified",
+      "checked_date": "2026-10-31"
+    },
+    {
+      "product_id": "YZD-PROD-1625",
+      "slug": "mugler-womanity",
+      "brand_en": "Mugler",
+      "expected_name_en": "MUGLER - Womanity",
+      "reference_name": "Womanity",
+      "official_url": "https://inter.mugler.com/default/fragrance/women-s-fragrances/womanity/womanity-eau-de-parfum/M01090105.html",
+      "status": "official_original_found_supplier_essence_unverified",
+      "checked_date": "2026-10-31"
+    }
+  ]
+}

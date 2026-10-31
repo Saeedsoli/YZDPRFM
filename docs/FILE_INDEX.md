@@ -466,3 +466,8 @@ node_modules/   با npm install برمی‌گردد
 
 - `scripts/test_reference_prices_v7.js`
 - `scripts/test_official_notes_v9.js`
+
+### سه قیمت مرجع و اصلاح نت‌های کلیدی
+
+- `scripts/test_reference_prices_v8.js`
+- `scripts/test_official_notes_v10.js`

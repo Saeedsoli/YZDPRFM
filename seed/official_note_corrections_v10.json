@@ -1,0 +1,120 @@
+{
+  "version": "official_notes_2026_10_v10",
+  "description": "Official reference-original notes only; unclassified notes are not assigned to a tier.",
+  "items": [
+    {
+      "product_id": "YZD-PROD-0679",
+      "product_slug": "kilian-paris-black-phantom-memento-mori",
+      "official_brand": "Kilian Paris",
+      "official_name": "Black Phantom - Memento Mori",
+      "source_url": "https://www.bykilian.com/product/19797/141058/perfume/black-phantom--memento-mori-icon-set",
+      "source_scope": "Official key notes without tiers; the gift set contains the same perfume.",
+      "expected_old_notes": {
+        "top": [
+          "شکلات تلخ",
+          "قهوه اسپرسو داغ"
+        ],
+        "middle": [
+          "نیشکر",
+          "بادام تلخ",
+          "کارامل",
+          "رام کارائیبی"
+        ],
+        "base": [
+          "چوب صندل",
+          "گل آفتاب‌پرست"
+        ]
+      },
+      "verified_notes": {
+        "top": [],
+        "middle": [],
+        "base": []
+      },
+      "expected_old_accords": [
+        "کشتی دزدان دریایی کارائیب",
+        "نوشیدن رام و قهوه تلخ در کنار شکلات ذوب‌شده"
+      ],
+      "verified_accords": [
+        "رام",
+        "قهوه",
+        "چوب صندل"
+      ]
+    },
+    {
+      "product_id": "YZD-PROD-0502",
+      "product_slug": "penhaligons-the-blazing-mr-sam",
+      "official_brand": "Penhaligon's",
+      "official_name": "The Blazing Mister Sam",
+      "source_url": "https://www.penhaligons.com/fr/en/p/the-blazing-mister-sam-eau-de-parfum-75ml--000000000065173422",
+      "source_scope": "Official key notes without tiers; source lists the original product.",
+      "expected_old_notes": {
+        "top": [
+          "هل گواتمالا",
+          "دارچین"
+        ],
+        "middle": [
+          "زیره سیاه",
+          "زعفران",
+          "فلفل سیاه"
+        ],
+        "base": [
+          "تنباکو",
+          "وانیل",
+          "سدر",
+          "نعناع هندی"
+        ]
+      },
+      "verified_notes": {
+        "top": [],
+        "middle": [],
+        "base": []
+      },
+      "expected_old_accords": [
+        "ادویه‌ای گرم",
+        "تنباکویی",
+        "وانیل دارچینی",
+        "اغواگر"
+      ],
+      "verified_accords": [
+        "فلفل سیاه",
+        "هل",
+        "چوب سدر"
+      ]
+    },
+    {
+      "product_id": "YZD-PROD-1625",
+      "product_slug": "mugler-womanity",
+      "official_brand": "Mugler",
+      "official_name": "Womanity",
+      "source_url": "https://inter.mugler.com/default/fragrance/women-s-fragrances/womanity/womanity-eau-de-parfum/M01090105.html",
+      "source_scope": "Official description and accords without top/middle/base pyramid. The US site lists it discontinued in that market; do not generalize to all markets.",
+      "expected_old_notes": {
+        "top": [
+          "انجیر شیرین رسیده"
+        ],
+        "middle": [
+          "خاویار سیاه نمکی دریایی"
+        ],
+        "base": [
+          "برگ درخت انجیر",
+          "چوب درخت انجیر"
+        ]
+      },
+      "verified_notes": {
+        "top": [],
+        "middle": [],
+        "base": []
+      },
+      "expected_old_accords": [
+        "طراحی بدنه فلزی گوتیک با صورتک زنانه",
+        "جسورانه‌ترین ترکیب شیرینی انجیر و شوری خاویار در تاریخ"
+      ],
+      "verified_accords": [
+        "انجیر",
+        "برگ انجیر",
+        "چوب انجیر",
+        "آکورد خاویار"
+      ]
+    }
+  ]
+}
