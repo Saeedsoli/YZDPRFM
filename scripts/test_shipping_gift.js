@@ -132,9 +132,11 @@ function stockedVariant(minPrice, maxPrice) {
        بدون این کار، بررسی «نمونه‌ای نبود» سبز می‌شد — یعنی سبزِ
        توخالی روی مهم‌ترین قانون این فایل. */
     const edge = db.prepare(`
-      SELECT sku, price_toman, stock FROM variants
-      WHERE price_toman > ? AND price_toman < ?
-      ORDER BY price_toman DESC LIMIT 1`)
+      SELECT v.sku, v.price_toman, v.stock, p.id AS product_id, p.supply_mode
+      FROM variants v JOIN products p ON p.id=v.product_id
+      WHERE v.type='EDP' AND v.volume_ml IN (10,30,50,100)
+        AND v.price_toman > ? AND v.price_toman < ?
+      ORDER BY v.price_toman DESC LIMIT 1`)
       .get(FREE_THRESHOLD - GIFT_FEE, FREE_THRESHOLD);
 
     if (!edge) {
@@ -143,6 +145,7 @@ function stockedVariant(minPrice, maxPrice) {
     } else {
       const prevStock = edge.stock;
       db.prepare('UPDATE variants SET stock=5 WHERE sku=?').run(edge.sku);
+      db.prepare("UPDATE products SET supply_mode='IN_STOCK' WHERE id=?").run(edge.product_id);
       try {
         const trap = await calc({ items: [{ sku: edge.sku, quantity: 1 }], gift_wrap: true });
         const withGift = trap.json.subtotal + GIFT_FEE;
@@ -153,6 +156,7 @@ function stockedVariant(minPrice, maxPrice) {
       } finally {
         // موجودی همیشه برگردانده می‌شود، حتی اگر بررسی بالا خطا دهد
         db.prepare('UPDATE variants SET stock=? WHERE sku=?').run(prevStock, edge.sku);
+        db.prepare('UPDATE products SET supply_mode=? WHERE id=?').run(edge.supply_mode, edge.product_id);
       }
     }
   }

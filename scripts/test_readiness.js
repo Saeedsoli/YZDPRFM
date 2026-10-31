@@ -84,7 +84,7 @@ const api = (port, p, opt = {}, tok = null) =>
  * که مدیر در پنل عوض کرده با یک ری‌استارت برنگردد.
  */
 async function login(port, pw) {
-  for (const p of [pw, 'yazd1404']) {
+  for (const p of [...new Set([pw, process.env.ADMIN_PASSWORD, 'yazd1404'].filter(Boolean))]) {
     const r = await api(port, '/api/admin/login', {
       method: 'POST',
       body: JSON.stringify({ username: process.env.ADMIN_USERNAME || 'owner', password: p })
@@ -278,7 +278,7 @@ async function login(port, pw) {
 
     {
       const P3 = 4483;
-      procs.push(await boot(P3, {}));
+      procs.push(await boot(P3, { ADMIN_PASSWORD: 'yazd1404' }));
       const T3 = await login(P3, 'yazd1404');
       const res = await api(P3, '/api/admin/readiness?deep=1', {}, T3);
       const b = res.body;

@@ -111,6 +111,15 @@ chk "$(curl -s -o /dev/null -w '%{http_code}' 'http://localhost:3000/api/product
 ATOK=$(curl -s -X POST http://localhost:3000/api/admin/login -H 'Content-Type: application/json' \
   -d '{"username":"owner","password":"yazd1404"}' | node -e "let d='';process.stdin.on('data',c=>d+=c).on('end',()=>{try{console.log(JSON.parse(d).token||'')}catch{console.log('')}})")
 
+# Complete the forced initial password change through the real API in the
+# disposable store. Later admin/RBAC tests must not bypass that security gate.
+if [ -z "$ATOK" ]; then echo 'Smoke owner login failed' >&2; exit 2; fi
+CHANGE_STATUS=$(curl -s -o /dev/null -w '%{http_code}' -X POST http://localhost:3000/api/admin/change-password \
+  -H 'Content-Type: application/json' -H "Authorization: Bearer $ATOK" \
+  -d '{"current":"yazd1404","new_password":"SmokeFixture-8372"}')
+if [ "$CHANGE_STATUS" != 200 ]; then echo "Smoke owner password change failed: $CHANGE_STATUS" >&2; exit 2; fi
+export ADMIN_PASSWORD='SmokeFixture-8372'
+
 echo "== security headers"
 HDR=$(curl -sI http://localhost:3000/)
 chk "$(echo "$HDR" | grep -ci 'X-Frame-Options: SAMEORIGIN')" "1" "x-frame-options"
@@ -152,7 +161,7 @@ chk "$WEBP" "image/webp" "auto-webp serving"
 # هویت لوگو — باید اینجا اجرا شود چون به سرور زنده نیاز دارد
 # (بخش بعدی سرور را می‌کشد).
 run_test test_brand_logo.js "brand logo identity"
-run_test test_shipping_gift.js "shipping rates and gift wrap"
+if node -e "const {withStock}=require('./scripts/lib/test_stock');const {spawnSync}=require('child_process');const lease=withStock('data/yazd.db',1,500,'EDP');try{if(!lease.skus.length)process.exitCode=1;else {const r=spawnSync(process.execPath,['scripts/test_shipping_gift.js'],{stdio:'inherit',env:process.env});process.exitCode=r.status===0?0:1;}}finally{lease.restore();}" > /tmp/test_shipping_gift.log 2>&1; then P=$((P+1)); else F=$((F+1)); echo "  X shipping rates and gift wrap"; fi
 
 echo "== backup endpoints"
 BK=$(curl -s http://localhost:3000/api/admin/backups -H "Authorization: Bearer $ATOK" \

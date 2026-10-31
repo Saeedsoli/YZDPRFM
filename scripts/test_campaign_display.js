@@ -108,7 +108,7 @@ const api = (p, opt = {}, tok = null) =>
     /* محصولی از خانواده چوبی که هم سمپل دارد هم EDP —
        برای سنجش جشنواره نوع‌محور لازم است. */
     const P = db.prepare(`
-      SELECT p.id, p.slug, p.family_slug, p.brand_fa, p.gender
+      SELECT p.id, p.slug, p.family_slug, p.brand_fa, p.gender, p.supply_mode
       FROM products p
       WHERE p.family_slug = 'woody'
         AND EXISTS (SELECT 1 FROM variants v WHERE v.product_id=p.id AND v.type='SAMPLE')
@@ -131,10 +131,12 @@ const api = (p, opt = {}, tok = null) =>
     const prev = [vEdp.sku, vSmp.sku].map(sku =>
       ({ sku, stock: db.prepare('SELECT stock FROM variants WHERE sku=?').get(sku).stock }));
     db.prepare('UPDATE variants SET stock=20 WHERE sku IN (?,?)').run(vEdp.sku, vSmp.sku);
+    db.prepare("UPDATE products SET supply_mode='IN_STOCK' WHERE id=?").run(P.id);
     db.close();
     restoreStock = () => {
       const d2 = new Database(DB);
       prev.forEach(x => d2.prepare('UPDATE variants SET stock=? WHERE sku=?').run(x.stock, x.sku));
+      d2.prepare('UPDATE products SET supply_mode=? WHERE id=?').run(P.supply_mode, P.id);
       d2.close();
     };
 
@@ -512,19 +514,23 @@ const api = (p, opt = {}, tok = null) =>
          هم زیرش نبردش (آستانه ÷ ۰٫۹). */
       const FREE_SHIP = 2000000;
       const edge = db3.prepare(`
-        SELECT sku, price_toman FROM variants
-        WHERE price_toman > ? AND price_toman < ? LIMIT 1`)
+        SELECT v.sku, v.price_toman, p.id AS product_id, p.supply_mode
+        FROM variants v JOIN products p ON p.id=v.product_id
+        WHERE v.type='EDP' AND v.volume_ml IN (10,30,50,100)
+          AND v.price_toman > ? AND v.price_toman < ? LIMIT 1`)
         .get(FREE_SHIP, Math.floor(FREE_SHIP / 0.9));
       let edgePrev = null;
       if (edge) {
         edgePrev = db3.prepare('SELECT stock FROM variants WHERE sku=?').get(edge.sku).stock;
         db3.prepare('UPDATE variants SET stock=5 WHERE sku=?').run(edge.sku);
+        db3.prepare("UPDATE products SET supply_mode='IN_STOCK' WHERE id=?").run(edge.product_id);
       }
       db3.close();
 
       if (!edge) {
         add('واریانت مرزی برای آزمون یافت شد', false);
       } else {
+        try {
         const one = [{ sku: edge.sku, quantity: 1 }];
 
         const noCamp = await api('/api/cart/calculate', {
@@ -577,10 +583,14 @@ const api = (p, opt = {}, tok = null) =>
           add('ثبت سفارش مرزی', false, ord2.body.error);
         }
 
-        if (edgePrev !== null) {
-          const db5 = new Database(DB);
-          db5.prepare('UPDATE variants SET stock=? WHERE sku=?').run(edgePrev, edge.sku);
-          db5.close();
+        } finally {
+          if (edgePrev !== null) {
+            const db5 = new Database(DB);
+            try {
+              db5.prepare('UPDATE variants SET stock=? WHERE sku=?').run(edgePrev, edge.sku);
+              db5.prepare('UPDATE products SET supply_mode=? WHERE id=?').run(edge.supply_mode, edge.product_id);
+            } finally { db5.close(); }
+          }
         }
       }
     }

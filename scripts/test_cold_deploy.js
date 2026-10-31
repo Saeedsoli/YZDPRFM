@@ -96,7 +96,7 @@ function dockerCopiedDirs() {
     const t0 = Date.now();
     proc = spawn('node', ['src/server.js'], {
       cwd: stage,
-      env: { ...process.env, BACKUP_DISABLED: '1', PORT: String(PORT),
+      env: { ...process.env, ADMIN_USERNAME: 'owner', ADMIN_PASSWORD: 'yazd1404', BACKUP_DISABLED: '1', PORT: String(PORT),
              DB_PATH: path.join(stage, 'data', 'yazd.db') },
       stdio: 'ignore'
     });
@@ -218,8 +218,8 @@ function dockerCopiedDirs() {
     const login = await fetch(`${BASE}/api/admin/login`, {
       method: 'POST', headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        username: process.env.ADMIN_USERNAME || 'owner',
-        password: process.env.ADMIN_PASSWORD || 'yazd1404'
+        username: 'owner',
+        password: 'yazd1404'
       })
     }).then(r => r.json());
     add('مدیر کل می‌تواند وارد شود', !!login.token);

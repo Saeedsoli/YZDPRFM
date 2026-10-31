@@ -19,6 +19,7 @@
 const { spawn } = require('child_process');
 const path = require('path');
 const Database = require('better-sqlite3');
+const { withStock } = require('./lib/test_stock');
 
 const ROOT = path.dirname(__dirname);
 const DB = path.join(ROOT, 'data', 'yazd.db');
@@ -129,19 +130,17 @@ function usageCount(code) {
   seedCoupons();
 
   const srv = await boot();
+  let stockLease = null;
   const finish = code => {
     try { srv.kill('SIGKILL'); } catch {}
+    try { if (stockLease) stockLease.restore(); } catch {}
     cleanup();
     process.exit(code);
   };
 
-  const cat = await (await fetch(`${BASE}/api/products?limit=1&full=1`)).json();
-  const v = cat.products[0].variants.find(x => x.stock > 30) || cat.products[0].variants[0];
-
-  const db0 = new Database(DB);
-  db0.prepare('UPDATE variants SET stock=100 WHERE sku=?').run(v.sku);
-  const origStock = db0.prepare('SELECT stock FROM variants WHERE sku=?').get(v.sku).stock;
-  db0.close();
+  stockLease = withStock(DB, 1, 100, 'EDP');
+  if (!stockLease.skus.length) { console.error('No sellable test variant'); return finish(1); }
+  const v = { sku: stockLease.skus[0] };
 
   const checks = [];
 
@@ -220,11 +219,6 @@ function usageCount(code) {
     console.log(`  ${pass ? g('✓') : r('✗')} ${label}`);
     if (!pass) failed++;
   }
-
-  // بازگرداندن موجودی
-  const db2 = new Database(DB);
-  db2.prepare('UPDATE variants SET stock=? WHERE sku=?').run(origStock, v.sku);
-  db2.close();
 
   console.log();
   console.log(failed === 0

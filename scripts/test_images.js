@@ -67,7 +67,15 @@ const drift = rows.filter(x =>
   && /\/fam-/.test(imageForProduct(null, x.family_slug, x.id, x.gender)));
 
 // محصولاتی که برندشان تصویر اختصاصی دارد استثنا هستند
-const realDrift = drift.filter(x => !/brand-/.test(x.image_url));
+// A verified gender correction deliberately preserves the pre-existing image:
+// changing gender metadata must not silently change the approved visual asset.
+const genderFixes = [...require('../seed/official_gender_corrections_v1.json').items,
+                     ...require('../seed/official_gender_corrections_v2.json').items];
+const realDrift = drift.filter(x => {
+  if (/brand-/.test(x.image_url)) return false;
+  const fix = genderFixes.find(f => f.product_id === x.id && f.official_gender === x.gender);
+  return !(fix && imageForProduct(null, x.family_slug, x.id, fix.expected_old_gender) === x.image_url);
+});
 add('تخصیص پایدار است (اجرای دوباره تغییری نمی‌دهد)', realDrift.length === 0,
     realDrift.length ? `${realDrift.length} محصول جابه‌جا شد` : '');
 

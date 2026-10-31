@@ -19,6 +19,7 @@
 const { spawn } = require('child_process');
 const path = require('path');
 const Database = require('better-sqlite3');
+const { withStock } = require('./lib/test_stock');
 
 const ROOT = path.dirname(__dirname);
 const DB = path.join(ROOT, 'data', 'yazd.db');
@@ -78,6 +79,7 @@ const api = (p, opt = {}, token = null) =>
   cleanup();
   const srv = await boot();
   const db = new Database(DB);
+  const stockLease = withStock(DB, 1, 20, 'EDP');
 
   const checks = [];
   const add = (label, ok, note) => {
@@ -87,6 +89,7 @@ const api = (p, opt = {}, token = null) =>
   const finish = (aborted) => {
     try { srv.kill('SIGKILL'); } catch {}
     try { db.close(); } catch {}
+    try { stockLease.restore(); } catch {}
     cleanup();
     const failed = checks.filter(x => !x).length;
     console.log();
@@ -333,8 +336,8 @@ const api = (p, opt = {}, token = null) =>
   // ══ ۱) فیلدهای سفارش ══
   console.log(d('\n  فیلدهای سفارش'));
 
-  const prod = await fetch(`${BASE}/api/products?limit=1&full=1`).then(r => r.json());
-  const sku = prod.products[0].variants[0].sku;
+  const sku = stockLease.skus[0];
+  if (!sku) { add('واریانت آزمایشی', false); return finish(); }
 
   const order = await api('/api/orders', {
     method: 'POST',
