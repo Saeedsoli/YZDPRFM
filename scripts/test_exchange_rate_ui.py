@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """End-to-end rate UI test with an isolated seeded database."""
-import os,socket,sqlite3,subprocess,tempfile,time,urllib.request
+import json,os,socket,sqlite3,subprocess,tempfile,time,urllib.request
 from pathlib import Path
 from playwright.sync_api import sync_playwright, expect
 root=Path(__file__).resolve().parent.parent
@@ -9,6 +9,8 @@ with tempfile.TemporaryDirectory(prefix='yazd-rate-ui-') as tmp:
     env={**os.environ,'DB_PATH':dbfile,'BACKUP_DISABLED':'1','PORT':str(port),'ADMIN_USERNAME':'owner','ADMIN_PASSWORD':'test-rate-secret-123'}
     init="const {db}=require('./src/db');require('./src/import-supplier-prices').importSupplierPrices(db,require('./seed/supplier_exact_prices_staged.json'));"
     subprocess.run(['node','-e',init],cwd=root,env=env,check=True,stdout=subprocess.DEVNULL,timeout=120)
+    expected_products=len(json.loads((root/'seed/supplier_exact_prices_staged.json').read_text(encoding='utf8'))['prices'])+len(json.loads((root/'seed/lv_reference_prices_v1.json').read_text(encoding='utf8'))['items'])
+    expected_fa=str(expected_products*6).translate(str.maketrans('0123456789','۰۱۲۳۴۵۶۷۸۹'))
     server=subprocess.Popen(['node','src/server.js'],cwd=root,env=env,stdout=subprocess.DEVNULL,stderr=subprocess.PIPE)
     try:
         base=f'http://127.0.0.1:{port}'
@@ -29,7 +31,7 @@ with tempfile.TemporaryDirectory(prefix='yazd-rate-ui-') as tmp:
             page.locator('#exchangeRateInput').fill('۲۵۰٬۰۰۰')
             page.locator('#exchangePreviewBtn').click()
             expect(page.locator('#exchangeRatePreview')).to_be_visible()
-            expect(page.locator('#exchangeRatePreview')).to_contain_text('۲۵۲')
+            expect(page.locator('#exchangeRatePreview')).to_contain_text(expected_fa)
             expect(page.locator('#exchangeApplyBtn')).to_be_visible()
             page.locator('#exchangeRateInput').fill('۲۶۰۰۰۰')
             expect(page.locator('#exchangeApplyBtn')).to_be_hidden()
@@ -38,7 +40,7 @@ with tempfile.TemporaryDirectory(prefix='yazd-rate-ui-') as tmp:
             page.once('dialog',lambda dialog:dialog.accept())
             page.locator('#exchangeApplyBtn').click()
             expect(page.locator('#exchangeRateCurrent')).to_contain_text('۲۵۰٬۰۰۰')
-            expect(page.locator('#exchangeRateMessage')).to_contain_text('۲۵۲')
+            expect(page.locator('#exchangeRateMessage')).to_contain_text(expected_fa)
             expect(page.locator('#exchangeApplyBtn')).to_be_hidden()
             con=sqlite3.connect(dbfile)
             assert con.execute("select value from settings where key='essence_usd_rate_toman'").fetchone()[0]=='250000'

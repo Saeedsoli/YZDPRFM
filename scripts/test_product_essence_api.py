@@ -54,7 +54,7 @@ with tempfile.TemporaryDirectory(prefix='yazd-product-essence-') as tmp:
         status,state=api('GET',route,token=token);assert state['usd_per_gram']=='0.286' and state['toman_per_gram']=='85800',state
         assert con.execute("select count(*) from audit_log where action='products.essence_price'").fetchone()[0]==1
         # New sourced catalog product initially has no variants: generate all six with one price update.
-        new_id='SUP-LV-900001';new_route='/api/admin/essence-pricing/products/'+new_id
+        new_id='SUP-ATKINSONS-OUD-SAVE-THE-KING';new_route='/api/admin/essence-pricing/products/'+new_id
         status,new_preview=api('POST',new_route+'/preview',{'usd_per_gram':'0.4037'},token)
         assert status==200 and len(new_preview['changes'])==6,(status,new_preview)
         status,new_result=api('PUT',new_route,{'usd_per_gram':'0.4037','expected_rate_toman':300000,'expected_usd_per_kg':None},token)

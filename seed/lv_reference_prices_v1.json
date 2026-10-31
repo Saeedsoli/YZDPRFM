@@ -1,0 +1,61 @@
+{
+  "version": "lv_reference_prices_v1",
+  "supplier_file_sha256": "bbe8f40610bc765bda0a7d2da9dbe78f4e397458a6991239c3c18d0853f33f5c",
+  "description": "Exact-name association only; supplier essence identity and variant are not independently verified. Prices do not imply availability.",
+  "items": [
+    {
+      "product_id": "SUP-LV-900001",
+      "slug": "louis-vuitton-afternoon-swim",
+      "reference_name": "Afternoon Swim",
+      "official_url": "https://us.louisvuitton.com/eng-us/products/afternoon-swim-nvprod7330060v/LP0487",
+      "usd_per_kg": "403.7",
+      "quality": "H",
+      "match_status": "name_matched_supplier_identity_unverified"
+    },
+    {
+      "product_id": "SUP-LV-900002",
+      "slug": "louis-vuitton-imagination",
+      "reference_name": "Imagination",
+      "official_url": "https://en.louisvuitton.com/eng-nl/products/Imagination-nvprod7340011v/LP0476",
+      "usd_per_kg": "618.2",
+      "quality": "H",
+      "match_status": "name_matched_supplier_identity_unverified"
+    },
+    {
+      "product_id": "SUP-LV-900003",
+      "slug": "louis-vuitton-limmensite",
+      "reference_name": "L'Immensité",
+      "official_url": "https://us.louisvuitton.com/eng-us/products/limmensite-nvprod1030132v/LP0062",
+      "usd_per_kg": "478.5",
+      "quality": "H",
+      "match_status": "name_matched_supplier_identity_unverified"
+    },
+    {
+      "product_id": "SUP-LV-900004",
+      "slug": "louis-vuitton-ombre-nomade",
+      "reference_name": "Ombre Nomade",
+      "official_url": "https://me.louisvuitton.com/eng-ae/products/Ombre-Nomade-nvprod990245v/LP0096",
+      "usd_per_kg": "425.7",
+      "quality": "H",
+      "match_status": "name_matched_supplier_identity_unverified"
+    },
+    {
+      "product_id": "SUP-LV-900005",
+      "slug": "louis-vuitton-stellar-times",
+      "reference_name": "Stellar Times",
+      "official_url": "https://my.louisvuitton.com/eng-my/products/stellar-times-nvprod7340023v/LP0526",
+      "usd_per_kg": "429",
+      "quality": "H",
+      "match_status": "name_matched_supplier_identity_unverified"
+    },
+    {
+      "product_id": "SUP-LV-900006",
+      "slug": "louis-vuitton-california-dream",
+      "reference_name": "California Dream",
+      "official_url": "https://uk.louisvuitton.com/eng-gb/products/california-dream-nvprod2210033v/LP0175",
+      "usd_per_kg": "126.5",
+      "quality": "I",
+      "match_status": "name_matched_supplier_identity_unverified"
+    }
+  ]
+}

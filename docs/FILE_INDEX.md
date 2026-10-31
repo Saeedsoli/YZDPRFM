@@ -421,3 +421,8 @@ node_modules/   با npm install برمی‌گردد
 - `src/retire-sample3-cli.js`
 - `src/variant-history.js`
 - `src/variant-visibility.js`
+
+### ورود قیمت مرجع لویی ویتون
+
+- `scripts/test_lv_reference_prices.js`
+- `src/lv-reference-prices.js`

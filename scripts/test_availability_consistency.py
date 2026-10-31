@@ -17,7 +17,7 @@ with tempfile.TemporaryDirectory(prefix='yazd-availability-') as tmp:
         sku=con.execute("select sku from variants where product_id=? and type='EDP' and volume_ml=10",(id,)).fetchone()[0]
         con.execute('update variants set stock=?,price_toman=? where sku=?',(stock,0 if id==ids[-1] else 100000,sku));skus.append(sku)
         slugs.append(con.execute('select slug from products where id=?',(id,)).fetchone()[0])
-    con.execute("update products set supply_mode='MADE_TO_ORDER' where id='SUP-LV-900001'");con.commit()
+    con.execute("update products set supply_mode='MADE_TO_ORDER' where id='SUP-ATKINSONS-OUD-SAVE-THE-KING'");con.commit()
     server=subprocess.Popen(['node','src/server.js'],cwd=root,env=env,stdout=subprocess.DEVNULL,stderr=subprocess.PIPE)
     try:
         base=f'http://127.0.0.1:{port}'
@@ -43,14 +43,14 @@ with tempfile.TemporaryDirectory(prefix='yazd-availability-') as tmp:
         stock=json.loads(get('/api/products?in_stock=1&limit=100'))
         assert ids[0] not in [x['id'] for x in stock['products']] and ids[3] in [x['id'] for x in stock['products']]
         sitemap=get('/sitemap.xml');assert '/perfume/'+slugs[0]+'<' not in sitemap and '/perfume/'+slugs[1]+'<' in sitemap and '/perfume/'+slugs[2]+'<' not in sitemap
-        assert '/perfume/louis-vuitton-afternoon-swim<' not in sitemap
+        assert '/perfume/atkinsons-oud-save-the-king<' not in sitemap
         def product_schema(slug):
             html=get('/perfume/'+slug);blocks=re.findall(r'<script type="application/ld\+json">(.*?)</script>',html,re.S)
             return html,next(x for x in map(json.loads,blocks) if x.get('@type')=='Product')
         html,schema=product_schema(slugs[0]);assert schema['offers']['availability'].endswith('OutOfStock') and 'noindex, follow' in html
         html,schema=product_schema(slugs[1]);assert schema['offers']['availability'].endswith('BackOrder') and 'noindex, follow' not in html
         html,schema=product_schema(slugs[2]);assert schema['offers']['availability'].endswith('OutOfStock') and 'noindex, follow' in html
-        html,schema=product_schema('louis-vuitton-afternoon-swim');assert 'offers' not in schema and 'noindex, follow' in html
+        html,schema=product_schema('atkinsons-oud-save-the-king');assert 'offers' not in schema and 'noindex, follow' in html
         with sync_playwright() as pw:
             browser=pw.chromium.launch(headless=True,args=['--no-sandbox']);page=browser.new_page(viewport={'width':390,'height':844});errors=[]
             page.on('pageerror',lambda e:errors.append(str(e)))
@@ -61,7 +61,7 @@ with tempfile.TemporaryDirectory(prefix='yazd-availability-') as tmp:
                 else: expect(page.locator('#addBtn')).to_be_enabled()
                 if index==0: expect(page.locator('#stockInfo')).to_have_text('فعلاً امکان تهیه نیست')
                 if index==1: expect(page.locator('#addBtn')).to_contain_text('سفارش ساخت')
-            page.goto(base+'/perfume/louis-vuitton-afternoon-swim',wait_until='domcontentloaded')
+            page.goto(base+'/perfume/atkinsons-oud-save-the-king',wait_until='domcontentloaded')
             expect(page.locator('#content')).to_be_visible();expect(page.locator('#addBtn')).to_be_disabled();expect(page.locator('#price')).to_have_text('قیمت در دسترس نیست')
             page.goto(base+'/')
             recent=page.evaluate("() => productCard({name_fa:'تست',slug:'test',min_price:100000,image_url:'',notes:{top:[]},availability_unknown:true})")
