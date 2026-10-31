@@ -1,0 +1,56 @@
+{
+  "version": "official_identity_evidence_v12",
+  "scope": "Official original only; supplier essence identity remains unverified.",
+  "items": [
+    {
+      "product_id": "YZD-PROD-1627",
+      "slug": "lancme-la-vie-est-belle-edp",
+      "brand_en": "Lancôme",
+      "expected_name_en": "LANCÔME - La Vie Est Belle EDP",
+      "reference_name": "La vie est belle Eau de Parfum",
+      "official_url": "https://www.lancome-usa.com/fragrance/fragrance-by-collection/la-vie-est-belle/la-vie-est-belle-eau-de-parfum/100606.html",
+      "status": "official_original_found_supplier_essence_unverified",
+      "checked_date": "2026-10-31"
+    },
+    {
+      "product_id": "SUP-EX-900011",
+      "slug": "ex-nihilo-fleur-narcotique",
+      "brand_en": "Ex Nihilo",
+      "expected_name_en": "EX NIHILO - Fleur Narcotique",
+      "reference_name": "Fleur Narcotique",
+      "official_url": "https://us.ex-nihilo-paris.com/products/fleur-narcotique-eau-de-parfum",
+      "status": "official_original_found_supplier_essence_unverified",
+      "checked_date": "2026-10-31"
+    },
+    {
+      "product_id": "SUP-EX-900012",
+      "slug": "ex-nihilo-blue-talisman",
+      "brand_en": "Ex Nihilo",
+      "expected_name_en": "EX NIHILO - Blue Talisman",
+      "reference_name": "Blue Talisman",
+      "official_url": "https://us.ex-nihilo-paris.com/products/blue-talisman-eau-de-parfum",
+      "status": "official_original_found_supplier_essence_unverified",
+      "checked_date": "2026-10-31"
+    },
+    {
+      "product_id": "SUP-AT-900013",
+      "slug": "atkinsons-her-majesty-the-oud",
+      "brand_en": "Atkinsons",
+      "expected_name_en": "ATKINSONS - Her Majesty The Oud",
+      "reference_name": "Her Majesty The Oud",
+      "official_url": "https://www.atkinsons1799.com/en_eu/custom-sample-set",
+      "status": "official_original_found_supplier_essence_unverified",
+      "checked_date": "2026-10-31"
+    },
+    {
+      "product_id": "SUP-AG-900014",
+      "slug": "ariana-grande-ari",
+      "brand_en": "Ariana Grande",
+      "expected_name_en": "ARIANA GRANDE - Ari",
+      "reference_name": "Ari",
+      "official_url": "https://arianagrandefragrances.com/products/ari-by-ariana-grande",
+      "status": "official_original_found_supplier_essence_unverified",
+      "checked_date": "2026-10-31"
+    }
+  ]
+}

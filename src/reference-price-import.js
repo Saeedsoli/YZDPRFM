@@ -16,13 +16,14 @@ const VERSION_9='official_reference_prices_2026_10_v9';
 const VERSION_10='official_reference_prices_2026_10_v10';
 const VERSION_11='official_reference_prices_2026_10_v11';
 const VERSION_12='official_reference_prices_2026_10_v12';
+const VERSION_13='official_reference_prices_2026_10_v13';
 const V1_HOSTS=new Set(['lattafa.com','www.creedfragrance.com','www.atkinsons1799.com']);
 function applyReferencePrices(db,file){
  if(!fs.existsSync(file))return {applied:0,skipped:0,reason:'file_missing'};
  const data=JSON.parse(fs.readFileSync(file,'utf8'));
  const second=data.version===VERSION_2;
- const needsIdentity=[VERSION_2,VERSION_3,VERSION_4,VERSION_5,VERSION_6,VERSION_7,VERSION_8,VERSION_9,VERSION_10,VERSION_11,VERSION_12].includes(data.version);
- const counts={[VERSION]:4,[VERSION_2]:37,[VERSION_3]:6,[VERSION_4]:6,[VERSION_5]:8,[VERSION_6]:1,[VERSION_7]:5,[VERSION_8]:3,[VERSION_9]:1,[VERSION_10]:2,[VERSION_11]:6,[VERSION_12]:5};
+ const needsIdentity=[VERSION_2,VERSION_3,VERSION_4,VERSION_5,VERSION_6,VERSION_7,VERSION_8,VERSION_9,VERSION_10,VERSION_11,VERSION_12,VERSION_13].includes(data.version);
+ const counts={[VERSION]:4,[VERSION_2]:37,[VERSION_3]:6,[VERSION_4]:6,[VERSION_5]:8,[VERSION_6]:1,[VERSION_7]:5,[VERSION_8]:3,[VERSION_9]:1,[VERSION_10]:2,[VERSION_11]:6,[VERSION_12]:5,[VERSION_13]:5};
  if(!Object.hasOwn(counts,data.version)||!/^[a-f0-9]{64}$/.test(data.supplier_file_sha256||'')||!Array.isArray(data.items)||data.items.length!==counts[data.version])throw new Error('Invalid reference price manifest');
  const ids=new Set();
  for(const x of data.items){
@@ -75,4 +76,4 @@ function applyReferencePrices(db,file){
   return second ? {applied,backfilled,skipped:skipped.length,skipped_ids:skipped} : {applied,skipped:skipped.length,skipped_ids:skipped};
  })();
 }
-module.exports={applyReferencePrices,VERSION,VERSION_2,VERSION_3,VERSION_4,VERSION_5,VERSION_6,VERSION_7,VERSION_8,VERSION_9,VERSION_10,VERSION_11,VERSION_12};
+module.exports={applyReferencePrices,VERSION,VERSION_2,VERSION_3,VERSION_4,VERSION_5,VERSION_6,VERSION_7,VERSION_8,VERSION_9,VERSION_10,VERSION_11,VERSION_12,VERSION_13};

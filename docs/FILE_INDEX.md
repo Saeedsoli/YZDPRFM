@@ -497,3 +497,7 @@ node_modules/   با npm install برمی‌گردد
 
 - `scripts/test_reference_prices_v12.js`
 - `scripts/test_official_notes_v14.js`
+
+### پنج مرجع و چهار محصول تکمیلی
+
+- `scripts/test_five_added_reference.js`

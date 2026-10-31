@@ -1,0 +1,106 @@
+{
+  "version": "official_reference_prices_2026_10_v13",
+  "supplier_file_sha256": "bbe8f40610bc765bda0a7d2da9dbe78f4e397458a6991239c3c18d0853f33f5c",
+  "description": "Provisional name match; supplier essence identity unverified; no automatic activation.",
+  "items": [
+    {
+      "product_id": "YZD-PROD-1627",
+      "slug": "lancme-la-vie-est-belle-edp",
+      "brand_en": "Lancôme",
+      "expected_name_en": "LANCÔME - La Vie Est Belle EDP",
+      "reference_name": "La vie est belle Eau de Parfum",
+      "official_url": "https://www.lancome-usa.com/fragrance/fragrance-by-collection/la-vie-est-belle/la-vie-est-belle-eau-de-parfum/100606.html",
+      "supplier_brand": "LANCOME",
+      "supplier_model": "La Vie Est belle",
+      "usd_per_kg": "245.3",
+      "quality": "H",
+      "match_status": "name_matched_supplier_identity_unverified",
+      "expected_edps": [
+        {
+          "sku": "YZD-1627-EDP-010",
+          "volume_ml": 10,
+          "price_toman": 465000,
+          "stock": 0,
+          "price_usd": 4.5
+        },
+        {
+          "sku": "YZD-1627-EDP-030",
+          "volume_ml": 30,
+          "price_toman": 1094999,
+          "stock": 0,
+          "price_usd": 4.5
+        },
+        {
+          "sku": "YZD-1627-EDP-050",
+          "volume_ml": 50,
+          "price_toman": 1725000,
+          "stock": 0,
+          "price_usd": 4.5
+        },
+        {
+          "sku": "YZD-1627-EDP-100",
+          "volume_ml": 100,
+          "price_toman": 3300000,
+          "stock": 0,
+          "price_usd": 4.5
+        }
+      ]
+    },
+    {
+      "product_id": "SUP-EX-900011",
+      "slug": "ex-nihilo-fleur-narcotique",
+      "brand_en": "Ex Nihilo",
+      "expected_name_en": "EX NIHILO - Fleur Narcotique",
+      "reference_name": "Fleur Narcotique",
+      "official_url": "https://us.ex-nihilo-paris.com/products/fleur-narcotique-eau-de-parfum",
+      "supplier_brand": "Ex Nihilo",
+      "supplier_model": "FLEUR NARCOTIQUE",
+      "usd_per_kg": "291.5",
+      "quality": "H",
+      "match_status": "name_matched_supplier_identity_unverified",
+      "expected_edps": []
+    },
+    {
+      "product_id": "SUP-EX-900012",
+      "slug": "ex-nihilo-blue-talisman",
+      "brand_en": "Ex Nihilo",
+      "expected_name_en": "EX NIHILO - Blue Talisman",
+      "reference_name": "Blue Talisman",
+      "official_url": "https://us.ex-nihilo-paris.com/products/blue-talisman-eau-de-parfum",
+      "supplier_brand": "Ex Nihilo",
+      "supplier_model": "BLUE TALISMAN",
+      "usd_per_kg": "286",
+      "quality": "H",
+      "match_status": "name_matched_supplier_identity_unverified",
+      "expected_edps": []
+    },
+    {
+      "product_id": "SUP-AT-900013",
+      "slug": "atkinsons-her-majesty-the-oud",
+      "brand_en": "Atkinsons",
+      "expected_name_en": "ATKINSONS - Her Majesty The Oud",
+      "reference_name": "Her Majesty The Oud",
+      "official_url": "https://www.atkinsons1799.com/en_eu/custom-sample-set",
+      "supplier_brand": "ATKINSONS",
+      "supplier_model": "HER MAJESTY THE OUD",
+      "usd_per_kg": "190.3",
+      "quality": "H",
+      "match_status": "name_matched_supplier_identity_unverified",
+      "expected_edps": []
+    },
+    {
+      "product_id": "SUP-AG-900014",
+      "slug": "ariana-grande-ari",
+      "brand_en": "Ariana Grande",
+      "expected_name_en": "ARIANA GRANDE - Ari",
+      "reference_name": "Ari",
+      "official_url": "https://arianagrandefragrances.com/products/ari-by-ariana-grande",
+      "supplier_brand": "Ariana Grande",
+      "supplier_model": "Ari",
+      "usd_per_kg": "112.2",
+      "quality": "B",
+      "match_status": "name_matched_supplier_identity_unverified",
+      "expected_edps": []
+    }
+  ]
+}

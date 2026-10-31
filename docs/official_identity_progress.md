@@ -151,3 +151,19 @@ Torino24 پیش‌تر در کاتالوگ نبود و به‌صورت محصو�
 Mefisto با Mefisto Gentiluomo یکی نیست. در برخی صفحات قدیمی رسمی برای Bouquet Ideale، Lira و Gran Ballo توصیف‌های اضافی یا متفاوتی دیده می‌شود؛ نت‌های ثبت‌شده مطابق جدول ساختاری صفحه رسمی محصول در نشانی‌های بالا هستند و موارد اختلافی اضافه نشدند. داده‌ها توصیف عطر مرجع‌اند؛ هویت، نسخه یا کیفیت اسانس واقعی تأمین‌کننده مستقل تأیید نشده است. هیچ محصولی خودکار قابل سفارش نشده است.
 
 مدارک و قیمت‌ها در `seed/official_identity_evidence_v11.json` و `seed/official_reference_prices_v12.json` و اصلاح نت‌ها در `seed/official_note_corrections_v14.json` نگهداری می‌شوند.
+
+## پنج تناظر و چهار محصول تکمیلی
+
+| عطر مرجع | قیمت دلار/کیلو | کیفیت فایل | منبع رسمی |
+|---|---:|---|---|
+| La vie est belle Eau de Parfum | 245.3 | H | https://www.lancome-usa.com/fragrance/fragrance-by-collection/la-vie-est-belle/la-vie-est-belle-eau-de-parfum/100606.html |
+| Fleur Narcotique | 291.5 | H | https://us.ex-nihilo-paris.com/products/fleur-narcotique-eau-de-parfum |
+| Blue Talisman | 286 | H | https://us.ex-nihilo-paris.com/products/blue-talisman-eau-de-parfum |
+| Her Majesty The Oud | 190.3 | H | https://www.atkinsons1799.com/en_eu/custom-sample-set |
+| Ari | 112.2 | B | https://arianagrandefragrances.com/products/ari-by-ariana-grande |
+
+به‌جز La vie est belle چهار نام دیگر در جست‌وجوی کاتالوگ محلی پیدا نشدند و به صورت محصولات تکمیلی دست‌ساز، بدون فرض جنسیت از فایل، اضافه شدند. برای نام Her Majesty The Oud فقط درج نام در فهرست رسمی ست نمونه اتکینسونز تأیید شد؛ چون در این بررسی هرم نت رسمی آن پیدا نشد، نت‌ها خالی ماندند. برای دو محصول Ex Nihilo، صفحات رسمی مورد استناد نسخه EDP را معرفی می‌کنند؛ نسخه‌های Extrait نیز مستقل وجود دارند و هویت یا نسخه واقعی اسانس تأمین‌کننده از نام فایل ثابت نمی‌شود. برای La vie est belle، نت‌های کلیدی رسمی بدون انتساب حدسی به طبقات ثبت شدند.
+
+همه قیمت‌ها موقت و فقط بر اساس تطبیق نام‌اند؛ هیچ اسانسی مستقل از نظر هویت یا کیفیت تأیید نشده است و همه محصولات غیرقابل سفارش باقی می‌مانند. مدارک در `seed/official_identity_evidence_v12.json`، قیمت‌ها در `seed/official_reference_prices_v13.json` و اصلاح نت در `seed/official_note_corrections_v15.json` است.
+
+ردیف `Happy` از Clinique به نسخه زنانه یا مردانه خودکار نسبت داده نشد: [صفحه زنانه](https://www.clinique.com/product/1579/5188/fragrance/clinique-happy/clinique-happy-eau-de-parfum-spray) و [صفحه مردانه](https://www.clinique.com/product/1617/5190/mens/cologne/clinique-happy-for-men/clinique-happy-for-men-cologne-spray) محصولات متفاوت معرفی می‌کنند و برچسب جنسیت فایل مرجع قطعی هویت اسانس نیست.

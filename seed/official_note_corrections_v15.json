@@ -1,0 +1,46 @@
+{
+  "version": "official_notes_2026_10_v15",
+  "description": "Official reference-original notes only; unclassified notes are not assigned to a tier.",
+  "items": [
+    {
+      "product_id": "YZD-PROD-1627",
+      "product_slug": "lancme-la-vie-est-belle-edp",
+      "official_brand": "Lancôme",
+      "official_name": "La vie est belle Eau de Parfum",
+      "source_url": "https://www.lancome-usa.com/fragrance/fragrance-by-collection/la-vie-est-belle/la-vie-est-belle-eau-de-parfum/100606.html",
+      "source_scope": "Official product key notes without a tiered note pyramid; other named La vie est belle editions are distinct.",
+      "expected_old_notes": {
+        "top": [
+          "انگور فرنگی سیاه",
+          "گلابی آبدار"
+        ],
+        "middle": [
+          "زنبق پالیدا فلورانس",
+          "گل یاس سامباک",
+          "شکوفه پرتقال"
+        ],
+        "base": [
+          "پرالین (شکلات فندقی)",
+          "وانیل ماداگاسکار",
+          "نعناع هندی",
+          "دانه تونکا"
+        ]
+      },
+      "verified_notes": {
+        "top": [],
+        "middle": [],
+        "base": []
+      },
+      "expected_old_accords": [
+        "پرفروش‌ترین عطر زنانه فرانسه با چهره جولیا رابرتس و شیشه لبخند کریستالی",
+        "غول ماندگاری و پخش بو"
+      ],
+      "verified_accords": [
+        "زنبق",
+        "پچولی",
+        "وانیل",
+        "شکر ریسیده"
+      ]
+    }
+  ]
+}

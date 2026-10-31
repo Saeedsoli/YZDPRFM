@@ -341,5 +341,126 @@
     "source_url": "https://www.montblanc.com/en-us/eau-de-toilette_cod23471478575779015.html",
     "source_note": "Official notes and identity describe the reference EDT, not the verified identity or composition of supplier essence. Gender is not inferred from supplier list.",
     "variants": []
+  },
+  {
+    "id": "SUP-EX-900011",
+    "slug": "ex-nihilo-fleur-narcotique",
+    "name_fa": "فلور نارکوتیک",
+    "name_en": "Fleur Narcotique",
+    "title_fa_base": "فلور نارکوتیک",
+    "full_display_fa": "اِکس نیهیلو — فلور نارکوتیک",
+    "inspired_brand_en": "Ex Nihilo",
+    "inspired_brand_fa": "اِکس نیهیلو",
+    "gender": null,
+    "notes": {
+      "top": [
+        "ترنج",
+        "لیچی",
+        "هلو"
+      ],
+      "middle": [
+        "پتالیا",
+        "شکوفه پرتقال",
+        "یاس"
+      ],
+      "base": [
+        "مشک",
+        "چوب شفاف",
+        "خزه"
+      ]
+    },
+    "accords": [],
+    "transclaimer_notice": "این محصول بازآفرینی دست‌ساز است و محصول اورجینال برند اِکس نیهیلو نیست.",
+    "source_url": "https://us.ex-nihilo-paris.com/products/fleur-narcotique-eau-de-parfum",
+    "source_note": "Official EDP original; extrait is distinct. Supplier essence identity and version are not independently verified.",
+    "variants": [],
+    "perfumer": "Quentin Bisch"
+  },
+  {
+    "id": "SUP-EX-900012",
+    "slug": "ex-nihilo-blue-talisman",
+    "name_fa": "بلو تالیسمان",
+    "name_en": "Blue Talisman",
+    "title_fa_base": "بلو تالیسمان",
+    "full_display_fa": "اِکس نیهیلو — بلو تالیسمان",
+    "inspired_brand_en": "Ex Nihilo",
+    "inspired_brand_fa": "اِکس نیهیلو",
+    "gender": null,
+    "notes": {
+      "top": [
+        "گلابی",
+        "ترنج",
+        "زنجبیل",
+        "ماندارین"
+      ],
+      "middle": [
+        "شکوفه پرتقال",
+        "جورجی‌وود"
+      ],
+      "base": [
+        "آمبروفیکس",
+        "آکیگالاوود",
+        "مشک"
+      ]
+    },
+    "accords": [],
+    "transclaimer_notice": "این محصول بازآفرینی دست‌ساز است و محصول اورجینال برند اِکس نیهیلو نیست.",
+    "source_url": "https://us.ex-nihilo-paris.com/products/blue-talisman-eau-de-parfum",
+    "source_note": "Official EDP original; extrait is distinct. Supplier essence identity and version are not independently verified.",
+    "variants": []
+  },
+  {
+    "id": "SUP-AT-900013",
+    "slug": "atkinsons-her-majesty-the-oud",
+    "name_fa": "هر مجستی د عود",
+    "name_en": "Her Majesty The Oud",
+    "title_fa_base": "هر مجستی د عود",
+    "full_display_fa": "اتکینسونز — هر مجستی د عود",
+    "inspired_brand_en": "Atkinsons",
+    "inspired_brand_fa": "اتکینسونز",
+    "gender": null,
+    "notes": {
+      "top": [],
+      "middle": [],
+      "base": []
+    },
+    "accords": [],
+    "transclaimer_notice": "این محصول بازآفرینی دست‌ساز است و محصول اورجینال برند اتکینسونز نیست.",
+    "source_url": "https://www.atkinsons1799.com/en_eu/custom-sample-set",
+    "source_note": "Exact original name appears in the official Atkinsons sample-set listing; no official note pyramid was found. Supplier essence identity is unverified.",
+    "variants": []
+  },
+  {
+    "id": "SUP-AG-900014",
+    "slug": "ariana-grande-ari",
+    "name_fa": "آری",
+    "name_en": "Ari",
+    "title_fa_base": "آری",
+    "full_display_fa": "آریانا گرانده — آری",
+    "inspired_brand_en": "Ariana Grande",
+    "inspired_brand_fa": "آریانا گرانده",
+    "gender": null,
+    "notes": {
+      "top": [
+        "گلابی",
+        "گریپ‌فروت صورتی",
+        "تمشک"
+      ],
+      "middle": [
+        "گل برف",
+        "غنچه رز",
+        "ارکیده وانیل"
+      ],
+      "base": [
+        "مارشمالو",
+        "مشک",
+        "چوب روشن"
+      ]
+    },
+    "accords": [],
+    "transclaimer_notice": "این محصول بازآفرینی دست‌ساز است و محصول اورجینال برند آریانا گرانده نیست.",
+    "source_url": "https://arianagrandefragrances.com/products/ari-by-ariana-grande",
+    "source_note": "Official original notes; supplier essence identity remains unverified.",
+    "variants": []
   }
 ]
