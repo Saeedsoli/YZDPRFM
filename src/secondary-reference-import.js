@@ -10,11 +10,12 @@ const VERSION_4='secondary_reference_prices_2026_11_v4';
 const VERSION_5='secondary_reference_prices_2026_11_v5';
 const VERSION_6='secondary_reference_prices_2026_11_v6';
 const VERSION_7='secondary_reference_prices_2026_11_v7';
+const VERSION_8='secondary_reference_prices_2026_11_v8';
 const STATUS='secondary_original_found_supplier_essence_unverified';
 function applySecondaryReferences(db,file){
  if(!fs.existsSync(file))return {applied:0,backfilled:0,skipped:0,reason:'file_missing'};
  const data=JSON.parse(fs.readFileSync(file,'utf8'));
- if(!Object.hasOwn({[VERSION]:12,[VERSION_2]:6,[VERSION_3]:3,[VERSION_4]:4,[VERSION_5]:2,[VERSION_6]:2,[VERSION_7]:2},data.version)||!/^[a-f0-9]{64}$/.test(data.supplier_file_sha256||'')||!Array.isArray(data.items)||data.items.length!==({[VERSION]:12,[VERSION_2]:6,[VERSION_3]:3,[VERSION_4]:4,[VERSION_5]:2,[VERSION_6]:2,[VERSION_7]:2})[data.version])throw new Error('Invalid independent reference manifest');
+ if(!Object.hasOwn({[VERSION]:12,[VERSION_2]:6,[VERSION_3]:3,[VERSION_4]:4,[VERSION_5]:2,[VERSION_6]:2,[VERSION_7]:2,[VERSION_8]:5},data.version)||!/^[a-f0-9]{64}$/.test(data.supplier_file_sha256||'')||!Array.isArray(data.items)||data.items.length!==({[VERSION]:12,[VERSION_2]:6,[VERSION_3]:3,[VERSION_4]:4,[VERSION_5]:2,[VERSION_6]:2,[VERSION_7]:2,[VERSION_8]:5})[data.version])throw new Error('Invalid independent reference manifest');
  const seen=new Set();
  for(const x of data.items){
   let url;try{url=new URL(x.source_url);}catch{throw new Error('Invalid independent reference URL');}

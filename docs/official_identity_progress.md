@@ -378,3 +378,18 @@ Yara مرجع با Yara Tous، Moi و Candy یکی نیست. Tygar مرجع با
 | Erba Pura — Sospiro | 267.3 | H | مستقل | https://www.fragrantica.com/perfume/Sospiro-Perfumes/Erba-Pura-18652.html |
 
 سه منبع رسمی به نسخه اصلی معرفی‌شده برند مربوط‌اند و با نسخه‌های Intense، Parfum، Blush، Suprême یا Le Parfum یکی نشده‌اند؛ برچسب فایل به‌تنهایی نسخه اسانس را تأیید نمی‌کند. نت‌های رسمیِ معرفی‌شده بدون هرم ساختگی و با محافظ ویرایش مدیر ثبت شدند. در فایل، نام Givenchy به «Absolutely» کوتاه شده؛ منبع مستقل آن را Absolutely Irresistible 2008 معرفی می‌کند و با Irresistible فعلی یکی نشده است. منبع مستقل Sospiro Erba Pura 2013 را معرفی می‌کند؛ برابری با Xerjoff Erba Pura یا Erba Pura Magica فرض نشده است.
+
+
+## پنج تناظر مستقل دیگر — ۱ نوامبر ۲۰۲۶
+
+پنج محصول مکمل دست‌ساز با قیمت موقت نام‌محور ثبت شدند. مرجع‌های زیر مستقل‌اند و تأیید اصالت، نسخه یا هویت واقعی اسانس تأمین‌کننده نیستند؛ همه محصولات غیرفعال‌اند.
+
+| رایحه مرجع | دلار/کیلو | کیفیت فایل | منبع مستقل |
+|---|---:|---|---|
+| Aramis 900 | 305.8 | T | https://www.fragrantica.com/perfume/Aramis/Aramis-900-116.html |
+| Jasmin Noir — Bvlgari | 234.3 | H | https://www.fragrantica.com/perfume/Bvlgari/Jasmin-Noir-3750.html |
+| Apple Brandy — Kilian | 222.2 | P | https://www.fragrantica.com/perfume/By-Kilian/Apple-Brandy-22614.html |
+| Amor Amor — Cacharel | 97.9 | B | https://www.fragrantica.com/perfume/Cacharel/Amor-Amor-238.html |
+| Eilish — Billie Eilish | 115.5 | P | https://www.fragrantica.com/perfume/Billie-Eilish/Eilish-70052.html |
+
+صفحات رسمی بررسی‌شده برای این نسخه‌ها اطلاعات کافی نداشتند یا صفحه مستقیم در دسترس نبود. Jasmin Noir مرجع ۲۰۰۸ با Splendida و Mon Jasmin Noir یکی نشده؛ Apple Brandy مرجع ۲۰۱۳ با On the Rocks و Eilish با Intense، شماره ۲ و شماره ۳ یکی نشده‌اند. نت رام و سیوت در صورت ذکر، صرفاً آکورد رایحه مرجع هستند و وجود این مواد در اسانس واقعی را ثابت نمی‌کنند. صفحه عمومی منبع مستقل و دست‌ساز بودن را صریح اعلام می‌کند.

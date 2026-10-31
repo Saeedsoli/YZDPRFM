@@ -612,3 +612,10 @@ node_modules/   با npm install برمی‌گردد
 - `seed/secondary_supplement_v7.json`
 - `scripts/test_official_reference_v23.js`
 - `scripts/test_secondary_reference_v7.js`
+
+
+### پنج تناظر مستقل دیگر
+
+- `seed/secondary_reference_prices_v8.json`
+- `seed/secondary_supplement_v8.json`
+- `scripts/test_secondary_reference_v8.js`
