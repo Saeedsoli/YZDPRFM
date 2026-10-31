@@ -2665,6 +2665,8 @@ function seedVerifiedSupplement() {
   return inserted;
 }
 const supplementInserted = seedVerifiedSupplement() || 0;
+// This records reference-original evidence only; it never verifies supplier essence.
+require('./official-identities').seedOfficialIdentities(db, path.join(SEED_DIR, 'official_identity_evidence_v1.json'));
 // Exact-name price associations remain explicitly unverified and unavailable;
 // only untouched supplement rows receive prices and zero-stock variants.
 require('./lv-reference-prices').applyLvReferencePrices(db, path.join(SEED_DIR, 'lv_reference_prices_v1.json'));

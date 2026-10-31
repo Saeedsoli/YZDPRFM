@@ -146,8 +146,10 @@ function dockerCopiedDirs() {
     const orderable = cold.prepare(
       "SELECT COUNT(DISTINCT brand_fa) c FROM products WHERE supply_mode != 'UNAVAILABLE'").get().c;
     const obsoleteSamples = cold.prepare("SELECT COUNT(*) n FROM variants WHERE type='SAMPLE' AND volume_ml=3").get().n;
+    const identitySources = cold.prepare("SELECT COUNT(*) n FROM official_identity_evidence WHERE status='official_original_found_supplier_essence_unverified'").get().n;
     cold.close();
     add('سمپل ۳ میل در دیتابیس تازه ایجاد نمی‌شود', obsoleteSamples === 0, `${obsoleteSamples} ردیف`);
+    add('منابع رسمی مرجع با برچسب عدم تأیید اسانس بارگذاری می‌شوند', identitySources === 37, `${identitySources} منبع`);
 
     add('کاتالوگ تنوع برند دارد', brandsInDb >= 100, `${brandsInDb} برند در دیتابیس`);
 

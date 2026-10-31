@@ -251,8 +251,10 @@ function copyRespectingIgnore(src, dst, patterns, base = src) {
     const nOrders = fresh.prepare('SELECT COUNT(*) c FROM orders').get().c;
     const nStaff = fresh.prepare('SELECT COUNT(*) c FROM staff').get().c;
     const legacySamples = fresh.prepare("SELECT COUNT(*) c FROM variants WHERE type='SAMPLE' AND volume_ml=3").get().c;
+    const identitySources = fresh.prepare("SELECT COUNT(*) c FROM official_identity_evidence WHERE status='official_original_found_supplier_essence_unverified'").get().c;
     fresh.close();
     add('سمپل ۳ میل در نصب تازه نیست', legacySamples === 0, legacySamples + ' واریانت');
+    add('مدارک هویت رایحه مرجع بارگذاری شدند', identitySources === 37, identitySources + ' منبع');
     add('فروشگاه تازه صفر سفارش دارد', nOrders === 0, nOrders + ' سفارش');
     add('فقط حساب مدیر اولیه ساخته شد', nStaff === 1, nStaff + ' کارمند');
   }

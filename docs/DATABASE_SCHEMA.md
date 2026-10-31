@@ -336,6 +336,12 @@ EXPIRED               CANCELLED                  RETURNED
 کلید-مقدار برای تنظیمات فروشگاه، `invoice_seq`، `invoice_no:{order_id}` و
 `essence_usd_rate_toman` (نرخ دلار به تومان).
 
+### `official_identity_evidence`
+
+نشانی منبع رسمی و وضعیت شناسایی محصول **مرجع** را برای شناسه محصول
+نگه می‌دارد. مقدار `official_original_found_supplier_essence_unverified` فقط
+وجود محصول اصلی را مستند می‌کند؛ هویت یا اصالت اسانس تأمین‌کننده را تأیید نمی‌کند.
+
 ### `supplier_price_evidence`
 
 سابقه ورود مرجع‌های قیمت نام‌محور: شناسه محصول، هش فایل قیمت، نشانی رسمی،

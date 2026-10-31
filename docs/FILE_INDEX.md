@@ -431,3 +431,8 @@ node_modules/   با npm install برمی‌گردد
 
 - `scripts/test_reference_price_import.js`
 - `src/reference-price-import.js`
+
+### مستندسازی هویت رایحه مرجع
+
+- `scripts/test_official_identity_evidence.js`
+- `src/official-identities.js`
