@@ -9,8 +9,8 @@
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
 <link rel="manifest" href="/site.webmanifest">
 <meta name="theme-color" content="#121212">
-<title>سمپل ۳ میل | امتحان کنید، بعد بخرید</title>
-<meta name="description" content="سمپل ۳ میلی‌لیتری عطر یزد — با کمتر از یک‌دهم قیمت بطری کامل، رایحه را چند روز روی پوست خودتان امتحان کنید. انتخاب از میان کاتالوگ کامل.">
+<title>سمپل ۵ میل | امتحان کنید، بعد بخرید</title>
+<meta name="description" content="سمپل ۵ میلی‌لیتری عطر یزد — رایحه‌های قابل سفارش را پیش از خرید بطری کامل امتحان کنید.">
 <link rel="stylesheet" href="/assets/theme.css">
 <style>
   .s-hero { background:linear-gradient(135deg,#141414,#242424); color:#FFF;
@@ -121,9 +121,9 @@
 
 <section class="s-hero">
   <span class="eyebrow">پیش از خرید بطری کامل</span>
-  <h1>سمپل <em>۳ میلی‌لیتری</em><br>پیش از خرید بطری کامل</h1>
-  <p>خرید عطر بدون بوییدن، قمار است. با کمتر از یک‌دهم قیمت بطری کامل،
-     رایحه را چند روز روی پوست خودتان امتحان کنید.</p>
+  <h1>سمپل <em>۵ میلی‌لیتری</em><br>پیش از خرید بطری کامل</h1>
+  <p>پیش از خرید بطری کامل، سمپل رایحه‌های قابل سفارش را
+     روی پوست خودتان امتحان کنید.</p>
 </section>
 
 <main id="main">
@@ -134,14 +134,14 @@
       <span class="ic" aria-hidden="true">
         <svg viewBox="0 0 24 24"><path d="M9 2h6M10 2v6.5L5.5 17A3 3 0 0 0 8 21.5h8a3 3 0 0 0 2.5-4.5L14 8.5V2"/></svg>
       </span>
-      <b>روی <em id="cntAll" data-stat="products">—</em> رایحه کاتالوگ</b>
-      <span>نه فقط پرفروش‌ها — سمپل هر محصولی موجود است.</span>
+      <b><em id="cntAll">—</em> رایحه قابل سفارش</b>
+      <span>فقط رایحه‌هایی که سمپل ۵ میل قابل سفارش دارند.</span>
     </div>
     <div class="s-card">
       <span class="ic" aria-hidden="true">
         <svg viewBox="0 0 24 24"><path d="M20.6 13.4 12 22l-9-9V4a1 1 0 0 1 1-1h9z"/><circle cx="7.5" cy="7.5" r="1.2"/></svg>
       </span>
-      <b id="fromPrice">از ۴۸٬۶۴۰ تومان</b>
+      <b id="fromPrice">قیمت پس از انتخاب رایحه</b>
       <span>ریسک امتحان کردن را به کمترین حد می‌رساند.</span>
     </div>
     <div class="s-card">
@@ -253,7 +253,7 @@ function bind(rowId, attr, fn) {
 function reset() { state.page = 1; state.done = false; items = []; load(); }
 
 async function load() {
-  const q = new URLSearchParams({ limit: '24', page: String(state.page) });
+  const q = new URLSearchParams({ limit: '24', page: String(state.page), sample_5: '1' });
   if (state.gender) q.set('gender', state.gender);
   if (state.family) q.set('family', state.family);
 
@@ -265,9 +265,10 @@ async function load() {
     items = state.page === 1 ? (d.products || []) : items.concat(d.products || []);
 
     document.getElementById('cnt').innerHTML =
-      `<b>${toFa(d.total || 0)}</b> رایحه — سمپل ۳ میل هر کدام موجود است`;
+      `<b>${toFa(d.total || 0)}</b> رایحه با سمپل ۵ میل قابل سفارش`;
 
-    grid.innerHTML = items.map(card).join('');
+    grid.innerHTML = items.length ? items.map(card).join('') :
+      `<div class="empty-state" style="grid-column:1/-1"><h3>فعلاً سمپل قابل سفارش نداریم</h3><p>پس از فعال‌شدن رایحه‌ها، اینجا نمایش داده می‌شوند.</p></div>`;
 
     const more = document.getElementById('moreBtn');
     state.done = items.length >= (d.total || 0);
@@ -278,27 +279,24 @@ async function load() {
   }
 }
 
-/* قیمت نمایش‌داده‌شده، قیمت سمپل است نه بطری کامل.
-   min_price همیشه سمپل ۳ میل است چون ارزان‌ترین واریانت است. */
+/* قیمت از واریانت واقعی سمپل ۵ میل می‌آید، نه کمترین قیمت کل محصول. */
 function card(p) {
   const full = fullName(p);
   return `
   <article class="sc">
     <a href="/perfume/${p.slug}" class="img" aria-label="${esc(full)}">
       <img src="${cardImage(p.image_url)}" alt="" loading="lazy" width="215" height="215">
-      <span class="tag">سمپل ۳ میل</span>
+      <span class="tag">سمپل ۵ میل</span>
     </a>
     <div class="bd">
       <div class="nm">${esc(full)}</div>
       <div class="en">${esc(p.name_en || '')}</div>
       <div class="fam">${esc(p.family_fa || '')}</div>
       <div class="pr">
-        <b>${money(p.min_price)}</b>
+        <b>${money(p.sample_price)}</b>
         <span style="font-size:.7rem;color:var(--muted)">تومان</span>
       </div>
-      ${p.in_stock
-        ? `<a class="go" href="/perfume/${p.slug}">مشاهده و خرید</a>`
-        : `<span class="oos">فعلاً ناموجود</span>`}
+      <a class="go" href="/perfume/${p.slug}">مشاهده سمپل</a>
     </div>
   </article>`;
 }
@@ -308,17 +306,15 @@ bind('genderRow', 'g', v => { state.gender = v; reset(); });
 
 /* آمار بالای صفحه از داده واقعی، نه عدد دستی —
    عدد دستی با اولین تغییر کاتالوگ کهنه می‌شود. */
-fetch('/api/products?limit=1')
+fetch('/api/products?sample_5=1&limit=1')
   .then(r => r.json())
-  .then(d => {
-    if (d.total) document.getElementById('cntAll').textContent = toFa(d.total);
-  })
+  .then(d => { document.getElementById('cntAll').textContent = toFa(d.total || 0); })
   .catch(() => {});
 
-fetch('/api/products?limit=60&sort=price_asc')
+fetch('/api/products?sample_5=1&limit=1&sort=sample_price_asc')
   .then(r => r.json())
   .then(d => {
-    const prices = (d.products || []).map(p => p.min_price).filter(Boolean);
+    const prices = (d.products || []).map(p => p.sample_price).filter(Boolean);
     if (prices.length) {
       document.getElementById('fromPrice').textContent =
         'از ' + money(Math.min(...prices)) + ' تومان';

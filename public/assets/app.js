@@ -226,7 +226,7 @@ function renderHeader(active = '') {
         <li><a href="/" class="${active === 'home' ? 'active' : ''}">کاتالوگ عطرها</a></li>
         <li><a href="/brands" class="${active === 'brands' ? 'active' : ''}">برندها</a></li>
         <li><a href="/quiz" class="${active === 'quiz' ? 'active' : ''}">پیشنهاد هوشمند</a></li>
-        <li><a href="/samples" class="${active === 'samples' ? 'active' : ''}">سمپل ۳ میل</a></li>
+        <li><a href="/samples" class="${active === 'samples' ? 'active' : ''}">سمپل ۵ میل</a></li>
         <li><a href="/essences" class="${active === 'essences' ? 'active' : ''}">خانه‌های اسانس</a></li>
         <li><a href="/why-us" class="${active === 'why-us' ? 'active' : ''}">چرا ما؟</a></li>
         <li><a href="/journal" class="${active === 'journal' ? 'active' : ''}">مجله آموزشی</a></li>
@@ -259,7 +259,7 @@ function renderFooter() {
       </div>
       <div>
         <h4>راهنما</h4>
-        <a href="/samples">سمپل ۳ میل</a>
+        <a href="/samples">سمپل ۵ میل</a>
         <a href="/why-us">چرا عطر یزد؟</a>
         <a href="/terms">قوانین و مقررات</a>
         <a href="/privacy">حریم خصوصی</a>

@@ -140,6 +140,14 @@ async function handle(ctx) {
       where.push(`EXISTS (SELECT 1 FROM variants v
                     WHERE v.product_id = products.id AND ${publicVariantSql('v')} AND v.stock > 0)`);
     }
+    // Sample listings must refer to an actual sellable 5ml SKU, not min product price.
+    const samplesOnly = parsed.query.sample_5 === '1';
+    if (samplesOnly) {
+      where.push(`products.supply_mode IN ('IN_STOCK','MADE_TO_ORDER') AND EXISTS (
+        SELECT 1 FROM variants sv WHERE sv.product_id=products.id AND sv.type='SAMPLE'
+        AND sv.volume_ml=5 AND sv.price_toman>0
+        AND (sv.stock>0 OR products.supply_mode='MADE_TO_ORDER'))`);
+    }
 
     const clause = where.length ? 'WHERE ' + where.join(' AND ') : '';
 
@@ -158,14 +166,19 @@ async function handle(ctx) {
        پیش‌فرض: کسی که «ارزان‌ترین» را می‌خواهد، ارزان‌ترینِ
        قابل خرید را می‌خواهد. */
     const IN_STOCK = `EXISTS (SELECT 1 FROM variants v2 WHERE v2.product_id = products.id AND ${publicVariantSql('v2')} AND v2.stock > 0) DESC`;
+    const SAMPLE_PRICE = `(SELECT MIN(sv.price_toman) FROM variants sv WHERE sv.product_id=products.id
+      AND sv.type='SAMPLE' AND sv.volume_ml=5 AND sv.price_toman>0
+      AND (sv.stock>0 OR products.supply_mode='MADE_TO_ORDER'))`;
     const SORTS = {
+      sample_price_asc: samplesOnly ? `${SAMPLE_PRICE} ASC, id` : 'id',
       default:    'id',
       price_asc:  `${CHEAPEST} ASC, id`,
       price_desc: `${CHEAPEST} DESC, id`,
       name:       'name_fa COLLATE NOCASE, id',
       brand:      'brand_fa COLLATE NOCASE, name_fa COLLATE NOCASE'
     };
-    const orderBy = `${IN_STOCK}, ${SORTS[parsed.query.sort] || SORTS.default}`;
+    const orderBy = samplesOnly && parsed.query.sort === 'sample_price_asc'
+      ? SORTS.sample_price_asc : `${IN_STOCK}, ${SORTS[parsed.query.sort] || SORTS.default}`;
 
     /* ── رتبه‌بندی ربط برای جستجوی متنی ──
        🔴 باگ واقعی که تعویض منبع داده آشکار کرد (مرداد ۱۴۰۵):
@@ -252,6 +265,11 @@ async function handle(ctx) {
       /* درصد جشنواره‌ای که این محصول را می‌گیرد — مبنای قیمت
          خط‌خورده روی کارت. صفر یعنی جشنواره‌ای شامل نمی‌شود. */
       const pct = camps.length ? campaignPercentFor(p, camps) : 0;
+      if (samplesOnly) {
+        const samplePrices = p.variants.filter(v => v.type === 'SAMPLE' && v.volume_ml === 5 && v.price_toman > 0 &&
+          (v.stock > 0 || p.supply_mode === 'MADE_TO_ORDER')).map(v => v.price_toman);
+        p.sample_price = samplePrices.length ? Math.min(...samplePrices) : null;
+      }
       if (wantFull) { p.campaign_percent = pct; return p; }
       // نسخه سبک برای کارت محصول — حدود نصف حجم
       const inStock = p.variants.some(v => v.stock > 0);
@@ -263,6 +281,7 @@ async function handle(ctx) {
         season: p.season, image_url: p.image_url,
         notes: { top: p.notes.top.slice(0, 3) },
         min_price: p.min_price,
+        ...(samplesOnly ? { sample_price: p.sample_price } : {}),
         campaign_percent: pct,
         in_stock: inStock,
         /* وضعیت تأمین برای کارت — تفاوت «به سفارش ساخته می‌شود»
