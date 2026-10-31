@@ -1,0 +1,290 @@
+{
+  "version": "official_notes_2026_10_v8",
+  "description": "Official reference-original notes only; absent tiers are not proof the scent has no notes.",
+  "items": [
+    {
+      "product_id": "YZD-PROD-2019",
+      "product_slug": "bvlgari-le-gemme-ambero",
+      "official_brand": "Bvlgari",
+      "official_name": "Le Gemme Ambero",
+      "source_url": "https://www.bulgari.com/en-int/52104.html",
+      "source_scope": "Official page lists key notes but does not label top/heart/base.",
+      "expected_old_notes": {
+        "top": [
+          "زنجبیل تازه",
+          "فلفل صورتی"
+        ],
+        "middle": [
+          "صمغ کندر",
+          "زعفران"
+        ],
+        "base": [
+          "کهربای بالتیک",
+          "چوب سدر"
+        ]
+      },
+      "verified_notes": {
+        "top": [],
+        "middle": [],
+        "base": []
+      },
+      "expected_old_accords": [
+        "سنگ کهربای طلایی دریای بالتیک",
+        "گرم",
+        "ادویه‌ای و پرتوافشان"
+      ],
+      "verified_accords": [
+        "زنجبیل",
+        "زعفران",
+        "وتیور"
+      ]
+    },
+    {
+      "product_id": "YZD-PROD-2016",
+      "product_slug": "bvlgari-le-gemme-falkar",
+      "official_brand": "Bvlgari",
+      "official_name": "Le Gemme Falkar",
+      "source_url": "https://www.bulgari.com/en-gb/fragrances/bvlgari-le-gemme/bvlgari-le-gemme-falkar-eau-de-parfum-42178",
+      "source_scope": "Official page lists key notes but does not label top/heart/base.",
+      "expected_old_notes": {
+        "top": [
+          "جوز هندی",
+          "دارچین"
+        ],
+        "middle": [
+          "روایح چوبی",
+          "چوب صندل"
+        ],
+        "base": [
+          "چوب عود آگار",
+          "چرم تیره",
+          "زعفران",
+          "مشک سیاه"
+        ]
+      },
+      "verified_notes": {
+        "top": [],
+        "middle": [],
+        "base": []
+      },
+      "expected_old_accords": [
+        "سنگ چشم شاهین در شیشه سرمه‌ای و طلایی با سنگین‌ترین عود و چرم دیزاینر لوکس"
+      ],
+      "verified_accords": [
+        "آکورد مشک سیاه چوبی",
+        "عود"
+      ]
+    },
+    {
+      "product_id": "YZD-PROD-2017",
+      "product_slug": "bvlgari-le-gemme-onekh",
+      "official_brand": "Bvlgari",
+      "official_name": "Le Gemme Onekh",
+      "source_url": "https://www.bulgari.com/en-int/52105.html",
+      "source_scope": "Official page lists key notes but does not label top/heart/base.",
+      "expected_old_notes": {
+        "top": [
+          "ادویه‌جات گرم"
+        ],
+        "middle": [
+          "چرم تیره دباغی‌شده"
+        ],
+        "base": [
+          "چوب عود طبیعی لائوس",
+          "صمغ لادن"
+        ]
+      },
+      "verified_notes": {
+        "top": [],
+        "middle": [],
+        "base": []
+      },
+      "expected_old_accords": [
+        "سنگ عقیق سیاه اسرارآمیز",
+        "شاهکار تاریک و قدرتمند ژاک کاوالیه"
+      ],
+      "verified_accords": [
+        "نارنگی ماندارین",
+        "عود",
+        "لابدانوم دودی"
+      ]
+    },
+    {
+      "product_id": "YZD-PROD-1245",
+      "product_slug": "escentric-molecules-molecule-01",
+      "official_brand": "Escentric Molecules",
+      "official_name": "Molecule 01",
+      "source_url": "https://www.escentric.com/en-us/products/molecule-01-100ml",
+      "source_scope": "Official describes a single aroma molecule; no invented pyramid.",
+      "expected_old_notes": {
+        "top": [
+          "ایزو ای سوپر خالص"
+        ],
+        "middle": [
+          "ایزو ای سوپر"
+        ],
+        "base": [
+          "ایزو ای سوپر",
+          "چوب سدر مخملی"
+        ]
+      },
+      "verified_notes": {
+        "top": [],
+        "middle": [],
+        "base": []
+      },
+      "expected_old_accords": [
+        "عطری که صنعت عطرسازی را زیر و رو کرد",
+        "بوی چوب سدر مخملی که گهگاه ناپدید شده و دوباره پدیدار می‌شود"
+      ],
+      "verified_accords": [
+        "ایزو ای سوپر (Iso E Super)"
+      ]
+    },
+    {
+      "product_id": "YZD-PROD-1246",
+      "product_slug": "escentric-molecules-molecule-02",
+      "official_brand": "Escentric Molecules",
+      "official_name": "Molecule 02",
+      "source_url": "https://www.escentric.com/en-us/products/molecule-02-100ml",
+      "source_scope": "Official describes a single aroma molecule; no invented pyramid.",
+      "expected_old_notes": {
+        "top": [
+          "امبروکسان خالص"
+        ],
+        "middle": [
+          "امبروکسان معدنی"
+        ],
+        "base": [
+          "امبروکسان",
+          "عنبر سائل"
+        ]
+      },
+      "verified_notes": {
+        "top": [],
+        "middle": [],
+        "base": []
+      },
+      "expected_old_accords": [
+        "جذاب‌ترین مولکول معدنی تاریخ",
+        "بوی پوست گرم آفتاب‌خورده بعد از شنا در دریا"
+      ],
+      "verified_accords": [
+        "آمبروکسان (Ambroxan)"
+      ]
+    },
+    {
+      "product_id": "YZD-PROD-1248",
+      "product_slug": "escentric-molecules-molecule-04",
+      "official_brand": "Escentric Molecules",
+      "official_name": "Molecule 04",
+      "source_url": "https://www.escentric.com/en-us/products/molecule-04-100ml",
+      "source_scope": "Official describes a single aroma molecule; no invented pyramid.",
+      "expected_old_notes": {
+        "top": [
+          "جاوانیول خالص"
+        ],
+        "middle": [
+          "جاوانیول صندلی"
+        ],
+        "base": [
+          "چوب صندل شیری",
+          "چوب صورتی"
+        ]
+      },
+      "verified_notes": {
+        "top": [],
+        "middle": [],
+        "base": []
+      },
+      "expected_old_accords": [
+        "مولکول قرن ۲۱ جایگزین صندل میسور",
+        "شیری",
+        "درخشان و با ماندگاری چند روزه"
+      ],
+      "verified_accords": [
+        "جاوانول (Javanol)"
+      ]
+    },
+    {
+      "product_id": "YZD-PROD-1635",
+      "product_slug": "lancme-miracle",
+      "official_brand": "Lancôme",
+      "official_name": "Miracle",
+      "source_url": "https://www.lancome-usa.com/fragrance/fragrance-by-collection/miracle/miracle-eau-de-parfum/022055.html",
+      "source_scope": "Official text and labeled pyramid conflict on jasmine position; omit disputed placement.",
+      "expected_old_notes": {
+        "top": [
+          "سرخالو (لیچی)",
+          "فریزیا سفید"
+        ],
+        "middle": [
+          "گل مگنولیا",
+          "زنجبیل تازه",
+          "فلفل سیاه",
+          "نارنگی",
+          "یاس"
+        ],
+        "base": [
+          "مشک سفید",
+          "کهربا",
+          "گل یاس"
+        ]
+      },
+      "verified_notes": {
+        "top": [
+          "لیچی",
+          "فریزیا"
+        ],
+        "middle": [
+          "مگنولیا",
+          "زنجبیل",
+          "فلفل"
+        ],
+        "base": [
+          "کهربا",
+          "مشک"
+        ]
+      }
+    },
+    {
+      "product_id": "YZD-PROD-1631",
+      "product_slug": "lancme-trsor-midnight-rose",
+      "official_brand": "Lancôme",
+      "official_name": "Trésor Midnight Rose",
+      "source_url": "https://www.lancome-usa.com/fragrance/fragrance-by-collection/tresor/tresor-midnight-rose-eau-de-parfum/10033.html",
+      "source_scope": "Official labeled top, heart and base notes.",
+      "expected_old_notes": {
+        "top": [
+          "تمشک سرخ",
+          "گل رز دمشقی"
+        ],
+        "middle": [
+          "فلفل صورتی",
+          "برگ بنفشه",
+          "گل صدتومانی",
+          "یاس"
+        ],
+        "base": [
+          "وانیل ماداگاسکار",
+          "چوب سدر",
+          "مشک سفید"
+        ]
+      },
+      "verified_notes": {
+        "top": [
+          "تمشک",
+          "جوانه انگور فرنگی سیاه"
+        ],
+        "middle": [
+          "رز",
+          "یاس"
+        ],
+        "base": [
+          "وانیل",
+          "مشک"
+        ]
+      }
+    }
+  ]
+}

@@ -1,0 +1,86 @@
+{
+  "version": "official_identity_evidence_v4",
+  "scope": "Official reference-original names only; supplier essence identity and product availability remain independently unverified.",
+  "items": [
+    {
+      "product_id": "YZD-PROD-2019",
+      "slug": "bvlgari-le-gemme-ambero",
+      "brand_en": "Bvlgari",
+      "expected_name_en": "BVLGARI - Le Gemme Ambero",
+      "reference_name": "Le Gemme Ambero",
+      "official_url": "https://www.bulgari.com/en-int/52104.html",
+      "status": "official_original_found_supplier_essence_unverified",
+      "checked_date": "2026-10-31"
+    },
+    {
+      "product_id": "YZD-PROD-2016",
+      "slug": "bvlgari-le-gemme-falkar",
+      "brand_en": "Bvlgari",
+      "expected_name_en": "BVLGARI - Le Gemme Falkar",
+      "reference_name": "Le Gemme Falkar",
+      "official_url": "https://www.bulgari.com/en-gb/fragrances/bvlgari-le-gemme/bvlgari-le-gemme-falkar-eau-de-parfum-42178",
+      "status": "official_original_found_supplier_essence_unverified",
+      "checked_date": "2026-10-31"
+    },
+    {
+      "product_id": "YZD-PROD-2017",
+      "slug": "bvlgari-le-gemme-onekh",
+      "brand_en": "Bvlgari",
+      "expected_name_en": "BVLGARI - Le Gemme Onekh",
+      "reference_name": "Le Gemme Onekh",
+      "official_url": "https://www.bulgari.com/en-int/52105.html",
+      "status": "official_original_found_supplier_essence_unverified",
+      "checked_date": "2026-10-31"
+    },
+    {
+      "product_id": "YZD-PROD-1245",
+      "slug": "escentric-molecules-molecule-01",
+      "brand_en": "Escentric Molecules",
+      "expected_name_en": "ESCENTRIC MOLECULES - Molecule 01",
+      "reference_name": "Molecule 01",
+      "official_url": "https://www.escentric.com/en-us/products/molecule-01-100ml",
+      "status": "official_original_found_supplier_essence_unverified",
+      "checked_date": "2026-10-31"
+    },
+    {
+      "product_id": "YZD-PROD-1246",
+      "slug": "escentric-molecules-molecule-02",
+      "brand_en": "Escentric Molecules",
+      "expected_name_en": "ESCENTRIC MOLECULES - Molecule 02",
+      "reference_name": "Molecule 02",
+      "official_url": "https://www.escentric.com/en-us/products/molecule-02-100ml",
+      "status": "official_original_found_supplier_essence_unverified",
+      "checked_date": "2026-10-31"
+    },
+    {
+      "product_id": "YZD-PROD-1248",
+      "slug": "escentric-molecules-molecule-04",
+      "brand_en": "Escentric Molecules",
+      "expected_name_en": "ESCENTRIC MOLECULES - Molecule 04",
+      "reference_name": "Molecule 04",
+      "official_url": "https://www.escentric.com/en-us/products/molecule-04-100ml",
+      "status": "official_original_found_supplier_essence_unverified",
+      "checked_date": "2026-10-31"
+    },
+    {
+      "product_id": "YZD-PROD-1635",
+      "slug": "lancme-miracle",
+      "brand_en": "Lancôme",
+      "expected_name_en": "LANCÔME - Miracle",
+      "reference_name": "Miracle",
+      "official_url": "https://www.lancome-usa.com/fragrance/fragrance-by-collection/miracle/miracle-eau-de-parfum/022055.html",
+      "status": "official_original_found_supplier_essence_unverified",
+      "checked_date": "2026-10-31"
+    },
+    {
+      "product_id": "YZD-PROD-1631",
+      "slug": "lancme-trsor-midnight-rose",
+      "brand_en": "Lancôme",
+      "expected_name_en": "LANCÔME - Trésor Midnight Rose",
+      "reference_name": "Trésor Midnight Rose",
+      "official_url": "https://www.lancome-usa.com/fragrance/fragrance-by-collection/tresor/tresor-midnight-rose-eau-de-parfum/10033.html",
+      "status": "official_original_found_supplier_essence_unverified",
+      "checked_date": "2026-10-31"
+    }
+  ]
+}

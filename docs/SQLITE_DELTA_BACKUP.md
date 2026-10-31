@@ -9,6 +9,7 @@
 - پایه کامل: `data/backups/pre-reference-v2-20261031.sqlite.gz`
 - پیش از ورود شش قیمت: `data/backups/pre-reference-v4-delta-20261031.zip`
 - پس از ورود شش قیمت: `data/backups/post-reference-v4-delta-20261031.zip`
+- پس از ورود هشت قیمت مرجع بعدی: `data/backups/post-reference-v5-delta-20261031.zip`
 
 پایه و فایل افزایشی باید با هم نگه داشته شوند. در آزمون واقعی، نسخه پس از ورود در فایل جداگانه بازسازی شد و تعداد قیمت‌ها، وضعیت تأمین، اقلام سفارش، هش و `integrity_check` با موفقیت کنترل شدند.
 

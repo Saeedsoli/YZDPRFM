@@ -1,0 +1,351 @@
+{
+  "version": "official_reference_prices_2026_10_v5",
+  "supplier_file_sha256": "bbe8f40610bc765bda0a7d2da9dbe78f4e397458a6991239c3c18d0853f33f5c",
+  "description": "Reference-original name association only; actual supplier essence identity is unverified. No automatic stock or activation.",
+  "items": [
+    {
+      "product_id": "YZD-PROD-2019",
+      "slug": "bvlgari-le-gemme-ambero",
+      "official_url": "https://www.bulgari.com/en-int/52104.html",
+      "supplier_brand": "BVLGARI",
+      "supplier_model": "Ambero",
+      "usd_per_kg": "663.3",
+      "quality": "P",
+      "match_status": "name_matched_supplier_identity_unverified",
+      "expected_edps": [
+        {
+          "sku": "YZD-2019-EDP-010",
+          "volume_ml": 10,
+          "price_toman": 745000,
+          "stock": 0,
+          "price_usd": 8.5
+        },
+        {
+          "sku": "YZD-2019-EDP-030",
+          "volume_ml": 30,
+          "price_toman": 1935000,
+          "stock": 0,
+          "price_usd": 8.5
+        },
+        {
+          "sku": "YZD-2019-EDP-050",
+          "volume_ml": 50,
+          "price_toman": 3125000,
+          "stock": 0,
+          "price_usd": 8.5
+        },
+        {
+          "sku": "YZD-2019-EDP-100",
+          "volume_ml": 100,
+          "price_toman": 6100000,
+          "stock": 0,
+          "price_usd": 8.5
+        }
+      ],
+      "brand_en": "Bvlgari",
+      "expected_name_en": "BVLGARI - Le Gemme Ambero",
+      "reference_name": "Le Gemme Ambero"
+    },
+    {
+      "product_id": "YZD-PROD-2016",
+      "slug": "bvlgari-le-gemme-falkar",
+      "official_url": "https://www.bulgari.com/en-gb/fragrances/bvlgari-le-gemme/bvlgari-le-gemme-falkar-eau-de-parfum-42178",
+      "supplier_brand": "BVLGARI",
+      "supplier_model": "FALKAR",
+      "usd_per_kg": "852.5",
+      "quality": "P",
+      "match_status": "name_matched_supplier_identity_unverified",
+      "expected_edps": [
+        {
+          "sku": "YZD-2016-EDP-010",
+          "volume_ml": 10,
+          "price_toman": 745000,
+          "stock": 0,
+          "price_usd": 8.5
+        },
+        {
+          "sku": "YZD-2016-EDP-030",
+          "volume_ml": 30,
+          "price_toman": 1935000,
+          "stock": 0,
+          "price_usd": 8.5
+        },
+        {
+          "sku": "YZD-2016-EDP-050",
+          "volume_ml": 50,
+          "price_toman": 3125000,
+          "stock": 0,
+          "price_usd": 8.5
+        },
+        {
+          "sku": "YZD-2016-EDP-100",
+          "volume_ml": 100,
+          "price_toman": 6100000,
+          "stock": 0,
+          "price_usd": 8.5
+        }
+      ],
+      "brand_en": "Bvlgari",
+      "expected_name_en": "BVLGARI - Le Gemme Falkar",
+      "reference_name": "Le Gemme Falkar"
+    },
+    {
+      "product_id": "YZD-PROD-2017",
+      "slug": "bvlgari-le-gemme-onekh",
+      "official_url": "https://www.bulgari.com/en-int/52105.html",
+      "supplier_brand": "BVLGARI",
+      "supplier_model": "Onekh",
+      "usd_per_kg": "690.8",
+      "quality": "P",
+      "match_status": "name_matched_supplier_identity_unverified",
+      "expected_edps": [
+        {
+          "sku": "YZD-2017-EDP-010",
+          "volume_ml": 10,
+          "price_toman": 745000,
+          "stock": 0,
+          "price_usd": 8.5
+        },
+        {
+          "sku": "YZD-2017-EDP-030",
+          "volume_ml": 30,
+          "price_toman": 1935000,
+          "stock": 0,
+          "price_usd": 8.5
+        },
+        {
+          "sku": "YZD-2017-EDP-050",
+          "volume_ml": 50,
+          "price_toman": 3125000,
+          "stock": 0,
+          "price_usd": 8.5
+        },
+        {
+          "sku": "YZD-2017-EDP-100",
+          "volume_ml": 100,
+          "price_toman": 6100000,
+          "stock": 0,
+          "price_usd": 8.5
+        }
+      ],
+      "brand_en": "Bvlgari",
+      "expected_name_en": "BVLGARI - Le Gemme Onekh",
+      "reference_name": "Le Gemme Onekh"
+    },
+    {
+      "product_id": "YZD-PROD-1245",
+      "slug": "escentric-molecules-molecule-01",
+      "official_url": "https://www.escentric.com/en-us/products/molecule-01-100ml",
+      "supplier_brand": "Escentric",
+      "supplier_model": "Molecule 01",
+      "usd_per_kg": "283.8",
+      "quality": "P",
+      "match_status": "name_matched_supplier_identity_unverified",
+      "expected_edps": [
+        {
+          "sku": "YZD-1245-EDP-010",
+          "volume_ml": 10,
+          "price_toman": 465000,
+          "stock": 0,
+          "price_usd": 4.5
+        },
+        {
+          "sku": "YZD-1245-EDP-030",
+          "volume_ml": 30,
+          "price_toman": 1094999,
+          "stock": 0,
+          "price_usd": 4.5
+        },
+        {
+          "sku": "YZD-1245-EDP-050",
+          "volume_ml": 50,
+          "price_toman": 1725000,
+          "stock": 0,
+          "price_usd": 4.5
+        },
+        {
+          "sku": "YZD-1245-EDP-100",
+          "volume_ml": 100,
+          "price_toman": 3300000,
+          "stock": 0,
+          "price_usd": 4.5
+        }
+      ],
+      "brand_en": "Escentric Molecules",
+      "expected_name_en": "ESCENTRIC MOLECULES - Molecule 01",
+      "reference_name": "Molecule 01"
+    },
+    {
+      "product_id": "YZD-PROD-1246",
+      "slug": "escentric-molecules-molecule-02",
+      "official_url": "https://www.escentric.com/en-us/products/molecule-02-100ml",
+      "supplier_brand": "Escentric",
+      "supplier_model": "Molecule 02",
+      "usd_per_kg": "322.3",
+      "quality": "H",
+      "match_status": "name_matched_supplier_identity_unverified",
+      "expected_edps": [
+        {
+          "sku": "YZD-1246-EDP-010",
+          "volume_ml": 10,
+          "price_toman": 465000,
+          "stock": 0,
+          "price_usd": 4.5
+        },
+        {
+          "sku": "YZD-1246-EDP-030",
+          "volume_ml": 30,
+          "price_toman": 1094999,
+          "stock": 0,
+          "price_usd": 4.5
+        },
+        {
+          "sku": "YZD-1246-EDP-050",
+          "volume_ml": 50,
+          "price_toman": 1725000,
+          "stock": 0,
+          "price_usd": 4.5
+        },
+        {
+          "sku": "YZD-1246-EDP-100",
+          "volume_ml": 100,
+          "price_toman": 3300000,
+          "stock": 0,
+          "price_usd": 4.5
+        }
+      ],
+      "brand_en": "Escentric Molecules",
+      "expected_name_en": "ESCENTRIC MOLECULES - Molecule 02",
+      "reference_name": "Molecule 02"
+    },
+    {
+      "product_id": "YZD-PROD-1248",
+      "slug": "escentric-molecules-molecule-04",
+      "official_url": "https://www.escentric.com/en-us/products/molecule-04-100ml",
+      "supplier_brand": "Escentric",
+      "supplier_model": "Molecule 04",
+      "usd_per_kg": "303.6",
+      "quality": "H",
+      "match_status": "name_matched_supplier_identity_unverified",
+      "expected_edps": [
+        {
+          "sku": "YZD-1248-EDP-010",
+          "volume_ml": 10,
+          "price_toman": 465000,
+          "stock": 0,
+          "price_usd": 4.5
+        },
+        {
+          "sku": "YZD-1248-EDP-030",
+          "volume_ml": 30,
+          "price_toman": 1094999,
+          "stock": 0,
+          "price_usd": 4.5
+        },
+        {
+          "sku": "YZD-1248-EDP-050",
+          "volume_ml": 50,
+          "price_toman": 1725000,
+          "stock": 0,
+          "price_usd": 4.5
+        },
+        {
+          "sku": "YZD-1248-EDP-100",
+          "volume_ml": 100,
+          "price_toman": 3300000,
+          "stock": 0,
+          "price_usd": 4.5
+        }
+      ],
+      "brand_en": "Escentric Molecules",
+      "expected_name_en": "ESCENTRIC MOLECULES - Molecule 04",
+      "reference_name": "Molecule 04"
+    },
+    {
+      "product_id": "YZD-PROD-1635",
+      "slug": "lancme-miracle",
+      "official_url": "https://www.lancome-usa.com/fragrance/fragrance-by-collection/miracle/miracle-eau-de-parfum/022055.html",
+      "supplier_brand": "LANCOME",
+      "supplier_model": "Miracle",
+      "usd_per_kg": "314.6",
+      "quality": "H",
+      "match_status": "name_matched_supplier_identity_unverified",
+      "expected_edps": [
+        {
+          "sku": "YZD-1635-EDP-010",
+          "volume_ml": 10,
+          "price_toman": 430000,
+          "stock": 0,
+          "price_usd": 4.0
+        },
+        {
+          "sku": "YZD-1635-EDP-030",
+          "volume_ml": 30,
+          "price_toman": 990000,
+          "stock": 0,
+          "price_usd": 4.0
+        },
+        {
+          "sku": "YZD-1635-EDP-050",
+          "volume_ml": 50,
+          "price_toman": 1550000,
+          "stock": 0,
+          "price_usd": 4.0
+        },
+        {
+          "sku": "YZD-1635-EDP-100",
+          "volume_ml": 100,
+          "price_toman": 2950000,
+          "stock": 0,
+          "price_usd": 4.0
+        }
+      ],
+      "brand_en": "Lancôme",
+      "expected_name_en": "LANCÔME - Miracle",
+      "reference_name": "Miracle"
+    },
+    {
+      "product_id": "YZD-PROD-1631",
+      "slug": "lancme-trsor-midnight-rose",
+      "official_url": "https://www.lancome-usa.com/fragrance/fragrance-by-collection/tresor/tresor-midnight-rose-eau-de-parfum/10033.html",
+      "supplier_brand": "LANCOME",
+      "supplier_model": "Tresor Midnight Rose",
+      "usd_per_kg": "174.9",
+      "quality": "H",
+      "match_status": "name_matched_supplier_identity_unverified",
+      "expected_edps": [
+        {
+          "sku": "YZD-1631-EDP-010",
+          "volume_ml": 10,
+          "price_toman": 465000,
+          "stock": 0,
+          "price_usd": 4.5
+        },
+        {
+          "sku": "YZD-1631-EDP-030",
+          "volume_ml": 30,
+          "price_toman": 1094999,
+          "stock": 0,
+          "price_usd": 4.5
+        },
+        {
+          "sku": "YZD-1631-EDP-050",
+          "volume_ml": 50,
+          "price_toman": 1725000,
+          "stock": 0,
+          "price_usd": 4.5
+        },
+        {
+          "sku": "YZD-1631-EDP-100",
+          "volume_ml": 100,
+          "price_toman": 3300000,
+          "stock": 0,
+          "price_usd": 4.5
+        }
+      ],
+      "brand_en": "Lancôme",
+      "expected_name_en": "LANCÔME - Trésor Midnight Rose",
+      "reference_name": "Trésor Midnight Rose"
+    }
+  ]
+}

@@ -8,13 +8,14 @@ const VERSION='official_reference_prices_2026_10_v1';
 const VERSION_2='official_reference_prices_2026_10_v2';
 const VERSION_3='official_reference_prices_2026_10_v3';
 const VERSION_4='official_reference_prices_2026_10_v4';
+const VERSION_5='official_reference_prices_2026_10_v5';
 const V1_HOSTS=new Set(['lattafa.com','www.creedfragrance.com','www.atkinsons1799.com']);
 function applyReferencePrices(db,file){
  if(!fs.existsSync(file))return {applied:0,skipped:0,reason:'file_missing'};
  const data=JSON.parse(fs.readFileSync(file,'utf8'));
  const second=data.version===VERSION_2;
- const needsIdentity=[VERSION_2,VERSION_3,VERSION_4].includes(data.version);
- const counts={[VERSION]:4,[VERSION_2]:37,[VERSION_3]:6,[VERSION_4]:6};
+ const needsIdentity=[VERSION_2,VERSION_3,VERSION_4,VERSION_5].includes(data.version);
+ const counts={[VERSION]:4,[VERSION_2]:37,[VERSION_3]:6,[VERSION_4]:6,[VERSION_5]:8};
  if(!Object.hasOwn(counts,data.version)||!/^[a-f0-9]{64}$/.test(data.supplier_file_sha256||'')||!Array.isArray(data.items)||data.items.length!==counts[data.version])throw new Error('Invalid reference price manifest');
  const ids=new Set();
  for(const x of data.items){
@@ -67,4 +68,4 @@ function applyReferencePrices(db,file){
   return second ? {applied,backfilled,skipped:skipped.length,skipped_ids:skipped} : {applied,skipped:skipped.length,skipped_ids:skipped};
  })();
 }
-module.exports={applyReferencePrices,VERSION,VERSION_2,VERSION_3,VERSION_4};
+module.exports={applyReferencePrices,VERSION,VERSION_2,VERSION_3,VERSION_4,VERSION_5};

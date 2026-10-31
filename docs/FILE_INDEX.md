@@ -450,3 +450,9 @@ node_modules/   با npm install برمی‌گردد
 - `scripts/sqlite_delta_backup.py`
 - `scripts/test_sqlite_delta_backup.py`
 - `scripts/test_reference_prices_v4.js`
+
+### هشت تناظر و نت‌های بدون هرم تأییدشده
+
+- `scripts/test_reference_prices_v5.js`
+- `scripts/test_official_notes_v8.js`
+- `scripts/test_unclassified_notes.py`
