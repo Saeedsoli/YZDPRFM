@@ -518,3 +518,11 @@ node_modules/   با npm install برمی‌گردد
 ### دو محصول تکمیلی و موارد مبهم
 
 - `scripts/test_two_supplement_v17.js`
+
+### ممیزی پوشش فهرست تأمین‌کننده
+
+- `scripts/supplier_coverage.py`
+- `scripts/test_supplier_coverage.py`
+- `reports/supplier_coverage_20261031.csv`
+- `reports/supplier_coverage_20261031.json`
+- `docs/supplier_coverage_snapshot.md`
