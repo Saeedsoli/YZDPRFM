@@ -2668,6 +2668,9 @@ const supplementInserted = seedVerifiedSupplement() || 0;
 // Exact-name price associations remain explicitly unverified and unavailable;
 // only untouched supplement rows receive prices and zero-stock variants.
 require('./lv-reference-prices').applyLvReferencePrices(db, path.join(SEED_DIR, 'lv_reference_prices_v1.json'));
+// A separate, guarded batch covers four further official-name matches; it only
+// updates unchanged unavailable products and records the provisional source.
+require('./reference-price-import').applyReferencePrices(db, path.join(SEED_DIR, 'official_reference_prices_v1.json'));
 // Correct earlier supplier-derived gender fields only for unchanged, unavailable
 // supplement rows. Never switch availability or overwrite a different value.
 function correctSupplementGenderFromOfficial() {

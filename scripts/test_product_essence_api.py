@@ -8,6 +8,8 @@ with tempfile.TemporaryDirectory(prefix='yazd-product-essence-') as tmp:
     env={**os.environ,'DB_PATH':dbfile,'BACKUP_DISABLED':'1','PORT':str(port),'ADMIN_USERNAME':'owner','ADMIN_PASSWORD':'test-secret-123'}
     subprocess.run(['node','-e',"require('./src/db')"],cwd=root,env=env,check=True,stdout=subprocess.DEVNULL,timeout=120)
     con=sqlite3.connect(dbfile)
+    # A synthetic unsold product keeps the empty-variant test independent of catalog imports.
+    con.execute("insert into products(id,slug,name_fa,name_en,brand_fa,supply_mode) values('SUP-TEST-NEW','test-new-product','تست','Test','تست','UNAVAILABLE')")
     # Simulate an existing deployment that still contains a retired 3ml SKU.
     con.execute("insert into variants(sku,product_id,type,type_label,volume_ml,price_toman,stock) values('OLD-SAMPLE-3','YZD-PROD-0429','SAMPLE','قدیمی',3,123000,0)")
     con.execute("INSERT INTO roles(key,name,permissions) VALUES('stock_test','Stock test',?)",(json.dumps(['products.view','products.stock']),))
@@ -54,7 +56,7 @@ with tempfile.TemporaryDirectory(prefix='yazd-product-essence-') as tmp:
         status,state=api('GET',route,token=token);assert state['usd_per_gram']=='0.286' and state['toman_per_gram']=='85800',state
         assert con.execute("select count(*) from audit_log where action='products.essence_price'").fetchone()[0]==1
         # New sourced catalog product initially has no variants: generate all six with one price update.
-        new_id='SUP-ATKINSONS-OUD-SAVE-THE-KING';new_route='/api/admin/essence-pricing/products/'+new_id
+        new_id='SUP-TEST-NEW';new_route='/api/admin/essence-pricing/products/'+new_id
         status,new_preview=api('POST',new_route+'/preview',{'usd_per_gram':'0.4037'},token)
         assert status==200 and len(new_preview['changes'])==6,(status,new_preview)
         status,new_result=api('PUT',new_route,{'usd_per_gram':'0.4037','expected_rate_toman':300000,'expected_usd_per_kg':None},token)

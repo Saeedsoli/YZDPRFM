@@ -6,7 +6,7 @@ const env={...process.env,DB_PATH:path.join(tmp,'db.sqlite'),BACKUP_DISABLED:'1'
 try {
  const code=`
  const assert=require('assert/strict'),{db,hasPurchased}=require('./src/db'),{retireSampleThree}=require('./src/variant-history'),reports=require('./src/reports').build(db);
- const products=db.prepare('select id from products order by id limit 2').all();
+ const products=db.prepare("select id from products where id like 'YZD-PROD-%' order by id limit 2").all();
  assert.equal(db.prepare("select count(*) n from variants where type='SAMPLE' and volume_ml=3").get().n,0);
  const ins=db.prepare('insert into variants(sku,product_id,type,type_label,volume_ml,price_toman,stock) values(?,?,?,?,?,?,?)');
  ins.run('OLD-SAMPLE-1',products[0].id,'SAMPLE','قدیمی',3,123000,0);

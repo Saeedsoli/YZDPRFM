@@ -426,3 +426,8 @@ node_modules/   با npm install برمی‌گردد
 
 - `scripts/test_lv_reference_prices.js`
 - `src/lv-reference-prices.js`
+
+### ورود مرجع قیمت با محافظ ویرایش مدیر
+
+- `scripts/test_reference_price_import.js`
+- `src/reference-price-import.js`
