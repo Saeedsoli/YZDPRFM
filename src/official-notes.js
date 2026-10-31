@@ -9,7 +9,7 @@ function applyOfficialNotes(db,file) {
   const marker=data.version;
   const ids=new Set();
   for (const item of data.items) {
-    if (!item.product_id || !item.product_slug || !/^https:\/\/(www\.creedfragrance\.com|us\.parfums-de-marly\.com)\//.test(item.source_url) || ids.has(item.product_id)) throw new Error('Invalid official notes entry');
+    if (!item.product_id || !item.product_slug || !/^https:\/\/(www\.creedfragrance\.com|us\.parfums-de-marly\.com|www\.byredo\.com|www\.xerjoff\.com|www\.montblanc\.com|ortoparisi\.com)\//.test(item.source_url) || ids.has(item.product_id)) throw new Error('Invalid official notes entry');
     ids.add(item.product_id);
     for(const key of ['top','middle','base']) {
       if(!Array.isArray(item.expected_old_notes?.[key]) || !Array.isArray(item.verified_notes?.[key])) throw new Error('Invalid note list');

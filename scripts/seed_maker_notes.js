@@ -454,7 +454,11 @@ console.log();
 
 let written = 0, skipped = 0;
 const samples = [];
-const upd = db.prepare('UPDATE products SET maker_note=?, maker_note_by=? WHERE id=?');
+// Generated prose is always a draft, including when --force replaces an approved note.
+const hasApproval = db.prepare('PRAGMA table_info(products)').all().some(c => c.name === 'maker_note_approved');
+const upd = db.prepare(hasApproval
+  ? 'UPDATE products SET maker_note=?, maker_note_by=?, maker_note_approved=0 WHERE id=?'
+  : 'UPDATE products SET maker_note=?, maker_note_by=? WHERE id=?');
 
 const run = db.transaction(list => {
   for (const p of list) {

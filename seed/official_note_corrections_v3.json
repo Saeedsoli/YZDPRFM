@@ -1,0 +1,206 @@
+{
+  "version": "official_notes_2026_10_v3",
+  "description": "Official notes or explicit non-disclosure; does not verify supplier essence identity.",
+  "items": [
+    {
+      "product_id": "YZD-PROD-0990",
+      "product_slug": "byredo-de-los-santos",
+      "official_brand": "Byredo",
+      "official_name": "De Los Santos",
+      "source_url": "https://www.byredo.com/us_en/de-los-santos-50ml",
+      "source_scope": "Official fragrance pyramid.",
+      "expected_old_notes": {
+        "top": [
+          "مریم‌گلی اسکلاریا",
+          "ماندارین"
+        ],
+        "middle": [
+          "آلو زرد",
+          "گل سوسن",
+          "ریشه زنبق"
+        ],
+        "base": [
+          "صمغ لادن",
+          "مشک",
+          "آمبروکسان"
+        ]
+      },
+      "verified_notes": {
+        "top": [
+          "مریم‌گلی کلاری",
+          "آلو میرابل"
+        ],
+        "middle": [
+          "ریشه زنبق",
+          "روغن لادن صخره‌ای"
+        ],
+        "base": [
+          "مشک",
+          "آمبروکسان",
+          "پالو سانتو"
+        ]
+      }
+    },
+    {
+      "product_id": "YZD-PROD-0989",
+      "product_slug": "byredo-rouge-chaotique",
+      "official_brand": "Byredo",
+      "official_name": "Rouge Chaotique",
+      "source_url": "https://www.byredo.com/us_en/p/rouge-chaotique-night-veils-perfume-extract-70ml",
+      "source_scope": "Official fragrance pyramid for perfume extract.",
+      "expected_old_notes": {
+        "top": [
+          "زعفران",
+          "ترنج",
+          "برگ کلاسی"
+        ],
+        "middle": [
+          "آلو سیاه",
+          "پرالین شکلاتی",
+          "چوب عود"
+        ],
+        "base": [
+          "پچولی",
+          "پاپیروس"
+        ]
+      },
+      "verified_notes": {
+        "top": [
+          "ترنج",
+          "انگور فرنگی سیاه",
+          "زعفران"
+        ],
+        "middle": [
+          "آلو",
+          "پرالین"
+        ],
+        "base": [
+          "پاپیروس",
+          "نعناع هندی",
+          "عود"
+        ]
+      }
+    },
+    {
+      "product_id": "YZD-PROD-0576",
+      "product_slug": "xerjoff-alexandria-ii",
+      "official_brand": "Xerjoff",
+      "official_name": "Alexandria II",
+      "source_url": "https://www.xerjoff.com/en-us/products/alexandria-ll-parfum",
+      "source_scope": "Official parfum pyramid; no supplier identity or concentration inference.",
+      "expected_old_notes": {
+        "top": [
+          "اسطوخودوس",
+          "اقاقیا برزیلی",
+          "دارچین",
+          "سیب"
+        ],
+        "middle": [
+          "رز دمشقی",
+          "گل برف",
+          "چوب سدر"
+        ],
+        "base": [
+          "چوب عود لائوس",
+          "چوب صندل",
+          "وانیل",
+          "کهربا",
+          "مشک"
+        ]
+      },
+      "verified_notes": {
+        "top": [
+          "سیب",
+          "دارچین",
+          "اسطوخودوس",
+          "چوب رز"
+        ],
+        "middle": [
+          "چوب سدر",
+          "گل برف",
+          "رز بلغاری"
+        ],
+        "base": [
+          "کهربا",
+          "عود لائوس",
+          "مشک",
+          "چوب صندل",
+          "وانیل"
+        ]
+      }
+    },
+    {
+      "product_id": "YZD-PROD-2081",
+      "product_slug": "montblanc-legend-spirit",
+      "official_brand": "Montblanc",
+      "official_name": "Legend Spirit",
+      "source_url": "https://www.montblanc.com/en-cl/montblanc-legend-spirit-eau-de-toilette-50-ml-MB115366VG.html",
+      "source_scope": "Official eau-de-toilette product page.",
+      "expected_old_notes": {
+        "top": [
+          "گریپ‌فروت صورتی",
+          "ترنج",
+          "فلفل صورتی"
+        ],
+        "middle": [
+          "نت‌های آبزی دریا",
+          "اسطوخودوس",
+          "هل"
+        ],
+        "base": [
+          "مشک سفید",
+          "روایح چوبی",
+          "چوب کشمیر",
+          "خزه بلوط"
+        ]
+      },
+      "verified_notes": {
+        "top": [
+          "فلفل صورتی",
+          "گریپ‌فروت",
+          "ترنج"
+        ],
+        "middle": [
+          "اسطوخودوس",
+          "هل",
+          "آکورد آبی"
+        ],
+        "base": [
+          "چوب‌های سفید",
+          "خزه بلوط",
+          "مشک سفید"
+        ]
+      }
+    },
+    {
+      "product_id": "YZD-PROD-0931",
+      "product_slug": "orto-parisi-megamare",
+      "official_brand": "Orto Parisi",
+      "official_name": "Megamare",
+      "source_url": "https://ortoparisi.com/pages/faq",
+      "source_scope": "The official FAQ says the creator does not reveal notes; empty tiers mean not disclosed, not that the fragrance has no notes.",
+      "expected_old_notes": {
+        "top": [
+          "آب دریا",
+          "نمک اقیانوس",
+          "پرتقال خونی"
+        ],
+        "middle": [
+          "جلبک دریایی",
+          "فلفل سیاه",
+          "زنجبیل"
+        ],
+        "base": [
+          "عنبر سائل معدنی",
+          "چوب سدر",
+          "مشک اقیانوسی"
+        ]
+      },
+      "verified_notes": {
+        "top": [],
+        "middle": [],
+        "base": []
+      }
+    }
+  ]
+}

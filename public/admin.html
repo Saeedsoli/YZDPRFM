@@ -672,9 +672,10 @@
             صفحه است که هیچ رقیبی نمی‌تواند کپی کند و بیشترین اثر را روی اعتماد
             مشتری و رتبه گوگل دارد.
             <br>
-            متن فعلی پیش‌نویس است — آزادانه ویرایشش کنید. خالی گذاشتن یعنی
-            جعبه در صفحه محصول نمایش داده نشود.
+            یادداشت‌های تأییدنشده از سایت پنهان هستند. فقط متنی را تأیید کنید که
+            تجربه واقعی شماست؛ ذخیره یادداشت، آن را منتشر می‌کند.
           </div>
+          <div id="makerApprovalStatus" role="status" style="font-size:.76rem;color:var(--muted);margin-bottom:8px"></div>
           <textarea id="makerNote" rows="5"
             placeholder="مثال: آن حالت آناناس دودی با اسانس معمولی در نمی‌آید؛ سه بار فرمول را عوض کردیم تا به آن رسیدیم."
             style="width:100%;padding:10px;border:1px solid var(--border);border-radius:8px;
@@ -2952,6 +2953,8 @@ async function editProduct(slug) {
   const mn = document.getElementById('makerNote');
   if (mn) {
     mn.value = p.maker_note || '';
+    document.getElementById('makerApprovalStatus').textContent = !p.maker_note ? 'یادداشتی ثبت نشده است.' :
+      p.maker_note_approved ? 'این یادداشت تأیید و منتشر شده است.' : 'پیش‌نویس است و در سایت نمایش داده نمی‌شود.';
     const by = document.getElementById('makerNoteBy');
     if (by) by.value = p.maker_note_by || '';
     const len = document.getElementById('makerLen');
@@ -3135,6 +3138,7 @@ async function saveSupplyMode() {
 async function saveMakerNote() {
   const note = document.getElementById('makerNote').value.trim();
   const by = document.getElementById('makerNoteBy').value.trim();
+  if (note && !confirm('این متن به‌عنوان تجربه واقعی در سایت منتشر می‌شود. آن را بررسی و تأیید کرده‌اید؟')) return;
   const r = await fetch('/api/admin/products/' + currentProduct.slug, {
     method: 'PUT', headers: H(),
     body: JSON.stringify({ maker_note: note, maker_note_by: by })

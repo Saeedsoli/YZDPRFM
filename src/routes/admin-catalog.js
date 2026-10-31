@@ -275,7 +275,7 @@ async function handle(ctx) {
     const row = db.prepare('SELECT * FROM products WHERE id=? OR slug=?').get(key, key);
     if (!row) return sendJSON(404, { error: 'محصول یافت نشد' });
 
-    const product = attachVariants(parseProduct(row), { includeHidden: true });
+    const product = attachVariants(parseProduct(row, { includeDrafts: true }), { includeHidden: true });
     /* قیمت دلاری فقط برای کسی که مجوز قیمت دارد. انباردار
        محصول را می‌بیند ولی پایه قیمت‌گذاری را نه.
 
@@ -349,14 +349,14 @@ async function handle(ctx) {
         return sendJSON(400, { error: 'یادداشت عطرساز نباید بیش از ۱۵۰۰ نویسه باشد.' });
       }
       const by = String(b.maker_note_by ?? '').trim().slice(0, 80);
-      db.prepare('UPDATE products SET maker_note=?, maker_note_by=? WHERE id=?')
-        .run(note || null, note ? (by || 'عطرساز عطر یزد') : null, p.id);
+      db.prepare('UPDATE products SET maker_note=?, maker_note_by=?, maker_note_approved=? WHERE id=?')
+        .run(note || null, note ? (by || 'عطرساز عطر یزد') : null, note ? 1 : 0, p.id);
       appLog('INFO', 'admin', note ? 'ویرایش یادداشت عطرساز' : 'حذف یادداشت عطرساز',
              { product: p.id, chars: note.length });
     }
 
     const fresh = attachVariants(parseProduct(
-      db.prepare('SELECT * FROM products WHERE id=?').get(p.id)), { includeHidden: true });
+      db.prepare('SELECT * FROM products WHERE id=?').get(p.id), { includeDrafts: true }), { includeHidden: true });
     return sendJSON(200, { message: 'محصول به‌روزرسانی شد.', product: fresh });
   }
 

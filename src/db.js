@@ -502,6 +502,11 @@ function initSchema() {
   if (!pcols.includes('maker_note_by')) {
     db.exec('ALTER TABLE products ADD COLUMN maker_note_by TEXT');
   }
+  // Existing notes may have been generated as drafts; never publish them as
+  // first-hand experience until a human explicitly reviews and approves them.
+  if (!pcols.includes('maker_note_approved')) {
+    db.exec('ALTER TABLE products ADD COLUMN maker_note_approved INTEGER NOT NULL DEFAULT 0');
+  }
 
   /* ── وضعیت تأمین: سه‌حالته، نه دوحالته ──
      پیش‌تر فقط «موجود / ناموجود» داشتیم و این واقعیت کار دست‌ساز
@@ -1068,7 +1073,7 @@ function seedIfEmpty() {
 // ═══════════════════════════════════════════
 // توابع کمکی — تبدیل ردیف به شیء API
 // ═══════════════════════════════════════════
-function parseProduct(row) {
+function parseProduct(row, options = {}) {
   if (!row) return null;
   return {
     id: row.id,
@@ -1111,8 +1116,9 @@ function parseProduct(row) {
     supply_mode: row.supply_mode || 'UNAVAILABLE',
     transparency_notice: row.transparency_notice,
     /* یادداشت عطرساز — تجربه دست‌اول، تنها محتوای غیرقابل کپی. */
-    maker_note: row.maker_note || null,
-    maker_note_by: row.maker_note_by || null,
+    maker_note: (options.includeDrafts || row.maker_note_approved === 1) ? (row.maker_note || null) : null,
+    maker_note_by: (options.includeDrafts || row.maker_note_approved === 1) ? (row.maker_note_by || null) : null,
+    maker_note_approved: options.includeDrafts ? row.maker_note_approved === 1 : undefined,
     image_url: row.image_url
   };
 }
@@ -2675,7 +2681,7 @@ function correctSupplementGenderFromOfficial() {
   })();
 }
 correctSupplementGenderFromOfficial();
-const officialNoteManifests = ['official_note_corrections_v1.json', 'official_note_corrections_v2.json'];
+const officialNoteManifests = ['official_note_corrections_v1.json', 'official_note_corrections_v2.json', 'official_note_corrections_v3.json'];
 const officialNotesResults = officialNoteManifests.map(file =>
   require('./official-notes').applyOfficialNotes(db, path.join(SEED_DIR, file)));
 seedCoupons();
