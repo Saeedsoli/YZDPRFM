@@ -11,12 +11,12 @@ const HOST_BY_BRAND={
   'Memo Paris':'us.memoparis.com','Caron Paris':'www.parfumscaron.com','Montblanc':'www.montblanc.com','Nasomatto':'nasomatto.com','Orto Parisi':'ortoparisi.com',
   'Parfums de Marly':'us.parfums-de-marly.com',"Penhaligon's":'www.penhaligons.com',
   'Tom Ford':'www.tomfordbeauty.com','Byredo':'www.byredo.com','Versace':'www.versace.com',
-  'Xerjoff':'www.xerjoff.com','Yves Saint Laurent':'www.yslbeautyus.com'
+  'Casamorati':'www.xerjoff.com','Xerjoff':'www.xerjoff.com','Yves Saint Laurent':'www.yslbeautyus.com'
 };
 function seedOfficialIdentities(db,file){
  if(!fs.existsSync(file))return {added:0,skipped:0,reason:'file_missing'};
  const m=JSON.parse(fs.readFileSync(file,'utf8'));
- const counts={official_identity_evidence_v1:37,official_identity_evidence_v2:6,official_identity_evidence_v3:6,official_identity_evidence_v4:8,official_identity_evidence_v5:1,official_identity_evidence_v6:5,official_identity_evidence_v7:3,official_identity_evidence_v8:1,official_identity_evidence_v9:2,official_identity_evidence_v10:6};
+ const counts={official_identity_evidence_v1:37,official_identity_evidence_v2:6,official_identity_evidence_v3:6,official_identity_evidence_v4:8,official_identity_evidence_v5:1,official_identity_evidence_v6:5,official_identity_evidence_v7:3,official_identity_evidence_v8:1,official_identity_evidence_v9:2,official_identity_evidence_v10:6,official_identity_evidence_v11:5};
  if(!Object.hasOwn(counts,m.version)||!Array.isArray(m.items)||m.items.length!==counts[m.version])throw new Error('Invalid identity evidence manifest');
  const ids=new Set();
  for(const x of m.items){

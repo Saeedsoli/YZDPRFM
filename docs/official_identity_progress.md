@@ -135,3 +135,19 @@ Torino24 پیش‌تر در کاتالوگ نبود و به‌صورت محصو�
 `Emblem` در جست‌وجوی کاتالوگ محلی پیدا نشد و به صورت محصول دست‌ساز `SUP-MB-900010` بدون حدس جنسیت ایجاد شد. `Irish Leader` املای فایل و `Irish Leather` نام رسمی است. در فایل یک ردیف با مدل `Layton`، نام فارسی «دلینا» دارد؛ این تعارض حفظ و مستند شده و قیمت انتخابی ۴۲۷٫۹ دلار از ردیف دارای نام فارسی لیتون است، نه از آن ردیف متعارض. هیچ نتیجه‌ای درباره هویت اسانس با تکیه بر این تشابه گرفته نمی‌شود.
 
 برای Explorer دو صفحه رسمی طبقه‌بندی متفاوتی از نت‌ها دارند؛ فقط نت‌های مشترک بدون هرم ثبت شد. برای Versace Pour Homme متن و هرم رسمی درباره نت پایه کاملاً همخوان نیستند؛ بخش اختلافی حدسی در هرم قرار نگرفت. نت‌ها توصیف عطر مرجع اصلی‌اند. صفحات مورد استناد برای Versace و CARON نسخه EDT را توصیف می‌کنند و این الزاماً غلظت محصول دست‌ساز یا نسخه اسانس تأمین‌کننده نیست. منابع، قیمت‌ها و اصلاح نت در `seed/official_identity_evidence_v10.json`، `seed/official_reference_prices_v11.json` و `seed/official_note_corrections_v13.json` آمده‌اند.
+
+## پنج تناظر کازاموراتی / زرژوف
+
+پنج قیمت مرجع موقت دیگر ثبت شد. فهرست تأمین‌کننده این رایحه‌ها را زیر `XERJOFF` آورده و کاتالوگ محلی زیر `Casamorati` دارد؛ صفحات رسمی زرژوف این نام‌ها را در مجموعه Casamorati معرفی می‌کنند.
+
+| عطر مرجع | دلار/کیلو | کیفیت فایل | صفحه رسمی |
+|---|---:|---|---|
+| Bouquet Ideale | 223.3 | H | https://www.xerjoff.com/products/bouquet-ideale-eau-de-parfum |
+| Dama Bianca | 130.9 | P | https://www.xerjoff.com/en-us/products/dama-bianca-eau-de-parfum |
+| Lira | 180.4 | H | https://www.xerjoff.com/en-us/products/lira-eau-de-parfum |
+| Gran Ballo | 221.1 | H | https://www.xerjoff.com/en-us/products/gran-ballo-eau-de-parfum |
+| Mefisto | 178.2 | H | https://www.xerjoff.com/en-us/products/mefisto-eau-de-parfum |
+
+Mefisto با Mefisto Gentiluomo یکی نیست. در برخی صفحات قدیمی رسمی برای Bouquet Ideale، Lira و Gran Ballo توصیف‌های اضافی یا متفاوتی دیده می‌شود؛ نت‌های ثبت‌شده مطابق جدول ساختاری صفحه رسمی محصول در نشانی‌های بالا هستند و موارد اختلافی اضافه نشدند. داده‌ها توصیف عطر مرجع‌اند؛ هویت، نسخه یا کیفیت اسانس واقعی تأمین‌کننده مستقل تأیید نشده است. هیچ محصولی خودکار قابل سفارش نشده است.
+
+مدارک و قیمت‌ها در `seed/official_identity_evidence_v11.json` و `seed/official_reference_prices_v12.json` و اصلاح نت‌ها در `seed/official_note_corrections_v14.json` نگهداری می‌شوند.

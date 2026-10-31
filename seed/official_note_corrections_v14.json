@@ -1,0 +1,250 @@
+{
+  "version": "official_notes_2026_10_v14",
+  "description": "Official reference-original notes only; unclassified notes are not assigned to a tier.",
+  "items": [
+    {
+      "product_id": "YZD-PROD-0603",
+      "product_slug": "casamorati-bouquet-ideale",
+      "official_brand": "Casamorati",
+      "official_name": "Bouquet Ideale",
+      "source_url": "https://www.xerjoff.com/products/bouquet-ideale-eau-de-parfum",
+      "source_scope": "Official Casamorati product listing. Other official collection description lists additional heart ingredients; recorded structured list from product page only.",
+      "expected_old_notes": {
+        "top": [
+          "دارچین",
+          "جوز هندی"
+        ],
+        "middle": [
+          "چوب گایاک",
+          "چوب صندل",
+          "سدر",
+          "پاپیروس"
+        ],
+        "base": [
+          "وانیل",
+          "دانه تونکا",
+          "بنزوئین",
+          "لادن",
+          "مشک"
+        ]
+      },
+      "verified_notes": {
+        "top": [
+          "دارچین",
+          "جوز هندی"
+        ],
+        "middle": [
+          "چوب سدر",
+          "چوب گایاک"
+        ],
+        "base": [
+          "کومارین",
+          "مشک",
+          "گل تنباکو",
+          "وانیل"
+        ]
+      },
+      "expected_old_accords": [
+        "دسته گل ایده‌آل شب‌های رمانتیک",
+        "چوب‌های معطر و دارچین"
+      ],
+      "verified_accords": []
+    },
+    {
+      "product_id": "YZD-PROD-0602",
+      "product_slug": "casamorati-dama-bianca",
+      "official_brand": "Casamorati",
+      "official_name": "Dama Bianca",
+      "source_url": "https://www.xerjoff.com/en-us/products/dama-bianca-eau-de-parfum",
+      "source_scope": "Official Casamorati product structured notes.",
+      "expected_old_notes": {
+        "top": [
+          "کامکوات (پرتقال مینیاتوری)",
+          "لیمو ترش"
+        ],
+        "middle": [
+          "زنبق فلورانس",
+          "بنفشه",
+          "یاس",
+          "گل برف",
+          "یاس بنفش"
+        ],
+        "base": [
+          "وانیل ماداگاسکار",
+          "مالت جو",
+          "دانه آمبرت",
+          "چوب صندل",
+          "سدر"
+        ]
+      },
+      "verified_notes": {
+        "top": [
+          "لایم",
+          "کامکوات",
+          "ریشه زنبق فلورانسی"
+        ],
+        "middle": [
+          "یاس مصری",
+          "گل برف",
+          "بنفشه",
+          "یاس بنفش"
+        ],
+        "base": [
+          "چوب سدر",
+          "مشک سفید",
+          "مالت سوخته",
+          "آمبِرت",
+          "وانیل زنگباری",
+          "چوب صندل اندونزی"
+        ]
+      },
+      "expected_old_accords": [
+        "بانوی اسیر در قصر سفید",
+        "لطیف‌ترین و پودری‌ترین وانیل جهان"
+      ],
+      "verified_accords": []
+    },
+    {
+      "product_id": "YZD-PROD-0601",
+      "product_slug": "casamorati-lira",
+      "official_brand": "Casamorati",
+      "official_name": "Lira",
+      "source_url": "https://www.xerjoff.com/en-us/products/lira-eau-de-parfum",
+      "source_scope": "Official product structured notes; older brand description mentions licorice blossom, excluded from structured notes due to difference.",
+      "expected_old_notes": {
+        "top": [
+          "پرتقال خونی سیسیلی",
+          "ترنج",
+          "اسطوخودوس"
+        ],
+        "middle": [
+          "دارچین",
+          "شیرین‌بیان",
+          "یاس"
+        ],
+        "base": [
+          "کارامل کرمی",
+          "وانیل ماداگاسکار",
+          "مشک"
+        ]
+      },
+      "verified_notes": {
+        "top": [
+          "پرتقال خونی",
+          "گل اسطوخودوس",
+          "ترنج"
+        ],
+        "middle": [
+          "دارچین",
+          "یاس",
+          "رز"
+        ],
+        "base": [
+          "کارامل",
+          "مشک",
+          "وانیل"
+        ]
+      },
+      "expected_old_accords": [
+        "ملکه دسرهای جهان",
+        "کیک پرتقال و کارامل کرمی وانیلی"
+      ],
+      "verified_accords": []
+    },
+    {
+      "product_id": "YZD-PROD-0611",
+      "product_slug": "casamorati-gran-ballo",
+      "official_brand": "Casamorati",
+      "official_name": "Gran Ballo",
+      "source_url": "https://www.xerjoff.com/en-us/products/gran-ballo-eau-de-parfum",
+      "source_scope": "Official product structured notes; older brand description mentions honeysuckle not included in current structured list.",
+      "expected_old_notes": {
+        "top": [
+          "توت‌های وحشی",
+          "نارنگی ماندارین"
+        ],
+        "middle": [
+          "پیچ امین‌الدوله",
+          "گاردنیا",
+          "یاس سامباک"
+        ],
+        "base": [
+          "کارامل",
+          "وانیل",
+          "کهربا",
+          "چوب صندل"
+        ]
+      },
+      "verified_notes": {
+        "top": [
+          "ماندارین",
+          "توت‌های وحشی"
+        ],
+        "middle": [
+          "گاردنیا",
+          "یاس سامباک"
+        ],
+        "base": [
+          "کهربا",
+          "کارامل",
+          "چوب صندل",
+          "وانیل"
+        ]
+      },
+      "expected_old_accords": [
+        "رقص دختران اشرافی قرن ۱۸ در کاخ‌های وین",
+        "گل‌های سفید کاراملی"
+      ],
+      "verified_accords": []
+    },
+    {
+      "product_id": "YZD-PROD-0604",
+      "product_slug": "casamorati-mefisto",
+      "official_brand": "Casamorati",
+      "official_name": "Mefisto",
+      "source_url": "https://www.xerjoff.com/en-us/products/mefisto-eau-de-parfum",
+      "source_scope": "Official Mefisto, a separate fragrance from Mefisto Gentiluomo; supplier essence version unverified.",
+      "expected_old_notes": {
+        "top": [
+          "گریپ‌فروت",
+          "ترنج کالابریا",
+          "لیمو سیسیلی"
+        ],
+        "middle": [
+          "اسطوخودوس",
+          "زنبق فلورانس",
+          "رز"
+        ],
+        "base": [
+          "مشک",
+          "چوب صندل",
+          "سدر ویرجینیا",
+          "کهربا"
+        ]
+      },
+      "verified_notes": {
+        "top": [
+          "لیمو کالابریا",
+          "گریپ‌فروت",
+          "ترنج",
+          "گل اسطوخودوس"
+        ],
+        "middle": [
+          "زنبق فلورانسی",
+          "رز"
+        ],
+        "base": [
+          "کهربا",
+          "چوب سدر",
+          "مشک",
+          "چوب صندل میسور"
+        ]
+      },
+      "expected_old_accords": [
+        "برادر ایتالیایی سیلور مانتین واتر",
+        "مرکباتی خنک و اشرافی"
+      ],
+      "verified_accords": []
+    }
+  ]
+}

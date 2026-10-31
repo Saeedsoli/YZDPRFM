@@ -492,3 +492,8 @@ node_modules/   با npm install برمی‌گردد
 
 - `scripts/test_reference_prices_v11.js`
 - `scripts/test_official_notes_v13.js`
+
+### پنج قیمت و نت کازاموراتی
+
+- `scripts/test_reference_prices_v12.js`
+- `scripts/test_official_notes_v14.js`

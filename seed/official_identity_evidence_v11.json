@@ -1,0 +1,56 @@
+{
+  "version": "official_identity_evidence_v11",
+  "scope": "Official original only; supplier essence identity remains unverified.",
+  "items": [
+    {
+      "product_id": "YZD-PROD-0603",
+      "slug": "casamorati-bouquet-ideale",
+      "brand_en": "Casamorati",
+      "expected_name_en": "CASAMORATI - Bouquet Ideale",
+      "reference_name": "Bouquet Ideale",
+      "official_url": "https://www.xerjoff.com/products/bouquet-ideale-eau-de-parfum",
+      "status": "official_original_found_supplier_essence_unverified",
+      "checked_date": "2026-10-31"
+    },
+    {
+      "product_id": "YZD-PROD-0602",
+      "slug": "casamorati-dama-bianca",
+      "brand_en": "Casamorati",
+      "expected_name_en": "CASAMORATI - Dama Bianca",
+      "reference_name": "Dama Bianca",
+      "official_url": "https://www.xerjoff.com/en-us/products/dama-bianca-eau-de-parfum",
+      "status": "official_original_found_supplier_essence_unverified",
+      "checked_date": "2026-10-31"
+    },
+    {
+      "product_id": "YZD-PROD-0601",
+      "slug": "casamorati-lira",
+      "brand_en": "Casamorati",
+      "expected_name_en": "CASAMORATI - Lira",
+      "reference_name": "Lira",
+      "official_url": "https://www.xerjoff.com/en-us/products/lira-eau-de-parfum",
+      "status": "official_original_found_supplier_essence_unverified",
+      "checked_date": "2026-10-31"
+    },
+    {
+      "product_id": "YZD-PROD-0611",
+      "slug": "casamorati-gran-ballo",
+      "brand_en": "Casamorati",
+      "expected_name_en": "CASAMORATI - Gran Ballo",
+      "reference_name": "Gran Ballo",
+      "official_url": "https://www.xerjoff.com/en-us/products/gran-ballo-eau-de-parfum",
+      "status": "official_original_found_supplier_essence_unverified",
+      "checked_date": "2026-10-31"
+    },
+    {
+      "product_id": "YZD-PROD-0604",
+      "slug": "casamorati-mefisto",
+      "brand_en": "Casamorati",
+      "expected_name_en": "CASAMORATI - Mefisto",
+      "reference_name": "Mefisto",
+      "official_url": "https://www.xerjoff.com/en-us/products/mefisto-eau-de-parfum",
+      "status": "official_original_found_supplier_essence_unverified",
+      "checked_date": "2026-10-31"
+    }
+  ]
+}
