@@ -2683,7 +2683,7 @@ function correctSupplementGenderFromOfficial() {
 correctSupplementGenderFromOfficial();
 for (const file of ['official_gender_corrections_v1.json', 'official_gender_corrections_v2.json'])
   require('./official-gender').applyOfficialGender(db, path.join(SEED_DIR, file));
-const officialNoteManifests = ['official_note_corrections_v1.json', 'official_note_corrections_v2.json', 'official_note_corrections_v3.json', 'official_note_corrections_v4.json', 'official_note_corrections_v5.json', 'official_note_corrections_v6.json'];
+const officialNoteManifests = ['official_note_corrections_v1.json', 'official_note_corrections_v2.json', 'official_note_corrections_v3.json', 'official_note_corrections_v4.json', 'official_note_corrections_v5.json', 'official_note_corrections_v6.json', 'official_note_corrections_v7.json'];
 const officialNotesResults = officialNoteManifests.map(file =>
   require('./official-notes').applyOfficialNotes(db, path.join(SEED_DIR, file)));
 seedCoupons();

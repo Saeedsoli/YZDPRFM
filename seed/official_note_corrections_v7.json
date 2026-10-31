@@ -1,0 +1,177 @@
+{
+  "version": "official_notes_2026_10_v7",
+  "description": "Partial official descriptions of original fragrances; not confirmation of supplier-essence identity.",
+  "items": [
+    {
+      "product_id": "YZD-PROD-0564",
+      "product_slug": "amouage-purpose",
+      "official_brand": "Amouage",
+      "official_name": "Purpose",
+      "source_url": "https://amouage.com/products/100ml-purpose",
+      "source_scope": "Purpose Eau de Parfum, not Purpose 50; the source explicitly lists tiers.",
+      "expected_old_notes": {
+        "top": [
+          "صمغ کندر",
+          "فلفل شیرین پیملو",
+          "ترنج",
+          "هل"
+        ],
+        "middle": [
+          "خس‌خس",
+          "چوب صندل",
+          "پاپیروس",
+          "گل رز"
+        ],
+        "base": [
+          "آکیگالاوود",
+          "زعفران",
+          "جیر",
+          "صمغ میستیکال"
+        ]
+      },
+      "verified_notes": {
+        "top": [
+          "ترنج",
+          "فلفل صورتی",
+          "کندر",
+          "دانه فلفل پیمنتو"
+        ],
+        "middle": [
+          "رز",
+          "وتیور شنی",
+          "چوب صندل",
+          "پاپیروس"
+        ],
+        "base": [
+          "زعفران",
+          "جیر",
+          "میستیکال (Mystikal)",
+          "آکیگالاوود"
+        ]
+      }
+    },
+    {
+      "product_id": "YZD-PROD-0566",
+      "product_slug": "amouage-search",
+      "official_brand": "Amouage",
+      "official_name": "Search",
+      "source_url": "https://amouage.com/en-ch/products/100ml-search",
+      "source_scope": "Original Search; official notes, not a verification of supplier essence.",
+      "expected_old_notes": {
+        "top": [
+          "لیمو سیسیلی",
+          "لایم",
+          "نارنگی ماندارین"
+        ],
+        "middle": [
+          "صمغ کندر",
+          "فلفل سیاه",
+          "صمغ المی"
+        ],
+        "base": [
+          "چوب درخت قان (توس)",
+          "خس‌خس",
+          "چوب گایاک"
+        ]
+      },
+      "verified_notes": {
+        "top": [
+          "لیمو",
+          "لایم",
+          "نارنگی ماندارین"
+        ],
+        "middle": [
+          "کندر هوجری",
+          "فلفل سیاه",
+          "المی"
+        ],
+        "base": [
+          "چوب کاد",
+          "وتیور",
+          "چوب گایاک"
+        ]
+      }
+    },
+    {
+      "product_id": "YZD-PROD-0432",
+      "product_slug": "creed-millesime-imperial",
+      "official_brand": "Creed",
+      "official_name": "Millesime Imperial",
+      "source_url": "https://www.creedfragrance.com/p/millesime-imperial/12870041/",
+      "source_scope": "Only explicitly described tiers; marine accord is not positioned in a tier on the referenced page.",
+      "expected_old_notes": {
+        "top": [
+          "نت‌های میوه‌ای آبدار",
+          "نمک دریا"
+        ],
+        "middle": [
+          "لیمو سیسیلی",
+          "ترنج",
+          "زنبق",
+          "نارنگی ماندارین"
+        ],
+        "base": [
+          "نت‌های دریایی",
+          "مشک",
+          "روایح چوبی"
+        ]
+      },
+      "verified_notes": {
+        "top": [
+          "ترنج",
+          "انگور فرنگی سیاه",
+          "برگ بنفشه"
+        ],
+        "middle": [
+          "ریشه زنبق"
+        ],
+        "base": [
+          "چوب سدر",
+          "چوب صندل",
+          "مشک"
+        ]
+      }
+    },
+    {
+      "product_id": "YZD-PROD-1507",
+      "product_slug": "yves-saint-laurent-mon-paris",
+      "official_brand": "Yves Saint Laurent",
+      "official_name": "Mon Paris",
+      "source_url": "https://www.yslbeautyus.com/fragrance/womens-fragrances/mon-paris/mon-paris-eau-de-parfum/4150YSL.html",
+      "source_scope": "Original Mon Paris Eau de Parfum; only tiers clear from the official description.",
+      "expected_old_notes": {
+        "top": [
+          "توت فرنگی سرخ",
+          "تمشک",
+          "گلابی",
+          "ترنج کالابریا"
+        ],
+        "middle": [
+          "گل تاتوره (داتورا)",
+          "گل صدتومانی",
+          "شکوفه پرتقال",
+          "یاس سامباک"
+        ],
+        "base": [
+          "نعناع هندی اندونزی",
+          "مشک سفید",
+          "سدر",
+          "وانیل"
+        ]
+      },
+      "verified_notes": {
+        "top": [
+          "میوه‌های قرمز"
+        ],
+        "middle": [
+          "گل تاتوره",
+          "گل صدتومانی سفید"
+        ],
+        "base": [
+          "مشک سفید",
+          "نعناع هندی"
+        ]
+      }
+    }
+  ]
+}

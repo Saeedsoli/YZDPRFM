@@ -79,3 +79,12 @@
 `Hindu Grass` و `Akaster` در جستجوی این نوبت صفحه رسمی محصول قابل تأیید نداشتند؛ اطلاعات و قیمتشان تغییر داده نشد. همچنین صفحات رسمی مختلف برای `Torino22` درباره افشای نت‌ها ناسازگارند؛ تا روشن‌شدن منبع مناسب، داده آن تغییر نکرده است.
 
 در هر پنج مورد، تصحیح فقط در صورتی اعمال می‌شود که هر سه فهرست نت با داده اولیه برابر باشند. قیمت، سفارش، موجودی و وضعیت تأمین در این نوبت تغییر نکرده‌اند. گزارش ماشین‌خوان: `seed/official_note_corrections_v6.json`.
+
+## نوبت هفتم — آمواج، کرید و ایو سن لوران
+
+- **Amouage Purpose Eau de Parfum**: https://amouage.com/products/100ml-purpose — نت‌های رسمی خود این نسخه ثبت شد؛ Purpose 50 نسخه دیگری است و به‌طور خودکار معادل دانسته نشده.
+- **Amouage Search**: https://amouage.com/en-ch/products/100ml-search — هرم نت طبق صفحه رسمی ثبت شد.
+- **Creed Millésime Impérial**: https://www.creedfragrance.com/p/millesime-imperial/12870041/ — فقط نت‌هایی که جایگاهشان از توضیح رسمی روشن است در هرم آمده‌اند؛ جایگاه آکورد دریایی حدس زده نشده است.
+- **YSL Mon Paris Eau de Parfum**: https://www.yslbeautyus.com/fragrance/womens-fragrances/mon-paris/mon-paris-eau-de-parfum/4150YSL.html — نت‌های صریحاً قابل تشخیص از توضیح صفحه رسمی ثبت شد.
+
+این تطبیق‌ها صحت نام و اطلاعات رایحه مرجع را مستند می‌کنند، نه هویت قطعی اسانس تأمین‌کننده یا قیمت آن. قیمت‌ها، سفارش‌ها و وضعیت تأمین تغییر نکرده‌اند. فایل ماشین‌خوان: `seed/official_note_corrections_v7.json`.
