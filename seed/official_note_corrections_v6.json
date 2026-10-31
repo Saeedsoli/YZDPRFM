@@ -1,0 +1,170 @@
+{
+  "version": "official_notes_2026_10_v6",
+  "description": "Only official reference-fragrance notes; absent notes not evidence of absence; no confirmation of supplier essence or price.",
+  "items": [
+    {
+      "product_id": "YZD-PROD-0684",
+      "product_slug": "kilian-paris-moonlight-in-heaven",
+      "official_brand": "Kilian Paris",
+      "official_name": "Moonlight in Heaven",
+      "source_url": "https://www.bykilian.com/product/19797/52771/perfume/moonlight-in-heaven/the-fresh",
+      "source_scope": "Official page lists top, heart and base notes for original fragrance.",
+      "expected_old_notes": {
+        "top": [
+          "گریپ‌فروت",
+          "لیمو",
+          "فلفل صورتی"
+        ],
+        "middle": [
+          "انبه رسیده استوایی",
+          "نارگیل",
+          "برنج سفید تایلندی"
+        ],
+        "base": [
+          "دانه تونکا",
+          "خس‌خس هائیتی"
+        ]
+      },
+      "verified_notes": {
+        "top": [
+          "گریپ‌فروت"
+        ],
+        "middle": [
+          "انبه",
+          "نارگیل"
+        ],
+        "base": [
+          "دانه تونکای برشته",
+          "برنج"
+        ]
+      }
+    },
+    {
+      "product_id": "YZD-PROD-1744",
+      "product_slug": "carolina-herrera-212-vip-men",
+      "official_brand": "Carolina Herrera",
+      "official_name": "212 VIP Men",
+      "source_url": "https://www.carolinaherrera.com/ww/en/p-fragrance/212-vip-men",
+      "source_scope": "Use explicitly labeled pyramid; introductory prose positions mint differently.",
+      "expected_old_notes": {
+        "top": [
+          "میوه گل ساعتی (پشن فروت)",
+          "لایم",
+          "فلفل",
+          "زنجبیل"
+        ],
+        "middle": [
+          "عرق ودکا",
+          "جین",
+          "نعناع خنک",
+          "ادویه‌جات"
+        ],
+        "base": [
+          "چرم تیره",
+          "کهربا",
+          "چوب‌های معطر"
+        ]
+      },
+      "verified_notes": {
+        "top": [
+          "لایم خاویاری",
+          "نعناع یخ‌زده"
+        ],
+        "middle": [
+          "زنجبیل",
+          "ودکای خنک"
+        ],
+        "base": [
+          "چوب کینگ‌وود",
+          "دانه تونکا"
+        ]
+      }
+    },
+    {
+      "product_id": "YZD-PROD-0919",
+      "product_slug": "nasomatto-black-afgano",
+      "official_brand": "Nasomatto",
+      "official_name": "Black Afgano",
+      "source_url": "https://nasomatto.com/products/black-afgano",
+      "source_scope": "The official product page does not disclose a note pyramid; blank means not documented, not a scent-free fragrance.",
+      "expected_old_notes": {
+        "top": [
+          "شاهدانه (حشیش)",
+          "نت‌های سبز گیاهی"
+        ],
+        "middle": [
+          "رزین‌های دودی",
+          "نت‌های چوبی",
+          "قهوه اسپرسو",
+          "تنباکو"
+        ],
+        "base": [
+          "چوب عود آگار",
+          "صمغ کندر یمنی"
+        ]
+      },
+      "verified_notes": {
+        "top": [],
+        "middle": [],
+        "base": []
+      }
+    },
+    {
+      "product_id": "YZD-PROD-0921",
+      "product_slug": "nasomatto-baraonda",
+      "official_brand": "Nasomatto",
+      "official_name": "Baraonda",
+      "source_url": "https://nasomatto.com/products/baraonda",
+      "source_scope": "The official product page does not disclose a note pyramid; blank means not documented, not a scent-free fragrance.",
+      "expected_old_notes": {
+        "top": [
+          "ویسکی سینگل مالت کهنه بلوطی"
+        ],
+        "middle": [
+          "رز دمشقی سنتفولیا",
+          "گل ختی"
+        ],
+        "base": [
+          "دانه آمبرت",
+          "نت‌های چوبی",
+          "مشک سفید"
+        ]
+      },
+      "verified_notes": {
+        "top": [],
+        "middle": [],
+        "base": []
+      }
+    },
+    {
+      "product_id": "YZD-PROD-0928",
+      "product_slug": "nasomatto-fantomas",
+      "official_brand": "Nasomatto",
+      "official_name": "Fantomas",
+      "source_url": "https://nasomatto.com/products/fantomas",
+      "source_scope": "The official product page does not disclose a note pyramid; blank means not documented, not a scent-free fragrance.",
+      "expected_old_notes": {
+        "top": [
+          "خربزه",
+          "میوه‌های شیرین",
+          "صمغ پلاستیک"
+        ],
+        "middle": [
+          "باروت",
+          "دود",
+          "نت‌های لاستیکی"
+        ],
+        "base": [
+          "نعناع هندی",
+          "چوب سدر",
+          "کارامل"
+        ]
+      },
+      "verified_notes": {
+        "top": [],
+        "middle": [],
+        "base": []
+      }
+    }
+  ]
+}
