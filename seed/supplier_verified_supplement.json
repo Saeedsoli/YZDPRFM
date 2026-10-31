@@ -310,5 +310,36 @@
     "source_url": "https://www.creedfragrance.com/p/royales-exclusives-white-flowers/12900138/",
     "source_note": "Notes are for the official reference original, from https://creedfragrance.com/journal/floral-fragrances.list; not proof of supplier essence identity or composition. Gender is not inferred from supplier list.",
     "variants": []
+  },
+  {
+    "id": "SUP-MB-900010",
+    "slug": "montblanc-emblem",
+    "name_fa": "امبلم",
+    "name_en": "Emblem",
+    "title_fa_base": "امبلم",
+    "full_display_fa": "مون بلان — امبلم",
+    "inspired_brand_en": "Montblanc",
+    "inspired_brand_fa": "مون بلان",
+    "gender": null,
+    "notes": {
+      "top": [
+        "مریم‌گلی",
+        "هل",
+        "گریپ‌فروت"
+      ],
+      "middle": [
+        "برگ بنفشه",
+        "برگ دارچین"
+      ],
+      "base": [
+        "دانه تونکا",
+        "چوب‌های گران‌بها"
+      ]
+    },
+    "accords": [],
+    "transclaimer_notice": "این محصول بازآفرینی دست‌ساز است و محصول اورجینال برند مون بلان نیست.",
+    "source_url": "https://www.montblanc.com/en-us/eau-de-toilette_cod23471478575779015.html",
+    "source_note": "Official notes and identity describe the reference EDT, not the verified identity or composition of supplier essence. Gender is not inferred from supplier list.",
+    "variants": []
   }
 ]

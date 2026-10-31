@@ -487,3 +487,8 @@ node_modules/   با npm install برمی‌گردد
 ### کرید و آرمانی — دو قیمت مرجع
 
 - `scripts/test_creed_armani_reference.js`
+
+### شش قیمت مرجع و نت رسمی
+
+- `scripts/test_reference_prices_v11.js`
+- `scripts/test_official_notes_v13.js`

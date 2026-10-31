@@ -118,3 +118,20 @@ Torino24 پیش‌تر در کاتالوگ نبود و به‌صورت محصو�
 هر دو انتساب صرفاً بر اساس نام‌اند؛ اصالت، هویت و کیفیت اسانس واقعی تأمین‌کننده مستقل تأیید نشده است. وضعیت هر دو محصول `UNAVAILABLE` است و واریانت‌های قیمت‌گذاری‌شده موجودی صفر دارند. مدارک در `seed/official_identity_evidence_v9.json`، قیمت‌ها در `seed/official_reference_prices_v10.json` و اصلاح نت آرمانی در `seed/official_note_corrections_v12.json` ثبت شده‌اند.
 
 نام `ABSOLUE AVENTUS` در فهرست را به Aventus معمولی نسبت ندادیم؛ صفحه رسمی، Absolu Aventus را محصول متمایز معرفی می‌کند و صفحات رسمی آن توصیف‌های متفاوتی برای نسخه‌های کنونی و محدود دارند. نسخه واقعی اسانس هنوز تأیید نشده است.
+
+## شش تناظر دیگر — دسته سریع‌تر و کنترل‌شده
+
+در این دسته شش قیمت مرجع موقت با بالاترین قیمت مثبت ثبت شد. همه محصولات `UNAVAILABLE` و واریانت‌های قیمت‌گذاری‌شده با موجودی صفر هستند. تطبیق نام و صفحه عطر اصلی، **هویت و کیفیت واقعی اسانس تأمین‌کننده را اثبات نمی‌کند**.
+
+| عطر مرجع | قیمت دلار/کیلو | کیفیت فایل | منبع رسمی |
+|---|---:|---|---|
+| Layton | 427.9 | H | https://us.parfums-de-marly.com/products/layton |
+| Irish Leather | 265.1 | H | https://us.memoparis.com/products/irish-leather-eau-de-parfum-30ml |
+| Explorer | 209 | H | https://www.montblanc.com/en-be/explorer-eau-de-parfum-60-ml-MB124070.html |
+| Versace Pour Homme | 330 | T | https://www.versace.com/us/en/men/accessories/fragrances-body-care/pour-homme/pour-homme-edt-100-ml-blue/R720010-R100MLS_RNUL.html |
+| Pour Un Homme de CARON | 224.4 | H | https://www.parfumscaron.com/en/products/pour-un-homme-vaporisateur |
+| Montblanc Emblem | 269.5 | H | https://www.montblanc.com/en-us/eau-de-toilette_cod23471478575779015.html |
+
+`Emblem` در جست‌وجوی کاتالوگ محلی پیدا نشد و به صورت محصول دست‌ساز `SUP-MB-900010` بدون حدس جنسیت ایجاد شد. `Irish Leader` املای فایل و `Irish Leather` نام رسمی است. در فایل یک ردیف با مدل `Layton`، نام فارسی «دلینا» دارد؛ این تعارض حفظ و مستند شده و قیمت انتخابی ۴۲۷٫۹ دلار از ردیف دارای نام فارسی لیتون است، نه از آن ردیف متعارض. هیچ نتیجه‌ای درباره هویت اسانس با تکیه بر این تشابه گرفته نمی‌شود.
+
+برای Explorer دو صفحه رسمی طبقه‌بندی متفاوتی از نت‌ها دارند؛ فقط نت‌های مشترک بدون هرم ثبت شد. برای Versace Pour Homme متن و هرم رسمی درباره نت پایه کاملاً همخوان نیستند؛ بخش اختلافی حدسی در هرم قرار نگرفت. نت‌ها توصیف عطر مرجع اصلی‌اند. صفحات مورد استناد برای Versace و CARON نسخه EDT را توصیف می‌کنند و این الزاماً غلظت محصول دست‌ساز یا نسخه اسانس تأمین‌کننده نیست. منابع، قیمت‌ها و اصلاح نت در `seed/official_identity_evidence_v10.json`، `seed/official_reference_prices_v11.json` و `seed/official_note_corrections_v13.json` آمده‌اند.

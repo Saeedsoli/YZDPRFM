@@ -1,0 +1,237 @@
+{
+  "version": "official_notes_2026_10_v13",
+  "description": "Official reference-original notes only; unclassified notes are not assigned to a tier.",
+  "items": [
+    {
+      "product_id": "YZD-PROD-0636",
+      "product_slug": "parfums-de-marly-layton",
+      "official_brand": "Parfums de Marly",
+      "official_name": "Layton",
+      "source_url": "https://us.parfums-de-marly.com/products/layton",
+      "source_scope": "Official structured pyramid; descriptive excerpt also mentions jasmine, not in the pyramid. Supplier has conflicting Persian Delina on one lower-price Layton row; no identity assumption about essence.",
+      "expected_old_notes": {
+        "top": [
+          "سیب ترد",
+          "اسطوخودوس",
+          "نارنگی ماندارین",
+          "ترنج"
+        ],
+        "middle": [
+          "گل شمعدانی",
+          "بنفشه",
+          "یاس"
+        ],
+        "base": [
+          "وانیل ماداگاسکار",
+          "هل",
+          "چوب گایاک",
+          "چوب صندل",
+          "فلفل سیاه",
+          "نعناع هندی"
+        ]
+      },
+      "verified_notes": {
+        "top": [
+          "سیب",
+          "ترنج",
+          "هل"
+        ],
+        "middle": [
+          "اسطوخودوس",
+          "بنفشه",
+          "شمعدانی"
+        ],
+        "base": [
+          "پچولی",
+          "وانیل",
+          "چوب گایاک",
+          "پرالین"
+        ]
+      },
+      "expected_old_accords": [
+        "شاه‌بیت عطرهای پاییزی جهان",
+        "سیب دارچینی وانیلی با اغواگری مرگبار"
+      ],
+      "verified_accords": []
+    },
+    {
+      "product_id": "YZD-PROD-1159",
+      "product_slug": "memo-paris-irish-leather",
+      "official_brand": "Memo Paris",
+      "official_name": "Irish Leather",
+      "source_url": "https://us.memoparis.com/products/irish-leather-eau-de-parfum-30ml",
+      "source_scope": "Official structured notes; supplier spelling Irish Leader differs from official Irish Leather.",
+      "expected_old_notes": {
+        "top": [
+          "دانه سرو کوهی (جونیپر)",
+          "فلفل صورتی"
+        ],
+        "middle": [
+          "چای ماته پاراگوئه",
+          "مریم‌گلی"
+        ],
+        "base": [
+          "چرم تیره",
+          "غان",
+          "خزه بلوط",
+          "کهربا"
+        ]
+      },
+      "verified_notes": {
+        "top": [
+          "فلفل",
+          "نارنگی",
+          "سرو کوهی"
+        ],
+        "middle": [
+          "زنبق",
+          "مریم‌گلی",
+          "ماته سبز"
+        ],
+        "base": [
+          "چرم سبز",
+          "چوب سدر",
+          "وتیور"
+        ]
+      },
+      "expected_old_accords": [
+        "صبح سرد و مه‌آلود در علفزارهای ایرلند با تاخت و تاز اسب‌ها",
+        "چرم باطراوت و سبز"
+      ],
+      "verified_accords": []
+    },
+    {
+      "product_id": "YZD-PROD-1816",
+      "product_slug": "montblanc-montblanc-explorer",
+      "official_brand": "Montblanc",
+      "official_name": "Explorer",
+      "source_url": "https://www.montblanc.com/en-be/explorer-eau-de-parfum-60-ml-MB124070.html",
+      "source_scope": "Official product and official collection https://www.montblanc.com/en-ad/collection/fragrances/explorer differ in tier assignments; only shared notes unclassified.",
+      "expected_old_notes": {
+        "top": [
+          "ترنج کالابریا",
+          "فلفل صورتی",
+          "مریم‌گلی"
+        ],
+        "middle": [
+          "خس‌خس هائیتی",
+          "چرم دست‌ساز"
+        ],
+        "base": [
+          "آمبروکسان",
+          "نعناع هندی اندونزی",
+          "کاکائو",
+          "اکیگالاوود"
+        ]
+      },
+      "verified_notes": {
+        "top": [],
+        "middle": [],
+        "base": []
+      },
+      "expected_old_accords": [
+        "شیشه با روکش چرم مشکی با ستاره سفید مون بلان",
+        "پرفروش‌ترین و باکیفیت‌ترین آلترناتیو کرید اونتوس"
+      ],
+      "verified_accords": [
+        "ترنج",
+        "مریم‌گلی",
+        "وتیور",
+        "چرم",
+        "پچولی"
+      ]
+    },
+    {
+      "product_id": "YZD-PROD-1702",
+      "product_slug": "versace-versace-pour-homme",
+      "official_brand": "Versace",
+      "official_name": "Versace Pour Homme",
+      "source_url": "https://www.versace.com/us/en/men/accessories/fragrances-body-care/pour-homme/pour-homme-edt-100-ml-blue/R720010-R100MLS_RNUL.html",
+      "source_scope": "Official description lists amber and musk base but structured list differs; disputed components are not assigned to a tier.",
+      "expected_old_notes": {
+        "top": [
+          "لیمو ترش",
+          "بهارنارنج",
+          "ترنج کالابریا",
+          "گل رز"
+        ],
+        "middle": [
+          "سنبل آبی",
+          "چوب سدر",
+          "مریم‌گلی اسکلاریا",
+          "شمعدانی"
+        ],
+        "base": [
+          "دانه تونکا",
+          "مشک سفید",
+          "کهربا"
+        ]
+      },
+      "verified_notes": {
+        "top": [
+          "ترنج",
+          "نرولی",
+          "سیترون",
+          "برگ نارنج"
+        ],
+        "middle": [
+          "شمعدانی",
+          "مریم‌گلی",
+          "سنبل آبی"
+        ],
+        "base": [
+          "کهربای معدنی"
+        ]
+      },
+      "expected_old_accords": [
+        "شاهکار آلبرتو موریلاس در سال ۲۰۰۸",
+        "محبوب‌ترین ادکلن خنک تابستانی برای آقایان در سراسر جهان"
+      ],
+      "verified_accords": [
+        "مشک"
+      ]
+    },
+    {
+      "product_id": "YZD-PROD-1642",
+      "product_slug": "caron-paris-pour-un-homme-de-caron",
+      "official_brand": "Caron Paris",
+      "official_name": "Pour Un Homme de CARON",
+      "source_url": "https://www.parfumscaron.com/en/products/pour-un-homme-vaporisateur",
+      "source_scope": "Official original EDT pyramid; other CARON variants exist, and supplier essence version remains unverified.",
+      "expected_old_notes": {
+        "top": [
+          "اسطوخودوس فرانسوی پرووانس خالص"
+        ],
+        "middle": [
+          "اسطوخودوس",
+          "رزماری"
+        ],
+        "base": [
+          "وانیل ماداگاسکار",
+          "دانه تونکا",
+          "مشک",
+          "کهربا"
+        ]
+      },
+      "verified_notes": {
+        "top": [
+          "اسطوخودوس",
+          "لاواندین"
+        ],
+        "middle": [
+          "رز"
+        ],
+        "base": [
+          "وانیل",
+          "آکورد عنبری",
+          "مشک"
+        ]
+      },
+      "expected_old_accords": [
+        "نخستین عطر مردانه مستقل تاریخ در سال ۱۹۳۴",
+        "ترکیب جاودانه دو نت متضاد اسطوخودوس خنک و وانیل گرم"
+      ],
+      "verified_accords": []
+    }
+  ]
+}

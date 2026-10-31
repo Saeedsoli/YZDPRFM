@@ -14,13 +14,14 @@ const VERSION_7='official_reference_prices_2026_10_v7';
 const VERSION_8='official_reference_prices_2026_10_v8';
 const VERSION_9='official_reference_prices_2026_10_v9';
 const VERSION_10='official_reference_prices_2026_10_v10';
+const VERSION_11='official_reference_prices_2026_10_v11';
 const V1_HOSTS=new Set(['lattafa.com','www.creedfragrance.com','www.atkinsons1799.com']);
 function applyReferencePrices(db,file){
  if(!fs.existsSync(file))return {applied:0,skipped:0,reason:'file_missing'};
  const data=JSON.parse(fs.readFileSync(file,'utf8'));
  const second=data.version===VERSION_2;
- const needsIdentity=[VERSION_2,VERSION_3,VERSION_4,VERSION_5,VERSION_6,VERSION_7,VERSION_8,VERSION_9,VERSION_10].includes(data.version);
- const counts={[VERSION]:4,[VERSION_2]:37,[VERSION_3]:6,[VERSION_4]:6,[VERSION_5]:8,[VERSION_6]:1,[VERSION_7]:5,[VERSION_8]:3,[VERSION_9]:1,[VERSION_10]:2};
+ const needsIdentity=[VERSION_2,VERSION_3,VERSION_4,VERSION_5,VERSION_6,VERSION_7,VERSION_8,VERSION_9,VERSION_10,VERSION_11].includes(data.version);
+ const counts={[VERSION]:4,[VERSION_2]:37,[VERSION_3]:6,[VERSION_4]:6,[VERSION_5]:8,[VERSION_6]:1,[VERSION_7]:5,[VERSION_8]:3,[VERSION_9]:1,[VERSION_10]:2,[VERSION_11]:6};
  if(!Object.hasOwn(counts,data.version)||!/^[a-f0-9]{64}$/.test(data.supplier_file_sha256||'')||!Array.isArray(data.items)||data.items.length!==counts[data.version])throw new Error('Invalid reference price manifest');
  const ids=new Set();
  for(const x of data.items){
@@ -73,4 +74,4 @@ function applyReferencePrices(db,file){
   return second ? {applied,backfilled,skipped:skipped.length,skipped_ids:skipped} : {applied,skipped:skipped.length,skipped_ids:skipped};
  })();
 }
-module.exports={applyReferencePrices,VERSION,VERSION_2,VERSION_3,VERSION_4,VERSION_5,VERSION_6,VERSION_7,VERSION_8,VERSION_9,VERSION_10};
+module.exports={applyReferencePrices,VERSION,VERSION_2,VERSION_3,VERSION_4,VERSION_5,VERSION_6,VERSION_7,VERSION_8,VERSION_9,VERSION_10,VERSION_11};

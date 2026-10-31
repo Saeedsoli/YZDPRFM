@@ -1,0 +1,66 @@
+{
+  "version": "official_identity_evidence_v10",
+  "scope": "Official original only; supplier essence identity remains unverified.",
+  "items": [
+    {
+      "product_id": "YZD-PROD-0636",
+      "slug": "parfums-de-marly-layton",
+      "brand_en": "Parfums de Marly",
+      "expected_name_en": "PARFUMS DE MARLY - Layton",
+      "reference_name": "Layton",
+      "official_url": "https://us.parfums-de-marly.com/products/layton",
+      "status": "official_original_found_supplier_essence_unverified",
+      "checked_date": "2026-10-31"
+    },
+    {
+      "product_id": "YZD-PROD-1159",
+      "slug": "memo-paris-irish-leather",
+      "brand_en": "Memo Paris",
+      "expected_name_en": "MEMO PARIS - Irish Leather",
+      "reference_name": "Irish Leather",
+      "official_url": "https://us.memoparis.com/products/irish-leather-eau-de-parfum-30ml",
+      "status": "official_original_found_supplier_essence_unverified",
+      "checked_date": "2026-10-31"
+    },
+    {
+      "product_id": "YZD-PROD-1816",
+      "slug": "montblanc-montblanc-explorer",
+      "brand_en": "Montblanc",
+      "expected_name_en": "Montblanc Explorer",
+      "reference_name": "Explorer",
+      "official_url": "https://www.montblanc.com/en-be/explorer-eau-de-parfum-60-ml-MB124070.html",
+      "status": "official_original_found_supplier_essence_unverified",
+      "checked_date": "2026-10-31"
+    },
+    {
+      "product_id": "YZD-PROD-1702",
+      "slug": "versace-versace-pour-homme",
+      "brand_en": "Versace",
+      "expected_name_en": "Versace Pour Homme",
+      "reference_name": "Versace Pour Homme",
+      "official_url": "https://www.versace.com/us/en/men/accessories/fragrances-body-care/pour-homme/pour-homme-edt-100-ml-blue/R720010-R100MLS_RNUL.html",
+      "status": "official_original_found_supplier_essence_unverified",
+      "checked_date": "2026-10-31"
+    },
+    {
+      "product_id": "YZD-PROD-1642",
+      "slug": "caron-paris-pour-un-homme-de-caron",
+      "brand_en": "Caron Paris",
+      "expected_name_en": "CARON PARIS - Pour Un Homme de Caron",
+      "reference_name": "Pour Un Homme de CARON",
+      "official_url": "https://www.parfumscaron.com/en/products/pour-un-homme-vaporisateur",
+      "status": "official_original_found_supplier_essence_unverified",
+      "checked_date": "2026-10-31"
+    },
+    {
+      "product_id": "SUP-MB-900010",
+      "slug": "montblanc-emblem",
+      "brand_en": "Montblanc",
+      "expected_name_en": "MONTBLANC - Emblem",
+      "reference_name": "Emblem",
+      "official_url": "https://www.montblanc.com/en-us/eau-de-toilette_cod23471478575779015.html",
+      "status": "official_original_found_supplier_essence_unverified",
+      "checked_date": "2026-10-31"
+    }
+  ]
+}
