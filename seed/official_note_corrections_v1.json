@@ -1,0 +1,162 @@
+{
+  "version": "official_notes_2026_10_v1",
+  "description": "Documented, partial official note descriptions; not a claim of full formula or supplier-essence identity.",
+  "items": [
+    {
+      "product_id": "YZD-PROD-0430",
+      "product_slug": "creed-green-irish-tweed",
+      "official_brand": "Creed",
+      "official_name": "Green Irish Tweed",
+      "source_url": "https://www.creedfragrance.com/p/green-irish-tweed/12870035/",
+      "source_scope": "Only notes explicitly described in official product page; omission is not a claim of absence.",
+      "expected_old_notes": {
+        "top": [
+          "بهارنارنج",
+          "زنبق"
+        ],
+        "middle": [
+          "برگ بنفشه"
+        ],
+        "base": [
+          "عنبر سائل",
+          "چوب صندل میسور"
+        ]
+      },
+      "verified_notes": {
+        "top": [
+          "ترنج",
+          "لیمو",
+          "نعناع فلفلی"
+        ],
+        "middle": [
+          "شمعدانی",
+          "اسطوخودوس"
+        ],
+        "base": [
+          "خزه بلوط",
+          "نت‌های چوبی"
+        ]
+      }
+    },
+    {
+      "product_id": "YZD-PROD-0431",
+      "product_slug": "creed-silver-mountain-water",
+      "official_brand": "Creed",
+      "official_name": "Silver Mountain Water",
+      "source_url": "https://www.creedfragrance.com/p/silver-mountain-water/12870049/",
+      "source_scope": "Only notes explicitly described in official product page; omission is not a claim of absence.",
+      "expected_old_notes": {
+        "top": [
+          "ترنج",
+          "نارنگی ماندارین"
+        ],
+        "middle": [
+          "چای سبز",
+          "انگور فرنگی سیاه"
+        ],
+        "base": [
+          "مشک",
+          "چوب صندل",
+          "برگ درخت نارنج",
+          "صمغ گالبانوم"
+        ]
+      },
+      "verified_notes": {
+        "top": [
+          "ترنج",
+          "انگور فرنگی سیاه"
+        ],
+        "middle": [
+          "چای",
+          "آکورد ازونیک"
+        ],
+        "base": [
+          "چوب صندل",
+          "مشک"
+        ]
+      }
+    },
+    {
+      "product_id": "YZD-PROD-0436",
+      "product_slug": "creed-viking",
+      "official_brand": "Creed",
+      "official_name": "Viking",
+      "source_url": "https://www.creedfragrance.com/p/viking/12870053/",
+      "source_scope": "Only notes explicitly described in official product page; omission is not a claim of absence.",
+      "expected_old_notes": {
+        "top": [
+          "فلفل صورتی",
+          "نعناع تند",
+          "ترنج کالابریا",
+          "لیمو"
+        ],
+        "middle": [
+          "فلفل صورتی",
+          "رز بلغاری",
+          "اسطوخودوس"
+        ],
+        "base": [
+          "چوب صندل",
+          "خس‌خس هائیتی",
+          "نعناع هندی",
+          "سدر"
+        ]
+      },
+      "verified_notes": {
+        "top": [
+          "ترنج",
+          "لیمو",
+          "فلفل صورتی",
+          "فلفل سیاه",
+          "نعناع فلفلی"
+        ],
+        "middle": [],
+        "base": [
+          "چوب سدر",
+          "وتیور هائیتی"
+        ]
+      }
+    },
+    {
+      "product_id": "YZD-PROD-0647",
+      "product_slug": "parfums-de-marly-greenley",
+      "official_brand": "Parfums de Marly",
+      "official_name": "Greenley",
+      "source_url": "https://us.parfums-de-marly.com/products/greenley",
+      "source_scope": "Only notes explicitly described in official product page; omission is not a claim of absence.",
+      "expected_old_notes": {
+        "top": [
+          "سیب سبز ترش",
+          "ترنج کالابریا",
+          "نارنگی ماندارین"
+        ],
+        "middle": [
+          "برگ درخت نارنج",
+          "بنفشه",
+          "سدر",
+          "چوب کشمیر"
+        ],
+        "base": [
+          "خزه بلوط",
+          "امبروکسان",
+          "مشک سفید"
+        ]
+      },
+      "verified_notes": {
+        "top": [
+          "ترنج",
+          "نارنگی ماندارین",
+          "سیب سبز"
+        ],
+        "middle": [
+          "پتی‌گرن"
+        ],
+        "base": [
+          "آمبروکس",
+          "چوب عنبری",
+          "چوب سدر"
+        ]
+      }
+    }
+  ]
+}

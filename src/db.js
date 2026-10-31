@@ -2643,6 +2643,7 @@ function seedVerifiedSupplement() {
   if (!fs.existsSync(file)) return;
   const rows = JSON.parse(fs.readFileSync(file, 'utf8'));
   const exists = db.prepare('SELECT id, slug FROM products WHERE id = ? OR slug = ?');
+  let inserted = 0;
   for (const row of rows) {
     const existing = exists.get(row.id, row.slug);
     if (existing) {
@@ -2651,9 +2652,11 @@ function seedVerifiedSupplement() {
       continue;
     }
     insertProducts([row]);
+    inserted++;
   }
+  return inserted;
 }
-seedVerifiedSupplement();
+const supplementInserted = seedVerifiedSupplement() || 0;
 // Correct earlier supplier-derived gender fields only for unchanged, unavailable
 // supplement rows. Never switch availability or overwrite a different value.
 function correctSupplementGenderFromOfficial() {
@@ -2672,12 +2675,15 @@ function correctSupplementGenderFromOfficial() {
   })();
 }
 correctSupplementGenderFromOfficial();
+const officialNotesResult = require('./official-notes').applyOfficialNotes(
+  db, path.join(SEED_DIR, 'official_note_corrections_v1.json'));
 seedCoupons();
 /* تنظیمات واقعی فروشگاه — پس از ساخت جدول‌ها، پیش از سرو شدن
    هر صفحه. فاکتور و برچسب پستی بدون این‌ها ناقص چاپ می‌شوند. */
 seedShopSettings();
 buildSearchIndex();
-buildNotesIndex();
+// Rebuild note lookup after sourced notes change or new supplement products arrive.
+buildNotesIndex(supplementInserted > 0 || officialNotesResult.updated > 0);
 
 startMaintenance();
 
