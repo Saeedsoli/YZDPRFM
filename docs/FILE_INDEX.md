@@ -475,3 +475,7 @@ node_modules/   با npm install برمی‌گردد
 ### بررسی اکستریت باکارات رژ
 
 - `scripts/test_baccarat_extrait_reference.js`
+
+### ایزوله‌سازی آزمون دود
+
+- `scripts/test_smoke_isolation.py`

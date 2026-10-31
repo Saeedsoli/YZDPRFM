@@ -6,9 +6,48 @@
 # پیش‌تر اینجا `cd /home/user` بود که فقط روی ماشین توسعه کار
 # می‌کرد؛ روی هر کلون دیگری آزمون در پوشه اشتباه اجرا می‌شد.
 cd "$(dirname "${BASH_SOURCE[0]}")/.." || exit 1
-pkill -f "node src/server" 2>/dev/null; sleep 1
+# The suite intentionally changes stock, orders, staff and settings. Some legacy
+# fixtures hard-code data/yazd.db, so DB_PATH alone is NOT isolation. Always
+# run an ephemeral project copy with a clean database and a clean environment.
+if [ "${YAZD_SMOKE_STAGE:-}" != "1" ]; then
+  ROOT=$(pwd -P)
+  if [ ! -d "$ROOT/node_modules" ]; then echo "Dependencies missing; install them before running smoke." >&2; exit 2; fi
+  STAGE=$(mktemp -d /tmp/yazd-smoke-XXXXXXXX) || exit 2
+  STAGE_PID=
+  cleanup_stage() {
+    if [ -n "$STAGE_PID" ]; then
+      # Every descendant inherits this newly created session/process group;
+      # this also reaps a test server orphaned by a crashing test.
+      kill -TERM -- "-$STAGE_PID" 2>/dev/null || true
+      wait "$STAGE_PID" 2>/dev/null || true
+    fi
+    rm -rf -- "$STAGE"
+  }
+  trap cleanup_stage EXIT
+  trap 'exit 130' INT
+  trap 'exit 143' TERM
+  if ! tar --exclude='./.git' --exclude='./.ssh' --exclude='./node_modules' --exclude='./data' --exclude='./.cache' --exclude='./.npm' -cf - . | tar -C "$STAGE" -xf -; then echo 'Could not create isolated project' >&2; exit 2; fi
+  mkdir -p "$STAGE/data"
+  ln -s "$ROOT/node_modules" "$STAGE/node_modules"
+  env -i PATH="$PATH" HOME="$HOME" YAZD_SMOKE_STAGE=1 DB_PATH="$STAGE/data/yazd.db" BACKUP_DISABLED=1 NODE_ENV=test setsid bash "$STAGE/scripts/smoke_test.sh" &
+  STAGE_PID=$!
+  wait "$STAGE_PID"
+  STAGE_CODE=$?
+  exit "$STAGE_CODE"
+fi
+STAGE_ROOT=$(pwd -P)
+case "$STAGE_ROOT" in /tmp/yazd-smoke-????????) ;; *) echo 'Unsafe smoke stage; refusing to run' >&2; exit 2;; esac
+if [ "$(realpath -m "${DB_PATH:-}")" != "$STAGE_ROOT/data/yazd.db" ]; then echo 'Unsafe smoke DB_PATH; refusing to run' >&2; exit 2; fi
+# Do not kill unrelated servers or accidentally hit an existing service.
+if ! python3 -c 'import socket; s=socket.socket(); s.bind(("127.0.0.1",3000)); s.close()'; then echo 'Port 3000 is occupied; refusing to run' >&2; exit 2; fi
+MAINPID= BRPID= LNKPID=
+cleanup_smoke() { for pid in "$MAINPID" "$BRPID" "$LNKPID"; do [ -z "$pid" ] || kill "$pid" 2>/dev/null || true; done; }
+trap cleanup_smoke EXIT
+trap 'exit 130' INT
+trap 'exit 143' TERM
 node -e "const {db}=require('./src/db');db.prepare('DELETE FROM rate_limits').run()" 2>/dev/null
 BACKUP_DISABLED=1 node src/server.js > /tmp/fin.log 2>&1 &
+MAINPID=$!
 sleep 8
 P=0; F=0
 chk(){ if [ "$1" = "$2" ]; then P=$((P+1)); else F=$((F+1)); echo "  X $3 (want $2 got $1)"; fi }
@@ -124,24 +163,18 @@ chk "$(curl -s -o /dev/null -w '%{http_code}' -H "Authorization: Bearer $ATOK" '
 chk "$(curl -s -o /dev/null -w '%{http_code}' -H "Authorization: Bearer $ATOK" 'http://localhost:3000/api/admin/backups/yazd.db')" "400" "arbitrary-name-blocked"
 
 echo "== purchase journey"
-SKU=$(curl -s "http://localhost:3000/api/products?limit=1&full=1" | node -e "let d='';process.stdin.on('data',c=>d+=c).on('end',()=>console.log(JSON.parse(d).products[0].variants[2].sku))")
-# موجودی موقت برای همین یک SKU.
-# موجودی تولید عمداً صفر است (کالا تا تأیید انبار فروخته نمی‌شود)،
-# پس آزمون خرید باید موجودی خودش را بسازد و در پایان برگرداند.
-PREV_STOCK=$(node -e "
-const D=require('better-sqlite3');const db=new D('data/yazd.db');
-const r=db.prepare('SELECT stock FROM variants WHERE sku=?').get('$SKU');
-console.log(r?r.stock:0);
-db.prepare('UPDATE variants SET stock=? WHERE sku=?').run(50,'$SKU');db.close();")
+# Select a real, positively priced 50ml SKU from the isolated database.
+# Explicitly mark only its product in stock, since stock alone cannot override
+# UNAVAILABLE. This fixture is never applied to the real store.
+FIXTURE=$(node -e "const D=require('better-sqlite3');const db=new D('data/yazd.db');const r=db.prepare(\"SELECT v.sku,v.stock,p.id,p.supply_mode FROM variants v JOIN products p ON p.id=v.product_id WHERE v.type='EDP' AND v.volume_ml=50 AND v.price_toman>0 ORDER BY p.id LIMIT 1\").get();if(!r)process.exit(1);console.log([r.sku,r.stock,r.id,r.supply_mode].join('|'));db.prepare('UPDATE variants SET stock=50 WHERE sku=?').run(r.sku);db.prepare(\"UPDATE products SET supply_mode='IN_STOCK' WHERE id=?\").run(r.id);db.close();")
+IFS='|' read -r SKU PREV_STOCK FIXTURE_PRODUCT PREV_MODE <<< "$FIXTURE"
 OID=$(curl -s -X POST http://localhost:3000/api/orders -H 'Content-Type: application/json' \
   -d "{\"customer_name\":\"سارا کریمی\",\"mobile\":\"09195554433\",\"province\":\"اصفهان\",\"city\":\"اصفهان\",\"address\":\"خیابان چهارباغ، کوچه ۷، پلاک ۲۲\",\"postal_code\":\"8134567890\",\"items\":[{\"sku\":\"$SKU\",\"quantity\":2}]}" \
   | node -e "let d='';process.stdin.on('data',c=>d+=c).on('end',()=>{try{console.log(JSON.parse(d).order_id||'')}catch{console.log('')}})")
 if [ -n "$OID" ]; then P=$((P+1)); echo "  order: $OID"; else F=$((F+1)); echo "  X order failed"; fi
 chk "$(curl -s -o /dev/null -w '%{http_code}' "http://localhost:3000/api/orders/track?mobile=09195554433")" "200" "track"
-# موجودی به مقدار پیشین برگردانده می‌شود
-node -e "
-const D=require('better-sqlite3');const db=new D('data/yazd.db');
-db.prepare('UPDATE variants SET stock=? WHERE sku=?').run(${PREV_STOCK:-0},'$SKU');db.close();" 2>/dev/null
+# Restore both stock and availability (even in the disposable fixture).
+node -e "const D=require('better-sqlite3');const db=new D('data/yazd.db');db.prepare('UPDATE variants SET stock=? WHERE sku=?').run(Number(process.argv[1]),process.argv[2]);db.prepare('UPDATE products SET supply_mode=? WHERE id=?').run(process.argv[3],process.argv[4]);db.close();" "${PREV_STOCK:-0}" "$SKU" "$PREV_MODE" "$FIXTURE_PRODUCT" 2>/dev/null
 
 # ── هم‌راستایی نسخه Node ──
 # چهار جا نسخه تعریف می‌شود و هیچ‌کدام دیگری را نمی‌بیند.
@@ -152,7 +185,7 @@ node scripts/check_node_version.js > /tmp/nodever.log 2>&1
 chk "$?" "0" "node version aligned (see /tmp/nodever.log)"
 
 echo "== concurrency, otp, alerts, coupons, xss, rbac"
-pkill -f "node src/server" 2>/dev/null; sleep 2
+kill "$MAINPID" 2>/dev/null || true; MAINPID=; sleep 2
 run_test test_concurrency.js "stock concurrency"
 run_test test_payment_race.js "payment idempotency"
 run_test test_callback_race.js "gateway callback idempotency"
@@ -182,7 +215,7 @@ if python3 -c "import playwright" 2>/dev/null \
    && ls ~/.cache/ms-playwright/chromium*/ >/dev/null 2>&1; then
   # سرورهای قبلی حتماً بسته شوند، وگرنه curl زیر به سرور کهنه
   # پاسخ می‌دهد و آزمون روی نسخه قدیمی کد اجرا می‌شود.
-  pkill -f "node src/server" 2>/dev/null; sleep 2
+  sleep 2
   BACKUP_DISABLED=1 node src/server.js > /tmp/br.log 2>&1 &
   BRPID=$!
   # صبر تا سرور واقعاً پاسخ بدهد — `sleep 8` ثابت روی محیط کند
@@ -300,7 +333,7 @@ if node scripts/audit_docs_truth.js >/tmp/docs_truth.log 2>&1; then
   P=$((P+1)); else F=$((F+1)); echo "  X docs numbers are true (see /tmp/docs_truth.log)"; fi
 
 # هیچ لینک شکسته‌ای در هیچ صفحه‌ای نباشد — سرور باید بالا باشد
-pkill -f "node src/server" 2>/dev/null; sleep 2
+sleep 2
 BACKUP_DISABLED=1 node src/server.js > /tmp/lnk.log 2>&1 &
 LNKPID=$!
 for i in $(seq 1 60); do
@@ -313,4 +346,4 @@ kill $LNKPID 2>/dev/null
 
 echo ""
 echo "===== RESULT: $P pass / $F fail"
-pkill -f "node src/server"
+[ "$F" -eq 0 ]
