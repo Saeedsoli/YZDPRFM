@@ -1,0 +1,43 @@
+{
+  "version": "secondary_reference_prices_2026_11_v5",
+  "supplier_file_sha256": "bbe8f40610bc765bda0a7d2da9dbe78f4e397458a6991239c3c18d0853f33f5c",
+  "description": "Independent source only; no manufacturer verification or supplier essence identification; no automatic availability.",
+  "items": [
+    {
+      "product_id": "SUP-TP-910019",
+      "slug": "tommy-hilfiger-tommy-jeans",
+      "brand_en": "Tommy Hilfiger",
+      "expected_name_en": "TOMMY HILFIGER - Tommy Jeans",
+      "reference_name": "Tommy Jeans",
+      "source_url": "https://www.fragrantica.com/perfume/Tommy-Hilfiger/Tommy-Jeans-6316.html",
+      "provider": "Fragrantica",
+      "status": "secondary_original_found_supplier_essence_unverified",
+      "checked_date": "2026-11-01",
+      "supplier_brand": "TOMMY HILFIGER",
+      "supplier_model": "Tommy Jeans",
+      "usd_per_kg": "122.1",
+      "quality": "H",
+      "match_status": "name_matched_supplier_identity_unverified",
+      "expected_edps": [],
+      "legacy_backfill": false
+    },
+    {
+      "product_id": "SUP-TP-910020",
+      "slug": "mugler-angel-passion-star",
+      "brand_en": "Mugler",
+      "expected_name_en": "MUGLER - Angel Passion Star",
+      "reference_name": "Angel Passion Star",
+      "source_url": "https://www.fragrantica.com/perfume/Mugler/Angel-Passion-Star-31849.html",
+      "provider": "Fragrantica",
+      "status": "secondary_original_found_supplier_essence_unverified",
+      "checked_date": "2026-11-01",
+      "supplier_brand": "Thiery Mugler",
+      "supplier_model": "Angel Passion Star",
+      "usd_per_kg": "75.9",
+      "quality": "I",
+      "match_status": "name_matched_supplier_identity_unverified",
+      "expected_edps": [],
+      "legacy_backfill": false
+    }
+  ]
+}

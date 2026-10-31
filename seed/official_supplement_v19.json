@@ -1,0 +1,60 @@
+[
+  {
+    "id": "SUP-GU-900050",
+    "slug": "givenchy-xeryus",
+    "name_fa": "اگزریوس",
+    "name_en": "Xeryus",
+    "title_fa_base": "اگزریوس",
+    "full_display_fa": "ژیوانشی — اگزریوس",
+    "inspired_brand_en": "Givenchy",
+    "inspired_brand_fa": "ژیوانشی",
+    "gender": null,
+    "notes": {
+      "top": [
+        "ریحان",
+        "مریم‌گلی"
+      ],
+      "middle": [
+        "برگ بنفشه",
+        "آکورد سبز"
+      ],
+      "base": [
+        "چوب‌های گرمسیری",
+        "کهربا"
+      ]
+    },
+    "accords": [],
+    "transclaimer_notice": "این محصول بازآفرینی دست‌ساز است و محصول اورجینال برند اصلی نیست. اطلاعات رایحه مرجع از وب‌سایت رسمی برند گرفته شده و هویت اسانس تأمین‌کننده مستقلاً تأیید نشده است.",
+    "source_url": "https://www.givenchybeauty.com/ca/en/p/xeryus-F10100073.html",
+    "source_note": "Xeryus is distinct from Xeryus Rouge. Current brand page, not a guarantee of a historic formula.",
+    "variants": []
+  },
+  {
+    "id": "SUP-BS-900050",
+    "slug": "boss-femme",
+    "name_fa": "فم",
+    "name_en": "Femme",
+    "title_fa_base": "فم",
+    "full_display_fa": "هوگو باس — فم",
+    "inspired_brand_en": "Hugo Boss",
+    "inspired_brand_fa": "هوگو باس",
+    "gender": null,
+    "notes": {
+      "top": [],
+      "middle": [],
+      "base": []
+    },
+    "accords": [
+      "انگور فرنگی سیاه",
+      "نارنگی",
+      "مشک",
+      "استفانوتیس",
+      "رز",
+      "سوسن"
+    ],
+    "transclaimer_notice": "این محصول بازآفرینی دست‌ساز است و محصول اورجینال برند اصلی نیست. اطلاعات رایحه مرجع از وب‌سایت رسمی برند گرفته شده و هویت اسانس تأمین‌کننده مستقلاً تأیید نشده است.",
+    "source_url": "https://www.hugoboss.com/fr/eau-de-parfum-femme-by-boss-50%C2%A0ml/0737052041285.html",
+    "source_note": "Supplier Famme is a spelling variant of Femme; Femme L’Eau Fraiche and other flankers are distinct. Official page does not provide a complete pyramid.",
+    "variants": []
+  }
+]

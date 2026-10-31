@@ -1,0 +1,75 @@
+[
+  {
+    "id": "SUP-TP-910019",
+    "slug": "tommy-hilfiger-tommy-jeans",
+    "name_fa": "تامی جینز",
+    "name_en": "Tommy Jeans",
+    "title_fa_base": "تامی جینز",
+    "full_display_fa": "تامی هیلفیگر — تامی جینز",
+    "inspired_brand_en": "Tommy Hilfiger",
+    "inspired_brand_fa": "تامی هیلفیگر",
+    "gender": null,
+    "notes": {
+      "top": [],
+      "middle": [],
+      "base": []
+    },
+    "accords": [
+      "نارنگی",
+      "گریپ‌فروت",
+      "پرتقال"
+    ],
+    "transclaimer_notice": "این محصول بازآفرینی دست‌ساز است و محصول اورجینال برند اصلی نیست. اطلاعات رایحه مرجع از فراگرانتیکا، یک منبع مستقل، گرفته شده و هویت اسانس تأمین‌کننده مستقلاً تأیید نشده است.",
+    "source_url": "https://www.fragrantica.com/perfume/Tommy-Hilfiger/Tommy-Jeans-6316.html",
+    "source_note": "Tommy Jeans 2003, not Tommy Girl Jeans; independent listing has no pyramid.",
+    "variants": []
+  },
+  {
+    "id": "SUP-TP-910020",
+    "slug": "mugler-angel-passion-star",
+    "name_fa": "آنجل پشن استار",
+    "name_en": "Angel Passion Star",
+    "title_fa_base": "آنجل پشن استار",
+    "full_display_fa": "موگلر — آنجل پشن استار",
+    "inspired_brand_en": "Mugler",
+    "inspired_brand_fa": "موگلر",
+    "gender": null,
+    "notes": {
+      "top": [
+        "پشمک",
+        "نارگیل",
+        "انگور فرنگی سیاه",
+        "خربزه",
+        "نارنگی",
+        "یاس",
+        "ترنج"
+      ],
+      "middle": [
+        "عسل",
+        "توت‌های قرمز",
+        "تمشک سیاه",
+        "زردآلو",
+        "هلو",
+        "آلو",
+        "ارکیده",
+        "یاس",
+        "گل برف",
+        "رز"
+      ],
+      "base": [
+        "پچولی",
+        "شکلات",
+        "وانیل",
+        "کارامل",
+        "دانه تونکا",
+        "کهربا",
+        "مشک"
+      ]
+    },
+    "accords": [],
+    "transclaimer_notice": "این محصول بازآفرینی دست‌ساز است و محصول اورجینال برند اصلی نیست. اطلاعات رایحه مرجع از فراگرانتیکا، یک منبع مستقل، گرفته شده و هویت اسانس تأمین‌کننده مستقلاً تأیید نشده است.",
+    "source_url": "https://www.fragrantica.com/perfume/Mugler/Angel-Passion-Star-31849.html",
+    "source_note": "Fragrantica article describes 2015 Passion Star as original Angel EDP in a limited red bottle; essence version remains unverified.",
+    "variants": []
+  }
+]

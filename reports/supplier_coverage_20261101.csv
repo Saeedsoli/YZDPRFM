@@ -102,7 +102,7 @@ GIVENCHY,Prestige,Unisex,پرستیژ,1,319,204.6,I,pending,هنوز قیمت م
 GIVENCHY,ange ou demon le secret,Women,آنجیو لسکرت,1,320,220,H,provisional,قیمت موقت با شاهد نام؛ هویت اسانس تأییدنشده,YZD-PROD-1576,https://www.givenchybeauty.com/us/p/ange-ou-demon-le-secret-F10100004.html,official_reference_prices_v7.json
 GIVENCHY,MMW,Unisex,ام ام دبلیو,1,321,269.5,P,pending,هنوز قیمت مرجع منتسب نشده,,,
 GIVENCHY,Gentelman,Unisex,جنتلمن,1,322,121,H,pending,هنوز قیمت مرجع منتسب نشده,,,
-GIVENCHY,Xeryus,Unisex,اگزریوس,1,323,143,H,pending,هنوز قیمت مرجع منتسب نشده,,,
+GIVENCHY,Xeryus,Unisex,اگزریوس,1,323,143,H,provisional,قیمت موقت با شاهد نام؛ هویت اسانس تأییدنشده,SUP-GU-900050,https://www.givenchybeauty.com/ca/en/p/xeryus-F10100073.html,official_reference_prices_v19.json
 GUCCI,Bloom,Women,گوچی بلوم,1,329,359.7,H,provisional,قیمت موقت با شاهد نام؛ هویت اسانس تأییدنشده,SUP-GC-900016,https://www.gucci.com/us/en/pr/beauty/fragrances/fragrances-for-women/gucci-bloom-100ml-eau-de-parfum-p-488830999990099,official_reference_prices_v14.json
 GUCCI,FLORA BY GUCCI,Women,گوچی فلورا,1,330,94.6,B,pending,هنوز قیمت مرجع منتسب نشده,,,
 GUCCI,RUSH,Women,گوچی راش,1,331,94.6,B,provisional,قیمت موقت با شاهد نام؛ هویت اسانس تأییدنشده,SUP-GC-900015,https://www.gucci.com/us/en/pr/beauty/fragrances/fragrances-for-women/gucci-rush-75ml-eau-de-toilette-p-012769999990099,official_reference_prices_v14.json
@@ -113,7 +113,7 @@ HERMES,Terre D`Hermes,Men,تق هرمس,1,356,247.5,H,pending,هنوز قیمت 
 HERMES,Voyage d`Hermes,Unisex,ویاج هرمس,1,357,94.6,H,pending,هنوز قیمت مرجع منتسب نشده,,,
 HUGO BOSS,VERSUS,Unisex,ورسوز,4,"363,364,365,366",93.5,"H,P",pending,هنوز قیمت مرجع منتسب نشده,,,
 HUGO BOSS,BOSS 98,Men,بوس 98,1,367,88,I,pending,هنوز قیمت مرجع منتسب نشده,,,
-HUGO BOSS,Boss Famme,Women,هوگو زنانه,2,"368,369",278.3,H,pending,هنوز قیمت مرجع منتسب نشده,,,
+HUGO BOSS,Boss Famme,Women,هوگو زنانه,2,"368,369",278.3,H,provisional,قیمت موقت با شاهد نام؛ هویت اسانس تأییدنشده,SUP-BS-900050,https://www.hugoboss.com/fr/eau-de-parfum-femme-by-boss-50%C2%A0ml/0737052041285.html,official_reference_prices_v19.json
 HUGO BOSS,Boss,Men,هوگو مردانه,1,370,119.9,I,pending,هنوز قیمت مرجع منتسب نشده,,,
 Initio,OUD FOR GREATNESS,Unisex,عود فور گریتنس,1,376,352,H,provisional,قیمت موقت با شاهد نام؛ هویت اسانس تأییدنشده,YZD-PROD-0662,https://us.initioparfums.com/products/oud-for-greatness,official_reference_prices_v7.json
 Initio,SIDE EFFECT,Unisex,ساید افکت,1,377,137.5,P,provisional,قیمت موقت با شاهد نام؛ هویت اسانس تأییدنشده,YZD-PROD-0665,https://us.initioparfums.com/products/side-effect,official_reference_prices_v7.json
@@ -218,7 +218,7 @@ SOSPIRO,Erba Pura,Unisex,ارباپورا,2,"754,755",267.3,H,pending,هنوز �
 SOSPIRO,Opera,Unisex,اُپرا,1,756,240.9,H,secondary,قیمت موقت با منبع مستقل؛ هویت اسانس تأییدنشده,YZD-PROD-1328,https://www.fragrantica.com/perfume/Sospiro-Perfumes/Opera-26282.html,secondary_reference_prices_v2.json
 SULTAN,Sultan,Unisex,سلطان,3,"762,763,764",584.1,P,pending,هنوز قیمت مرجع منتسب نشده,,,
 Thiery Mugler,Alien,Women,الین,1,770,294.8,H,pending,هنوز قیمت مرجع منتسب نشده,,,
-Thiery Mugler,Angel Passion Star,Women,آنجل قرمز,1,771,75.9,I,pending,هنوز قیمت مرجع منتسب نشده,,,
+Thiery Mugler,Angel Passion Star,Women,آنجل قرمز,1,771,75.9,I,secondary,قیمت موقت با منبع مستقل؛ هویت اسانس تأییدنشده,SUP-TP-910020,https://www.fragrantica.com/perfume/Mugler/Angel-Passion-Star-31849.html,secondary_reference_prices_v5.json
 Thiery Mugler,Womanity,Women,وومنیتی,1,772,89.1,P,provisional,قیمت موقت با شاهد نام؛ هویت اسانس تأییدنشده,YZD-PROD-1625,https://inter.mugler.com/default/fragrance/women-s-fragrances/womanity/womanity-eau-de-parfum/M01090105.html,official_reference_prices_v8.json
 Tiziana Terenzi,KIRKÈ,Unisex,کیرکه,2,"778,779",355.3,H,provisional,قیمت موقت با شاهد نام؛ هویت اسانس تأییدنشده,YZD-PROD-1351,https://tizianaterenzi.com/en/fragrance-wheel/,official_reference_prices_v7.json
 TOM FORD,Black Orchid,Women,بلک ارکید,2,"785,786",343.2,H,pending,هنوز قیمت مرجع منتسب نشده,,,
@@ -232,7 +232,7 @@ TOM FORD,Tuscan Leather,Unisex,توسکان لدر,2,"794,795",202.4,H,provision
 BYREDO,DE LOS SANTOS,Unisex,لوس سانتوس,1,801,410.3,H,provisional,قیمت موقت با شاهد نام؛ هویت اسانس تأییدنشده,YZD-PROD-0990,https://www.byredo.com/us_en/de-los-santos-50ml,official_reference_prices_v2.json
 BYREDO,ROUGE CHAOTIQUE,Unisex,رژ کاوتیک,1,802,382.8,H,provisional,قیمت موقت با شاهد نام؛ هویت اسانس تأییدنشده,YZD-PROD-0989,https://www.byredo.com/us_en/p/rouge-chaotique-night-veils-perfume-extract-70ml,official_reference_prices_v2.json
 ESCADA,Collection,Women,کالکشن,1,808,81.4,I,pending,هنوز قیمت مرجع منتسب نشده,,,
-TOMMY HILFIGER,Tommy Jeans,Men,تامی جینز,1,814,122.1,H,pending,هنوز قیمت مرجع منتسب نشده,,,
+TOMMY HILFIGER,Tommy Jeans,Men,تامی جینز,1,814,122.1,H,secondary,قیمت موقت با منبع مستقل؛ هویت اسانس تأییدنشده,SUP-TP-910019,https://www.fragrantica.com/perfume/Tommy-Hilfiger/Tommy-Jeans-6316.html,secondary_reference_prices_v5.json
 TOMMY HILFIGER,Tommy New,Unisex,تامی نیو,1,815,92.4,H,pending,هنوز قیمت مرجع منتسب نشده,,,
 VERSACE,Bright Crystal,Women,برایت کریستال,1,821,166.1,H,provisional,قیمت موقت با شاهد نام؛ هویت اسانس تأییدنشده,YZD-PROD-1706,https://www.versace.com/us/en/women/accessories/fragrances-body-care/bright-crystal/bright-crystal-edt-90-ml-pink/R510032-R090MLS_RNUL.html,official_reference_prices_v2.json
 VERSACE,Crysral Noir,Women,کریستال نویر,2,"822,823",220,I,pending,هنوز قیمت مرجع منتسب نشده,,,

@@ -305,3 +305,17 @@ Mefisto با Mefisto Gentiluomo یکی نیست. در برخی صفحات قدی
 | Blue For Men — Rasasi | 112.2 | H | https://www.fragrantica.com/perfume/Rasasi/Blue-For-Men-8630.html |
 
 در منابع رسمی بررسی‌شده، [میراتو مالک برند مالیزیا](https://mirato.it/en/malizia/) را معرفی می‌کند اما مشخصات Vetyver در آن صفحه نیست؛ نت وتیور در منبع مستقل بدون هرم آمده و هرم ساختگی ایجاد نشده است. [فهرست رسمی رصاصی](https://www.rasasi.com/products) نام Afshan و Afshan Conc Perfume را نشان می‌دهد اما جزئیات کافی برای اثبات برابری نسخه‌ها ندارد. Blue For Men با Blue Lady، Blue 2 و Deep Blue یکی نشده است؛ RiRi نیز با Crush و Kiss یکی نشده است. جستجوی صفحه رسمی کافی برای این چهار مورد به نتیجه نرسید و به معنی نبود قطعی آن نیست.
+
+
+## چهار تناظر دیگر — ۱ نوامبر ۲۰۲۶
+
+این چهار قیمت بر اساس بیشترین ردیف مثبت و صرفاً تطبیق نام موقت‌اند؛ همه محصولات دست‌ساز و غیرقابل سفارش‌اند. هیچ‌کدام هویت یا کیفیت اسانس واقعی تأمین‌کننده را تأیید نمی‌کنند.
+
+| رایحه مرجع | دلار/کیلو | کیفیت فایل | نوع منبع | صفحه مرجع |
+|---|---:|---|---|---|
+| Xeryus — Givenchy | 143 | H | رسمی | https://www.givenchybeauty.com/ca/en/p/xeryus-F10100073.html |
+| Femme — Hugo Boss | 278.3 | H | رسمی | https://www.hugoboss.com/fr/eau-de-parfum-femme-by-boss-50%C2%A0ml/0737052041285.html |
+| Tommy Jeans — Tommy Hilfiger | 122.1 | H | مستقل | https://www.fragrantica.com/perfume/Tommy-Hilfiger/Tommy-Jeans-6316.html |
+| Angel Passion Star — Mugler | 75.9 | I | مستقل | https://www.fragrantica.com/perfume/Mugler/Angel-Passion-Star-31849.html |
+
+Xeryus با Xeryus Rouge یکی نشده است؛ صفحه رسمی موجود درباره رایحه فعلی است و نسخه تاریخی اسانس را اثبات نمی‌کند. Boss Famme در فایل به‌عنوان املای نام Femme در نظر گرفته شده و نسخه‌های دیگر جدا هستند؛ صفحه رسمی هرم کامل ارائه نمی‌کند و فقط نت‌های بدون طبقه‌بندی ثبت شده‌اند. Tommy Jeans با Tommy Girl Jeans یکی نیست و منبع مستقل هرم ارائه نمی‌دهد. [مقاله مستقل فراگرانتیکا](https://www.fragrantica.com/news/Thierry-Mugler-ANGEL-Passion-Star-6986.html) Passion Star را بطری محدود Angel EDP اصلی توصیف می‌کند، اما این درباره اسانس تحویلی اثباتی نیست. منبع و محدودیت در توضیح عمومی هر محصول ثبت شده است.

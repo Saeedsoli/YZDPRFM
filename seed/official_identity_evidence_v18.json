@@ -1,0 +1,26 @@
+{
+  "version": "official_identity_evidence_v18",
+  "scope": "Official reference-original name only; actual supplier essence identity is unverified.",
+  "items": [
+    {
+      "product_id": "SUP-GU-900050",
+      "slug": "givenchy-xeryus",
+      "brand_en": "Givenchy",
+      "expected_name_en": "GIVENCHY - Xeryus",
+      "reference_name": "Xeryus",
+      "official_url": "https://www.givenchybeauty.com/ca/en/p/xeryus-F10100073.html",
+      "status": "official_original_found_supplier_essence_unverified",
+      "checked_date": "2026-11-01"
+    },
+    {
+      "product_id": "SUP-BS-900050",
+      "slug": "boss-femme",
+      "brand_en": "Hugo Boss",
+      "expected_name_en": "HUGO BOSS - Femme",
+      "reference_name": "Femme",
+      "official_url": "https://www.hugoboss.com/fr/eau-de-parfum-femme-by-boss-50%C2%A0ml/0737052041285.html",
+      "status": "official_original_found_supplier_essence_unverified",
+      "checked_date": "2026-11-01"
+    }
+  ]
+}
