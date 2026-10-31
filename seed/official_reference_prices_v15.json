@@ -1,0 +1,91 @@
+{
+  "version": "official_reference_prices_2026_10_v15",
+  "supplier_file_sha256": "bbe8f40610bc765bda0a7d2da9dbe78f4e397458a6991239c3c18d0853f33f5c",
+  "description": "Provisional name match; actual supplier essence identity is unverified; no activation.",
+  "items": [
+    {
+      "product_id": "SUP-LC-900017",
+      "slug": "lacoste-essential",
+      "brand_en": "Lacoste",
+      "expected_name_en": "LACOSTE - Essential",
+      "reference_name": "Essential",
+      "official_url": "https://www.lacoste.com/se/lacoste/men/accessories/fragrance/LC011A01.html",
+      "supplier_brand": "LACOSTE",
+      "supplier_model": "Essential",
+      "usd_per_kg": "140.8",
+      "quality": "H",
+      "match_status": "name_matched_supplier_identity_unverified",
+      "expected_edps": []
+    },
+    {
+      "product_id": "SUP-LC-900018",
+      "slug": "lacoste-pour-femme",
+      "brand_en": "Lacoste",
+      "expected_name_en": "LACOSTE - Pour Femme",
+      "reference_name": "Pour Femme",
+      "official_url": "https://www.lacoste.com/it/lacoste/donna/accessori/profumi/LC014A01.html",
+      "supplier_brand": "LACOSTE",
+      "supplier_model": "Pour Femme",
+      "usd_per_kg": "128.7",
+      "quality": "B",
+      "match_status": "name_matched_supplier_identity_unverified",
+      "expected_edps": []
+    },
+    {
+      "product_id": "SUP-LL-900019",
+      "slug": "lalique-lamour",
+      "brand_en": "Lalique",
+      "expected_name_en": "LALIQUE - L’Amour",
+      "reference_name": "L’Amour",
+      "official_url": "https://us.lalique.com/products/lamour-eau-de-parfum-l12202-r-1",
+      "supplier_brand": "LALIQUE",
+      "supplier_model": "L`amour",
+      "usd_per_kg": "156.2",
+      "quality": "H",
+      "match_status": "name_matched_supplier_identity_unverified",
+      "expected_edps": []
+    },
+    {
+      "product_id": "SUP-RL-900020",
+      "slug": "ralph-lauren-polo-black",
+      "brand_en": "Ralph Lauren",
+      "expected_name_en": "RALPH LAUREN - Polo Black",
+      "reference_name": "Polo Black",
+      "official_url": "https://www.ralphlaurenfragrances.com/en_US/men/polo-black/polo-black-eau-de-toilette/RLFE012.html",
+      "supplier_brand": "Ralph Lauren",
+      "supplier_model": "POLO BLACK",
+      "usd_per_kg": "251.9",
+      "quality": "H",
+      "match_status": "name_matched_supplier_identity_unverified",
+      "expected_edps": []
+    },
+    {
+      "product_id": "SUP-VS-900021",
+      "slug": "victorias-secret-bombshell",
+      "brand_en": "Victoria's Secret",
+      "expected_name_en": "VICTORIA'S SECRET - Bombshell",
+      "reference_name": "Bombshell",
+      "official_url": "https://www.victoriassecret.com/us/vs/beauty-catalog/5000010457",
+      "supplier_brand": "VICTORIA`S SECRET",
+      "supplier_model": "Bombshel",
+      "usd_per_kg": "174.9",
+      "quality": "H",
+      "match_status": "name_matched_supplier_identity_unverified",
+      "expected_edps": []
+    },
+    {
+      "product_id": "SUP-SH-900022",
+      "slug": "shiseido-zen",
+      "brand_en": "Shiseido",
+      "expected_name_en": "SHISEIDO - Zen",
+      "reference_name": "Zen",
+      "official_url": "https://www.shiseido.com/us/en/zen-eau-de-parfum-0768614102007.html",
+      "supplier_brand": "SHISEIDO",
+      "supplier_model": "Zen",
+      "usd_per_kg": "176",
+      "quality": "H",
+      "match_status": "name_matched_supplier_identity_unverified",
+      "expected_edps": []
+    }
+  ]
+}

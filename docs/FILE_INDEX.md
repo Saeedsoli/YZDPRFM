@@ -506,3 +506,7 @@ node_modules/   با npm install برمی‌گردد
 
 - `scripts/test_reference_prices_v14.js`
 - `scripts/test_official_notes_v16.js`
+
+### شش محصول مرجع تکمیلی
+
+- `scripts/test_six_supplement_v15.js`

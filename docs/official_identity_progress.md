@@ -185,3 +185,20 @@ Mefisto با Mefisto Gentiluomo یکی نیست. در برخی صفحات قدی
 نام‌های فایل `X FOR MEN`، `Bentley Intense` و `Encre Noir` با نام‌های رسمی جدول به صورت تطبیق موقت ثبت شدند. محصولات با نام‌های مشابه و نسخه‌های دیگر نباید با این موارد یکی تلقی شوند. صفحات معرفی‌شده برای Rush و Encre Noire نسخه EDT و برای Bloom و دو آرمانی نسخه EDP عطر اصلی را نشان می‌دهند؛ این به معنی اثبات نسخه اسانس تهیه‌شده یا غلظت محصول دست‌ساز نیست. همه محصولات `UNAVAILABLE` و واریانت‌های قیمت‌گذاری‌شده با موجودی صفرند.
 
 مدارک در `seed/official_identity_evidence_v13.json`، قیمت‌ها در `seed/official_reference_prices_v14.json` و اصلاح نت‌ها در `seed/official_note_corrections_v16.json` است.
+
+## شش محصول تکمیلی از فهرست قیمت
+
+شش نام زیر پس از بررسی منابع رسمی و جست‌وجوی کاتالوگ محلی، به‌صورت محصول دست‌ساز و با قیمت مرجع موقت اضافه شدند. هیچ‌کدام قابل سفارش نیستند و موجودی واریانت‌هایشان صفر است.
+
+| عطر مرجع | دلار/کیلو | کیفیت فایل | منبع رسمی |
+|---|---:|---|---|
+| Lacoste Essential | 140.8 | H | https://www.lacoste.com/se/lacoste/men/accessories/fragrance/LC011A01.html |
+| Lacoste Pour Femme | 128.7 | B | https://www.lacoste.com/it/lacoste/donna/accessori/profumi/LC014A01.html |
+| Lalique L’Amour | 156.2 | H | https://us.lalique.com/products/lamour-eau-de-parfum-l12202-r-1 |
+| Ralph Lauren Polo Black | 251.9 | H | https://www.ralphlaurenfragrances.com/en_US/men/polo-black/polo-black-eau-de-toilette/RLFE012.html |
+| Victoria’s Secret Bombshell | 174.9 | H | https://www.victoriassecret.com/us/vs/beauty-catalog/5000010457 |
+| Shiseido Zen | 176 | H | https://www.shiseido.com/us/en/zen-eau-de-parfum-0768614102007.html |
+
+`Bombshel` و ``L`amour`` در فایل با املای رسمی متفاوت‌اند. نسخه‌های دیگر مانند Bombshell Intense و Zen Essence با این محصولات یکسان فرض نشده‌اند. منابع لاکوست برای Essential جزئیات نت ابتدایی را یکسان بیان نمی‌کنند، پس آکورد کلی مرکبات ثبت شد. دو صفحه رسمی Polo Black نیز درباره برخی جزئیات و جایگاه نت‌ها تفاوت دارند؛ فقط نت‌های مشترک با جایگاه روشن ثبت شدند. برای Bombshell نت‌های کلیدی بدون هرم، و برای Zen به دلیل نبود هرم رسمی در صفحه بررسی‌شده، نت‌ها خالی نگه داشته شدند. خالی بودن به معنی بی‌بو بودن نیست.
+
+جنسیت از فایل تأمین‌کننده استنتاج نشده است. نام و نت‌ها به عطر مرجع اصلی مربوط‌اند؛ تطبیق نوشتاری به‌تنهایی هویت، نسخه، ترکیب یا کیفیت اسانس واقعی تأمین‌کننده را تأیید نمی‌کند. مدارک و قیمت‌ها به ترتیب در `seed/official_identity_evidence_v14.json` و `seed/official_reference_prices_v15.json` ثبت شده‌اند.

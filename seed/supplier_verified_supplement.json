@@ -522,5 +522,170 @@
     "source_note": "Official original EDP describes key notes without a tiered pyramid; supplier essence identity and version unverified.",
     "perfumer": "Alberto Morillas",
     "variants": []
+  },
+  {
+    "id": "SUP-LC-900017",
+    "slug": "lacoste-essential",
+    "name_fa": "اسنشیال",
+    "name_en": "Essential",
+    "title_fa_base": "اسنشیال",
+    "full_display_fa": "لاکوست — اسنشیال",
+    "inspired_brand_en": "Lacoste",
+    "inspired_brand_fa": "لاکوست",
+    "gender": null,
+    "notes": {
+      "top": [
+        "آکورد مرکبات"
+      ],
+      "middle": [
+        "فلفل سیاه",
+        "رز"
+      ],
+      "base": [
+        "چوب صندل",
+        "پچولی"
+      ]
+    },
+    "accords": [],
+    "transclaimer_notice": "این محصول بازآفرینی دست‌ساز است و محصول اورجینال برند لاکوست نیست.",
+    "source_url": "https://www.lacoste.com/se/lacoste/men/accessories/fragrance/LC011A01.html",
+    "source_note": "Original EDT; top note kept general because regional official pages differ in detail. Supplier essence identity and version unverified.",
+    "variants": []
+  },
+  {
+    "id": "SUP-LC-900018",
+    "slug": "lacoste-pour-femme",
+    "name_fa": "پور فم",
+    "name_en": "Pour Femme",
+    "title_fa_base": "پور فم",
+    "full_display_fa": "لاکوست — پور فم",
+    "inspired_brand_en": "Lacoste",
+    "inspired_brand_fa": "لاکوست",
+    "gender": null,
+    "notes": {
+      "top": [
+        "فریزیا",
+        "فلفل سیاه"
+      ],
+      "middle": [
+        "یاس",
+        "هلیوتروپ"
+      ],
+      "base": [
+        "چوب سدر",
+        "چرم جیر"
+      ]
+    },
+    "accords": [],
+    "transclaimer_notice": "این محصول بازآفرینی دست‌ساز است و محصول اورجینال برند لاکوست نیست.",
+    "source_url": "https://www.lacoste.com/it/lacoste/donna/accessori/profumi/LC014A01.html",
+    "source_note": "Official original EDP structured note list; supplier essence identity unverified. Other versions are not merged.",
+    "variants": []
+  },
+  {
+    "id": "SUP-LL-900019",
+    "slug": "lalique-lamour",
+    "name_fa": "لامور",
+    "name_en": "L’Amour",
+    "title_fa_base": "لامور",
+    "full_display_fa": "لالیک — لامور",
+    "inspired_brand_en": "Lalique",
+    "inspired_brand_fa": "لالیک",
+    "gender": null,
+    "notes": {
+      "top": [
+        "ترنج",
+        "نرولی",
+        "غنچه رز"
+      ],
+      "middle": [
+        "گاردنیا",
+        "گل مریم",
+        "یاس"
+      ],
+      "base": [
+        "مشک",
+        "چوب سدر",
+        "چوب صندل"
+      ]
+    },
+    "accords": [],
+    "transclaimer_notice": "این محصول بازآفرینی دست‌ساز است و محصول اورجینال برند لالیک نیست.",
+    "source_url": "https://us.lalique.com/products/lamour-eau-de-parfum-l12202-r-1",
+    "source_note": "Official original EDP; supplier spelling uses a backtick. Supplier essence identity unverified.",
+    "variants": []
+  },
+  {
+    "id": "SUP-RL-900020",
+    "slug": "ralph-lauren-polo-black",
+    "name_fa": "پولو بلک",
+    "name_en": "Polo Black",
+    "title_fa_base": "پولو بلک",
+    "full_display_fa": "رالف لورن — پولو بلک",
+    "inspired_brand_en": "Ralph Lauren",
+    "inspired_brand_fa": "رالف لورن",
+    "gender": null,
+    "notes": {
+      "top": [
+        "آکورد انبه یخی",
+        "ماندارین",
+        "لیمو"
+      ],
+      "middle": [],
+      "base": [
+        "پچولی"
+      ]
+    },
+    "accords": [],
+    "transclaimer_notice": "این محصول بازآفرینی دست‌ساز است و محصول اورجینال برند رالف لورن نیست.",
+    "source_url": "https://www.ralphlaurenfragrances.com/en_US/men/polo-black/polo-black-eau-de-toilette/RLFE012.html",
+    "source_note": "Official Polo Black EDT. Product and brand collection pages disagree about placement/details of some notes; retain shared unambiguous tiered notes only.",
+    "variants": []
+  },
+  {
+    "id": "SUP-VS-900021",
+    "slug": "victorias-secret-bombshell",
+    "name_fa": "بامب شل",
+    "name_en": "Bombshell",
+    "title_fa_base": "بامب شل",
+    "full_display_fa": "ویکتوریا سکرت — بامب شل",
+    "inspired_brand_en": "Victoria's Secret",
+    "inspired_brand_fa": "ویکتوریا سکرت",
+    "gender": null,
+    "notes": {
+      "top": [],
+      "middle": [],
+      "base": []
+    },
+    "accords": [
+      "میوه گل ساعتی",
+      "گل صدتومانی",
+      "ارکیده وانیل"
+    ],
+    "transclaimer_notice": "این محصول بازآفرینی دست‌ساز است و محصول اورجینال برند ویکتوریا سکرت نیست.",
+    "source_url": "https://www.victoriassecret.com/us/vs/beauty-catalog/5000010457",
+    "source_note": "Official Bombshell EDP lists key notes; supplier spelling differs; related editions are separate and supplier essence identity/version unverified.",
+    "variants": []
+  },
+  {
+    "id": "SUP-SH-900022",
+    "slug": "shiseido-zen",
+    "name_fa": "زن",
+    "name_en": "Zen",
+    "title_fa_base": "زن",
+    "full_display_fa": "شیسیدو — زن",
+    "inspired_brand_en": "Shiseido",
+    "inspired_brand_fa": "شیسیدو",
+    "gender": null,
+    "notes": {
+      "top": [],
+      "middle": [],
+      "base": []
+    },
+    "accords": [],
+    "transclaimer_notice": "این محصول بازآفرینی دست‌ساز است و محصول اورجینال برند شیسیدو نیست.",
+    "source_url": "https://www.shiseido.com/us/en/zen-eau-de-parfum-0768614102007.html",
+    "source_note": "Official Zen EDP; Zen Essence is separate. No complete official pyramid found in this source; supplier essence identity/version unverified.",
+    "variants": []
   }
 ]
