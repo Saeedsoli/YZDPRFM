@@ -1,0 +1,23 @@
+{
+  "version": "official_reference_prices_2026_11_v47",
+  "supplier_file_sha256": "bbe8f40610bc765bda0a7d2da9dbe78f4e397458a6991239c3c18d0853f33f5c",
+  "description": "Owner corrected earlier choice; official reference, provisional price; no automatic activation except specific approval.",
+  "items": [
+    {
+      "product_id": "SUP-BS-900001",
+      "slug": "burberry-weekend-woman-edp",
+      "brand_en": "Burberry",
+      "expected_name_en": "BURBERRY - Weekend for Women",
+      "reference_name": "Burberry Weekend for Women EDP",
+      "official_url": "https://us.burberry.com/burberry-weekend-eau-de-parfum-100ml-p34547061",
+      "supplier_brand": "BURBERRY",
+      "supplier_model": "Weekend",
+      "supplier_gender": "Women",
+      "usd_per_kg": "97.9",
+      "quality": "P",
+      "match_status": "name_matched_supplier_identity_unverified",
+      "owner_version_confirmation": "Owner corrected earlier selection to Weekend for Women; supplier essence identity unverified.",
+      "expected_edps": []
+    }
+  ]
+}

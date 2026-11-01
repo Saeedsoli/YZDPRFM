@@ -24,6 +24,7 @@ node scripts/test_backup_stream_safety.js
 node scripts/test_joop_name_correction.js
 node scripts/test_popular_persian_names.js
 node scripts/test_amouage_common_names.js
+node scripts/test_weekend_owner_correction.js
 node scripts/test_essence_pricing.js
 node scripts/test_essence_pricing_store.js
 node scripts/test_product_essence_rollback.js
@@ -34,6 +35,7 @@ python3 scripts/test_approved_mto_v2.py
 python3 scripts/test_approved_mto_v3.py
 python3 scripts/test_approved_mto_v4.py
 python3 scripts/test_approved_mto_v5.py
+python3 scripts/test_approved_mto_v6.py
 node scripts/test_generic_product_images.js
 DB_PATH="$PWD/data/imagery-check.db" BACKUP_DISABLED=1 node scripts/test_images.js
 node scripts/test_active_official_notes_v1.js

@@ -22,11 +22,11 @@
     "no_positive": 0
   },
   "manual_review_flags": 0,
-  "local_products": 2205,
+  "local_products": 2206,
   "local_priced_products": 214,
   "local_modes": {
-    "UNAVAILABLE": 1996,
-    "MADE_TO_ORDER": 209
+    "UNAVAILABLE": 1994,
+    "MADE_TO_ORDER": 212
   },
   "unmapped_priced_manifest_ids": [],
   "priced_products_without_manifest": [],

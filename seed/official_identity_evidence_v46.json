@@ -1,0 +1,16 @@
+{
+  "version": "official_identity_evidence_v46",
+  "scope": "Official reference-original name only; supplier essence identity unverified.",
+  "items": [
+    {
+      "product_id": "SUP-BS-900001",
+      "slug": "burberry-weekend-woman-edp",
+      "brand_en": "Burberry",
+      "expected_name_en": "BURBERRY - Weekend for Women",
+      "reference_name": "Burberry Weekend for Women EDP",
+      "official_url": "https://us.burberry.com/burberry-weekend-eau-de-parfum-100ml-p34547061",
+      "status": "official_original_found_supplier_essence_unverified",
+      "checked_date": "2026-11-01"
+    }
+  ]
+}

@@ -823,3 +823,11 @@ node_modules/   با npm install برمی‌گردد
 - `scripts/test_official_reference_v45.js` — قیمت باربری لندن زنانه با انتخاب مالک.
 
 - `scripts/test_official_reference_v46.js` — قیمت باربری ویکند مردانه با انتخاب مالک.
+
+- `scripts/test_official_reference_v47.js` — قیمت باربری ویکند زنانه پس از اصلاح مالک.
+- `src/weekend-owner-correction.js` — بازپس‌گیری محافظت‌شده انتساب قبلی و حفظ سفارش‌ها.
+
+- `src/approved-made-to-order-v6.js` — فعال‌سازی محافظت‌شده سه رایحه تأییدشده.
+- `scripts/test_approved_mto_v6.py` — سقف خرید و محافظ ویرایش مدیر برای تأیید جدید.
+
+- `scripts/test_weekend_owner_correction.js` — بازپس‌گیری امن قیمت اشتباه، حفاظت سفارش و ویرایش مدیر.

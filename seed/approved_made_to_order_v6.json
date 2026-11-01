@@ -1,0 +1,37 @@
+{
+  "version": "approved_made_to_order_2026_11_v6",
+  "source_sha256": "bbe8f40610bc765bda0a7d2da9dbe78f4e397458a6991239c3c18d0853f33f5c",
+  "description": "Owner approved these three selected references for made-to-order and approved future owner-confirmed versions; supplier essence identity unverified.",
+  "items": [
+    {
+      "product_id": "SUP-TP-910045",
+      "slug": "azzaro-chrome-eau-de-parfum",
+      "expected_name_en": "AZZARO - Chrome Eau de Parfum",
+      "brand_en": "Azzaro",
+      "usd_per_kg": "139.7",
+      "quality": "H",
+      "source_type": "secondary",
+      "reference_url": "https://www.fragrantica.com/perfume/Azzaro/Chrome-Eau-de-Parfum-72608.html"
+    },
+    {
+      "product_id": "YZD-PROD-2062",
+      "slug": "burberry-burberry-london-for-women",
+      "expected_name_en": "Burberry London for Women",
+      "brand_en": "Burberry",
+      "usd_per_kg": "89.1",
+      "quality": "P",
+      "source_type": "provisional",
+      "reference_url": "https://us.burberry.com/burberry-london-eau-de-parfum-100ml-p34547261"
+    },
+    {
+      "product_id": "SUP-BS-900001",
+      "slug": "burberry-weekend-woman-edp",
+      "expected_name_en": "BURBERRY - Weekend for Women",
+      "brand_en": "Burberry",
+      "usd_per_kg": "97.9",
+      "quality": "P",
+      "source_type": "provisional",
+      "reference_url": "https://us.burberry.com/burberry-weekend-eau-de-parfum-100ml-p34547061"
+    }
+  ]
+}
