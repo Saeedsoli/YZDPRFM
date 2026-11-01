@@ -20,6 +20,7 @@ env -i PATH="$PATH" HOME="$HOME" TMPDIR="${TMPDIR:-/tmp}" bash -s <<'ISOLATED'
 set -euo pipefail
 npm ci --no-audit --no-fund
 node -e "const D=require('better-sqlite3');const d=new D(':memory:');console.log('Node '+process.version+', SQLite '+d.prepare('select sqlite_version() v').get().v);d.close()"
+node scripts/test_backup_stream_safety.js
 node scripts/test_essence_pricing.js
 node scripts/test_essence_pricing_store.js
 node scripts/test_product_essence_rollback.js

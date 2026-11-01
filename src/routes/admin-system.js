@@ -35,6 +35,25 @@
 const fs = require('fs');
 const path = require('path');
 
+// Backup files contain customer and order data. Destroy the read stream when
+// the client disconnects; always clean up our private temporary directory.
+function streamBackup(res, file, cleanup, appLog) {
+  const stream = fs.createReadStream(file);
+  let cleaned = false;
+  const finish = () => {
+    if (cleaned) return;
+    cleaned = true;
+    if (cleanup) { try { cleanup(); } catch (e) { appLog('ERROR', 'backup', 'خطا در پاک‌سازی فایل موقت'); } }
+  };
+  stream.on('error', () => {
+    appLog('ERROR', 'backup', 'خطا در خواندن فایل پشتیبان');
+    res.destroy();
+  });
+  stream.on('close', finish);
+  res.on('close', () => { if (!stream.destroyed) stream.destroy(); });
+  stream.pipe(res);
+}
+
 /**
  * @param {object}   ctx
  * @param {string}   ctx.method
@@ -76,23 +95,28 @@ async function handle(ctx) {
   if (method === 'GET' && pathname === '/api/admin/backup') {
     if (!can('system.backup')) return true;
     const stamp = new Date().toISOString().slice(0, 19).replace(/[:T]/g, '-');
-    const tmp = path.join(path.dirname(DB_PATH), `backup-${stamp}.db`);
+    let dir;
     try {
+      // Unique directory prevents collisions for concurrent requests and is
+      // private even when the parent directory is broadly readable.
+      dir = fs.mkdtempSync(path.join(path.dirname(DB_PATH), '.manual-backup-'));
+      const tmp = path.join(dir, 'snapshot.db');
       db.prepare('VACUUM INTO ?').run(tmp);   // نسخه سازگار حتی حین نوشتن
       const size = fs.statSync(tmp).size;
       appLog('INFO', 'backup', 'پشتیبان دستی گرفته شد', { size });
       res.writeHead(200, {
         'Content-Type': 'application/octet-stream',
         'Content-Disposition': `attachment; filename="yazd-backup-${stamp}.db"`,
-        'Content-Length': size
+        'Content-Length': size,
+        'Cache-Control': 'no-store'
       });
-      const stream = fs.createReadStream(tmp);
-      stream.pipe(res);
-      stream.on('close', () => { try { fs.unlinkSync(tmp); } catch {} });
-      return true;    // استریم پشتیبان — sendJSON صدا زده نشد
+      streamBackup(res, tmp, () => fs.rmSync(dir, {recursive: true, force: true}), appLog);
+      return true;
     } catch (e) {
+      if (dir) { try { fs.rmSync(dir, {recursive: true, force: true}); } catch {} }
       appLog('ERROR', 'backup', e.message);
-      return sendJSON(500, { error: 'خطا در تهیه پشتیبان: ' + e.message });
+      if (res.headersSent) { res.destroy(); return true; }
+      return sendJSON(500, { error: 'خطا در تهیه پشتیبان' });
     }
   }
 
@@ -126,9 +150,10 @@ async function handle(ctx) {
     res.writeHead(200, {
       'Content-Type': 'application/octet-stream',
       'Content-Disposition': `attachment; filename="${raw}"`,
-      'Content-Length': fs.statSync(full).size
+      'Content-Length': fs.statSync(full).size,
+      'Cache-Control': 'no-store'
     });
-    fs.createReadStream(full).pipe(res);
+    streamBackup(res, full, null, appLog);
     return true;      // استریم فایل — sendJSON صدا زده نشد
   }
 
