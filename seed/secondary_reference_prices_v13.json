@@ -1,0 +1,25 @@
+{
+  "version": "secondary_reference_prices_2026_11_v13",
+  "supplier_file_sha256": "bbe8f40610bc765bda0a7d2da9dbe78f4e397458a6991239c3c18d0853f33f5c",
+  "description": "Independent references, provisional name matches; supplier essence identity unverified.",
+  "items": [
+    {
+      "product_id": "SUP-TP-910035",
+      "slug": "orlane-derrick-1978",
+      "brand_en": "Orlane",
+      "expected_name_en": "ORLANE - Derrick",
+      "reference_name": "Derrick",
+      "source_url": "https://www.fragrantica.com/perfume/Orlane/Derrick-15441.html",
+      "provider": "Fragrantica",
+      "status": "secondary_original_found_supplier_essence_unverified",
+      "checked_date": "2026-11-01",
+      "supplier_brand": "DERRICK",
+      "supplier_model": "DERRICK",
+      "usd_per_kg": "105.6",
+      "quality": "H",
+      "match_status": "name_matched_supplier_identity_unverified",
+      "expected_edps": [],
+      "legacy_backfill": false
+    }
+  ]
+}

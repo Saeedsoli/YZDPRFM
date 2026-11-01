@@ -1,0 +1,21 @@
+{
+  "version": "official_reference_prices_2026_11_v30",
+  "supplier_file_sha256": "bbe8f40610bc765bda0a7d2da9dbe78f4e397458a6991239c3c18d0853f33f5c",
+  "description": "Provisional name-based prices; supplier essence unverified; no activation.",
+  "items": [
+    {
+      "product_id": "SUP-ML-900001",
+      "slug": "milton-lloyd-hawaii",
+      "brand_en": "Milton Lloyd",
+      "expected_name_en": "MILTON LLOYD - Hawaii",
+      "reference_name": "Hawaii",
+      "official_url": "https://milton-lloyd.com/products/hawaii",
+      "supplier_brand": "HAVAYI",
+      "supplier_model": "HAVAYI",
+      "usd_per_kg": "97.9",
+      "quality": "P",
+      "match_status": "name_matched_supplier_identity_unverified",
+      "expected_edps": []
+    }
+  ]
+}

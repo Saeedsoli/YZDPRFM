@@ -1,0 +1,16 @@
+{
+  "version": "official_identity_evidence_v37",
+  "scope": "Official reference-original name only; supplier essence identity unverified.",
+  "items": [
+    {
+      "product_id": "SUP-ML-900001",
+      "slug": "milton-lloyd-hawaii",
+      "brand_en": "Milton Lloyd",
+      "expected_name_en": "MILTON LLOYD - Hawaii",
+      "reference_name": "Hawaii",
+      "official_url": "https://milton-lloyd.com/products/hawaii",
+      "status": "official_original_found_supplier_essence_unverified",
+      "checked_date": "2026-11-01"
+    }
+  ]
+}
