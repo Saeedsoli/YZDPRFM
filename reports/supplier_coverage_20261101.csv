@@ -12,7 +12,7 @@ aramis,900,Men,آرامیس 900,2,"26,27",305.8,T,secondary,قیمت موقت ب
 ATKINSONS,Oud Save The King,Men,عود سیو د کینگ,1,33,314.6,H,provisional,قیمت موقت با شاهد نام؛ هویت اسانس تأییدنشده,SUP-ATKINSONS-OUD-SAVE-THE-KING,https://www.atkinsons1799.com/products/oud-save-the-king,official_reference_prices_v1.json,,
 ATKINSONS,HER MAJESTY THE OUD,Women,هرمجستی,1,34,190.3,H,provisional,قیمت موقت با شاهد نام؛ هویت اسانس تأییدنشده,SUP-AT-900013,https://www.atkinsons1799.com/en_eu/custom-sample-set,official_reference_prices_v13.json,,
 AZZARO,Chrome,Men,آزارو کروم,1,40,139.7,H,pending,هنوز قیمت مرجع منتسب نشده,,,,,
-BDK Parfums,GRIS CHARNEL,Unisex,گریس چارنل,1,46,467.5,P,pending,هنوز قیمت مرجع منتسب نشده,,,,,
+BDK Parfums,GRIS CHARNEL,Unisex,گریس چارنل,1,46,467.5,P,pending,هنوز قیمت مرجع منتسب نشده,,,,ادوپرفیوم و اکستره دو نسخه مرجع جدا هستند؛ فایل نسخه اسانس را مشخص نکرده است.,https://us.bdkparfums.com/collections/gris-charnel
 BURBERRY,GODDESS,Women,باربری گادس,1,52,201.3,P,provisional,قیمت موقت با شاهد نام؛ هویت اسانس تأییدنشده,YZD-PROD-1804,https://us.burberry.com/burberry-goddess-eau-de-parfum-for-women-50ml-p40835971,official_reference_prices_v23.json,,
 BURBERRY,London,Women,باربری لندن,1,53,89.1,P,pending,هنوز قیمت مرجع منتسب نشده,,,,,
 BURBERRY,Weekend,Women,باربری ویکند,1,54,97.9,P,pending,هنوز قیمت مرجع منتسب نشده,,,,,
@@ -47,7 +47,7 @@ D&G,KING,Men,کینگ,1,125,130.9,R,pending,هنوز قیمت مرجع منتس�
 CARON,Pour Un Homme,Men,کارن پورانهوم,1,131,224.4,H,provisional,قیمت موقت با شاهد نام؛ هویت اسانس تأییدنشده,YZD-PROD-1642,https://www.parfumscaron.com/en/products/pour-un-homme-vaporisateur,official_reference_prices_v11.json,,
 Cartier,Pasha de Cartier,Men,کارتیر پاشا,1,137,168.3,H,pending,هنوز قیمت مرجع منتسب نشده,,,,,
 CHANEL,Allure Sport,Men,شنل آلوراسپرت,1,143,262.9,H,pending,هنوز قیمت مرجع منتسب نشده,,,,,
-CHANEL,BLEU de chanel,Men,بلو د شنل,2,"144,145",227.7,H,pending,هنوز قیمت مرجع منتسب نشده,,,,,
+CHANEL,BLEU de chanel,Men,بلو د شنل,2,"144,145",227.7,H,pending,هنوز قیمت مرجع منتسب نشده,,,,ادو تویلت، ادوپرفیوم و پرفیوم نسخه‌های مرجع جدا هستند؛ نسخه اسانس فایل مشخص نیست.,https://www.chanel.com/us/fragrance/men/c/7x1x2x34/bleu-de-chanel/
 CHANEL,Coco Mademoiselle,Women,کوکو شنل,1,146,132,H,pending,هنوز قیمت مرجع منتسب نشده,,,,,
 CHANEL,Chance,Women,چنس شنل,2,"147,148",388.3,H,pending,هنوز قیمت مرجع منتسب نشده,,,,,
 CHANEL,Platinium,Unisex,پلاتینیوم,1,149,92.4,P,provisional,قیمت موقت با شاهد نام؛ هویت اسانس تأییدنشده,YZD-PROD-1467,https://www.chanel.com/lt/fragrance/p/124460/platinum-egoiste-eau-de-toilette-spray/,official_reference_prices_v26.json,,
@@ -89,7 +89,7 @@ Escentric,Molecule 02,Unisex,مولکول 02,2,"279,280",322.3,H,provisional,ق�
 Escentric,Molecule 04,Unisex,مولکول 04,1,281,303.6,H,provisional,قیمت موقت با شاهد نام؛ هویت اسانس تأییدنشده,YZD-PROD-1248,https://www.escentric.com/en-us/products/molecule-04-100ml,official_reference_prices_v5.json,,
 Ex Nihilo,FLEUR NARCOTIQUE,Unisex,فلورنارکوتیک,1,287,291.5,H,provisional,قیمت موقت با شاهد نام؛ هویت اسانس تأییدنشده,SUP-EX-900011,https://us.ex-nihilo-paris.com/products/fleur-narcotique-eau-de-parfum,official_reference_prices_v13.json,,
 Ex Nihilo,BLUE TALISMAN,Unisex,بلو تالیسمان,1,288,286,H,provisional,قیمت موقت با شاهد نام؛ هویت اسانس تأییدنشده,SUP-EX-900012,https://us.ex-nihilo-paris.com/products/blue-talisman-eau-de-parfum,official_reference_prices_v13.json,,
-Francic Kurkdjian,Baccarat Rouge 540,Unisex,باکارات رژ,2,"294,295",319,H,pending,هنوز قیمت مرجع منتسب نشده,,,,,
+Francic Kurkdjian,Baccarat Rouge 540,Unisex,باکارات رژ,2,"294,295",319,H,pending,هنوز قیمت مرجع منتسب نشده,,,,ادوپرفیوم و اکستره نسخه‌های مرجع جدا هستند؛ این ردیف نسخه اسانس را مشخص نکرده است.,https://www.franciskurkdjian.com/us-en/landing_page_baccarat-rouge-540.html
 Francic Kurkdjian,Baccarat Rouge 540 Extrait,Unisex,باکارات رژ اکستریت,1,296,287.1,H,provisional,قیمت موقت با شاهد نام؛ هویت اسانس تأییدنشده,YZD-PROD-0615,https://www.franciskurkdjian.com/int-en/p/baccarat-rouge-540-extrait-de-parfum-RA142321.html,official_reference_prices_v9.json,,
 Ariana Grande,Ari,Women,آریانا گرند,1,302,112.2,B,provisional,قیمت موقت با شاهد نام؛ هویت اسانس تأییدنشده,SUP-AG-900014,https://arianagrandefragrances.com/products/ari-by-ariana-grande,official_reference_prices_v13.json,,
 GEORGIO ARMANI,Acqua di Gio,Men,آکوا دی جیو,1,308,133.1,A,pending,هنوز قیمت مرجع منتسب نشده,,,,,
@@ -235,9 +235,9 @@ ESCADA,Collection,Women,کالکشن,1,808,81.4,I,secondary,قیمت موقت ب
 TOMMY HILFIGER,Tommy Jeans,Men,تامی جینز,1,814,122.1,H,secondary,قیمت موقت با منبع مستقل؛ هویت اسانس تأییدنشده,SUP-TP-910019,https://www.fragrantica.com/perfume/Tommy-Hilfiger/Tommy-Jeans-6316.html,secondary_reference_prices_v5.json,,
 TOMMY HILFIGER,Tommy New,Unisex,تامی نیو,1,815,92.4,H,pending,هنوز قیمت مرجع منتسب نشده,,,,,
 VERSACE,Bright Crystal,Women,برایت کریستال,1,821,166.1,H,provisional,قیمت موقت با شاهد نام؛ هویت اسانس تأییدنشده,YZD-PROD-1706,https://www.versace.com/us/en/women/accessories/fragrances-body-care/bright-crystal/bright-crystal-edt-90-ml-pink/R510032-R090MLS_RNUL.html,official_reference_prices_v2.json,,
-VERSACE,Crysral Noir,Women,کریستال نویر,2,"822,823",220,I,pending,هنوز قیمت مرجع منتسب نشده,,,,,
+VERSACE,Crysral Noir,Women,کریستال نویر,2,"822,823",220,I,pending,هنوز قیمت مرجع منتسب نشده,,,,Crystal Noir ادو تویلت و پرفیوم مرجع جدا دارد؛ نسخه این ردیف نامشخص است.,https://www.versace.com/us/en/women/accessories/fragrances-body-care/crystal-collection-for-her/
 VERSACE,Eros,Men,اروس مردانه,1,824,243.1,H,pending,هنوز قیمت مرجع منتسب نشده,,,,,
-VERSACE,Eros pour Femme,Women,اروس زنانه,1,825,286,H,pending,هنوز قیمت مرجع منتسب نشده,,,,,
+VERSACE,Eros pour Femme,Women,اروس زنانه,1,825,286,H,pending,هنوز قیمت مرجع منتسب نشده,,,,ادو تویلت و ادوپرفیوم مرجع جدا هستند؛ نسخه این ردیف مشخص نیست.,https://www.versace.com/us/en/women/accessories/fragrances-body-care/eros-pour-femme/eros-pour-femme-edt-100-ml-gold/R750132-R100MLS_RNUL.html | https://www.versace.com/row/en/eros-pour-femme-edp-100-ml/R750032-R100MLS.html
 VERSACE,Pour Homme,Men,ورساچه پورهوم,2,"826,827",330,T,provisional,قیمت موقت با شاهد نام؛ هویت اسانس تأییدنشده,YZD-PROD-1702,https://www.versace.com/us/en/men/accessories/fragrances-body-care/pour-homme/pour-homme-edt-100-ml-blue/R720010-R100MLS_RNUL.html,official_reference_prices_v11.json,,
 VICTOR&ROLF,SPICEBOMB,Men,اسپایس بمب,1,833,217.8,P,provisional,قیمت موقت با شاهد نام؛ هویت اسانس تأییدنشده,YZD-PROD-1748,https://us.viktor-rolf.com/fragrance/spicebomb-eau-de-toilette-VKR_030.html,official_reference_prices_v25.json,,
 VICTORIA`S SECRET,AQUA KISS,Women,آکوا کیس,1,839,108.9,P,provisional,قیمت موقت با شاهد نام؛ هویت اسانس تأییدنشده,SUP-VS-900032,https://www.victoriassecret.com/ca/vs/beauty-catalog/5000011041?genericId=11259203&choice=4760,official_reference_prices_v18.json,,
@@ -263,4 +263,4 @@ Yves Saint Laurent,Supreme Bouquet,Women,سوپریم بوکت,1,878,264,H,legac
 Yves Saint Laurent,Tuxedo,Women,تاکسیدو,1,879,385,H,provisional,قیمت موقت با شاهد نام؛ هویت اسانس تأییدنشده,YZD-PROD-1511,https://www.yslbeautyus.com/fragrance/le-vestiaire-des-parfums/the-signature-collection/tuxedo---le-vestiaire-des-parfums/809YSL.html,official_reference_prices_v3.json,,
 Yves Saint Laurent,Y,Men,وای,1,880,320.1,H,pending,هنوز قیمت مرجع منتسب نشده,,,,,
 Bentley,Bentley Intense,Men,بنتلی اینتنس,1,886,184.8,R,provisional,قیمت موقت با شاهد نام؛ هویت اسانس تأییدنشده,YZD-PROD-1814,https://bentley-fragrances.com/en/for-men-intense,official_reference_prices_v14.json,,
-Marc-Antoine Barrois,Ganymede,Unisex,گانیمد,1,892,126.5,R,pending,هنوز قیمت مرجع منتسب نشده,,,,,
+Marc-Antoine Barrois,Ganymede,Unisex,گانیمد,1,892,126.5,R,pending,هنوز قیمت مرجع منتسب نشده,,,,گانیمد و گانیمد اکستره مرجع جدا هستند؛ نسخه اسانس در فایل مشخص نیست.,https://marcantoinebarrois.com/en/products/ganymede-extrait

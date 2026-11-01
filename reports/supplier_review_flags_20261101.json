@@ -85,6 +85,67 @@
         "https://www.fragrantica.com/perfume/Perfumer-s-Workshop/Tea-Rose-5512.html",
         "https://www.fragrantica.com/perfume/Perfumer-s-Workshop/Eau-de-Parfum-Tea-Rose-29757.html"
       ]
+    },
+    {
+      "brand": "BDK Parfums",
+      "model": "GRIS CHARNEL",
+      "supplier_gender": "Unisex",
+      "expected_fa": "گریس چارنل",
+      "warning": "ادوپرفیوم و اکستره دو نسخه مرجع جدا هستند؛ فایل نسخه اسانس را مشخص نکرده است.",
+      "reference_urls": [
+        "https://us.bdkparfums.com/collections/gris-charnel"
+      ]
+    },
+    {
+      "brand": "CHANEL",
+      "model": "BLEU de chanel",
+      "supplier_gender": "Men",
+      "expected_fa": "بلو د شنل",
+      "warning": "ادو تویلت، ادوپرفیوم و پرفیوم نسخه‌های مرجع جدا هستند؛ نسخه اسانس فایل مشخص نیست.",
+      "reference_urls": [
+        "https://www.chanel.com/us/fragrance/men/c/7x1x2x34/bleu-de-chanel/"
+      ]
+    },
+    {
+      "brand": "Francic Kurkdjian",
+      "model": "Baccarat Rouge 540",
+      "supplier_gender": "Unisex",
+      "expected_fa": "باکارات رژ",
+      "warning": "ادوپرفیوم و اکستره نسخه‌های مرجع جدا هستند؛ این ردیف نسخه اسانس را مشخص نکرده است.",
+      "reference_urls": [
+        "https://www.franciskurkdjian.com/us-en/landing_page_baccarat-rouge-540.html"
+      ]
+    },
+    {
+      "brand": "VERSACE",
+      "model": "Crysral Noir",
+      "supplier_gender": "Women",
+      "expected_fa": "کریستال نویر",
+      "warning": "Crystal Noir ادو تویلت و پرفیوم مرجع جدا دارد؛ نسخه این ردیف نامشخص است.",
+      "reference_urls": [
+        "https://www.versace.com/us/en/women/accessories/fragrances-body-care/crystal-collection-for-her/"
+      ]
+    },
+    {
+      "brand": "VERSACE",
+      "model": "Eros pour Femme",
+      "supplier_gender": "Women",
+      "expected_fa": "اروس زنانه",
+      "warning": "ادو تویلت و ادوپرفیوم مرجع جدا هستند؛ نسخه این ردیف مشخص نیست.",
+      "reference_urls": [
+        "https://www.versace.com/us/en/women/accessories/fragrances-body-care/eros-pour-femme/eros-pour-femme-edt-100-ml-gold/R750132-R100MLS_RNUL.html",
+        "https://www.versace.com/row/en/eros-pour-femme-edp-100-ml/R750032-R100MLS.html"
+      ]
+    },
+    {
+      "brand": "Marc-Antoine Barrois",
+      "model": "Ganymede",
+      "supplier_gender": "Unisex",
+      "expected_fa": "گانیمد",
+      "warning": "گانیمد و گانیمد اکستره مرجع جدا هستند؛ نسخه اسانس در فایل مشخص نیست.",
+      "reference_urls": [
+        "https://marcantoinebarrois.com/en/products/ganymede-extrait"
+      ]
     }
   ]
 }
