@@ -1,0 +1,16 @@
+{
+  "version": "official_identity_evidence_v52",
+  "scope": "Official reference-original name only; supplier essence identity unverified.",
+  "items": [
+    {
+      "product_id": "SUP-CH-900005",
+      "slug": "chanel-coco-edp",
+      "brand_en": "Chanel",
+      "expected_name_en": "CHANEL - Coco EDP",
+      "reference_name": "Coco Eau de Parfum",
+      "official_url": "https://www.chanel.com/us/fragrance/p/113530/coco-eau-de-parfum-spray/",
+      "status": "official_original_found_supplier_essence_unverified",
+      "checked_date": "2026-11-01"
+    }
+  ]
+}

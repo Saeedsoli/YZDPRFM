@@ -1,0 +1,17 @@
+{
+  "version": "approved_made_to_order_2026_11_v16",
+  "source_sha256": "bbe8f40610bc765bda0a7d2da9dbe78f4e397458a6991239c3c18d0853f33f5c",
+  "description": "Owner selected Coco and previously authorized activation of owner-confirmed selections; supplier essence identity unverified.",
+  "items": [
+    {
+      "product_id": "SUP-CH-900005",
+      "slug": "chanel-coco-edp",
+      "expected_name_en": "CHANEL - Coco EDP",
+      "brand_en": "Chanel",
+      "usd_per_kg": "132",
+      "quality": "H",
+      "source_type": "provisional",
+      "reference_url": "https://www.chanel.com/us/fragrance/p/113530/coco-eau-de-parfum-spray/"
+    }
+  ]
+}

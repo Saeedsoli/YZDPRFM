@@ -21,6 +21,7 @@ function genericFor(productId,m){
  // A single approved neutral fallback is rebalanced to keep illustration use
  // below the tested limit; this is not a claim about the product or its notes.
  if(productId==='SUP-AG-900002')return `${PREFIX}generic-neutral-4.jpg`;
+ if(productId==='SUP-CH-900005')return `${PREFIX}generic-neutral-6.jpg`;
  // New unidentified catalog entries get a stable, neutral illustration, never
  // an invented family or gender. Existing uploaded/brand images still win.
  const digest=crypto.createHash('sha256').update(String(productId)).digest();
@@ -28,7 +29,7 @@ function genericFor(productId,m){
 }
 function applyGenericImages(db,m,imagesDir){
  if(!m)return {updated:0,already:0,skipped:0,reason:'manifest_missing'};
- for(let i=1;i<=5;i++)for(const ext of [`.jpg`,`.webp`,`-sm.jpg`,`-sm.webp`])if(!fs.existsSync(path.join(imagesDir,`generic-neutral-${i}${ext}`)))throw Error('Missing approved generic image asset');
+ for(let i=1;i<=6;i++)for(const ext of [`.jpg`,`.webp`,`-sm.jpg`,`-sm.webp`])if(!fs.existsSync(path.join(imagesDir,`generic-neutral-${i}${ext}`)))throw Error('Missing approved generic image asset');
  return db.transaction(()=>{
   if(db.prepare('SELECT 1 FROM settings WHERE key=?').get(VERSION))return {updated:0,already:0,skipped:0,reason:'already_applied'};
   const get=db.prepare('SELECT id,slug,name_en,brand_en,family_slug,gender,image_url FROM products WHERE id=?');

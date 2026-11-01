@@ -1,0 +1,23 @@
+{
+  "version": "official_reference_prices_2026_11_v56",
+  "supplier_file_sha256": "bbe8f40610bc765bda0a7d2da9dbe78f4e397458a6991239c3c18d0853f33f5c",
+  "description": "Owner-selected reference for conflicting row; provisional price; supplier essence unverified.",
+  "items": [
+    {
+      "product_id": "SUP-CH-900005",
+      "slug": "chanel-coco-edp",
+      "brand_en": "Chanel",
+      "expected_name_en": "CHANEL - Coco EDP",
+      "reference_name": "Coco Eau de Parfum",
+      "official_url": "https://www.chanel.com/us/fragrance/p/113530/coco-eau-de-parfum-spray/",
+      "supplier_brand": "CHANEL",
+      "supplier_model": "Coco Mademoiselle",
+      "supplier_gender": "Women",
+      "usd_per_kg": "132",
+      "quality": "H",
+      "match_status": "name_matched_supplier_identity_unverified",
+      "owner_version_confirmation": "Owner selected Coco rather than Coco Mademoiselle despite conflicting source names and authorized EDP default; supplier essence identity unverified.",
+      "expected_edps": []
+    }
+  ]
+}

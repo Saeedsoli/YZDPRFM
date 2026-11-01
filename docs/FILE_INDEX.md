@@ -878,3 +878,11 @@ node_modules/   با npm install برمی‌گردد
 
 - `src/approved-made-to-order-v15.js` — تأیید محافظت‌شده دو تطبیق جدید.
 - `scripts/test_approved_mto_v15.py` — خرید و محافظ تأیید دسته جدید.
+
+- `scripts/test_official_reference_v56.js` — قیمت کوکو شنل با انتخاب مالک در ردیف متناقض.
+
+- `src/approved-made-to-order-v16.js` — تأیید محافظت‌شده کوکو شنل.
+- `scripts/test_approved_mto_v16.py` — خرید و محافظ تأیید کوکو شنل.
+- `scripts/test_generic_image_six.js` — ششمین تصویر نمادین و نمایش برچسب آن.
+
+- `scripts/test_generic_image_six_browser.py` — آزمون مرورگر تصویر نمادین ششم در موبایل و دسکتاپ.

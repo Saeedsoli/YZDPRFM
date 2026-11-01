@@ -1,0 +1,33 @@
+[
+  {
+    "id": "SUP-CH-900005",
+    "slug": "chanel-coco-edp",
+    "name_fa": "کوکو ادوپرفیوم",
+    "name_en": "Coco EDP",
+    "title_fa_base": "کوکو ادوپرفیوم",
+    "full_display_fa": "شنل — کوکو ادوپرفیوم",
+    "inspired_brand_en": "Chanel",
+    "inspired_brand_fa": "شنل",
+    "gender": "WOMEN",
+    "notes": {
+      "top": [
+        "نارنگی سیسیلی"
+      ],
+      "middle": [
+        "یاس",
+        "یلانگ یلانگ",
+        "شکوفه پرتقال"
+      ],
+      "base": [
+        "پچولی",
+        "بنزوئین",
+        "دانه تونکا"
+      ]
+    },
+    "accords": [],
+    "transclaimer_notice": "این محصول بازآفرینی دست‌ساز است و محصول اورجینال برند اصلی نیست. اطلاعات رایحه مرجع از وب‌سایت رسمی برند گرفته شده و هویت و نسخه اسانس تأمین‌کننده مستقلاً تأیید نشده است.",
+    "source_url": "https://www.chanel.com/us/fragrance/p/113530/coco-eau-de-parfum-spray/",
+    "source_note": "Owner selected Coco rather than Coco Mademoiselle despite conflicting file names; EDP default. Supplier essence unverified.",
+    "variants": []
+  }
+]

@@ -336,6 +336,8 @@ if python3 scripts/test_approved_mto_v14.py >/tmp/test_approved_mto_v14.log 2>&1
 run_test test_default_reference_v54.js "three sourced default references"
 if python3 scripts/test_approved_mto_v15.py >/tmp/test_approved_mto_v15.log 2>&1; then P=$((P+1)); else F=$((F+1)); echo "  X owner default two approvals"; fi
 run_test test_default_reference_v55.js "two sourced default references"
+if python3 scripts/test_approved_mto_v16.py >/tmp/test_approved_mto_v16.log 2>&1; then P=$((P+1)); else F=$((F+1)); echo "  X Coco owner approval"; fi
+run_test test_generic_image_six.js "sixth symbolic image disclosure"
 if python3 scripts/test_approved_mto_v13.py >/tmp/test_approved_mto_v13.log 2>&1; then P=$((P+1)); else F=$((F+1)); echo "  X owner default six approvals"; fi
 run_test test_default_reference_v53.js "six sourced default references"
 run_test test_journal_lcp.js "journal server-side render + LCP guards"
