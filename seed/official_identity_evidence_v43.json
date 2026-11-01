@@ -1,0 +1,17 @@
+{
+  "version": "official_identity_evidence_v43",
+  "scope": "Official reference-original name only; supplier essence identity unverified.",
+  "items": [
+    {
+      "product_id": "YZD-PROD-0542",
+      "slug": "amouage-jubilation-40-man",
+      "brand_en": "Amouage",
+      "expected_name_en": "AMOUAGE - Jubilation 40 Man",
+      "expected_concentration": "Extrait de Parfum",
+      "reference_name": "Jubilation 40 Man Extrait",
+      "official_url": "https://amouage.com/products/new-jubilation-40-man-exceptional-extrait",
+      "status": "official_original_found_supplier_essence_unverified",
+      "checked_date": "2026-11-01"
+    }
+  ]
+}

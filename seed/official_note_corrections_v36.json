@@ -1,0 +1,81 @@
+{
+  "version": "official_notes_2026_11_v36",
+  "description": "Guarded official reference notes; no pricing or availability changes.",
+  "items": [
+    {
+      "product_id": "YZD-PROD-0542",
+      "product_slug": "amouage-jubilation-40-man",
+      "expected_name_en": "AMOUAGE - Jubilation 40 Man",
+      "expected_concentration": "Extrait de Parfum",
+      "official_brand": "Amouage",
+      "official_name": "Jubilation 40 Man Extrait",
+      "source_url": "https://amouage.com/products/new-jubilation-40-man-exceptional-extrait",
+      "source_scope": "Original reference notes only; not evidence of supplier essence ingredients, concentration or quality.",
+      "expected_old_notes": {
+        "top": [
+          "شاه‌توت",
+          "کندر",
+          "توت سیاه",
+          "لابدانیوم",
+          "دارچین",
+          "رزماری"
+        ],
+        "middle": [
+          "برگ بو",
+          "دارچین",
+          "عسل",
+          "گل رز",
+          "زنبق",
+          "هل"
+        ],
+        "base": [
+          "عود",
+          "صمغ مر",
+          "خزه بلوط",
+          "چوب صندل",
+          "نعناع هندی",
+          "مشک",
+          "مشک زباد"
+        ]
+      },
+      "verified_notes": {
+        "top": [
+          "شاه‌توت",
+          "انگور فرنگی سیاه",
+          "رزماری",
+          "لابدانیوم",
+          "پرتقال",
+          "داوانا"
+        ],
+        "middle": [
+          "گل جاروب اسکاتلندی",
+          "کندر",
+          "دارچین",
+          "میخک",
+          "برگ بو سنت توماس",
+          "رز",
+          "دانه کرفس"
+        ],
+        "base": [
+          "پچولی",
+          "سیستوس",
+          "اوپوپوناکس",
+          "مر",
+          "چوب سدر",
+          "چوب گایاک",
+          "مشک",
+          "خزه",
+          "عنبر",
+          "عود"
+        ]
+      },
+      "expected_old_accords": [
+        "۴۰٪ غلظت روغن عصاره خالص برای جشن ۴۰ سالگی برند"
+      ],
+      "verified_accords": [],
+      "requires_unavailable": true,
+      "expected_old_notice": "این محصول، بازآفرینی دست‌ساز با عصاره خالص اولیه و فرمولاسیون اختصاصی عطر یزد است.",
+      "verified_notice": "این محصول بازآفرینی دست‌ساز است و محصول اورجینال برند اصلی نیست. نت‌ها مربوط به رایحه مرجع در وب‌سایت رسمی برند هستند؛ هویت، نسخه و ترکیبات اسانس تأمین‌کننده مستقلاً تأیید نشده است."
+    }
+  ]
+}

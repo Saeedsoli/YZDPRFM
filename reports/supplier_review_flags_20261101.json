@@ -3,16 +3,6 @@
   "description": "Manual advisory only; not an import block or supplier verification.",
   "items": [
     {
-      "brand": "AMUAGE",
-      "model": "Jubilation XXV",
-      "supplier_gender": "Men",
-      "expected_fa": "آمواج جوبیلیشن 40",
-      "warning": "نام فارسی ۴۰ با نام انگلیسی XXV متفاوت است؛ نسخه اسانس نامشخص.",
-      "reference_urls": [
-        "https://amouage.com/products/new-jubilation-40-man-exceptional-extrait"
-      ]
-    },
-    {
       "brand": "PARFUMS de MARLY",
       "model": "Layton",
       "supplier_gender": "Women",
