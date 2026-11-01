@@ -1,0 +1,26 @@
+{
+  "version": "official_identity_evidence_v25",
+  "scope": "Official reference-original name only; actual supplier essence identity is unverified.",
+  "items": [
+    {
+      "product_id": "YZD-PROD-0548",
+      "slug": "amouage-guidance",
+      "brand_en": "Amouage",
+      "expected_name_en": "AMOUAGE - Guidance",
+      "reference_name": "Guidance Eau de Parfum",
+      "official_url": "https://amouage.com/products/100ml-guidance",
+      "status": "official_original_found_supplier_essence_unverified",
+      "checked_date": "2026-11-01"
+    },
+    {
+      "product_id": "YZD-PROD-1467",
+      "slug": "chanel-platinum-goste",
+      "brand_en": "Chanel",
+      "expected_name_en": "CHANEL - Platinum Égoïste",
+      "reference_name": "Platinum Égoïste Eau de Toilette",
+      "official_url": "https://www.chanel.com/lt/fragrance/p/124460/platinum-egoiste-eau-de-toilette-spray/",
+      "status": "official_original_found_supplier_essence_unverified",
+      "checked_date": "2026-11-01"
+    }
+  ]
+}

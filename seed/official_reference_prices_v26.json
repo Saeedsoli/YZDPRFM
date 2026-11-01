@@ -1,0 +1,93 @@
+{
+  "version": "official_reference_prices_2026_11_v26",
+  "supplier_file_sha256": "bbe8f40610bc765bda0a7d2da9dbe78f4e397458a6991239c3c18d0853f33f5c",
+  "description": "Provisional name-based prices; supplier essence is unverified; no activation.",
+  "items": [
+    {
+      "product_id": "YZD-PROD-0548",
+      "slug": "amouage-guidance",
+      "brand_en": "Amouage",
+      "expected_name_en": "AMOUAGE - Guidance",
+      "reference_name": "Guidance Eau de Parfum",
+      "official_url": "https://amouage.com/products/100ml-guidance",
+      "supplier_brand": "AMUAGE",
+      "supplier_model": "guidence",
+      "usd_per_kg": "409.2",
+      "quality": "H",
+      "match_status": "name_matched_supplier_identity_unverified",
+      "expected_edps": [
+        {
+          "sku": "YZD-0548-EDP-010",
+          "volume_ml": 10,
+          "price_toman": 639999,
+          "stock": 0,
+          "price_usd": 7.0
+        },
+        {
+          "sku": "YZD-0548-EDP-030",
+          "volume_ml": 30,
+          "price_toman": 1620000,
+          "stock": 0,
+          "price_usd": 7.0
+        },
+        {
+          "sku": "YZD-0548-EDP-050",
+          "volume_ml": 50,
+          "price_toman": 2600000,
+          "stock": 0,
+          "price_usd": 7.0
+        },
+        {
+          "sku": "YZD-0548-EDP-100",
+          "volume_ml": 100,
+          "price_toman": 5050000,
+          "stock": 0,
+          "price_usd": 7.0
+        }
+      ]
+    },
+    {
+      "product_id": "YZD-PROD-1467",
+      "slug": "chanel-platinum-goste",
+      "brand_en": "Chanel",
+      "expected_name_en": "CHANEL - Platinum Égoïste",
+      "reference_name": "Platinum Égoïste Eau de Toilette",
+      "official_url": "https://www.chanel.com/lt/fragrance/p/124460/platinum-egoiste-eau-de-toilette-spray/",
+      "supplier_brand": "CHANEL",
+      "supplier_model": "Platinium",
+      "usd_per_kg": "92.4",
+      "quality": "P",
+      "match_status": "name_matched_supplier_identity_unverified",
+      "expected_edps": [
+        {
+          "sku": "YZD-1467-EDP-010",
+          "volume_ml": 10,
+          "price_toman": 465000,
+          "stock": 0,
+          "price_usd": 4.5
+        },
+        {
+          "sku": "YZD-1467-EDP-030",
+          "volume_ml": 30,
+          "price_toman": 1094999,
+          "stock": 0,
+          "price_usd": 4.5
+        },
+        {
+          "sku": "YZD-1467-EDP-050",
+          "volume_ml": 50,
+          "price_toman": 1725000,
+          "stock": 0,
+          "price_usd": 4.5
+        },
+        {
+          "sku": "YZD-1467-EDP-100",
+          "volume_ml": 100,
+          "price_toman": 3300000,
+          "stock": 0,
+          "price_usd": 4.5
+        }
+      ]
+    }
+  ]
+}

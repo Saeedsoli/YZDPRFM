@@ -1,0 +1,113 @@
+{
+  "version": "official_notes_2026_11_v21",
+  "description": "Guarded official reference notes and transparency, never supplier identity verification.",
+  "items": [
+    {
+      "product_id": "YZD-PROD-0548",
+      "product_slug": "amouage-guidance",
+      "official_brand": "Amouage",
+      "official_name": "Guidance Eau de Parfum",
+      "source_url": "https://amouage.com/products/100ml-guidance",
+      "source_scope": "Guidance EDP is distinct from Guidance 46; the supplier spelling differs and essence identity/version remain unverified.",
+      "expected_old_notes": {
+        "top": [
+          "گلابی آبدار",
+          "فندق برشته",
+          "صمغ کندر"
+        ],
+        "middle": [
+          "گل اسمانتوس",
+          "رز دمشقی",
+          "زعفران",
+          "یاس سامباک"
+        ],
+        "base": [
+          "چوب صندل",
+          "وانیل",
+          "آکیگالاوود",
+          "عنبر سائل",
+          "لادن"
+        ]
+      },
+      "verified_notes": {
+        "top": [
+          "گلابی",
+          "کندر",
+          "فندق"
+        ],
+        "middle": [
+          "زعفران",
+          "رز",
+          "یاس سامباک",
+          "اوسمانتوس"
+        ],
+        "base": [
+          "لابدانوم",
+          "چوب صندل",
+          "آکیگالاوود",
+          "کهربای خاکستری",
+          "وانیل"
+        ]
+      },
+      "expected_old_accords": [
+        "پدیده‌سازترین عطر زنانه معاصر جهان با خط بوی جادویی"
+      ],
+      "verified_accords": [],
+      "requires_unavailable": true,
+      "expected_old_notice": "این محصول، بازآفرینی دست‌ساز با عصاره خالص اولیه و فرمولاسیون اختصاصی عطر یزد است.",
+      "verified_notice": "این محصول بازآفرینی دست‌ساز است و محصول اورجینال برند اصلی نیست. اطلاعات رایحه مرجع از وب‌سایت رسمی برند گرفته شده و هویت اسانس تأمین‌کننده مستقلاً تأیید نشده است."
+    },
+    {
+      "product_id": "YZD-PROD-1467",
+      "product_slug": "chanel-platinum-goste",
+      "official_brand": "Chanel",
+      "official_name": "Platinum Égoïste Eau de Toilette",
+      "source_url": "https://www.chanel.com/lt/fragrance/p/124460/platinum-egoiste-eau-de-toilette-spray/",
+      "source_scope": "Supplier Platinium is a provisional abbreviated name match to Platinum Égoïste; essence identity and version remain unverified.",
+      "expected_old_notes": {
+        "top": [
+          "رزماری",
+          "اسطوخودوس پرووانس",
+          "بهارنارنج",
+          "برگ درخت نارنج"
+        ],
+        "middle": [
+          "صمغ گالبانوم",
+          "مریم‌گلی اسکلاریا",
+          "گل یاس",
+          "شمعدانی"
+        ],
+        "base": [
+          "خزه درخت بلوط",
+          "خس‌خس",
+          "سدر",
+          "چوب صندل",
+          "کهربا"
+        ]
+      },
+      "verified_notes": {
+        "top": [
+          "اسطوخودوس",
+          "رزماری",
+          "پتیگرین"
+        ],
+        "middle": [
+          "مریم‌گلی",
+          "شمعدانی"
+        ],
+        "base": [
+          "کهربا",
+          "چوب‌های گرمسیری"
+        ]
+      },
+      "expected_old_accords": [
+        "نماد برازندگی و جذابیت پلاتینیوم برای مردان اصیل",
+        "فوژه سبز متالیک و صابونی بسیار باکلاس"
+      ],
+      "verified_accords": [],
+      "requires_unavailable": true,
+      "expected_old_notice": "این محصول، بازآفرینی دست‌ساز با عصاره خالص اولیه و فرمولاسیون اختصاصی عطر یزد است.",
+      "verified_notice": "این محصول بازآفرینی دست‌ساز است و محصول اورجینال برند اصلی نیست. اطلاعات رایحه مرجع از وب‌سایت رسمی برند گرفته شده و هویت اسانس تأمین‌کننده مستقلاً تأیید نشده است."
+    }
+  ]
+}

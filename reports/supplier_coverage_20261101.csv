@@ -7,7 +7,7 @@ AMUAGE,MEMOIR,Men,آمواج ممویر,1,16,279.4,P,pending,هنوز قیمت �
 AMUAGE,Purpose,Unisex,آمواج پرپس,1,17,269.5,P,provisional,قیمت موقت با شاهد نام؛ هویت اسانس تأییدنشده,YZD-PROD-0564,https://amouage.com/products/100ml-purpose,official_reference_prices_v2.json
 AMUAGE,SEARCH,Unisex,آمواج سرچ,1,18,348.7,P,provisional,قیمت موقت با شاهد نام؛ هویت اسانس تأییدنشده,YZD-PROD-0566,https://amouage.com/en-ch/products/100ml-search,official_reference_prices_v2.json
 AMUAGE,Jubilation XXV,Men,آمواج جوبیلیشن 40,1,19,387.2,P,pending,هنوز قیمت مرجع منتسب نشده,,,
-AMUAGE,guidence,Women,آمواج گایدنس,1,20,409.2,H,pending,هنوز قیمت مرجع منتسب نشده,,,
+AMUAGE,guidence,Women,آمواج گایدنس,1,20,409.2,H,provisional,قیمت موقت با شاهد نام؛ هویت اسانس تأییدنشده,YZD-PROD-0548,https://amouage.com/products/100ml-guidance,official_reference_prices_v26.json
 aramis,900,Men,آرامیس 900,2,"26,27",305.8,T,secondary,قیمت موقت با منبع مستقل؛ هویت اسانس تأییدنشده,SUP-TP-910025,https://www.fragrantica.com/perfume/Aramis/Aramis-900-116.html,secondary_reference_prices_v8.json
 ATKINSONS,Oud Save The King,Men,عود سیو د کینگ,1,33,314.6,H,provisional,قیمت موقت با شاهد نام؛ هویت اسانس تأییدنشده,SUP-ATKINSONS-OUD-SAVE-THE-KING,https://www.atkinsons1799.com/products/oud-save-the-king,official_reference_prices_v1.json
 ATKINSONS,HER MAJESTY THE OUD,Women,هرمجستی,1,34,190.3,H,provisional,قیمت موقت با شاهد نام؛ هویت اسانس تأییدنشده,SUP-AT-900013,https://www.atkinsons1799.com/en_eu/custom-sample-set,official_reference_prices_v13.json
@@ -50,7 +50,7 @@ CHANEL,Allure Sport,Men,شنل آلوراسپرت,1,143,262.9,H,pending,هنوز
 CHANEL,BLEU de chanel,Men,بلو د شنل,2,"144,145",227.7,H,pending,هنوز قیمت مرجع منتسب نشده,,,
 CHANEL,Coco Mademoiselle,Women,کوکو شنل,1,146,132,H,pending,هنوز قیمت مرجع منتسب نشده,,,
 CHANEL,Chance,Women,چنس شنل,2,"147,148",388.3,H,pending,هنوز قیمت مرجع منتسب نشده,,,
-CHANEL,Platinium,Unisex,پلاتینیوم,1,149,92.4,P,pending,هنوز قیمت مرجع منتسب نشده,,,
+CHANEL,Platinium,Unisex,پلاتینیوم,1,149,92.4,P,provisional,قیمت موقت با شاهد نام؛ هویت اسانس تأییدنشده,YZD-PROD-1467,https://www.chanel.com/lt/fragrance/p/124460/platinum-egoiste-eau-de-toilette-spray/,official_reference_prices_v26.json
 EVAFLOR,WISKY SILVER,Unisex,ویسکی سیلور,1,155,126.5,R,provisional,قیمت موقت با شاهد نام؛ هویت اسانس تأییدنشده,SUP-EV-900001,https://www.evaflor.com/en/products/whisky-silver-coffret-parfum-homme-serviette-money-clip,official_reference_prices_v21.json
 chloe,Narcisse,Women,نارسیس,1,161,88,P,secondary,قیمت موقت با منبع مستقل؛ هویت اسانس تأییدنشده,SUP-TP-910012,https://www.fragrantica.com/perfume/Chloe/Chloe-Narcisse-344.html,secondary_reference_prices_v3.json
 CLINIQUE,Happy,Men,هپی کلینیک,1,167,174.9,H,pending,هنوز قیمت مرجع منتسب نشده,,,

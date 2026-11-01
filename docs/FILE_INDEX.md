@@ -638,3 +638,11 @@ node_modules/   با npm install برمی‌گردد
 - `seed/official_reference_prices_v25.json`
 - `seed/official_note_corrections_v20.json`
 - `scripts/test_official_reference_v25.js`
+
+
+### دو تناظر رسمی تازه
+
+- `seed/official_identity_evidence_v25.json`
+- `seed/official_reference_prices_v26.json`
+- `seed/official_note_corrections_v21.json`
+- `scripts/test_official_reference_v26.js`
