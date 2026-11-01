@@ -1,0 +1,52 @@
+{
+  "version": "official_reference_prices_2026_11_v39",
+  "supplier_file_sha256": "bbe8f40610bc765bda0a7d2da9dbe78f4e397458a6991239c3c18d0853f33f5c",
+  "description": "Owner-selected reference version; provisional name-level supplier price; no activation or essence verification.",
+  "items": [
+    {
+      "product_id": "YZD-PROD-1585",
+      "slug": "jean-paul-gaultier-le-beau-paradise-garden-2024",
+      "brand_en": "Jean Paul Gaultier",
+      "expected_name_en": "JEAN PAUL GAULTIER - Le Beau Paradise Garden 2024",
+      "reference_name": "Le Beau Paradise Garden EDP",
+      "official_url": "https://www.jeanpaulgaultier.com/fr/fr/p/gamme-le-beau/le-beau-paradise-garden-eau-de-parfum-000000000065199801",
+      "supplier_brand": "JEAN PAUL GAULTIER",
+      "supplier_model": "PARADISE GARDEN",
+      "supplier_gender": "Men",
+      "usd_per_kg": "108.9",
+      "quality": "B",
+      "match_status": "name_matched_supplier_identity_unverified",
+      "owner_version_confirmation": "Owner selected Le Beau Paradise Garden for supplier row; supplier essence identity unverified.",
+      "expected_edps": [
+        {
+          "sku": "YZD-1585-EDP-010",
+          "volume_ml": 10,
+          "price_toman": 535000,
+          "stock": 0,
+          "price_usd": 5.5
+        },
+        {
+          "sku": "YZD-1585-EDP-030",
+          "volume_ml": 30,
+          "price_toman": 1305000,
+          "stock": 0,
+          "price_usd": 5.5
+        },
+        {
+          "sku": "YZD-1585-EDP-050",
+          "volume_ml": 50,
+          "price_toman": 2074999,
+          "stock": 0,
+          "price_usd": 5.5
+        },
+        {
+          "sku": "YZD-1585-EDP-100",
+          "volume_ml": 100,
+          "price_toman": 3999999,
+          "stock": 0,
+          "price_usd": 5.5
+        }
+      ]
+    }
+  ]
+}
