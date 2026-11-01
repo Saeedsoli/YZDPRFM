@@ -1,0 +1,25 @@
+{
+  "version": "secondary_reference_prices_2026_11_v10",
+  "supplier_file_sha256": "bbe8f40610bc765bda0a7d2da9dbe78f4e397458a6991239c3c18d0853f33f5c",
+  "description": "Independent source only; no manufacturer verification or supplier essence identification; no automatic availability.",
+  "items": [
+    {
+      "product_id": "SUP-TP-910030",
+      "slug": "narciso-rodriguez-for-him-original",
+      "brand_en": "Narciso Rodriguez",
+      "expected_name_en": "Narciso Rodriguez for Him",
+      "reference_name": "Narciso Rodriguez for Him",
+      "source_url": "https://www.fragrantica.com/perfume/Narciso-Rodriguez/Narciso-Rodriguez-for-Him-1063.html",
+      "provider": "Fragrantica",
+      "status": "secondary_original_found_supplier_essence_unverified",
+      "checked_date": "2026-11-01",
+      "supplier_brand": "narciso rodriguez",
+      "supplier_model": "Narciso rodriguez for him",
+      "usd_per_kg": "145.2",
+      "quality": "P",
+      "match_status": "name_matched_supplier_identity_unverified",
+      "expected_edps": [],
+      "legacy_backfill": false
+    }
+  ]
+}

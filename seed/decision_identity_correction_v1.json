@@ -1,0 +1,43 @@
+{
+  "version": "decision_metadata_2026_11_v1",
+  "product_id": "YZD-PROD-1996",
+  "slug": "amouage-decision-2024",
+  "official_url": "https://amouage.com/products/new-decision",
+  "year_source_url": "https://www.parfumo.com/Perfumes/Amouage/decision",
+  "expected": {
+    "name_fa": "دسیژن ۲۰۲۴",
+    "name_en": "AMOUAGE - Decision 2024",
+    "subtitle_en_display": "AMOUAGE - Decision 2024",
+    "gender": "MEN",
+    "family_fa": "شرقی چوبی چرمی ادویه‌ای",
+    "family_en": "Oriental Woody",
+    "family_slug": "ambery-oriental",
+    "temperature": "گرم",
+    "taste": "تلخ چرم تیره، هل، صمغ کندر و عود طبیعی",
+    "season": "پاییز و زمستان",
+    "occasion": "جلسات سرنوشت‌ساز، رسمی و شب",
+    "longevity": "ابدی",
+    "sillage": "سنگین و ردبوی عمیق",
+    "market_segment": "نیش فوق‌لوکس",
+    "perfumer": "Amouage",
+    "release_year": 2024
+  },
+  "updated": {
+    "name_fa": "دسیژن",
+    "name_en": "AMOUAGE - Decision",
+    "subtitle_en_display": "AMOUAGE - Decision",
+    "gender": null,
+    "family_fa": "چوبی آروماتیک",
+    "family_en": "Woody Aromatic",
+    "family_slug": null,
+    "temperature": null,
+    "taste": null,
+    "season": null,
+    "occasion": null,
+    "longevity": null,
+    "sillage": null,
+    "market_segment": null,
+    "perfumer": "Quentin Bisch",
+    "release_year": 2025
+  }
+}

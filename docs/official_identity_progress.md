@@ -362,7 +362,7 @@ Yara مرجع با Yara Tous، Moi و Candy یکی نیست. Tygar مرجع با
 
 ### مورد کنارگذاشته‌شده
 
-نام محصول محلی `AMOUAGE - Decision 2024` با اطلاعات بررسی‌شده درباره عرضه Decision در ۲۰۲۵ تعارض سال دارد؛ منبع رسمی [Decision](https://amouage.com/products/new-decision) عطر مرجع و [منبع مستقل Parfumo](https://www.parfumo.com/Perfumes/Amouage/decision) سال ۲۰۲۵ را ذکر می‌کند. Decision 42 هم نسخه جداست. تا بررسی بیشتر هیچ قیمت یا تصحیح حدسی برای این مورد ثبت نشده است.
+نام محصول محلی `AMOUAGE - Decision 2024` با اطلاعات بررسی‌شده درباره عرضه Decision در ۲۰۲۵ تعارض سال دارد؛ منبع رسمی [Decision](https://amouage.com/products/new-decision) عطر مرجع و [منبع مستقل Parfumo](https://www.parfumo.com/Perfumes/Amouage/decision) سال ۲۰۲۵ را ذکر می‌کند. Decision 42 هم نسخه جداست. در آن زمان قیمت یا تصحیح حدسی برای این مورد ثبت نشد؛ اصلاح بعدی در بخش زیر مستند است.
 
 
 ## پنج تناظر بیشتر — ۱ نوامبر ۲۰۲۶
@@ -430,3 +430,15 @@ Icon اصلی با Absolute، Racing و Elite یکی نشده است و نت‌�
 | Platinum Égoïste EDT — Chanel | 92.4 | P | https://www.chanel.com/lt/fragrance/p/124460/platinum-egoiste-eau-de-toilette-spray/ |
 
 Guidance با Guidance 46 یکی نشده است. Platinium نام کوتاه‌شده فایل برای Platinum Égoïste در نظر گرفته شده؛ شناسایی نام، نسخه یا کیفیت واقعی اسانس را اثبات نمی‌کند. نت‌ها و متن شفافیت تنها برای داده دست‌نخورده و غیرقابل سفارش به‌روزرسانی شده‌اند.
+
+
+## اصلاح دسیژن و یک تناظر مستقل — ۱ نوامبر ۲۰۲۶
+
+سال نادرست و داده‌های نامطمئن محصول Decision موجود تنها در صورت دست‌نخورده بودن و غیرفعال بودن اصلاح شد؛ نام نمایشی تصحیح و پیوند قبلی برای جلوگیری از شکستن نشانی‌ها حفظ شد. نت و نام رایحه مرجع از [منبع رسمی آمواج](https://amouage.com/products/new-decision) و سال ۲۰۲۵ از [پارفومو، منبع مستقل](https://www.parfumo.com/Perfumes/Amouage/decision) است. منابع رسمی برای طبقه‌بندی جنسیت در مجموعه‌های متفاوت یکسان نیستند؛ بنابراین جنسیت نامعلوم ثبت شد. ادعاهای تأییدنشده ماندگاری، پخش و طبع حذف شدند و ویرایش مدیر و سفارش‌ها محفوظ ماندند.
+
+| رایحه مرجع | دلار/کیلو | کیفیت فایل | نوع منبع | صفحه |
+|---|---:|---|---|---|
+| Decision EDP — Amouage | 330 | H | رسمی برای نام و نت | https://amouage.com/products/new-decision |
+| Narciso Rodriguez for Him | 145.2 | P | مستقل | https://www.fragrantica.com/perfume/Narciso-Rodriguez/Narciso-Rodriguez-for-Him-1063.html |
+
+هر دو قیمت موقت نام‌محور و غیرقابل سفارش‌اند. نسخه Decision 42 و نسخه‌های Bleu Noir، Intense و Vetiver Musc با این دو یکی نشده‌اند. اطلاعات وب درباره مرجع اصلی است و هویت، نسخه یا کیفیت اسانس تأمین‌کننده را اثبات نمی‌کند. منبع مستقل برای محصول نارسیسو در متن عمومی جداگانه ذکر شده است.

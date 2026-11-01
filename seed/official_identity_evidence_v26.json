@@ -1,0 +1,16 @@
+{
+  "version": "official_identity_evidence_v26",
+  "scope": "Official reference-original name only; actual supplier essence identity is unverified.",
+  "items": [
+    {
+      "product_id": "YZD-PROD-1996",
+      "slug": "amouage-decision-2024",
+      "brand_en": "Amouage",
+      "expected_name_en": "AMOUAGE - Decision",
+      "reference_name": "Decision Eau de Parfum",
+      "official_url": "https://amouage.com/products/new-decision",
+      "status": "official_original_found_supplier_essence_unverified",
+      "checked_date": "2026-11-01"
+    }
+  ]
+}

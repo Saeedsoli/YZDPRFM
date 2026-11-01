@@ -1,0 +1,55 @@
+{
+  "version": "official_notes_2026_11_v22",
+  "description": "Guarded official reference notes and transparency, never supplier identity verification.",
+  "items": [
+    {
+      "product_id": "YZD-PROD-1996",
+      "product_slug": "amouage-decision-2024",
+      "expected_name_en": "AMOUAGE - Decision",
+      "official_brand": "Amouage",
+      "official_name": "Decision Eau de Parfum",
+      "source_url": "https://amouage.com/products/new-decision",
+      "source_scope": "Official original Decision EDP; year separately sourced to independent Parfumo; distinct from Decision 42; supplier essence unverified.",
+      "expected_old_notes": {
+        "top": [
+          "هل سبز",
+          "ترنج کالابریا"
+        ],
+        "middle": [
+          "چرم دست‌دوز",
+          "صمغ کندر",
+          "پچولی"
+        ],
+        "base": [
+          "چوب عود آگار",
+          "چوب سدر",
+          "خس‌خس"
+        ]
+      },
+      "verified_notes": {
+        "top": [
+          "فلفل صورتی",
+          "ترنج",
+          "هل"
+        ],
+        "middle": [
+          "کندر",
+          "سرو کوهی",
+          "مر"
+        ],
+        "base": [
+          "پچولی",
+          "چوب سدر",
+          "وانیل"
+        ]
+      },
+      "expected_old_accords": [
+        "تصمیم شجاعانه مردانه در بالاترین سطح عطرسازی لوکس عمان"
+      ],
+      "verified_accords": [],
+      "requires_unavailable": true,
+      "expected_old_notice": "این محصول، بازآفرینی دست‌ساز با عصاره خالص اولیه و فرمولاسیون اختصاصی عطر یزد است.",
+      "verified_notice": "این محصول بازآفرینی دست‌ساز است و محصول اورجینال برند اصلی نیست. اطلاعات رایحه مرجع از وب‌سایت رسمی برند و سال عرضه از پارفومو، یک منبع مستقل، گرفته شده‌اند؛ هویت اسانس تأمین‌کننده مستقلاً تأیید نشده است."
+    }
+  ]
+}

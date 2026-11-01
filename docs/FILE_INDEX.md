@@ -646,3 +646,15 @@ node_modules/   با npm install برمی‌گردد
 - `seed/official_reference_prices_v26.json`
 - `seed/official_note_corrections_v21.json`
 - `scripts/test_official_reference_v26.js`
+
+
+### اصلاح دسیژن و تناظر مستقل
+
+- `src/decision-identity-correction.js`
+- `seed/decision_identity_correction_v1.json`
+- `seed/official_identity_evidence_v26.json`
+- `seed/official_reference_prices_v27.json`
+- `seed/official_note_corrections_v22.json`
+- `seed/secondary_reference_prices_v10.json`
+- `seed/secondary_supplement_v9.json`
+- `scripts/test_decision_original_batch.js`

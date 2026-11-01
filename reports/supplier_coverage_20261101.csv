@@ -1,6 +1,6 @@
 ﻿brand,model,supplier_gender,supplier_names,row_count,lines,max_usd_per_kg,max_quality,state,status_fa,product_ids,reference_urls,source_manifests
 AMUAGE,Epic,Men,آمواج اپیک,2,"11,12",276.1,H,pending,هنوز قیمت مرجع منتسب نشده,,,
-AMUAGE,DECISION,Unisex,دسیژن,1,13,330,H,pending,هنوز قیمت مرجع منتسب نشده,,,
+AMUAGE,DECISION,Unisex,دسیژن,1,13,330,H,provisional,قیمت موقت با شاهد نام؛ هویت اسانس تأییدنشده,YZD-PROD-1996,https://amouage.com/products/new-decision,official_reference_prices_v27.json
 AMUAGE,OUTLADNS,Unisex,اوتلندررز,1,14,408.1,H,provisional,قیمت موقت با شاهد نام؛ هویت اسانس تأییدنشده,SUP-AM-900008,https://amouage.com/products/new-outlands,official_reference_prices_v6.json
 AMUAGE,Honour,Women,آمواج عانر,1,15,365.2,H,pending,هنوز قیمت مرجع منتسب نشده,,,
 AMUAGE,MEMOIR,Men,آمواج ممویر,1,16,279.4,P,pending,هنوز قیمت مرجع منتسب نشده,,,
@@ -167,7 +167,7 @@ MONT BLANC,EXPLORER,Men,اکسپلورر,1,573,209,H,provisional,قیمت موق
 MONT BLANC,LEGEND,Men,لجند,4,"574,575,576,577",166.1,T,pending,هنوز قیمت مرجع منتسب نشده,,,
 MONT BLANC,Legend Spirit,Men,لجند اسپریت,1,578,121,H,provisional,قیمت موقت با شاهد نام؛ هویت اسانس تأییدنشده,YZD-PROD-2081,https://www.montblanc.com/en-cl/montblanc-legend-spirit-eau-de-toilette-50-ml-MB115366VG.html,official_reference_prices_v2.json
 MONT BLANC,EMBLEM,Unisex,امبلم,1,579,269.5,H,provisional,قیمت موقت با شاهد نام؛ هویت اسانس تأییدنشده,SUP-MB-900010,https://www.montblanc.com/en-us/eau-de-toilette_cod23471478575779015.html,official_reference_prices_v11.json
-narciso rodriguez,Narciso rodriguez for him,Men,نارسیسو رودریگز مردانه,1,585,145.2,P,pending,هنوز قیمت مرجع منتسب نشده,,,
+narciso rodriguez,Narciso rodriguez for him,Men,نارسیسو رودریگز مردانه,1,585,145.2,P,secondary,قیمت موقت با منبع مستقل؛ هویت اسانس تأییدنشده,SUP-TP-910030,https://www.fragrantica.com/perfume/Narciso-Rodriguez/Narciso-Rodriguez-for-Him-1063.html,secondary_reference_prices_v10.json
 NASOMATTO,Baraonda,Unisex,بارائوندا,1,591,931.7,H,provisional,قیمت موقت با شاهد نام؛ هویت اسانس تأییدنشده,YZD-PROD-0921,https://nasomatto.com/products/baraonda,official_reference_prices_v2.json
 NASOMATTO,Black Afgano,Unisex,بلک افگانو,2,"592,593",407,H,provisional,قیمت موقت با شاهد نام؛ هویت اسانس تأییدنشده,YZD-PROD-0919,https://nasomatto.com/products/black-afgano,official_reference_prices_v2.json
 NASOMATTO,Fantomas,Unisex,فانتوماس,1,594,530.2,H,provisional,قیمت موقت با شاهد نام؛ هویت اسانس تأییدنشده,YZD-PROD-0928,https://nasomatto.com/products/fantomas,official_reference_prices_v2.json
