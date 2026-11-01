@@ -1,0 +1,4 @@
+'use strict';
+const assert=require('assert/strict'),Database=require('better-sqlite3'),f=require('../src/amouage-common-names');
+const db=new Database(':memory:');db.exec("CREATE TABLE settings(key TEXT PRIMARY KEY,value TEXT);CREATE TABLE products(id TEXT PRIMARY KEY,slug TEXT,brand_en TEXT,name_fa TEXT,search_blob TEXT);INSERT INTO products VALUES('YZD-PROD-0543','amouage-memoir-man','Amouage','مموار مردانه','x');INSERT INTO products VALUES('YZD-PROD-0553','amouage-honour-woman','Amouage','نام انتخابی مدیر','x');");
+assert.equal(f.apply(db).updated,1);assert.equal(db.prepare('select name_fa from products where id=?').get('YZD-PROD-0543').name_fa,'ممویر مردانه');assert.equal(db.prepare('select name_fa from products where id=?').get('YZD-PROD-0553').name_fa,'نام انتخابی مدیر');assert.equal(f.apply(db).reason,'already_applied');db.close();console.log('PASS Amouage popular names and owner-edit guard');

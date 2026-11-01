@@ -1,0 +1,37 @@
+{
+  "version": "approved_made_to_order_2026_11_v5",
+  "source_sha256": "bbe8f40610bc765bda0a7d2da9dbe78f4e397458a6991239c3c18d0853f33f5c",
+  "description": "Owner approved exactly three Amouage references for made-to-order; supplier essence identity unverified.",
+  "items": [
+    {
+      "product_id": "YZD-PROD-0545",
+      "slug": "amouage-epic-man",
+      "expected_name_en": "AMOUAGE - Epic Man",
+      "brand_en": "Amouage",
+      "usd_per_kg": "276.1",
+      "quality": "H",
+      "source_type": "provisional",
+      "reference_url": "https://amouage.com/products/epic-man-100ml"
+    },
+    {
+      "product_id": "YZD-PROD-0553",
+      "slug": "amouage-honour-woman",
+      "expected_name_en": "AMOUAGE - Honour Woman",
+      "brand_en": "Amouage",
+      "usd_per_kg": "365.2",
+      "quality": "H",
+      "source_type": "provisional",
+      "reference_url": "https://amouage.com/products/honour-woman-100ml"
+    },
+    {
+      "product_id": "YZD-PROD-0543",
+      "slug": "amouage-memoir-man",
+      "expected_name_en": "AMOUAGE - Memoir Man",
+      "brand_en": "Amouage",
+      "usd_per_kg": "279.4",
+      "quality": "P",
+      "source_type": "provisional",
+      "reference_url": "https://amouage.com/products/memoir-man"
+    }
+  ]
+}

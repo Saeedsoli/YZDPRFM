@@ -214,6 +214,7 @@ run_test test_images.js "product images"
 run_test test_brand_names.js "persian brand names"
 run_test test_joop_name_correction.js "guarded Joop names"
 run_test test_popular_persian_names.js "popular Persian spelling"
+run_test test_amouage_common_names.js "Amouage Persian spelling"
 run_test test_notifications.js "panel notifications"
 run_test test_profile.js "staff profile"
 run_test test_content.js "journal content and quiz"
@@ -317,6 +318,7 @@ run_test test_backup_stream_safety.js "backup concurrency, recovery and stream c
 if python3 scripts/test_approved_mto_v2.py >/tmp/test_approved_mto_v2.log 2>&1; then P=$((P+1)); else F=$((F+1)); echo "  X seven owner approvals"; fi
 if python3 scripts/test_approved_mto_v3.py >/tmp/test_approved_mto_v3.log 2>&1; then P=$((P+1)); else F=$((F+1)); echo "  X four owner approvals"; fi
 if python3 scripts/test_approved_mto_v4.py >/tmp/test_approved_mto_v4.log 2>&1; then P=$((P+1)); else F=$((F+1)); echo "  X three owner approvals"; fi
+if python3 scripts/test_approved_mto_v5.py >/tmp/test_approved_mto_v5.log 2>&1; then P=$((P+1)); else F=$((F+1)); echo "  X three Amouage owner approvals"; fi
 run_test test_journal_lcp.js "journal server-side render + LCP guards"
 run_test test_invoice_legal.js "invoice: plain vs formal (legal info)"
 run_test test_customer_note.js "customer note + label + real contact"

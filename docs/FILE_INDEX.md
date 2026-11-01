@@ -811,3 +811,9 @@ node_modules/   با npm install برمی‌گردد
 - `scripts/test_official_reference_v43.js` — قیمت آمواج آنر زنانه با انتخاب مالک.
 
 - `scripts/test_official_reference_v44.js` — قیمت آمواج ممویر مردانه با انتخاب مالک.
+
+- `src/approved-made-to-order-v5.js` — فعال‌سازی محافظت‌شده سه رایحه آمواج.
+- `scripts/test_approved_mto_v5.py` — تأیید خرید، سقف و جستجوی نام‌های رایج.
+- `src/amouage-common-names.js` — اصلاح محافظت‌شده نام ممویر و آنر.
+
+- `scripts/test_amouage_common_names.js` — محافظ نام رایج و ویرایش مدیر.
