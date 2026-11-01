@@ -1,0 +1,28 @@
+{
+  "version": "secondary_reference_prices_2026_11_v26",
+  "supplier_file_sha256": "bbe8f40610bc765bda0a7d2da9dbe78f4e397458a6991239c3c18d0853f33f5c",
+  "description": "Owner-default provisional EDP choice; independent sources; supplier essence unverified.",
+  "items": [
+    {
+      "product_id": "SUP-TP-910047",
+      "slug": "loewe-quizas-quizas-quizas-edp",
+      "brand_en": "Loewe",
+      "expected_name_en": "LOEWE - Quizás Quizás Quizás EDP",
+      "reference_name": "Quizás Quizás Quizás Eau de Parfum",
+      "source_url": "https://www.fragrantica.com/perfume/Loewe/Quizas-Quizas-Quizas-2576.html",
+      "provider": "Fragrantica",
+      "status": "secondary_original_found_supplier_essence_unverified",
+      "checked_date": "2026-11-01",
+      "supplier_brand": "LOEWE",
+      "supplier_model": "Quizas",
+      "supplier_gender": "Women",
+      "usd_per_kg": "382.8",
+      "quality": "H",
+      "match_status": "name_matched_supplier_identity_unverified",
+      "owner_version_confirmation": "Owner authorized base EDP and source-row label as provisional selection; supplier essence identity unverified.",
+      "additional_independent_version_url": "https://www.heavenly-riches.com/product/loewe-quizas-quizas-quizas-eau-de-parfum-30ml/",
+      "expected_edps": [],
+      "legacy_backfill": false
+    }
+  ]
+}

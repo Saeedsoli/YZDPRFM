@@ -8,7 +8,7 @@ with tempfile.TemporaryDirectory(prefix='mto-v7-') as td:
  db=str(Path(td)/'fresh.sqlite');s=socket.socket();s.bind(('127.0.0.1',0));port=s.getsockname()[1];s.close()
  env={**os.environ,'DB_PATH':db,'BACKUP_DISABLED':'1','PORT':str(port)}
  for k in ['APPROVED_MTO_AUTOSTART','APPROVED_MTO_V2_AUTOSTART','APPROVED_MTO_V3_AUTOSTART','APPROVED_MTO_V4_AUTOSTART','APPROVED_MTO_V5_AUTOSTART','APPROVED_MTO_V6_AUTOSTART','APPROVED_MTO_V7_AUTOSTART']:env.pop(k,None)
- env['APPROVED_MTO_V8_AUTOSTART']='0';env['APPROVED_MTO_V9_AUTOSTART']='0';env['APPROVED_MTO_V10_AUTOSTART']='0';env['APPROVED_MTO_V11_AUTOSTART']='0';env['APPROVED_MTO_V12_AUTOSTART']='0';env['APPROVED_MTO_V13_AUTOSTART']='0'
+ env['APPROVED_MTO_V8_AUTOSTART']='0';env['APPROVED_MTO_V9_AUTOSTART']='0';env['APPROVED_MTO_V10_AUTOSTART']='0';env['APPROVED_MTO_V11_AUTOSTART']='0';env['APPROVED_MTO_V12_AUTOSTART']='0';env['APPROVED_MTO_V13_AUTOSTART']='0';env['APPROVED_MTO_V14_AUTOSTART']='0'
  server=subprocess.Popen(['node','src/server.js'],cwd=root,env=env,stdout=subprocess.DEVNULL,stderr=subprocess.PIPE)
  def post(sku,n):
   req=urllib.request.Request(f'http://127.0.0.1:{port}/api/cart/calculate',data=json.dumps({'items':[{'sku':sku,'quantity':n}]}).encode(),headers={'Content-Type':'application/json'},method='POST')

@@ -1,0 +1,27 @@
+{
+  "version": "official_identity_evidence_v50",
+  "scope": "Official reference-original name only; supplier essence identity unverified.",
+  "items": [
+    {
+      "product_id": "SUP-MB-900013",
+      "slug": "montblanc-legend-edp",
+      "brand_en": "Montblanc",
+      "expected_name_en": "MONTBLANC - Legend EDP",
+      "reference_name": "Montblanc Legend Eau de Parfum",
+      "official_url": "https://www.montblanc.com/en-id/montblanc-legend-eau-de-parfum-100-ml-MB127070.html",
+      "status": "official_original_found_supplier_essence_unverified",
+      "checked_date": "2026-11-01"
+    },
+    {
+      "product_id": "YZD-PROD-1566",
+      "slug": "givenchy-gentleman-edp",
+      "brand_en": "Givenchy",
+      "expected_name_en": "GIVENCHY - Gentleman EDP",
+      "expected_concentration": "EDP",
+      "reference_name": "Gentleman Givenchy Eau de Parfum",
+      "official_url": "https://www.givenchybeauty.com/en/si/p/gentleman-givenchy-F10100026.html",
+      "status": "official_original_found_supplier_essence_unverified",
+      "checked_date": "2026-11-01"
+    }
+  ]
+}

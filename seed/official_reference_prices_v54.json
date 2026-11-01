@@ -1,0 +1,68 @@
+{
+  "version": "official_reference_prices_2026_11_v54",
+  "supplier_file_sha256": "bbe8f40610bc765bda0a7d2da9dbe78f4e397458a6991239c3c18d0853f33f5c",
+  "description": "Two owner-default provisional EDP choices; named originals do not verify supplied essence.",
+  "items": [
+    {
+      "product_id": "SUP-MB-900013",
+      "slug": "montblanc-legend-edp",
+      "brand_en": "Montblanc",
+      "expected_name_en": "MONTBLANC - Legend EDP",
+      "reference_name": "Montblanc Legend Eau de Parfum",
+      "official_url": "https://www.montblanc.com/en-id/montblanc-legend-eau-de-parfum-100-ml-MB127070.html",
+      "supplier_brand": "MONT BLANC",
+      "supplier_model": "LEGEND",
+      "supplier_gender": "Men",
+      "usd_per_kg": "166.1",
+      "quality": "T",
+      "match_status": "name_matched_supplier_identity_unverified",
+      "owner_version_confirmation": "Owner authorized base EDP or base Parfum fallback and source-row label as provisional selection; supplier essence identity unverified.",
+      "expected_edps": []
+    },
+    {
+      "product_id": "YZD-PROD-1566",
+      "slug": "givenchy-gentleman-edp",
+      "brand_en": "Givenchy",
+      "expected_name_en": "GIVENCHY - Gentleman EDP",
+      "reference_name": "Gentleman Givenchy Eau de Parfum",
+      "official_url": "https://www.givenchybeauty.com/en/si/p/gentleman-givenchy-F10100026.html",
+      "supplier_brand": "GIVENCHY",
+      "supplier_model": "Gentelman",
+      "supplier_gender": "Unisex",
+      "usd_per_kg": "121",
+      "quality": "H",
+      "match_status": "name_matched_supplier_identity_unverified",
+      "owner_version_confirmation": "Owner authorized base EDP or base Parfum fallback and source-row label as provisional selection; supplier essence identity unverified.",
+      "expected_edps": [
+        {
+          "sku": "YZD-1566-EDP-010",
+          "volume_ml": 10,
+          "price_toman": 430000,
+          "stock": 0,
+          "price_usd": 4.0
+        },
+        {
+          "sku": "YZD-1566-EDP-030",
+          "volume_ml": 30,
+          "price_toman": 990000,
+          "stock": 0,
+          "price_usd": 4.0
+        },
+        {
+          "sku": "YZD-1566-EDP-050",
+          "volume_ml": 50,
+          "price_toman": 1550000,
+          "stock": 0,
+          "price_usd": 4.0
+        },
+        {
+          "sku": "YZD-1566-EDP-100",
+          "volume_ml": 100,
+          "price_toman": 2950000,
+          "stock": 0,
+          "price_usd": 4.0
+        }
+      ]
+    }
+  ]
+}

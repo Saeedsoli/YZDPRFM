@@ -868,3 +868,8 @@ node_modules/   با npm install برمی‌گردد
 - `scripts/test_approved_mto_v13.py` — خرید و محافظ تأیید دسته جدید.
 
 - `scripts/test_generic_image_rebalance.js` — تعادل تصویر نمادین و حفاظت انتخاب مدیر.
+
+- `scripts/test_default_reference_v54.js` — سه تطبیق موقت رسمی و مستقل بر مبنای پیش‌فرض مالک.
+
+- `src/approved-made-to-order-v14.js` — تأیید محافظت‌شده سه تطبیق جدید.
+- `scripts/test_approved_mto_v14.py` — خرید و محافظ تأیید دسته جدید.

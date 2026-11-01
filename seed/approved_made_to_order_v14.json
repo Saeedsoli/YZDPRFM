@@ -1,0 +1,37 @@
+{
+  "version": "approved_made_to_order_2026_11_v14",
+  "source_sha256": "bbe8f40610bc765bda0a7d2da9dbe78f4e397458a6991239c3c18d0853f33f5c",
+  "description": "Owner approved EDP-first default, Parfum fallback, source-label gender and activation; named originals do not verify supplied essence.",
+  "items": [
+    {
+      "product_id": "SUP-MB-900013",
+      "slug": "montblanc-legend-edp",
+      "expected_name_en": "MONTBLANC - Legend EDP",
+      "brand_en": "Montblanc",
+      "usd_per_kg": "166.1",
+      "quality": "T",
+      "source_type": "provisional",
+      "reference_url": "https://www.montblanc.com/en-id/montblanc-legend-eau-de-parfum-100-ml-MB127070.html"
+    },
+    {
+      "product_id": "YZD-PROD-1566",
+      "slug": "givenchy-gentleman-edp",
+      "expected_name_en": "GIVENCHY - Gentleman EDP",
+      "brand_en": "Givenchy",
+      "usd_per_kg": "121",
+      "quality": "H",
+      "source_type": "provisional",
+      "reference_url": "https://www.givenchybeauty.com/en/si/p/gentleman-givenchy-F10100026.html"
+    },
+    {
+      "product_id": "SUP-TP-910047",
+      "slug": "loewe-quizas-quizas-quizas-edp",
+      "expected_name_en": "LOEWE - Quizás Quizás Quizás EDP",
+      "brand_en": "Loewe",
+      "usd_per_kg": "382.8",
+      "quality": "H",
+      "source_type": "secondary",
+      "reference_url": "https://www.fragrantica.com/perfume/Loewe/Quizas-Quizas-Quizas-2576.html"
+    }
+  ]
+}

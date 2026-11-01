@@ -47,6 +47,8 @@ node scripts/test_default_reference_v52.js
 python3 scripts/test_approved_mto_v13.py
 node scripts/test_default_reference_v53.js
 node scripts/test_generic_image_rebalance.js
+python3 scripts/test_approved_mto_v14.py
+node scripts/test_default_reference_v54.js
 python3 scripts/test_approved_mto_v13.py
 node scripts/test_default_reference_v53.js
 node scripts/test_generic_product_images.js
