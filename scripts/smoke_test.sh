@@ -324,6 +324,7 @@ if python3 scripts/test_approved_mto_v6.py >/tmp/test_approved_mto_v6.log 2>&1; 
 if python3 scripts/test_approved_mto_v7.py >/tmp/test_approved_mto_v7.log 2>&1; then P=$((P+1)); else F=$((F+1)); echo "  X Burberry Her approval"; fi
 if python3 scripts/test_approved_mto_v8.py >/tmp/test_approved_mto_v8.log 2>&1; then P=$((P+1)); else F=$((F+1)); echo "  X Eternity approval"; fi
 if python3 scripts/test_approved_mto_v9.py >/tmp/test_approved_mto_v9.log 2>&1; then P=$((P+1)); else F=$((F+1)); echo "  X Euphoria Men approval"; fi
+if python3 scripts/test_approved_mto_v10.py >/tmp/test_approved_mto_v10.log 2>&1; then P=$((P+1)); else F=$((F+1)); echo "  X Euphoria Women approval"; fi
 run_test test_journal_lcp.js "journal server-side render + LCP guards"
 run_test test_invoice_legal.js "invoice: plain vs formal (legal info)"
 run_test test_customer_note.js "customer note + label + real contact"

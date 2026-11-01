@@ -846,3 +846,8 @@ node_modules/   با npm install برمی‌گردد
 
 - `src/approved-made-to-order-v9.js` — تأیید محافظت‌شده ایفوریا مردانه.
 - `scripts/test_approved_mto_v9.py` — خرید و محافظ تأیید ایفوریا.
+
+- `scripts/test_official_reference_v50.js` — قیمت ایفوریا زنانه ادوپرفیوم با انتخاب مالک.
+
+- `src/approved-made-to-order-v10.js` — تأیید محافظت‌شده ایفوریا زنانه.
+- `scripts/test_approved_mto_v10.py` — خرید و محافظ تأیید ایفوریا زنانه.

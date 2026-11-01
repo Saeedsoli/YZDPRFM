@@ -1,0 +1,17 @@
+{
+  "version": "approved_made_to_order_2026_11_v10",
+  "source_sha256": "bbe8f40610bc765bda0a7d2da9dbe78f4e397458a6991239c3c18d0853f33f5c",
+  "description": "Owner selected this reference and previously authorized activation of future owner-confirmed selections; supplier essence identity unverified.",
+  "items": [
+    {
+      "product_id": "YZD-PROD-1809",
+      "slug": "calvin-klein-euphoria-women",
+      "expected_name_en": "CALVIN KLEIN - Euphoria Women",
+      "brand_en": "Calvin Klein",
+      "usd_per_kg": "155.1",
+      "quality": "H",
+      "source_type": "provisional",
+      "reference_url": "https://www.calvinklein.us/en/women/fragrance/fragrance/euphoria-eau-de-parfum/LX000718-000.html"
+    }
+  ]
+}
