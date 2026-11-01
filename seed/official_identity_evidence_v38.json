@@ -1,0 +1,26 @@
+{
+  "version": "official_identity_evidence_v38",
+  "scope": "Official reference-original name only; supplier essence identity unverified.",
+  "items": [
+    {
+      "product_id": "SUP-CH-900003",
+      "slug": "carolina-herrera-212-sexy-men",
+      "brand_en": "Carolina Herrera",
+      "expected_name_en": "CAROLINA HERRERA - 212 Sexy Men",
+      "reference_name": "212 Sexy Men",
+      "official_url": "https://www.carolinaherrera.com/ww/en/p-fragrance/212-sexy-men",
+      "status": "official_original_found_supplier_essence_unverified",
+      "checked_date": "2026-11-01"
+    },
+    {
+      "product_id": "SUP-CH-900004",
+      "slug": "carolina-herrera-212-sexy-women",
+      "brand_en": "Carolina Herrera",
+      "expected_name_en": "CAROLINA HERRERA - 212 Sexy",
+      "reference_name": "212 Sexy",
+      "official_url": "https://www.carolinaherrera.com/fr/en/p-fragrance/212-sexy",
+      "status": "official_original_found_supplier_essence_unverified",
+      "checked_date": "2026-11-01"
+    }
+  ]
+}
