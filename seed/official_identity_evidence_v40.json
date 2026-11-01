@@ -1,0 +1,16 @@
+{
+  "version": "official_identity_evidence_v40",
+  "scope": "Official reference-original name only; supplier essence identity unverified.",
+  "items": [
+    {
+      "product_id": "SUP-SF-900001",
+      "slug": "salvatore-ferragamo-signorina-edp",
+      "brand_en": "Salvatore Ferragamo",
+      "expected_name_en": "SALVATORE FERRAGAMO - Signorina",
+      "reference_name": "Signorina",
+      "official_url": "https://www.ferragamo.com/shop/esp/es/mujer/fragancias/signorina-781424--5",
+      "status": "official_original_found_supplier_essence_unverified",
+      "checked_date": "2026-11-01"
+    }
+  ]
+}

@@ -737,9 +737,11 @@ node_modules/   با npm install برمی‌گردد
 - `scripts/test_official_reference_v29.js`
 - `scripts/test_official_reference_v30.js`
 - `scripts/test_official_reference_v31.js`
+- `scripts/test_official_reference_v32.js`
 - `scripts/test_secondary_reference_v11.js`
 - `scripts/test_secondary_reference_v12.js`
 - `scripts/test_secondary_reference_v13.js`
 - `scripts/test_secondary_reference_v14.js`
+- `scripts/test_secondary_reference_v15.js`
 - `scripts/test_official_notes_v32.js`
 - `scripts/test_official_notes_v33.js`

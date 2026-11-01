@@ -1,0 +1,25 @@
+{
+  "version": "secondary_reference_prices_2026_11_v15",
+  "supplier_file_sha256": "bbe8f40610bc765bda0a7d2da9dbe78f4e397458a6991239c3c18d0853f33f5c",
+  "description": "Independent references, provisional name matches; supplier essence identity unverified.",
+  "items": [
+    {
+      "product_id": "SUP-TP-910037",
+      "slug": "salvatore-ferragamo-incanto-2003",
+      "brand_en": "Salvatore Ferragamo",
+      "expected_name_en": "SALVATORE FERRAGAMO - Incanto",
+      "reference_name": "Incanto",
+      "source_url": "https://www.fragrantica.com/perfume/Salvatore-Ferragamo/Incanto-651.html",
+      "provider": "Fragrantica",
+      "status": "secondary_original_found_supplier_essence_unverified",
+      "checked_date": "2026-11-01",
+      "supplier_brand": "Salvator Ferragamo",
+      "supplier_model": "inconto",
+      "usd_per_kg": "203.5",
+      "quality": "H",
+      "match_status": "name_matched_supplier_identity_unverified",
+      "expected_edps": [],
+      "legacy_backfill": false
+    }
+  ]
+}

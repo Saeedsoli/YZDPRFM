@@ -1,0 +1,21 @@
+{
+  "version": "official_reference_prices_2026_11_v32",
+  "supplier_file_sha256": "bbe8f40610bc765bda0a7d2da9dbe78f4e397458a6991239c3c18d0853f33f5c",
+  "description": "Provisional name-based prices; supplier essence unverified; no activation.",
+  "items": [
+    {
+      "product_id": "SUP-SF-900001",
+      "slug": "salvatore-ferragamo-signorina-edp",
+      "brand_en": "Salvatore Ferragamo",
+      "expected_name_en": "SALVATORE FERRAGAMO - Signorina",
+      "reference_name": "Signorina",
+      "official_url": "https://www.ferragamo.com/shop/esp/es/mujer/fragancias/signorina-781424--5",
+      "supplier_brand": "Salvator Ferragamo",
+      "supplier_model": "Signoria",
+      "usd_per_kg": "92.4",
+      "quality": "B",
+      "match_status": "name_matched_supplier_identity_unverified",
+      "expected_edps": []
+    }
+  ]
+}
