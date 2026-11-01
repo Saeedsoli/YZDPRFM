@@ -19,11 +19,12 @@ const VERSION_13='secondary_reference_prices_2026_11_v13';
 const VERSION_14='secondary_reference_prices_2026_11_v14';
 const VERSION_15='secondary_reference_prices_2026_11_v15';
 const VERSION_16='secondary_reference_prices_2026_11_v16';
+const VERSION_17='secondary_reference_prices_2026_11_v17';
 const STATUS='secondary_original_found_supplier_essence_unverified';
 function applySecondaryReferences(db,file){
  if(!fs.existsSync(file))return {applied:0,backfilled:0,skipped:0,reason:'file_missing'};
  const data=JSON.parse(fs.readFileSync(file,'utf8'));
- if(!Object.hasOwn({[VERSION]:12,[VERSION_2]:6,[VERSION_3]:3,[VERSION_4]:4,[VERSION_5]:2,[VERSION_6]:2,[VERSION_7]:2,[VERSION_8]:5,[VERSION_9]:1,[VERSION_10]:1,[VERSION_11]:1,[VERSION_12]:3,[VERSION_13]:1,[VERSION_14]:1,[VERSION_15]:1,[VERSION_16]:2},data.version)||!/^[a-f0-9]{64}$/.test(data.supplier_file_sha256||'')||!Array.isArray(data.items)||data.items.length!==({[VERSION]:12,[VERSION_2]:6,[VERSION_3]:3,[VERSION_4]:4,[VERSION_5]:2,[VERSION_6]:2,[VERSION_7]:2,[VERSION_8]:5,[VERSION_9]:1,[VERSION_10]:1,[VERSION_11]:1,[VERSION_12]:3,[VERSION_13]:1,[VERSION_14]:1,[VERSION_15]:1,[VERSION_16]:2})[data.version])throw new Error('Invalid independent reference manifest');
+ if(!Object.hasOwn({[VERSION]:12,[VERSION_2]:6,[VERSION_3]:3,[VERSION_4]:4,[VERSION_5]:2,[VERSION_6]:2,[VERSION_7]:2,[VERSION_8]:5,[VERSION_9]:1,[VERSION_10]:1,[VERSION_11]:1,[VERSION_12]:3,[VERSION_13]:1,[VERSION_14]:1,[VERSION_15]:1,[VERSION_16]:2,[VERSION_17]:1},data.version)||!/^[a-f0-9]{64}$/.test(data.supplier_file_sha256||'')||!Array.isArray(data.items)||data.items.length!==({[VERSION]:12,[VERSION_2]:6,[VERSION_3]:3,[VERSION_4]:4,[VERSION_5]:2,[VERSION_6]:2,[VERSION_7]:2,[VERSION_8]:5,[VERSION_9]:1,[VERSION_10]:1,[VERSION_11]:1,[VERSION_12]:3,[VERSION_13]:1,[VERSION_14]:1,[VERSION_15]:1,[VERSION_16]:2,[VERSION_17]:1})[data.version])throw new Error('Invalid independent reference manifest');
  const seen=new Set();
  for(const x of data.items){
   let url;try{url=new URL(x.source_url);}catch{throw new Error('Invalid independent reference URL');}

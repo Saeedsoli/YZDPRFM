@@ -4,16 +4,6 @@
   "items": [
     {
       "brand": "JOOP",
-      "model": "JOOP HOMME (Red)",
-      "supplier_gender": "Men",
-      "expected_fa": "جوپ سبز",
-      "warning": "رنگ فارسی سبز و انگلیسی قرمز متناقض است؛ مدل قابل تعیین نیست.",
-      "reference_urls": [
-        "https://www.fragrantica.com/perfume/Joop/Nightflight-1721.html"
-      ]
-    },
-    {
-      "brand": "JOOP",
       "model": "Joop Night Flight (Green)",
       "supplier_gender": "Men",
       "expected_fa": "جوپ قرمز",
