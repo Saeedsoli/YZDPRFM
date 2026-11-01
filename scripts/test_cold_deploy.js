@@ -133,9 +133,8 @@ function dockerCopiedDirs() {
 
     /* ── چرا شمار برند از دیتابیس گرفته می‌شود، نه از API ──
        `/api/brands` عمداً فقط برندهایی را برمی‌گرداند که محصول
-       قابل سفارش دارند. روی دیتابیس تازهٔ استقرار، پیش‌فرض همه
-       UNAVAILABLE است، پس این فهرست درست و انتظارآمیز خالی
-       است — نه خرابی.
+       قابل سفارش دارند. روی دیتابیس تازه، فقط موارد تأییدشده و قابل سفارش
+       باید در این فهرست حضور داشته باشند.
 
        چیزی که واقعاً باید بسنجیم این است که کاتالوگ با تنوع
        برند پر شده باشد. آن را از خود دیتابیس می‌پرسیم. */
@@ -145,6 +144,7 @@ function dockerCopiedDirs() {
       'SELECT COUNT(DISTINCT brand_fa) c FROM products WHERE brand_fa IS NOT NULL').get().c;
     const orderable = cold.prepare(
       "SELECT COUNT(DISTINCT brand_fa) c FROM products WHERE supply_mode != 'UNAVAILABLE'").get().c;
+    const madeToOrder = cold.prepare("SELECT COUNT(*) n FROM products WHERE supply_mode='MADE_TO_ORDER'").get().n;
     const obsoleteSamples = cold.prepare("SELECT COUNT(*) n FROM variants WHERE type='SAMPLE' AND volume_ml=3").get().n;
     const identitySources = cold.prepare("SELECT COUNT(*) n FROM official_identity_evidence WHERE status='official_original_found_supplier_essence_unverified'").get().n;
     const referencePrices = cold.prepare('SELECT COUNT(*) n FROM products WHERE essence_usd_per_kg IS NOT NULL').get().n;
@@ -157,6 +157,7 @@ function dockerCopiedDirs() {
     add('قیمت‌های مرجع موقت در نصب تازه بازسازی می‌شوند', referencePrices === expectedPrices, `${referencePrices}/${expectedPrices}`);
     add('منابع مستقل جدا از منابع رسمی بارگذاری شدند', secondarySources === expectedSecondary, `${secondarySources}/${expectedSecondary}`);
     add('سمپل ۳ میل در دیتابیس تازه ایجاد نمی‌شود', obsoleteSamples === 0, `${obsoleteSamples} ردیف`);
+    add('مصوبات ساخت پس از سفارش در نصب تازه فعال‌اند', madeToOrder === 192, `${madeToOrder}/192`);
     const expectedIdentities = ['official_identity_evidence_v1.json','official_identity_evidence_v2.json','official_identity_evidence_v3.json','official_identity_evidence_v4.json','official_identity_evidence_v5.json','official_identity_evidence_v6.json','official_identity_evidence_v7.json','official_identity_evidence_v8.json','official_identity_evidence_v9.json','official_identity_evidence_v10.json','official_identity_evidence_v11.json','official_identity_evidence_v12.json','official_identity_evidence_v13.json','official_identity_evidence_v14.json','official_identity_evidence_v15.json','official_identity_evidence_v16.json','official_identity_evidence_v17.json','official_identity_evidence_v18.json','official_identity_evidence_v19.json','official_identity_evidence_v20.json','official_identity_evidence_v21.json','official_identity_evidence_v22.json','official_identity_evidence_v23.json','official_identity_evidence_v24.json','official_identity_evidence_v25.json','official_identity_evidence_v26.json','official_identity_evidence_v27.json','official_identity_evidence_v28.json','official_identity_evidence_v29.json','official_identity_evidence_v30.json','official_identity_evidence_v31.json','official_identity_evidence_v32.json','official_identity_evidence_v33.json','official_identity_evidence_v34.json','official_identity_evidence_v35.json','official_identity_evidence_v36.json','official_identity_evidence_v37.json','official_identity_evidence_v38.json','official_identity_evidence_v39.json','official_identity_evidence_v40.json'].reduce((n,f) => n + JSON.parse(fs.readFileSync(path.join(stage,'seed',f),'utf8')).items.length,0);
     add('منابع رسمی مرجع با برچسب عدم تأیید اسانس بارگذاری می‌شوند', identitySources === expectedIdentities, `${identitySources}/${expectedIdentities}`);
 

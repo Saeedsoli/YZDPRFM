@@ -166,7 +166,7 @@ async function handle(ctx) {
        پیش‌فرض: کسی که «ارزان‌ترین» را می‌خواهد، ارزان‌ترینِ
        قابل خرید را می‌خواهد. */
     const IN_STOCK = `(products.supply_mode IN ('IN_STOCK','MADE_TO_ORDER') AND EXISTS
-      (SELECT 1 FROM variants v2 WHERE v2.product_id = products.id AND ${publicVariantSql('v2')} AND v2.stock > 0 AND v2.price_toman>0)) DESC`;
+      (SELECT 1 FROM variants v2 WHERE v2.product_id = products.id AND ${publicVariantSql('v2')} AND (v2.stock > 0 OR products.supply_mode='MADE_TO_ORDER') AND v2.price_toman>0)) DESC`;
     const SAMPLE_PRICE = `(SELECT MIN(sv.price_toman) FROM variants sv WHERE sv.product_id=products.id
       AND sv.type='SAMPLE' AND sv.volume_ml=5 AND sv.price_toman>0
       AND (sv.stock>0 OR products.supply_mode='MADE_TO_ORDER'))`;

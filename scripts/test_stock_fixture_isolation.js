@@ -1,4 +1,6 @@
 'use strict';
+// This legacy fixture explicitly tests the pre-approval unavailable baseline.
+process.env.APPROVED_MTO_AUTOSTART ??= '0';
 // Test helper must restore exact stock and supply states, using only a temporary DB.
 const fs=require('fs'),os=require('os'),path=require('path'),{spawnSync}=require('child_process');
 const root=path.join(__dirname,'..'),tmp=fs.mkdtempSync(path.join(os.tmpdir(),'yazd-stock-fixture-'));

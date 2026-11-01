@@ -19,6 +19,8 @@ const ROOT_DIR = path.resolve(__dirname, '..');
 // روی Liara: DB_PATH=/app/data/yazd.db  (Disk پایدار)
 // محلی: data/yazd.db
 const DB_PATH = process.env.DB_PATH || path.join(ROOT_DIR, 'data', 'yazd.db');
+// A pre-existing nonempty SQLite file must never be treated as a new store.
+const DB_WAS_EXISTING = fs.existsSync(DB_PATH) && fs.statSync(DB_PATH).size > 0;
 
 /**
  * پوشه داده‌های اولیه — عمداً بیرون از `data/`.
@@ -2637,6 +2639,8 @@ function otpPurgeExpired() {
 }
 
 initSchema();
+// Only a genuinely empty installation may receive the owner's default approval.
+const isFreshInstallation = !DB_WAS_EXISTING && db.prepare('SELECT COUNT(*) AS c FROM products').get().c === 0;
 // Historical order reporting remains valid after retired SKUs leave the catalog.
 require('./variant-history').ensureVariantHistory(db);
 // Storage only: rates do not change prices until an explicit, atomic reprice.
@@ -2739,6 +2743,14 @@ seedCoupons();
 /* تنظیمات واقعی فروشگاه — پس از ساخت جدول‌ها، پیش از سرو شدن
    هر صفحه. فاکتور و برچسب پستی بدون این‌ها ناقص چاپ می‌شوند. */
 seedShopSettings();
+// Existing installations are never silently migrated: use the guarded approval
+// operation after backup. A clean installation can safely apply the fixed scope.
+if (isFreshInstallation && process.env.APPROVED_MTO_AUTOSTART !== '0') {
+  const approved = require('./approved-made-to-order');
+  const result = approved.applyApprovedMadeToOrder(db, path.join(SEED_DIR, 'approved_made_to_order_v1.json'));
+  approved.correctApprovedNotices(db, path.join(SEED_DIR, 'approved_made_to_order_v1.json'));
+  if (result.skipped.length) console.warn('[DB] approved made-to-order items skipped:', result.skipped.length);
+}
 buildSearchIndex();
 // Rebuild note lookup after sourced notes change or new supplement products arrive.
 buildNotesIndex(supplementInserted > 0 || secondaryNotesResults.some(r => r.updated > 0) || officialNotesResults.some(r => r.updated > 0));

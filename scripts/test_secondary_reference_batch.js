@@ -1,4 +1,6 @@
 'use strict';
+// This legacy fixture explicitly tests the pre-approval unavailable baseline.
+process.env.APPROVED_MTO_AUTOSTART ??= '0';
 // Independent source is never official, never supplier verification; isolated DB only.
 const assert=require('assert/strict'),fs=require('fs'),os=require('os'),path=require('path'),crypto=require('crypto'),net=require('net'),{spawn,spawnSync}=require('child_process');
 const root=path.join(__dirname,'..'),m=require('../seed/secondary_reference_prices_v1.json'),n=require('../seed/secondary_note_corrections_v1.json'),sup=require('../seed/secondary_supplement_v1.json'),raw=fs.readFileSync(path.join(root,'uploads/لیست_قیمت_عمده.md'));

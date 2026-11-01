@@ -1,4 +1,6 @@
 'use strict';
+// This legacy fixture explicitly tests the pre-approval unavailable baseline.
+process.env.APPROVED_MTO_AUTOSTART ??= '0';
 // Original-product identity is separate from supplier-essence and stock verification.
 const assert=require('assert/strict'),fs=require('fs'),os=require('os'),path=require('path'),{spawnSync}=require('child_process');
 const root=path.join(__dirname,'..'),manifest=require('../seed/official_identity_evidence_v1.json'),prices=require('../seed/supplier_exact_prices_staged.json').prices;

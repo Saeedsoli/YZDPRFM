@@ -1,0 +1,1927 @@
+{
+  "version": "approved_made_to_order_2026_11_v1",
+  "source_sha256": "bbe8f40610bc765bda0a7d2da9dbe78f4e397458a6991239c3c18d0853f33f5c",
+  "description": "Owner approved these provisional name-matched products for made-to-order; source references do not verify supplier essence. Ambiguous legacy prices excluded.",
+  "items": [
+    {
+      "product_id": "YZD-PROD-1996",
+      "slug": "amouage-decision-2024",
+      "expected_name_en": "AMOUAGE - Decision",
+      "brand_en": "Amouage",
+      "usd_per_kg": "330",
+      "quality": "H",
+      "source_type": "provisional",
+      "reference_url": "https://amouage.com/products/new-decision"
+    },
+    {
+      "product_id": "SUP-AM-900008",
+      "slug": "amouage-outlands",
+      "expected_name_en": "AMOUAGE - Outlands",
+      "brand_en": "Amouage",
+      "usd_per_kg": "408.1",
+      "quality": "H",
+      "source_type": "provisional",
+      "reference_url": "https://amouage.com/products/new-outlands"
+    },
+    {
+      "product_id": "YZD-PROD-0564",
+      "slug": "amouage-purpose",
+      "expected_name_en": "AMOUAGE - Purpose",
+      "brand_en": "Amouage",
+      "usd_per_kg": "269.5",
+      "quality": "P",
+      "source_type": "provisional",
+      "reference_url": "https://amouage.com/products/100ml-purpose"
+    },
+    {
+      "product_id": "YZD-PROD-0566",
+      "slug": "amouage-search",
+      "expected_name_en": "AMOUAGE - Search",
+      "brand_en": "Amouage",
+      "usd_per_kg": "348.7",
+      "quality": "P",
+      "source_type": "provisional",
+      "reference_url": "https://amouage.com/en-ch/products/100ml-search"
+    },
+    {
+      "product_id": "YZD-PROD-0548",
+      "slug": "amouage-guidance",
+      "expected_name_en": "AMOUAGE - Guidance",
+      "brand_en": "Amouage",
+      "usd_per_kg": "409.2",
+      "quality": "H",
+      "source_type": "provisional",
+      "reference_url": "https://amouage.com/products/100ml-guidance"
+    },
+    {
+      "product_id": "SUP-TP-910025",
+      "slug": "aramis-900",
+      "expected_name_en": "Aramis 900",
+      "brand_en": "Aramis",
+      "usd_per_kg": "305.8",
+      "quality": "T",
+      "source_type": "secondary",
+      "reference_url": "https://www.fragrantica.com/perfume/Aramis/Aramis-900-116.html"
+    },
+    {
+      "product_id": "SUP-ATKINSONS-OUD-SAVE-THE-KING",
+      "slug": "atkinsons-oud-save-the-king",
+      "expected_name_en": "ATKINSONS - Oud Save the King",
+      "brand_en": "Atkinsons",
+      "usd_per_kg": "314.6",
+      "quality": "H",
+      "source_type": "provisional",
+      "reference_url": "https://www.atkinsons1799.com/products/oud-save-the-king"
+    },
+    {
+      "product_id": "SUP-AT-900013",
+      "slug": "atkinsons-her-majesty-the-oud",
+      "expected_name_en": "ATKINSONS - Her Majesty The Oud",
+      "brand_en": "Atkinsons",
+      "usd_per_kg": "190.3",
+      "quality": "H",
+      "source_type": "provisional",
+      "reference_url": "https://www.atkinsons1799.com/en_eu/custom-sample-set"
+    },
+    {
+      "product_id": "YZD-PROD-1804",
+      "slug": "burberry-burberry-goddess-edp",
+      "expected_name_en": "Burberry Goddess EDP",
+      "brand_en": "Burberry",
+      "usd_per_kg": "201.3",
+      "quality": "P",
+      "source_type": "provisional",
+      "reference_url": "https://us.burberry.com/burberry-goddess-eau-de-parfum-for-women-50ml-p40835971"
+    },
+    {
+      "product_id": "YZD-PROD-2019",
+      "slug": "bvlgari-le-gemme-ambero",
+      "expected_name_en": "BVLGARI - Le Gemme Ambero",
+      "brand_en": "Bvlgari",
+      "usd_per_kg": "663.3",
+      "quality": "P",
+      "source_type": "provisional",
+      "reference_url": "https://www.bulgari.com/en-int/52104.html"
+    },
+    {
+      "product_id": "SUP-TP-910004",
+      "slug": "bvlgari-le-gemme-amarena",
+      "expected_name_en": "BVLGARI - Le Gemme Amarena",
+      "brand_en": "Bvlgari",
+      "usd_per_kg": "218.9",
+      "quality": "P",
+      "source_type": "secondary",
+      "reference_url": "https://www.fragrantica.com/perfume/Bvlgari/Amarena-27387.html"
+    },
+    {
+      "product_id": "YZD-PROD-1758",
+      "slug": "bvlgari-bvlgari-aqva-pour-homme",
+      "expected_name_en": "Bvlgari Aqva Pour Homme",
+      "brand_en": "Bvlgari",
+      "usd_per_kg": "224.4",
+      "quality": "H",
+      "source_type": "secondary",
+      "reference_url": "https://www.fragrantica.com/perfume/Bvlgari/Aqva-Pour-Homme-153.html"
+    },
+    {
+      "product_id": "YZD-PROD-2016",
+      "slug": "bvlgari-le-gemme-falkar",
+      "expected_name_en": "BVLGARI - Le Gemme Falkar",
+      "brand_en": "Bvlgari",
+      "usd_per_kg": "852.5",
+      "quality": "P",
+      "source_type": "provisional",
+      "reference_url": "https://www.bulgari.com/en-gb/fragrances/bvlgari-le-gemme/bvlgari-le-gemme-falkar-eau-de-parfum-42178"
+    },
+    {
+      "product_id": "SUP-TP-910026",
+      "slug": "bvlgari-jasmin-noir-original",
+      "expected_name_en": "BVLGARI - Jasmin Noir",
+      "brand_en": "Bvlgari",
+      "usd_per_kg": "234.3",
+      "quality": "H",
+      "source_type": "secondary",
+      "reference_url": "https://www.fragrantica.com/perfume/Bvlgari/Jasmin-Noir-3750.html"
+    },
+    {
+      "product_id": "YZD-PROD-2017",
+      "slug": "bvlgari-le-gemme-onekh",
+      "expected_name_en": "BVLGARI - Le Gemme Onekh",
+      "brand_en": "Bvlgari",
+      "usd_per_kg": "690.8",
+      "quality": "P",
+      "source_type": "provisional",
+      "reference_url": "https://www.bulgari.com/en-int/52105.html"
+    },
+    {
+      "product_id": "YZD-PROD-1763",
+      "slug": "bvlgari-le-gemme-tygar",
+      "expected_name_en": "BVLGARI - Le Gemme Tygar",
+      "brand_en": "Bvlgari",
+      "usd_per_kg": "378.4",
+      "quality": "P",
+      "source_type": "provisional",
+      "reference_url": "https://www.bulgari.com/en-int/fragrances/bvlgari-le-gemme/42183.html"
+    },
+    {
+      "product_id": "YZD-PROD-0677",
+      "slug": "kilian-paris-angels-share",
+      "expected_name_en": "KILIAN PARIS - Angels' Share",
+      "brand_en": "Kilian Paris",
+      "usd_per_kg": "427.9",
+      "quality": "P",
+      "source_type": "provisional",
+      "reference_url": "https://www.bykilian.com/product/19797/82905/perfume/angels-share/the-liquors"
+    },
+    {
+      "product_id": "SUP-TP-910027",
+      "slug": "kilian-apple-brandy-original",
+      "expected_name_en": "KILIAN PARIS - Apple Brandy",
+      "brand_en": "Kilian Paris",
+      "usd_per_kg": "222.2",
+      "quality": "P",
+      "source_type": "secondary",
+      "reference_url": "https://www.fragrantica.com/perfume/By-Kilian/Apple-Brandy-22614.html"
+    },
+    {
+      "product_id": "YZD-PROD-0679",
+      "slug": "kilian-paris-black-phantom-memento-mori",
+      "expected_name_en": "KILIAN PARIS - Black Phantom - Memento Mori",
+      "brand_en": "Kilian Paris",
+      "usd_per_kg": "256.3",
+      "quality": "P",
+      "source_type": "provisional",
+      "reference_url": "https://www.bykilian.com/product/19797/141058/perfume/black-phantom--memento-mori-icon-set"
+    },
+    {
+      "product_id": "YZD-PROD-0688",
+      "slug": "kilian-paris-good-girl-gone-bad",
+      "expected_name_en": "KILIAN PARIS - Good Girl Gone Bad",
+      "brand_en": "Kilian Paris",
+      "usd_per_kg": "300.3",
+      "quality": "P",
+      "source_type": "provisional",
+      "reference_url": "https://www.bykilian.com/product/19797/147603/perfume/good-girl-gone-bad-the-icon-set/the-narcotics"
+    },
+    {
+      "product_id": "YZD-PROD-0684",
+      "slug": "kilian-paris-moonlight-in-heaven",
+      "expected_name_en": "KILIAN PARIS - Moonlight in Heaven",
+      "brand_en": "Kilian Paris",
+      "usd_per_kg": "438.9",
+      "quality": "H",
+      "source_type": "provisional",
+      "reference_url": "https://www.bykilian.com/product/19797/52771/perfume/moonlight-in-heaven/the-fresh"
+    },
+    {
+      "product_id": "SUP-TP-910010",
+      "slug": "kilian-smoke-for-the-soul",
+      "expected_name_en": "KILIAN PARIS - Smoke for the Soul",
+      "brand_en": "Kilian Paris",
+      "usd_per_kg": "270.6",
+      "quality": "P",
+      "source_type": "secondary",
+      "reference_url": "https://www.fragrantica.com/perfume/By-Kilian/Smoke-for-the-Soul-25993.html"
+    },
+    {
+      "product_id": "SUP-TP-910028",
+      "slug": "cacharel-amor-amor",
+      "expected_name_en": "CACHAREL - Amor Amor",
+      "brand_en": "Cacharel",
+      "usd_per_kg": "97.9",
+      "quality": "B",
+      "source_type": "secondary",
+      "reference_url": "https://www.fragrantica.com/perfume/Cacharel/Amor-Amor-238.html"
+    },
+    {
+      "product_id": "YZD-PROD-1737",
+      "slug": "carolina-herrera-good-girl-edp",
+      "expected_name_en": "CAROLINA HERRERA - Good Girl EDP",
+      "brand_en": "Carolina Herrera",
+      "usd_per_kg": "221.1",
+      "quality": "H",
+      "source_type": "provisional",
+      "reference_url": "https://www.carolinaherrera.com/us/en/p-fragrance/good-girl-eau-de-parfum"
+    },
+    {
+      "product_id": "SUP-CH-900003",
+      "slug": "carolina-herrera-212-sexy-men",
+      "expected_name_en": "CAROLINA HERRERA - 212 Sexy Men",
+      "brand_en": "Carolina Herrera",
+      "usd_per_kg": "133.1",
+      "quality": "H",
+      "source_type": "provisional",
+      "reference_url": "https://www.carolinaherrera.com/ww/en/p-fragrance/212-sexy-men"
+    },
+    {
+      "product_id": "SUP-CH-900004",
+      "slug": "carolina-herrera-212-sexy-women",
+      "expected_name_en": "CAROLINA HERRERA - 212 Sexy",
+      "brand_en": "Carolina Herrera",
+      "usd_per_kg": "188.1",
+      "quality": "H",
+      "source_type": "provisional",
+      "reference_url": "https://www.carolinaherrera.com/fr/en/p-fragrance/212-sexy"
+    },
+    {
+      "product_id": "SUP-CH-900001",
+      "slug": "carolina-herrera-212-vip-women",
+      "expected_name_en": "CAROLINA HERRERA - 212 VIP",
+      "brand_en": "Carolina Herrera",
+      "usd_per_kg": "177.1",
+      "quality": "H",
+      "source_type": "provisional",
+      "reference_url": "https://www.carolinaherrera.com/br/en/p-fragrance/212-vip"
+    },
+    {
+      "product_id": "YZD-PROD-1744",
+      "slug": "carolina-herrera-212-vip-men",
+      "expected_name_en": "CAROLINA HERRERA - 212 VIP Men",
+      "brand_en": "Carolina Herrera",
+      "usd_per_kg": "114.4",
+      "quality": "H",
+      "source_type": "provisional",
+      "reference_url": "https://www.carolinaherrera.com/ww/en/p-fragrance/212-vip-men"
+    },
+    {
+      "product_id": "SUP-DG-900001",
+      "slug": "dolce-gabbana-dgvib3",
+      "expected_name_en": "DOLCE & GABBANA - DGVIB3",
+      "brand_en": "Dolce & Gabbana",
+      "usd_per_kg": "148.5",
+      "quality": "R",
+      "source_type": "provisional",
+      "reference_url": "https://www.dolcegabbana.com/en-us/beauty/perfumes-for-him/dgvib3/dgvib3---VP003HVP0009V000.html"
+    },
+    {
+      "product_id": "YZD-PROD-1642",
+      "slug": "caron-paris-pour-un-homme-de-caron",
+      "expected_name_en": "CARON PARIS - Pour Un Homme de Caron",
+      "brand_en": "Caron Paris",
+      "usd_per_kg": "224.4",
+      "quality": "H",
+      "source_type": "provisional",
+      "reference_url": "https://www.parfumscaron.com/en/products/pour-un-homme-vaporisateur"
+    },
+    {
+      "product_id": "YZD-PROD-1467",
+      "slug": "chanel-platinum-goste",
+      "expected_name_en": "CHANEL - Platinum Égoïste",
+      "brand_en": "Chanel",
+      "usd_per_kg": "92.4",
+      "quality": "P",
+      "source_type": "provisional",
+      "reference_url": "https://www.chanel.com/lt/fragrance/p/124460/platinum-egoiste-eau-de-toilette-spray/"
+    },
+    {
+      "product_id": "SUP-EV-900001",
+      "slug": "evaflor-whisky-silver",
+      "expected_name_en": "EVAFLOR - Whisky Silver",
+      "brand_en": "Evaflor",
+      "usd_per_kg": "126.5",
+      "quality": "R",
+      "source_type": "provisional",
+      "reference_url": "https://www.evaflor.com/en/products/whisky-silver-coffret-parfum-homme-serviette-money-clip"
+    },
+    {
+      "product_id": "SUP-TP-910012",
+      "slug": "chloe-chloe-narcisse",
+      "expected_name_en": "Chloé Narcisse",
+      "brand_en": "Chloé",
+      "usd_per_kg": "88",
+      "quality": "P",
+      "source_type": "secondary",
+      "reference_url": "https://www.fragrantica.com/perfume/Chloe/Chloe-Narcisse-344.html"
+    },
+    {
+      "product_id": "YZD-PROD-0485",
+      "slug": "clive-christian-x-men",
+      "expected_name_en": "CLIVE CHRISTIAN - X Men",
+      "brand_en": "Clive Christian",
+      "usd_per_kg": "453.2",
+      "quality": "P",
+      "source_type": "provisional",
+      "reference_url": "https://us.clivechristian.com/products/x-masculine"
+    },
+    {
+      "product_id": "YZD-PROD-0429",
+      "slug": "creed-aventus",
+      "expected_name_en": "CREED - Aventus",
+      "brand_en": "Creed",
+      "usd_per_kg": "709.5",
+      "quality": "T",
+      "source_type": "provisional",
+      "reference_url": "https://www.creedfragrance.com/p/aventus/12870029/"
+    },
+    {
+      "product_id": "SUP-CR-900050",
+      "slug": "creed-absolu-aventus",
+      "expected_name_en": "CREED - Absolu Aventus",
+      "brand_en": "Creed",
+      "usd_per_kg": "499.4",
+      "quality": "H",
+      "source_type": "provisional",
+      "reference_url": "https://www.creedfragrance.com/p/absolu-aventus/16281794/"
+    },
+    {
+      "product_id": "YZD-PROD-0439",
+      "slug": "creed-erolfa",
+      "expected_name_en": "CREED - Erolfa",
+      "brand_en": "Creed",
+      "usd_per_kg": "366.3",
+      "quality": "P",
+      "source_type": "provisional",
+      "reference_url": "https://www.creedfragrance.com/p/erolfa/12870033/"
+    },
+    {
+      "product_id": "YZD-PROD-0430",
+      "slug": "creed-green-irish-tweed",
+      "expected_name_en": "CREED - Green Irish Tweed",
+      "brand_en": "Creed",
+      "usd_per_kg": "212.3",
+      "quality": "H",
+      "source_type": "provisional",
+      "reference_url": "https://www.creedfragrance.com/p/green-irish-tweed/12870035/"
+    },
+    {
+      "product_id": "YZD-PROD-0432",
+      "slug": "creed-millesime-imperial",
+      "expected_name_en": "CREED - Millesime Imperial",
+      "brand_en": "Creed",
+      "usd_per_kg": "453.2",
+      "quality": "H",
+      "source_type": "provisional",
+      "reference_url": "https://www.creedfragrance.com/p/millesime-imperial/12870041/"
+    },
+    {
+      "product_id": "YZD-PROD-0442",
+      "slug": "creed-original-vetiver",
+      "expected_name_en": "CREED - Original Vetiver",
+      "brand_en": "Creed",
+      "usd_per_kg": "110",
+      "quality": "P",
+      "source_type": "provisional",
+      "reference_url": "https://www.creedfragrance.com/p/original-vetiver/12870044/"
+    },
+    {
+      "product_id": "SUP-TP-910031",
+      "slug": "creed-pour-enfants",
+      "expected_name_en": "CREED - Pour Enfants",
+      "brand_en": "Creed",
+      "usd_per_kg": "580.8",
+      "quality": "H",
+      "source_type": "secondary",
+      "reference_url": "https://www.fragrantica.com/perfume/Creed/Creed-Pour-Enfants-37549.html"
+    },
+    {
+      "product_id": "YZD-PROD-0431",
+      "slug": "creed-silver-mountain-water",
+      "expected_name_en": "CREED - Silver Mountain Water",
+      "brand_en": "Creed",
+      "usd_per_kg": "690.8",
+      "quality": "T",
+      "source_type": "provisional",
+      "reference_url": "https://www.creedfragrance.com/p/silver-mountain-water/12870049/"
+    },
+    {
+      "product_id": "YZD-PROD-0436",
+      "slug": "creed-viking",
+      "expected_name_en": "CREED - Viking",
+      "brand_en": "Creed",
+      "usd_per_kg": "844.8",
+      "quality": "T",
+      "source_type": "provisional",
+      "reference_url": "https://www.creedfragrance.com/p/viking/12870053/"
+    },
+    {
+      "product_id": "SUP-CR-900009",
+      "slug": "creed-white-flowers",
+      "expected_name_en": "CREED - White Flowers",
+      "brand_en": "Creed",
+      "usd_per_kg": "427.9",
+      "quality": "H",
+      "source_type": "provisional",
+      "reference_url": "https://www.creedfragrance.com/p/royales-exclusives-white-flowers/12900138/"
+    },
+    {
+      "product_id": "SUP-TP-910036",
+      "slug": "chopard-vanille-de-madagascar",
+      "expected_name_en": "CHOPARD - Vanille de Madagascar",
+      "brand_en": "Chopard",
+      "usd_per_kg": "86.9",
+      "quality": "B",
+      "source_type": "secondary",
+      "reference_url": "https://www.fragrantica.com/perfume/Chopard/Vanille-de-Madagascar-45225.html"
+    },
+    {
+      "product_id": "SUP-TP-910009",
+      "slug": "davidoff-champion",
+      "expected_name_en": "DAVIDOFF - Champion",
+      "brand_en": "Davidoff",
+      "usd_per_kg": "276.1",
+      "quality": "H",
+      "source_type": "secondary",
+      "reference_url": "https://www.fragrantica.com/perfume/Davidoff/Champion-9109.html"
+    },
+    {
+      "product_id": "YZD-PROD-1427",
+      "slug": "christian-dior-dior-homme-intense",
+      "expected_name_en": "CHRISTIAN DIOR - Dior Homme Intense",
+      "brand_en": "Christian Dior",
+      "usd_per_kg": "424.6",
+      "quality": "H",
+      "source_type": "provisional",
+      "reference_url": "https://www.dior.com/en_int/beauty/products/dior-homme-intense-Y0479201.html"
+    },
+    {
+      "product_id": "YZD-PROD-1425",
+      "slug": "christian-dior-sauvage-elixir",
+      "expected_name_en": "CHRISTIAN DIOR - Sauvage Elixir",
+      "brand_en": "Christian Dior",
+      "usd_per_kg": "273.9",
+      "quality": "H",
+      "source_type": "provisional",
+      "reference_url": "https://www.dior.com/en_cz/beauty/products/sauvage-elixir-Y0996460.html"
+    },
+    {
+      "product_id": "SUP-TP-910003",
+      "slug": "dsquared2-he-wood-rocky-mountain-wood",
+      "expected_name_en": "DSQUARED2 - He Wood Rocky Mountain Wood",
+      "brand_en": "Dsquared2",
+      "usd_per_kg": "300.3",
+      "quality": "P",
+      "source_type": "secondary",
+      "reference_url": "https://www.fragrantica.com/perfume/DSQUARED2/He-Wood-Rocky-Mountain-Wood-5862.html"
+    },
+    {
+      "product_id": "YZD-PROD-1941",
+      "slug": "alfred-dunhill-dunhill-desire-blue",
+      "expected_name_en": "ALFRED DUNHILL - Dunhill Desire Blue",
+      "brand_en": "Alfred Dunhill",
+      "usd_per_kg": "139.7",
+      "quality": "H",
+      "source_type": "secondary",
+      "reference_url": "https://www.fragrantica.com/perfume/Alfred-Dunhill/Desire-Blue-1937.html"
+    },
+    {
+      "product_id": "YZD-PROD-1936",
+      "slug": "alfred-dunhill-icon",
+      "expected_name_en": "ALFRED DUNHILL - Icon",
+      "brand_en": "Alfred Dunhill",
+      "usd_per_kg": "245.3",
+      "quality": "H",
+      "source_type": "provisional",
+      "reference_url": "https://www.dunhill.com/il/icon_cod46530312ax.html"
+    },
+    {
+      "product_id": "SUP-TP-910035",
+      "slug": "orlane-derrick-1978",
+      "expected_name_en": "ORLANE - Derrick",
+      "brand_en": "Orlane",
+      "usd_per_kg": "105.6",
+      "quality": "H",
+      "source_type": "secondary",
+      "reference_url": "https://www.fragrantica.com/perfume/Orlane/Derrick-15441.html"
+    },
+    {
+      "product_id": "SUP-EP-900001",
+      "slug": "emper-epic-adventure",
+      "expected_name_en": "EMPER - Epic Adventure",
+      "brand_en": "Emper",
+      "usd_per_kg": "126.5",
+      "quality": "P",
+      "source_type": "provisional",
+      "reference_url": "https://uae.emperperfumes.com/products/epic-adventure"
+    },
+    {
+      "product_id": "SUP-EP-900002",
+      "slug": "emper-chifon",
+      "expected_name_en": "EMPER - Chifon",
+      "brand_en": "Emper",
+      "usd_per_kg": "123.2",
+      "quality": "P",
+      "source_type": "provisional",
+      "reference_url": "https://uae.emperperfumes.com/products/chifon"
+    },
+    {
+      "product_id": "YZD-PROD-1245",
+      "slug": "escentric-molecules-molecule-01",
+      "expected_name_en": "ESCENTRIC MOLECULES - Molecule 01",
+      "brand_en": "Escentric Molecules",
+      "usd_per_kg": "283.8",
+      "quality": "P",
+      "source_type": "provisional",
+      "reference_url": "https://www.escentric.com/en-us/products/molecule-01-100ml"
+    },
+    {
+      "product_id": "YZD-PROD-1246",
+      "slug": "escentric-molecules-molecule-02",
+      "expected_name_en": "ESCENTRIC MOLECULES - Molecule 02",
+      "brand_en": "Escentric Molecules",
+      "usd_per_kg": "322.3",
+      "quality": "H",
+      "source_type": "provisional",
+      "reference_url": "https://www.escentric.com/en-us/products/molecule-02-100ml"
+    },
+    {
+      "product_id": "YZD-PROD-1248",
+      "slug": "escentric-molecules-molecule-04",
+      "expected_name_en": "ESCENTRIC MOLECULES - Molecule 04",
+      "brand_en": "Escentric Molecules",
+      "usd_per_kg": "303.6",
+      "quality": "H",
+      "source_type": "provisional",
+      "reference_url": "https://www.escentric.com/en-us/products/molecule-04-100ml"
+    },
+    {
+      "product_id": "SUP-EX-900011",
+      "slug": "ex-nihilo-fleur-narcotique",
+      "expected_name_en": "EX NIHILO - Fleur Narcotique",
+      "brand_en": "Ex Nihilo",
+      "usd_per_kg": "291.5",
+      "quality": "H",
+      "source_type": "provisional",
+      "reference_url": "https://us.ex-nihilo-paris.com/products/fleur-narcotique-eau-de-parfum"
+    },
+    {
+      "product_id": "SUP-EX-900012",
+      "slug": "ex-nihilo-blue-talisman",
+      "expected_name_en": "EX NIHILO - Blue Talisman",
+      "brand_en": "Ex Nihilo",
+      "usd_per_kg": "286",
+      "quality": "H",
+      "source_type": "provisional",
+      "reference_url": "https://us.ex-nihilo-paris.com/products/blue-talisman-eau-de-parfum"
+    },
+    {
+      "product_id": "YZD-PROD-0615",
+      "slug": "maison-francis-kurkdjian-baccarat-rouge-540-extrait-de-parfum",
+      "expected_name_en": "MAISON FRANCIS KURKDJIAN - Baccarat Rouge 540 Extrait de Parfum",
+      "brand_en": "Maison Francis Kurkdjian",
+      "usd_per_kg": "287.1",
+      "quality": "H",
+      "source_type": "provisional",
+      "reference_url": "https://www.franciskurkdjian.com/int-en/p/baccarat-rouge-540-extrait-de-parfum-RA142321.html"
+    },
+    {
+      "product_id": "SUP-AG-900014",
+      "slug": "ariana-grande-ari",
+      "expected_name_en": "ARIANA GRANDE - Ari",
+      "brand_en": "Ariana Grande",
+      "usd_per_kg": "112.2",
+      "quality": "B",
+      "source_type": "provisional",
+      "reference_url": "https://arianagrandefragrances.com/products/ari-by-ariana-grande"
+    },
+    {
+      "product_id": "YZD-PROD-1658",
+      "slug": "giorgio-armani-stronger-with-you",
+      "expected_name_en": "GIORGIO ARMANI - Stronger With You",
+      "brand_en": "Giorgio Armani",
+      "usd_per_kg": "119.9",
+      "quality": "B",
+      "source_type": "provisional",
+      "reference_url": "https://www.giorgioarmanibeauty-usa.com/fragrances/view-all-fragrances/stronger-with-you-eau-de-toilette/A2061.html"
+    },
+    {
+      "product_id": "YZD-PROD-1651",
+      "slug": "giorgio-armani-acqua-di-gi-profumo",
+      "expected_name_en": "GIORGIO ARMANI - Acqua di Giò Profumo",
+      "brand_en": "Giorgio Armani",
+      "usd_per_kg": "225.5",
+      "quality": "H",
+      "source_type": "provisional",
+      "reference_url": "https://www.giorgioarmanibeauty-usa.com/discontinued/acqua-di-gio-profumo/A019.html"
+    },
+    {
+      "product_id": "YZD-PROD-1662",
+      "slug": "giorgio-armani-armani-s-edp",
+      "expected_name_en": "GIORGIO ARMANI - Armani Sì EDP",
+      "brand_en": "Giorgio Armani",
+      "usd_per_kg": "227.7",
+      "quality": "H",
+      "source_type": "provisional",
+      "reference_url": "https://www.giorgioarmanibeauty-usa.com/fragrances/womens-perfume/si/si-eau-de-parfum/A218.html"
+    },
+    {
+      "product_id": "YZD-PROD-1664",
+      "slug": "giorgio-armani-my-way-edp",
+      "expected_name_en": "GIORGIO ARMANI - My Way EDP",
+      "brand_en": "Giorgio Armani",
+      "usd_per_kg": "96.8",
+      "quality": "H",
+      "source_type": "provisional",
+      "reference_url": "https://www.giorgioarmanibeauty-usa.com/fragrances/womens-perfume/my-way/my-way-eau-de-parfum/A2259.html"
+    },
+    {
+      "product_id": "SUP-TP-910023",
+      "slug": "givenchy-absolutely-irresistible",
+      "expected_name_en": "GIVENCHY - Absolutely Irresistible",
+      "brand_en": "Givenchy",
+      "usd_per_kg": "150.7",
+      "quality": "H",
+      "source_type": "secondary",
+      "reference_url": "https://www.fragrantica.com/perfume/Givenchy/Absolutely-Irresistible-4613.html"
+    },
+    {
+      "product_id": "YZD-PROD-1576",
+      "slug": "givenchy-ange-ou-dmon-le-secret",
+      "expected_name_en": "GIVENCHY - Ange ou Démon Le Secret",
+      "brand_en": "Givenchy",
+      "usd_per_kg": "220",
+      "quality": "H",
+      "source_type": "provisional",
+      "reference_url": "https://www.givenchybeauty.com/us/p/ange-ou-demon-le-secret-F10100004.html"
+    },
+    {
+      "product_id": "SUP-GU-900051",
+      "slug": "givenchy-mmw",
+      "expected_name_en": "GIVENCHY - MMW",
+      "brand_en": "Givenchy",
+      "usd_per_kg": "269.5",
+      "quality": "P",
+      "source_type": "provisional",
+      "reference_url": "https://www.givenchybeauty.com/fr/fr/p/3-avenue-george-v-F10100184.html"
+    },
+    {
+      "product_id": "SUP-GU-900050",
+      "slug": "givenchy-xeryus",
+      "expected_name_en": "GIVENCHY - Xeryus",
+      "brand_en": "Givenchy",
+      "usd_per_kg": "143",
+      "quality": "H",
+      "source_type": "provisional",
+      "reference_url": "https://www.givenchybeauty.com/ca/en/p/xeryus-F10100073.html"
+    },
+    {
+      "product_id": "SUP-GC-900016",
+      "slug": "gucci-bloom",
+      "expected_name_en": "GUCCI - Bloom",
+      "brand_en": "Gucci",
+      "usd_per_kg": "359.7",
+      "quality": "H",
+      "source_type": "provisional",
+      "reference_url": "https://www.gucci.com/us/en/pr/beauty/fragrances/fragrances-for-women/gucci-bloom-100ml-eau-de-parfum-p-488830999990099"
+    },
+    {
+      "product_id": "SUP-GC-900015",
+      "slug": "gucci-rush",
+      "expected_name_en": "GUCCI - Rush",
+      "brand_en": "Gucci",
+      "usd_per_kg": "94.6",
+      "quality": "B",
+      "source_type": "provisional",
+      "reference_url": "https://www.gucci.com/us/en/pr/beauty/fragrances/fragrances-for-women/gucci-rush-75ml-eau-de-toilette-p-012769999990099"
+    },
+    {
+      "product_id": "SUP-GU-900029",
+      "slug": "guerlain-baiser-de-russie",
+      "expected_name_en": "GUERLAIN - Baiser de Russie",
+      "brand_en": "Guerlain",
+      "usd_per_kg": "229.9",
+      "quality": "H",
+      "source_type": "provisional",
+      "reference_url": "https://www.guerlain.com/us/en-us/p/les-parisiennes-baiser-de-russie---eau-de-parfum-P017774.html"
+    },
+    {
+      "product_id": "SUP-ML-900001",
+      "slug": "milton-lloyd-hawaii",
+      "expected_name_en": "MILTON LLOYD - Hawaii",
+      "brand_en": "Milton Lloyd",
+      "usd_per_kg": "97.9",
+      "quality": "P",
+      "source_type": "provisional",
+      "reference_url": "https://milton-lloyd.com/products/hawaii"
+    },
+    {
+      "product_id": "YZD-PROD-1798",
+      "slug": "hugo-boss-boss-bottled-edt",
+      "expected_name_en": "HUGO BOSS - Boss Bottled EDT",
+      "brand_en": "Hugo Boss",
+      "usd_per_kg": "88",
+      "quality": "I",
+      "source_type": "provisional",
+      "reference_url": "https://www.hugoboss.com/boss-bottled-eau-de-toilette-50ml/hbeu58000035_999.html"
+    },
+    {
+      "product_id": "SUP-BS-900050",
+      "slug": "boss-femme",
+      "expected_name_en": "HUGO BOSS - Femme",
+      "brand_en": "Hugo Boss",
+      "usd_per_kg": "278.3",
+      "quality": "H",
+      "source_type": "provisional",
+      "reference_url": "https://www.hugoboss.com/fr/eau-de-parfum-femme-by-boss-50%C2%A0ml/0737052041285.html"
+    },
+    {
+      "product_id": "YZD-PROD-0662",
+      "slug": "initio-parfums-prives-oud-for-greatness",
+      "expected_name_en": "INITIO PARFUMS PRIVES - Oud for Greatness",
+      "brand_en": "Initio Parfums Prives",
+      "usd_per_kg": "352",
+      "quality": "H",
+      "source_type": "provisional",
+      "reference_url": "https://us.initioparfums.com/products/oud-for-greatness"
+    },
+    {
+      "product_id": "YZD-PROD-0665",
+      "slug": "initio-parfums-prives-side-effect",
+      "expected_name_en": "INITIO PARFUMS PRIVES - Side Effect",
+      "brand_en": "Initio Parfums Prives",
+      "usd_per_kg": "137.5",
+      "quality": "P",
+      "source_type": "provisional",
+      "reference_url": "https://us.initioparfums.com/products/side-effect"
+    },
+    {
+      "product_id": "YZD-PROD-0308",
+      "slug": "issey-miyake-leau-bleue-dissey-pour-homme",
+      "expected_name_en": "ISSEY MIYAKE - L'Eau Bleue d'Issey Pour Homme",
+      "brand_en": "Issey Miyake",
+      "usd_per_kg": "338.8",
+      "quality": "H",
+      "source_type": "secondary",
+      "reference_url": "https://www.fragrantica.com/perfume/Issey-Miyake/L-Eau-Bleue-d-Issey-Pour-Homme-724.html"
+    },
+    {
+      "product_id": "SUP-TP-910007",
+      "slug": "jacques-bogart-silver-scent",
+      "expected_name_en": "JACQUES BOGART - Silver Scent",
+      "brand_en": "Jacques Bogart",
+      "usd_per_kg": "128.7",
+      "quality": "H",
+      "source_type": "secondary",
+      "reference_url": "https://www.fragrantica.com/perfume/Jacques-Bogart/Silver-Scent-7794.html"
+    },
+    {
+      "product_id": "YZD-PROD-0089",
+      "slug": "jean-paul-gaultier-kokorico",
+      "expected_name_en": "JEAN PAUL GAULTIER - Kokorico",
+      "brand_en": "Jean Paul Gaultier",
+      "usd_per_kg": "239.8",
+      "quality": "H",
+      "source_type": "secondary",
+      "reference_url": "https://www.fragrantica.com/perfume/Jean-Paul-Gaultier/Kokorico-12711.html"
+    },
+    {
+      "product_id": "YZD-PROD-1581",
+      "slug": "jean-paul-gaultier-le-male-elixir",
+      "expected_name_en": "JEAN PAUL GAULTIER - Le Male Elixir",
+      "brand_en": "Jean Paul Gaultier",
+      "usd_per_kg": "169.4",
+      "quality": "H",
+      "source_type": "provisional",
+      "reference_url": "https://www.jeanpaulgaultier.com/nl/nl/p/assortiment-le-male/le-male-elixir-parfum-000000000065188980"
+    },
+    {
+      "product_id": "SUP-TP-910029",
+      "slug": "billie-eilish-eilish",
+      "expected_name_en": "BILLIE EILISH - Eilish",
+      "brand_en": "Billie Eilish",
+      "usd_per_kg": "115.5",
+      "quality": "P",
+      "source_type": "secondary",
+      "reference_url": "https://www.fragrantica.com/perfume/Billie-Eilish/Eilish-70052.html"
+    },
+    {
+      "product_id": "SUP-TP-910013",
+      "slug": "jennifer-lopez-still",
+      "expected_name_en": "JENNIFER LOPEZ - Still",
+      "brand_en": "Jennifer Lopez",
+      "usd_per_kg": "190.3",
+      "quality": "H",
+      "source_type": "secondary",
+      "reference_url": "https://www.fragrantica.com/perfume/Jennifer-Lopez/Still-868.html"
+    },
+    {
+      "product_id": "SUP-TP-910011",
+      "slug": "halloween-halloween",
+      "expected_name_en": "Halloween",
+      "brand_en": "Halloween",
+      "usd_per_kg": "190.3",
+      "quality": "H",
+      "source_type": "secondary",
+      "reference_url": "https://www.fragrantica.com/perfume/Halloween/Halloween-1444.html"
+    },
+    {
+      "product_id": "SUP-TP-910038",
+      "slug": "joop-femme-original",
+      "expected_name_en": "Joop! Femme",
+      "brand_en": "Joop!",
+      "usd_per_kg": "77",
+      "quality": "H",
+      "source_type": "secondary",
+      "reference_url": "https://www.fragrantica.com/perfume/Joop/Joop-Femme-3100.html"
+    },
+    {
+      "product_id": "SUP-JC-900024",
+      "slug": "juicy-couture-viva-la-juicy",
+      "expected_name_en": "JUICY COUTURE - Viva La Juicy",
+      "brand_en": "Juicy Couture",
+      "usd_per_kg": "132",
+      "quality": "I",
+      "source_type": "provisional",
+      "reference_url": "https://juicycouture.com/products/juicy-couture-viva-la-juicy-eau-de-parfum-spray-3-4oz"
+    },
+    {
+      "product_id": "SUP-LC-900017",
+      "slug": "lacoste-essential",
+      "expected_name_en": "LACOSTE - Essential",
+      "brand_en": "Lacoste",
+      "usd_per_kg": "140.8",
+      "quality": "H",
+      "source_type": "provisional",
+      "reference_url": "https://www.lacoste.com/se/lacoste/men/accessories/fragrance/LC011A01.html"
+    },
+    {
+      "product_id": "SUP-LC-900018",
+      "slug": "lacoste-pour-femme",
+      "expected_name_en": "LACOSTE - Pour Femme",
+      "brand_en": "Lacoste",
+      "usd_per_kg": "128.7",
+      "quality": "B",
+      "source_type": "provisional",
+      "reference_url": "https://www.lacoste.com/it/lacoste/donna/accessori/profumi/LC014A01.html"
+    },
+    {
+      "product_id": "SUP-LC-900023",
+      "slug": "lacoste-touch-of-pink",
+      "expected_name_en": "LACOSTE - Touch of Pink",
+      "brand_en": "Lacoste",
+      "usd_per_kg": "84.7",
+      "quality": "I",
+      "source_type": "provisional",
+      "reference_url": "https://www.lacoste.com/fr/lacoste/femme/accessoires/parfums/LC015A02.html"
+    },
+    {
+      "product_id": "SUP-GL-900027",
+      "slug": "guy-laroche-drakkar-noir",
+      "expected_name_en": "GUY LAROCHE - Drakkar Noir",
+      "brand_en": "Guy Laroche",
+      "usd_per_kg": "121",
+      "quality": "H",
+      "source_type": "provisional",
+      "reference_url": "https://www.guylaroche.com/fragrances"
+    },
+    {
+      "product_id": "YZD-PROD-1766",
+      "slug": "lalique-encre-noire",
+      "expected_name_en": "LALIQUE - Encre Noire",
+      "brand_en": "Lalique",
+      "usd_per_kg": "229.9",
+      "quality": "H",
+      "source_type": "provisional",
+      "reference_url": "https://us.lalique.com/products/encre-noire-eau-de-toilette-m13201-1-1/"
+    },
+    {
+      "product_id": "SUP-LL-900019",
+      "slug": "lalique-lamour",
+      "expected_name_en": "LALIQUE - L’Amour",
+      "brand_en": "Lalique",
+      "usd_per_kg": "156.2",
+      "quality": "H",
+      "source_type": "provisional",
+      "reference_url": "https://us.lalique.com/products/lamour-eau-de-parfum-l12202-r-1"
+    },
+    {
+      "product_id": "YZD-PROD-1627",
+      "slug": "lancme-la-vie-est-belle-edp",
+      "expected_name_en": "LANCÔME - La Vie Est Belle EDP",
+      "brand_en": "Lancôme",
+      "usd_per_kg": "245.3",
+      "quality": "H",
+      "source_type": "provisional",
+      "reference_url": "https://www.lancome-usa.com/fragrance/fragrance-by-collection/la-vie-est-belle/la-vie-est-belle-eau-de-parfum/100606.html"
+    },
+    {
+      "product_id": "YZD-PROD-1635",
+      "slug": "lancme-miracle",
+      "expected_name_en": "LANCÔME - Miracle",
+      "brand_en": "Lancôme",
+      "usd_per_kg": "314.6",
+      "quality": "H",
+      "source_type": "provisional",
+      "reference_url": "https://www.lancome-usa.com/fragrance/fragrance-by-collection/miracle/miracle-eau-de-parfum/022055.html"
+    },
+    {
+      "product_id": "YZD-PROD-1631",
+      "slug": "lancme-trsor-midnight-rose",
+      "expected_name_en": "LANCÔME - Trésor Midnight Rose",
+      "brand_en": "Lancôme",
+      "usd_per_kg": "174.9",
+      "quality": "H",
+      "source_type": "provisional",
+      "reference_url": "https://www.lancome-usa.com/fragrance/fragrance-by-collection/tresor/tresor-midnight-rose-eau-de-parfum/10033.html"
+    },
+    {
+      "product_id": "SUP-TP-910006",
+      "slug": "lanvin-eclat-darpege",
+      "expected_name_en": "LANVIN - Eclat d’Arpège",
+      "brand_en": "Lanvin",
+      "usd_per_kg": "177.1",
+      "quality": "H",
+      "source_type": "secondary",
+      "reference_url": "https://www.fragrantica.com/perfume/Lanvin/Eclat-d-Arpege-988.html"
+    },
+    {
+      "product_id": "SUP-TP-910005",
+      "slug": "lanvin-marry-me",
+      "expected_name_en": "LANVIN - Marry Me",
+      "brand_en": "Lanvin",
+      "usd_per_kg": "172.7",
+      "quality": "H",
+      "source_type": "secondary",
+      "reference_url": "https://www.fragrantica.com/perfume/Lanvin/Marry-Me-9405.html"
+    },
+    {
+      "product_id": "YZD-PROD-1840",
+      "slug": "lattafa-perfumes-hayaati",
+      "expected_name_en": "LATTAFA PERFUMES - Hayaati",
+      "brand_en": "Lattafa Perfumes",
+      "usd_per_kg": "102.3",
+      "quality": "B",
+      "source_type": "provisional",
+      "reference_url": "https://lattafa.com/product/hayaati/"
+    },
+    {
+      "product_id": "YZD-PROD-1820",
+      "slug": "lattafa-perfumes-khamrah",
+      "expected_name_en": "LATTAFA PERFUMES - Khamrah",
+      "brand_en": "Lattafa Perfumes",
+      "usd_per_kg": "92.4",
+      "quality": "B",
+      "source_type": "provisional",
+      "reference_url": "https://lattafa.com/product/khamrah/"
+    },
+    {
+      "product_id": "YZD-PROD-1824",
+      "slug": "lattafa-perfumes-yara-pink",
+      "expected_name_en": "LATTAFA PERFUMES - Yara Pink",
+      "brand_en": "Lattafa Perfumes",
+      "usd_per_kg": "154",
+      "quality": "H",
+      "source_type": "provisional",
+      "reference_url": "https://lattafa.com/product/yara/"
+    },
+    {
+      "product_id": "YZD-PROD-0993",
+      "slug": "le-labo-santal-33",
+      "expected_name_en": "LE LABO - Santal 33",
+      "brand_en": "Le Labo",
+      "usd_per_kg": "126.5",
+      "quality": "H",
+      "source_type": "provisional",
+      "reference_url": "https://www.lelabofragrances.com/santal-33-147.html"
+    },
+    {
+      "product_id": "SUP-KY-900001",
+      "slug": "kayali-wedding-velvet-santal-35",
+      "expected_name_en": "KAYALI - The Wedding Velvet Santal 35",
+      "brand_en": "Kayali",
+      "usd_per_kg": "101.2",
+      "quality": "H",
+      "source_type": "provisional",
+      "reference_url": "https://us.kayali.com/products/the-wedding-velvet-santal-35"
+    },
+    {
+      "product_id": "SUP-LV-900001",
+      "slug": "louis-vuitton-afternoon-swim",
+      "expected_name_en": "LOUIS VUITTON - Afternoon Swim",
+      "brand_en": "Louis Vuitton",
+      "usd_per_kg": "403.7",
+      "quality": "H",
+      "source_type": "provisional",
+      "reference_url": "https://us.louisvuitton.com/eng-us/products/afternoon-swim-nvprod7330060v/LP0487"
+    },
+    {
+      "product_id": "SUP-LV-900002",
+      "slug": "louis-vuitton-imagination",
+      "expected_name_en": "LOUIS VUITTON - Imagination",
+      "brand_en": "Louis Vuitton",
+      "usd_per_kg": "618.2",
+      "quality": "H",
+      "source_type": "provisional",
+      "reference_url": "https://en.louisvuitton.com/eng-nl/products/Imagination-nvprod7340011v/LP0476"
+    },
+    {
+      "product_id": "SUP-LV-900003",
+      "slug": "louis-vuitton-limmensite",
+      "expected_name_en": "LOUIS VUITTON - L'Immensité",
+      "brand_en": "Louis Vuitton",
+      "usd_per_kg": "478.5",
+      "quality": "H",
+      "source_type": "provisional",
+      "reference_url": "https://us.louisvuitton.com/eng-us/products/limmensite-nvprod1030132v/LP0062"
+    },
+    {
+      "product_id": "SUP-LV-900004",
+      "slug": "louis-vuitton-ombre-nomade",
+      "expected_name_en": "LOUIS VUITTON - Ombre Nomade",
+      "brand_en": "Louis Vuitton",
+      "usd_per_kg": "425.7",
+      "quality": "H",
+      "source_type": "provisional",
+      "reference_url": "https://me.louisvuitton.com/eng-ae/products/Ombre-Nomade-nvprod990245v/LP0096"
+    },
+    {
+      "product_id": "SUP-LV-900005",
+      "slug": "louis-vuitton-stellar-times",
+      "expected_name_en": "LOUIS VUITTON - Stellar Times",
+      "brand_en": "Louis Vuitton",
+      "usd_per_kg": "429",
+      "quality": "H",
+      "source_type": "provisional",
+      "reference_url": "https://my.louisvuitton.com/eng-my/products/stellar-times-nvprod7340023v/LP0526"
+    },
+    {
+      "product_id": "SUP-LV-900006",
+      "slug": "louis-vuitton-california-dream",
+      "expected_name_en": "LOUIS VUITTON - California Dream",
+      "brand_en": "Louis Vuitton",
+      "usd_per_kg": "126.5",
+      "quality": "I",
+      "source_type": "provisional",
+      "reference_url": "https://uk.louisvuitton.com/eng-gb/products/california-dream-nvprod2210033v/LP0175"
+    },
+    {
+      "product_id": "SUP-TP-910039",
+      "slug": "max-factor-just-call-me-maxi",
+      "expected_name_en": "MAX FACTOR - Just Call Me Maxi",
+      "brand_en": "Max Factor",
+      "usd_per_kg": "116.6",
+      "quality": "I",
+      "source_type": "secondary",
+      "reference_url": "https://www.fragrantica.com/perfume/Max-Factor/Just-Call-Me-Maxi-41450.html"
+    },
+    {
+      "product_id": "YZD-PROD-1159",
+      "slug": "memo-paris-irish-leather",
+      "expected_name_en": "MEMO PARIS - Irish Leather",
+      "brand_en": "Memo Paris",
+      "usd_per_kg": "265.1",
+      "quality": "H",
+      "source_type": "provisional",
+      "reference_url": "https://us.memoparis.com/products/irish-leather-eau-de-parfum-30ml"
+    },
+    {
+      "product_id": "SUP-TP-910001",
+      "slug": "memo-paris-jamals-palace",
+      "expected_name_en": "MEMO PARIS - Jamal's Palace",
+      "brand_en": "Memo Paris",
+      "usd_per_kg": "467.5",
+      "quality": "H",
+      "source_type": "secondary",
+      "reference_url": "https://www.fragrantica.com/perfume/Memo-Paris/Jamal-s-Palace-60077.html"
+    },
+    {
+      "product_id": "SUP-TP-910002",
+      "slug": "memo-paris-retba",
+      "expected_name_en": "MEMO PARIS - Retba",
+      "brand_en": "Memo Paris",
+      "usd_per_kg": "332.2",
+      "quality": "H",
+      "source_type": "secondary",
+      "reference_url": "https://www.fragrantica.com/perfume/Memo-Paris/Retba-60076.html"
+    },
+    {
+      "product_id": "SUP-TP-910016",
+      "slug": "malizia-uomo-vetyver",
+      "expected_name_en": "Malizia Uomo Vetyver",
+      "brand_en": "Malizia",
+      "usd_per_kg": "174.9",
+      "quality": "H",
+      "source_type": "secondary",
+      "reference_url": "https://www.fragrantica.com/perfume/Malizia/Malizia-Uomo-Vetyver-12997.html"
+    },
+    {
+      "product_id": "YZD-PROD-1816",
+      "slug": "montblanc-montblanc-explorer",
+      "expected_name_en": "Montblanc Explorer",
+      "brand_en": "Montblanc",
+      "usd_per_kg": "209",
+      "quality": "H",
+      "source_type": "provisional",
+      "reference_url": "https://www.montblanc.com/en-be/explorer-eau-de-parfum-60-ml-MB124070.html"
+    },
+    {
+      "product_id": "YZD-PROD-2081",
+      "slug": "montblanc-legend-spirit",
+      "expected_name_en": "MONTBLANC - Legend Spirit",
+      "brand_en": "Montblanc",
+      "usd_per_kg": "121",
+      "quality": "H",
+      "source_type": "provisional",
+      "reference_url": "https://www.montblanc.com/en-cl/montblanc-legend-spirit-eau-de-toilette-50-ml-MB115366VG.html"
+    },
+    {
+      "product_id": "SUP-MB-900010",
+      "slug": "montblanc-emblem",
+      "expected_name_en": "MONTBLANC - Emblem",
+      "brand_en": "Montblanc",
+      "usd_per_kg": "269.5",
+      "quality": "H",
+      "source_type": "provisional",
+      "reference_url": "https://www.montblanc.com/en-us/eau-de-toilette_cod23471478575779015.html"
+    },
+    {
+      "product_id": "SUP-TP-910030",
+      "slug": "narciso-rodriguez-for-him-original",
+      "expected_name_en": "Narciso Rodriguez for Him",
+      "brand_en": "Narciso Rodriguez",
+      "usd_per_kg": "145.2",
+      "quality": "P",
+      "source_type": "secondary",
+      "reference_url": "https://www.fragrantica.com/perfume/Narciso-Rodriguez/Narciso-Rodriguez-for-Him-1063.html"
+    },
+    {
+      "product_id": "YZD-PROD-0921",
+      "slug": "nasomatto-baraonda",
+      "expected_name_en": "NASOMATTO - Baraonda",
+      "brand_en": "Nasomatto",
+      "usd_per_kg": "931.7",
+      "quality": "H",
+      "source_type": "provisional",
+      "reference_url": "https://nasomatto.com/products/baraonda"
+    },
+    {
+      "product_id": "YZD-PROD-0919",
+      "slug": "nasomatto-black-afgano",
+      "expected_name_en": "NASOMATTO - Black Afgano",
+      "brand_en": "Nasomatto",
+      "usd_per_kg": "407",
+      "quality": "H",
+      "source_type": "provisional",
+      "reference_url": "https://nasomatto.com/products/black-afgano"
+    },
+    {
+      "product_id": "YZD-PROD-0928",
+      "slug": "nasomatto-fantomas",
+      "expected_name_en": "NASOMATTO - Fantomas",
+      "brand_en": "Nasomatto",
+      "usd_per_kg": "530.2",
+      "quality": "H",
+      "source_type": "provisional",
+      "reference_url": "https://nasomatto.com/products/fantomas"
+    },
+    {
+      "product_id": "YZD-PROD-0925",
+      "slug": "nasomatto-hindu-grass",
+      "expected_name_en": "NASOMATTO - Hindu Grass",
+      "brand_en": "Nasomatto",
+      "usd_per_kg": "474.1",
+      "quality": "H",
+      "source_type": "secondary",
+      "reference_url": "https://www.fragrantica.com/perfume/Nasomatto/Hindu-Grass-4294.html"
+    },
+    {
+      "product_id": "SUP-NT-900026",
+      "slug": "nautica-voyage",
+      "expected_name_en": "NAUTICA - Voyage",
+      "brand_en": "Nautica",
+      "usd_per_kg": "92.4",
+      "quality": "B",
+      "source_type": "provisional",
+      "reference_url": "https://www.nautica.com/nautica-voyage-3.4-oz.-eau-de-toilette/99350078119.html"
+    },
+    {
+      "product_id": "SUP-TP-910032",
+      "slug": "remy-marquis-shalis-cologne",
+      "expected_name_en": "REMY MARQUIS - Shalis Cologne",
+      "brand_en": "Remy Marquis",
+      "usd_per_kg": "92.4",
+      "quality": "B",
+      "source_type": "secondary",
+      "reference_url": "https://www.fragrantica.com/perfume/Remy-Marquis/Shalis-Cologne-20850.html"
+    },
+    {
+      "product_id": "YZD-PROD-0931",
+      "slug": "orto-parisi-megamare",
+      "expected_name_en": "ORTO PARISI - Megamare",
+      "brand_en": "Orto Parisi",
+      "usd_per_kg": "1118.7",
+      "quality": "T",
+      "source_type": "provisional",
+      "reference_url": "https://ortoparisi.com/products/megamare"
+    },
+    {
+      "product_id": "SUP-JH-900028",
+      "slug": "juliette-has-a-gun-metal-chypre",
+      "expected_name_en": "JULIETTE HAS A GUN - Metal Chypré",
+      "brand_en": "Juliette Has A Gun",
+      "usd_per_kg": "183.7",
+      "quality": "I",
+      "source_type": "provisional",
+      "reference_url": "https://us.juliettehasagun.com/products/metal-chypre"
+    },
+    {
+      "product_id": "YZD-PROD-0031",
+      "slug": "parfums-de-marly-akaster",
+      "expected_name_en": "PARFUMS DE MARLY - Akaster",
+      "brand_en": "Parfums de Marly",
+      "usd_per_kg": "331.1",
+      "quality": "H",
+      "source_type": "secondary",
+      "reference_url": "https://www.fragrantica.com/perfume/Parfums-de-Marly/Akaster-33513.html"
+    },
+    {
+      "product_id": "YZD-PROD-0651",
+      "slug": "parfums-de-marly-galloway",
+      "expected_name_en": "PARFUMS DE MARLY - Galloway",
+      "brand_en": "Parfums de Marly",
+      "usd_per_kg": "191.4",
+      "quality": "H",
+      "source_type": "provisional",
+      "reference_url": "https://us.parfums-de-marly.com/products/galloway"
+    },
+    {
+      "product_id": "YZD-PROD-0648",
+      "slug": "parfums-de-marly-godolphin",
+      "expected_name_en": "PARFUMS DE MARLY - Godolphin",
+      "brand_en": "Parfums de Marly",
+      "usd_per_kg": "182.6",
+      "quality": "H",
+      "source_type": "provisional",
+      "reference_url": "https://us.parfums-de-marly.com/products/godolphin"
+    },
+    {
+      "product_id": "YZD-PROD-0647",
+      "slug": "parfums-de-marly-greenley",
+      "expected_name_en": "PARFUMS DE MARLY - Greenley",
+      "brand_en": "Parfums de Marly",
+      "usd_per_kg": "314.6",
+      "quality": "H",
+      "source_type": "provisional",
+      "reference_url": "https://us.parfums-de-marly.com/products/greenley"
+    },
+    {
+      "product_id": "YZD-PROD-0642",
+      "slug": "parfums-de-marly-haltane",
+      "expected_name_en": "PARFUMS DE MARLY - Haltane",
+      "brand_en": "Parfums de Marly",
+      "usd_per_kg": "283.8",
+      "quality": "H",
+      "source_type": "provisional",
+      "reference_url": "https://us.parfums-de-marly.com/products/haltane"
+    },
+    {
+      "product_id": "YZD-PROD-0639",
+      "slug": "parfums-de-marly-herod",
+      "expected_name_en": "PARFUMS DE MARLY - Herod",
+      "brand_en": "Parfums de Marly",
+      "usd_per_kg": "199.1",
+      "quality": "H",
+      "source_type": "provisional",
+      "reference_url": "https://us.parfums-de-marly.com/products/herod"
+    },
+    {
+      "product_id": "YZD-PROD-0650",
+      "slug": "parfums-de-marly-kalan",
+      "expected_name_en": "PARFUMS DE MARLY - Kalan",
+      "brand_en": "Parfums de Marly",
+      "usd_per_kg": "322.3",
+      "quality": "H",
+      "source_type": "provisional",
+      "reference_url": "https://us.parfums-de-marly.com/products/kalan"
+    },
+    {
+      "product_id": "YZD-PROD-0636",
+      "slug": "parfums-de-marly-layton",
+      "expected_name_en": "PARFUMS DE MARLY - Layton",
+      "brand_en": "Parfums de Marly",
+      "usd_per_kg": "427.9",
+      "quality": "H",
+      "source_type": "provisional",
+      "reference_url": "https://us.parfums-de-marly.com/products/layton"
+    },
+    {
+      "product_id": "YZD-PROD-0656",
+      "slug": "parfums-de-marly-valaya",
+      "expected_name_en": "PARFUMS DE MARLY - Valaya",
+      "brand_en": "Parfums de Marly",
+      "usd_per_kg": "123.2",
+      "quality": "B",
+      "source_type": "provisional",
+      "reference_url": "https://us.parfums-de-marly.com/products/valaya"
+    },
+    {
+      "product_id": "YZD-PROD-0032",
+      "slug": "parfums-de-marly-nisean",
+      "expected_name_en": "PARFUMS DE MARLY - Nisean",
+      "brand_en": "Parfums de Marly",
+      "usd_per_kg": "303.6",
+      "quality": "H",
+      "source_type": "secondary",
+      "reference_url": "https://www.fragrantica.com/perfume/Parfums-de-Marly/Nisean-36540.html"
+    },
+    {
+      "product_id": "YZD-PROD-0640",
+      "slug": "parfums-de-marly-pegasus",
+      "expected_name_en": "PARFUMS DE MARLY - Pegasus",
+      "brand_en": "Parfums de Marly",
+      "usd_per_kg": "191.4",
+      "quality": "H",
+      "source_type": "provisional",
+      "reference_url": "https://us.parfums-de-marly.com/products/pegasus"
+    },
+    {
+      "product_id": "YZD-PROD-0645",
+      "slug": "parfums-de-marly-percival",
+      "expected_name_en": "PARFUMS DE MARLY - Percival",
+      "brand_en": "Parfums de Marly",
+      "usd_per_kg": "393.8",
+      "quality": "P",
+      "source_type": "provisional",
+      "reference_url": "https://us.parfums-de-marly.com/products/percival"
+    },
+    {
+      "product_id": "YZD-PROD-0646",
+      "slug": "parfums-de-marly-sedley",
+      "expected_name_en": "PARFUMS DE MARLY - Sedley",
+      "brand_en": "Parfums de Marly",
+      "usd_per_kg": "300.3",
+      "quality": "H",
+      "source_type": "provisional",
+      "reference_url": "https://us.parfums-de-marly.com/products/sedley"
+    },
+    {
+      "product_id": "YZD-PROD-0501",
+      "slug": "penhaligons-the-tragedy-of-lord-george",
+      "expected_name_en": "PENHALIGON'S - The Tragedy of Lord George",
+      "brand_en": "Penhaligon's",
+      "usd_per_kg": "423.5",
+      "quality": "H",
+      "source_type": "provisional",
+      "reference_url": "https://www.penhaligons.com/uk/en/p/the-tragedy-of-lord-george-eau-de-parfum-75-ml--000000000065173406"
+    },
+    {
+      "product_id": "YZD-PROD-0502",
+      "slug": "penhaligons-the-blazing-mr-sam",
+      "expected_name_en": "PENHALIGON'S - The Blazing Mr Sam",
+      "brand_en": "Penhaligon's",
+      "usd_per_kg": "289.3",
+      "quality": "H",
+      "source_type": "provisional",
+      "reference_url": "https://www.penhaligons.com/fr/en/p/the-blazing-mister-sam-eau-de-parfum-75ml--000000000065173422"
+    },
+    {
+      "product_id": "SUP-RL-900020",
+      "slug": "ralph-lauren-polo-black",
+      "expected_name_en": "RALPH LAUREN - Polo Black",
+      "brand_en": "Ralph Lauren",
+      "usd_per_kg": "251.9",
+      "quality": "H",
+      "source_type": "provisional",
+      "reference_url": "https://www.ralphlaurenfragrances.com/en_US/men/polo-black/polo-black-eau-de-toilette/RLFE012.html"
+    },
+    {
+      "product_id": "SUP-TP-910018",
+      "slug": "rasasi-blue-for-men",
+      "expected_name_en": "RASASI - Blue For Men",
+      "brand_en": "Rasasi",
+      "usd_per_kg": "112.2",
+      "quality": "H",
+      "source_type": "secondary",
+      "reference_url": "https://www.fragrantica.com/perfume/Rasasi/Blue-For-Men-8630.html"
+    },
+    {
+      "product_id": "SUP-TP-910017",
+      "slug": "rasasi-afshan",
+      "expected_name_en": "RASASI - Afshan",
+      "brand_en": "Rasasi",
+      "usd_per_kg": "92.4",
+      "quality": "B",
+      "source_type": "secondary",
+      "reference_url": "https://www.fragrantica.com/perfume/Rasasi/Afshan-19525.html"
+    },
+    {
+      "product_id": "SUP-TP-910015",
+      "slug": "rihanna-riri",
+      "expected_name_en": "RIHANNA - RiRi",
+      "brand_en": "Rihanna",
+      "usd_per_kg": "169.4",
+      "quality": "H",
+      "source_type": "secondary",
+      "reference_url": "https://www.fragrantica.com/perfume/Rihanna/RiRi-31629.html"
+    },
+    {
+      "product_id": "SUP-TP-910014",
+      "slug": "rochas-aquawoman",
+      "expected_name_en": "ROCHAS - Aquawoman",
+      "brand_en": "Rochas",
+      "usd_per_kg": "168.3",
+      "quality": "H",
+      "source_type": "secondary",
+      "reference_url": "https://www.fragrantica.com/perfume/Rochas/Aquawoman-1427.html"
+    },
+    {
+      "product_id": "SUP-TP-910021",
+      "slug": "roger-gallet-open",
+      "expected_name_en": "ROGER & GALLET - Open",
+      "brand_en": "Roger & Gallet",
+      "usd_per_kg": "155.1",
+      "quality": "H",
+      "source_type": "secondary",
+      "reference_url": "https://www.fragrantica.com/perfume/Roger-Gallet/Open-5973.html"
+    },
+    {
+      "product_id": "SUP-TP-910037",
+      "slug": "salvatore-ferragamo-incanto-2003",
+      "expected_name_en": "SALVATORE FERRAGAMO - Incanto",
+      "brand_en": "Salvatore Ferragamo",
+      "usd_per_kg": "203.5",
+      "quality": "H",
+      "source_type": "secondary",
+      "reference_url": "https://www.fragrantica.com/perfume/Salvatore-Ferragamo/Incanto-651.html"
+    },
+    {
+      "product_id": "SUP-SF-900001",
+      "slug": "salvatore-ferragamo-signorina-edp",
+      "expected_name_en": "SALVATORE FERRAGAMO - Signorina",
+      "brand_en": "Salvatore Ferragamo",
+      "usd_per_kg": "92.4",
+      "quality": "B",
+      "source_type": "provisional",
+      "reference_url": "https://www.ferragamo.com/shop/esp/es/mujer/fragancias/signorina-781424--5"
+    },
+    {
+      "product_id": "SUP-TP-910033",
+      "slug": "sapil-chichi-original-women",
+      "expected_name_en": "SAPIL - Chichi",
+      "brand_en": "Sapil",
+      "usd_per_kg": "75.9",
+      "quality": "I",
+      "source_type": "secondary",
+      "reference_url": "https://www.fragrantica.com/perfume/Sapil/Chichi-25560.html"
+    },
+    {
+      "product_id": "SUP-SP-900050",
+      "slug": "sapil-nice-feelings-black",
+      "expected_name_en": "SAPIL - Nice Feeling Black",
+      "brand_en": "Sapil",
+      "usd_per_kg": "86.9",
+      "quality": "B",
+      "source_type": "provisional",
+      "reference_url": "https://sapil.com/products/nice_feeling_black"
+    },
+    {
+      "product_id": "SUP-SE-900001",
+      "slug": "seris-splendor",
+      "expected_name_en": "SERIS PARFUMS - Splendor",
+      "brand_en": "Seris Parfums",
+      "usd_per_kg": "172.7",
+      "quality": "H",
+      "source_type": "provisional",
+      "reference_url": "https://www.seris-parfums.com/product/splendor/"
+    },
+    {
+      "product_id": "SUP-SH-900022",
+      "slug": "shiseido-zen",
+      "expected_name_en": "SHISEIDO - Zen",
+      "brand_en": "Shiseido",
+      "usd_per_kg": "176",
+      "quality": "H",
+      "source_type": "provisional",
+      "reference_url": "https://www.shiseido.com/us/en/zen-eau-de-parfum-0768614102007.html"
+    },
+    {
+      "product_id": "SUP-TP-910008",
+      "slug": "sospiro-accento",
+      "expected_name_en": "SOSPIRO PERFUMES - Accento",
+      "brand_en": "Sospiro Perfumes",
+      "usd_per_kg": "491.7",
+      "quality": "T",
+      "source_type": "secondary",
+      "reference_url": "https://www.fragrantica.com/perfume/Sospiro-Perfumes/Accento-13816.html"
+    },
+    {
+      "product_id": "SUP-TP-910024",
+      "slug": "sospiro-erba-pura-original",
+      "expected_name_en": "SOSPIRO PERFUMES - Erba Pura",
+      "brand_en": "Sospiro Perfumes",
+      "usd_per_kg": "267.3",
+      "quality": "H",
+      "source_type": "secondary",
+      "reference_url": "https://www.fragrantica.com/perfume/Sospiro-Perfumes/Erba-Pura-18652.html"
+    },
+    {
+      "product_id": "YZD-PROD-1328",
+      "slug": "sospiro-perfumes-opera",
+      "expected_name_en": "SOSPIRO PERFUMES - Opera",
+      "brand_en": "Sospiro Perfumes",
+      "usd_per_kg": "240.9",
+      "quality": "H",
+      "source_type": "secondary",
+      "reference_url": "https://www.fragrantica.com/perfume/Sospiro-Perfumes/Opera-26282.html"
+    },
+    {
+      "product_id": "SUP-TP-910020",
+      "slug": "mugler-angel-passion-star",
+      "expected_name_en": "MUGLER - Angel Passion Star",
+      "brand_en": "Mugler",
+      "usd_per_kg": "75.9",
+      "quality": "I",
+      "source_type": "secondary",
+      "reference_url": "https://www.fragrantica.com/perfume/Mugler/Angel-Passion-Star-31849.html"
+    },
+    {
+      "product_id": "YZD-PROD-1625",
+      "slug": "mugler-womanity",
+      "expected_name_en": "MUGLER - Womanity",
+      "brand_en": "Mugler",
+      "usd_per_kg": "89.1",
+      "quality": "P",
+      "source_type": "provisional",
+      "reference_url": "https://inter.mugler.com/default/fragrance/women-s-fragrances/womanity/womanity-eau-de-parfum/M01090105.html"
+    },
+    {
+      "product_id": "YZD-PROD-1351",
+      "slug": "tiziana-terenzi-kirke",
+      "expected_name_en": "TIZIANA TERENZI - Kirke",
+      "brand_en": "Tiziana Terenzi",
+      "usd_per_kg": "355.3",
+      "quality": "H",
+      "source_type": "provisional",
+      "reference_url": "https://tizianaterenzi.com/en/fragrance-wheel/"
+    },
+    {
+      "product_id": "YZD-PROD-1684",
+      "slug": "tom-ford-fucking-fabulous",
+      "expected_name_en": "TOM FORD - Fucking Fabulous",
+      "brand_en": "Tom Ford",
+      "usd_per_kg": "331.1",
+      "quality": "H",
+      "source_type": "provisional",
+      "reference_url": "https://www.tomfordbeauty.com/products/fucking-fabulous-eau-de-parfum"
+    },
+    {
+      "product_id": "YZD-PROD-1677",
+      "slug": "tom-ford-lost-cherry",
+      "expected_name_en": "TOM FORD - Lost Cherry",
+      "brand_en": "Tom Ford",
+      "usd_per_kg": "262.9",
+      "quality": "H",
+      "source_type": "provisional",
+      "reference_url": "https://www.tomfordbeauty.com/products/lost-cherry-eau-de-parfum-set"
+    },
+    {
+      "product_id": "YZD-PROD-1676",
+      "slug": "tom-ford-oud-wood",
+      "expected_name_en": "TOM FORD - Oud Wood",
+      "brand_en": "Tom Ford",
+      "usd_per_kg": "187",
+      "quality": "B",
+      "source_type": "provisional",
+      "reference_url": "https://www.tomfordbeauty.com/products/oud-wood-eau-de-parfum"
+    },
+    {
+      "product_id": "YZD-PROD-1688",
+      "slug": "tom-ford-vanilla-sex-2024",
+      "expected_name_en": "TOM FORD - Vanilla Sex 2024",
+      "brand_en": "Tom Ford",
+      "usd_per_kg": "205.7",
+      "quality": "H",
+      "source_type": "provisional",
+      "reference_url": "https://www.tomfordbeauty.com/products/vanilla-sex-eau-de-parfum"
+    },
+    {
+      "product_id": "YZD-PROD-1674",
+      "slug": "tom-ford-tobacco-vanille",
+      "expected_name_en": "TOM FORD - Tobacco Vanille",
+      "brand_en": "Tom Ford",
+      "usd_per_kg": "382.8",
+      "quality": "H",
+      "source_type": "provisional",
+      "reference_url": "https://www.tomfordbeauty.com/products/tobacco-vanille-eau-de-parfum"
+    },
+    {
+      "product_id": "YZD-PROD-1675",
+      "slug": "tom-ford-tuscan-leather",
+      "expected_name_en": "TOM FORD - Tuscan Leather",
+      "brand_en": "Tom Ford",
+      "usd_per_kg": "202.4",
+      "quality": "H",
+      "source_type": "provisional",
+      "reference_url": "https://www.tomfordbeauty.com/products/tuscan-leather-eau-de-parfum"
+    },
+    {
+      "product_id": "YZD-PROD-0990",
+      "slug": "byredo-de-los-santos",
+      "expected_name_en": "BYREDO - De Los Santos",
+      "brand_en": "Byredo",
+      "usd_per_kg": "410.3",
+      "quality": "H",
+      "source_type": "provisional",
+      "reference_url": "https://www.byredo.com/us_en/de-los-santos-50ml"
+    },
+    {
+      "product_id": "YZD-PROD-0989",
+      "slug": "byredo-rouge-chaotique",
+      "expected_name_en": "BYREDO - Rouge Chaotique",
+      "brand_en": "Byredo",
+      "usd_per_kg": "382.8",
+      "quality": "H",
+      "source_type": "provisional",
+      "reference_url": "https://www.byredo.com/us_en/p/rouge-chaotique-night-veils-perfume-extract-70ml"
+    },
+    {
+      "product_id": "SUP-TP-910034",
+      "slug": "escada-collection-1997",
+      "expected_name_en": "Escada Collection",
+      "brand_en": "Escada",
+      "usd_per_kg": "81.4",
+      "quality": "I",
+      "source_type": "secondary",
+      "reference_url": "https://www.fragrantica.com/perfume/Escada/Escada-Collection-1369.html"
+    },
+    {
+      "product_id": "SUP-TP-910019",
+      "slug": "tommy-hilfiger-tommy-jeans",
+      "expected_name_en": "TOMMY HILFIGER - Tommy Jeans",
+      "brand_en": "Tommy Hilfiger",
+      "usd_per_kg": "122.1",
+      "quality": "H",
+      "source_type": "secondary",
+      "reference_url": "https://www.fragrantica.com/perfume/Tommy-Hilfiger/Tommy-Jeans-6316.html"
+    },
+    {
+      "product_id": "YZD-PROD-1706",
+      "slug": "versace-bright-crystal",
+      "expected_name_en": "VERSACE - Bright Crystal",
+      "brand_en": "Versace",
+      "usd_per_kg": "166.1",
+      "quality": "H",
+      "source_type": "provisional",
+      "reference_url": "https://www.versace.com/us/en/women/accessories/fragrances-body-care/bright-crystal/bright-crystal-edt-90-ml-pink/R510032-R090MLS_RNUL.html"
+    },
+    {
+      "product_id": "YZD-PROD-1702",
+      "slug": "versace-versace-pour-homme",
+      "expected_name_en": "Versace Pour Homme",
+      "brand_en": "Versace",
+      "usd_per_kg": "330",
+      "quality": "T",
+      "source_type": "provisional",
+      "reference_url": "https://www.versace.com/us/en/men/accessories/fragrances-body-care/pour-homme/pour-homme-edt-100-ml-blue/R720010-R100MLS_RNUL.html"
+    },
+    {
+      "product_id": "YZD-PROD-1748",
+      "slug": "viktor-rolf-spicebomb-edt",
+      "expected_name_en": "VIKTOR & ROLF - Spicebomb EDT",
+      "brand_en": "Viktor & Rolf",
+      "usd_per_kg": "217.8",
+      "quality": "P",
+      "source_type": "provisional",
+      "reference_url": "https://us.viktor-rolf.com/fragrance/spicebomb-eau-de-toilette-VKR_030.html"
+    },
+    {
+      "product_id": "SUP-VS-900032",
+      "slug": "victorias-secret-aqua-kiss",
+      "expected_name_en": "VICTORIA'S SECRET - Aqua Kiss",
+      "brand_en": "Victoria's Secret",
+      "usd_per_kg": "108.9",
+      "quality": "P",
+      "source_type": "provisional",
+      "reference_url": "https://www.victoriassecret.com/ca/vs/beauty-catalog/5000011041?genericId=11259203&choice=4760"
+    },
+    {
+      "product_id": "SUP-VS-900021",
+      "slug": "victorias-secret-bombshell",
+      "expected_name_en": "VICTORIA'S SECRET - Bombshell",
+      "brand_en": "Victoria's Secret",
+      "usd_per_kg": "174.9",
+      "quality": "H",
+      "source_type": "provisional",
+      "reference_url": "https://www.victoriassecret.com/us/vs/beauty-catalog/5000010457"
+    },
+    {
+      "product_id": "SUP-VS-900030",
+      "slug": "victorias-secret-very-sexy",
+      "expected_name_en": "VICTORIA'S SECRET - Very Sexy",
+      "brand_en": "Victoria's Secret",
+      "usd_per_kg": "107.8",
+      "quality": "P",
+      "source_type": "provisional",
+      "reference_url": "https://www.victoriassecret.com/us/vs/beauty-catalog/5000010459/-/a/generic-11260424-choice-2068/very-sexy-eau-de-parfum-3.4-oz-floral"
+    },
+    {
+      "product_id": "SUP-TP-910022",
+      "slug": "john-richmond-for-men",
+      "expected_name_en": "John Richmond for Men",
+      "brand_en": "John Richmond",
+      "usd_per_kg": "122.1",
+      "quality": "B",
+      "source_type": "secondary",
+      "reference_url": "https://www.fragrantica.com/perfume/John-Richmond/John-Richmond-for-Men-9117.html"
+    },
+    {
+      "product_id": "SUP-JG-900025",
+      "slug": "jaguar-classic-black",
+      "expected_name_en": "JAGUAR - Classic Black",
+      "brand_en": "Jaguar",
+      "usd_per_kg": "106.7",
+      "quality": "B",
+      "source_type": "provisional",
+      "reference_url": "https://jaguar-fragrances.com/en/classic-black"
+    },
+    {
+      "product_id": "SUP-XJ-900007",
+      "slug": "xerjoff-torino24",
+      "expected_name_en": "XERJOFF - Torino24",
+      "brand_en": "Xerjoff",
+      "usd_per_kg": "330",
+      "quality": "H",
+      "source_type": "provisional",
+      "reference_url": "https://www.xerjoff.com/en-us/products/torino24-eau-de-parfum-15ml"
+    },
+    {
+      "product_id": "YZD-PROD-0591",
+      "slug": "xerjoff-torino22",
+      "expected_name_en": "XERJOFF - Torino22",
+      "brand_en": "Xerjoff",
+      "usd_per_kg": "277.2",
+      "quality": "H",
+      "source_type": "provisional",
+      "reference_url": "https://www.xerjoff.com/products/torino22-eau-de-parfum"
+    },
+    {
+      "product_id": "YZD-PROD-0576",
+      "slug": "xerjoff-alexandria-ii",
+      "expected_name_en": "XERJOFF - Alexandria II",
+      "brand_en": "Xerjoff",
+      "usd_per_kg": "333.3",
+      "quality": "H",
+      "source_type": "provisional",
+      "reference_url": "https://www.xerjoff.com/en-us/products/alexandria-ll-parfum"
+    },
+    {
+      "product_id": "YZD-PROD-0603",
+      "slug": "casamorati-bouquet-ideale",
+      "expected_name_en": "CASAMORATI - Bouquet Ideale",
+      "brand_en": "Casamorati",
+      "usd_per_kg": "223.3",
+      "quality": "H",
+      "source_type": "provisional",
+      "reference_url": "https://www.xerjoff.com/products/bouquet-ideale-eau-de-parfum"
+    },
+    {
+      "product_id": "YZD-PROD-0602",
+      "slug": "casamorati-dama-bianca",
+      "expected_name_en": "CASAMORATI - Dama Bianca",
+      "brand_en": "Casamorati",
+      "usd_per_kg": "130.9",
+      "quality": "P",
+      "source_type": "provisional",
+      "reference_url": "https://www.xerjoff.com/en-us/products/dama-bianca-eau-de-parfum"
+    },
+    {
+      "product_id": "YZD-PROD-0601",
+      "slug": "casamorati-lira",
+      "expected_name_en": "CASAMORATI - Lira",
+      "brand_en": "Casamorati",
+      "usd_per_kg": "180.4",
+      "quality": "H",
+      "source_type": "provisional",
+      "reference_url": "https://www.xerjoff.com/en-us/products/lira-eau-de-parfum"
+    },
+    {
+      "product_id": "YZD-PROD-0611",
+      "slug": "casamorati-gran-ballo",
+      "expected_name_en": "CASAMORATI - Gran Ballo",
+      "brand_en": "Casamorati",
+      "usd_per_kg": "221.1",
+      "quality": "H",
+      "source_type": "provisional",
+      "reference_url": "https://www.xerjoff.com/en-us/products/gran-ballo-eau-de-parfum"
+    },
+    {
+      "product_id": "YZD-PROD-0604",
+      "slug": "casamorati-mefisto",
+      "expected_name_en": "CASAMORATI - Mefisto",
+      "brand_en": "Casamorati",
+      "usd_per_kg": "178.2",
+      "quality": "H",
+      "source_type": "provisional",
+      "reference_url": "https://www.xerjoff.com/en-us/products/mefisto-eau-de-parfum"
+    },
+    {
+      "product_id": "YZD-PROD-0575",
+      "slug": "xerjoff-naxos",
+      "expected_name_en": "XERJOFF - Naxos",
+      "brand_en": "Xerjoff",
+      "usd_per_kg": "354.2",
+      "quality": "H",
+      "source_type": "provisional",
+      "reference_url": "https://www.xerjoff.com/products/naxos-eau-de-parfum"
+    },
+    {
+      "product_id": "YZD-PROD-1501",
+      "slug": "yves-saint-laurent-black-opium-edp",
+      "expected_name_en": "YVES SAINT LAURENT - Black Opium EDP",
+      "brand_en": "Yves Saint Laurent",
+      "usd_per_kg": "245.3",
+      "quality": "H",
+      "source_type": "provisional",
+      "reference_url": "https://www.yslbeautyus.com/fragrance/womens-fragrances/black-opium/black-opium-eau-de-parfum/252YSL.html"
+    },
+    {
+      "product_id": "YZD-PROD-1512",
+      "slug": "yves-saint-laurent-babycat",
+      "expected_name_en": "YVES SAINT LAURENT - Babycat",
+      "brand_en": "Yves Saint Laurent",
+      "usd_per_kg": "292.6",
+      "quality": "H",
+      "source_type": "provisional",
+      "reference_url": "https://www.yslbeautyus.com/fragrance/le-vestiaire-des-parfums/the-signature-collection/babycat---le-vestiaire-des-parfums/WW-50920YSL.html"
+    },
+    {
+      "product_id": "YZD-PROD-1504",
+      "slug": "yves-saint-laurent-libre-edp",
+      "expected_name_en": "YVES SAINT LAURENT - Libre EDP",
+      "brand_en": "Yves Saint Laurent",
+      "usd_per_kg": "256.3",
+      "quality": "H",
+      "source_type": "provisional",
+      "reference_url": "https://www.yslbeautyus.com/fragrance/womens-fragrances/libre/libre-eau-de-parfum/109YSL.html"
+    },
+    {
+      "product_id": "YZD-PROD-1505",
+      "slug": "yves-saint-laurent-libre-intense",
+      "expected_name_en": "YVES SAINT LAURENT - Libre Intense",
+      "brand_en": "Yves Saint Laurent",
+      "usd_per_kg": "119.9",
+      "quality": "B",
+      "source_type": "provisional",
+      "reference_url": "https://www.yslbeautyus.com/fragrance/womens-fragrances/libre/libre-eau-de-parfum-intense/306YSL.html"
+    },
+    {
+      "product_id": "YZD-PROD-1507",
+      "slug": "yves-saint-laurent-mon-paris",
+      "expected_name_en": "YVES SAINT LAURENT - Mon Paris",
+      "brand_en": "Yves Saint Laurent",
+      "usd_per_kg": "388.3",
+      "quality": "H",
+      "source_type": "provisional",
+      "reference_url": "https://www.yslbeautyus.com/fragrance/womens-fragrances/mon-paris/mon-paris-eau-de-parfum/4150YSL.html"
+    },
+    {
+      "product_id": "YZD-PROD-1511",
+      "slug": "yves-saint-laurent-tuxedo",
+      "expected_name_en": "YVES SAINT LAURENT - Tuxedo",
+      "brand_en": "Yves Saint Laurent",
+      "usd_per_kg": "385",
+      "quality": "H",
+      "source_type": "provisional",
+      "reference_url": "https://www.yslbeautyus.com/fragrance/le-vestiaire-des-parfums/the-signature-collection/tuxedo---le-vestiaire-des-parfums/809YSL.html"
+    },
+    {
+      "product_id": "YZD-PROD-1814",
+      "slug": "bentley-bentley-for-men-intense",
+      "expected_name_en": "Bentley for Men Intense",
+      "brand_en": "Bentley",
+      "usd_per_kg": "184.8",
+      "quality": "R",
+      "source_type": "provisional",
+      "reference_url": "https://bentley-fragrances.com/en/for-men-intense"
+    }
+  ]
+}

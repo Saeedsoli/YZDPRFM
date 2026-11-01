@@ -24,6 +24,8 @@
  * اجرا: node scripts/test_audit_blackbox_fixes.js   (سرور بالا)
  */
 'use strict';
+// This legacy fixture explicitly tests the pre-approval unavailable baseline.
+process.env.APPROVED_MTO_AUTOSTART ??= '0';
 
 const http = require('http');
 const fs   = require('fs');

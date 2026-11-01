@@ -377,6 +377,7 @@ node_modules/   با npm install برمی‌گردد
 - `scripts/retire_sample3.js`
 - `scripts/test_availability_consistency.py`
 - `scripts/test_availability_rules.js`
+- `scripts/test_approved_mto.py`
 - `scripts/test_essence_pricing.js`
 - `scripts/test_essence_pricing_store.js`
 - `scripts/test_exchange_rate_api.py`
@@ -412,6 +413,7 @@ node_modules/   با npm install برمی‌گردد
 ### ماژول‌های سرور
 
 - `src/availability.js`
+- `src/approved-made-to-order.js`
 - `src/essence-pricing-store.js`
 - `src/essence-pricing.js`
 - `src/import-supplier-prices.js`

@@ -1,4 +1,6 @@
 'use strict';
+// This legacy fixture explicitly tests the pre-approval unavailable baseline.
+process.env.APPROVED_MTO_AUTOSTART ??= '0';
 const assert=require('assert/strict'),fs=require('fs'),os=require('os'),path=require('path'),{spawnSync}=require('child_process');
 const root=path.join(__dirname,'..'),tmp=fs.mkdtempSync(path.join(os.tmpdir(),'supplier-import-'));
 const env={...process.env,DB_PATH:path.join(tmp,'test.db'),BACKUP_DISABLED:'1',REFERENCE_PRICE_V2_AUTOMIGRATE:'0'};

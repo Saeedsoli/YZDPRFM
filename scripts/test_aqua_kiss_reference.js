@@ -1,4 +1,6 @@
 'use strict';
+// This legacy fixture explicitly tests the pre-approval unavailable baseline.
+process.env.APPROVED_MTO_AUTOSTART ??= '0';
 // Isolated original-reference identity, source price, public disclaimer and guards.
 const assert=require('assert/strict'),fs=require('fs'),os=require('os'),path=require('path'),crypto=require('crypto'),net=require('net'),{spawn,spawnSync}=require('child_process');
 const root=path.join(__dirname,'..'),m=require('../seed/official_reference_prices_v18.json'),i=require('../seed/official_identity_evidence_v17.json'),raw=fs.readFileSync(path.join(root,'uploads/لیست_قیمت_عمده.md'));

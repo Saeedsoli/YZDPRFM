@@ -23,6 +23,8 @@
  */
 
 'use strict';
+// This legacy fixture explicitly tests the pre-approval unavailable baseline.
+process.env.APPROVED_MTO_AUTOSTART ??= '0';
 
 const { spawn } = require('child_process');
 const path = require('path');

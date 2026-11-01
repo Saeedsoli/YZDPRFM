@@ -1,4 +1,6 @@
 'use strict';
+// This legacy fixture explicitly tests the pre-approval unavailable baseline.
+process.env.APPROVED_MTO_AUTOSTART ??= '0';
 const assert=require('assert/strict'),fs=require('fs'),os=require('os'),path=require('path'),crypto=require('crypto'),{spawnSync}=require('child_process');
 const root=path.join(__dirname,'..'),m=require('../seed/secondary_reference_prices_v4.json'),sup=require('../seed/secondary_supplement_v4.json');
 const raw=fs.readFileSync(path.join(root,'uploads/لیست_قیمت_عمده.md'));
