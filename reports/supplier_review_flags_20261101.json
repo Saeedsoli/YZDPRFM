@@ -87,16 +87,6 @@
       ]
     },
     {
-      "brand": "BDK Parfums",
-      "model": "GRIS CHARNEL",
-      "supplier_gender": "Unisex",
-      "expected_fa": "گریس چارنل",
-      "warning": "ادوپرفیوم و اکستره دو نسخه مرجع جدا هستند؛ فایل نسخه اسانس را مشخص نکرده است.",
-      "reference_urls": [
-        "https://us.bdkparfums.com/collections/gris-charnel"
-      ]
-    },
-    {
       "brand": "CHANEL",
       "model": "BLEU de chanel",
       "supplier_gender": "Men",

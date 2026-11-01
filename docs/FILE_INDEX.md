@@ -762,3 +762,5 @@ node_modules/   با npm install برمی‌گردد
 - `scripts/test_official_notes_v35.js`
 
 - `scripts/test_official_reference_v34.js` — بررسی قیمت با تأیید نسخه توسط مالک و حفظ وضعیت غیرفعال.
+
+- `scripts/test_official_reference_v35.js` — بررسی قیمت گریس چارنل با تأیید نسخه و حفظ وضعیت غیرفعال.

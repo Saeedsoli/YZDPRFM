@@ -1,0 +1,52 @@
+{
+  "version": "official_reference_prices_2026_11_v35",
+  "supplier_file_sha256": "bbe8f40610bc765bda0a7d2da9dbe78f4e397458a6991239c3c18d0853f33f5c",
+  "description": "Owner-confirmed reference version, provisional name-level supplier price; no activation or essence verification.",
+  "items": [
+    {
+      "product_id": "YZD-PROD-0756",
+      "slug": "bdk-parfums-gris-charnel-edp",
+      "brand_en": "BDK Parfums",
+      "expected_name_en": "BDK PARFUMS - Gris Charnel EDP",
+      "reference_name": "Gris Charnel EDP",
+      "official_url": "https://us.bdkparfums.com/products/gris-charnel",
+      "supplier_brand": "BDK Parfums",
+      "supplier_model": "GRIS CHARNEL",
+      "supplier_gender": "Unisex",
+      "usd_per_kg": "467.5",
+      "quality": "P",
+      "match_status": "name_matched_supplier_identity_unverified",
+      "owner_version_confirmation": "Owner selected Eau de Parfum for this supplier row; not independent supplier essence verification.",
+      "expected_edps": [
+        {
+          "sku": "YZD-0756-EDP-010",
+          "volume_ml": 10,
+          "price_toman": 500000,
+          "stock": 0,
+          "price_usd": 5.0
+        },
+        {
+          "sku": "YZD-0756-EDP-030",
+          "volume_ml": 30,
+          "price_toman": 1200000,
+          "stock": 0,
+          "price_usd": 5.0
+        },
+        {
+          "sku": "YZD-0756-EDP-050",
+          "volume_ml": 50,
+          "price_toman": 1900000,
+          "stock": 0,
+          "price_usd": 5.0
+        },
+        {
+          "sku": "YZD-0756-EDP-100",
+          "volume_ml": 100,
+          "price_toman": 3650000,
+          "stock": 0,
+          "price_usd": 5.0
+        }
+      ]
+    }
+  ]
+}
