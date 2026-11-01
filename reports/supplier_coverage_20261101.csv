@@ -83,7 +83,7 @@ DERRICK,DERRICK,Men,درک,1,258,105.6,H,secondary,قیمت موقت با منب
 EMPER,MERCEDES BENZ,Men,مرسدس بنز,1,264,124.3,P,pending,هنوز قیمت مرجع منتسب نشده,,,,,
 EMPER,Epic ADVANTURE,Men,اپیک ادونجر,1,265,126.5,P,provisional,قیمت موقت با شاهد نام؛ هویت اسانس تأییدنشده,SUP-EP-900001,https://uae.emperperfumes.com/products/epic-adventure,official_reference_prices_v21.json,,
 EMPER,Chifoon,Men,چیفون,1,266,123.2,P,provisional,قیمت موقت با شاهد نام؛ هویت اسانس تأییدنشده,SUP-EP-900002,https://uae.emperperfumes.com/products/chifon,official_reference_prices_v21.json,,
-Nikos,Sculpture,Men,اسکالیپچر,1,272,89.1,I,pending,هنوز قیمت مرجع منتسب نشده,,,,Sculpture Homme و Sculpture Parfum جدا هستند؛ نسخه فایل تعیین نشده است.,https://www.fragrantica.com/perfume/Nikos/Sculpture-Homme-925.html | https://www.fragrantica.com/perfume/Nikos/Sculpture-Parfum-74214.html
+Nikos,Sculpture,Men,اسکالیپچر,1,272,89.1,I,secondary,قیمت موقت با منبع مستقل؛ هویت اسانس تأییدنشده,SUP-TP-910042,https://www.fragrantica.com/perfume/Nikos/Sculpture-Homme-925.html,secondary_reference_prices_v19.json,,
 Escentric,Molecule 01,Unisex,مولکول 01,1,278,283.8,P,provisional,قیمت موقت با شاهد نام؛ هویت اسانس تأییدنشده,YZD-PROD-1245,https://www.escentric.com/en-us/products/molecule-01-100ml,official_reference_prices_v5.json,,
 Escentric,Molecule 02,Unisex,مولکول 02,2,"279,280",322.3,H,provisional,قیمت موقت با شاهد نام؛ هویت اسانس تأییدنشده,YZD-PROD-1246,https://www.escentric.com/en-us/products/molecule-02-100ml,official_reference_prices_v5.json,,
 Escentric,Molecule 04,Unisex,مولکول 04,1,281,303.6,H,provisional,قیمت موقت با شاهد نام؛ هویت اسانس تأییدنشده,YZD-PROD-1248,https://www.escentric.com/en-us/products/molecule-04-100ml,official_reference_prices_v5.json,,

@@ -3,17 +3,6 @@
   "description": "Manual advisory only; not an import block or supplier verification.",
   "items": [
     {
-      "brand": "Nikos",
-      "model": "Sculpture",
-      "supplier_gender": "Men",
-      "expected_fa": "اسکالیپچر",
-      "warning": "Sculpture Homme و Sculpture Parfum جدا هستند؛ نسخه فایل تعیین نشده است.",
-      "reference_urls": [
-        "https://www.fragrantica.com/perfume/Nikos/Sculpture-Homme-925.html",
-        "https://www.fragrantica.com/perfume/Nikos/Sculpture-Parfum-74214.html"
-      ]
-    },
-    {
       "brand": "Paco rabanne",
       "model": "Black XS L`exces",
       "supplier_gender": "Men",

@@ -1,0 +1,27 @@
+{
+  "version": "secondary_reference_prices_2026_11_v19",
+  "supplier_file_sha256": "bbe8f40610bc765bda0a7d2da9dbe78f4e397458a6991239c3c18d0853f33f5c",
+  "description": "Owner-selected reference version; independent source; provisional price and no activation.",
+  "items": [
+    {
+      "product_id": "SUP-TP-910042",
+      "slug": "nikos-sculpture-homme-original",
+      "brand_en": "Nikos",
+      "expected_name_en": "Nikos Sculpture Homme",
+      "reference_name": "Sculpture Homme",
+      "source_url": "https://www.fragrantica.com/perfume/Nikos/Sculpture-Homme-925.html",
+      "provider": "Fragrantica",
+      "status": "secondary_original_found_supplier_essence_unverified",
+      "checked_date": "2026-11-01",
+      "supplier_brand": "Nikos",
+      "supplier_model": "Sculpture",
+      "supplier_gender": "Men",
+      "usd_per_kg": "89.1",
+      "quality": "I",
+      "match_status": "name_matched_supplier_identity_unverified",
+      "owner_version_confirmation": "Owner selected Sculpture Homme; actual supplier essence identity unverified.",
+      "expected_edps": [],
+      "legacy_backfill": false
+    }
+  ]
+}

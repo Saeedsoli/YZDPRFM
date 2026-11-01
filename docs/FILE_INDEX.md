@@ -782,3 +782,5 @@ node_modules/   با npm install برمی‌گردد
 - `src/joop-name-correction.js` — اصلاح محافظت‌شده تکرار نام برند جوپ.
 
 - `scripts/test_joop_name_correction.js` — محافظ نام و تغییرات مدیر.
+
+- `scripts/test_secondary_reference_v19.js` — قیمت و مرجع مستقل اسکالیپچر هوم طبق انتخاب مالک.
