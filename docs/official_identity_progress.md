@@ -474,3 +474,19 @@ Guidance با Guidance 46 یکی نشده است. Platinium نام کوتاه‌
 | For Him Bleu Noir EDT | https://www.narcisorodriguezparfums.com/en/narciso-rodriguez-for-him-bleu-noir/for-him-bleu-noir-eau-de-toilette.html |
 
 نسخه‌های EDT، EDP، Parfum و سایر نسخه‌های متفاوت یکی نشده‌اند. صفحه Chrome درباره Parfum هم توضیح می‌دهد؛ فقط توصیف کلی مربوط به EDT بدون هرم ثبت شده است. نت رام Black Orchid صرفاً آکورد عطر مرجع است، نه اثبات مواد اسانس تحویلی. منابع در متن عمومی صریح و نام رسمی از منبع مستقل جداست.
+
+
+## شش شناسنامه رسمی دیگر بدون انتساب قیمت — ۱ نوامبر ۲۰۲۶
+
+اطلاعات شش محصول موجود با منابع رسمی نسخه مشخص‌شده اصلاح شدند؛ ویرایش مدیر، تمام واریانت‌ها، قیمت‌ها و سفارش‌ها حفظ شده‌اند. قیمت فایل تأمین‌کننده به این نسخه‌ها منتسب نشده و همه محصولات غیرفعال‌اند. اطلاعات مرجع، هویت یا نسخه واقعی اسانس تحویلی را اثبات نمی‌کند.
+
+| رایحه مرجع | صفحه رسمی |
+|---|---|
+| Bleu de Chanel Parfum | https://www.chanel.com/us/fragrance/p/107170/bleu-de-chanel-parfum-spray/ |
+| Ganymede Extrait | https://us.marcantoinebarrois.com/products/ganymede-1 |
+| Y Le Parfum | https://www.yslbeautyus.com/fragrance/mens-fragrances/y/y-le-parfum/WW-507861YSL.html |
+| Black Orchid Parfum | https://www.tomfordbeauty.com/products/black-orchid-parfum |
+| Sauvage EDT | https://www.dior.com/en_int/beauty/products/sauvage-eau-de-toilette-Y0685240.html |
+| Gris Charnel Extrait | https://us.bdkparfums.com/products/gris-charnel-extrait |
+
+این عطرهای مرجع با نسخه‌های EDP، EDT یا نسخه‌های دیگر با نام مشابه یکی نشده‌اند. تنها Gris Charnel Extrait بر اساس هرم صریح رسمی دسته‌بندی شده و نت‌های بقیه بدون هرم ذخیره شده‌اند. آکورد رام Black Orchid درباره عطر مرجع است و اثبات ماده در اسانس واقعی نیست.

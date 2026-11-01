@@ -1,0 +1,66 @@
+{
+  "version": "official_identity_evidence_v29",
+  "scope": "Official reference-original name only; actual supplier essence identity is unverified. No supplier pricing.",
+  "items": [
+    {
+      "product_id": "YZD-PROD-1463",
+      "slug": "chanel-bleu-de-chanel-parfum",
+      "brand_en": "Chanel",
+      "expected_name_en": "CHANEL - Bleu de Chanel Parfum",
+      "reference_name": "Bleu de Chanel Parfum",
+      "official_url": "https://www.chanel.com/us/fragrance/p/107170/bleu-de-chanel-parfum-spray/",
+      "status": "official_original_found_supplier_essence_unverified",
+      "checked_date": "2026-11-01"
+    },
+    {
+      "product_id": "YZD-PROD-0782",
+      "slug": "marc-antoine-barrois-ganymede-extrait",
+      "brand_en": "Marc-Antoine Barrois",
+      "expected_name_en": "MARC-ANTOINE BARROIS - Ganymede Extrait",
+      "reference_name": "Ganymede Extrait",
+      "official_url": "https://us.marcantoinebarrois.com/products/ganymede-1",
+      "status": "official_original_found_supplier_essence_unverified",
+      "checked_date": "2026-11-01"
+    },
+    {
+      "product_id": "YZD-PROD-1493",
+      "slug": "yves-saint-laurent-y-le-parfum",
+      "brand_en": "Yves Saint Laurent",
+      "expected_name_en": "YVES SAINT LAURENT - Y Le Parfum",
+      "reference_name": "Y Le Parfum",
+      "official_url": "https://www.yslbeautyus.com/fragrance/mens-fragrances/y/y-le-parfum/WW-507861YSL.html",
+      "status": "official_original_found_supplier_essence_unverified",
+      "checked_date": "2026-11-01"
+    },
+    {
+      "product_id": "YZD-PROD-1691",
+      "slug": "tom-ford-black-orchid-parfum",
+      "brand_en": "Tom Ford",
+      "expected_name_en": "TOM FORD - Black Orchid Parfum",
+      "reference_name": "Black Orchid Parfum",
+      "official_url": "https://www.tomfordbeauty.com/products/black-orchid-parfum",
+      "status": "official_original_found_supplier_essence_unverified",
+      "checked_date": "2026-11-01"
+    },
+    {
+      "product_id": "YZD-PROD-1422",
+      "slug": "christian-dior-sauvage-edt",
+      "brand_en": "Christian Dior",
+      "expected_name_en": "CHRISTIAN DIOR - Sauvage EDT",
+      "reference_name": "Sauvage EDT",
+      "official_url": "https://www.dior.com/en_int/beauty/products/sauvage-eau-de-toilette-Y0685240.html",
+      "status": "official_original_found_supplier_essence_unverified",
+      "checked_date": "2026-11-01"
+    },
+    {
+      "product_id": "YZD-PROD-0757",
+      "slug": "bdk-parfums-gris-charnel-extrait",
+      "brand_en": "BDK Parfums",
+      "expected_name_en": "BDK PARFUMS - Gris Charnel Extrait",
+      "reference_name": "Gris Charnel Extrait",
+      "official_url": "https://us.bdkparfums.com/products/gris-charnel-extrait",
+      "status": "official_original_found_supplier_essence_unverified",
+      "checked_date": "2026-11-01"
+    }
+  ]
+}

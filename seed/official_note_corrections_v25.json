@@ -1,0 +1,286 @@
+{
+  "version": "official_notes_2026_11_v25",
+  "description": "Guarded notes for named official originals; source does not establish supplier essence, pricing or stock.",
+  "items": [
+    {
+      "product_id": "YZD-PROD-1463",
+      "product_slug": "chanel-bleu-de-chanel-parfum",
+      "expected_name_en": "CHANEL - Bleu de Chanel Parfum",
+      "official_brand": "Chanel",
+      "official_name": "Bleu de Chanel Parfum",
+      "source_url": "https://www.chanel.com/us/fragrance/p/107170/bleu-de-chanel-parfum-spray/",
+      "source_scope": "Parfum reference only, distinct from Bleu EDT and EDP; supplier essence and version unverified.",
+      "expected_old_notes": {
+        "top": [
+          "پوست لیمو ترش",
+          "ترنج",
+          "نعناع",
+          "درمنه"
+        ],
+        "middle": [
+          "اسطوخودوس",
+          "گل شمعدانی",
+          "آناناس",
+          "ترکیبات سبز"
+        ],
+        "base": [
+          "چوب صندل کالدونیای جدید",
+          "چوب سدر",
+          "عنبر",
+          "دانه تونکا"
+        ]
+      },
+      "verified_notes": {
+        "top": [],
+        "middle": [],
+        "base": []
+      },
+      "expected_old_accords": [
+        "بالاترین غلظت بلو د شنل با گرانبهاترین چوب صندل کالدونیا",
+        "بسیار متین",
+        "آرام",
+        "سنگین و جنتلمن"
+      ],
+      "verified_accords": [
+        "چوب سدر",
+        "چوب صندل",
+        "آکورد آروماتیک چوبی"
+      ],
+      "requires_unavailable": true,
+      "expected_old_notice": "این محصول، بازآفرینی دست‌ساز با عصاره خالص اولیه و فرمولاسیون اختصاصی عطر یزد است.",
+      "verified_notice": "این محصول بازآفرینی دست‌ساز است و محصول اورجینال برند اصلی نیست. نت‌های عطر مرجع از وب‌سایت رسمی برند هستند؛ هویت و نسخه اسانس تأمین‌کننده مستقلاً تأیید نشده است."
+    },
+    {
+      "product_id": "YZD-PROD-0782",
+      "product_slug": "marc-antoine-barrois-ganymede-extrait",
+      "expected_name_en": "MARC-ANTOINE BARROIS - Ganymede Extrait",
+      "official_brand": "Marc-Antoine Barrois",
+      "official_name": "Ganymede Extrait",
+      "source_url": "https://us.marcantoinebarrois.com/products/ganymede-1",
+      "source_scope": "Extrait reference only, distinct from Ganymede EDP; supplier essence and version unverified.",
+      "expected_old_notes": {
+        "top": [
+          "صمغ مر",
+          "نارنگی ماندارین"
+        ],
+        "middle": [
+          "گل ابدی (ایمورتل)",
+          "چوب آکیگالاوود"
+        ],
+        "base": [
+          "بخور کندر",
+          "بوته وحشی جاوی",
+          "صمغ لادن"
+        ]
+      },
+      "verified_notes": {
+        "top": [],
+        "middle": [],
+        "base": []
+      },
+      "expected_old_accords": [
+        "نسخه دودی‌تر و گرم‌تر گانیمد با اتمسفر سوزان سیارک گانیمد مشتری"
+      ],
+      "verified_accords": [
+        "گل جاودان",
+        "بخور",
+        "مر",
+        "زعفران",
+        "آکورد چرم",
+        "آکیگالاوود",
+        "نارنگی"
+      ],
+      "requires_unavailable": true,
+      "expected_old_notice": "این محصول، بازآفرینی دست‌ساز با عصاره خالص اولیه و فرمولاسیون اختصاصی عطر یزد است.",
+      "verified_notice": "این محصول بازآفرینی دست‌ساز است و محصول اورجینال برند اصلی نیست. نت‌های عطر مرجع از وب‌سایت رسمی برند هستند؛ هویت و نسخه اسانس تأمین‌کننده مستقلاً تأیید نشده است."
+    },
+    {
+      "product_id": "YZD-PROD-1493",
+      "product_slug": "yves-saint-laurent-y-le-parfum",
+      "expected_name_en": "YVES SAINT LAURENT - Y Le Parfum",
+      "official_brand": "Yves Saint Laurent",
+      "official_name": "Y Le Parfum",
+      "source_url": "https://www.yslbeautyus.com/fragrance/mens-fragrances/y/y-le-parfum/WW-507861YSL.html",
+      "source_scope": "Le Parfum reference only, distinct from Y EDP, EDT, Intense and Elixir; supplier essence unverified.",
+      "expected_old_notes": {
+        "top": [
+          "سیب",
+          "گریپ‌فروت",
+          "زنجبیل",
+          "آلدهیدها"
+        ],
+        "middle": [
+          "اسطوخودوس فرانسوی",
+          "مریم‌گلی",
+          "شمعدانی"
+        ],
+        "base": [
+          "چوب سدر ویرجینیا",
+          "دانه تونکا",
+          "صمغ کندر",
+          "نعناع هندی"
+        ]
+      },
+      "verified_notes": {
+        "top": [],
+        "middle": [],
+        "base": []
+      },
+      "expected_old_accords": [
+        "بطری کاملاً مشکی مات با بافت فوژه غنی‌تر",
+        "پخته‌تر و شبانه‌تر برای مردان با اعتماد به نفس"
+      ],
+      "verified_accords": [
+        "شمعدانی",
+        "کاج",
+        "پچولی",
+        "بالسام صنوبر"
+      ],
+      "requires_unavailable": true,
+      "expected_old_notice": "این محصول، بازآفرینی دست‌ساز با عصاره خالص اولیه و فرمولاسیون اختصاصی عطر یزد است.",
+      "verified_notice": "این محصول بازآفرینی دست‌ساز است و محصول اورجینال برند اصلی نیست. نت‌های عطر مرجع از وب‌سایت رسمی برند هستند؛ هویت و نسخه اسانس تأمین‌کننده مستقلاً تأیید نشده است."
+    },
+    {
+      "product_id": "YZD-PROD-1691",
+      "product_slug": "tom-ford-black-orchid-parfum",
+      "expected_name_en": "TOM FORD - Black Orchid Parfum",
+      "official_brand": "Tom Ford",
+      "official_name": "Black Orchid Parfum",
+      "source_url": "https://www.tomfordbeauty.com/products/black-orchid-parfum",
+      "source_scope": "Parfum reference only, distinct from Black Orchid EDP and Reserve; rum is an olfactory accord, not proof of ingredient.",
+      "expected_old_notes": {
+        "top": [
+          "قارچ ترافل",
+          "آلو سیاه رسیده"
+        ],
+        "middle": [
+          "عرق رام کارائیبی",
+          "گل یلانگ یلانگ",
+          "ارکیده سیاه"
+        ],
+        "base": [
+          "نعناع هندی اندونزی"
+        ]
+      },
+      "verified_notes": {
+        "top": [],
+        "middle": [],
+        "base": []
+      },
+      "expected_old_accords": [
+        "شیشه تمام طلایی باشکوه",
+        "نسخه غلیظ‌تر با مستی رام کارائیبی و آلوی سیاه برای مردان و بانوان"
+      ],
+      "verified_accords": [
+        "ترافل سیاه",
+        "یلانگ یلانگ",
+        "آکورد ارکیده سیاه",
+        "آلوی سیاه",
+        "آکورد رام",
+        "پچولی"
+      ],
+      "requires_unavailable": true,
+      "expected_old_notice": "این محصول، بازآفرینی دست‌ساز با عصاره خالص اولیه و فرمولاسیون اختصاصی عطر یزد است.",
+      "verified_notice": "این محصول بازآفرینی دست‌ساز است و محصول اورجینال برند اصلی نیست. نت‌های عطر مرجع از وب‌سایت رسمی برند هستند؛ هویت و نسخه اسانس تأمین‌کننده مستقلاً تأیید نشده است."
+    },
+    {
+      "product_id": "YZD-PROD-1422",
+      "product_slug": "christian-dior-sauvage-edt",
+      "expected_name_en": "CHRISTIAN DIOR - Sauvage EDT",
+      "official_brand": "Christian Dior",
+      "official_name": "Sauvage EDT",
+      "source_url": "https://www.dior.com/en_int/beauty/products/sauvage-eau-de-toilette-Y0685240.html",
+      "source_scope": "EDT reference only, distinct from Sauvage EDP, Parfum, Elixir and Eau Sauvage; supplier essence unverified.",
+      "expected_old_notes": {
+        "top": [
+          "ترنج کالابریا",
+          "فلفل سیاه"
+        ],
+        "middle": [
+          "فلفل سیچوان",
+          "اسطوخودوس",
+          "فلفل صورتی",
+          "خس‌خس",
+          "شمعدانی",
+          "نعناع هندی"
+        ],
+        "base": [
+          "امبروکسان خالص",
+          "چوب سدر",
+          "لادن"
+        ]
+      },
+      "verified_notes": {
+        "top": [],
+        "middle": [],
+        "base": []
+      },
+      "expected_old_accords": [
+        "پرفروش‌ترین عطر مردانه تاریخ معاصر",
+        "نماد مرد سرکش و مدرن با خط بوی بمب امبروکسانی"
+      ],
+      "verified_accords": [
+        "ترنج",
+        "فلفل سیچوان",
+        "آکورد چوبی کهربایی"
+      ],
+      "requires_unavailable": true,
+      "expected_old_notice": "این محصول، بازآفرینی دست‌ساز با عصاره خالص اولیه و فرمولاسیون اختصاصی عطر یزد است.",
+      "verified_notice": "این محصول بازآفرینی دست‌ساز است و محصول اورجینال برند اصلی نیست. نت‌های عطر مرجع از وب‌سایت رسمی برند هستند؛ هویت و نسخه اسانس تأمین‌کننده مستقلاً تأیید نشده است."
+    },
+    {
+      "product_id": "YZD-PROD-0757",
+      "product_slug": "bdk-parfums-gris-charnel-extrait",
+      "expected_name_en": "BDK PARFUMS - Gris Charnel Extrait",
+      "official_brand": "BDK Parfums",
+      "official_name": "Gris Charnel Extrait",
+      "source_url": "https://us.bdkparfums.com/products/gris-charnel-extrait",
+      "source_scope": "Extrait reference only, distinct from Gris Charnel EDP; supplier essence unverified.",
+      "expected_old_notes": {
+        "top": [
+          "هل",
+          "انجیر",
+          "چای سیاه"
+        ],
+        "middle": [
+          "زنبق",
+          "خس‌خس بوربون",
+          "صمغ کندر"
+        ],
+        "base": [
+          "چوب صندل",
+          "دانه تونکا",
+          "چوب گایاک",
+          "وانیل"
+        ]
+      },
+      "verified_notes": {
+        "top": [
+          "هل",
+          "چای سیاه",
+          "آکورد انجیر"
+        ],
+        "middle": [
+          "زنبق",
+          "سیستوس",
+          "وتیور"
+        ],
+        "base": [
+          "پچولی",
+          "وانیل",
+          "چوب صندل",
+          "چوب سدر",
+          "دانه تونکا"
+        ]
+      },
+      "expected_old_accords": [
+        "۳۰٪ غلظت خالص",
+        "تاریک‌تر و دودی‌تر با محوریت چای و کندر"
+      ],
+      "verified_accords": [],
+      "requires_unavailable": true,
+      "expected_old_notice": "این محصول، بازآفرینی دست‌ساز با عصاره خالص اولیه و فرمولاسیون اختصاصی عطر یزد است.",
+      "verified_notice": "این محصول بازآفرینی دست‌ساز است و محصول اورجینال برند اصلی نیست. نت‌های عطر مرجع از وب‌سایت رسمی برند هستند؛ هویت و نسخه اسانس تأمین‌کننده مستقلاً تأیید نشده است."
+    }
+  ]
+}
