@@ -821,3 +821,5 @@ node_modules/   با npm install برمی‌گردد
 - `scripts/test_secondary_reference_v23.js` — قیمت آزارو کروم ادوپرفیوم با انتخاب مالک و منبع مستقل.
 
 - `scripts/test_official_reference_v45.js` — قیمت باربری لندن زنانه با انتخاب مالک.
+
+- `scripts/test_official_reference_v46.js` — قیمت باربری ویکند مردانه با انتخاب مالک.

@@ -1,0 +1,52 @@
+{
+  "version": "official_reference_prices_2026_11_v46",
+  "supplier_file_sha256": "bbe8f40610bc765bda0a7d2da9dbe78f4e397458a6991239c3c18d0853f33f5c",
+  "description": "Owner-selected reference despite conflicting source row label; provisional supplier price; no activation or essence verification.",
+  "items": [
+    {
+      "product_id": "YZD-PROD-0343",
+      "slug": "burberry-burberry-weekend-for-men",
+      "brand_en": "Burberry",
+      "expected_name_en": "Burberry Weekend for Men",
+      "reference_name": "Burberry Weekend for Men EDT",
+      "official_url": "https://us.burberry.com/burberry-weekend-eau-de-toilette-100ml-p34547091",
+      "supplier_brand": "BURBERRY",
+      "supplier_model": "Weekend",
+      "supplier_gender": "Women",
+      "usd_per_kg": "97.9",
+      "quality": "P",
+      "match_status": "name_matched_supplier_identity_unverified",
+      "owner_version_confirmation": "Owner selected Burberry Weekend for Men despite supplier row gender label Women; actual supplier essence identity unverified.",
+      "expected_edps": [
+        {
+          "sku": "YZD-0343-EDP-010",
+          "volume_ml": 10,
+          "price_toman": 360000,
+          "stock": 0,
+          "price_usd": 3.0
+        },
+        {
+          "sku": "YZD-0343-EDP-030",
+          "volume_ml": 30,
+          "price_toman": 780000,
+          "stock": 0,
+          "price_usd": 3.0
+        },
+        {
+          "sku": "YZD-0343-EDP-050",
+          "volume_ml": 50,
+          "price_toman": 1200000,
+          "stock": 0,
+          "price_usd": 3.0
+        },
+        {
+          "sku": "YZD-0343-EDP-100",
+          "volume_ml": 100,
+          "price_toman": 2250000,
+          "stock": 0,
+          "price_usd": 3.0
+        }
+      ]
+    }
+  ]
+}
