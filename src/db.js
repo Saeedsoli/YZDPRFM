@@ -1851,6 +1851,7 @@ const UNIVERSAL_WORDS = 'عطر ادکلن اسانس رایحه بو خوشبو
  */
 const BRAND_ALIASES = {
   'Amouage':              'آمواژ',
+  'Jean Paul Gaultier':   'ژان پل گالتیه',
   'Nishane':              'نیشانه',
   'Atelier Cologne':      'آتلیه کلن',
   'Thameen London':       'ثمین لندن',
@@ -1900,6 +1901,7 @@ function buildSearchIndex(force = false) {
         r.release_year ? String(r.release_year) : '',
         GENDER_WORDS[r.gender] || '',
         BRAND_ALIASES[r.brand_en] || '',
+        r.id === 'YZD-PROD-1707' ? 'کریستال نوآر' : '',
         flat(r.notes_top), flat(r.notes_middle), flat(r.notes_base), flat(r.accords),
         UNIVERSAL_WORDS
       ].filter(Boolean).join(' ');
@@ -2702,6 +2704,7 @@ const supplementInserted = (seedVerifiedSupplement('supplier_verified_supplement
   (seedVerifiedSupplement('official_supplement_v28.json') || 0);
 // Correct only the untouched duplicated Joop brand names, preserving owner edits.
 require('./joop-name-correction').apply(db);
+require('./popular-persian-names').apply(db);
 // Only approved generic replacements; preserve all manager-selected images.
 genericImageModule.applyGenericImages(db, genericImageManifest, path.join(ROOT_DIR, 'public', 'images', 'products'));
 // Repair the known year/name mismatch only for unchanged unavailable seed data.
@@ -2764,6 +2767,10 @@ if (isFreshInstallation && process.env.APPROVED_MTO_AUTOSTART !== '0') {
   if (process.env.APPROVED_MTO_V2_AUTOSTART !== '0') {
     const v2 = require('./approved-made-to-order-v2').applyApprovedMadeToOrder(db, path.join(SEED_DIR, 'approved_made_to_order_v2.json'));
     if (v2.skipped.length) console.warn('[DB] seven approved made-to-order items skipped:', v2.skipped.length);
+  }
+  if (process.env.APPROVED_MTO_V3_AUTOSTART !== '0') {
+    const v3 = require('./approved-made-to-order-v3').applyApprovedMadeToOrder(db, path.join(SEED_DIR, 'approved_made_to_order_v3.json'));
+    if (v3.skipped.length) console.warn('[DB] four approved made-to-order items skipped:', v3.skipped.length);
   }
 }
 // Active-product correction is guarded by original evidence, owner-approved mode,

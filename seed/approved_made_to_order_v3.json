@@ -1,0 +1,47 @@
+{
+  "version": "approved_made_to_order_2026_11_v3",
+  "source_sha256": "bbe8f40610bc765bda0a7d2da9dbe78f4e397458a6991239c3c18d0853f33f5c",
+  "description": "Owner approved exactly four selected reference products for made-to-order; supplier essence identity unverified.",
+  "items": [
+    {
+      "product_id": "SUP-TP-910042",
+      "slug": "nikos-sculpture-homme-original",
+      "expected_name_en": "Nikos Sculpture Homme",
+      "brand_en": "Nikos",
+      "usd_per_kg": "89.1",
+      "quality": "I",
+      "source_type": "secondary",
+      "reference_url": "https://www.fragrantica.com/perfume/Nikos/Sculpture-Homme-925.html"
+    },
+    {
+      "product_id": "YZD-PROD-1585",
+      "slug": "jean-paul-gaultier-le-beau-paradise-garden-2024",
+      "expected_name_en": "JEAN PAUL GAULTIER - Le Beau Paradise Garden 2024",
+      "brand_en": "Jean Paul Gaultier",
+      "usd_per_kg": "108.9",
+      "quality": "B",
+      "source_type": "provisional",
+      "reference_url": "https://www.jeanpaulgaultier.com/fr/fr/p/gamme-le-beau/le-beau-paradise-garden-eau-de-parfum-000000000065199801"
+    },
+    {
+      "product_id": "YZD-PROD-1707",
+      "slug": "versace-crystal-noir-edp",
+      "expected_name_en": "VERSACE - Crystal Noir EDP",
+      "brand_en": "Versace",
+      "usd_per_kg": "220",
+      "quality": "I",
+      "source_type": "secondary",
+      "reference_url": "https://www.fragrantica.com/perfume/Versace/Crystal-Noir-631.html"
+    },
+    {
+      "product_id": "SUP-VS-900001",
+      "slug": "versace-eros-pour-femme-edp",
+      "expected_name_en": "VERSACE - Eros Pour Femme",
+      "brand_en": "Versace",
+      "usd_per_kg": "286",
+      "quality": "H",
+      "source_type": "provisional",
+      "reference_url": "https://www.versace.com/row/en/women/accessories/fragrances-body-care/eros-pour-femme/eros-pour-femme-edp-100-ml/R750032-R100MLS_RNUL.html"
+    }
+  ]
+}

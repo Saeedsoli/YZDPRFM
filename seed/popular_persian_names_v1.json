@@ -1,0 +1,109 @@
+{
+  "version": "popular_persian_names_2026_11_v1",
+  "brand_items": [
+    {
+      "id": "YZD-PROD-0088",
+      "slug": "jean-paul-gaultier-le-male-pride"
+    },
+    {
+      "id": "YZD-PROD-0089",
+      "slug": "jean-paul-gaultier-kokorico"
+    },
+    {
+      "id": "YZD-PROD-0090",
+      "slug": "jean-paul-gaultier-gaultier-2"
+    },
+    {
+      "id": "YZD-PROD-0091",
+      "slug": "jean-paul-gaultier-classique-edp"
+    },
+    {
+      "id": "YZD-PROD-0372",
+      "slug": "jean-paul-gaultier-le-male-terrible"
+    },
+    {
+      "id": "YZD-PROD-0373",
+      "slug": "jean-paul-gaultier-scandal-gold"
+    },
+    {
+      "id": "YZD-PROD-1579",
+      "slug": "jean-paul-gaultier-le-male"
+    },
+    {
+      "id": "YZD-PROD-1580",
+      "slug": "jean-paul-gaultier-le-male-le-parfum"
+    },
+    {
+      "id": "YZD-PROD-1581",
+      "slug": "jean-paul-gaultier-le-male-elixir"
+    },
+    {
+      "id": "YZD-PROD-1582",
+      "slug": "jean-paul-gaultier-ultra-male"
+    },
+    {
+      "id": "YZD-PROD-1583",
+      "slug": "jean-paul-gaultier-le-beau-edt"
+    },
+    {
+      "id": "YZD-PROD-1584",
+      "slug": "jean-paul-gaultier-le-beau-le-parfum"
+    },
+    {
+      "id": "YZD-PROD-1585",
+      "slug": "jean-paul-gaultier-le-beau-paradise-garden-2024"
+    },
+    {
+      "id": "YZD-PROD-1586",
+      "slug": "jean-paul-gaultier-scandal-pour-homme-edt"
+    },
+    {
+      "id": "YZD-PROD-1587",
+      "slug": "jean-paul-gaultier-scandal-pour-homme-le-parfum"
+    },
+    {
+      "id": "YZD-PROD-1588",
+      "slug": "jean-paul-gaultier-scandal-pour-homme-absolu-2024"
+    },
+    {
+      "id": "YZD-PROD-1589",
+      "slug": "jean-paul-gaultier-scandal-women"
+    },
+    {
+      "id": "YZD-PROD-1590",
+      "slug": "jean-paul-gaultier-scandal-by-night"
+    },
+    {
+      "id": "YZD-PROD-1591",
+      "slug": "jean-paul-gaultier-la-belle"
+    },
+    {
+      "id": "YZD-PROD-1592",
+      "slug": "jean-paul-gaultier-la-belle-le-parfum"
+    },
+    {
+      "id": "YZD-PROD-1593",
+      "slug": "jean-paul-gaultier-divine"
+    }
+  ],
+  "name_items": [
+    {
+      "id": "YZD-PROD-1585",
+      "slug": "jean-paul-gaultier-le-beau-paradise-garden-2024",
+      "old": "پارادایس گاردن ۲۰۲۴",
+      "new": "له بو پارادایس گاردن"
+    },
+    {
+      "id": "YZD-PROD-1707",
+      "slug": "versace-crystal-noir-edp",
+      "old": "کریستال نوآر ادوپرفیوم (ورساچه مشکی)",
+      "new": "کریستال نویر ادوپرفیوم (ورساچه مشکی)"
+    },
+    {
+      "id": "YZD-PROD-0090",
+      "slug": "jean-paul-gaultier-gaultier-2",
+      "old": "گالتیه دو",
+      "new": "گوتیه دو"
+    }
+  ]
+}

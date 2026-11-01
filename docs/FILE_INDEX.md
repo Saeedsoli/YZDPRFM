@@ -790,3 +790,9 @@ node_modules/   با npm install برمی‌گردد
 - `scripts/test_secondary_reference_v20.js` — قیمت کریستال نویر ادوپرفیوم و منبع مستقل.
 
 - `scripts/test_official_reference_v40.js` — قیمت اروس پور فم ادوپرفیوم با انتخاب مالک.
+
+- `src/approved-made-to-order-v3.js` — فعال‌سازی محافظت‌شده چهار محصول تأییدشده.
+- `src/popular-persian-names.js` — اصلاح محافظت‌شده نگارش‌های رایج فارسی.
+
+- `scripts/test_approved_mto_v3.py` — چهار تأیید جدید، سقف خرید و املای جستجو.
+- `scripts/test_popular_persian_names.js` — محافظ تغییرات مدیر در اصلاح نام‌ها.
