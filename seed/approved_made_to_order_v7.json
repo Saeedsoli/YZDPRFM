@@ -1,0 +1,17 @@
+{
+  "version": "approved_made_to_order_2026_11_v7",
+  "source_sha256": "bbe8f40610bc765bda0a7d2da9dbe78f4e397458a6991239c3c18d0853f33f5c",
+  "description": "Owner selected this reference and previously authorized activation of future owner-confirmed selections; supplier essence identity unverified.",
+  "items": [
+    {
+      "product_id": "YZD-PROD-1805",
+      "slug": "burberry-burberry-her-edp",
+      "expected_name_en": "Burberry Her EDP",
+      "brand_en": "Burberry",
+      "usd_per_kg": "117.7",
+      "quality": "P",
+      "source_type": "provisional",
+      "reference_url": "https://us.burberry.com/her-eau-de-parfum-100ml-p40804591"
+    }
+  ]
+}

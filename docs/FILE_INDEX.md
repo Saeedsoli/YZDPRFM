@@ -831,3 +831,8 @@ node_modules/   با npm install برمی‌گردد
 - `scripts/test_approved_mto_v6.py` — سقف خرید و محافظ ویرایش مدیر برای تأیید جدید.
 
 - `scripts/test_weekend_owner_correction.js` — بازپس‌گیری امن قیمت اشتباه، حفاظت سفارش و ویرایش مدیر.
+
+- `scripts/test_official_reference_v48.js` — قیمت باربری هر ادوپرفیوم با انتخاب مالک.
+
+- `src/approved-made-to-order-v7.js` — فعال‌سازی محافظت‌شده باربری هر.
+- `scripts/test_approved_mto_v7.py` — خرید، سقف، ویرایش مدیر و ری‌استارت.
