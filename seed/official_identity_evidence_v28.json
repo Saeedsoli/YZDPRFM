@@ -1,0 +1,66 @@
+{
+  "version": "official_identity_evidence_v28",
+  "scope": "Official reference-original name only; actual supplier essence identity is unverified. No supplier pricing.",
+  "items": [
+    {
+      "product_id": "YZD-PROD-1461",
+      "slug": "chanel-bleu-de-chanel-edt",
+      "brand_en": "Chanel",
+      "expected_name_en": "CHANEL - Bleu de Chanel EDT",
+      "reference_name": "Bleu de Chanel EDT",
+      "official_url": "https://www.chanel.com/us/fragrance/p/107480/bleu-de-chanel-eau-de-toilette-spray/",
+      "status": "official_original_found_supplier_essence_unverified",
+      "checked_date": "2026-11-01"
+    },
+    {
+      "product_id": "YZD-PROD-1690",
+      "slug": "tom-ford-black-orchid-edp",
+      "brand_en": "Tom Ford",
+      "expected_name_en": "TOM FORD - Black Orchid EDP",
+      "reference_name": "Black Orchid EDP",
+      "official_url": "https://www.tomfordbeauty.com/products/black-orchid-eau-de-parfum",
+      "status": "official_original_found_supplier_essence_unverified",
+      "checked_date": "2026-11-01"
+    },
+    {
+      "product_id": "YZD-PROD-1423",
+      "slug": "christian-dior-sauvage-edp",
+      "brand_en": "Christian Dior",
+      "expected_name_en": "CHRISTIAN DIOR - Sauvage EDP",
+      "reference_name": "Sauvage EDP",
+      "official_url": "https://www.dior.com/en_us/beauty/products/sauvage-eau-de-parfum-Y0785220.html",
+      "status": "official_original_found_supplier_essence_unverified",
+      "checked_date": "2026-11-01"
+    },
+    {
+      "product_id": "YZD-PROD-1492",
+      "slug": "yves-saint-laurent-y-eau-de-parfum",
+      "brand_en": "Yves Saint Laurent",
+      "expected_name_en": "YVES SAINT LAURENT - Y Eau de Parfum",
+      "reference_name": "Y Eau de Parfum",
+      "official_url": "https://www.yslbeautyus.com/fragrance/mens-fragrances/y/y-eau-de-parfum/727YSL.html",
+      "status": "official_original_found_supplier_essence_unverified",
+      "checked_date": "2026-11-01"
+    },
+    {
+      "product_id": "YZD-PROD-2079",
+      "slug": "azzaro-azzaro-chrome-edt",
+      "brand_en": "Azzaro",
+      "expected_name_en": "Azzaro Chrome EDT",
+      "reference_name": "Chrome Eau de Toilette",
+      "official_url": "https://www.azzaro.com/en/fragrances/azzaro-chrome/eau-de-toilette",
+      "status": "official_original_found_supplier_essence_unverified",
+      "checked_date": "2026-11-01"
+    },
+    {
+      "product_id": "YZD-PROD-1780",
+      "slug": "narciso-rodriguez-for-him-bleu-noir-edt",
+      "brand_en": "Narciso Rodriguez",
+      "expected_name_en": "NARCISO RODRIGUEZ - For Him Bleu Noir EDT",
+      "reference_name": "For Him Bleu Noir Eau de Toilette",
+      "official_url": "https://www.narcisorodriguezparfums.com/en/narciso-rodriguez-for-him-bleu-noir/for-him-bleu-noir-eau-de-toilette.html",
+      "status": "official_original_found_supplier_essence_unverified",
+      "checked_date": "2026-11-01"
+    }
+  ]
+}

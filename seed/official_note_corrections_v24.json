@@ -1,0 +1,283 @@
+{
+  "version": "official_notes_2026_11_v24",
+  "description": "Guarded notes for named official originals; source does not establish supplier essence, pricing or stock.",
+  "items": [
+    {
+      "product_id": "YZD-PROD-1461",
+      "product_slug": "chanel-bleu-de-chanel-edt",
+      "expected_name_en": "CHANEL - Bleu de Chanel EDT",
+      "official_brand": "Chanel",
+      "official_name": "Bleu de Chanel EDT",
+      "source_url": "https://www.chanel.com/us/fragrance/p/107480/bleu-de-chanel-eau-de-toilette-spray/",
+      "source_scope": "EDT reference only, distinct from Bleu EDP and Parfum; supplier essence and version unverified.",
+      "expected_old_notes": {
+        "top": [
+          "گریپ‌فروت",
+          "لیمو",
+          "نعناع",
+          "فلفل صورتی"
+        ],
+        "middle": [
+          "زنجبیل",
+          "جوز هندی",
+          "گل یاس",
+          "ایزو ای سوپر"
+        ],
+        "base": [
+          "بخور کندر",
+          "سدر",
+          "چوب صندل",
+          "نعناع هندی",
+          "لادن",
+          "مشک"
+        ]
+      },
+      "verified_notes": {
+        "top": [],
+        "middle": [],
+        "base": []
+      },
+      "expected_old_accords": [
+        "سلطان عطرهای آبی تاریخ",
+        "انقلابی در دنیای مردانه با ترکیبی از گریپ‌فروت تازه و بخور دودی عمیق"
+      ],
+      "verified_accords": [
+        "مرکبات",
+        "چوب سدر",
+        "چوب صندل"
+      ],
+      "requires_unavailable": true,
+      "expected_old_notice": "این محصول، بازآفرینی دست‌ساز با عصاره خالص اولیه و فرمولاسیون اختصاصی عطر یزد است.",
+      "verified_notice": "این محصول بازآفرینی دست‌ساز است و محصول اورجینال برند اصلی نیست. نت‌های عطر مرجع از وب‌سایت رسمی برند هستند؛ هویت و نسخه اسانس تأمین‌کننده مستقلاً تأیید نشده است."
+    },
+    {
+      "product_id": "YZD-PROD-1690",
+      "product_slug": "tom-ford-black-orchid-edp",
+      "expected_name_en": "TOM FORD - Black Orchid EDP",
+      "official_brand": "Tom Ford",
+      "official_name": "Black Orchid EDP",
+      "source_url": "https://www.tomfordbeauty.com/products/black-orchid-eau-de-parfum",
+      "source_scope": "EDP reference only, distinct from Black Orchid Parfum, EDT and Reserve; rum is a scent accord, not proof of ingredient.",
+      "expected_old_notes": {
+        "top": [
+          "قارچ ترافل سیاه",
+          "یلانگ یلانگ",
+          "ترنج",
+          "انگور فرنگی",
+          "یاس"
+        ],
+        "middle": [
+          "ارکیده سیاه",
+          "ادویه‌جات",
+          "میوه‌های شیرین",
+          "لوتوس"
+        ],
+        "base": [
+          "شکلات تلخ مکزیکی",
+          "نعناع هندی",
+          "وانیل",
+          "صندل",
+          "عود",
+          "کهربا"
+        ]
+      },
+      "verified_notes": {
+        "top": [],
+        "middle": [],
+        "base": []
+      },
+      "expected_old_accords": [
+        "نخستین و جاودانه‌ترین شاهکار تام فورد در سال ۲۰۰۶ با شیشه سیاه شیاردار",
+        "بمب پخش بوی جهان"
+      ],
+      "verified_accords": [
+        "ترافل سیاه",
+        "یلانگ یلانگ",
+        "آکورد ارکیده سیاه",
+        "آلوی سیاه",
+        "آکورد رام",
+        "پچولی"
+      ],
+      "requires_unavailable": true,
+      "expected_old_notice": "این محصول، بازآفرینی دست‌ساز با عصاره خالص اولیه و فرمولاسیون اختصاصی عطر یزد است.",
+      "verified_notice": "این محصول بازآفرینی دست‌ساز است و محصول اورجینال برند اصلی نیست. نت‌های عطر مرجع از وب‌سایت رسمی برند هستند؛ هویت و نسخه اسانس تأمین‌کننده مستقلاً تأیید نشده است."
+    },
+    {
+      "product_id": "YZD-PROD-1423",
+      "product_slug": "christian-dior-sauvage-edp",
+      "expected_name_en": "CHRISTIAN DIOR - Sauvage EDP",
+      "official_brand": "Christian Dior",
+      "official_name": "Sauvage EDP",
+      "source_url": "https://www.dior.com/en_us/beauty/products/sauvage-eau-de-parfum-Y0785220.html",
+      "source_scope": "EDP reference only, distinct from Sauvage EDT, Parfum, Elixir and Eau Sauvage; supplier essence and version unverified.",
+      "expected_old_notes": {
+        "top": [
+          "ترنج کالابریا"
+        ],
+        "middle": [
+          "اسطوخودوس",
+          "فلفل سیچوان",
+          "بادیان رومی (انیسون ستاره‌ای)",
+          "جوز هندی"
+        ],
+        "base": [
+          "وانیل پاپوآ گینه نو",
+          "امبروکسان"
+        ]
+      },
+      "verified_notes": {
+        "top": [],
+        "middle": [],
+        "base": []
+      },
+      "expected_old_accords": [
+        "نسخه جذاب‌تر و گرم‌تر ساواج در ساعت گرگ و میش صحرا با وانیل دودی"
+      ],
+      "verified_accords": [
+        "ترنج",
+        "فلفل سیچوان",
+        "اسطوخودوس",
+        "بادیان ستاره‌ای",
+        "وانیل",
+        "امبروکسان"
+      ],
+      "requires_unavailable": true,
+      "expected_old_notice": "این محصول، بازآفرینی دست‌ساز با عصاره خالص اولیه و فرمولاسیون اختصاصی عطر یزد است.",
+      "verified_notice": "این محصول بازآفرینی دست‌ساز است و محصول اورجینال برند اصلی نیست. نت‌های عطر مرجع از وب‌سایت رسمی برند هستند؛ هویت و نسخه اسانس تأمین‌کننده مستقلاً تأیید نشده است."
+    },
+    {
+      "product_id": "YZD-PROD-1492",
+      "product_slug": "yves-saint-laurent-y-eau-de-parfum",
+      "expected_name_en": "YVES SAINT LAURENT - Y Eau de Parfum",
+      "official_brand": "Yves Saint Laurent",
+      "official_name": "Y Eau de Parfum",
+      "source_url": "https://www.yslbeautyus.com/fragrance/mens-fragrances/y/y-eau-de-parfum/727YSL.html",
+      "source_scope": "EDP reference only, distinct from Y EDT, Le Parfum, Elixir and Intense; supplier essence and version unverified.",
+      "expected_old_notes": {
+        "top": [
+          "سیب ترد",
+          "زنجبیل تازه",
+          "ترنج کالابریا"
+        ],
+        "middle": [
+          "مریم‌گلی اسکلاریا",
+          "دانه سرو کوهی (جونیپر)",
+          "گل شمعدانی"
+        ],
+        "base": [
+          "دانه تونکا",
+          "صمغ کندر (الیبانوم)",
+          "چوب سدر",
+          "خس‌خس"
+        ]
+      },
+      "verified_notes": {
+        "top": [],
+        "middle": [],
+        "base": []
+      },
+      "expected_old_accords": [
+        "پرچمدار عصر جدید ایو سن لوران",
+        "تعادل بی‌نقص میان شادابی سیب و زنجبیل با پایه سنگین چوبی و کندر"
+      ],
+      "verified_accords": [
+        "مریم‌گلی",
+        "شمعدانی",
+        "نت‌های چوبی"
+      ],
+      "requires_unavailable": true,
+      "expected_old_notice": "این محصول، بازآفرینی دست‌ساز با عصاره خالص اولیه و فرمولاسیون اختصاصی عطر یزد است.",
+      "verified_notice": "این محصول بازآفرینی دست‌ساز است و محصول اورجینال برند اصلی نیست. نت‌های عطر مرجع از وب‌سایت رسمی برند هستند؛ هویت و نسخه اسانس تأمین‌کننده مستقلاً تأیید نشده است."
+    },
+    {
+      "product_id": "YZD-PROD-2079",
+      "product_slug": "azzaro-azzaro-chrome-edt",
+      "expected_name_en": "Azzaro Chrome EDT",
+      "official_brand": "Azzaro",
+      "official_name": "Chrome Eau de Toilette",
+      "source_url": "https://www.azzaro.com/en/fragrances/azzaro-chrome/eau-de-toilette",
+      "source_scope": "EDT reference only. Official page also describes Chrome Parfum; avoid attributing its individual notes to EDT. Supplier essence unverified.",
+      "expected_old_notes": {
+        "top": [
+          "لیمو",
+          "رزماری",
+          "ترنج",
+          "بهارنارنج",
+          "آناناس"
+        ],
+        "middle": [
+          "گل یاس",
+          "خزه بلوط",
+          "گشنیز",
+          "پنیرک"
+        ],
+        "base": [
+          "مشک سفید",
+          "چوب سدر",
+          "خس‌خس",
+          "صندل",
+          "دانه تونکا"
+        ]
+      },
+      "verified_notes": {
+        "top": [],
+        "middle": [],
+        "base": []
+      },
+      "expected_old_accords": [
+        "مکعب بلورین با مایع آبی آسمانی نماد عشق پدر و پسر",
+        "طراوت مرکبات فلزی و رزماری"
+      ],
+      "verified_accords": [
+        "آکورد مرکباتی",
+        "آکورد آبی",
+        "آکورد چوبی"
+      ],
+      "requires_unavailable": true,
+      "expected_old_notice": "این محصول، بازآفرینی دست‌ساز با عصاره خالص اولیه و فرمولاسیون اختصاصی عطر یزد است.",
+      "verified_notice": "این محصول بازآفرینی دست‌ساز است و محصول اورجینال برند اصلی نیست. نت‌های عطر مرجع از وب‌سایت رسمی برند هستند؛ هویت و نسخه اسانس تأمین‌کننده مستقلاً تأیید نشده است."
+    },
+    {
+      "product_id": "YZD-PROD-1780",
+      "product_slug": "narciso-rodriguez-for-him-bleu-noir-edt",
+      "expected_name_en": "NARCISO RODRIGUEZ - For Him Bleu Noir EDT",
+      "official_brand": "Narciso Rodriguez",
+      "official_name": "For Him Bleu Noir Eau de Toilette",
+      "source_url": "https://www.narcisorodriguezparfums.com/en/narciso-rodriguez-for-him-bleu-noir/for-him-bleu-noir-eau-de-toilette.html",
+      "source_scope": "Bleu Noir EDT reference only, distinct from original 2007 For Him, Bleu Noir EDP and Parfum; supplier essence unverified.",
+      "expected_old_notes": {
+        "top": [
+          "هل سبز",
+          "جوز هندی"
+        ],
+        "middle": [
+          "مشک امضای نارسیسو رودریگز"
+        ],
+        "base": [
+          "چوب سدر ویرجینیا",
+          "چوب آبنوس",
+          "خس‌خس",
+          "کهربا"
+        ]
+      },
+      "verified_notes": {
+        "top": [],
+        "middle": [],
+        "base": []
+      },
+      "expected_old_accords": [
+        "شیشه مکعب آبی تیره مایل به سیاه",
+        "بهترین و جذاب‌ترین هل ادویه‌ای با چوب سدر مردانه"
+      ],
+      "verified_accords": [
+        "جوز هندی",
+        "هل",
+        "آکورد مشک",
+        "چوب سدر"
+      ],
+      "requires_unavailable": true,
+      "expected_old_notice": "این محصول، بازآفرینی دست‌ساز با عصاره خالص اولیه و فرمولاسیون اختصاصی عطر یزد است.",
+      "verified_notice": "این محصول بازآفرینی دست‌ساز است و محصول اورجینال برند اصلی نیست. نت‌های عطر مرجع از وب‌سایت رسمی برند هستند؛ هویت و نسخه اسانس تأمین‌کننده مستقلاً تأیید نشده است."
+    }
+  ]
+}

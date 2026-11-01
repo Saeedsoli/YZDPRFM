@@ -458,3 +458,19 @@ Guidance با Guidance 46 یکی نشده است. Platinium نام کوتاه‌
 | Ombré Leather EDP | https://www.tomfordbeauty.com/products/ombre-leather-eau-de-parfum |
 
 قیمت‌های فایل برای این نام‌ها بدون شواهد کافی درباره نسخه اسانس منتسب نشده‌اند. صفحه مرجع باکارا مربوط به ریفیل EDP اصلی است، نه ریفیل فروشی این فروشگاه. نت‌ها تنها ویژگی‌های بویایی مرجع‌اند و اثبات مواد موجود در محصول دست‌ساز نیستند.
+
+
+## شش شناسنامه رسمی دیگر بدون انتساب قیمت — ۱ نوامبر ۲۰۲۶
+
+اطلاعات شش محصول موجود با منابع رسمی نسخه مشخص‌شده اصلاح شدند؛ ویرایش مدیر، تمام واریانت‌ها، قیمت‌ها و سفارش‌ها حفظ شده‌اند. این نام‌ها از فایل قیمت به نسخه‌ای منتسب نشده‌اند و همچنان غیرقابل سفارش‌اند. مدارک عطر مرجع، هویت یا نسخه واقعی اسانس را ثابت نمی‌کنند.
+
+| رایحه مرجع | صفحه رسمی |
+|---|---|
+| Bleu de Chanel EDT | https://www.chanel.com/us/fragrance/p/107480/bleu-de-chanel-eau-de-toilette-spray/ |
+| Black Orchid EDP | https://www.tomfordbeauty.com/products/black-orchid-eau-de-parfum |
+| Sauvage EDP | https://www.dior.com/en_us/beauty/products/sauvage-eau-de-parfum-Y0785220.html |
+| Y EDP | https://www.yslbeautyus.com/fragrance/mens-fragrances/y/y-eau-de-parfum/727YSL.html |
+| Chrome EDT | https://www.azzaro.com/en/fragrances/azzaro-chrome/eau-de-toilette |
+| For Him Bleu Noir EDT | https://www.narcisorodriguezparfums.com/en/narciso-rodriguez-for-him-bleu-noir/for-him-bleu-noir-eau-de-toilette.html |
+
+نسخه‌های EDT، EDP، Parfum و سایر نسخه‌های متفاوت یکی نشده‌اند. صفحه Chrome درباره Parfum هم توضیح می‌دهد؛ فقط توصیف کلی مربوط به EDT بدون هرم ثبت شده است. نت رام Black Orchid صرفاً آکورد عطر مرجع است، نه اثبات مواد اسانس تحویلی. منابع در متن عمومی صریح و نام رسمی از منبع مستقل جداست.

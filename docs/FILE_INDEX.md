@@ -665,3 +665,10 @@ node_modules/   با npm install برمی‌گردد
 - `seed/official_identity_evidence_v27.json`
 - `seed/official_note_corrections_v23.json`
 - `scripts/test_official_notes_v23.js`
+
+
+### شش شناسنامه رسمی دیگر بدون انتساب قیمت
+
+- `seed/official_identity_evidence_v28.json`
+- `seed/official_note_corrections_v24.json`
+- `scripts/test_official_notes_v24.js`
