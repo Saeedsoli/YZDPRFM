@@ -2774,6 +2774,10 @@ if (isFreshInstallation && process.env.APPROVED_MTO_AUTOSTART !== '0') {
     const v3 = require('./approved-made-to-order-v3').applyApprovedMadeToOrder(db, path.join(SEED_DIR, 'approved_made_to_order_v3.json'));
     if (v3.skipped.length) console.warn('[DB] four approved made-to-order items skipped:', v3.skipped.length);
   }
+  if (process.env.APPROVED_MTO_V4_AUTOSTART !== '0') {
+    const v4 = require('./approved-made-to-order-v4').applyApprovedMadeToOrder(db, path.join(SEED_DIR, 'approved_made_to_order_v4.json'));
+    if (v4.skipped.length) console.warn('[DB] three approved made-to-order items skipped:', v4.skipped.length);
+  }
 }
 // Active-product correction is guarded by original evidence, owner-approved mode,
 // unchanged price and exact prior content; it never touches order data.

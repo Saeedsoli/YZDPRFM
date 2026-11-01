@@ -25,8 +25,8 @@
   "local_products": 2204,
   "local_priced_products": 208,
   "local_modes": {
-    "UNAVAILABLE": 2001,
-    "MADE_TO_ORDER": 203
+    "UNAVAILABLE": 1998,
+    "MADE_TO_ORDER": 206
   },
   "unmapped_priced_manifest_ids": [],
   "priced_products_without_manifest": [],

@@ -8,7 +8,7 @@ assert len(items)==4 and len({x['product_id'] for x in items})==4
 with tempfile.TemporaryDirectory(prefix='mto-v3-') as td:
  db=str(Path(td)/'fresh.sqlite');s=socket.socket();s.bind(('127.0.0.1',0));port=s.getsockname()[1];s.close()
  env={**os.environ,'DB_PATH':db,'BACKUP_DISABLED':'1','PORT':str(port)}
- env.pop('APPROVED_MTO_AUTOSTART',None);env.pop('APPROVED_MTO_V2_AUTOSTART',None);env.pop('APPROVED_MTO_V3_AUTOSTART',None)
+ env.pop('APPROVED_MTO_AUTOSTART',None);env.pop('APPROVED_MTO_V2_AUTOSTART',None);env.pop('APPROVED_MTO_V3_AUTOSTART',None);env['APPROVED_MTO_V4_AUTOSTART']='0'
  server=subprocess.Popen(['node','src/server.js'],cwd=root,env=env,stdout=subprocess.DEVNULL,stderr=subprocess.PIPE)
  def post(sku,n):
   req=urllib.request.Request(f'http://127.0.0.1:{port}/api/cart/calculate',data=json.dumps({'items':[{'sku':sku,'quantity':n}]}).encode(),headers={'Content-Type':'application/json'},method='POST')

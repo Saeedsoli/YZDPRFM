@@ -316,6 +316,7 @@ run_test test_readiness.js "launch readiness + no key leakage"
 run_test test_backup_stream_safety.js "backup concurrency, recovery and stream cleanup"
 if python3 scripts/test_approved_mto_v2.py >/tmp/test_approved_mto_v2.log 2>&1; then P=$((P+1)); else F=$((F+1)); echo "  X seven owner approvals"; fi
 if python3 scripts/test_approved_mto_v3.py >/tmp/test_approved_mto_v3.log 2>&1; then P=$((P+1)); else F=$((F+1)); echo "  X four owner approvals"; fi
+if python3 scripts/test_approved_mto_v4.py >/tmp/test_approved_mto_v4.log 2>&1; then P=$((P+1)); else F=$((F+1)); echo "  X three owner approvals"; fi
 run_test test_journal_lcp.js "journal server-side render + LCP guards"
 run_test test_invoice_legal.js "invoice: plain vs formal (legal info)"
 run_test test_customer_note.js "customer note + label + real contact"

@@ -802,3 +802,6 @@ node_modules/   با npm install برمی‌گردد
 - `scripts/test_secondary_reference_v21.js` — قیمت بلک ایکس اس ال اکسس مردانه با انتخاب مالک و منبع مستقل.
 
 - `scripts/test_secondary_reference_v22.js` — قیمت تی رز ادوپرفیوم با انتخاب مالک و منبع مستقل.
+
+- `src/approved-made-to-order-v4.js` — فعال‌سازی محافظت‌شده سه محصول تأییدشده.
+- `scripts/test_approved_mto_v4.py` — مصوبه سه محصول، سقف خرید و محافظ ویرایش مدیر.

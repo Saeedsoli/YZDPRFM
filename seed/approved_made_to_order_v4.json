@@ -1,0 +1,37 @@
+{
+  "version": "approved_made_to_order_2026_11_v4",
+  "source_sha256": "bbe8f40610bc765bda0a7d2da9dbe78f4e397458a6991239c3c18d0853f33f5c",
+  "description": "Owner approved exactly three previously selected reference products for made-to-order; supplier essence identity unverified.",
+  "items": [
+    {
+      "product_id": "YZD-PROD-0781",
+      "slug": "marc-antoine-barrois-ganymede-edp",
+      "expected_name_en": "MARC-ANTOINE BARROIS - Ganymede EDP",
+      "brand_en": "Marc-Antoine Barrois",
+      "usd_per_kg": "126.5",
+      "quality": "R",
+      "source_type": "provisional",
+      "reference_url": "https://us.marcantoinebarrois.com/products/ganymede"
+    },
+    {
+      "product_id": "SUP-TP-910043",
+      "slug": "paco-rabanne-black-xs-l-exces-for-him",
+      "expected_name_en": "PACO RABANNE - Black XS L'Exces for Him",
+      "brand_en": "Paco Rabanne",
+      "usd_per_kg": "278.3",
+      "quality": "H",
+      "source_type": "secondary",
+      "reference_url": "https://www.fragrantica.com/perfume/Rabanne/Black-XS-L-Exces-for-Him-13805.html"
+    },
+    {
+      "product_id": "SUP-TP-910044",
+      "slug": "perfumers-workshop-tea-rose-edp",
+      "expected_name_en": "PERFUMER'S WORKSHOP - Eau de Parfum Tea Rose",
+      "brand_en": "Perfumer's Workshop",
+      "usd_per_kg": "86.9",
+      "quality": "B",
+      "source_type": "secondary",
+      "reference_url": "https://www.fragrantica.com/perfume/Perfumer-s-Workshop/Eau-de-Parfum-Tea-Rose-29757.html"
+    }
+  ]
+}
