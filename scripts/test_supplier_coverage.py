@@ -54,10 +54,10 @@ actual,source_sha=a.read_rows(ROOT/a.SOURCE);assert len(actual)==342;assert len(
 actual_groups=a.group_rows(actual)
 raw_results,_=a.assess(actual_groups,[],{}, {},source_sha,False)
 before_states=[r['state'] for r in raw_results]
-assert a.apply_review_flags(ROOT,source_sha,raw_results)==10
+assert a.apply_review_flags(ROOT,source_sha,raw_results)==9
 assert [r['state'] for r in raw_results]==before_states
 flagged={(r['brand'],r['model']):r for r in raw_results if r['review_warning']}
-assert ('PARFUMS de MARLY','Layton') in flagged and 'دلینا' in flagged[('PARFUMS de MARLY','Layton')]['review_warning']
+assert ('PARFUMS de MARLY','Layton') not in flagged
 assert ('AMUAGE','Jubilation XXV') not in flagged
 for key in [('VERSACE','Crysral Noir'),
             ('VERSACE','Eros pour Femme'),('Marc-Antoine Barrois','Ganymede')]:
@@ -72,9 +72,6 @@ except ValueError as exc: assert 'unresolved supplier review flag' in str(exc)
 # Layton's separately identified men's source group is not the flagged women's row.
 layton=next(x for x in actual_candidates if x['product_id']=='YZD-PROD-0636')
 a.check_flagged_manifest_candidates(actual_groups,[layton],raw_results)
-bad_layton={**layton,'supplier_gender':'Women'}
-try: a.check_flagged_manifest_candidates(actual_groups,[bad_layton],raw_results); assert False, 'flagged Layton row must fail'
-except ValueError: pass
 try: a.apply_review_flags(ROOT,'0'*64,raw_results); assert False, 'stale source must fail'
 except ValueError: pass
 with tempfile.TemporaryDirectory(prefix='coverage-flags-') as d:

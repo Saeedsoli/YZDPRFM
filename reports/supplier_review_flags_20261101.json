@@ -3,17 +3,6 @@
   "description": "Manual advisory only; not an import block or supplier verification.",
   "items": [
     {
-      "brand": "PARFUMS de MARLY",
-      "model": "Layton",
-      "supplier_gender": "Women",
-      "expected_fa": "دلینا",
-      "warning": "نام فارسی دلینا و نام انگلیسی لیتون دو رایحه جدا هستند؛ انتساب نامشخص.",
-      "reference_urls": [
-        "https://ae.parfums-de-marly.com/products/layton",
-        "https://us.parfums-de-marly.com/collections/delina-family"
-      ]
-    },
-    {
       "brand": "JOOP",
       "model": "JOOP HOMME (Red)",
       "supplier_gender": "Men",

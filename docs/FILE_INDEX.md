@@ -768,3 +768,5 @@ node_modules/   با npm install برمی‌گردد
 - `scripts/test_official_reference_v36.js` — بررسی انتساب موقت بلو شنل و حفظ وضعیت غیرفعال.
 
 - `scripts/test_official_reference_v37.js` — قیمت جوبیلیشن ۴۰ طبق انتخاب مالک در ردیف متناقض.
+
+- `scripts/test_official_reference_v38.js` — قیمت و نت دلینا طبق انتخاب مالک در ردیف متناقض.

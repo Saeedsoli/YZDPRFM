@@ -1,0 +1,17 @@
+{
+  "version": "official_identity_evidence_v44",
+  "scope": "Official reference-original name only; supplier essence identity unverified.",
+  "items": [
+    {
+      "product_id": "YZD-PROD-0653",
+      "slug": "parfums-de-marly-delina",
+      "brand_en": "Parfums de Marly",
+      "expected_name_en": "PARFUMS DE MARLY - Delina",
+      "expected_concentration": "EDP",
+      "reference_name": "Delina Eau de Parfum",
+      "official_url": "https://us.parfums-de-marly.com/products/delina",
+      "status": "official_original_found_supplier_essence_unverified",
+      "checked_date": "2026-11-01"
+    }
+  ]
+}

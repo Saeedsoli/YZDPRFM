@@ -1,0 +1,59 @@
+{
+  "version": "official_notes_2026_11_v37",
+  "description": "Guarded official reference notes; no pricing or availability changes.",
+  "items": [
+    {
+      "product_id": "YZD-PROD-0653",
+      "product_slug": "parfums-de-marly-delina",
+      "expected_name_en": "PARFUMS DE MARLY - Delina",
+      "expected_concentration": "EDP",
+      "official_brand": "Parfums de Marly",
+      "official_name": "Delina Eau de Parfum",
+      "source_url": "https://us.parfums-de-marly.com/products/delina",
+      "source_scope": "Original reference notes only; not evidence of supplier essence ingredients or quality.",
+      "expected_old_notes": {
+        "top": [
+          "ریواس ترش",
+          "سرخالو (لیچی)",
+          "ترنج",
+          "جوز هندی"
+        ],
+        "middle": [
+          "رز ترکی دمشقی",
+          "گل صدتومانی",
+          "پتالیا",
+          "وانیل"
+        ],
+        "base": [
+          "مشک کشمیر",
+          "چوب سدر",
+          "خس‌خس هائیتی",
+          "کندر"
+        ]
+      },
+      "verified_notes": {
+        "top": [
+          "ترنج",
+          "لیچی",
+          "ریواس"
+        ],
+        "middle": [
+          "رز دمشقی",
+          "جوز هندی"
+        ],
+        "base": [
+          "کشمیران",
+          "مشک",
+          "وتیور"
+        ]
+      },
+      "expected_old_accords": [
+        "محبوب‌ترین و نمادین‌ترین عطر زنانه نیش معاصر در شیشه صورتی مخملی"
+      ],
+      "verified_accords": [],
+      "requires_unavailable": true,
+      "expected_old_notice": "این محصول، بازآفرینی دست‌ساز با عصاره خالص اولیه و فرمولاسیون اختصاصی عطر یزد است.",
+      "verified_notice": "این محصول بازآفرینی دست‌ساز است و محصول اورجینال برند اصلی نیست. نت‌ها مربوط به رایحه مرجع در وب‌سایت رسمی برند هستند؛ هویت، نسخه و ترکیبات اسانس تأمین‌کننده مستقلاً تأیید نشده است."
+    }
+  ]
+}
