@@ -61,7 +61,7 @@ CREED,Erolfa,Men,ارولفا کرید,1,185,366.3,P,provisional,قیمت موق
 CREED,Green Irish Tweed,Men,گرین آیریش کرید,1,186,212.3,H,provisional,قیمت موقت با شاهد نام؛ هویت اسانس تأییدنشده,YZD-PROD-0430,https://www.creedfragrance.com/p/green-irish-tweed/12870035/,official_reference_prices_v2.json
 CREED,MILLÉSIME IMPÉRIAL,Unisex,ایمپریال میلیسیوم کرید,1,187,453.2,H,provisional,قیمت موقت با شاهد نام؛ هویت اسانس تأییدنشده,YZD-PROD-0432,https://www.creedfragrance.com/p/millesime-imperial/12870041/,official_reference_prices_v1.json
 CREED,Original Vetiver,Men,اوجینال وتیور,1,188,110,P,provisional,قیمت موقت با شاهد نام؛ هویت اسانس تأییدنشده,YZD-PROD-0442,https://www.creedfragrance.com/p/original-vetiver/12870044/,official_reference_prices_v3.json
-CREED,Pour Enfants,Unisex,پوراینفانتس کرید,1,189,580.8,H,pending,هنوز قیمت مرجع منتسب نشده,,,
+CREED,Pour Enfants,Unisex,پوراینفانتس کرید,1,189,580.8,H,secondary,قیمت موقت با منبع مستقل؛ هویت اسانس تأییدنشده,SUP-TP-910031,https://www.fragrantica.com/perfume/Creed/Creed-Pour-Enfants-37549.html,secondary_reference_prices_v11.json
 CREED,Silver Mountain Water,Unisex,سیلور مانتین,2,"190,191",690.8,T,provisional,قیمت موقت با شاهد نام؛ هویت اسانس تأییدنشده,YZD-PROD-0431,https://www.creedfragrance.com/p/silver-mountain-water/12870049/,official_reference_prices_v2.json
 CREED,Viking,Men,وایکینگ,2,"192,193",844.8,T,provisional,قیمت موقت با شاهد نام؛ هویت اسانس تأییدنشده,YZD-PROD-0436,https://www.creedfragrance.com/p/viking/12870053/,official_reference_prices_v2.json
 CREED,White Flowers,Women,وایت فلاورز,1,194,427.9,H,provisional,قیمت موقت با شاهد نام؛ هویت اسانس تأییدنشده,SUP-CR-900009,https://www.creedfragrance.com/p/royales-exclusives-white-flowers/12900138/,official_reference_prices_v10.json
@@ -211,7 +211,7 @@ Salvator Ferragamo,Signoria,Women,سیگنوریا( سیگنارینا),1,719,92
 Sapil,Chi Chi,Women,چی چی زنانه,1,725,75.9,I,pending,هنوز قیمت مرجع منتسب نشده,,,
 Sapil,NICE BLACK,Men,نایس بلک,1,726,86.9,B,provisional,قیمت موقت با شاهد نام؛ هویت اسانس تأییدنشده,SUP-SP-900050,https://sapil.com/products/nice_feeling_black,official_reference_prices_v20.json
 SENJED,SENJED,Unisex,سنجد,1,732,55,I,pending,هنوز قیمت مرجع منتسب نشده,,,
-SERIS,Splandor,Men,اسپلندور,2,"738,739",172.7,H,pending,هنوز قیمت مرجع منتسب نشده,,,
+SERIS,Splandor,Men,اسپلندور,2,"738,739",172.7,H,provisional,قیمت موقت با شاهد نام؛ هویت اسانس تأییدنشده,SUP-SE-900001,https://www.seris-parfums.com/product/splendor/,official_reference_prices_v29.json
 SHISEIDO,Zen,Women,زن,1,745,176,H,provisional,قیمت موقت با شاهد نام؛ هویت اسانس تأییدنشده,SUP-SH-900022,https://www.shiseido.com/us/en/zen-eau-de-parfum-0768614102007.html,official_reference_prices_v15.json
 SOSPIRO,Accento,Unisex,اکسنتو,3,"751,752,753",491.7,T,secondary,قیمت موقت با منبع مستقل؛ هویت اسانس تأییدنشده,SUP-TP-910008,https://www.fragrantica.com/perfume/Sospiro-Perfumes/Accento-13816.html,secondary_reference_prices_v2.json
 SOSPIRO,Erba Pura,Unisex,ارباپورا,2,"754,755",267.3,H,secondary,قیمت موقت با منبع مستقل؛ هویت اسانس تأییدنشده,SUP-TP-910024,https://www.fragrantica.com/perfume/Sospiro-Perfumes/Erba-Pura-18652.html,secondary_reference_prices_v7.json

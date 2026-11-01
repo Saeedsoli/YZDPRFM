@@ -594,3 +594,17 @@ Guidance با Guidance 46 یکی نشده است. Platinium نام کوتاه‌
 برند ژیوانشی صریحاً نام تازه 3 Avenue George V را برای MMW با حفظ امضای بویایی اعلام کرده؛ این موضوع اثباتی درباره اسانس تأمین‌کننده نیست. برند DGVIB3 را مناسب همه معرفی می‌کند و جنسیت فایل مبنای شناسنامه آن قرار نگرفته است.
 
 شش شناسنامه بدون انتساب قیمت جدید: [Chance EDP](https://www.chanel.com/us/fragrance/p/126520/chance-eau-de-parfum-spray/)، [Chance Eau Tendre EDT](https://www.chanel.com/us/fragrance/p/126310/chance-eau-tendre-eau-de-toilette-spray/)، [Chance Eau Fraîche EDT](https://www.chanel.com/us/fragrance/p/136420/chance-eau-fraiche-eau-de-toilette-spray/)، [Chance Eau Vive EDT](https://www.chanel.com/us/fragrance/p/126550/chance-eau-vive-eau-de-toilette-spray/)، [Eternity for Men EDT](https://www.calvinklein.us/en/eternity-eau-de-toilette-for-men/LX000145.html) و [Eternity for Men Parfum](https://www.calvinklein.us/en/men/fragrance/fragrance/eternity-parfum-for-men/3616303549756.html). نسخه‌های متفاوت یکی نشده‌اند و آکورد رام، وصف رایحه مرجع است نه اثبات ماده اسانس تحویلی.
+
+
+## دو قیمت موقت و شش شناسنامه — ۱ نوامبر ۲۰۲۶
+
+دو محصول مکمل با قیمت نام‌محور موقت و شش شناسنامه موجود با محافظ ویرایش مدیر ثبت شدند. منابع رسمی و مستقل جدا هستند. واریانت‌ها و سفارش‌های قبلی بدون تغییر باقی ماندند. تمام محصولات غیرقابل سفارش‌اند و هویت، کیفیت و نسخه اسانس واقعی تأمین‌کننده با این مدارک تأیید نمی‌شود.
+
+| رایحه مرجع | دلار/کیلو | کیفیت فایل | نوع منبع | صفحه |
+|---|---:|---|---|---|
+| Splendor — Seris | 172.7 | H | رسمی | https://www.seris-parfums.com/product/splendor/ |
+| Creed Pour Enfants | 580.8 | H | مستقل | https://www.fragrantica.com/perfume/Creed/Creed-Pour-Enfants-37549.html |
+
+املای Splandor فایل به Splendor بدون پسوند تطبیق نامی شده است؛ چون صفحه رسمی توضیح‌های متناقضی برای نت‌ها دارد، نت‌های آن خالی‌اند و نسخه‌های Pink، Noir و Sport با آن یکی نشده‌اند. عطر مرجع Creed با نام Pour Enfants در بعضی منابع مستقل محصولی برای کودکان و بدون الکل معرفی شده است؛ این ویژگی به محصول دست‌ساز فروشگاه تعمیم داده نمی‌شود. **ایمنی محصول دست‌ساز برای کودکان تأیید نشده و استفاده برای کودکان توصیه نمی‌شود**؛ این هشدار در متن عمومی محصول نیز ثبت شده است.
+
+شش شناسنامه بدون قیمت تازه: [Acqua di Giò EDT](https://www.giorgioarmanibeauty-usa.com/fragrances/mens-cologne/acqua-di-gio/acqua-di-gio-eau-de-toilette/A005.html)، [Profondo EDP](https://www.giorgioarmanibeauty-usa.com/fragrances/mens-cologne/acqua-di-gio/acqua-di-gio-profondo-eau-de-parfum/A2267.html)، [Acqua di Giò Parfum](https://www.giorgioarmanibeauty-usa.com/fragrances/mens-cologne/acqua-di-gio/acqua-di-gio-parfum/A2608.html)، [Burberry Her EDP](https://us.burberry.com/her-eau-de-parfum-100ml-p40804591)، [Hero EDP](https://us.burberry.com/burberry-hero-eau-de-parfum-100ml-p40827901) و [Hero Parfum](https://us.burberry.com/burberry-hero-parfum-100ml-p40841031). نت‌ها بر اساس صفحات رسمی فعلی و بدون هرم ساختگی ثبت شدند؛ نسخه‌های متفاوت با هم یکی نشده‌اند.

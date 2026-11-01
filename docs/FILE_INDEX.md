@@ -724,3 +724,16 @@ node_modules/   با npm install برمی‌گردد
 - `seed/official_note_corrections_v31.json`
 - `scripts/test_official_reference_v28.js`
 - `scripts/test_official_notes_v31.js`
+
+
+### دو قیمت موقت و شش شناسنامه دیگر
+
+- `seed/official_supplement_v24.json`
+- `seed/official_identity_evidence_v36.json`
+- `seed/official_reference_prices_v29.json`
+- `seed/official_note_corrections_v32.json`
+- `seed/secondary_supplement_v10.json`
+- `seed/secondary_reference_prices_v11.json`
+- `scripts/test_official_reference_v29.js`
+- `scripts/test_secondary_reference_v11.js`
+- `scripts/test_official_notes_v32.js`

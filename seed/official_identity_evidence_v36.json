@@ -1,0 +1,82 @@
+{
+  "version": "official_identity_evidence_v36",
+  "scope": "Official reference-original name only; supplier essence identity unverified.",
+  "items": [
+    {
+      "product_id": "YZD-PROD-1650",
+      "slug": "giorgio-armani-acqua-di-gi-edt",
+      "brand_en": "Giorgio Armani",
+      "expected_name_en": "GIORGIO ARMANI - Acqua di Giò EDT",
+      "expected_concentration": "EDT",
+      "reference_name": "Acqua di Giò EDT",
+      "official_url": "https://www.giorgioarmanibeauty-usa.com/fragrances/mens-cologne/acqua-di-gio/acqua-di-gio-eau-de-toilette/A005.html",
+      "status": "official_original_found_supplier_essence_unverified",
+      "checked_date": "2026-11-01"
+    },
+    {
+      "product_id": "YZD-PROD-1652",
+      "slug": "giorgio-armani-acqua-di-gi-profondo",
+      "brand_en": "Giorgio Armani",
+      "expected_name_en": "GIORGIO ARMANI - Acqua di Giò Profondo",
+      "expected_concentration": "EDP",
+      "reference_name": "Acqua di Giò Profondo EDP",
+      "official_url": "https://www.giorgioarmanibeauty-usa.com/fragrances/mens-cologne/acqua-di-gio/acqua-di-gio-profondo-eau-de-parfum/A2267.html",
+      "status": "official_original_found_supplier_essence_unverified",
+      "checked_date": "2026-11-01"
+    },
+    {
+      "product_id": "YZD-PROD-1653",
+      "slug": "giorgio-armani-acqua-di-gi-parfum",
+      "brand_en": "Giorgio Armani",
+      "expected_name_en": "GIORGIO ARMANI - Acqua di Giò Parfum",
+      "expected_concentration": "Parfum",
+      "reference_name": "Acqua di Giò Parfum",
+      "official_url": "https://www.giorgioarmanibeauty-usa.com/fragrances/mens-cologne/acqua-di-gio/acqua-di-gio-parfum/A2608.html",
+      "status": "official_original_found_supplier_essence_unverified",
+      "checked_date": "2026-11-01"
+    },
+    {
+      "product_id": "YZD-PROD-1805",
+      "slug": "burberry-burberry-her-edp",
+      "brand_en": "Burberry",
+      "expected_name_en": "Burberry Her EDP",
+      "expected_concentration": "EDP",
+      "reference_name": "Burberry Her EDP",
+      "official_url": "https://us.burberry.com/her-eau-de-parfum-100ml-p40804591",
+      "status": "official_original_found_supplier_essence_unverified",
+      "checked_date": "2026-11-01"
+    },
+    {
+      "product_id": "YZD-PROD-1803",
+      "slug": "burberry-burberry-hero-edp",
+      "brand_en": "Burberry",
+      "expected_name_en": "Burberry Hero EDP",
+      "expected_concentration": "EDP",
+      "reference_name": "Burberry Hero EDP",
+      "official_url": "https://us.burberry.com/burberry-hero-eau-de-parfum-100ml-p40827901",
+      "status": "official_original_found_supplier_essence_unverified",
+      "checked_date": "2026-11-01"
+    },
+    {
+      "product_id": "YZD-PROD-0286",
+      "slug": "burberry-burberry-hero-parfum-2024",
+      "brand_en": "Burberry",
+      "expected_name_en": "Burberry Hero Parfum 2024",
+      "expected_concentration": "Parfum",
+      "reference_name": "Burberry Hero Parfum",
+      "official_url": "https://us.burberry.com/burberry-hero-parfum-100ml-p40841031",
+      "status": "official_original_found_supplier_essence_unverified",
+      "checked_date": "2026-11-01"
+    },
+    {
+      "product_id": "SUP-SE-900001",
+      "slug": "seris-splendor",
+      "brand_en": "Seris Parfums",
+      "expected_name_en": "SERIS PARFUMS - Splendor",
+      "reference_name": "Splendor",
+      "official_url": "https://www.seris-parfums.com/product/splendor/",
+      "status": "official_original_found_supplier_essence_unverified",
+      "checked_date": "2026-11-01"
+    }
+  ]
+}

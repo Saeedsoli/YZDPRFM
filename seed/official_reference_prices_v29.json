@@ -1,0 +1,21 @@
+{
+  "version": "official_reference_prices_2026_11_v29",
+  "supplier_file_sha256": "bbe8f40610bc765bda0a7d2da9dbe78f4e397458a6991239c3c18d0853f33f5c",
+  "description": "Provisional name-based prices; supplier essence unverified; no activation.",
+  "items": [
+    {
+      "product_id": "SUP-SE-900001",
+      "slug": "seris-splendor",
+      "brand_en": "Seris Parfums",
+      "expected_name_en": "SERIS PARFUMS - Splendor",
+      "reference_name": "Splendor",
+      "official_url": "https://www.seris-parfums.com/product/splendor/",
+      "supplier_brand": "SERIS",
+      "supplier_model": "Splandor",
+      "usd_per_kg": "172.7",
+      "quality": "H",
+      "match_status": "name_matched_supplier_identity_unverified",
+      "expected_edps": []
+    }
+  ]
+}
