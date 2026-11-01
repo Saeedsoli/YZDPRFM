@@ -26,16 +26,6 @@
     },
     {
       "brand": "VERSACE",
-      "model": "Crysral Noir",
-      "supplier_gender": "Women",
-      "expected_fa": "کریستال نویر",
-      "warning": "Crystal Noir ادو تویلت و پرفیوم مرجع جدا دارد؛ نسخه این ردیف نامشخص است.",
-      "reference_urls": [
-        "https://www.versace.com/us/en/women/accessories/fragrances-body-care/crystal-collection-for-her/"
-      ]
-    },
-    {
-      "brand": "VERSACE",
       "model": "Eros pour Femme",
       "supplier_gender": "Women",
       "expected_fa": "اروس زنانه",

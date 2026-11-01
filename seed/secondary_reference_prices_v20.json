@@ -1,0 +1,57 @@
+{
+  "version": "secondary_reference_prices_2026_11_v20",
+  "supplier_file_sha256": "bbe8f40610bc765bda0a7d2da9dbe78f4e397458a6991239c3c18d0853f33f5c",
+  "description": "Owner-selected EDP version; independent references; provisional price and no activation.",
+  "items": [
+    {
+      "product_id": "YZD-PROD-1707",
+      "slug": "versace-crystal-noir-edp",
+      "brand_en": "Versace",
+      "expected_name_en": "VERSACE - Crystal Noir EDP",
+      "reference_name": "Crystal Noir EDP",
+      "source_url": "https://www.fragrantica.com/perfume/Versace/Crystal-Noir-631.html",
+      "provider": "Fragrantica",
+      "status": "secondary_original_found_supplier_essence_unverified",
+      "checked_date": "2026-11-01",
+      "supplier_brand": "VERSACE",
+      "supplier_model": "Crysral Noir",
+      "supplier_gender": "Women",
+      "usd_per_kg": "220",
+      "quality": "I",
+      "match_status": "name_matched_supplier_identity_unverified",
+      "owner_version_confirmation": "Owner selected Eau de Parfum. Fragrantica page is generic, separate Parfumo EDP page supports version; supplier essence unverified.",
+      "additional_independent_version_url": "https://www.parfumo.com/Perfumes/Versace/Crystal_Noir_Eau_de_Parfum",
+      "expected_edps": [
+        {
+          "sku": "YZD-1707-EDP-010",
+          "volume_ml": 10,
+          "price_toman": 430000,
+          "stock": 0,
+          "price_usd": 4.0
+        },
+        {
+          "sku": "YZD-1707-EDP-030",
+          "volume_ml": 30,
+          "price_toman": 990000,
+          "stock": 0,
+          "price_usd": 4.0
+        },
+        {
+          "sku": "YZD-1707-EDP-050",
+          "volume_ml": 50,
+          "price_toman": 1550000,
+          "stock": 0,
+          "price_usd": 4.0
+        },
+        {
+          "sku": "YZD-1707-EDP-100",
+          "volume_ml": 100,
+          "price_toman": 2950000,
+          "stock": 0,
+          "price_usd": 4.0
+        }
+      ],
+      "legacy_backfill": false
+    }
+  ]
+}

@@ -1,0 +1,54 @@
+{
+  "version": "secondary_notes_2026_11_v4",
+  "description": "Common reference notes across independent generic Fragrantica and version-specific Parfumo EDP pages; neither verifies supplier essence.",
+  "items": [
+    {
+      "product_id": "YZD-PROD-1707",
+      "product_slug": "versace-crystal-noir-edp",
+      "source_url": "https://www.fragrantica.com/perfume/Versace/Crystal-Noir-631.html",
+      "additional_independent_version_url": "https://www.parfumo.com/Perfumes/Versace/Crystal_Noir_Eau_de_Parfum",
+      "expected_old_notes": {
+        "top": [
+          "هل",
+          "زنجبیل تازه",
+          "فلفل سیاه"
+        ],
+        "middle": [
+          "گل گاردنیا",
+          "گل صدتومانی",
+          "شکوفه پرتقال",
+          "نارگیل"
+        ],
+        "base": [
+          "چوب صندل میسور",
+          "مشک",
+          "کهربا"
+        ]
+      },
+      "expected_old_accords": [
+        "الماس سیاه بزرگ بر روی شیشه زرشکی تیره",
+        "اغواگرترین عطر زنانه با نارگیل خامه‌ای و ادویه‌جات تند"
+      ],
+      "expected_notice": "این محصول، بازآفرینی دست‌ساز با عصاره خالص اولیه و فرمولاسیون اختصاصی عطر یزد است.",
+      "notes": {
+        "top": [
+          "فلفل",
+          "زنجبیل",
+          "هل"
+        ],
+        "middle": [
+          "گاردنیا",
+          "شکوفه پرتقال",
+          "گل صدتومانی"
+        ],
+        "base": [
+          "چوب صندل",
+          "مشک",
+          "کهربا"
+        ]
+      },
+      "accords": [],
+      "new_notice": "این محصول بازآفرینی دست‌ساز است و محصول اورجینال برند اصلی نیست. اطلاعات رایحه مرجع از فراگرانتیکا و پرفیومو، منابع مستقل، گرفته شده و هویت و ترکیبات اسانس تأمین‌کننده مستقلاً تأیید نشده است."
+    }
+  ]
+}
