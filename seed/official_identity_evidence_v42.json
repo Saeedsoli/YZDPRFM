@@ -1,0 +1,61 @@
+{
+  "version": "official_identity_evidence_v42",
+  "scope": "Official reference-original name only; supplier essence identity unverified.",
+  "items": [
+    {
+      "product_id": "YZD-PROD-0637",
+      "slug": "parfums-de-marly-layton-exclusif",
+      "brand_en": "Parfums de Marly",
+      "expected_name_en": "PARFUMS DE MARLY - Layton Exclusif",
+      "expected_concentration": "Parfum",
+      "reference_name": "Layton Exclusif Parfum",
+      "official_url": "https://us.parfums-de-marly.com/products/layton-exclusif",
+      "status": "official_original_found_supplier_essence_unverified",
+      "checked_date": "2026-11-01"
+    },
+    {
+      "product_id": "YZD-PROD-1605",
+      "slug": "paco-rabanne-phantom-edt",
+      "brand_en": "Paco Rabanne",
+      "expected_name_en": "PACO RABANNE - Phantom EDT",
+      "expected_concentration": "EDT",
+      "reference_name": "Phantom EDT",
+      "official_url": "https://www.rabanne.com/it/it/fragrance/p/phantom-ricarica-200ml--000000000065171498",
+      "status": "official_original_found_supplier_essence_unverified",
+      "checked_date": "2026-11-01"
+    },
+    {
+      "product_id": "YZD-PROD-1606",
+      "slug": "paco-rabanne-phantom-parfum",
+      "brand_en": "Paco Rabanne",
+      "expected_name_en": "PACO RABANNE - Phantom Parfum",
+      "expected_concentration": "Parfum",
+      "reference_name": "Phantom Parfum",
+      "official_url": "https://www.rabanne.com/us/en_US/fragrance/p/phantom-parfum--000000000065188737",
+      "status": "official_original_found_supplier_essence_unverified",
+      "checked_date": "2026-11-01"
+    },
+    {
+      "product_id": "YZD-PROD-1602",
+      "slug": "paco-rabanne-invictus-victory-elixir",
+      "brand_en": "Paco Rabanne",
+      "expected_name_en": "PACO RABANNE - Invictus Victory Elixir",
+      "expected_concentration": "Parfum Intense",
+      "reference_name": "Invictus Victory Elixir",
+      "official_url": "https://www.rabanne.com/ww/it/fragrance/p/invictus-victory-elixir--000000000065188730",
+      "status": "official_original_found_supplier_essence_unverified",
+      "checked_date": "2026-11-01"
+    },
+    {
+      "product_id": "YZD-PROD-0457",
+      "slug": "roja-dove-elysium-pour-homme-parfum",
+      "brand_en": "Roja Dove",
+      "expected_name_en": "ROJA DOVE - Elysium Pour Homme Parfum",
+      "expected_concentration": "Pure Parfum",
+      "reference_name": "Elysium Pour Homme Parfum",
+      "official_url": "https://rojalondon.com/products/elysium-homme-parfum",
+      "status": "official_original_found_supplier_essence_unverified",
+      "checked_date": "2026-11-01"
+    }
+  ]
+}

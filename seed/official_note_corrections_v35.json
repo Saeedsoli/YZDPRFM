@@ -1,0 +1,282 @@
+{
+  "version": "official_notes_2026_11_v35",
+  "description": "Guarded official reference notes; no pricing or availability changes.",
+  "items": [
+    {
+      "product_id": "YZD-PROD-0637",
+      "product_slug": "parfums-de-marly-layton-exclusif",
+      "expected_name_en": "PARFUMS DE MARLY - Layton Exclusif",
+      "expected_concentration": "Parfum",
+      "official_brand": "Parfums de Marly",
+      "official_name": "Layton Exclusif Parfum",
+      "source_url": "https://us.parfums-de-marly.com/products/layton-exclusif",
+      "source_scope": "Named original only; reference accord descriptions do not establish ingredients, version or quality in supplied essence. Refill page describes the original, not a refill product sold here.",
+      "expected_old_notes": {
+        "top": [
+          "بادام تلخ",
+          "ترنج",
+          "نارنگی ماندارین",
+          "ترکیبات آبزی"
+        ],
+        "middle": [
+          "گل شمعدانی",
+          "گل رز",
+          "گاردنیا",
+          "زنبق دره"
+        ],
+        "base": [
+          "چوب عود لائوس",
+          "چوب گایاک",
+          "وانیل",
+          "چرم",
+          "چوب صندل",
+          "نعناع هندی",
+          "کهربا"
+        ]
+      },
+      "verified_notes": {
+        "top": [
+          "ترنج",
+          "فلفل صورتی",
+          "هل"
+        ],
+        "middle": [
+          "شمعدانی",
+          "اسطوخودوس",
+          "لاواندین"
+        ],
+        "base": [
+          "آکورد عود",
+          "چوب صندل",
+          "پچولی",
+          "آکورد چرم"
+        ]
+      },
+      "expected_old_accords": [
+        "لیتون در تاریک‌ترین و انیمالیک‌ترین حالت ممکن با عود و بادام تلخ"
+      ],
+      "verified_accords": [],
+      "requires_unavailable": true,
+      "expected_old_notice": "این محصول، بازآفرینی دست‌ساز با عصاره خالص اولیه و فرمولاسیون اختصاصی عطر یزد است.",
+      "verified_notice": "این محصول بازآفرینی دست‌ساز است و محصول اورجینال برند اصلی نیست. اطلاعات رایحه مرجع از وب‌سایت رسمی برند گرفته شده؛ هویت و نسخه اسانس تأمین‌کننده مستقلاً تأیید نشده است."
+    },
+    {
+      "product_id": "YZD-PROD-1605",
+      "product_slug": "paco-rabanne-phantom-edt",
+      "expected_name_en": "PACO RABANNE - Phantom EDT",
+      "expected_concentration": "EDT",
+      "official_brand": "Paco Rabanne",
+      "official_name": "Phantom EDT",
+      "source_url": "https://www.rabanne.com/it/it/fragrance/p/phantom-ricarica-200ml--000000000065171498",
+      "source_scope": "Named original only; reference accord descriptions do not establish ingredients, version or quality in supplied essence. Refill page describes the original, not a refill product sold here.",
+      "expected_old_notes": {
+        "top": [
+          "اسطوخودوس",
+          "پوست لیمو",
+          "لیمو آمالفی"
+        ],
+        "middle": [
+          "اسطوخودوس",
+          "سیب",
+          "دود",
+          "نعناع هندی"
+        ],
+        "base": [
+          "وانیل ماداگاسکار",
+          "اسطوخودوس",
+          "خس‌خس"
+        ]
+      },
+      "verified_notes": {
+        "top": [
+          "اسطوخودوس"
+        ],
+        "middle": [
+          "لیمو"
+        ],
+        "base": [
+          "وانیل"
+        ]
+      },
+      "expected_old_accords": [
+        "اولین بطری ربات فلزی متصل به گوشی با چیپ NFC",
+        "رایحه انرژی‌بخش برای نسل جدید"
+      ],
+      "verified_accords": [],
+      "requires_unavailable": true,
+      "expected_old_notice": "این محصول، بازآفرینی دست‌ساز با عصاره خالص اولیه و فرمولاسیون اختصاصی عطر یزد است.",
+      "verified_notice": "این محصول بازآفرینی دست‌ساز است و محصول اورجینال برند اصلی نیست. اطلاعات رایحه مرجع از وب‌سایت رسمی برند گرفته شده؛ هویت و نسخه اسانس تأمین‌کننده مستقلاً تأیید نشده است."
+    },
+    {
+      "product_id": "YZD-PROD-1606",
+      "product_slug": "paco-rabanne-phantom-parfum",
+      "expected_name_en": "PACO RABANNE - Phantom Parfum",
+      "expected_concentration": "Parfum",
+      "official_brand": "Paco Rabanne",
+      "official_name": "Phantom Parfum",
+      "source_url": "https://www.rabanne.com/us/en_US/fragrance/p/phantom-parfum--000000000065188737",
+      "source_scope": "Named original only; reference accord descriptions do not establish ingredients, version or quality in supplied essence. Refill page describes the original, not a refill product sold here.",
+      "expected_old_notes": {
+        "top": [
+          "ترنج",
+          "لیمو",
+          "هل",
+          "ریواس"
+        ],
+        "middle": [
+          "اسطوخودوس",
+          "گل شمعدانی",
+          "نعناع هندی",
+          "سدر"
+        ],
+        "base": [
+          "وانیل بوربون ماداگاسکار",
+          "خس‌خس هائیتی",
+          "تولو"
+        ]
+      },
+      "verified_notes": {
+        "top": [
+          "وتیور"
+        ],
+        "middle": [
+          "اسطوخودوس"
+        ],
+        "base": [
+          "وانیل"
+        ]
+      },
+      "expected_old_accords": [
+        "ربات سیاه مات با رایحه‌ای تاریک‌تر",
+        "مرموزتر و بی‌نهایت جذاب با وانیل بوربون خالص"
+      ],
+      "verified_accords": [],
+      "requires_unavailable": true,
+      "expected_old_notice": "این محصول، بازآفرینی دست‌ساز با عصاره خالص اولیه و فرمولاسیون اختصاصی عطر یزد است.",
+      "verified_notice": "این محصول بازآفرینی دست‌ساز است و محصول اورجینال برند اصلی نیست. اطلاعات رایحه مرجع از وب‌سایت رسمی برند گرفته شده؛ هویت و نسخه اسانس تأمین‌کننده مستقلاً تأیید نشده است."
+    },
+    {
+      "product_id": "YZD-PROD-1602",
+      "product_slug": "paco-rabanne-invictus-victory-elixir",
+      "expected_name_en": "PACO RABANNE - Invictus Victory Elixir",
+      "expected_concentration": "Parfum Intense",
+      "official_brand": "Paco Rabanne",
+      "official_name": "Invictus Victory Elixir",
+      "source_url": "https://www.rabanne.com/ww/it/fragrance/p/invictus-victory-elixir--000000000065188730",
+      "source_scope": "Named original only; reference accord descriptions do not establish ingredients, version or quality in supplied essence. Refill page describes the original, not a refill product sold here.",
+      "expected_old_notes": {
+        "top": [
+          "اسطوخودوس",
+          "هل",
+          "فلفل سیاه"
+        ],
+        "middle": [
+          "صمغ کندر عمان",
+          "نعناع هندی"
+        ],
+        "base": [
+          "وانیل ماداگاسکار",
+          "دانه تونکا"
+        ]
+      },
+      "verified_notes": {
+        "top": [
+          "دانه تونکا"
+        ],
+        "middle": [
+          "بخور"
+        ],
+        "base": [
+          "نت‌های چوبی"
+        ]
+      },
+      "expected_old_accords": [
+        "شاهکار سال ۲۰۲۳ با غلظت بالای الکسیر",
+        "غنی‌ترین و ماندگارترین عطر از خانواده اینویکتوس"
+      ],
+      "verified_accords": [],
+      "requires_unavailable": true,
+      "expected_old_notice": "این محصول، بازآفرینی دست‌ساز با عصاره خالص اولیه و فرمولاسیون اختصاصی عطر یزد است.",
+      "verified_notice": "این محصول بازآفرینی دست‌ساز است و محصول اورجینال برند اصلی نیست. اطلاعات رایحه مرجع از وب‌سایت رسمی برند گرفته شده؛ هویت و نسخه اسانس تأمین‌کننده مستقلاً تأیید نشده است."
+    },
+    {
+      "product_id": "YZD-PROD-0457",
+      "product_slug": "roja-dove-elysium-pour-homme-parfum",
+      "expected_name_en": "ROJA DOVE - Elysium Pour Homme Parfum",
+      "expected_concentration": "Pure Parfum",
+      "official_brand": "Roja Dove",
+      "official_name": "Elysium Pour Homme Parfum",
+      "source_url": "https://rojalondon.com/products/elysium-homme-parfum",
+      "source_scope": "Named original only; reference accord descriptions do not establish ingredients, version or quality in supplied essence. Refill page describes the original, not a refill product sold here.",
+      "expected_old_notes": {
+        "top": [
+          "گریپ‌فروت",
+          "لیمو",
+          "لایم",
+          "ترنج",
+          "اسطوخودوس",
+          "آویشن"
+        ],
+        "middle": [
+          "سیب",
+          "گل سوسن",
+          "یاس",
+          "رز",
+          "فلفل صورتی",
+          "خس‌خس هائیتی"
+        ],
+        "base": [
+          "چرم دست‌دوز",
+          "عنبر سائل",
+          "وانیل",
+          "صمغ لادن",
+          "مشک",
+          "سدر"
+        ]
+      },
+      "verified_notes": {
+        "top": [
+          "لیمو",
+          "ترنج",
+          "گریپ‌فروت",
+          "لایم",
+          "اسطوخودوس",
+          "آویشن",
+          "درمنه",
+          "مشک"
+        ],
+        "middle": [
+          "گل برف",
+          "رز",
+          "یاس",
+          "سیب",
+          "انگور فرنگی سیاه"
+        ],
+        "base": [
+          "گالبانوم",
+          "فلفل صورتی",
+          "سیپریول",
+          "وتیور",
+          "سدر",
+          "ارس",
+          "بنزوئین",
+          "وانیل",
+          "لابدانوم",
+          "آکورد چرم",
+          "آکورد عنبر",
+          "مشک"
+        ]
+      },
+      "expected_old_accords": [
+        "مرکباتی متراکم",
+        "چرم اشرافی",
+        "خس‌خس غلیظ",
+        "کهربایی"
+      ],
+      "verified_accords": [],
+      "requires_unavailable": true,
+      "expected_old_notice": "این محصول، بازآفرینی دست‌ساز با عصاره خالص اولیه و فرمولاسیون اختصاصی عطر یزد است.",
+      "verified_notice": "این محصول بازآفرینی دست‌ساز است و محصول اورجینال برند اصلی نیست. اطلاعات رایحه مرجع از وب‌سایت رسمی برند گرفته شده؛ هویت و نسخه اسانس تأمین‌کننده مستقلاً تأیید نشده است."
+    }
+  ]
+}
