@@ -819,3 +819,5 @@ node_modules/   با npm install برمی‌گردد
 - `scripts/test_amouage_common_names.js` — محافظ نام رایج و ویرایش مدیر.
 
 - `scripts/test_secondary_reference_v23.js` — قیمت آزارو کروم ادوپرفیوم با انتخاب مالک و منبع مستقل.
+
+- `scripts/test_official_reference_v45.js` — قیمت باربری لندن زنانه با انتخاب مالک.
