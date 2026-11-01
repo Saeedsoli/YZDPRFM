@@ -1,0 +1,17 @@
+{
+  "version": "approved_made_to_order_2026_11_v9",
+  "source_sha256": "bbe8f40610bc765bda0a7d2da9dbe78f4e397458a6991239c3c18d0853f33f5c",
+  "description": "Owner selected EDT reference and previously authorized activation of future owner-confirmed selections; supplier essence identity unverified.",
+  "items": [
+    {
+      "product_id": "YZD-PROD-1808",
+      "slug": "calvin-klein-euphoria-men",
+      "expected_name_en": "CALVIN KLEIN - Euphoria Men",
+      "brand_en": "Calvin Klein",
+      "usd_per_kg": "151.8",
+      "quality": "P",
+      "source_type": "secondary",
+      "reference_url": "https://www.fragrantica.com/perfume/Calvin-Klein/Euphoria-Men-799.html"
+    }
+  ]
+}

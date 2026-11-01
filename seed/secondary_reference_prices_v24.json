@@ -1,0 +1,57 @@
+{
+  "version": "secondary_reference_prices_2026_11_v24",
+  "supplier_file_sha256": "bbe8f40610bc765bda0a7d2da9dbe78f4e397458a6991239c3c18d0853f33f5c",
+  "description": "Owner-selected EDT reference; independent references; provisional price, supplier essence unverified.",
+  "items": [
+    {
+      "product_id": "YZD-PROD-1808",
+      "slug": "calvin-klein-euphoria-men",
+      "brand_en": "Calvin Klein",
+      "expected_name_en": "CALVIN KLEIN - Euphoria Men",
+      "reference_name": "Euphoria Men Eau de Toilette",
+      "source_url": "https://www.fragrantica.com/perfume/Calvin-Klein/Euphoria-Men-799.html",
+      "provider": "Fragrantica",
+      "status": "secondary_original_found_supplier_essence_unverified",
+      "checked_date": "2026-11-01",
+      "supplier_brand": "Calvin Klein",
+      "supplier_model": "Euphoria",
+      "supplier_gender": "Men",
+      "usd_per_kg": "151.8",
+      "quality": "P",
+      "match_status": "name_matched_supplier_identity_unverified",
+      "owner_version_confirmation": "Owner selected Euphoria Men EDT reference after clarification; supplier essence identity unverified.",
+      "additional_independent_version_url": "https://www.parfumo.com/Perfumes/Calvin_Klein/Euphoria_Men_Eau_de_Toilette",
+      "expected_edps": [
+        {
+          "sku": "YZD-1808-EDP-010",
+          "volume_ml": 10,
+          "price_toman": 360000,
+          "stock": 0,
+          "price_usd": 3.0
+        },
+        {
+          "sku": "YZD-1808-EDP-030",
+          "volume_ml": 30,
+          "price_toman": 780000,
+          "stock": 0,
+          "price_usd": 3.0
+        },
+        {
+          "sku": "YZD-1808-EDP-050",
+          "volume_ml": 50,
+          "price_toman": 1200000,
+          "stock": 0,
+          "price_usd": 3.0
+        },
+        {
+          "sku": "YZD-1808-EDP-100",
+          "volume_ml": 100,
+          "price_toman": 2250000,
+          "stock": 0,
+          "price_usd": 3.0
+        }
+      ],
+      "legacy_backfill": false
+    }
+  ]
+}

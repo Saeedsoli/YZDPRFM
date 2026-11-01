@@ -2740,7 +2740,7 @@ const weekendCorrection = require('./weekend-owner-correction').apply(db, path.j
 if (weekendCorrection.ok) require('./reference-price-import').applyReferencePrices(db, path.join(SEED_DIR, 'official_reference_prices_v47.json'));
 else console.warn('[DB] Weekend correction requires manual review; new price deferred');
 // Independent sources never enter the official evidence table.
-for (const file of ['secondary_reference_prices_v1.json','secondary_reference_prices_v2.json','secondary_reference_prices_v3.json','secondary_reference_prices_v4.json','secondary_reference_prices_v5.json','secondary_reference_prices_v6.json','secondary_reference_prices_v7.json','secondary_reference_prices_v8.json','secondary_reference_prices_v9.json','secondary_reference_prices_v10.json','secondary_reference_prices_v11.json','secondary_reference_prices_v12.json','secondary_reference_prices_v13.json','secondary_reference_prices_v14.json','secondary_reference_prices_v15.json','secondary_reference_prices_v16.json','secondary_reference_prices_v17.json','secondary_reference_prices_v18.json','secondary_reference_prices_v19.json','secondary_reference_prices_v20.json','secondary_reference_prices_v21.json','secondary_reference_prices_v22.json','secondary_reference_prices_v23.json'])
+for (const file of ['secondary_reference_prices_v1.json','secondary_reference_prices_v2.json','secondary_reference_prices_v3.json','secondary_reference_prices_v4.json','secondary_reference_prices_v5.json','secondary_reference_prices_v6.json','secondary_reference_prices_v7.json','secondary_reference_prices_v8.json','secondary_reference_prices_v9.json','secondary_reference_prices_v10.json','secondary_reference_prices_v11.json','secondary_reference_prices_v12.json','secondary_reference_prices_v13.json','secondary_reference_prices_v14.json','secondary_reference_prices_v15.json','secondary_reference_prices_v16.json','secondary_reference_prices_v17.json','secondary_reference_prices_v18.json','secondary_reference_prices_v19.json','secondary_reference_prices_v20.json','secondary_reference_prices_v21.json','secondary_reference_prices_v22.json','secondary_reference_prices_v23.json','secondary_reference_prices_v24.json'])
   require('./secondary-reference-import').applySecondaryReferences(db, path.join(SEED_DIR, file));
 // Correct earlier supplier-derived gender fields only for unchanged, unavailable
 // supplement rows. Never switch availability or overwrite a different value.
@@ -2765,7 +2765,7 @@ for (const file of ['official_gender_corrections_v1.json', 'official_gender_corr
 const officialNoteManifests = ['official_note_corrections_v1.json', 'official_note_corrections_v2.json', 'official_note_corrections_v3.json', 'official_note_corrections_v4.json', 'official_note_corrections_v5.json', 'official_note_corrections_v6.json', 'official_note_corrections_v7.json', 'official_note_corrections_v8.json', 'official_note_corrections_v9.json', 'official_note_corrections_v10.json', 'official_note_corrections_v11.json', 'official_note_corrections_v12.json', 'official_note_corrections_v13.json', 'official_note_corrections_v14.json', 'official_note_corrections_v15.json', 'official_note_corrections_v16.json','official_note_corrections_v17.json','official_note_corrections_v18.json','official_note_corrections_v19.json','official_note_corrections_v20.json','official_note_corrections_v21.json','official_note_corrections_v22.json','official_note_corrections_v23.json','official_note_corrections_v24.json','official_note_corrections_v25.json','official_note_corrections_v26.json','official_note_corrections_v27.json','official_note_corrections_v28.json','official_note_corrections_v29.json','official_note_corrections_v30.json','official_note_corrections_v31.json','official_note_corrections_v32.json','official_note_corrections_v33.json','official_note_corrections_v34.json','official_note_corrections_v35.json','official_note_corrections_v36.json','official_note_corrections_v37.json'];
 const officialNotesResults = officialNoteManifests.map(file =>
   require('./official-notes').applyOfficialNotes(db, path.join(SEED_DIR, file)));
-const secondaryNotesResults = ['secondary_note_corrections_v1.json','secondary_note_corrections_v2.json','secondary_note_corrections_v3.json','secondary_note_corrections_v4.json'].map(file =>
+const secondaryNotesResults = ['secondary_note_corrections_v1.json','secondary_note_corrections_v2.json','secondary_note_corrections_v3.json','secondary_note_corrections_v4.json','secondary_note_corrections_v5.json'].map(file =>
   require('./secondary-notes').applySecondaryNotes(db, path.join(SEED_DIR, file)));
 seedCoupons();
 /* تنظیمات واقعی فروشگاه — پس از ساخت جدول‌ها، پیش از سرو شدن
@@ -2805,6 +2805,10 @@ if (isFreshInstallation && process.env.APPROVED_MTO_AUTOSTART !== '0') {
   if (process.env.APPROVED_MTO_V8_AUTOSTART !== '0') {
     const v8 = require('./approved-made-to-order-v8').applyApprovedMadeToOrder(db, path.join(SEED_DIR, 'approved_made_to_order_v8.json'));
     if (v8.skipped.length) console.warn('[DB] Eternity approval skipped:', v8.skipped.length);
+  }
+  if (process.env.APPROVED_MTO_V9_AUTOSTART !== '0') {
+    const v9 = require('./approved-made-to-order-v9').applyApprovedMadeToOrder(db, path.join(SEED_DIR, 'approved_made_to_order_v9.json'));
+    if (v9.skipped.length) console.warn('[DB] Euphoria Men approval skipped:', v9.skipped.length);
   }
 }
 // Active-product correction is guarded by original evidence, owner-approved mode,

@@ -841,3 +841,8 @@ node_modules/   با npm install برمی‌گردد
 
 - `src/approved-made-to-order-v8.js` — تأیید محافظت‌شده اترنیتی ادوپرفیوم.
 - `scripts/test_approved_mto_v8.py` — خرید و محافظ تأیید اترنیتی.
+
+- `scripts/test_secondary_reference_v24.js` — قیمت ایفوریا مردانه بر مبنای ادوتویلت مرجع.
+
+- `src/approved-made-to-order-v9.js` — تأیید محافظت‌شده ایفوریا مردانه.
+- `scripts/test_approved_mto_v9.py` — خرید و محافظ تأیید ایفوریا.

@@ -5,11 +5,12 @@ const VERSION='secondary_notes_2026_11_v1';
 const VERSION_2='secondary_notes_2026_11_v2';
 const VERSION_3='secondary_notes_2026_11_v3';
 const VERSION_4='secondary_notes_2026_11_v4';
+const VERSION_5='secondary_notes_2026_11_v5';
 const STATUS='secondary_original_found_supplier_essence_unverified';
 function applySecondaryNotes(db,file){
  if(!fs.existsSync(file))return {updated:0,skipped:0,reason:'file_missing'};
  const m=JSON.parse(fs.readFileSync(file,'utf8'));
- if(!Object.hasOwn({[VERSION]:5,[VERSION_2]:2,[VERSION_3]:1,[VERSION_4]:1},m.version)||!Array.isArray(m.items)||m.items.length!==({[VERSION]:5,[VERSION_2]:2,[VERSION_3]:1,[VERSION_4]:1})[m.version])throw new Error('Invalid independent notes manifest');
+ if(!Object.hasOwn({[VERSION]:5,[VERSION_2]:2,[VERSION_3]:1,[VERSION_4]:1,[VERSION_5]:1},m.version)||!Array.isArray(m.items)||m.items.length!==({[VERSION]:5,[VERSION_2]:2,[VERSION_3]:1,[VERSION_4]:1,[VERSION_5]:1})[m.version])throw new Error('Invalid independent notes manifest');
  const seen=new Set();
  for(const x of m.items){
   let url;try{url=new URL(x.source_url);}catch{throw new Error('Invalid independent note URL');}

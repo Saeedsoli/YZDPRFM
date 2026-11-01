@@ -1,0 +1,52 @@
+{
+  "version": "secondary_notes_2026_11_v5",
+  "description": "Common reference notes across independent generic Fragrantica and version-specific Parfumo EDT pages; neither verifies supplier essence.",
+  "items": [
+    {
+      "product_id": "YZD-PROD-1808",
+      "product_slug": "calvin-klein-euphoria-men",
+      "source_url": "https://www.fragrantica.com/perfume/Calvin-Klein/Euphoria-Men-799.html",
+      "additional_independent_version_url": "https://www.parfumo.com/Perfumes/Calvin_Klein/Euphoria_Men_Eau_de_Toilette",
+      "expected_old_notes": {
+        "top": [
+          "زنجبیل تازه",
+          "فلفل سیاه"
+        ],
+        "middle": [
+          "ریحان سیاه",
+          "مریم‌گلی",
+          "چوب سدر"
+        ],
+        "base": [
+          "نعناع هندی اندونزی",
+          "چرم جیر",
+          "چوب قرمز",
+          "کهربا"
+        ]
+      },
+      "expected_old_accords": [
+        "شیشه مکعب با قاب نقره‌ای",
+        "یکی از شناخته‌شده‌ترین و پرطرفدارترین عطرهای مردانه ایران"
+      ],
+      "expected_notice": "این محصول، بازآفرینی دست‌ساز با عصاره خالص اولیه و فرمولاسیون اختصاصی عطر یزد است.",
+      "notes": {
+        "top": [
+          "زنجبیل",
+          "فلفل"
+        ],
+        "middle": [
+          "ریحان سیاه",
+          "مریم‌گلی"
+        ],
+        "base": [
+          "کهربا",
+          "آکورد جیر",
+          "چوب قرمز",
+          "پچولی"
+        ]
+      },
+      "accords": [],
+      "new_notice": "این محصول بازآفرینی دست‌ساز است و محصول اورجینال برند اصلی نیست. اطلاعات رایحه مرجع از فراگرانتیکا و پرفیومو، منابع مستقل، گرفته شده و هویت و ترکیبات اسانس تأمین‌کننده مستقلاً تأیید نشده است."
+    }
+  ]
+}
