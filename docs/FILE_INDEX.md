@@ -796,3 +796,5 @@ node_modules/   با npm install برمی‌گردد
 
 - `scripts/test_approved_mto_v3.py` — چهار تأیید جدید، سقف خرید و املای جستجو.
 - `scripts/test_popular_persian_names.js` — محافظ تغییرات مدیر در اصلاح نام‌ها.
+
+- `scripts/test_official_reference_v41.js` — قیمت گانیمد ادوپرفیوم با انتخاب مالک.

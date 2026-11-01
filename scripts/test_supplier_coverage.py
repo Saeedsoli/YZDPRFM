@@ -54,17 +54,15 @@ actual,source_sha=a.read_rows(ROOT/a.SOURCE);assert len(actual)==342;assert len(
 actual_groups=a.group_rows(actual)
 raw_results,_=a.assess(actual_groups,[],{}, {},source_sha,False)
 before_states=[r['state'] for r in raw_results]
-assert a.apply_review_flags(ROOT,source_sha,raw_results)==3
+assert a.apply_review_flags(ROOT,source_sha,raw_results)==2
 assert [r['state'] for r in raw_results]==before_states
 flagged={(r['brand'],r['model']):r for r in raw_results if r['review_warning']}
 assert ('PARFUMS de MARLY','Layton') not in flagged
 assert ('AMUAGE','Jubilation XXV') not in flagged
-for key in [('Marc-Antoine Barrois','Ganymede')]:
-    assert key in flagged and flagged[key]['state']=='pending'
 # Check manifests before DB application, including flagged rows without prices.
 actual_candidates=a.manifests(ROOT,source_sha)
 a.check_flagged_manifest_candidates(actual_groups,actual_candidates,raw_results)
-bad={'supplier_brand':'Marc-Antoine Barrois','supplier_model':'Ganymede','supplier_gender':'Unisex',
+bad={'supplier_brand':'Paco rabanne','supplier_model':'Black XS L`exces','supplier_gender':'Men',
      'product_id':'test','quality':'H','usd_per_kg':'1','origin':'test.json'}
 try: a.check_flagged_manifest_candidates(actual_groups,[bad],raw_results); assert False, 'flagged candidate must fail even before import'
 except ValueError as exc: assert 'unresolved supplier review flag' in str(exc)

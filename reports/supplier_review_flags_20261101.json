@@ -23,16 +23,6 @@
         "https://www.fragrantica.com/perfume/Perfumer-s-Workshop/Tea-Rose-5512.html",
         "https://www.fragrantica.com/perfume/Perfumer-s-Workshop/Eau-de-Parfum-Tea-Rose-29757.html"
       ]
-    },
-    {
-      "brand": "Marc-Antoine Barrois",
-      "model": "Ganymede",
-      "supplier_gender": "Unisex",
-      "expected_fa": "گانیمد",
-      "warning": "گانیمد و گانیمد اکستره مرجع جدا هستند؛ نسخه اسانس در فایل مشخص نیست.",
-      "reference_urls": [
-        "https://marcantoinebarrois.com/en/products/ganymede-extrait"
-      ]
     }
   ]
 }
