@@ -774,3 +774,11 @@ node_modules/   با npm install برمی‌گردد
 - `scripts/test_secondary_reference_v17.js` — قیمت و مرجع مستقل جوپ سبز طبق انتخاب مالک.
 
 - `scripts/test_secondary_reference_v18.js` — قیمت و مرجع مستقل جوپ قرمز طبق انتخاب مالک.
+
+- `src/approved-made-to-order-v2.js` — فعال‌سازی محافظت‌شده هفت محصول تأییدشده.
+
+- `scripts/test_approved_mto_v2.py` — هفت تأیید تازه، خرید و محافظ تغییرات مدیر.
+
+- `src/joop-name-correction.js` — اصلاح محافظت‌شده تکرار نام برند جوپ.
+
+- `scripts/test_joop_name_correction.js` — محافظ نام و تغییرات مدیر.

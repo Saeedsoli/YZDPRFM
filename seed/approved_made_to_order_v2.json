@@ -1,0 +1,77 @@
+{
+  "version": "approved_made_to_order_2026_11_v2",
+  "source_sha256": "bbe8f40610bc765bda0a7d2da9dbe78f4e397458a6991239c3c18d0853f33f5c",
+  "description": "Owner approved exactly seven previously selected reference products for made-to-order; supplier essence identity unverified.",
+  "items": [
+    {
+      "product_id": "YZD-PROD-0614",
+      "slug": "maison-francis-kurkdjian-baccarat-rouge-540-edp",
+      "expected_name_en": "MAISON FRANCIS KURKDJIAN - Baccarat Rouge 540 EDP",
+      "brand_en": "Maison Francis Kurkdjian",
+      "usd_per_kg": "319",
+      "quality": "H",
+      "source_type": "provisional",
+      "reference_url": "https://www.franciskurkdjian.com/us-en/p/baccarat-rouge-540-eau-de-parfum---refills-RA12235.html"
+    },
+    {
+      "product_id": "YZD-PROD-0756",
+      "slug": "bdk-parfums-gris-charnel-edp",
+      "expected_name_en": "BDK PARFUMS - Gris Charnel EDP",
+      "brand_en": "BDK Parfums",
+      "usd_per_kg": "467.5",
+      "quality": "P",
+      "source_type": "provisional",
+      "reference_url": "https://us.bdkparfums.com/products/gris-charnel"
+    },
+    {
+      "product_id": "YZD-PROD-1462",
+      "slug": "chanel-bleu-de-chanel-edp",
+      "expected_name_en": "CHANEL - Bleu de Chanel EDP",
+      "brand_en": "Chanel",
+      "usd_per_kg": "227.7",
+      "quality": "H",
+      "source_type": "provisional",
+      "reference_url": "https://www.chanel.com/gr/fragrance/p/107360/bleu-de-chanel-eau-de-parfum-spray/"
+    },
+    {
+      "product_id": "YZD-PROD-0542",
+      "slug": "amouage-jubilation-40-man",
+      "expected_name_en": "AMOUAGE - Jubilation 40 Man",
+      "brand_en": "Amouage",
+      "usd_per_kg": "387.2",
+      "quality": "P",
+      "source_type": "provisional",
+      "reference_url": "https://amouage.com/products/new-jubilation-40-man-exceptional-extrait"
+    },
+    {
+      "product_id": "YZD-PROD-0653",
+      "slug": "parfums-de-marly-delina",
+      "expected_name_en": "PARFUMS DE MARLY - Delina",
+      "brand_en": "Parfums de Marly",
+      "usd_per_kg": "105.6",
+      "quality": "R",
+      "source_type": "provisional",
+      "reference_url": "https://us.parfums-de-marly.com/products/delina"
+    },
+    {
+      "product_id": "SUP-TP-910040",
+      "slug": "joop-nightflight-original",
+      "expected_name_en": "Joop! Nightflight",
+      "brand_en": "Joop!",
+      "usd_per_kg": "113.3",
+      "quality": "H",
+      "source_type": "secondary",
+      "reference_url": "https://www.fragrantica.com/perfume/Joop/Nightflight-1721.html"
+    },
+    {
+      "product_id": "SUP-TP-910041",
+      "slug": "joop-homme-original",
+      "expected_name_en": "Joop! Homme",
+      "brand_en": "Joop!",
+      "usd_per_kg": "83.6",
+      "quality": "H",
+      "source_type": "secondary",
+      "reference_url": "https://www.fragrantica.com/perfume/Joop/Joop-Homme-1251.html"
+    }
+  ]
+}

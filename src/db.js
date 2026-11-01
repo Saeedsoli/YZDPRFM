@@ -2698,6 +2698,8 @@ const supplementInserted = (seedVerifiedSupplement('supplier_verified_supplement
   (seedVerifiedSupplement('secondary_supplement_v15.json') || 0) +
   (seedVerifiedSupplement('secondary_supplement_v16.json') || 0) +
   (seedVerifiedSupplement('secondary_supplement_v17.json') || 0);
+// Correct only the untouched duplicated Joop brand names, preserving owner edits.
+require('./joop-name-correction').apply(db);
 // Only approved generic replacements; preserve all manager-selected images.
 genericImageModule.applyGenericImages(db, genericImageManifest, path.join(ROOT_DIR, 'public', 'images', 'products'));
 // Repair the known year/name mismatch only for unchanged unavailable seed data.
@@ -2757,6 +2759,10 @@ if (isFreshInstallation && process.env.APPROVED_MTO_AUTOSTART !== '0') {
   const result = approved.applyApprovedMadeToOrder(db, path.join(SEED_DIR, 'approved_made_to_order_v1.json'));
   approved.correctApprovedNotices(db, path.join(SEED_DIR, 'approved_made_to_order_v1.json'));
   if (result.skipped.length) console.warn('[DB] approved made-to-order items skipped:', result.skipped.length);
+  if (process.env.APPROVED_MTO_V2_AUTOSTART !== '0') {
+    const v2 = require('./approved-made-to-order-v2').applyApprovedMadeToOrder(db, path.join(SEED_DIR, 'approved_made_to_order_v2.json'));
+    if (v2.skipped.length) console.warn('[DB] seven approved made-to-order items skipped:', v2.skipped.length);
+  }
 }
 // Active-product correction is guarded by original evidence, owner-approved mode,
 // unchanged price and exact prior content; it never touches order data.
