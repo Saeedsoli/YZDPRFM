@@ -71,3 +71,7 @@ python3 scripts/sqlite_delta_backup.py restore \
 ```
 
 نام نسخه‌های آرشیوشده: `post-reference-v4-delta-20261031.zip`، `post-reference-v5-delta-20261031.zip`، `post-outlands-final-v6-20261031.zip`، `post-five-v7-20261031.zip`، `post-three-v8-20261031.zip`، `post-baccarat-v9-20261031.zip`، `post-creed-armani-v10-20261031.zip`، `post-six-v11-20261031.zip`، `post-casamorati-v12-20261031.zip`، `post-five-v13-20261031.zip`، `post-seven-v14-20261031.zip`، `post-six-v15-20261031.zip`، `post-six-v16-20261031.zip`، `post-two-v17-20261031.zip`، `post-aquakiss-v18-20261101.zip`، `post-secondary-v1-20261101.zip`، `post-secondary-v2-20261101.zip`، `post-secondary-v3-20261101.zip`، `post-secondary-v4-20261101.zip`، `post-mixed-v5-20261101.zip`، `post-mixed-v6-20261101.zip` و `post-official-v21-20261101.zip`. سایر پشتیبان‌ها و نسخه‌های جدیدتر همچنان جداگانه‌اند.
+
+## گسترش آرشیو تاریخی — ۱ نوامبر ۲۰۲۶
+
+آرشیو مشترک اکنون ۳۴ پشتیبان افزایشی را نگهداری می‌کند. ۱۲ نسخه تازه افزوده‌شده شامل `post-notes-v23` تا `post-notes-v30` و `post-official-v22`، `post-secondary-v8`، `post-mixed-v9` و `post-dunhill` با پسوند تاریخ `-20261101.zip` هستند. همه اعضای آرشیو جدید با نسخه قبلی یا ZIP مبدأ بایت‌به‌بایت مقایسه شدند؛ هر ۱۲ نسخه افزوده‌شده از آرشیو مستقل بازیابی و هش و سلامت پایگاه بررسی شد. نسخه تکراری ZIP فقط پس از تأیید حذف شد. پایه XZ و آرشیو باید همراه هم حفظ شوند.

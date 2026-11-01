@@ -1,0 +1,94 @@
+{
+  "version": "official_identity_evidence_v39",
+  "scope": "Official reference-original name only; supplier essence identity unverified.",
+  "items": [
+    {
+      "product_id": "YZD-PROD-1798",
+      "slug": "hugo-boss-boss-bottled-edt",
+      "brand_en": "Hugo Boss",
+      "expected_name_en": "HUGO BOSS - Boss Bottled EDT",
+      "expected_concentration": "EDT",
+      "reference_name": "Boss Bottled EDT",
+      "official_url": "https://www.hugoboss.com/boss-bottled-eau-de-toilette-50ml/hbeu58000035_999.html",
+      "status": "official_original_found_supplier_essence_unverified",
+      "checked_date": "2026-11-01"
+    },
+    {
+      "product_id": "YZD-PROD-1799",
+      "slug": "hugo-boss-boss-bottled-elixir-2023",
+      "brand_en": "Hugo Boss",
+      "expected_name_en": "HUGO BOSS - Boss Bottled Elixir 2023",
+      "expected_concentration": "Parfum Intense",
+      "reference_name": "Boss Bottled Elixir",
+      "official_url": "https://www.hugoboss.com/boss-bottled-elixir-eau-de-parfum-50ml/hbeu58129502_999.html",
+      "status": "official_original_found_supplier_essence_unverified",
+      "checked_date": "2026-11-01"
+    },
+    {
+      "product_id": "YZD-PROD-0283",
+      "slug": "hugo-boss-boss-bottled-triumph-elixir-2024",
+      "brand_en": "Hugo Boss",
+      "expected_name_en": "HUGO BOSS - Boss Bottled Triumph Elixir 2024",
+      "expected_concentration": "Parfum Intense",
+      "reference_name": "Boss Bottled Triumph Elixir",
+      "official_url": "https://www.hugoboss.com/boss-bottled-triumph-elixir-eau-de-parfum-50ml/hbeu58138450_999.html",
+      "status": "official_original_found_supplier_essence_unverified",
+      "checked_date": "2026-11-01"
+    },
+    {
+      "product_id": "YZD-PROD-2054",
+      "slug": "hugo-boss-boss-bottled-parfum",
+      "brand_en": "Hugo Boss",
+      "expected_name_en": "HUGO BOSS - Boss Bottled Parfum",
+      "expected_concentration": "Parfum",
+      "reference_name": "Boss Bottled Parfum",
+      "official_url": "https://www.hugoboss.com/boss-bottled-parfum-200ml/hbeu58114178_999.html",
+      "status": "official_original_found_supplier_essence_unverified",
+      "checked_date": "2026-11-01"
+    },
+    {
+      "product_id": "YZD-PROD-2055",
+      "slug": "hugo-boss-boss-bottled-infinite",
+      "brand_en": "Hugo Boss",
+      "expected_name_en": "HUGO BOSS - Boss Bottled Infinite",
+      "expected_concentration": "EDP",
+      "reference_name": "Boss Bottled Infinite EDP",
+      "official_url": "https://www.hugoboss.com/boss-bottled-infinite-eau-de-parfum-200ml/hbeu58079182_999.html",
+      "status": "official_original_found_supplier_essence_unverified",
+      "checked_date": "2026-11-01"
+    },
+    {
+      "product_id": "YZD-PROD-2056",
+      "slug": "hugo-boss-boss-bottled-night",
+      "brand_en": "Hugo Boss",
+      "expected_name_en": "HUGO BOSS - Boss Bottled Night",
+      "expected_concentration": "EDT",
+      "reference_name": "Boss Bottled Night EDT",
+      "official_url": "https://www.hugoboss.com/boss-bottled-night-eau-de-toilette-100ml/hbeu58004750_999.html",
+      "status": "official_original_found_supplier_essence_unverified",
+      "checked_date": "2026-11-01"
+    },
+    {
+      "product_id": "YZD-PROD-2057",
+      "slug": "hugo-boss-boss-bottled-tonic",
+      "brand_en": "Hugo Boss",
+      "expected_name_en": "HUGO BOSS - Boss Bottled Tonic",
+      "expected_concentration": "EDT",
+      "reference_name": "Boss Bottled Tonic EDT",
+      "official_url": "https://www.hugoboss.com/boss-bottled-tonic-eau-de-toilette-100ml/hbeu58058068_999.html",
+      "status": "official_original_found_supplier_essence_unverified",
+      "checked_date": "2026-11-01"
+    },
+    {
+      "product_id": "YZD-PROD-1809",
+      "slug": "calvin-klein-euphoria-women",
+      "brand_en": "Calvin Klein",
+      "expected_name_en": "CALVIN KLEIN - Euphoria Women",
+      "expected_concentration": "EDP",
+      "reference_name": "Euphoria Women EDP",
+      "official_url": "https://www.calvinklein.us/en/women/fragrance/fragrance/euphoria-eau-de-parfum/LX000718-000.html",
+      "status": "official_original_found_supplier_essence_unverified",
+      "checked_date": "2026-11-01"
+    }
+  ]
+}

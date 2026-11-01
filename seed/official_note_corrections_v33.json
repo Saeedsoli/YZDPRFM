@@ -1,0 +1,346 @@
+{
+  "version": "official_notes_2026_11_v33",
+  "description": "Guarded reference notes only; no supplier price or stock assignment.",
+  "items": [
+    {
+      "product_id": "YZD-PROD-1798",
+      "product_slug": "hugo-boss-boss-bottled-edt",
+      "expected_name_en": "HUGO BOSS - Boss Bottled EDT",
+      "expected_concentration": "EDT",
+      "official_brand": "Hugo Boss",
+      "official_name": "Boss Bottled EDT",
+      "source_url": "https://www.hugoboss.com/boss-bottled-eau-de-toilette-50ml/hbeu58000035_999.html",
+      "source_scope": "Named original reference only; brand source does not verify actual supplier essence. Concentration field preserved where brand text differs.",
+      "expected_old_notes": {
+        "top": [
+          "سیب",
+          "آلو",
+          "لیمو",
+          "ترنج",
+          "شمعدانی",
+          "خزه بلوط"
+        ],
+        "middle": [
+          "دارچین سیلان",
+          "گل میخک",
+          "چوب بلسان بنفش"
+        ],
+        "base": [
+          "وانیل ماداگاسکار",
+          "چوب صندل",
+          "سدر",
+          "خس‌خس",
+          "زیتون"
+        ]
+      },
+      "verified_notes": {
+        "top": [],
+        "middle": [],
+        "base": []
+      },
+      "expected_old_accords": [
+        "پرفروش‌ترین عطر تاریخ آلمان با بیش از ۵۰ میلیون شیشه فروش",
+        "شاهکار آنیک مناردو با سیب دارچینی لذیذ"
+      ],
+      "verified_accords": [
+        "سیب",
+        "دارچین",
+        "نت‌های چوبی"
+      ],
+      "requires_unavailable": true,
+      "expected_old_notice": "این محصول، بازآفرینی دست‌ساز با عصاره خالص اولیه و فرمولاسیون اختصاصی عطر یزد است.",
+      "verified_notice": "این محصول بازآفرینی دست‌ساز است و محصول اورجینال برند اصلی نیست. اطلاعات رایحه مرجع از وب‌سایت رسمی برند گرفته شده؛ هویت و نسخه اسانس تأمین‌کننده مستقلاً تأیید نشده است."
+    },
+    {
+      "product_id": "YZD-PROD-1799",
+      "product_slug": "hugo-boss-boss-bottled-elixir-2023",
+      "expected_name_en": "HUGO BOSS - Boss Bottled Elixir 2023",
+      "expected_concentration": "Parfum Intense",
+      "official_brand": "Hugo Boss",
+      "official_name": "Boss Bottled Elixir",
+      "source_url": "https://www.hugoboss.com/boss-bottled-elixir-eau-de-parfum-50ml/hbeu58129502_999.html",
+      "source_scope": "Named original reference only; brand source does not verify actual supplier essence. Concentration field preserved where brand text differs.",
+      "expected_old_notes": {
+        "top": [
+          "هل گواتمالا",
+          "صمغ کندر عمان"
+        ],
+        "middle": [
+          "نعناع هندی اندونزی",
+          "خس‌خس"
+        ],
+        "base": [
+          "چوب سدر ویرجینیا",
+          "گل لادن"
+        ]
+      },
+      "verified_notes": {
+        "top": [],
+        "middle": [],
+        "base": []
+      },
+      "expected_old_accords": [
+        "شاهکار سال ۲۰۲۳ طراحی آنیک مناردو با بالاترین غلظت الکسیر",
+        "تاریک‌ترین و غنی‌ترین نسخه باتلد"
+      ],
+      "verified_accords": [
+        "بخور",
+        "هل",
+        "وتیور",
+        "پچولی",
+        "سدر"
+      ],
+      "requires_unavailable": true,
+      "expected_old_notice": "این محصول، بازآفرینی دست‌ساز با عصاره خالص اولیه و فرمولاسیون اختصاصی عطر یزد است.",
+      "verified_notice": "این محصول بازآفرینی دست‌ساز است و محصول اورجینال برند اصلی نیست. اطلاعات رایحه مرجع از وب‌سایت رسمی برند گرفته شده؛ هویت و نسخه اسانس تأمین‌کننده مستقلاً تأیید نشده است."
+    },
+    {
+      "product_id": "YZD-PROD-0283",
+      "product_slug": "hugo-boss-boss-bottled-triumph-elixir-2024",
+      "expected_name_en": "HUGO BOSS - Boss Bottled Triumph Elixir 2024",
+      "expected_concentration": "Parfum Intense",
+      "official_brand": "Hugo Boss",
+      "official_name": "Boss Bottled Triumph Elixir",
+      "source_url": "https://www.hugoboss.com/boss-bottled-triumph-elixir-eau-de-parfum-50ml/hbeu58138450_999.html",
+      "source_scope": "Named original reference only; brand source does not verify actual supplier essence. Concentration field preserved where brand text differs.",
+      "expected_old_notes": {
+        "top": [
+          "برگ بنفشه بنفش"
+        ],
+        "middle": [
+          "خس‌خس هائیتی دودی"
+        ],
+        "base": [
+          "نعناع هندی اندونزی",
+          "چوب گایاک"
+        ]
+      },
+      "verified_notes": {
+        "top": [],
+        "middle": [],
+        "base": []
+      },
+      "expected_old_accords": [
+        "شیشه آبی گرادیان تیره نماد پیروزی و افتخار در مسابقات",
+        "شاهکار سال ۲۰۲۴ با برگ بنفشه خنک"
+      ],
+      "verified_accords": [
+        "وتیور",
+        "پچولی",
+        "برگ بنفشه"
+      ],
+      "requires_unavailable": true,
+      "expected_old_notice": "این محصول، بازآفرینی دست‌ساز با عصاره خالص اولیه و فرمولاسیون اختصاصی عطر یزد است.",
+      "verified_notice": "این محصول بازآفرینی دست‌ساز است و محصول اورجینال برند اصلی نیست. اطلاعات رایحه مرجع از وب‌سایت رسمی برند گرفته شده؛ هویت و نسخه اسانس تأمین‌کننده مستقلاً تأیید نشده است."
+    },
+    {
+      "product_id": "YZD-PROD-2054",
+      "product_slug": "hugo-boss-boss-bottled-parfum",
+      "expected_name_en": "HUGO BOSS - Boss Bottled Parfum",
+      "expected_concentration": "Parfum",
+      "official_brand": "Hugo Boss",
+      "official_name": "Boss Bottled Parfum",
+      "source_url": "https://www.hugoboss.com/boss-bottled-parfum-200ml/hbeu58114178_999.html",
+      "source_scope": "Named original reference only; brand source does not verify actual supplier essence. Concentration field preserved where brand text differs.",
+      "expected_old_notes": {
+        "top": [
+          "صمغ کندر (لبان)",
+          "پرتقال ماندارین"
+        ],
+        "middle": [
+          "ریشه زنبق فلورانس",
+          "درخت انجیر"
+        ],
+        "base": [
+          "چرم تیره",
+          "چوب سدر ویرجینیا"
+        ]
+      },
+      "verified_notes": {
+        "top": [],
+        "middle": [],
+        "base": []
+      },
+      "expected_old_accords": [
+        "بطری تمام مشکی مات با خط طلایی",
+        "پخته‌ترین و اشرافی‌ترین نسخه باتلد با چرم و زنبق"
+      ],
+      "verified_accords": [
+        "زنبق",
+        "آکورد ریشه انجیر"
+      ],
+      "requires_unavailable": true,
+      "expected_old_notice": "این محصول، بازآفرینی دست‌ساز با عصاره خالص اولیه و فرمولاسیون اختصاصی عطر یزد است.",
+      "verified_notice": "این محصول بازآفرینی دست‌ساز است و محصول اورجینال برند اصلی نیست. اطلاعات رایحه مرجع از وب‌سایت رسمی برند گرفته شده؛ هویت و نسخه اسانس تأمین‌کننده مستقلاً تأیید نشده است."
+    },
+    {
+      "product_id": "YZD-PROD-2055",
+      "product_slug": "hugo-boss-boss-bottled-infinite",
+      "expected_name_en": "HUGO BOSS - Boss Bottled Infinite",
+      "expected_concentration": "EDP",
+      "official_brand": "Hugo Boss",
+      "official_name": "Boss Bottled Infinite EDP",
+      "source_url": "https://www.hugoboss.com/boss-bottled-infinite-eau-de-parfum-200ml/hbeu58079182_999.html",
+      "source_scope": "Named original reference only; brand source does not verify actual supplier essence. Concentration field preserved where brand text differs.",
+      "expected_old_notes": {
+        "top": [
+          "سیب",
+          "دارچین",
+          "مریم‌گلی",
+          "نارنگی ماندارین"
+        ],
+        "middle": [
+          "اسطوخودوس",
+          "رزماری",
+          "نعناع هندی"
+        ],
+        "base": [
+          "چوب صندل",
+          "درخت زیتون"
+        ]
+      },
+      "verified_notes": {
+        "top": [],
+        "middle": [],
+        "base": []
+      },
+      "expected_old_accords": [
+        "شیشه خاکستری آبی",
+        "ترکیب آرامش‌بخش اسطوخودوس با سیب و دارچین نمادین باتلد"
+      ],
+      "verified_accords": [
+        "مرکبات",
+        "نت‌های معطر",
+        "نت‌های چوبی"
+      ],
+      "requires_unavailable": true,
+      "expected_old_notice": "این محصول، بازآفرینی دست‌ساز با عصاره خالص اولیه و فرمولاسیون اختصاصی عطر یزد است.",
+      "verified_notice": "این محصول بازآفرینی دست‌ساز است و محصول اورجینال برند اصلی نیست. اطلاعات رایحه مرجع از وب‌سایت رسمی برند گرفته شده؛ هویت و نسخه اسانس تأمین‌کننده مستقلاً تأیید نشده است."
+    },
+    {
+      "product_id": "YZD-PROD-2056",
+      "product_slug": "hugo-boss-boss-bottled-night",
+      "expected_name_en": "HUGO BOSS - Boss Bottled Night",
+      "expected_concentration": "EDT",
+      "official_brand": "Hugo Boss",
+      "official_name": "Boss Bottled Night EDT",
+      "source_url": "https://www.hugoboss.com/boss-bottled-night-eau-de-toilette-100ml/hbeu58004750_999.html",
+      "source_scope": "Named original reference only; brand source does not verify actual supplier essence. Concentration field preserved where brand text differs.",
+      "expected_old_notes": {
+        "top": [
+          "اسطوخودوس",
+          "چوب درخت توس (قان)"
+        ],
+        "middle": [
+          "گل بنفشه",
+          "هل"
+        ],
+        "base": [
+          "روایح چوبی",
+          "چوب لورنول",
+          "مشک"
+        ]
+      },
+      "verified_notes": {
+        "top": [],
+        "middle": [],
+        "base": []
+      },
+      "expected_old_accords": [
+        "شیشه سرمه‌ای شبانه",
+        "اغواگری برای شب‌های مهمانی و جوانان با برگ بنفشه خنک"
+      ],
+      "verified_accords": [
+        "نت‌های چوبی",
+        "آکورد چوب لورو آمارلو"
+      ],
+      "requires_unavailable": true,
+      "expected_old_notice": "این محصول، بازآفرینی دست‌ساز با عصاره خالص اولیه و فرمولاسیون اختصاصی عطر یزد است.",
+      "verified_notice": "این محصول بازآفرینی دست‌ساز است و محصول اورجینال برند اصلی نیست. اطلاعات رایحه مرجع از وب‌سایت رسمی برند گرفته شده؛ هویت و نسخه اسانس تأمین‌کننده مستقلاً تأیید نشده است."
+    },
+    {
+      "product_id": "YZD-PROD-2057",
+      "product_slug": "hugo-boss-boss-bottled-tonic",
+      "expected_name_en": "HUGO BOSS - Boss Bottled Tonic",
+      "expected_concentration": "EDT",
+      "official_brand": "Hugo Boss",
+      "official_name": "Boss Bottled Tonic EDT",
+      "source_url": "https://www.hugoboss.com/boss-bottled-tonic-eau-de-toilette-100ml/hbeu58058068_999.html",
+      "source_scope": "Named original reference only; brand source does not verify actual supplier essence. Concentration field preserved where brand text differs.",
+      "expected_old_notes": {
+        "top": [
+          "سیب",
+          "گریپ‌فروت",
+          "پرتقال تلخ",
+          "لیمو"
+        ],
+        "middle": [
+          "زنجبیل تازه",
+          "دارچین",
+          "شمعدانی",
+          "میخک"
+        ],
+        "base": [
+          "خس‌خس هائیتی",
+          "چوب سدر"
+        ]
+      },
+      "verified_notes": {
+        "top": [],
+        "middle": [],
+        "base": []
+      },
+      "expected_old_accords": [
+        "کوکتل تونیک لیمویی و زنجبیلی در روزهای بسیار داغ تابستان",
+        "فوق‌العاده انرژی‌بخش"
+      ],
+      "verified_accords": [
+        "مرکبات",
+        "نت‌های چوبی"
+      ],
+      "requires_unavailable": true,
+      "expected_old_notice": "این محصول، بازآفرینی دست‌ساز با عصاره خالص اولیه و فرمولاسیون اختصاصی عطر یزد است.",
+      "verified_notice": "این محصول بازآفرینی دست‌ساز است و محصول اورجینال برند اصلی نیست. اطلاعات رایحه مرجع از وب‌سایت رسمی برند گرفته شده؛ هویت و نسخه اسانس تأمین‌کننده مستقلاً تأیید نشده است."
+    },
+    {
+      "product_id": "YZD-PROD-1809",
+      "product_slug": "calvin-klein-euphoria-women",
+      "expected_name_en": "CALVIN KLEIN - Euphoria Women",
+      "expected_concentration": "EDP",
+      "official_brand": "Calvin Klein",
+      "official_name": "Euphoria Women EDP",
+      "source_url": "https://www.calvinklein.us/en/women/fragrance/fragrance/euphoria-eau-de-parfum/LX000718-000.html",
+      "source_scope": "Named original reference only; brand source does not verify actual supplier essence. Concentration field preserved where brand text differs.",
+      "expected_old_notes": {
+        "top": [
+          "انار سرخ",
+          "نت‌های سبز گیاهی",
+          "هلو"
+        ],
+        "middle": [
+          "ارکیده سیاه",
+          "لوتوس آبی (نیلوفر آبی)"
+        ],
+        "base": [
+          "چوب ماهون",
+          "کهربای مایع",
+          "بنفشه سیاه",
+          "مشک"
+        ]
+      },
+      "verified_notes": {
+        "top": [],
+        "middle": [],
+        "base": []
+      },
+      "expected_old_accords": [
+        "برنده جایزه بهترین عطر زنانه سال ۲۰۰۶ فی‌فی",
+        "پرفروش‌ترین عطر زنانه ایران با شیشه سفینه نقره‌ای"
+      ],
+      "verified_accords": [],
+      "requires_unavailable": true,
+      "expected_old_notice": "این محصول، بازآفرینی دست‌ساز با عصاره خالص اولیه و فرمولاسیون اختصاصی عطر یزد است.",
+      "verified_notice": "این محصول بازآفرینی دست‌ساز است و محصول اورجینال برند اصلی نیست. اطلاعات رایحه مرجع از وب‌سایت رسمی برند گرفته شده؛ هویت و نسخه اسانس تأمین‌کننده مستقلاً تأیید نشده است."
+    }
+  ]
+}
