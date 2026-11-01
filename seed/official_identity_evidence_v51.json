@@ -1,0 +1,16 @@
+{
+  "version": "official_identity_evidence_v51",
+  "scope": "Official reference-original name only; supplier essence identity unverified.",
+  "items": [
+    {
+      "product_id": "SUP-TB-900003",
+      "slug": "the-body-shop-black-musk-edp",
+      "brand_en": "The Body Shop",
+      "expected_name_en": "THE BODY SHOP - Black Musk EDP",
+      "reference_name": "Black Musk Eau de Parfum",
+      "official_url": "https://us.thebodyshop.com/products/black-musk-eau-de-parfum",
+      "status": "official_original_found_supplier_essence_unverified",
+      "checked_date": "2026-11-01"
+    }
+  ]
+}

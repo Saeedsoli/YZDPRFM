@@ -1,0 +1,27 @@
+{
+  "version": "approved_made_to_order_2026_11_v15",
+  "source_sha256": "bbe8f40610bc765bda0a7d2da9dbe78f4e397458a6991239c3c18d0853f33f5c",
+  "description": "Owner approved EDP-first default, Parfum fallback, source-label gender and activation; named originals do not verify supplied essence.",
+  "items": [
+    {
+      "product_id": "SUP-TB-900003",
+      "slug": "the-body-shop-black-musk-edp",
+      "expected_name_en": "THE BODY SHOP - Black Musk EDP",
+      "brand_en": "The Body Shop",
+      "usd_per_kg": "63.8",
+      "quality": "I",
+      "source_type": "provisional",
+      "reference_url": "https://us.thebodyshop.com/products/black-musk-eau-de-parfum"
+    },
+    {
+      "product_id": "YZD-PROD-1773",
+      "slug": "cartier-pasha-de-cartier-parfum",
+      "expected_name_en": "CARTIER - Pasha de Cartier Parfum",
+      "brand_en": "Cartier",
+      "usd_per_kg": "168.3",
+      "quality": "H",
+      "source_type": "provisional",
+      "reference_url": "https://www.cartier.com/en-us/art-of-living/fragrances/mens-fragrances/pasha-de-cartier-parfum-100ml-65100036.html"
+    }
+  ]
+}

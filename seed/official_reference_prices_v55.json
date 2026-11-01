@@ -1,0 +1,69 @@
+{
+  "version": "official_reference_prices_2026_11_v55",
+  "supplier_file_sha256": "bbe8f40610bc765bda0a7d2da9dbe78f4e397458a6991239c3c18d0853f33f5c",
+  "description": "Two owner-default provisional reference choices; named originals do not verify supplied essence.",
+  "items": [
+    {
+      "product_id": "SUP-TB-900003",
+      "slug": "the-body-shop-black-musk-edp",
+      "brand_en": "The Body Shop",
+      "expected_name_en": "THE BODY SHOP - Black Musk EDP",
+      "reference_name": "Black Musk Eau de Parfum",
+      "official_url": "https://us.thebodyshop.com/products/black-musk-eau-de-parfum",
+      "supplier_brand": "BLACK MUSK",
+      "supplier_model": "The Body Shop",
+      "supplier_gender": "Unisex",
+      "usd_per_kg": "63.8",
+      "quality": "I",
+      "match_status": "name_matched_supplier_identity_unverified",
+      "owner_version_confirmation": "Owner authorized base EDP default. Brand and model transposed in source; actual supplier essence identity unverified.",
+      "expected_edps": []
+    },
+    {
+      "product_id": "YZD-PROD-1773",
+      "slug": "cartier-pasha-de-cartier-parfum",
+      "brand_en": "Cartier",
+      "expected_name_en": "CARTIER - Pasha de Cartier Parfum",
+      "reference_name": "Pasha de Cartier Parfum",
+      "official_url": "https://www.cartier.com/en-us/art-of-living/fragrances/mens-fragrances/pasha-de-cartier-parfum-100ml-65100036.html",
+      "additional_official_version_url": "https://www.cartier.com/en-us/fragrances/signatures/mens-parfum-discovery-set-CR65002003.html",
+      "supplier_brand": "Cartier",
+      "supplier_model": "Pasha de Cartier",
+      "supplier_gender": "Men",
+      "usd_per_kg": "168.3",
+      "quality": "H",
+      "match_status": "name_matched_supplier_identity_unverified",
+      "owner_version_confirmation": "Owner authorized base Parfum fallback; discovery set explicitly names Parfum and has same ingredient listing as linked original. No claim about supplier essence.",
+      "expected_edps": [
+        {
+          "sku": "YZD-1773-EDP-010",
+          "volume_ml": 10,
+          "price_toman": 500000,
+          "stock": 0,
+          "price_usd": 5.0
+        },
+        {
+          "sku": "YZD-1773-EDP-030",
+          "volume_ml": 30,
+          "price_toman": 1200000,
+          "stock": 0,
+          "price_usd": 5.0
+        },
+        {
+          "sku": "YZD-1773-EDP-050",
+          "volume_ml": 50,
+          "price_toman": 1900000,
+          "stock": 0,
+          "price_usd": 5.0
+        },
+        {
+          "sku": "YZD-1773-EDP-100",
+          "volume_ml": 100,
+          "price_toman": 3650000,
+          "stock": 0,
+          "price_usd": 5.0
+        }
+      ]
+    }
+  ]
+}

@@ -873,3 +873,8 @@ node_modules/   با npm install برمی‌گردد
 
 - `src/approved-made-to-order-v14.js` — تأیید محافظت‌شده سه تطبیق جدید.
 - `scripts/test_approved_mto_v14.py` — خرید و محافظ تأیید دسته جدید.
+
+- `scripts/test_default_reference_v55.js` — دو تطبیق موقت بر مبنای پیش‌فرض مالک.
+
+- `src/approved-made-to-order-v15.js` — تأیید محافظت‌شده دو تطبیق جدید.
+- `scripts/test_approved_mto_v15.py` — خرید و محافظ تأیید دسته جدید.
