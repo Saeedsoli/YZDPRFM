@@ -1,0 +1,17 @@
+{
+  "version": "official_identity_evidence_v48",
+  "scope": "Official reference-original name only; supplier essence identity unverified.",
+  "items": [
+    {
+      "product_id": "YZD-PROD-1719",
+      "slug": "dolce-gabbana-k-by-dolce-gabbana-edp",
+      "brand_en": "Dolce & Gabbana",
+      "expected_name_en": "DOLCE & GABBANA - K by Dolce & Gabbana EDP",
+      "expected_concentration": "EDP",
+      "reference_name": "K by Dolce&Gabbana Eau de Parfum",
+      "official_url": "https://www.dolcegabbana.com/en-us/beauty/perfumes-for-him/k-by-dolceandgabbana/k-by-dolceandgabbana-eau-de-parfum---VP001UVP0009V000.html",
+      "status": "official_original_found_supplier_essence_unverified",
+      "checked_date": "2026-11-01"
+    }
+  ]
+}

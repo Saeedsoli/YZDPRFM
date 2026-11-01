@@ -6,7 +6,7 @@ root=Path(__file__).resolve().parent.parent
 manifest=json.loads((root/'seed/approved_made_to_order_v1.json').read_text());ids={x['product_id'] for x in manifest['items']};assert len(ids)==192
 with tempfile.TemporaryDirectory(prefix='approved-mto-') as td:
  db=str(Path(td)/'store.sqlite');s=socket.socket();s.bind(('127.0.0.1',0));port=s.getsockname()[1];s.close()
- env={**os.environ,'DB_PATH':db,'BACKUP_DISABLED':'1','PORT':str(port)};env.pop('APPROVED_MTO_AUTOSTART',None);env['APPROVED_MTO_V2_AUTOSTART']='0';env['APPROVED_MTO_V3_AUTOSTART']='0';env['APPROVED_MTO_V4_AUTOSTART']='0';env['APPROVED_MTO_V5_AUTOSTART']='0';env['APPROVED_MTO_V6_AUTOSTART']='0';env['APPROVED_MTO_V7_AUTOSTART']='0';env['APPROVED_MTO_V8_AUTOSTART']='0';env['APPROVED_MTO_V9_AUTOSTART']='0';env['APPROVED_MTO_V10_AUTOSTART']='0'
+ env={**os.environ,'DB_PATH':db,'BACKUP_DISABLED':'1','PORT':str(port)};env.pop('APPROVED_MTO_AUTOSTART',None);env['APPROVED_MTO_V2_AUTOSTART']='0';env['APPROVED_MTO_V3_AUTOSTART']='0';env['APPROVED_MTO_V4_AUTOSTART']='0';env['APPROVED_MTO_V5_AUTOSTART']='0';env['APPROVED_MTO_V6_AUTOSTART']='0';env['APPROVED_MTO_V7_AUTOSTART']='0';env['APPROVED_MTO_V8_AUTOSTART']='0';env['APPROVED_MTO_V9_AUTOSTART']='0';env['APPROVED_MTO_V10_AUTOSTART']='0';env['APPROVED_MTO_V11_AUTOSTART']='0'
  server=subprocess.Popen(['node','src/server.js'],cwd=root,env=env,stdout=subprocess.DEVNULL,stderr=subprocess.PIPE)
  base='http://127.0.0.1:'+str(port)
  def get(p):

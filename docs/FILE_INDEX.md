@@ -851,3 +851,8 @@ node_modules/   با npm install برمی‌گردد
 
 - `src/approved-made-to-order-v10.js` — تأیید محافظت‌شده ایفوریا زنانه.
 - `scripts/test_approved_mto_v10.py` — خرید و محافظ تأیید ایفوریا زنانه.
+
+- `scripts/test_default_reference_v51.js` — هفت تطبیق موقت بر مبنای پیش‌فرض مالک.
+
+- `src/approved-made-to-order-v11.js` — تأیید محافظت‌شده هفت تطبیق پیش‌فرض.
+- `scripts/test_approved_mto_v11.py` — خرید و محافظ تأیید دسته پیش‌فرض.

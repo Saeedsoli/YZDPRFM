@@ -1,0 +1,65 @@
+{
+  "version": "official_notes_2026_11_v38",
+  "description": "Guarded official reference notes; no pricing or availability changes.",
+  "items": [
+    {
+      "product_id": "YZD-PROD-1719",
+      "product_slug": "dolce-gabbana-k-by-dolce-gabbana-edp",
+      "expected_name_en": "DOLCE & GABBANA - K by Dolce & Gabbana EDP",
+      "expected_concentration": "EDP",
+      "official_brand": "Dolce & Gabbana",
+      "official_name": "K by Dolce&Gabbana Eau de Parfum",
+      "source_url": "https://www.dolcegabbana.com/en-us/beauty/perfumes-for-him/k-by-dolceandgabbana/k-by-dolceandgabbana-eau-de-parfum---VP001UVP0009V000.html",
+      "source_scope": "Named original reference only; notes do not establish ingredients, version, or quality in the supplied essence.",
+      "expected_old_notes": {
+        "top": [
+          "پرتقال خونی سیسیلی",
+          "دانه ارس",
+          "لیمو",
+          "هل"
+        ],
+        "middle": [
+          "فلفل قرمز پیمنتو",
+          "شیر انجیر",
+          "اسطوخودوس",
+          "مریم‌گلی"
+        ],
+        "base": [
+          "چوب سدر",
+          "نعناع هندی",
+          "خس‌خس",
+          "ناگارموتا"
+        ]
+      },
+      "verified_notes": {
+        "top": [
+          "لیمو سیسیلی",
+          "پرتقال خونی",
+          "دانه ارس",
+          "هل"
+        ],
+        "middle": [
+          "انجیر",
+          "فلفل چیلی",
+          "شمعدانی",
+          "مریم‌گلی",
+          "اسطوخودوس"
+        ],
+        "base": [
+          "چوب سدر ویرجینیا",
+          "پچولی",
+          "ناگارموتا",
+          "وتیور هائیتی"
+        ]
+      },
+      "expected_old_accords": [
+        "درپوش تاج طلایی با سنگ‌های لاجورد",
+        "پادشاه زندگی روزمره با شیرینی انجیر و تندی فلفل پیمنتو"
+      ],
+      "verified_accords": [],
+      "requires_unavailable": true,
+      "expected_old_notice": "این محصول، بازآفرینی دست‌ساز با عصاره خالص اولیه و فرمولاسیون اختصاصی عطر یزد است.",
+      "verified_notice": "این محصول بازآفرینی دست‌ساز است و محصول اورجینال برند اصلی نیست. نت‌های رایحه مرجع از وب‌سایت رسمی برند گرفته شده‌اند؛ نسخه و ترکیبات اسانس تأمین‌کننده مستقلاً تأیید نشده‌اند."
+    }
+  ]
+}

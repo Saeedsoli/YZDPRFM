@@ -1,0 +1,77 @@
+{
+  "version": "approved_made_to_order_2026_11_v11",
+  "source_sha256": "bbe8f40610bc765bda0a7d2da9dbe78f4e397458a6991239c3c18d0853f33f5c",
+  "description": "Owner approved EDP-first default, Parfum fallback, source-label gender and activation; named originals do not verify supplied essence.",
+  "items": [
+    {
+      "product_id": "YZD-PROD-1719",
+      "slug": "dolce-gabbana-k-by-dolce-gabbana-edp",
+      "expected_name_en": "DOLCE & GABBANA - K by Dolce & Gabbana EDP",
+      "brand_en": "Dolce & Gabbana",
+      "usd_per_kg": "130.9",
+      "quality": "R",
+      "source_type": "provisional",
+      "reference_url": "https://www.dolcegabbana.com/en-us/beauty/perfumes-for-him/k-by-dolceandgabbana/k-by-dolceandgabbana-eau-de-parfum---VP001UVP0009V000.html"
+    },
+    {
+      "product_id": "YZD-PROD-1423",
+      "slug": "christian-dior-sauvage-edp",
+      "expected_name_en": "CHRISTIAN DIOR - Sauvage EDP",
+      "brand_en": "Christian Dior",
+      "usd_per_kg": "248.6",
+      "quality": "H",
+      "source_type": "provisional",
+      "reference_url": "https://www.dior.com/en_us/beauty/products/sauvage-eau-de-parfum-Y0785220.html"
+    },
+    {
+      "product_id": "YZD-PROD-1477",
+      "slug": "chanel-chance-chanel",
+      "expected_name_en": "CHANEL - Chance Chanel",
+      "brand_en": "Chanel",
+      "usd_per_kg": "388.3",
+      "quality": "H",
+      "source_type": "provisional",
+      "reference_url": "https://www.chanel.com/us/fragrance/p/126520/chance-eau-de-parfum-spray/"
+    },
+    {
+      "product_id": "YZD-PROD-1690",
+      "slug": "tom-ford-black-orchid-edp",
+      "expected_name_en": "TOM FORD - Black Orchid EDP",
+      "brand_en": "Tom Ford",
+      "usd_per_kg": "343.2",
+      "quality": "H",
+      "source_type": "provisional",
+      "reference_url": "https://www.tomfordbeauty.com/products/black-orchid-eau-de-parfum"
+    },
+    {
+      "product_id": "YZD-PROD-1547",
+      "slug": "herms-terre-dherms-pure-parfum",
+      "expected_name_en": "HERMÈS - Terre d'Hermès Pure Parfum",
+      "brand_en": "Hermès",
+      "usd_per_kg": "247.5",
+      "quality": "H",
+      "source_type": "provisional",
+      "reference_url": "https://www.hermes.com/us/en/product/terre-d-hermes-parfum-V107757V0/"
+    },
+    {
+      "product_id": "YZD-PROD-1696",
+      "slug": "tom-ford-ombr-leather-edp",
+      "expected_name_en": "TOM FORD - Ombré Leather EDP",
+      "brand_en": "Tom Ford",
+      "usd_per_kg": "316.8",
+      "quality": "H",
+      "source_type": "provisional",
+      "reference_url": "https://www.tomfordbeauty.com/products/ombre-leather-eau-de-parfum"
+    },
+    {
+      "product_id": "YZD-PROD-1492",
+      "slug": "yves-saint-laurent-y-eau-de-parfum",
+      "expected_name_en": "YVES SAINT LAURENT - Y Eau de Parfum",
+      "brand_en": "Yves Saint Laurent",
+      "usd_per_kg": "320.1",
+      "quality": "H",
+      "source_type": "provisional",
+      "reference_url": "https://www.yslbeautyus.com/fragrance/mens-fragrances/y/y-eau-de-parfum/727YSL.html"
+    }
+  ]
+}

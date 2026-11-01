@@ -1,0 +1,322 @@
+{
+  "version": "official_reference_prices_2026_11_v51",
+  "supplier_file_sha256": "bbe8f40610bc765bda0a7d2da9dbe78f4e397458a6991239c3c18d0853f33f5c",
+  "description": "Seven provisional choices using owner-approved default; reference does not verify supplied essence.",
+  "items": [
+    {
+      "product_id": "YZD-PROD-1719",
+      "slug": "dolce-gabbana-k-by-dolce-gabbana-edp",
+      "brand_en": "Dolce & Gabbana",
+      "expected_name_en": "DOLCE & GABBANA - K by Dolce & Gabbana EDP",
+      "reference_name": "K by Dolce&Gabbana Eau de Parfum",
+      "official_url": "https://www.dolcegabbana.com/en-us/beauty/perfumes-for-him/k-by-dolceandgabbana/k-by-dolceandgabbana-eau-de-parfum---VP001UVP0009V000.html",
+      "supplier_brand": "D&G",
+      "supplier_model": "KING",
+      "supplier_gender": "Men",
+      "usd_per_kg": "130.9",
+      "quality": "R",
+      "match_status": "name_matched_supplier_identity_unverified",
+      "owner_version_confirmation": "Owner authorized default EDP, or base Parfum when no base EDP, and source-row gender label as provisional selection; supplier essence identity unverified.",
+      "expected_edps": [
+        {
+          "sku": "YZD-1719-EDP-010",
+          "volume_ml": 10,
+          "price_toman": 430000,
+          "stock": 0,
+          "price_usd": 4.0
+        },
+        {
+          "sku": "YZD-1719-EDP-030",
+          "volume_ml": 30,
+          "price_toman": 990000,
+          "stock": 0,
+          "price_usd": 4.0
+        },
+        {
+          "sku": "YZD-1719-EDP-050",
+          "volume_ml": 50,
+          "price_toman": 1550000,
+          "stock": 0,
+          "price_usd": 4.0
+        },
+        {
+          "sku": "YZD-1719-EDP-100",
+          "volume_ml": 100,
+          "price_toman": 2950000,
+          "stock": 0,
+          "price_usd": 4.0
+        }
+      ]
+    },
+    {
+      "product_id": "YZD-PROD-1423",
+      "slug": "christian-dior-sauvage-edp",
+      "brand_en": "Christian Dior",
+      "expected_name_en": "CHRISTIAN DIOR - Sauvage EDP",
+      "reference_name": "Sauvage EDP",
+      "official_url": "https://www.dior.com/en_us/beauty/products/sauvage-eau-de-parfum-Y0785220.html",
+      "supplier_brand": "Dior",
+      "supplier_model": "Sauvage",
+      "supplier_gender": "Men",
+      "usd_per_kg": "248.6",
+      "quality": "H",
+      "match_status": "name_matched_supplier_identity_unverified",
+      "owner_version_confirmation": "Owner authorized default EDP, or base Parfum when no base EDP, and source-row gender label as provisional selection; supplier essence identity unverified.",
+      "expected_edps": [
+        {
+          "sku": "YZD-1423-EDP-010",
+          "volume_ml": 10,
+          "price_toman": 465000,
+          "stock": 0,
+          "price_usd": 4.5
+        },
+        {
+          "sku": "YZD-1423-EDP-030",
+          "volume_ml": 30,
+          "price_toman": 1094999,
+          "stock": 0,
+          "price_usd": 4.5
+        },
+        {
+          "sku": "YZD-1423-EDP-050",
+          "volume_ml": 50,
+          "price_toman": 1725000,
+          "stock": 0,
+          "price_usd": 4.5
+        },
+        {
+          "sku": "YZD-1423-EDP-100",
+          "volume_ml": 100,
+          "price_toman": 3300000,
+          "stock": 0,
+          "price_usd": 4.5
+        }
+      ]
+    },
+    {
+      "product_id": "YZD-PROD-1477",
+      "slug": "chanel-chance-chanel",
+      "brand_en": "Chanel",
+      "expected_name_en": "CHANEL - Chance Chanel",
+      "reference_name": "Chance EDP",
+      "official_url": "https://www.chanel.com/us/fragrance/p/126520/chance-eau-de-parfum-spray/",
+      "supplier_brand": "CHANEL",
+      "supplier_model": "Chance",
+      "supplier_gender": "Women",
+      "usd_per_kg": "388.3",
+      "quality": "H",
+      "match_status": "name_matched_supplier_identity_unverified",
+      "owner_version_confirmation": "Owner authorized default EDP, or base Parfum when no base EDP, and source-row gender label as provisional selection; supplier essence identity unverified.",
+      "expected_edps": [
+        {
+          "sku": "YZD-1477-EDP-010",
+          "volume_ml": 10,
+          "price_toman": 465000,
+          "stock": 0,
+          "price_usd": 4.5
+        },
+        {
+          "sku": "YZD-1477-EDP-030",
+          "volume_ml": 30,
+          "price_toman": 1094999,
+          "stock": 0,
+          "price_usd": 4.5
+        },
+        {
+          "sku": "YZD-1477-EDP-050",
+          "volume_ml": 50,
+          "price_toman": 1725000,
+          "stock": 0,
+          "price_usd": 4.5
+        },
+        {
+          "sku": "YZD-1477-EDP-100",
+          "volume_ml": 100,
+          "price_toman": 3300000,
+          "stock": 0,
+          "price_usd": 4.5
+        }
+      ]
+    },
+    {
+      "product_id": "YZD-PROD-1690",
+      "slug": "tom-ford-black-orchid-edp",
+      "brand_en": "Tom Ford",
+      "expected_name_en": "TOM FORD - Black Orchid EDP",
+      "reference_name": "Black Orchid EDP",
+      "official_url": "https://www.tomfordbeauty.com/products/black-orchid-eau-de-parfum",
+      "supplier_brand": "TOM FORD",
+      "supplier_model": "Black Orchid",
+      "supplier_gender": "Women",
+      "usd_per_kg": "343.2",
+      "quality": "H",
+      "match_status": "name_matched_supplier_identity_unverified",
+      "owner_version_confirmation": "Owner authorized default EDP, or base Parfum when no base EDP, and source-row gender label as provisional selection; supplier essence identity unverified.",
+      "expected_edps": [
+        {
+          "sku": "YZD-1690-EDP-010",
+          "volume_ml": 10,
+          "price_toman": 500000,
+          "stock": 0,
+          "price_usd": 5.0
+        },
+        {
+          "sku": "YZD-1690-EDP-030",
+          "volume_ml": 30,
+          "price_toman": 1200000,
+          "stock": 0,
+          "price_usd": 5.0
+        },
+        {
+          "sku": "YZD-1690-EDP-050",
+          "volume_ml": 50,
+          "price_toman": 1900000,
+          "stock": 0,
+          "price_usd": 5.0
+        },
+        {
+          "sku": "YZD-1690-EDP-100",
+          "volume_ml": 100,
+          "price_toman": 3650000,
+          "stock": 0,
+          "price_usd": 5.0
+        }
+      ]
+    },
+    {
+      "product_id": "YZD-PROD-1547",
+      "slug": "herms-terre-dherms-pure-parfum",
+      "brand_en": "Hermès",
+      "expected_name_en": "HERMÈS - Terre d'Hermès Pure Parfum",
+      "reference_name": "Terre d’Hermès Parfum",
+      "official_url": "https://www.hermes.com/us/en/product/terre-d-hermes-parfum-V107757V0/",
+      "supplier_brand": "HERMES",
+      "supplier_model": "Terre D`Hermes",
+      "supplier_gender": "Men",
+      "usd_per_kg": "247.5",
+      "quality": "H",
+      "match_status": "name_matched_supplier_identity_unverified",
+      "owner_version_confirmation": "Owner authorized default EDP, or base Parfum when no base EDP, and source-row gender label as provisional selection; supplier essence identity unverified.",
+      "expected_edps": [
+        {
+          "sku": "YZD-1547-EDP-010",
+          "volume_ml": 10,
+          "price_toman": 500000,
+          "stock": 0,
+          "price_usd": 5.0
+        },
+        {
+          "sku": "YZD-1547-EDP-030",
+          "volume_ml": 30,
+          "price_toman": 1200000,
+          "stock": 0,
+          "price_usd": 5.0
+        },
+        {
+          "sku": "YZD-1547-EDP-050",
+          "volume_ml": 50,
+          "price_toman": 1900000,
+          "stock": 0,
+          "price_usd": 5.0
+        },
+        {
+          "sku": "YZD-1547-EDP-100",
+          "volume_ml": 100,
+          "price_toman": 3650000,
+          "stock": 0,
+          "price_usd": 5.0
+        }
+      ]
+    },
+    {
+      "product_id": "YZD-PROD-1696",
+      "slug": "tom-ford-ombr-leather-edp",
+      "brand_en": "Tom Ford",
+      "expected_name_en": "TOM FORD - Ombré Leather EDP",
+      "reference_name": "Ombré Leather EDP",
+      "official_url": "https://www.tomfordbeauty.com/products/ombre-leather-eau-de-parfum",
+      "supplier_brand": "TOM FORD",
+      "supplier_model": "OMBRE LEATHER",
+      "supplier_gender": "Unisex",
+      "usd_per_kg": "316.8",
+      "quality": "H",
+      "match_status": "name_matched_supplier_identity_unverified",
+      "owner_version_confirmation": "Owner authorized default EDP, or base Parfum when no base EDP, and source-row gender label as provisional selection; supplier essence identity unverified.",
+      "expected_edps": [
+        {
+          "sku": "YZD-1696-EDP-010",
+          "volume_ml": 10,
+          "price_toman": 500000,
+          "stock": 0,
+          "price_usd": 5.0
+        },
+        {
+          "sku": "YZD-1696-EDP-030",
+          "volume_ml": 30,
+          "price_toman": 1200000,
+          "stock": 0,
+          "price_usd": 5.0
+        },
+        {
+          "sku": "YZD-1696-EDP-050",
+          "volume_ml": 50,
+          "price_toman": 1900000,
+          "stock": 0,
+          "price_usd": 5.0
+        },
+        {
+          "sku": "YZD-1696-EDP-100",
+          "volume_ml": 100,
+          "price_toman": 3650000,
+          "stock": 0,
+          "price_usd": 5.0
+        }
+      ]
+    },
+    {
+      "product_id": "YZD-PROD-1492",
+      "slug": "yves-saint-laurent-y-eau-de-parfum",
+      "brand_en": "Yves Saint Laurent",
+      "expected_name_en": "YVES SAINT LAURENT - Y Eau de Parfum",
+      "reference_name": "Y Eau de Parfum",
+      "official_url": "https://www.yslbeautyus.com/fragrance/mens-fragrances/y/y-eau-de-parfum/727YSL.html",
+      "supplier_brand": "Yves Saint Laurent",
+      "supplier_model": "Y",
+      "supplier_gender": "Men",
+      "usd_per_kg": "320.1",
+      "quality": "H",
+      "match_status": "name_matched_supplier_identity_unverified",
+      "owner_version_confirmation": "Owner authorized default EDP, or base Parfum when no base EDP, and source-row gender label as provisional selection; supplier essence identity unverified.",
+      "expected_edps": [
+        {
+          "sku": "YZD-1492-EDP-010",
+          "volume_ml": 10,
+          "price_toman": 465000,
+          "stock": 0,
+          "price_usd": 4.5
+        },
+        {
+          "sku": "YZD-1492-EDP-030",
+          "volume_ml": 30,
+          "price_toman": 1094999,
+          "stock": 0,
+          "price_usd": 4.5
+        },
+        {
+          "sku": "YZD-1492-EDP-050",
+          "volume_ml": 50,
+          "price_toman": 1725000,
+          "stock": 0,
+          "price_usd": 4.5
+        },
+        {
+          "sku": "YZD-1492-EDP-100",
+          "volume_ml": 100,
+          "price_toman": 3300000,
+          "stock": 0,
+          "price_usd": 4.5
+        }
+      ]
+    }
+  ]
+}
