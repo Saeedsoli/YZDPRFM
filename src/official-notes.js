@@ -17,6 +17,7 @@ function applyOfficialNotes(db,file) {
     }
     if (item.requires_unavailable !== undefined && typeof item.requires_unavailable !== 'boolean') throw new Error('Invalid availability guard');
     if (item.expected_name_en !== undefined && (typeof item.expected_name_en !== 'string' || !item.expected_name_en.trim())) throw new Error('Invalid name guard');
+    if (item.expected_concentration !== undefined && (typeof item.expected_concentration !== 'string' || !item.expected_concentration.trim())) throw new Error('Invalid concentration guard');
     if (item.expected_old_notice !== undefined || item.verified_notice !== undefined) {
       if (typeof item.expected_old_notice !== 'string' || typeof item.verified_notice !== 'string' || !item.verified_notice.trim()) throw new Error('Invalid transparency notice');
     }
@@ -28,14 +29,14 @@ function applyOfficialNotes(db,file) {
   }
   return db.transaction(()=>{
     if(db.prepare('SELECT value FROM settings WHERE key=?').get(marker))return {updated:0,skipped:0,reason:'already_applied'};
-    const get=db.prepare('SELECT id,slug,name_en,notes_top,notes_middle,notes_base,accords,supply_mode,transparency_notice FROM products WHERE id=?');
+    const get=db.prepare('SELECT id,slug,name_en,concentration,notes_top,notes_middle,notes_base,accords,supply_mode,transparency_notice FROM products WHERE id=?');
     const updateNotice=db.prepare('UPDATE products SET transparency_notice=? WHERE id=?');
     const update=db.prepare('UPDATE products SET notes_top=?,notes_middle=?,notes_base=?,search_blob=NULL WHERE id=?');
     const updateWithAccords=db.prepare('UPDATE products SET notes_top=?,notes_middle=?,notes_base=?,accords=?,search_blob=NULL WHERE id=?');
     let updated=0,skipped=0;
     for(const item of data.items) {
       const row=get.get(item.product_id);
-      if(!row || row.slug!==item.product_slug || (item.expected_name_en !== undefined && row.name_en!==item.expected_name_en) || (item.requires_unavailable && row.supply_mode!=='UNAVAILABLE') || (item.expected_old_notice !== undefined && row.transparency_notice!==item.expected_old_notice)) { skipped++; continue; }
+      if(!row || row.slug!==item.product_slug || (item.expected_name_en !== undefined && row.name_en!==item.expected_name_en) || (item.expected_concentration !== undefined && row.concentration!==item.expected_concentration) || (item.requires_unavailable && row.supply_mode!=='UNAVAILABLE') || (item.expected_old_notice !== undefined && row.transparency_notice!==item.expected_old_notice)) { skipped++; continue; }
       let unchanged;
       try {
         unchanged=['top','middle','base'].every(k=>JSON.stringify(JSON.parse(row['notes_'+k]||'[]'))===JSON.stringify(item.expected_old_notes[k]));

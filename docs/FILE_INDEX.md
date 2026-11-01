@@ -700,3 +700,10 @@ node_modules/   با npm install برمی‌گردد
 - `seed/official_identity_evidence_v32.json`
 - `seed/official_note_corrections_v28.json`
 - `scripts/test_official_notes_v28.js`
+
+
+### هشت شناسنامه رسمی و محافظ غلظت
+
+- `seed/official_identity_evidence_v33.json`
+- `seed/official_note_corrections_v29.json`
+- `scripts/test_official_notes_v29.js`

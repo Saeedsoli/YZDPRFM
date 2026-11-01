@@ -544,3 +544,21 @@ Guidance با Guidance 46 یکی نشده است. Platinium نام کوتاه‌
 | Le Beau Paradise Garden EDP | https://www.jeanpaulgaultier.com/fr/fr/p/gamme-le-beau/le-beau-paradise-garden-eau-de-parfum-000000000065199801 |
 
 مراجع هر نسخه از نسخه‌های متفاوت همان مجموعه جدا هستند. صفحه رسمی Legend دو فهرست متفاوت برای نسخه کلاسیک و EDT دارد؛ فقط نت‌های مشترک بدون هرم ثبت شدند. نت‌های اعلام‌شده درباره رایحه مرجع هستند و مواد اسانس تحویلی را اثبات نمی‌کنند.
+
+
+## هشت شناسنامه رسمی شنل، دیور، ایو سن لوران و هرمس — ۱ نوامبر ۲۰۲۶
+
+اطلاعات هشت محصول موجود با منابع رسمی نسخه مشخص و با محافظ ویرایش مدیر اصلاح شدند؛ قیمت، واریانت‌ها، سفارش‌ها و موجودی تغییر نکردند. تمام محصولات غیرفعال‌اند و نسخه واقعی اسانس تأمین‌کننده تأیید نشده است. نسخه‌های مختلف هر مجموعه یکی نشده‌اند و قیمت فایل بدون تعیین نسخه به آنها منتسب نشده است.
+
+| رایحه مرجع | صفحه رسمی |
+|---|---|
+| Allure Homme Sport EDT | https://www.chanel.com/us/fragrance/p/123630/allure-homme-sport-eau-de-toilette-spray/ |
+| Allure Homme Sport Eau Extrême EDP | https://www.chanel.com/us/fragrance/p/123560/allure-homme-sport-eau-extreme-eau-de-parfum-spray/ |
+| Allure Homme Sport Cologne | https://www.chanel.com/gb/fragrance/p/123320/allure-homme-sport-cologne-spray/ |
+| Sauvage Parfum | https://www.dior.com/en_int/beauty/products/sauvage-parfum-Y0998004.html |
+| Libre Le Parfum | https://www.yslbeautyus.com/fragrance/womens-fragrances/libre/libre-le-parfum/WW-51020YSL.html |
+| Libre Absolu Platine | https://www.yslbeautyus.com/libre-collection.html |
+| Coco Mademoiselle EDP Intense | https://www.chanel.com/us/fragrance/p/116660/coco-mademoiselle-eau-de-parfum-intense-spray/ |
+| Voyage d’Hermès Parfum | https://www.hermes.com/us/en/product/voyage-d-hermes-parfum-V107569V0/ |
+
+نام، غلظت ثبت‌شده، نت‌ها، متن شفافیت و غیرفعال بودن قبل از اصلاح بررسی می‌شوند تا ویرایش مدیر بازنویسی نشود. نت‌های عطر مرجع بدون هرم ساختگی ثبت شده و اثبات مواد اسانس تحویلی نیستند.

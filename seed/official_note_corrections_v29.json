@@ -1,0 +1,363 @@
+{
+  "version": "official_notes_2026_11_v29",
+  "description": "Guarded notes for named official originals; source does not establish supplier essence, pricing or stock.",
+  "items": [
+    {
+      "product_id": "YZD-PROD-1464",
+      "product_slug": "chanel-allure-homme-sport",
+      "expected_name_en": "CHANEL - Allure Homme Sport",
+      "official_brand": "Chanel",
+      "official_name": "Allure Homme Sport EDT",
+      "source_url": "https://www.chanel.com/us/fragrance/p/123630/allure-homme-sport-eau-de-toilette-spray/",
+      "source_scope": "EDT reference only; distinct from Cologne and Eau Extrême, supplier essence unverified.",
+      "expected_old_notes": {
+        "top": [
+          "پرتقال ماندارین",
+          "آب دریا",
+          "آلدهیدها",
+          "پرتقال خونی"
+        ],
+        "middle": [
+          "فلفل سیاه",
+          "بهارنارنج",
+          "چوب سدر"
+        ],
+        "base": [
+          "دانه تونکا",
+          "وانیل ماداگاسکار",
+          "مشک سفید",
+          "کهربا",
+          "خس‌خس"
+        ]
+      },
+      "verified_notes": {
+        "top": [],
+        "middle": [],
+        "base": []
+      },
+      "expected_old_accords": [
+        "شاداب‌ترین و پربازخوردترین عطر ورزشی تاریخ",
+        "نسیم اقیانوس با پرتقال ماندارین و تونکای خامه‌ای"
+      ],
+      "verified_accords": [
+        "نارنگی",
+        "چوب سدر",
+        "دانه تونکا",
+        "مشک سفید"
+      ],
+      "requires_unavailable": true,
+      "expected_old_notice": "این محصول، بازآفرینی دست‌ساز با عصاره خالص اولیه و فرمولاسیون اختصاصی عطر یزد است.",
+      "verified_notice": "این محصول بازآفرینی دست‌ساز است و محصول اورجینال برند اصلی نیست. نت‌های عطر مرجع از وب‌سایت رسمی برند هستند؛ هویت و نسخه اسانس تأمین‌کننده مستقلاً تأیید نشده است.",
+      "expected_concentration": "EDT"
+    },
+    {
+      "product_id": "YZD-PROD-1465",
+      "product_slug": "chanel-allure-homme-sport-eau-extrme",
+      "expected_name_en": "CHANEL - Allure Homme Sport Eau Extrême",
+      "official_brand": "Chanel",
+      "official_name": "Allure Homme Sport Eau Extrême EDP",
+      "source_url": "https://www.chanel.com/us/fragrance/p/123560/allure-homme-sport-eau-extreme-eau-de-parfum-spray/",
+      "source_scope": "Eau Extrême EDP reference only; distinct from original EDT and Cologne, supplier essence unverified.",
+      "expected_old_notes": {
+        "top": [
+          "نعناع تند",
+          "پرتقال ماندارین",
+          "گیاه سرو",
+          "مریم‌گلی"
+        ],
+        "middle": [
+          "فلفل سیاه"
+        ],
+        "base": [
+          "دانه تونکا برزیل",
+          "مشک سفید",
+          "چوب صندل",
+          "سدر"
+        ]
+      },
+      "verified_notes": {
+        "top": [],
+        "middle": [],
+        "base": []
+      },
+      "expected_old_accords": [
+        "محبوب‌ترین عطر تاریخ لاین الور هوم اسپرت",
+        "بمب انرژی نعناع و دانه تونکای اغواگر برای آقایان"
+      ],
+      "verified_accords": [
+        "نارنگی",
+        "سرو",
+        "مشک سفید",
+        "دانه تونکا"
+      ],
+      "requires_unavailable": true,
+      "expected_old_notice": "این محصول، بازآفرینی دست‌ساز با عصاره خالص اولیه و فرمولاسیون اختصاصی عطر یزد است.",
+      "verified_notice": "این محصول بازآفرینی دست‌ساز است و محصول اورجینال برند اصلی نیست. نت‌های عطر مرجع از وب‌سایت رسمی برند هستند؛ هویت و نسخه اسانس تأمین‌کننده مستقلاً تأیید نشده است.",
+      "expected_concentration": "EDP"
+    },
+    {
+      "product_id": "YZD-PROD-0054",
+      "product_slug": "chanel-allure-homme-sport-cologne",
+      "expected_name_en": "CHANEL - Allure Homme Sport Cologne",
+      "official_brand": "Chanel",
+      "official_name": "Allure Homme Sport Cologne",
+      "source_url": "https://www.chanel.com/gb/fragrance/p/123320/allure-homme-sport-cologne-spray/",
+      "source_scope": "Cologne reference only; distinct from original EDT and Eau Extrême, supplier essence unverified.",
+      "expected_old_notes": {
+        "top": [
+          "لیمو سیسیلی",
+          "ترنج",
+          "ماندارین",
+          "گریپ‌فروت",
+          "بهارنارنج"
+        ],
+        "middle": [
+          "دانه سرو کوهی (جونیپر)",
+          "فلفل سیاه",
+          "صمغ درخت کاج"
+        ],
+        "base": [
+          "مشک سفید",
+          "چوب سدر",
+          "خس‌خس",
+          "دانه تونکا"
+        ]
+      },
+      "verified_notes": {
+        "top": [],
+        "middle": [],
+        "base": []
+      },
+      "expected_old_accords": [
+        "انفجار ترش‌ترین و شاداب‌ترین مرکبات ایتالیا با ماندگاری عالی برای روزهای سوزان تابستان"
+      ],
+      "verified_accords": [
+        "مرکبات",
+        "آکورد فلفلی",
+        "چوب سدر",
+        "کهربا",
+        "مشک سفید"
+      ],
+      "requires_unavailable": true,
+      "expected_old_notice": "این محصول، بازآفرینی دست‌ساز با عصاره خالص اولیه و فرمولاسیون اختصاصی عطر یزد است.",
+      "verified_notice": "این محصول بازآفرینی دست‌ساز است و محصول اورجینال برند اصلی نیست. نت‌های عطر مرجع از وب‌سایت رسمی برند هستند؛ هویت و نسخه اسانس تأمین‌کننده مستقلاً تأیید نشده است.",
+      "expected_concentration": "EDC"
+    },
+    {
+      "product_id": "YZD-PROD-1424",
+      "product_slug": "christian-dior-sauvage-parfum",
+      "expected_name_en": "CHRISTIAN DIOR - Sauvage Parfum",
+      "official_brand": "Christian Dior",
+      "official_name": "Sauvage Parfum",
+      "source_url": "https://www.dior.com/en_int/beauty/products/sauvage-parfum-Y0998004.html",
+      "source_scope": "Parfum reference only; distinct from Sauvage EDT, EDP and Elixir, supplier essence unverified.",
+      "expected_old_notes": {
+        "top": [
+          "ترنج",
+          "پرتقال ماندارین",
+          "لامی"
+        ],
+        "middle": [
+          "چوب صندل هندی سریلانکا"
+        ],
+        "base": [
+          "صمغ کندر",
+          "دانه تونکا",
+          "وانیل ماداگاسکار"
+        ]
+      },
+      "verified_notes": {
+        "top": [],
+        "middle": [],
+        "base": []
+      },
+      "expected_old_accords": [
+        "نسخه بسیار پخته",
+        "صمغی و اشرافی برای مردان اصیل در شیشه آبی تیره شبی"
+      ],
+      "verified_accords": [
+        "نارنگی",
+        "دانه تونکا",
+        "چوب صندل"
+      ],
+      "requires_unavailable": true,
+      "expected_old_notice": "این محصول، بازآفرینی دست‌ساز با عصاره خالص اولیه و فرمولاسیون اختصاصی عطر یزد است.",
+      "verified_notice": "این محصول بازآفرینی دست‌ساز است و محصول اورجینال برند اصلی نیست. نت‌های عطر مرجع از وب‌سایت رسمی برند هستند؛ هویت و نسخه اسانس تأمین‌کننده مستقلاً تأیید نشده است.",
+      "expected_concentration": "Parfum"
+    },
+    {
+      "product_id": "YZD-PROD-1506",
+      "product_slug": "yves-saint-laurent-libre-le-parfum",
+      "expected_name_en": "YVES SAINT LAURENT - Libre Le Parfum",
+      "official_brand": "Yves Saint Laurent",
+      "official_name": "Libre Le Parfum",
+      "source_url": "https://www.yslbeautyus.com/fragrance/womens-fragrances/libre/libre-le-parfum/WW-51020YSL.html",
+      "source_scope": "Le Parfum reference only; distinct from Libre EDP, Intense and Absolu Platine, supplier essence unverified.",
+      "expected_old_notes": {
+        "top": [
+          "زعفران مراکشی",
+          "زنجبیل",
+          "پرتقال ماندارین",
+          "ترنج"
+        ],
+        "middle": [
+          "شکوفه پرتقال",
+          "اسطوخودوس دیوا"
+        ],
+        "base": [
+          "وانیل بوربون ماداگاسکار",
+          "عسل طبیعی",
+          "دانه تونکا",
+          "خس‌خس"
+        ]
+      },
+      "verified_notes": {
+        "top": [],
+        "middle": [],
+        "base": []
+      },
+      "expected_old_accords": [
+        "گرم‌ترین و ادویه‌ای‌ترین عطر خانواده لیبر با زعفران دست‌چین باغ‌های اوریکا مراکش متعلق به ایو سن لوران"
+      ],
+      "verified_accords": [
+        "اسطوخودوس",
+        "شکوفه پرتقال",
+        "آکورد زعفران"
+      ],
+      "requires_unavailable": true,
+      "expected_old_notice": "این محصول، بازآفرینی دست‌ساز با عصاره خالص اولیه و فرمولاسیون اختصاصی عطر یزد است.",
+      "verified_notice": "این محصول بازآفرینی دست‌ساز است و محصول اورجینال برند اصلی نیست. نت‌های عطر مرجع از وب‌سایت رسمی برند هستند؛ هویت و نسخه اسانس تأمین‌کننده مستقلاً تأیید نشده است.",
+      "expected_concentration": "Parfum"
+    },
+    {
+      "product_id": "YZD-PROD-0066",
+      "product_slug": "yves-saint-laurent-libre-labsolu-platine",
+      "expected_name_en": "YVES SAINT LAURENT - Libre L'Absolu Platine",
+      "official_brand": "Yves Saint Laurent",
+      "official_name": "Libre Absolu Platine",
+      "source_url": "https://www.yslbeautyus.com/libre-collection.html",
+      "source_scope": "Absolu Platine reference only; distinct from Libre EDP, Intense and Le Parfum, supplier essence unverified.",
+      "expected_old_notes": {
+        "top": [
+          "آلدهیدهای درخشان",
+          "ترنج کالابریا",
+          "نارنگی"
+        ],
+        "middle": [
+          "اسطوخودوس سفید",
+          "شکوفه پرتقال مراکش"
+        ],
+        "base": [
+          "وانیل ماداگاسکار بوربون",
+          "عنبر سائل"
+        ]
+      },
+      "verified_notes": {
+        "top": [],
+        "middle": [],
+        "base": []
+      },
+      "expected_old_accords": [
+        "لوگوی طلایی بر روی شیشه آینه‌ای پلاتینیوم نقره‌ای",
+        "ترکیب متالیک خنک با اسطوخودوس ناب"
+      ],
+      "verified_accords": [
+        "شکوفه پرتقال",
+        "اسطوخودوس",
+        "آکورد اسطوخودوس سفید"
+      ],
+      "requires_unavailable": true,
+      "expected_old_notice": "این محصول، بازآفرینی دست‌ساز با عصاره خالص اولیه و فرمولاسیون اختصاصی عطر یزد است.",
+      "verified_notice": "این محصول بازآفرینی دست‌ساز است و محصول اورجینال برند اصلی نیست. نت‌های عطر مرجع از وب‌سایت رسمی برند هستند؛ هویت و نسخه اسانس تأمین‌کننده مستقلاً تأیید نشده است.",
+      "expected_concentration": "Parfum"
+    },
+    {
+      "product_id": "YZD-PROD-1475",
+      "product_slug": "chanel-coco-mademoiselle-intense",
+      "expected_name_en": "CHANEL - Coco Mademoiselle Intense",
+      "official_brand": "Chanel",
+      "official_name": "Coco Mademoiselle EDP Intense",
+      "source_url": "https://www.chanel.com/us/fragrance/p/116660/coco-mademoiselle-eau-de-parfum-intense-spray/",
+      "source_scope": "EDP Intense reference only; distinct from Coco Mademoiselle EDP and L’Eau Privée, supplier essence unverified.",
+      "expected_old_notes": {
+        "top": [
+          "پرتقال سیسیلی",
+          "ترنج کالابریا",
+          "لیمو"
+        ],
+        "middle": [
+          "گل رز دمشقی",
+          "گل یاس",
+          "میوه‌های شیرین"
+        ],
+        "base": [
+          "نعناع هندی با دوز دو برابر",
+          "دانه تونکا برزیل",
+          "وانیل ماداگاسکار",
+          "لادن",
+          "مشک"
+        ]
+      },
+      "verified_notes": {
+        "top": [],
+        "middle": [],
+        "base": []
+      },
+      "expected_old_accords": [
+        "نسخه شبانه و مجلل‌تر مادمازل با دوز دوبرابر نعناع هندی اندونزی و گرمای وانیل و تونکا"
+      ],
+      "verified_accords": [
+        "پچولی",
+        "دانه تونکا",
+        "وانیل"
+      ],
+      "requires_unavailable": true,
+      "expected_old_notice": "این محصول، بازآفرینی دست‌ساز با عصاره خالص اولیه و فرمولاسیون اختصاصی عطر یزد است.",
+      "verified_notice": "این محصول بازآفرینی دست‌ساز است و محصول اورجینال برند اصلی نیست. نت‌های عطر مرجع از وب‌سایت رسمی برند هستند؛ هویت و نسخه اسانس تأمین‌کننده مستقلاً تأیید نشده است.",
+      "expected_concentration": "EDP"
+    },
+    {
+      "product_id": "YZD-PROD-1552",
+      "product_slug": "herms-voyage-dherms-parfum",
+      "expected_name_en": "HERMÈS - Voyage d'Hermès Parfum",
+      "official_brand": "Hermès",
+      "official_name": "Voyage d’Hermès Parfum",
+      "source_url": "https://www.hermes.com/us/en/product/voyage-d-hermes-parfum-V107569V0/",
+      "source_scope": "Parfum reference only; distinct from Voyage d’Hermès EDT, supplier essence unverified.",
+      "expected_old_notes": {
+        "top": [
+          "هل سبز گواتمالا",
+          "لیمو سیسیلی",
+          "دانه سرو کوهی"
+        ],
+        "middle": [
+          "چای سبز",
+          "نت‌های گلی",
+          "هدیون"
+        ],
+        "base": [
+          "چوب سدر",
+          "مشک سفید",
+          "عنبر سائل"
+        ]
+      },
+      "verified_notes": {
+        "top": [],
+        "middle": [],
+        "base": []
+      },
+      "expected_old_accords": [
+        "بطری چرخشی نقره‌ای شاهکار فیلیپ موکه نماد قطب‌نما و سفر",
+        "لطیف‌ترین هل و چای سبز تاریخ"
+      ],
+      "verified_accords": [
+        "سرو کوهی",
+        "چوب صندل"
+      ],
+      "requires_unavailable": true,
+      "expected_old_notice": "این محصول، بازآفرینی دست‌ساز با عصاره خالص اولیه و فرمولاسیون اختصاصی عطر یزد است.",
+      "verified_notice": "این محصول بازآفرینی دست‌ساز است و محصول اورجینال برند اصلی نیست. نت‌های عطر مرجع از وب‌سایت رسمی برند هستند؛ هویت و نسخه اسانس تأمین‌کننده مستقلاً تأیید نشده است.",
+      "expected_concentration": "Parfum"
+    }
+  ]
+}

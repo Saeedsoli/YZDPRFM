@@ -1,0 +1,94 @@
+{
+  "version": "official_identity_evidence_v33",
+  "scope": "Official reference-original name only; actual supplier essence identity is unverified. No supplier pricing.",
+  "items": [
+    {
+      "product_id": "YZD-PROD-1464",
+      "slug": "chanel-allure-homme-sport",
+      "brand_en": "Chanel",
+      "expected_name_en": "CHANEL - Allure Homme Sport",
+      "reference_name": "Allure Homme Sport EDT",
+      "official_url": "https://www.chanel.com/us/fragrance/p/123630/allure-homme-sport-eau-de-toilette-spray/",
+      "status": "official_original_found_supplier_essence_unverified",
+      "checked_date": "2026-11-01",
+      "expected_concentration": "EDT"
+    },
+    {
+      "product_id": "YZD-PROD-1465",
+      "slug": "chanel-allure-homme-sport-eau-extrme",
+      "brand_en": "Chanel",
+      "expected_name_en": "CHANEL - Allure Homme Sport Eau Extrême",
+      "reference_name": "Allure Homme Sport Eau Extrême EDP",
+      "official_url": "https://www.chanel.com/us/fragrance/p/123560/allure-homme-sport-eau-extreme-eau-de-parfum-spray/",
+      "status": "official_original_found_supplier_essence_unverified",
+      "checked_date": "2026-11-01",
+      "expected_concentration": "EDP"
+    },
+    {
+      "product_id": "YZD-PROD-0054",
+      "slug": "chanel-allure-homme-sport-cologne",
+      "brand_en": "Chanel",
+      "expected_name_en": "CHANEL - Allure Homme Sport Cologne",
+      "reference_name": "Allure Homme Sport Cologne",
+      "official_url": "https://www.chanel.com/gb/fragrance/p/123320/allure-homme-sport-cologne-spray/",
+      "status": "official_original_found_supplier_essence_unverified",
+      "checked_date": "2026-11-01",
+      "expected_concentration": "EDC"
+    },
+    {
+      "product_id": "YZD-PROD-1424",
+      "slug": "christian-dior-sauvage-parfum",
+      "brand_en": "Christian Dior",
+      "expected_name_en": "CHRISTIAN DIOR - Sauvage Parfum",
+      "reference_name": "Sauvage Parfum",
+      "official_url": "https://www.dior.com/en_int/beauty/products/sauvage-parfum-Y0998004.html",
+      "status": "official_original_found_supplier_essence_unverified",
+      "checked_date": "2026-11-01",
+      "expected_concentration": "Parfum"
+    },
+    {
+      "product_id": "YZD-PROD-1506",
+      "slug": "yves-saint-laurent-libre-le-parfum",
+      "brand_en": "Yves Saint Laurent",
+      "expected_name_en": "YVES SAINT LAURENT - Libre Le Parfum",
+      "reference_name": "Libre Le Parfum",
+      "official_url": "https://www.yslbeautyus.com/fragrance/womens-fragrances/libre/libre-le-parfum/WW-51020YSL.html",
+      "status": "official_original_found_supplier_essence_unverified",
+      "checked_date": "2026-11-01",
+      "expected_concentration": "Parfum"
+    },
+    {
+      "product_id": "YZD-PROD-0066",
+      "slug": "yves-saint-laurent-libre-labsolu-platine",
+      "brand_en": "Yves Saint Laurent",
+      "expected_name_en": "YVES SAINT LAURENT - Libre L'Absolu Platine",
+      "reference_name": "Libre Absolu Platine",
+      "official_url": "https://www.yslbeautyus.com/libre-collection.html",
+      "status": "official_original_found_supplier_essence_unverified",
+      "checked_date": "2026-11-01",
+      "expected_concentration": "Parfum"
+    },
+    {
+      "product_id": "YZD-PROD-1475",
+      "slug": "chanel-coco-mademoiselle-intense",
+      "brand_en": "Chanel",
+      "expected_name_en": "CHANEL - Coco Mademoiselle Intense",
+      "reference_name": "Coco Mademoiselle EDP Intense",
+      "official_url": "https://www.chanel.com/us/fragrance/p/116660/coco-mademoiselle-eau-de-parfum-intense-spray/",
+      "status": "official_original_found_supplier_essence_unverified",
+      "checked_date": "2026-11-01",
+      "expected_concentration": "EDP"
+    },
+    {
+      "product_id": "YZD-PROD-1552",
+      "slug": "herms-voyage-dherms-parfum",
+      "brand_en": "Hermès",
+      "expected_name_en": "HERMÈS - Voyage d'Hermès Parfum",
+      "reference_name": "Voyage d’Hermès Parfum",
+      "official_url": "https://www.hermes.com/us/en/product/voyage-d-hermes-parfum-V107569V0/",
+      "status": "official_original_found_supplier_essence_unverified",
+      "checked_date": "2026-11-01",
+      "expected_concentration": "Parfum"
+    }
+  ]
+}
