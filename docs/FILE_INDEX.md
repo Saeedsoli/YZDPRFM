@@ -707,3 +707,10 @@ node_modules/   با npm install برمی‌گردد
 - `seed/official_identity_evidence_v33.json`
 - `seed/official_note_corrections_v29.json`
 - `scripts/test_official_notes_v29.js`
+
+
+### هشت شناسنامه رسمی رابان
+
+- `seed/official_identity_evidence_v34.json`
+- `seed/official_note_corrections_v30.json`
+- `scripts/test_official_notes_v30.js`

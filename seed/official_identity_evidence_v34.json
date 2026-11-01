@@ -1,0 +1,94 @@
+{
+  "version": "official_identity_evidence_v34",
+  "scope": "Official reference-original name only; actual supplier essence identity is unverified. No supplier pricing.",
+  "items": [
+    {
+      "product_id": "YZD-PROD-1594",
+      "slug": "paco-rabanne-1-million-edt",
+      "brand_en": "Paco Rabanne",
+      "expected_name_en": "PACO RABANNE - 1 Million EDT",
+      "expected_concentration": "EDT",
+      "reference_name": "1 Million EDT",
+      "official_url": "https://www.rabanne.com/us/en_US/fragrance/p/1-million--000000000065249551",
+      "status": "official_original_found_supplier_essence_unverified",
+      "checked_date": "2026-11-01"
+    },
+    {
+      "product_id": "YZD-PROD-1595",
+      "slug": "paco-rabanne-1-million-parfum",
+      "brand_en": "Paco Rabanne",
+      "expected_name_en": "PACO RABANNE - 1 Million Parfum",
+      "expected_concentration": "Parfum",
+      "reference_name": "1 Million Parfum",
+      "official_url": "https://www.rabanne.com/ww/en/fragrance/p/1-million-parfum--000000000065156001",
+      "status": "official_original_found_supplier_essence_unverified",
+      "checked_date": "2026-11-01"
+    },
+    {
+      "product_id": "YZD-PROD-1596",
+      "slug": "paco-rabanne-1-million-elixir",
+      "brand_en": "Paco Rabanne",
+      "expected_name_en": "PACO RABANNE - 1 Million Elixir",
+      "expected_concentration": "Parfum Intense",
+      "reference_name": "1 Million Elixir",
+      "official_url": "https://www.rabanne.com/uk/en_GB/fragrance/p/1-million-elixir--000000000065251972",
+      "status": "official_original_found_supplier_essence_unverified",
+      "checked_date": "2026-11-01"
+    },
+    {
+      "product_id": "YZD-PROD-1597",
+      "slug": "paco-rabanne-1-million-royal",
+      "brand_en": "Paco Rabanne",
+      "expected_name_en": "PACO RABANNE - 1 Million Royal",
+      "expected_concentration": "Parfum",
+      "reference_name": "1 Million Royal",
+      "official_url": "https://www.rabanne.com/us/en_US/fragrance/p/1-million-royal--000000000065190440",
+      "status": "official_original_found_supplier_essence_unverified",
+      "checked_date": "2026-11-01"
+    },
+    {
+      "product_id": "YZD-PROD-1598",
+      "slug": "paco-rabanne-1-million-lucky",
+      "brand_en": "Paco Rabanne",
+      "expected_name_en": "PACO RABANNE - 1 Million Lucky",
+      "expected_concentration": "EDT",
+      "reference_name": "1 Million Lucky",
+      "official_url": "https://www.rabanne.com/fr/fr/fragrance/p/1-million-lucky--000000000065131403",
+      "status": "official_original_found_supplier_essence_unverified",
+      "checked_date": "2026-11-01"
+    },
+    {
+      "product_id": "YZD-PROD-1600",
+      "slug": "paco-rabanne-invictus-edt",
+      "brand_en": "Paco Rabanne",
+      "expected_name_en": "PACO RABANNE - Invictus EDT",
+      "expected_concentration": "EDT",
+      "reference_name": "Invictus EDT",
+      "official_url": "https://www.rabanne.com/ww/en/fragrance/p/invictus--000000000065055742",
+      "status": "official_original_found_supplier_essence_unverified",
+      "checked_date": "2026-11-01"
+    },
+    {
+      "product_id": "YZD-PROD-1601",
+      "slug": "paco-rabanne-invictus-victory",
+      "brand_en": "Paco Rabanne",
+      "expected_name_en": "PACO RABANNE - Invictus Victory",
+      "expected_concentration": "EDP Extreme",
+      "reference_name": "Invictus Victory",
+      "official_url": "https://www.rabanne.com/uk/en_GB/fragrance/p/invictus-victory--000000000065164673",
+      "status": "official_original_found_supplier_essence_unverified",
+      "checked_date": "2026-11-01"
+    },
+    {
+      "product_id": "YZD-PROD-1603",
+      "slug": "paco-rabanne-invictus-platinum",
+      "brand_en": "Paco Rabanne",
+      "expected_name_en": "PACO RABANNE - Invictus Platinum",
+      "expected_concentration": "EDP",
+      "reference_name": "Invictus Platinum",
+      "official_url": "https://www.rabanne.com/nl/en/fragrance/p/invictus-platinum--000000000065176115",
+      "status": "official_original_found_supplier_essence_unverified",
+      "checked_date": "2026-11-01"
+    }
+  ]
+}

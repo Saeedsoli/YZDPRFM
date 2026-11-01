@@ -1,0 +1,374 @@
+{
+  "version": "official_notes_2026_11_v30",
+  "description": "Guarded notes for named official originals; source does not establish supplier essence, pricing or stock.",
+  "items": [
+    {
+      "product_id": "YZD-PROD-1594",
+      "product_slug": "paco-rabanne-1-million-edt",
+      "expected_name_en": "PACO RABANNE - 1 Million EDT",
+      "expected_concentration": "EDT",
+      "official_brand": "Paco Rabanne",
+      "official_name": "1 Million EDT",
+      "source_url": "https://www.rabanne.com/us/en_US/fragrance/p/1-million--000000000065249551",
+      "source_scope": "Original EDT reference, distinct from Parfum, Elixir, Royal and Lucky; supplier version unverified.",
+      "expected_old_notes": {
+        "top": [
+          "پرتقال خونی",
+          "گریپ‌فروت",
+          "نعناع"
+        ],
+        "middle": [
+          "دارچین سیلان",
+          "ادویه‌جات",
+          "رز"
+        ],
+        "base": [
+          "چرم دست‌ساز",
+          "چوب‌های سفید",
+          "کهربا",
+          "نعناع هندی"
+        ]
+      },
+      "verified_notes": {
+        "top": [],
+        "middle": [],
+        "base": []
+      },
+      "expected_old_accords": [
+        "شمش طلای نمادین که پرفروش‌ترین عطر مردانه سال‌های ۲۰۱۰ شد",
+        "شیرین",
+        "درخشان و بسیار اغواگر"
+      ],
+      "verified_accords": [
+        "نارنگی خونی",
+        "گریپ‌فروت",
+        "نعناع",
+        "دارچین",
+        "رز",
+        "آکورد چرم و کهربا",
+        "پچولی"
+      ],
+      "requires_unavailable": true,
+      "expected_old_notice": "این محصول، بازآفرینی دست‌ساز با عصاره خالص اولیه و فرمولاسیون اختصاصی عطر یزد است.",
+      "verified_notice": "این محصول بازآفرینی دست‌ساز است و محصول اورجینال برند اصلی نیست. نت‌های عطر مرجع از وب‌سایت رسمی برند هستند؛ هویت و نسخه اسانس تأمین‌کننده مستقلاً تأیید نشده است."
+    },
+    {
+      "product_id": "YZD-PROD-1595",
+      "product_slug": "paco-rabanne-1-million-parfum",
+      "expected_name_en": "PACO RABANNE - 1 Million Parfum",
+      "expected_concentration": "Parfum",
+      "official_brand": "Paco Rabanne",
+      "official_name": "1 Million Parfum",
+      "source_url": "https://www.rabanne.com/ww/en/fragrance/p/1-million-parfum--000000000065156001",
+      "source_scope": "Parfum reference, distinct from EDT, Elixir, Royal and Lucky; supplier version unverified.",
+      "expected_old_notes": {
+        "top": [
+          "نت‌های خورشیدی",
+          "نمک دریا"
+        ],
+        "middle": [
+          "گل مریم هندی",
+          "چرم مونوئی"
+        ],
+        "base": [
+          "صمغ کاج",
+          "چرم",
+          "عنبر سائل"
+        ]
+      },
+      "verified_notes": {
+        "top": [],
+        "middle": [],
+        "base": []
+      },
+      "expected_old_accords": [
+        "خورشید طلایی درخشان روی بطری شمش طلا با گل مریم چرمی و بافت نمکی ساحلی برای آقایان"
+      ],
+      "verified_accords": [
+        "گریپ‌فروت",
+        "گل مریم",
+        "آکورد چرم"
+      ],
+      "requires_unavailable": true,
+      "expected_old_notice": "این محصول، بازآفرینی دست‌ساز با عصاره خالص اولیه و فرمولاسیون اختصاصی عطر یزد است.",
+      "verified_notice": "این محصول بازآفرینی دست‌ساز است و محصول اورجینال برند اصلی نیست. نت‌های عطر مرجع از وب‌سایت رسمی برند هستند؛ هویت و نسخه اسانس تأمین‌کننده مستقلاً تأیید نشده است."
+    },
+    {
+      "product_id": "YZD-PROD-1596",
+      "product_slug": "paco-rabanne-1-million-elixir",
+      "expected_name_en": "PACO RABANNE - 1 Million Elixir",
+      "expected_concentration": "Parfum Intense",
+      "official_brand": "Paco Rabanne",
+      "official_name": "1 Million Elixir",
+      "source_url": "https://www.rabanne.com/uk/en_GB/fragrance/p/1-million-elixir--000000000065251972",
+      "source_scope": "Elixir Parfum Intense reference, distinct from EDT, Parfum and Royal; supplier version unverified.",
+      "expected_old_notes": {
+        "top": [
+          "سیب پخته شیرین",
+          "گیاه درمنه"
+        ],
+        "middle": [
+          "رز دمشقی",
+          "گل اسمانتوس",
+          "سدر"
+        ],
+        "base": [
+          "وانیل ماداگاسکار",
+          "دانه تونکا",
+          "نعناع هندی"
+        ]
+      },
+      "verified_notes": {
+        "top": [],
+        "middle": [],
+        "base": []
+      },
+      "expected_old_accords": [
+        "شمش طلا با مثلث یاقوت سیاه",
+        "نهایت غلظت وانیلی میوه‌ای با ماندگاری ۲۴ ساعته"
+      ],
+      "verified_accords": [
+        "رز دمشقی",
+        "اوسمانتوس",
+        "دانه تونکا",
+        "داوانا",
+        "وانیل",
+        "چوب سدر"
+      ],
+      "requires_unavailable": true,
+      "expected_old_notice": "این محصول، بازآفرینی دست‌ساز با عصاره خالص اولیه و فرمولاسیون اختصاصی عطر یزد است.",
+      "verified_notice": "این محصول بازآفرینی دست‌ساز است و محصول اورجینال برند اصلی نیست. نت‌های عطر مرجع از وب‌سایت رسمی برند هستند؛ هویت و نسخه اسانس تأمین‌کننده مستقلاً تأیید نشده است."
+    },
+    {
+      "product_id": "YZD-PROD-1597",
+      "product_slug": "paco-rabanne-1-million-royal",
+      "expected_name_en": "PACO RABANNE - 1 Million Royal",
+      "expected_concentration": "Parfum",
+      "official_brand": "Paco Rabanne",
+      "official_name": "1 Million Royal",
+      "source_url": "https://www.rabanne.com/us/en_US/fragrance/p/1-million-royal--000000000065190440",
+      "source_scope": "Royal Parfum reference, distinct from EDT, Parfum and Elixir; supplier version unverified.",
+      "expected_old_notes": {
+        "top": [
+          "هل",
+          "نارنگی ماندارین",
+          "ترنج"
+        ],
+        "middle": [
+          "اسطوخودوس",
+          "مریم‌گلی",
+          "برگ بنفشه"
+        ],
+        "base": [
+          "صمغ بنزوئین",
+          "سدر",
+          "نعناع هندی"
+        ]
+      },
+      "verified_notes": {
+        "top": [],
+        "middle": [],
+        "base": []
+      },
+      "expected_old_accords": [
+        "شمش طلا با نگین سرخ سلطنتی",
+        "پخته‌تر و مدرن‌تر برای آقایان شیک‌پوش"
+      ],
+      "verified_accords": [
+        "چوب سدر",
+        "اسطوخودوس",
+        "بنزوئین"
+      ],
+      "requires_unavailable": true,
+      "expected_old_notice": "این محصول، بازآفرینی دست‌ساز با عصاره خالص اولیه و فرمولاسیون اختصاصی عطر یزد است.",
+      "verified_notice": "این محصول بازآفرینی دست‌ساز است و محصول اورجینال برند اصلی نیست. نت‌های عطر مرجع از وب‌سایت رسمی برند هستند؛ هویت و نسخه اسانس تأمین‌کننده مستقلاً تأیید نشده است."
+    },
+    {
+      "product_id": "YZD-PROD-1598",
+      "product_slug": "paco-rabanne-1-million-lucky",
+      "expected_name_en": "PACO RABANNE - 1 Million Lucky",
+      "expected_concentration": "EDT",
+      "official_brand": "Paco Rabanne",
+      "official_name": "1 Million Lucky",
+      "source_url": "https://www.rabanne.com/fr/fr/fragrance/p/1-million-lucky--000000000065131403",
+      "source_scope": "Lucky EDT reference, distinct from original EDT and other editions; supplier version unverified.",
+      "expected_old_notes": {
+        "top": [
+          "آلو زرد",
+          "گریپ‌فروت",
+          "ترنج",
+          "اوزون"
+        ],
+        "middle": [
+          "فندق برشته",
+          "عسل",
+          "سدر",
+          "چوب کشمیر",
+          "یاس"
+        ],
+        "base": [
+          "چوب عنبر",
+          "نعناع هندی",
+          "خزه بلوط",
+          "خس‌خس"
+        ]
+      },
+      "verified_notes": {
+        "top": [],
+        "middle": [],
+        "base": []
+      },
+      "expected_old_accords": [
+        "شمش نقره‌ای طلایی",
+        "لذیذترین عطر آجیلی فندقی با تمشک و آلوی تازه",
+        "به شدت کمیاب و محبوب"
+      ],
+      "verified_accords": [
+        "آلو",
+        "گریپ‌فروت",
+        "ترنج",
+        "آکورد فندق برشته",
+        "عسل",
+        "چوب سدر",
+        "پچولی",
+        "نت‌های چوبی کهربایی"
+      ],
+      "requires_unavailable": true,
+      "expected_old_notice": "این محصول، بازآفرینی دست‌ساز با عصاره خالص اولیه و فرمولاسیون اختصاصی عطر یزد است.",
+      "verified_notice": "این محصول بازآفرینی دست‌ساز است و محصول اورجینال برند اصلی نیست. نت‌های عطر مرجع از وب‌سایت رسمی برند هستند؛ هویت و نسخه اسانس تأمین‌کننده مستقلاً تأیید نشده است."
+    },
+    {
+      "product_id": "YZD-PROD-1600",
+      "product_slug": "paco-rabanne-invictus-edt",
+      "expected_name_en": "PACO RABANNE - Invictus EDT",
+      "expected_concentration": "EDT",
+      "official_brand": "Paco Rabanne",
+      "official_name": "Invictus EDT",
+      "source_url": "https://www.rabanne.com/ww/en/fragrance/p/invictus--000000000065055742",
+      "source_scope": "Original Invictus EDT reference, distinct from Victory, Platinum, Aqua and Intense; supplier version unverified.",
+      "expected_old_notes": {
+        "top": [
+          "گریپ‌فروت",
+          "نت‌های دریایی",
+          "نارنگی ماندارین"
+        ],
+        "middle": [
+          "برگ بو",
+          "گل یاس"
+        ],
+        "base": [
+          "عنبر سائل",
+          "چوب گایاک",
+          "خزه بلوط",
+          "نعناع هندی"
+        ]
+      },
+      "verified_notes": {
+        "top": [],
+        "middle": [],
+        "base": []
+      },
+      "expected_old_accords": [
+        "جام بلورین قهرمانان با بوی اقیانوس و مرکبات گازدار",
+        "پربازخوردترین عطر ورزشی و جوانان"
+      ],
+      "verified_accords": [
+        "گریپ‌فروت",
+        "آکورد دریایی",
+        "چوب گایاک",
+        "پچولی",
+        "آکورد کهربای خاکستری"
+      ],
+      "requires_unavailable": true,
+      "expected_old_notice": "این محصول، بازآفرینی دست‌ساز با عصاره خالص اولیه و فرمولاسیون اختصاصی عطر یزد است.",
+      "verified_notice": "این محصول بازآفرینی دست‌ساز است و محصول اورجینال برند اصلی نیست. نت‌های عطر مرجع از وب‌سایت رسمی برند هستند؛ هویت و نسخه اسانس تأمین‌کننده مستقلاً تأیید نشده است."
+    },
+    {
+      "product_id": "YZD-PROD-1601",
+      "product_slug": "paco-rabanne-invictus-victory",
+      "expected_name_en": "PACO RABANNE - Invictus Victory",
+      "expected_concentration": "EDP Extreme",
+      "official_brand": "Paco Rabanne",
+      "official_name": "Invictus Victory",
+      "source_url": "https://www.rabanne.com/uk/en_GB/fragrance/p/invictus-victory--000000000065164673",
+      "source_scope": "Victory Extreme EDP reference, distinct from Invictus EDT, Victory Elixir and Platinum; supplier version unverified.",
+      "expected_old_notes": {
+        "top": [
+          "فلفل صورتی",
+          "لیمو"
+        ],
+        "middle": [
+          "اسطوخودوس",
+          "صمغ کندر"
+        ],
+        "base": [
+          "وانیل",
+          "دانه تونکا",
+          "کهربا"
+        ]
+      },
+      "verified_notes": {
+        "top": [],
+        "middle": [],
+        "base": []
+      },
+      "expected_old_accords": [
+        "جام تمام مشکی مات با حرف V طلایی",
+        "نسخه زمستانی و شبانه اینویکتوس با وانیل داغ و دانه تونکا"
+      ],
+      "verified_accords": [
+        "لیمو",
+        "بخور",
+        "وانیل",
+        "دانه تونکا"
+      ],
+      "requires_unavailable": true,
+      "expected_old_notice": "این محصول، بازآفرینی دست‌ساز با عصاره خالص اولیه و فرمولاسیون اختصاصی عطر یزد است.",
+      "verified_notice": "این محصول بازآفرینی دست‌ساز است و محصول اورجینال برند اصلی نیست. نت‌های عطر مرجع از وب‌سایت رسمی برند هستند؛ هویت و نسخه اسانس تأمین‌کننده مستقلاً تأیید نشده است."
+    },
+    {
+      "product_id": "YZD-PROD-1603",
+      "product_slug": "paco-rabanne-invictus-platinum",
+      "expected_name_en": "PACO RABANNE - Invictus Platinum",
+      "expected_concentration": "EDP",
+      "official_brand": "Paco Rabanne",
+      "official_name": "Invictus Platinum",
+      "source_url": "https://www.rabanne.com/nl/en/fragrance/p/invictus-platinum--000000000065176115",
+      "source_scope": "Platinum EDP reference, distinct from original Invictus EDT, Victory and Elixir; absinthe is a scent accord, not proof of contents.",
+      "expected_old_notes": {
+        "top": [
+          "گریپ‌فروت",
+          "خاراگوش (درمنه)"
+        ],
+        "middle": [
+          "نعناع",
+          "اسطوخودوس"
+        ],
+        "base": [
+          "سرو کوهی",
+          "نعناع هندی"
+        ]
+      },
+      "verified_notes": {
+        "top": [],
+        "middle": [],
+        "base": []
+      },
+      "expected_old_accords": [
+        "جام نقره‌ای با بال‌های پرواز پلاتینیومی",
+        "گیاهی تلخ و مرکباتی برای پیروزی ورزشی"
+      ],
+      "verified_accords": [
+        "نعناع",
+        "اسطوخودوس",
+        "گریپ‌فروت",
+        "آکورد ابسنت",
+        "پچولی",
+        "سرو"
+      ],
+      "requires_unavailable": true,
+      "expected_old_notice": "این محصول، بازآفرینی دست‌ساز با عصاره خالص اولیه و فرمولاسیون اختصاصی عطر یزد است.",
+      "verified_notice": "این محصول بازآفرینی دست‌ساز است و محصول اورجینال برند اصلی نیست. نت‌های عطر مرجع از وب‌سایت رسمی برند هستند؛ هویت و نسخه اسانس تأمین‌کننده مستقلاً تأیید نشده است."
+    }
+  ]
+}

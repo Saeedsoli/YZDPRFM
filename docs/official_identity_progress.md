@@ -562,3 +562,21 @@ Guidance با Guidance 46 یکی نشده است. Platinium نام کوتاه‌
 | Voyage d’Hermès Parfum | https://www.hermes.com/us/en/product/voyage-d-hermes-parfum-V107569V0/ |
 
 نام، غلظت ثبت‌شده، نت‌ها، متن شفافیت و غیرفعال بودن قبل از اصلاح بررسی می‌شوند تا ویرایش مدیر بازنویسی نشود. نت‌های عطر مرجع بدون هرم ساختگی ثبت شده و اثبات مواد اسانس تحویلی نیستند.
+
+
+## هشت شناسنامه رسمی رابان — ۱ نوامبر ۲۰۲۶
+
+هشت محصول موجود با منابع رسمی و با محافظ نام، غلظت، نت و ویرایش مدیر اصلاح شدند. تمام قیمت‌ها، واریانت‌ها، سفارش‌ها و موجودی بدون تغییر مانده‌اند؛ محصولات غیرقابل سفارش‌اند. وب‌سایت کنونی برند از نام Rabanne استفاده می‌کند و شناسایی رایحه اصلی هویت و نسخه اسانس تأمین‌کننده را تأیید نمی‌کند.
+
+| رایحه مرجع | صفحه رسمی |
+|---|---|
+| 1 Million EDT | https://www.rabanne.com/us/en_US/fragrance/p/1-million--000000000065249551 |
+| 1 Million Parfum | https://www.rabanne.com/ww/en/fragrance/p/1-million-parfum--000000000065156001 |
+| 1 Million Elixir | https://www.rabanne.com/uk/en_GB/fragrance/p/1-million-elixir--000000000065251972 |
+| 1 Million Royal | https://www.rabanne.com/us/en_US/fragrance/p/1-million-royal--000000000065190440 |
+| 1 Million Lucky | https://www.rabanne.com/fr/fr/fragrance/p/1-million-lucky--000000000065131403 |
+| Invictus EDT | https://www.rabanne.com/ww/en/fragrance/p/invictus--000000000065055742 |
+| Invictus Victory | https://www.rabanne.com/uk/en_GB/fragrance/p/invictus-victory--000000000065164673 |
+| Invictus Platinum | https://www.rabanne.com/nl/en/fragrance/p/invictus-platinum--000000000065176115 |
+
+نسخه‌های EDT، Parfum و نسخه‌های نام‌دار مجموعه‌ها جدا هستند؛ قیمت‌های فایل بدون اثبات نسخه به آنها نسبت داده نشده‌اند. نت‌ها بدون هرم ساختگی ثبت شدند؛ آکوردهای چرم، کهربای خاکستری و ابسنت صرفاً توصیف رایحه مرجع‌اند و مواد اسانس واقعی را ثابت نمی‌کنند.
