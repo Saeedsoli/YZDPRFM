@@ -1,0 +1,402 @@
+{
+  "version": "official_notes_2026_11_v34",
+  "description": "Guarded official reference notes; no pricing or availability changes.",
+  "items": [
+    {
+      "product_id": "YZD-PROD-1806",
+      "product_slug": "calvin-klein-ck-one",
+      "expected_name_en": "CALVIN KLEIN - CK One",
+      "expected_concentration": "EDT",
+      "official_brand": "Calvin Klein",
+      "official_name": "CK One EDT",
+      "source_url": "https://www.calvinklein.us/en/calvin-klein-fragrance-coffret-gift-set/LX002164.html",
+      "source_scope": "Named original reference only; source does not verify supplier essence or its formula. Gift sets describe originals, not the handmade product packaging.",
+      "expected_old_notes": {
+        "top": [
+          "لیمو",
+          "نت‌های سبز",
+          "ترنج",
+          "آناناس",
+          "پرتقال ماندارین",
+          "هل",
+          "پاپایا"
+        ],
+        "middle": [
+          "گل برف",
+          "یاس",
+          "بنفشه",
+          "جوز هندی",
+          "گل رز",
+          "زنبق"
+        ],
+        "base": [
+          "مشک سفید",
+          "چوب سدر",
+          "چوب صندل",
+          "خزه بلوط",
+          "چای سبز"
+        ]
+      },
+      "verified_notes": {
+        "top": [],
+        "middle": [],
+        "base": []
+      },
+      "expected_old_accords": [
+        "انقلابی‌ترین عطر تاریخ دهه ۱۹۹۰ در بطری قمقمه شیشه‌ای مات",
+        "ثبت رکورد فروش ۲۰ شیشه در ثانیه"
+      ],
+      "verified_accords": [
+        "چای سبز",
+        "ترنج",
+        "مشک",
+        "کهربا"
+      ],
+      "requires_unavailable": true,
+      "expected_old_notice": "این محصول، بازآفرینی دست‌ساز با عصاره خالص اولیه و فرمولاسیون اختصاصی عطر یزد است.",
+      "verified_notice": "این محصول بازآفرینی دست‌ساز است و محصول اورجینال برند اصلی نیست. اطلاعات رایحه مرجع از وب‌سایت رسمی برند گرفته شده؛ هویت و نسخه اسانس تأمین‌کننده مستقلاً تأیید نشده است."
+    },
+    {
+      "product_id": "YZD-PROD-0288",
+      "product_slug": "calvin-klein-obsession-for-women",
+      "expected_name_en": "CALVIN KLEIN - Obsession for Women",
+      "expected_concentration": "EDP",
+      "official_brand": "Calvin Klein",
+      "official_name": "Obsession for Women EDP",
+      "source_url": "https://www.calvinklein.us/en/women/fragrance/fragrance/obsession-eau-de-parfum-for-women/088300603404.html",
+      "source_scope": "Named original reference only; source does not verify supplier essence or its formula. Gift sets describe originals, not the handmade product packaging.",
+      "expected_old_notes": {
+        "top": [
+          "وانیل",
+          "ریحان",
+          "ترنج",
+          "نارنگی ماندارین",
+          "هلو"
+        ],
+        "middle": [
+          "ادویه‌جات",
+          "چوب صندل",
+          "گشنیز",
+          "چوب درخت بلوط",
+          "رز"
+        ],
+        "base": [
+          "کهربای داغ",
+          "وانیل بوربون",
+          "مشک زباد",
+          "خس‌خس",
+          "لادن"
+        ]
+      },
+      "verified_notes": {
+        "top": [],
+        "middle": [],
+        "base": []
+      },
+      "expected_old_accords": [
+        "تبلیغ جنجالی کیت ماس در دهه ۱۹۹۰",
+        "یکی از گرم‌ترین و ماندگارترین کهرباهای تاریخ عطرسازی"
+      ],
+      "verified_accords": [
+        "آکورد ادویه‌ای",
+        "کهربا"
+      ],
+      "requires_unavailable": true,
+      "expected_old_notice": "این محصول، بازآفرینی دست‌ساز با عصاره خالص اولیه و فرمولاسیون اختصاصی عطر یزد است.",
+      "verified_notice": "این محصول بازآفرینی دست‌ساز است و محصول اورجینال برند اصلی نیست. اطلاعات رایحه مرجع از وب‌سایت رسمی برند گرفته شده؛ هویت و نسخه اسانس تأمین‌کننده مستقلاً تأیید نشده است."
+    },
+    {
+      "product_id": "YZD-PROD-2073",
+      "product_slug": "calvin-klein-obsession-for-men",
+      "expected_name_en": "CALVIN KLEIN - Obsession for Men",
+      "expected_concentration": "EDT",
+      "official_brand": "Calvin Klein",
+      "official_name": "Obsession for Men EDT",
+      "source_url": "https://www.calvinklein.us/en/calvin-klein-fragrance-coffret-gift-set/LX002164.html",
+      "source_scope": "Named original reference only; source does not verify supplier essence or its formula. Gift sets describe originals, not the handmade product packaging.",
+      "expected_old_notes": {
+        "top": [
+          "دارچین سیلان",
+          "اسطوخودوس",
+          "گشنیز",
+          "ترنج",
+          "لیمو"
+        ],
+        "middle": [
+          "صمغ مر",
+          "جوز هندی",
+          "چوب درخت رز",
+          "میخک",
+          "یاس"
+        ],
+        "base": [
+          "کهربا",
+          "وانیل",
+          "چوب صندل",
+          "خس‌خس",
+          "مشک",
+          "نعناع هندی"
+        ]
+      },
+      "verified_notes": {
+        "top": [],
+        "middle": [],
+        "base": []
+      },
+      "expected_old_accords": [
+        "جنون و وسواس عشق در سال ۱۹۸۶",
+        "یکی از گرم‌ترین و ادویه‌ای‌ترین عطرهای تاریخ با دارچین"
+      ],
+      "verified_accords": [
+        "ترنج",
+        "نارنگی",
+        "مر",
+        "مریم‌گلی",
+        "اسطوخودوس",
+        "مشک",
+        "چوب صندل",
+        "وتیور"
+      ],
+      "requires_unavailable": true,
+      "expected_old_notice": "این محصول، بازآفرینی دست‌ساز با عصاره خالص اولیه و فرمولاسیون اختصاصی عطر یزد است.",
+      "verified_notice": "این محصول بازآفرینی دست‌ساز است و محصول اورجینال برند اصلی نیست. اطلاعات رایحه مرجع از وب‌سایت رسمی برند گرفته شده؛ هویت و نسخه اسانس تأمین‌کننده مستقلاً تأیید نشده است."
+    },
+    {
+      "product_id": "YZD-PROD-0343",
+      "product_slug": "burberry-burberry-weekend-for-men",
+      "expected_name_en": "Burberry Weekend for Men",
+      "expected_concentration": "EDT",
+      "official_brand": "Burberry",
+      "official_name": "Burberry Weekend for Men EDT",
+      "source_url": "https://us.burberry.com/burberry-weekend-eau-de-toilette-100ml-p34547091",
+      "source_scope": "Named original reference only; source does not verify supplier essence or its formula. Gift sets describe originals, not the handmade product packaging.",
+      "expected_old_notes": {
+        "top": [
+          "لیمو سیسیلی",
+          "گریپ‌فروت",
+          "ترنج",
+          "آناناس",
+          "خربزه"
+        ],
+        "middle": [
+          "برگ پیچک",
+          "چوب صندل",
+          "خزه بلوط"
+        ],
+        "base": [
+          "عسل سفید",
+          "مشک سفید",
+          "کهربا"
+        ]
+      },
+      "verified_notes": {
+        "top": [],
+        "middle": [],
+        "base": []
+      },
+      "expected_old_accords": [
+        "تعطیلات آخر هفته در حومه سرسبز انگلستان با مرکبات خنک و شیرینی عسل"
+      ],
+      "verified_accords": [
+        "لیمو",
+        "گریپ‌فروت",
+        "نارنگی",
+        "خزه بلوط",
+        "برگ پیچک",
+        "چوب صندل",
+        "عسل",
+        "کهربا",
+        "مشک"
+      ],
+      "requires_unavailable": true,
+      "expected_old_notice": "این محصول، بازآفرینی دست‌ساز با عصاره خالص اولیه و فرمولاسیون اختصاصی عطر یزد است.",
+      "verified_notice": "این محصول بازآفرینی دست‌ساز است و محصول اورجینال برند اصلی نیست. اطلاعات رایحه مرجع از وب‌سایت رسمی برند گرفته شده؛ هویت و نسخه اسانس تأمین‌کننده مستقلاً تأیید نشده است."
+    },
+    {
+      "product_id": "YZD-PROD-2063",
+      "product_slug": "burberry-burberry-touch-for-men",
+      "expected_name_en": "Burberry Touch for Men",
+      "expected_concentration": "EDT",
+      "official_brand": "Burberry",
+      "official_name": "Burberry Touch for Men EDT",
+      "source_url": "https://us.burberry.com/burberry-touch-eau-de-toilette-100ml-p34546231",
+      "source_scope": "Named original reference only; source does not verify supplier essence or its formula. Gift sets describe originals, not the handmade product packaging.",
+      "expected_old_notes": {
+        "top": [
+          "برگ بنفشه",
+          "گیاه درمنه",
+          "نارنگی ماندارین"
+        ],
+        "middle": [
+          "فلفل سفید",
+          "جوز هندی",
+          "چوب سدر"
+        ],
+        "base": [
+          "دانه تونکا",
+          "خس‌خس",
+          "مشک سفید"
+        ]
+      },
+      "verified_notes": {
+        "top": [],
+        "middle": [],
+        "base": []
+      },
+      "expected_old_accords": [
+        "شیشه هرمی مخروطی با درپوش چوب بلوط",
+        "لمس نرمی پارچه‌های کشمیری باربری با برگ بنفشه"
+      ],
+      "verified_accords": [
+        "درمنه",
+        "نارنگی",
+        "برگ بنفشه",
+        "جوز هندی",
+        "چوب سدر",
+        "فلفل سفید",
+        "وتیور",
+        "دانه تونکا"
+      ],
+      "requires_unavailable": true,
+      "expected_old_notice": "این محصول، بازآفرینی دست‌ساز با عصاره خالص اولیه و فرمولاسیون اختصاصی عطر یزد است.",
+      "verified_notice": "این محصول بازآفرینی دست‌ساز است و محصول اورجینال برند اصلی نیست. اطلاعات رایحه مرجع از وب‌سایت رسمی برند گرفته شده؛ هویت و نسخه اسانس تأمین‌کننده مستقلاً تأیید نشده است."
+    },
+    {
+      "product_id": "YZD-PROD-2064",
+      "product_slug": "burberry-burberry-brit-for-men",
+      "expected_name_en": "Burberry Brit for Men",
+      "expected_concentration": "EDT",
+      "official_brand": "Burberry",
+      "official_name": "Burberry Brit for Him EDT",
+      "source_url": "https://us.burberry.com/burberry-brit-for-him-eau-de-toilette-100ml-p34547231",
+      "source_scope": "Named original reference only; source does not verify supplier essence or its formula. Gift sets describe originals, not the handmade product packaging.",
+      "expected_old_notes": {
+        "top": [
+          "زنجبیل",
+          "هل",
+          "نارنگی سبز",
+          "ترنج"
+        ],
+        "middle": [
+          "گل رز وحشی",
+          "جوز هندی",
+          "سدر"
+        ],
+        "base": [
+          "دانه تونکا",
+          "چوب‌های معطر",
+          "مشک خاکستری"
+        ]
+      },
+      "verified_notes": {
+        "top": [],
+        "middle": [],
+        "base": []
+      },
+      "expected_old_accords": [
+        "شیشه مستطیلی با طرح شطرنجی خاکستری",
+        "جوان مدرن لندنی با ترکیب رز ادویه‌ای و تونکا"
+      ],
+      "verified_accords": [
+        "زنجبیل",
+        "سدر",
+        "دانه تونکا"
+      ],
+      "requires_unavailable": true,
+      "expected_old_notice": "این محصول، بازآفرینی دست‌ساز با عصاره خالص اولیه و فرمولاسیون اختصاصی عطر یزد است.",
+      "verified_notice": "این محصول بازآفرینی دست‌ساز است و محصول اورجینال برند اصلی نیست. اطلاعات رایحه مرجع از وب‌سایت رسمی برند گرفته شده؛ هویت و نسخه اسانس تأمین‌کننده مستقلاً تأیید نشده است."
+    },
+    {
+      "product_id": "YZD-PROD-0285",
+      "product_slug": "burberry-burberry-brit-for-women",
+      "expected_name_en": "Burberry Brit for Women",
+      "expected_concentration": "EDP",
+      "official_brand": "Burberry",
+      "official_name": "Burberry Brit for Her EDP",
+      "source_url": "https://us.burberry.com/burberry-brit-for-her-eau-de-parfum-100ml-p34547181",
+      "source_scope": "Named original reference only; source does not verify supplier essence or its formula. Gift sets describe originals, not the handmade product packaging.",
+      "expected_old_notes": {
+        "top": [
+          "بادام تلخ",
+          "لیمو سیسیلی",
+          "گلابی آبدار"
+        ],
+        "middle": [
+          "بادام شکری (سوخته)",
+          "گل صدتومانی"
+        ],
+        "base": [
+          "وانیل ماداگاسکار",
+          "دانه تونکا",
+          "چوب ماهون",
+          "کهربا"
+        ]
+      },
+      "verified_notes": {
+        "top": [],
+        "middle": [],
+        "base": []
+      },
+      "expected_old_accords": [
+        "شیشه با طرح شطرنجی سفید بریتانیا",
+        "عطر خاطره‌انگیز بادام شکری داغ در روزهای پاییزی لندن"
+      ],
+      "verified_accords": [
+        "گلابی",
+        "بادام",
+        "وانیل"
+      ],
+      "requires_unavailable": true,
+      "expected_old_notice": "این محصول، بازآفرینی دست‌ساز با عصاره خالص اولیه و فرمولاسیون اختصاصی عطر یزد است.",
+      "verified_notice": "این محصول بازآفرینی دست‌ساز است و محصول اورجینال برند اصلی نیست. اطلاعات رایحه مرجع از وب‌سایت رسمی برند گرفته شده؛ هویت و نسخه اسانس تأمین‌کننده مستقلاً تأیید نشده است."
+    },
+    {
+      "product_id": "YZD-PROD-2065",
+      "product_slug": "burberry-mr-burberry-edp",
+      "expected_name_en": "BURBERRY - Mr. Burberry EDP",
+      "expected_concentration": "EDP",
+      "official_brand": "Burberry",
+      "official_name": "Mr. Burberry EDP",
+      "source_url": "https://us.burberry.com/mr-burberry-eau-de-parfum-50ml-p40382721",
+      "source_scope": "Named original reference only; source does not verify supplier essence or its formula. Gift sets describe originals, not the handmade product packaging.",
+      "expected_old_notes": {
+        "top": [
+          "گریپ‌فروت",
+          "هل",
+          "ترخون",
+          "نعناع"
+        ],
+        "middle": [
+          "چوب سدر",
+          "جوز هندی",
+          "اسطوخودوس"
+        ],
+        "base": [
+          "نعناع هندی اندونزی",
+          "خس‌خس",
+          "صمغ بنزوئین",
+          "کهربا"
+        ]
+      },
+      "verified_notes": {
+        "top": [],
+        "middle": [],
+        "base": []
+      },
+      "expected_old_accords": [
+        "درپوش شبیه به دکمه‌های کت ترنچ باربری با پاپیون گاباردین مشکی",
+        "اداری و بسیار باوقار"
+      ],
+      "verified_accords": [
+        "ترخون",
+        "دارچین",
+        "پچولی",
+        "کهربا",
+        "وتیور"
+      ],
+      "requires_unavailable": true,
+      "expected_old_notice": "این محصول، بازآفرینی دست‌ساز با عصاره خالص اولیه و فرمولاسیون اختصاصی عطر یزد است.",
+      "verified_notice": "این محصول بازآفرینی دست‌ساز است و محصول اورجینال برند اصلی نیست. اطلاعات رایحه مرجع از وب‌سایت رسمی برند گرفته شده؛ هویت و نسخه اسانس تأمین‌کننده مستقلاً تأیید نشده است."
+    }
+  ]
+}

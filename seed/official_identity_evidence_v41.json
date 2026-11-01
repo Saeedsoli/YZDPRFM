@@ -1,0 +1,94 @@
+{
+  "version": "official_identity_evidence_v41",
+  "scope": "Official reference-original name only; supplier essence identity unverified.",
+  "items": [
+    {
+      "product_id": "YZD-PROD-1806",
+      "slug": "calvin-klein-ck-one",
+      "brand_en": "Calvin Klein",
+      "expected_name_en": "CALVIN KLEIN - CK One",
+      "expected_concentration": "EDT",
+      "reference_name": "CK One EDT",
+      "official_url": "https://www.calvinklein.us/en/calvin-klein-fragrance-coffret-gift-set/LX002164.html",
+      "status": "official_original_found_supplier_essence_unverified",
+      "checked_date": "2026-11-01"
+    },
+    {
+      "product_id": "YZD-PROD-0288",
+      "slug": "calvin-klein-obsession-for-women",
+      "brand_en": "Calvin Klein",
+      "expected_name_en": "CALVIN KLEIN - Obsession for Women",
+      "expected_concentration": "EDP",
+      "reference_name": "Obsession for Women EDP",
+      "official_url": "https://www.calvinklein.us/en/women/fragrance/fragrance/obsession-eau-de-parfum-for-women/088300603404.html",
+      "status": "official_original_found_supplier_essence_unverified",
+      "checked_date": "2026-11-01"
+    },
+    {
+      "product_id": "YZD-PROD-2073",
+      "slug": "calvin-klein-obsession-for-men",
+      "brand_en": "Calvin Klein",
+      "expected_name_en": "CALVIN KLEIN - Obsession for Men",
+      "expected_concentration": "EDT",
+      "reference_name": "Obsession for Men EDT",
+      "official_url": "https://www.calvinklein.us/en/calvin-klein-fragrance-coffret-gift-set/LX002164.html",
+      "status": "official_original_found_supplier_essence_unverified",
+      "checked_date": "2026-11-01"
+    },
+    {
+      "product_id": "YZD-PROD-0343",
+      "slug": "burberry-burberry-weekend-for-men",
+      "brand_en": "Burberry",
+      "expected_name_en": "Burberry Weekend for Men",
+      "expected_concentration": "EDT",
+      "reference_name": "Burberry Weekend for Men EDT",
+      "official_url": "https://us.burberry.com/burberry-weekend-eau-de-toilette-100ml-p34547091",
+      "status": "official_original_found_supplier_essence_unverified",
+      "checked_date": "2026-11-01"
+    },
+    {
+      "product_id": "YZD-PROD-2063",
+      "slug": "burberry-burberry-touch-for-men",
+      "brand_en": "Burberry",
+      "expected_name_en": "Burberry Touch for Men",
+      "expected_concentration": "EDT",
+      "reference_name": "Burberry Touch for Men EDT",
+      "official_url": "https://us.burberry.com/burberry-touch-eau-de-toilette-100ml-p34546231",
+      "status": "official_original_found_supplier_essence_unverified",
+      "checked_date": "2026-11-01"
+    },
+    {
+      "product_id": "YZD-PROD-2064",
+      "slug": "burberry-burberry-brit-for-men",
+      "brand_en": "Burberry",
+      "expected_name_en": "Burberry Brit for Men",
+      "expected_concentration": "EDT",
+      "reference_name": "Burberry Brit for Him EDT",
+      "official_url": "https://us.burberry.com/burberry-brit-for-him-eau-de-toilette-100ml-p34547231",
+      "status": "official_original_found_supplier_essence_unverified",
+      "checked_date": "2026-11-01"
+    },
+    {
+      "product_id": "YZD-PROD-0285",
+      "slug": "burberry-burberry-brit-for-women",
+      "brand_en": "Burberry",
+      "expected_name_en": "Burberry Brit for Women",
+      "expected_concentration": "EDP",
+      "reference_name": "Burberry Brit for Her EDP",
+      "official_url": "https://us.burberry.com/burberry-brit-for-her-eau-de-parfum-100ml-p34547181",
+      "status": "official_original_found_supplier_essence_unverified",
+      "checked_date": "2026-11-01"
+    },
+    {
+      "product_id": "YZD-PROD-2065",
+      "slug": "burberry-mr-burberry-edp",
+      "brand_en": "Burberry",
+      "expected_name_en": "BURBERRY - Mr. Burberry EDP",
+      "expected_concentration": "EDP",
+      "reference_name": "Mr. Burberry EDP",
+      "official_url": "https://us.burberry.com/mr-burberry-eau-de-parfum-50ml-p40382721",
+      "status": "official_original_found_supplier_essence_unverified",
+      "checked_date": "2026-11-01"
+    }
+  ]
+}
