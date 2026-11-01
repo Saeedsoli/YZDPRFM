@@ -17,7 +17,7 @@
  *   • قالب نادرست Merchant ID بدون تماس شبکه رد می‌شود
  *   • آزمون پیامک محدودیت نرخ دارد
  *
- * اجرا: node scripts/test_readiness.js
+ * اجرا: bash scripts/smoke_test.sh (only in its isolated test stage)
  */
 'use strict';
 
@@ -27,6 +27,13 @@ const Database = require('better-sqlite3');
 
 const ROOT = path.dirname(__dirname);
 const DB = path.join(ROOT, 'data', 'yazd.db');
+// This legacy fixture edits settings and rate limits. Never open a real store.
+if (process.env.YAZD_SMOKE_STAGE !== '1' || process.env.NODE_ENV !== 'test' ||
+    !/^\/tmp\/yazd-smoke-[A-Za-z0-9]{8}$/.test(ROOT) ||
+    path.resolve(process.env.DB_PATH || '') !== DB) {
+  console.error('Unsafe readiness fixture: run only through isolated smoke_test.sh');
+  process.exit(2);
+}
 
 const g = s => `\x1b[32m${s}\x1b[0m`;
 const r = s => `\x1b[31m${s}\x1b[0m`;
@@ -320,18 +327,26 @@ async function login(port, pw) {
       dbr.prepare('DELETE FROM rate_limits').run();
       dbr.close();
 
+      // Use the separate console-only server: P1 deliberately has fake live
+      // credentials for masking tests and must never send a test SMS externally.
+      const smsPort = 4483;
+      const smsToken = await login(smsPort, 'yazd1404');
+      if (!smsToken) throw new Error('Console SMS test login failed');
+      const config = await api(smsPort, '/api/admin/readiness?deep=1', {}, smsToken);
+      if (config.body.sms?.provider !== 'console' || config.body.sms?.live !== false)
+        throw new Error('Refusing SMS rate-limit test on a live provider');
       let limited = false;
       for (let i = 0; i < 8; i++) {
-        const res = await api(P1, '/api/admin/readiness/test-sms', {
+        const res = await api(smsPort, '/api/admin/readiness/test-sms', {
           method: 'POST', body: JSON.stringify({ mobile: '09120000000' })
-        }, TOK);
+        }, smsToken);
         if (res.status === 429) { limited = true; break; }
       }
       add('آزمون پیامک پس از چند بار محدود می‌شود', limited);
 
-      const badMob = await api(P1, '/api/admin/readiness/test-sms', {
+      const badMob = await api(smsPort, '/api/admin/readiness/test-sms', {
         method: 'POST', body: JSON.stringify({ mobile: '123' })
-      }, TOK);
+      }, smsToken);
       add('شماره نامعتبر رد می‌شود',
         badMob.status === 400 || badMob.status === 429, `status ${badMob.status}`);
     }

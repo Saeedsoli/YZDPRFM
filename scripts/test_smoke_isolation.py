@@ -29,6 +29,12 @@ with tempfile.TemporaryDirectory(prefix='yazd-smoke-sentinel-') as td:
         assert 'Port 3000 is occupied' in result.stderr, result.stderr
         assert other.poll() is None, 'unrelated process was killed'
         assert hashlib.sha256(sentinel.read_bytes()).digest() == digest
+        # The mutating readiness fixture refuses direct production-root execution.
+        fixture = subprocess.run(['node', 'scripts/test_readiness.js'], cwd=root,
+                                 env={**env, 'YAZD_SMOKE_STAGE':'1', 'NODE_ENV':'test'},
+                                 capture_output=True, text=True, timeout=5)
+        assert fixture.returncode == 2 and 'Unsafe readiness fixture' in fixture.stderr
+        assert hashlib.sha256(sentinel.read_bytes()).digest() == digest
         assert set(glob.glob('/tmp/yazd-smoke-????????')) == before, 'temporary stage was left behind'
         forbidden = subprocess.run(['bash', 'scripts/smoke_test.sh'], cwd=root,
                                    env={**env, 'YAZD_SMOKE_STAGE': '1'},
