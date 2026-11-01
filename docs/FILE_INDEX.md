@@ -817,3 +817,5 @@ node_modules/   با npm install برمی‌گردد
 - `src/amouage-common-names.js` — اصلاح محافظت‌شده نام ممویر و آنر.
 
 - `scripts/test_amouage_common_names.js` — محافظ نام رایج و ویرایش مدیر.
+
+- `scripts/test_secondary_reference_v23.js` — قیمت آزارو کروم ادوپرفیوم با انتخاب مالک و منبع مستقل.

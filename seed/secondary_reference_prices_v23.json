@@ -1,0 +1,27 @@
+{
+  "version": "secondary_reference_prices_2026_11_v23",
+  "supplier_file_sha256": "bbe8f40610bc765bda0a7d2da9dbe78f4e397458a6991239c3c18d0853f33f5c",
+  "description": "Owner-selected reference; independent source; provisional price and no activation.",
+  "items": [
+    {
+      "product_id": "SUP-TP-910045",
+      "slug": "azzaro-chrome-eau-de-parfum",
+      "brand_en": "Azzaro",
+      "expected_name_en": "AZZARO - Chrome Eau de Parfum",
+      "reference_name": "Chrome Eau de Parfum",
+      "source_url": "https://www.fragrantica.com/perfume/Azzaro/Chrome-Eau-de-Parfum-72608.html",
+      "provider": "Fragrantica",
+      "status": "secondary_original_found_supplier_essence_unverified",
+      "checked_date": "2026-11-01",
+      "supplier_brand": "AZZARO",
+      "supplier_model": "Chrome",
+      "supplier_gender": "Men",
+      "usd_per_kg": "139.7",
+      "quality": "H",
+      "match_status": "name_matched_supplier_identity_unverified",
+      "owner_version_confirmation": "Owner selected Chrome Eau de Parfum; actual supplier essence identity unverified.",
+      "expected_edps": [],
+      "legacy_backfill": false
+    }
+  ]
+}

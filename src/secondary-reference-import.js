@@ -25,11 +25,12 @@ const VERSION_19='secondary_reference_prices_2026_11_v19';
 const VERSION_20='secondary_reference_prices_2026_11_v20';
 const VERSION_21='secondary_reference_prices_2026_11_v21';
 const VERSION_22='secondary_reference_prices_2026_11_v22';
+const VERSION_23='secondary_reference_prices_2026_11_v23';
 const STATUS='secondary_original_found_supplier_essence_unverified';
 function applySecondaryReferences(db,file){
  if(!fs.existsSync(file))return {applied:0,backfilled:0,skipped:0,reason:'file_missing'};
  const data=JSON.parse(fs.readFileSync(file,'utf8'));
- if(!Object.hasOwn({[VERSION]:12,[VERSION_2]:6,[VERSION_3]:3,[VERSION_4]:4,[VERSION_5]:2,[VERSION_6]:2,[VERSION_7]:2,[VERSION_8]:5,[VERSION_9]:1,[VERSION_10]:1,[VERSION_11]:1,[VERSION_12]:3,[VERSION_13]:1,[VERSION_14]:1,[VERSION_15]:1,[VERSION_16]:2,[VERSION_17]:1,[VERSION_18]:1,[VERSION_19]:1,[VERSION_20]:1,[VERSION_21]:1,[VERSION_22]:1},data.version)||!/^[a-f0-9]{64}$/.test(data.supplier_file_sha256||'')||!Array.isArray(data.items)||data.items.length!==({[VERSION]:12,[VERSION_2]:6,[VERSION_3]:3,[VERSION_4]:4,[VERSION_5]:2,[VERSION_6]:2,[VERSION_7]:2,[VERSION_8]:5,[VERSION_9]:1,[VERSION_10]:1,[VERSION_11]:1,[VERSION_12]:3,[VERSION_13]:1,[VERSION_14]:1,[VERSION_15]:1,[VERSION_16]:2,[VERSION_17]:1,[VERSION_18]:1,[VERSION_19]:1,[VERSION_20]:1,[VERSION_21]:1,[VERSION_22]:1})[data.version])throw new Error('Invalid independent reference manifest');
+ if(!Object.hasOwn({[VERSION]:12,[VERSION_2]:6,[VERSION_3]:3,[VERSION_4]:4,[VERSION_5]:2,[VERSION_6]:2,[VERSION_7]:2,[VERSION_8]:5,[VERSION_9]:1,[VERSION_10]:1,[VERSION_11]:1,[VERSION_12]:3,[VERSION_13]:1,[VERSION_14]:1,[VERSION_15]:1,[VERSION_16]:2,[VERSION_17]:1,[VERSION_18]:1,[VERSION_19]:1,[VERSION_20]:1,[VERSION_21]:1,[VERSION_22]:1,[VERSION_23]:1},data.version)||!/^[a-f0-9]{64}$/.test(data.supplier_file_sha256||'')||!Array.isArray(data.items)||data.items.length!==({[VERSION]:12,[VERSION_2]:6,[VERSION_3]:3,[VERSION_4]:4,[VERSION_5]:2,[VERSION_6]:2,[VERSION_7]:2,[VERSION_8]:5,[VERSION_9]:1,[VERSION_10]:1,[VERSION_11]:1,[VERSION_12]:3,[VERSION_13]:1,[VERSION_14]:1,[VERSION_15]:1,[VERSION_16]:2,[VERSION_17]:1,[VERSION_18]:1,[VERSION_19]:1,[VERSION_20]:1,[VERSION_21]:1,[VERSION_22]:1,[VERSION_23]:1})[data.version])throw new Error('Invalid independent reference manifest');
  const seen=new Set();
  for(const x of data.items){
   let url;try{url=new URL(x.source_url);}catch{throw new Error('Invalid independent reference URL');}
