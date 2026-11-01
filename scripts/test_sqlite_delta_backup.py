@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 """Isolated backup/restore test; no live DB is modified."""
-import gzip,hashlib,json,lzma,os,shutil,sqlite3,sys,tempfile,zipfile
+import gzip,hashlib,io,json,lzma,os,shutil,sqlite3,sys,tarfile,tempfile,zipfile
 from pathlib import Path
 sys.path.insert(0,str(Path(__file__).resolve().parent))
-from sqlite_delta_backup import create,restore,sha
+from sqlite_delta_backup import create,restore,sha,HISTORICAL_BUNDLE
 with tempfile.TemporaryDirectory(prefix='yazd-delta-test-') as td:
  p=Path(td);live=p/'live.sqlite';base_raw=p/'base.sqlite';base=p/'base.sqlite.gz';expected=p/'expected.sqlite';delta=p/'backup.zip';restored=p/'restored.sqlite'
  c=sqlite3.connect(live);c.execute('pragma journal_mode=WAL');c.execute('create table customers(id integer primary key, name text, amount integer)')
@@ -31,6 +31,24 @@ with tempfile.TemporaryDirectory(prefix='yazd-delta-test-') as td:
   for name in src.namelist():dst.writestr(name,src.read(name))
  compact_out=p/'compact-restored.sqlite';compact_info=restore(base,compact,compact_out)
  assert compact_info['target_sha256']==sha(expected) and sha(compact_out)==sha(expected)
+ # Old ZIP paths transparently restore from the compact shared archive.
+ history_dir=p/'history';history_dir.mkdir();history=history_dir/HISTORICAL_BUNDLE
+ with zipfile.ZipFile(delta) as source,tarfile.open(history,'w:xz') as bundle:
+  for leaf in ('manifest.json','pages.bin'):
+   b=source.read(leaf);entry=tarfile.TarInfo('archived.zip/'+leaf);entry.size=len(b);bundle.addfile(entry,io.BytesIO(b))
+ historical_output=p/'historical.sqlite';restore(xzbase,history_dir/'archived.zip',historical_output);assert sha(historical_output)==sha(expected)
+ try:restore(xzbase,history_dir/'missing.zip',p/'missing-output.sqlite');raise AssertionError('missing archived delta accepted')
+ except ValueError:pass
+ assert not (p/'missing-output.sqlite').exists()
+ bad_dir=p/'bad-history';bad_dir.mkdir()
+ with zipfile.ZipFile(delta) as source,tarfile.open(bad_dir/HISTORICAL_BUNDLE,'w:xz') as bundle:
+  for leaf in ('manifest.json','pages.bin'):
+   b=bytearray(source.read(leaf))
+   if leaf=='pages.bin':b[-1]^=1
+   entry=tarfile.TarInfo('bad.zip/'+leaf);entry.size=len(b);bundle.addfile(entry,io.BytesIO(b))
+ try:restore(base,bad_dir/'bad.zip',p/'bad-history-output.sqlite');raise AssertionError('tampered historical delta accepted')
+ except (ValueError,sqlite3.DatabaseError):pass
+ assert not (p/'bad-history-output.sqlite').exists()
  with zipfile.ZipFile(compact) as z:
   man=z.read('manifest.json');pages=bytearray(z.read('pages.bin'));pages[-1]^=1
  bad_lzma=p/'bad-lzma.zip'
@@ -53,4 +71,4 @@ with tempfile.TemporaryDirectory(prefix='yazd-delta-test-') as td:
  try:restore(base,bad,p/'tampered-output.sqlite');raise AssertionError('tampered delta accepted')
  except (ValueError,sqlite3.DatabaseError):pass
  assert not (p/'tampered-output.sqlite').exists();c.close()
- print('PASS: WAL snapshot, interchangeable gzip/XZ bases, deflate/LZMA restore, SQLite integrity, wrong-base/tamper/overwrite rejection')
+ print('PASS: WAL snapshot, gzip/XZ bases, archived and ZIP delta restore, integrity and safety guards')

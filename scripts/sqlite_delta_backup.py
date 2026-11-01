@@ -5,10 +5,12 @@ Neither create nor restore ever overwrites an existing file. Backups may contain
 private customer data and must remain outside Git. Restore writes a NEW database;
 never point it at a running database. Python standard library only.
 """
-import argparse, gzip, hashlib, json, lzma, os, shutil, sqlite3, struct, tempfile, zipfile
+import argparse, gzip, hashlib, json, lzma, os, re, shutil, sqlite3, struct, tarfile, tempfile, zipfile
+from contextlib import contextmanager
 from pathlib import Path
 VERSION='yazd-sqlite-page-delta-v1'
 MAX_BYTES=1024*1024*1024
+HISTORICAL_BUNDLE='archive_legacy_20261101.tar.xz'
 
 def sha(path):
     h=hashlib.sha256()
@@ -40,6 +42,36 @@ def expand_base(base,out):
             if total>MAX_BYTES: raise ValueError('Base exceeds size limit')
             dst.write(chunk)
 
+@contextmanager
+def open_delta(delta):
+    """Open a live ZIP or reconstitute its validated members from the local archive."""
+    source=Path(delta)
+    if source.is_file():
+        with zipfile.ZipFile(source,'r') as z: yield z
+        return
+    name=source.name
+    archive=source.parent/HISTORICAL_BUNDLE
+    if not re.fullmatch(r'[A-Za-z0-9._-]+\.zip',name) or not archive.is_file():
+        raise FileNotFoundError(f'Delta backup not found: {source}')
+    with tempfile.TemporaryDirectory(prefix='yazd-history-') as td:
+        reconstructed=Path(td)/'delta.zip'
+        with tarfile.open(archive,'r:xz') as bundle:
+            members=bundle.getmembers()
+            if len(members)>2000: raise ValueError('Historical bundle has too many members')
+            wanted={}
+            for leaf in ('manifest.json','pages.bin'):
+                matches=[m for m in members if m.name==name+'/'+leaf]
+                if len(matches)!=1 or not matches[0].isfile(): raise ValueError('Historical delta missing or duplicated')
+                limit=8192 if leaf=='manifest.json' else MAX_BYTES+(MAX_BYTES//512)*4
+                if matches[0].size>limit: raise ValueError('Historical delta member too large')
+                wanted[leaf]=matches[0]
+            with zipfile.ZipFile(reconstructed,'w',compression=zipfile.ZIP_STORED) as z:
+                for leaf,member in wanted.items():
+                    src=bundle.extractfile(member)
+                    if src is None: raise ValueError('Historical delta member unavailable')
+                    with src,z.open(leaf,'w',force_zip64=True) as dst: shutil.copyfileobj(src,dst,1024*1024)
+        with zipfile.ZipFile(reconstructed,'r') as z: yield z
+
 def atomic_publish(temp,output):
     # Hard-link is atomic and cannot overwrite an existing file/symlink.
     with open(temp,'rb') as f: os.fsync(f.fileno())
@@ -51,7 +83,7 @@ def restore(base,delta,output):
     fd,work=tempfile.mkstemp(prefix='.restore-',dir=out.parent);os.close(fd)
     try:
         expand_base(base,work);base_page,base_size=validate_sqlite(work)
-        with zipfile.ZipFile(delta,'r') as z:
+        with open_delta(delta) as z:
             if sorted(z.namelist())!=['manifest.json','pages.bin']: raise ValueError('Unexpected archive contents')
             if z.getinfo('manifest.json').file_size>8192: raise ValueError('Manifest too large')
             m=json.loads(z.read('manifest.json'))
