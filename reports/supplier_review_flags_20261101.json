@@ -3,17 +3,6 @@
   "description": "Manual advisory only; not an import block or supplier verification.",
   "items": [
     {
-      "brand": "Paco rabanne",
-      "model": "Black XS L`exces",
-      "supplier_gender": "Men",
-      "expected_fa": "بلک ایکس اس",
-      "warning": "نام فارسی نسخه L’Exces را مشخص نمی‌کند و دو رایحه For Him و For Her وجود دارند؛ جنسیت فایل به تنهایی شاهد نسخه نیست.",
-      "reference_urls": [
-        "https://www.fragrantica.com/perfume/Paco-Rabanne/Black-XS-L-Exces-for-Her-13804.html",
-        "https://www.fragrantica.com/perfume/Paco-Rabanne/Black-XS-L-Exces-for-Him-13805.html"
-      ]
-    },
-    {
       "brand": "American Perfume",
       "model": "TEA ROSE",
       "supplier_gender": "Unisex",

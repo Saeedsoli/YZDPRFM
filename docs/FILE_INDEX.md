@@ -798,3 +798,5 @@ node_modules/   با npm install برمی‌گردد
 - `scripts/test_popular_persian_names.js` — محافظ تغییرات مدیر در اصلاح نام‌ها.
 
 - `scripts/test_official_reference_v41.js` — قیمت گانیمد ادوپرفیوم با انتخاب مالک.
+
+- `scripts/test_secondary_reference_v21.js` — قیمت بلک ایکس اس ال اکسس مردانه با انتخاب مالک و منبع مستقل.

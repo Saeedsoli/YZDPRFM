@@ -178,7 +178,7 @@ Orto Parisi,Megamare,Unisex,مگاماره,4,"613,614,615,616",1118.7,T,provisio
 BLACK MUSK,The Body Shop,Unisex,مشک,1,622,63.8,I,pending,هنوز قیمت مرجع منتسب نشده,,,,,
 Juliette Has a Gun,METAL CHIBR,Unisex,متال شیبر,1,628,183.7,I,provisional,قیمت موقت با شاهد نام؛ هویت اسانس تأییدنشده,SUP-JH-900028,https://us.juliettehasagun.com/products/metal-chypre,official_reference_prices_v16.json,,
 Paco rabanne,1 Million,Men,وان میلیون,1,634,273.9,H,pending,هنوز قیمت مرجع منتسب نشده,,,,,
-Paco rabanne,Black XS L`exces,Men,بلک ایکس اس,1,635,278.3,H,pending,هنوز قیمت مرجع منتسب نشده,,,,نام فارسی نسخه L’Exces را مشخص نمی‌کند و دو رایحه For Him و For Her وجود دارند؛ جنسیت فایل به تنهایی شاهد نسخه نیست.,https://www.fragrantica.com/perfume/Paco-Rabanne/Black-XS-L-Exces-for-Her-13804.html | https://www.fragrantica.com/perfume/Paco-Rabanne/Black-XS-L-Exces-for-Him-13805.html
+Paco rabanne,Black XS L`exces,Men,بلک ایکس اس,1,635,278.3,H,secondary,قیمت موقت با منبع مستقل؛ هویت اسانس تأییدنشده,SUP-TP-910043,https://www.fragrantica.com/perfume/Rabanne/Black-XS-L-Exces-for-Him-13805.html,secondary_reference_prices_v21.json,,
 Paco rabanne,Invictus,Men,اینوکتوس,2,"636,637",198,H,pending,هنوز قیمت مرجع منتسب نشده,,,,,
 Paco rabanne,Invictus Intense,Men,اینوکتوس اینتنس,1,638,101.2,B,legacy,قیمت قدیمی فقط نام؛ شاهد رسمی مرجع کامل نیست,YZD-PROD-0145,,supplier_exact_prices_staged.json,,
 Paco rabanne,PHANTOM,Men,فانتوم,1,639,286,H,pending,هنوز قیمت مرجع منتسب نشده,,,,,
