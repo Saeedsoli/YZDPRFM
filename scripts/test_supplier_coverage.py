@@ -54,7 +54,7 @@ actual,source_sha=a.read_rows(ROOT/a.SOURCE);assert len(actual)==342;assert len(
 actual_groups=a.group_rows(actual)
 raw_results,_=a.assess(actual_groups,[],{}, {},source_sha,False)
 before_states=[r['state'] for r in raw_results]
-assert a.apply_review_flags(ROOT,source_sha,raw_results)==1
+assert a.apply_review_flags(ROOT,source_sha,raw_results)==0
 assert [r['state'] for r in raw_results]==before_states
 flagged={(r['brand'],r['model']):r for r in raw_results if r['review_warning']}
 assert ('PARFUMS de MARLY','Layton') not in flagged
@@ -62,9 +62,11 @@ assert ('AMUAGE','Jubilation XXV') not in flagged
 # Check manifests before DB application, including flagged rows without prices.
 actual_candidates=a.manifests(ROOT,source_sha)
 a.check_flagged_manifest_candidates(actual_groups,actual_candidates,raw_results)
-bad={'supplier_brand':'American Perfume','supplier_model':'TEA ROSE','supplier_gender':'Women',
+bad={'supplier_brand':'American Perfume','supplier_model':'TEA ROSE','supplier_gender':'Unisex',
      'product_id':'test','quality':'H','usd_per_kg':'1','origin':'test.json'}
-try: a.check_flagged_manifest_candidates(actual_groups,[bad],raw_results); assert False, 'flagged candidate must fail even before import'
+synthetic=[dict(r) for r in raw_results]
+next(r for r in synthetic if r['brand']=='American Perfume' and r['model']=='TEA ROSE')['review_warning']='test unresolved'
+try: a.check_flagged_manifest_candidates(actual_groups,[bad],synthetic); assert False, 'flagged candidate must fail even before import'
 except ValueError as exc: assert 'unresolved supplier review flag' in str(exc)
 # Layton's separately identified men's source group is not the flagged women's row.
 layton=next(x for x in actual_candidates if x['product_id']=='YZD-PROD-0636')
@@ -74,7 +76,7 @@ except ValueError: pass
 with tempfile.TemporaryDirectory(prefix='coverage-flags-') as d:
     temp=Path(d);(temp/'reports').mkdir()
     flags=json.loads((ROOT/'reports/supplier_review_flags_20261101.json').read_text(encoding='utf8'))
-    flags['items'].append(flags['items'][0])
+    flags['items']=[{'brand':'American Perfume','model':'TEA ROSE','supplier_gender':'Unisex','expected_fa':'تی رز','warning':'test','reference_urls':['https://example.com/']}]*2
     (temp/'reports/supplier_review_flags_20261101.json').write_text(json.dumps(flags),encoding='utf8')
     try: a.apply_review_flags(temp,source_sha,raw_results); assert False, 'duplicate flag must fail'
     except ValueError: pass

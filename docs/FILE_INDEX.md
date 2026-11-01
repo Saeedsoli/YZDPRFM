@@ -800,3 +800,5 @@ node_modules/   با npm install برمی‌گردد
 - `scripts/test_official_reference_v41.js` — قیمت گانیمد ادوپرفیوم با انتخاب مالک.
 
 - `scripts/test_secondary_reference_v21.js` — قیمت بلک ایکس اس ال اکسس مردانه با انتخاب مالک و منبع مستقل.
+
+- `scripts/test_secondary_reference_v22.js` — قیمت تی رز ادوپرفیوم با انتخاب مالک و منبع مستقل.

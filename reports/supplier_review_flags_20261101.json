@@ -1,17 +1,5 @@
 {
   "source_sha256": "bbe8f40610bc765bda0a7d2da9dbe78f4e397458a6991239c3c18d0853f33f5c",
   "description": "Manual advisory only; not an import block or supplier verification.",
-  "items": [
-    {
-      "brand": "American Perfume",
-      "model": "TEA ROSE",
-      "supplier_gender": "Unisex",
-      "expected_fa": "تی رز",
-      "warning": "برند فایل و نسخه Tea Rose اصلی یا EDP با منابع مستقل به طور قطعی تطبیق نشده است.",
-      "reference_urls": [
-        "https://www.fragrantica.com/perfume/Perfumer-s-Workshop/Tea-Rose-5512.html",
-        "https://www.fragrantica.com/perfume/Perfumer-s-Workshop/Eau-de-Parfum-Tea-Rose-29757.html"
-      ]
-    }
-  ]
+  "items": []
 }

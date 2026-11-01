@@ -1,0 +1,27 @@
+{
+  "version": "secondary_reference_prices_2026_11_v22",
+  "supplier_file_sha256": "bbe8f40610bc765bda0a7d2da9dbe78f4e397458a6991239c3c18d0853f33f5c",
+  "description": "Owner-selected reference; independent source; provisional price and no activation.",
+  "items": [
+    {
+      "product_id": "SUP-TP-910044",
+      "slug": "perfumers-workshop-tea-rose-edp",
+      "brand_en": "Perfumer's Workshop",
+      "expected_name_en": "PERFUMER'S WORKSHOP - Eau de Parfum Tea Rose",
+      "reference_name": "Eau de Parfum Tea Rose",
+      "source_url": "https://www.fragrantica.com/perfume/Perfumer-s-Workshop/Eau-de-Parfum-Tea-Rose-29757.html",
+      "provider": "Fragrantica",
+      "status": "secondary_original_found_supplier_essence_unverified",
+      "checked_date": "2026-11-01",
+      "supplier_brand": "American Perfume",
+      "supplier_model": "TEA ROSE",
+      "supplier_gender": "Unisex",
+      "usd_per_kg": "86.9",
+      "quality": "B",
+      "match_status": "name_matched_supplier_identity_unverified",
+      "owner_version_confirmation": "Owner selected Perfumer’s Workshop Tea Rose EDP despite different supplier brand wording; actual supplier essence unverified.",
+      "expected_edps": [],
+      "legacy_backfill": false
+    }
+  ]
+}
