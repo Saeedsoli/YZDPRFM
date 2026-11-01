@@ -807,3 +807,5 @@ node_modules/   با npm install برمی‌گردد
 - `scripts/test_approved_mto_v4.py` — مصوبه سه محصول، سقف خرید و محافظ ویرایش مدیر.
 
 - `scripts/test_official_reference_v42.js` — قیمت آمواج اپیک مردانه با انتخاب مالک.
+
+- `scripts/test_official_reference_v43.js` — قیمت آمواج آنر زنانه با انتخاب مالک.
