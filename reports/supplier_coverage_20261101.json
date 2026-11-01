@@ -4,26 +4,26 @@
   "supplier_groups": 265,
   "definition": "exact supplier brand + model + supplier gender; not proven unique fragrances",
   "groups_by_state": {
-    "provisional": 155,
+    "provisional": 156,
     "secondary": 53,
     "legacy": 2,
     "ambiguous": 0,
     "conflict": 0,
-    "pending": 55,
+    "pending": 54,
     "no_positive": 0
   },
   "rows_by_state": {
-    "provisional": 194,
+    "provisional": 195,
     "secondary": 70,
     "legacy": 2,
     "ambiguous": 0,
     "conflict": 0,
-    "pending": 76,
+    "pending": 75,
     "no_positive": 0
   },
   "manual_review_flags": 0,
   "local_products": 2204,
-  "local_priced_products": 210,
+  "local_priced_products": 211,
   "local_modes": {
     "UNAVAILABLE": 1998,
     "MADE_TO_ORDER": 206

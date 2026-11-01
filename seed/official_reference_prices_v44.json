@@ -1,0 +1,52 @@
+{
+  "version": "official_reference_prices_2026_11_v44",
+  "supplier_file_sha256": "bbe8f40610bc765bda0a7d2da9dbe78f4e397458a6991239c3c18d0853f33f5c",
+  "description": "Owner-selected reference version; provisional name-level supplier price; no activation or essence verification.",
+  "items": [
+    {
+      "product_id": "YZD-PROD-0543",
+      "slug": "amouage-memoir-man",
+      "brand_en": "Amouage",
+      "expected_name_en": "AMOUAGE - Memoir Man",
+      "reference_name": "Memoir Man",
+      "official_url": "https://amouage.com/products/memoir-man",
+      "supplier_brand": "AMUAGE",
+      "supplier_model": "MEMOIR",
+      "supplier_gender": "Men",
+      "usd_per_kg": "279.4",
+      "quality": "P",
+      "match_status": "name_matched_supplier_identity_unverified",
+      "owner_version_confirmation": "Owner selected Memoir Man for this supplier row; supplier essence identity unverified.",
+      "expected_edps": [
+        {
+          "sku": "YZD-0543-EDP-010",
+          "volume_ml": 10,
+          "price_toman": 570000,
+          "stock": 0,
+          "price_usd": 6.0
+        },
+        {
+          "sku": "YZD-0543-EDP-030",
+          "volume_ml": 30,
+          "price_toman": 1410000,
+          "stock": 0,
+          "price_usd": 6.0
+        },
+        {
+          "sku": "YZD-0543-EDP-050",
+          "volume_ml": 50,
+          "price_toman": 2250000,
+          "stock": 0,
+          "price_usd": 6.0
+        },
+        {
+          "sku": "YZD-0543-EDP-100",
+          "volume_ml": 100,
+          "price_toman": 4350000,
+          "stock": 0,
+          "price_usd": 6.0
+        }
+      ]
+    }
+  ]
+}
