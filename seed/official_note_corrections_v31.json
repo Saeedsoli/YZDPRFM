@@ -1,0 +1,288 @@
+{
+  "version": "official_notes_2026_11_v31",
+  "description": "Guarded notes for named official originals; source does not establish supplier essence, pricing or stock.",
+  "items": [
+    {
+      "product_id": "YZD-PROD-1477",
+      "product_slug": "chanel-chance-chanel",
+      "expected_name_en": "CHANEL - Chance Chanel",
+      "expected_concentration": "EDP",
+      "official_brand": "Chanel",
+      "official_name": "Chance EDP",
+      "source_url": "https://www.chanel.com/us/fragrance/p/126520/chance-eau-de-parfum-spray/",
+      "source_scope": "Chance EDP reference, distinct from EDT and Eau Tendre/Fraîche/Vive; supplier version unverified.",
+      "expected_old_notes": {
+        "top": [
+          "فلفل صورتی",
+          "آناناس",
+          "زنبق",
+          "سنبل"
+        ],
+        "middle": [
+          "گل یاس سامباک",
+          "لیمو سیسیلی"
+        ],
+        "base": [
+          "نعناع هندی اندونزی",
+          "مشک سفید",
+          "خس‌خس",
+          "وانیل"
+        ]
+      },
+      "verified_notes": {
+        "top": [],
+        "middle": [],
+        "base": []
+      },
+      "expected_old_accords": [
+        "شانس به سراغ کسانی می‌آید که به آن باور دارند",
+        "بطری گرد نماد چرخ بخت و اقبال با فلفل صورتی شاداب"
+      ],
+      "verified_accords": [
+        "فلفل صورتی",
+        "یاس",
+        "آکورد پچولی و کهربا",
+        "مشک سفید",
+        "وانیل"
+      ],
+      "requires_unavailable": true,
+      "expected_old_notice": "این محصول، بازآفرینی دست‌ساز با عصاره خالص اولیه و فرمولاسیون اختصاصی عطر یزد است.",
+      "verified_notice": "این محصول بازآفرینی دست‌ساز است و محصول اورجینال برند اصلی نیست. نت‌های عطر مرجع از وب‌سایت رسمی برند هستند؛ هویت و نسخه اسانس تأمین‌کننده مستقلاً تأیید نشده است."
+    },
+    {
+      "product_id": "YZD-PROD-1478",
+      "product_slug": "chanel-chance-eau-tendre",
+      "expected_name_en": "CHANEL - Chance Eau Tendre",
+      "expected_concentration": "EDT",
+      "official_brand": "Chanel",
+      "official_name": "Chance Eau Tendre EDT",
+      "source_url": "https://www.chanel.com/us/fragrance/p/126310/chance-eau-tendre-eau-de-toilette-spray/",
+      "source_scope": "Eau Tendre EDT reference, distinct from Eau Tendre EDP and other Chance versions; supplier version unverified.",
+      "expected_old_notes": {
+        "top": [
+          "میوه به (کوئینز)",
+          "گریپ‌فروت سیسیلی"
+        ],
+        "middle": [
+          "گل سنبل",
+          "گل یاس سامباک"
+        ],
+        "base": [
+          "مشک سفید",
+          "گل زنبق",
+          "سدر ویرجینیا",
+          "کهربا"
+        ]
+      },
+      "verified_notes": {
+        "top": [],
+        "middle": [],
+        "base": []
+      },
+      "expected_old_accords": [
+        "محبوب‌ترین نسخه خانواده چنس با رنگ صورتی رویایی",
+        "بوی میوه به و گل‌های تازه بهاری"
+      ],
+      "verified_accords": [
+        "آکورد گریپ‌فروت و به",
+        "یاس",
+        "مشک سفید"
+      ],
+      "requires_unavailable": true,
+      "expected_old_notice": "این محصول، بازآفرینی دست‌ساز با عصاره خالص اولیه و فرمولاسیون اختصاصی عطر یزد است.",
+      "verified_notice": "این محصول بازآفرینی دست‌ساز است و محصول اورجینال برند اصلی نیست. نت‌های عطر مرجع از وب‌سایت رسمی برند هستند؛ هویت و نسخه اسانس تأمین‌کننده مستقلاً تأیید نشده است."
+    },
+    {
+      "product_id": "YZD-PROD-1479",
+      "product_slug": "chanel-chance-eau-frache",
+      "expected_name_en": "CHANEL - Chance Eau Fraîche",
+      "expected_concentration": "EDT",
+      "official_brand": "Chanel",
+      "official_name": "Chance Eau Fraîche EDT",
+      "source_url": "https://www.chanel.com/us/fragrance/p/136420/chance-eau-fraiche-eau-de-toilette-spray/",
+      "source_scope": "Eau Fraîche EDT reference, distinct from Eau Fraîche EDP and other Chance versions; supplier version unverified.",
+      "expected_old_notes": {
+        "top": [
+          "لیمو",
+          "چوب سدر",
+          "سیترون"
+        ],
+        "middle": [
+          "گل سنبل آبی",
+          "گل یاس",
+          "فلفل صورتی"
+        ],
+        "base": [
+          "چوب درخت ساج",
+          "خس‌خس",
+          "نعناع هندی",
+          "مشک سفید",
+          "کهربا"
+        ]
+      },
+      "verified_notes": {
+        "top": [],
+        "middle": [],
+        "base": []
+      },
+      "expected_old_accords": [
+        "انرژی جوشان رنگ سبز روشن",
+        "خنک‌ترین چنس برای فرار از گرمای سوزان تابستان"
+      ],
+      "verified_accords": [
+        "سیترون",
+        "یاس",
+        "چوب ساج"
+      ],
+      "requires_unavailable": true,
+      "expected_old_notice": "این محصول، بازآفرینی دست‌ساز با عصاره خالص اولیه و فرمولاسیون اختصاصی عطر یزد است.",
+      "verified_notice": "این محصول بازآفرینی دست‌ساز است و محصول اورجینال برند اصلی نیست. نت‌های عطر مرجع از وب‌سایت رسمی برند هستند؛ هویت و نسخه اسانس تأمین‌کننده مستقلاً تأیید نشده است."
+    },
+    {
+      "product_id": "YZD-PROD-0057",
+      "product_slug": "chanel-chance-eau-vive",
+      "expected_name_en": "CHANEL - Chance Eau Vive",
+      "expected_concentration": "EDT",
+      "official_brand": "Chanel",
+      "official_name": "Chance Eau Vive EDT",
+      "source_url": "https://www.chanel.com/us/fragrance/p/126550/chance-eau-vive-eau-de-toilette-spray/",
+      "source_scope": "Eau Vive EDT reference, distinct from Eau Tendre and other Chance versions; supplier version unverified.",
+      "expected_old_notes": {
+        "top": [
+          "پرتقال خونی سیسیلی",
+          "گریپ‌فروت",
+          "مرکبات"
+        ],
+        "middle": [
+          "گل یاس سامباک",
+          "مشک سفید"
+        ],
+        "base": [
+          "خس‌خس هائیتی",
+          "چوب سدر",
+          "گل زنبق"
+        ]
+      },
+      "verified_notes": {
+        "top": [],
+        "middle": [],
+        "base": []
+      },
+      "expected_old_accords": [
+        "شیشه گرد مایع طلایی هلویی",
+        "بازی بولینگ با شیشه‌های چنس و انفجار پرتقال خونی ترش"
+      ],
+      "verified_accords": [
+        "گریپ‌فروت",
+        "پرتقال خونی",
+        "یاس",
+        "چوب سدر",
+        "زنبق"
+      ],
+      "requires_unavailable": true,
+      "expected_old_notice": "این محصول، بازآفرینی دست‌ساز با عصاره خالص اولیه و فرمولاسیون اختصاصی عطر یزد است.",
+      "verified_notice": "این محصول بازآفرینی دست‌ساز است و محصول اورجینال برند اصلی نیست. نت‌های عطر مرجع از وب‌سایت رسمی برند هستند؛ هویت و نسخه اسانس تأمین‌کننده مستقلاً تأیید نشده است."
+    },
+    {
+      "product_id": "YZD-PROD-2071",
+      "product_slug": "calvin-klein-eternity-for-men-edt",
+      "expected_name_en": "CALVIN KLEIN - Eternity for Men EDT",
+      "expected_concentration": "EDT",
+      "official_brand": "Calvin Klein",
+      "official_name": "Eternity for Men EDT",
+      "source_url": "https://www.calvinklein.us/en/eternity-eau-de-toilette-for-men/LX000145.html",
+      "source_scope": "Eternity for Men EDT reference, distinct from EDP, Parfum and women’s Eternity; supplier version unverified.",
+      "expected_old_notes": {
+        "top": [
+          "اسطوخودوس",
+          "لیمو",
+          "ترنج",
+          "نارنگی ماندارین"
+        ],
+        "middle": [
+          "مریم‌گلی",
+          "سرو کوهی",
+          "ریحان",
+          "شمعدانی",
+          "یاس",
+          "سوسن"
+        ],
+        "base": [
+          "چوب صندل",
+          "خس‌خس",
+          "مشک",
+          "چوب سدر",
+          "کهربا"
+        ]
+      },
+      "verified_notes": {
+        "top": [
+          "نارنگی",
+          "اسطوخودوس",
+          "نت‌های سبز"
+        ],
+        "middle": [
+          "ریحان",
+          "شمعدانی",
+          "مریم‌گلی"
+        ],
+        "base": [
+          "چوب صندل",
+          "چوب رز",
+          "کهربا"
+        ]
+      },
+      "expected_old_accords": [
+        "نماد وفاداری و عشق ابدی در سال ۱۹۸۹ با حلقه ازدواج کلوین کلاین",
+        "فوژه تمیز و آرامش‌بخش"
+      ],
+      "verified_accords": [],
+      "requires_unavailable": true,
+      "expected_old_notice": "این محصول، بازآفرینی دست‌ساز با عصاره خالص اولیه و فرمولاسیون اختصاصی عطر یزد است.",
+      "verified_notice": "این محصول بازآفرینی دست‌ساز است و محصول اورجینال برند اصلی نیست. نت‌های عطر مرجع از وب‌سایت رسمی برند هستند؛ هویت و نسخه اسانس تأمین‌کننده مستقلاً تأیید نشده است."
+    },
+    {
+      "product_id": "YZD-PROD-2072",
+      "product_slug": "calvin-klein-eternity-for-men-parfum",
+      "expected_name_en": "CALVIN KLEIN - Eternity for Men Parfum",
+      "expected_concentration": "Parfum",
+      "official_brand": "Calvin Klein",
+      "official_name": "Eternity for Men Parfum",
+      "source_url": "https://www.calvinklein.us/en/men/fragrance/fragrance/eternity-parfum-for-men/3616303549756.html",
+      "source_scope": "Eternity for Men Parfum reference, distinct from EDT/EDP. Rum describes the reference scent, not proof of ingredients.",
+      "expected_old_notes": {
+        "top": [
+          "اسطوخودوس پرووانس",
+          "نعناع تند"
+        ],
+        "middle": [
+          "صمغ کندر",
+          "سدر ویرجینیا"
+        ],
+        "base": [
+          "وانیل بوربون ماداگاسکار",
+          "نعناع هندی"
+        ]
+      },
+      "verified_notes": {
+        "top": [
+          "اسطوخودوس"
+        ],
+        "middle": [
+          "آکورد رام"
+        ],
+        "base": [
+          "وانیل"
+        ]
+      },
+      "expected_old_accords": [
+        "نسخه با غلظت خالص پارفوم با مایع سبز زمردی",
+        "غنی‌تر و گرم‌تر با وانیل بوربون لوکس"
+      ],
+      "verified_accords": [],
+      "requires_unavailable": true,
+      "expected_old_notice": "این محصول، بازآفرینی دست‌ساز با عصاره خالص اولیه و فرمولاسیون اختصاصی عطر یزد است.",
+      "verified_notice": "این محصول بازآفرینی دست‌ساز است و محصول اورجینال برند اصلی نیست. نت‌های عطر مرجع از وب‌سایت رسمی برند هستند؛ هویت و نسخه اسانس تأمین‌کننده مستقلاً تأیید نشده است."
+    }
+  ]
+}

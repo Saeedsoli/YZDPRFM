@@ -1,0 +1,92 @@
+{
+  "version": "official_identity_evidence_v35",
+  "scope": "Official reference-original name only; actual supplier essence identity is unverified.",
+  "items": [
+    {
+      "product_id": "SUP-DG-900001",
+      "slug": "dolce-gabbana-dgvib3",
+      "brand_en": "Dolce & Gabbana",
+      "expected_name_en": "DOLCE & GABBANA - DGVIB3",
+      "reference_name": "DGVIB3 Eau de Parfum",
+      "official_url": "https://www.dolcegabbana.com/en-us/beauty/perfumes-for-him/dgvib3/dgvib3---VP003HVP0009V000.html",
+      "status": "official_original_found_supplier_essence_unverified",
+      "checked_date": "2026-11-01"
+    },
+    {
+      "product_id": "SUP-GU-900051",
+      "slug": "givenchy-mmw",
+      "brand_en": "Givenchy",
+      "expected_name_en": "GIVENCHY - MMW",
+      "reference_name": "3 Avenue George V (MMW)",
+      "official_url": "https://www.givenchybeauty.com/fr/fr/p/3-avenue-george-v-F10100184.html",
+      "status": "official_original_found_supplier_essence_unverified",
+      "checked_date": "2026-11-01"
+    },
+    {
+      "product_id": "YZD-PROD-1477",
+      "slug": "chanel-chance-chanel",
+      "brand_en": "Chanel",
+      "expected_name_en": "CHANEL - Chance Chanel",
+      "expected_concentration": "EDP",
+      "reference_name": "Chance EDP",
+      "official_url": "https://www.chanel.com/us/fragrance/p/126520/chance-eau-de-parfum-spray/",
+      "status": "official_original_found_supplier_essence_unverified",
+      "checked_date": "2026-11-01"
+    },
+    {
+      "product_id": "YZD-PROD-1478",
+      "slug": "chanel-chance-eau-tendre",
+      "brand_en": "Chanel",
+      "expected_name_en": "CHANEL - Chance Eau Tendre",
+      "expected_concentration": "EDT",
+      "reference_name": "Chance Eau Tendre EDT",
+      "official_url": "https://www.chanel.com/us/fragrance/p/126310/chance-eau-tendre-eau-de-toilette-spray/",
+      "status": "official_original_found_supplier_essence_unverified",
+      "checked_date": "2026-11-01"
+    },
+    {
+      "product_id": "YZD-PROD-1479",
+      "slug": "chanel-chance-eau-frache",
+      "brand_en": "Chanel",
+      "expected_name_en": "CHANEL - Chance Eau Fraîche",
+      "expected_concentration": "EDT",
+      "reference_name": "Chance Eau Fraîche EDT",
+      "official_url": "https://www.chanel.com/us/fragrance/p/136420/chance-eau-fraiche-eau-de-toilette-spray/",
+      "status": "official_original_found_supplier_essence_unverified",
+      "checked_date": "2026-11-01"
+    },
+    {
+      "product_id": "YZD-PROD-0057",
+      "slug": "chanel-chance-eau-vive",
+      "brand_en": "Chanel",
+      "expected_name_en": "CHANEL - Chance Eau Vive",
+      "expected_concentration": "EDT",
+      "reference_name": "Chance Eau Vive EDT",
+      "official_url": "https://www.chanel.com/us/fragrance/p/126550/chance-eau-vive-eau-de-toilette-spray/",
+      "status": "official_original_found_supplier_essence_unverified",
+      "checked_date": "2026-11-01"
+    },
+    {
+      "product_id": "YZD-PROD-2071",
+      "slug": "calvin-klein-eternity-for-men-edt",
+      "brand_en": "Calvin Klein",
+      "expected_name_en": "CALVIN KLEIN - Eternity for Men EDT",
+      "expected_concentration": "EDT",
+      "reference_name": "Eternity for Men EDT",
+      "official_url": "https://www.calvinklein.us/en/eternity-eau-de-toilette-for-men/LX000145.html",
+      "status": "official_original_found_supplier_essence_unverified",
+      "checked_date": "2026-11-01"
+    },
+    {
+      "product_id": "YZD-PROD-2072",
+      "slug": "calvin-klein-eternity-for-men-parfum",
+      "brand_en": "Calvin Klein",
+      "expected_name_en": "CALVIN KLEIN - Eternity for Men Parfum",
+      "expected_concentration": "Parfum",
+      "reference_name": "Eternity for Men Parfum",
+      "official_url": "https://www.calvinklein.us/en/men/fragrance/fragrance/eternity-parfum-for-men/3616303549756.html",
+      "status": "official_original_found_supplier_essence_unverified",
+      "checked_date": "2026-11-01"
+    }
+  ]
+}

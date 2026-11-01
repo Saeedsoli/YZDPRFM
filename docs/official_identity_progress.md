@@ -580,3 +580,17 @@ Guidance با Guidance 46 یکی نشده است. Platinium نام کوتاه‌
 | Invictus Platinum | https://www.rabanne.com/nl/en/fragrance/p/invictus-platinum--000000000065176115 |
 
 نسخه‌های EDT، Parfum و نسخه‌های نام‌دار مجموعه‌ها جدا هستند؛ قیمت‌های فایل بدون اثبات نسخه به آنها نسبت داده نشده‌اند. نت‌ها بدون هرم ساختگی ثبت شدند؛ آکوردهای چرم، کهربای خاکستری و ابسنت صرفاً توصیف رایحه مرجع‌اند و مواد اسانس واقعی را ثابت نمی‌کنند.
+
+
+## دو قیمت مرجع و شش شناسنامه رسمی — ۱ نوامبر ۲۰۲۶
+
+دو رایحه مرجع تازه بر اساس نام و بالاترین قیمت فایل به‌صورت موقت ثبت و شش شناسنامه موجود با محافظ ویرایش مدیر اصلاح شدند. تمام محصولات غیرفعال و دست‌سازند و هیچ صفحه‌ای هویت یا نسخه واقعی اسانس تحویلی را تأیید نمی‌کند. واریانت‌ها و سفارش‌های قبلی تغییر نکردند.
+
+| رایحه مرجع | دلار/کیلو | کیفیت فایل | صفحه رسمی |
+|---|---:|---|---|
+| DGVIB3 — Dolce & Gabbana | 148.5 | R | https://www.dolcegabbana.com/en-us/beauty/perfumes-for-him/dgvib3/dgvib3---VP003HVP0009V000.html |
+| MMW / 3 Avenue George V — Givenchy | 269.5 | P | https://www.givenchybeauty.com/fr/fr/p/3-avenue-george-v-F10100184.html |
+
+برند ژیوانشی صریحاً نام تازه 3 Avenue George V را برای MMW با حفظ امضای بویایی اعلام کرده؛ این موضوع اثباتی درباره اسانس تأمین‌کننده نیست. برند DGVIB3 را مناسب همه معرفی می‌کند و جنسیت فایل مبنای شناسنامه آن قرار نگرفته است.
+
+شش شناسنامه بدون انتساب قیمت جدید: [Chance EDP](https://www.chanel.com/us/fragrance/p/126520/chance-eau-de-parfum-spray/)، [Chance Eau Tendre EDT](https://www.chanel.com/us/fragrance/p/126310/chance-eau-tendre-eau-de-toilette-spray/)، [Chance Eau Fraîche EDT](https://www.chanel.com/us/fragrance/p/136420/chance-eau-fraiche-eau-de-toilette-spray/)، [Chance Eau Vive EDT](https://www.chanel.com/us/fragrance/p/126550/chance-eau-vive-eau-de-toilette-spray/)، [Eternity for Men EDT](https://www.calvinklein.us/en/eternity-eau-de-toilette-for-men/LX000145.html) و [Eternity for Men Parfum](https://www.calvinklein.us/en/men/fragrance/fragrance/eternity-parfum-for-men/3616303549756.html). نسخه‌های متفاوت یکی نشده‌اند و آکورد رام، وصف رایحه مرجع است نه اثبات ماده اسانس تحویلی.
