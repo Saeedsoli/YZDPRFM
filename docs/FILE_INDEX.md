@@ -379,6 +379,7 @@ node_modules/   با npm install برمی‌گردد
 - `scripts/test_availability_rules.js`
 - `scripts/test_approved_mto.py`
 - `scripts/test_active_official_notes_v1.js`
+- `scripts/test_active_official_notes_v2.js`
 - `scripts/test_essence_pricing.js`
 - `scripts/test_essence_pricing_store.js`
 - `scripts/test_exchange_rate_api.py`

@@ -2753,10 +2753,11 @@ if (isFreshInstallation && process.env.APPROVED_MTO_AUTOSTART !== '0') {
 }
 // Active-product correction is guarded by original evidence, owner-approved mode,
 // unchanged price and exact prior content; it never touches order data.
-const activeNotesResult = require('./active-official-notes').applyActiveOfficialNotes(db, path.join(SEED_DIR, 'active_official_note_corrections_v1.json'));
+const activeNotesResults = ['active_official_note_corrections_v1.json','active_official_note_corrections_v2.json'].map(file =>
+  require('./active-official-notes').applyActiveOfficialNotes(db, path.join(SEED_DIR, file)));
 buildSearchIndex();
 // Rebuild note lookup after sourced notes change or new supplement products arrive.
-buildNotesIndex(activeNotesResult.updated > 0 || supplementInserted > 0 || secondaryNotesResults.some(r => r.updated > 0) || officialNotesResults.some(r => r.updated > 0));
+buildNotesIndex(activeNotesResults.some(r => r.updated > 0) || supplementInserted > 0 || secondaryNotesResults.some(r => r.updated > 0) || officialNotesResults.some(r => r.updated > 0));
 
 startMaintenance();
 

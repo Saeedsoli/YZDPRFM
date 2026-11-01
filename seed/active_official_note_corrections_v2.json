@@ -1,0 +1,361 @@
+{
+  "version": "active_official_notes_2026_11_v2",
+  "description": "Guarded reference notes for approved active products; supplier essence unverified.",
+  "items": [
+    {
+      "product_id": "YZD-PROD-0501",
+      "product_slug": "penhaligons-the-tragedy-of-lord-george",
+      "expected_name_en": "PENHALIGON'S - The Tragedy of Lord George",
+      "expected_brand": "Penhaligon's",
+      "expected_concentration": "EDP",
+      "expected_usd_per_kg": "423.5",
+      "source_url": "https://www.penhaligons.com/uk/en/p/the-tragedy-of-lord-george-eau-de-parfum-75-ml--000000000065173406",
+      "expected_old_notes": {
+        "top": [
+          "براندی اشرافی انگلیسی"
+        ],
+        "middle": [
+          "روایح چوبی",
+          "صابون اصلاح اصلاحگاه سلطنتی"
+        ],
+        "base": [
+          "دانه تونکا",
+          "کهربا"
+        ]
+      },
+      "verified_notes": {
+        "top": [],
+        "middle": [],
+        "base": []
+      },
+      "expected_old_accords": [
+        "مشروبی",
+        "آرایشگاهی اشرافی",
+        "صابونی چوبی",
+        "تمیز"
+      ],
+      "verified_accords": [
+        "آمبروکس",
+        "آکورد رام",
+        "دانه تونکا",
+        "آکورد صابون اصلاح"
+      ],
+      "expected_old_notice": "این محصول بازآفرینی دست‌ساز است و محصول اورجینال برند اصلی نیست. نام رایحه مرجع از وب‌سایت رسمی برند بررسی شده؛ هویت و کیفیت اسانس تأمین‌کننده مستقلاً تأیید نشده است.",
+      "verified_notice": "این محصول بازآفرینی دست‌ساز است و محصول اورجینال برند اصلی نیست. اطلاعات رایحه مرجع از وب‌سایت رسمی برند گرفته شده؛ هویت و نسخه اسانس تأمین‌کننده مستقلاً تأیید نشده است."
+    },
+    {
+      "product_id": "YZD-PROD-0677",
+      "product_slug": "kilian-paris-angels-share",
+      "expected_name_en": "KILIAN PARIS - Angels' Share",
+      "expected_brand": "Kilian Paris",
+      "expected_concentration": "EDP",
+      "expected_usd_per_kg": "427.9",
+      "source_url": "https://www.bykilian.com/product/19797/82905/perfume/angels-share/the-liquors",
+      "expected_old_notes": {
+        "top": [
+          "کنیاک فرانسوی اصل نسل خاندان هنسی"
+        ],
+        "middle": [
+          "دارچین",
+          "دانه تونکا",
+          "درخت بلوط"
+        ],
+        "base": [
+          "پرالین (شکلات فندقی)",
+          "وانیل ماداگاسکار",
+          "چوب صندل"
+        ]
+      },
+      "verified_notes": {
+        "top": [
+          "آکورد کنیاک"
+        ],
+        "middle": [
+          "بلوط",
+          "دارچین"
+        ],
+        "base": [
+          "دانه تونکا",
+          "چوب صندل"
+        ]
+      },
+      "expected_old_accords": [
+        "میراث خاندان کنیاک‌ساز هنسی",
+        "بخار مست‌کننده بشکه‌های چوب بلوط با دارچین"
+      ],
+      "verified_accords": [],
+      "expected_old_notice": "این محصول بازآفرینی دست‌ساز است و محصول اورجینال برند اصلی نیست. نام رایحه مرجع از وب‌سایت رسمی برند بررسی شده؛ هویت و کیفیت اسانس تأمین‌کننده مستقلاً تأیید نشده است.",
+      "verified_notice": "این محصول بازآفرینی دست‌ساز است و محصول اورجینال برند اصلی نیست. اطلاعات رایحه مرجع از وب‌سایت رسمی برند گرفته شده؛ هویت و نسخه اسانس تأمین‌کننده مستقلاً تأیید نشده است."
+    },
+    {
+      "product_id": "YZD-PROD-0993",
+      "product_slug": "le-labo-santal-33",
+      "expected_name_en": "LE LABO - Santal 33",
+      "expected_brand": "Le Labo",
+      "expected_concentration": "EDP",
+      "expected_usd_per_kg": "126.5",
+      "source_url": "https://www.lelabofragrances.com/santal-33-147.html",
+      "expected_old_notes": {
+        "top": [
+          "هل",
+          "برگ بنفشه",
+          "زنبق"
+        ],
+        "middle": [
+          "پاپیروس",
+          "چرم جیر",
+          "کهربا"
+        ],
+        "base": [
+          "چوب صندل استرالیایی",
+          "سدر ویرجینیا"
+        ]
+      },
+      "verified_notes": {
+        "top": [],
+        "middle": [],
+        "base": []
+      },
+      "expected_old_accords": [
+        "اسطوره قرن ۲۱",
+        "بوی کتابخانه چوبی",
+        "دود آتش گاوچران‌ها و صندل نیویورکی"
+      ],
+      "verified_accords": [
+        "هل",
+        "زنبق",
+        "بنفشه",
+        "چوب صندل",
+        "سدر",
+        "آکورد دود",
+        "آکورد چرم",
+        "مشک"
+      ],
+      "expected_old_notice": "این محصول بازآفرینی دست‌ساز است و محصول اورجینال برند اصلی نیست. نام رایحه مرجع از وب‌سایت رسمی برند بررسی شده؛ هویت و کیفیت اسانس تأمین‌کننده مستقلاً تأیید نشده است.",
+      "verified_notice": "این محصول بازآفرینی دست‌ساز است و محصول اورجینال برند اصلی نیست. اطلاعات رایحه مرجع از وب‌سایت رسمی برند گرفته شده؛ هویت و نسخه اسانس تأمین‌کننده مستقلاً تأیید نشده است."
+    },
+    {
+      "product_id": "YZD-PROD-1425",
+      "product_slug": "christian-dior-sauvage-elixir",
+      "expected_name_en": "CHRISTIAN DIOR - Sauvage Elixir",
+      "expected_brand": "Christian Dior",
+      "expected_concentration": "Elixir",
+      "expected_usd_per_kg": "273.9",
+      "source_url": "https://www.dior.com/en_cz/beauty/products/sauvage-elixir-Y0996460.html",
+      "expected_old_notes": {
+        "top": [
+          "دارچین سیلان",
+          "جوز هندی",
+          "هل گواتمالا",
+          "گریپ‌فروت"
+        ],
+        "middle": [
+          "اسطوخودوس دست‌چین نایکو پرووانس"
+        ],
+        "base": [
+          "شیرین‌بیان",
+          "چوب صندل",
+          "کهربا",
+          "نعناع هندی",
+          "خس‌خس هائیتی"
+        ]
+      },
+      "verified_notes": {
+        "top": [],
+        "middle": [],
+        "base": []
+      },
+      "expected_old_accords": [
+        "شاهکار شاهکارهای دیور",
+        "معجون ادویه‌ای فوق‌العاده متراکم با ماندگاری و پخش بوی بی‌همتا"
+      ],
+      "verified_accords": [
+        "اسطوخودوس",
+        "آکورد ادویه‌ای",
+        "نت‌های چوبی"
+      ],
+      "expected_old_notice": "این محصول بازآفرینی دست‌ساز است و محصول اورجینال برند اصلی نیست. نام رایحه مرجع از وب‌سایت رسمی برند بررسی شده؛ هویت و کیفیت اسانس تأمین‌کننده مستقلاً تأیید نشده است.",
+      "verified_notice": "این محصول بازآفرینی دست‌ساز است و محصول اورجینال برند اصلی نیست. اطلاعات رایحه مرجع از وب‌سایت رسمی برند گرفته شده؛ هویت و نسخه اسانس تأمین‌کننده مستقلاً تأیید نشده است."
+    },
+    {
+      "product_id": "YZD-PROD-1427",
+      "product_slug": "christian-dior-dior-homme-intense",
+      "expected_name_en": "CHRISTIAN DIOR - Dior Homme Intense",
+      "expected_brand": "Christian Dior",
+      "expected_concentration": "EDP",
+      "expected_usd_per_kg": "424.6",
+      "source_url": "https://www.dior.com/en_int/beauty/products/dior-homme-intense-Y0479201.html",
+      "expected_old_notes": {
+        "top": [
+          "اسطوخودوس پرووانس"
+        ],
+        "middle": [
+          "زنبق توسکانی",
+          "گل ختی (دانه آمبرت)",
+          "گلابی"
+        ],
+        "base": [
+          "چوب سدر ویرجینیا",
+          "خس‌خس هائیتی"
+        ]
+      },
+      "verified_notes": {
+        "top": [],
+        "middle": [],
+        "base": []
+      },
+      "expected_old_accords": [
+        "محبوب‌ترین و اغواگرترین عطر زمستانی مردانه تاریخ",
+        "کت مخمل بر تن جنتلمن در سالن اپرا"
+      ],
+      "verified_accords": [
+        "زنبق",
+        "کهربا",
+        "دانه آمبرت",
+        "سدر"
+      ],
+      "expected_old_notice": "این محصول بازآفرینی دست‌ساز است و محصول اورجینال برند اصلی نیست. نام رایحه مرجع از وب‌سایت رسمی برند بررسی شده؛ هویت و کیفیت اسانس تأمین‌کننده مستقلاً تأیید نشده است.",
+      "verified_notice": "این محصول بازآفرینی دست‌ساز است و محصول اورجینال برند اصلی نیست. اطلاعات رایحه مرجع از وب‌سایت رسمی برند گرفته شده؛ هویت و نسخه اسانس تأمین‌کننده مستقلاً تأیید نشده است."
+    },
+    {
+      "product_id": "YZD-PROD-1511",
+      "product_slug": "yves-saint-laurent-tuxedo",
+      "expected_name_en": "YVES SAINT LAURENT - Tuxedo",
+      "expected_brand": "Yves Saint Laurent",
+      "expected_concentration": "EDP",
+      "expected_usd_per_kg": "385",
+      "source_url": "https://www.yslbeautyus.com/fragrance/le-vestiaire-des-parfums/the-signature-collection/tuxedo---le-vestiaire-des-parfums/809YSL.html",
+      "expected_old_notes": {
+        "top": [
+          "برگ بنفشه",
+          "ترنج کالابریا",
+          "گشنیز"
+        ],
+        "middle": [
+          "فلفل سیاه",
+          "رز دمشقی",
+          "گل برف"
+        ],
+        "base": [
+          "نعناع هندی اندونزی",
+          "عنبر سائل",
+          "وانیل بوربون"
+        ]
+      },
+      "verified_notes": {
+        "top": [
+          "آکورد برگ بنفشه",
+          "ترنج",
+          "گشنیز"
+        ],
+        "middle": [
+          "رز",
+          "آکورد گل برف",
+          "فلفل سیاه"
+        ],
+        "base": [
+          "آکورد عنبر",
+          "پچولی",
+          "وانیل"
+        ]
+      },
+      "expected_old_accords": [
+        "شاهکار بدون تکرار ژولیت کاراگوزاوغلو",
+        "الهام از کت و شلوار اسموکینگ زنانه ایو سن لوران",
+        "اوج جذابیت و پرستیژ"
+      ],
+      "verified_accords": [],
+      "expected_old_notice": "این محصول بازآفرینی دست‌ساز است و محصول اورجینال برند اصلی نیست. نام رایحه مرجع از وب‌سایت رسمی برند بررسی شده؛ هویت و کیفیت اسانس تأمین‌کننده مستقلاً تأیید نشده است.",
+      "verified_notice": "این محصول بازآفرینی دست‌ساز است و محصول اورجینال برند اصلی نیست. اطلاعات رایحه مرجع از وب‌سایت رسمی برند گرفته شده؛ هویت و نسخه اسانس تأمین‌کننده مستقلاً تأیید نشده است."
+    },
+    {
+      "product_id": "YZD-PROD-1581",
+      "product_slug": "jean-paul-gaultier-le-male-elixir",
+      "expected_name_en": "JEAN PAUL GAULTIER - Le Male Elixir",
+      "expected_brand": "Jean Paul Gaultier",
+      "expected_concentration": "Elixir",
+      "expected_usd_per_kg": "169.4",
+      "source_url": "https://www.jeanpaulgaultier.com/nl/nl/p/assortiment-le-male/le-male-elixir-parfum-000000000065188980",
+      "expected_old_notes": {
+        "top": [
+          "اسطوخودوس",
+          "نعناع تند"
+        ],
+        "middle": [
+          "عسل طبیعی",
+          "دانه تونکا برزیل"
+        ],
+        "base": [
+          "بنزوئین",
+          "وانیل ماداگاسکار",
+          "برگ تنباکو"
+        ]
+      },
+      "verified_notes": {
+        "top": [],
+        "middle": [],
+        "base": []
+      },
+      "expected_old_accords": [
+        "شاهکار پرفروش سال ۲۰۲۳ با بطری طلای خط‌دار",
+        "اعتیادآورترین شیرینی عسل و تونکا برای آقایان"
+      ],
+      "verified_accords": [
+        "اسطوخودوس",
+        "دانه تونکا",
+        "بنزوئین"
+      ],
+      "expected_old_notice": "این محصول بازآفرینی دست‌ساز است و محصول اورجینال برند اصلی نیست. نام رایحه مرجع از وب‌سایت رسمی برند بررسی شده؛ هویت و کیفیت اسانس تأمین‌کننده مستقلاً تأیید نشده است.",
+      "verified_notice": "این محصول بازآفرینی دست‌ساز است و محصول اورجینال برند اصلی نیست. اطلاعات رایحه مرجع از وب‌سایت رسمی برند گرفته شده؛ هویت و نسخه اسانس تأمین‌کننده مستقلاً تأیید نشده است."
+    },
+    {
+      "product_id": "YZD-PROD-1676",
+      "product_slug": "tom-ford-oud-wood",
+      "expected_name_en": "TOM FORD - Oud Wood",
+      "expected_brand": "Tom Ford",
+      "expected_concentration": "EDP",
+      "expected_usd_per_kg": "187",
+      "source_url": "https://www.tomfordbeauty.com/products/oud-wood-eau-de-parfum",
+      "expected_old_notes": {
+        "top": [
+          "هل سبز",
+          "فلفل سیچوان",
+          "چوب بلسان بنفش (رزوود)"
+        ],
+        "middle": [
+          "چوب عود آگار",
+          "چوب صندل میسور",
+          "خس‌خس"
+        ],
+        "base": [
+          "دانه تونکا",
+          "وانیل ماداگاسکار",
+          "کهربا"
+        ]
+      },
+      "verified_notes": {
+        "top": [],
+        "middle": [],
+        "base": []
+      },
+      "expected_old_accords": [
+        "پرفروش‌ترین و همه‌پسندترین عطر عودی تاریخ جهان",
+        "معتدل",
+        "آرامش‌بخش",
+        "اشرافی و به شدت باکلاس"
+      ],
+      "verified_accords": [
+        "هل",
+        "فلفل صورتی",
+        "پچولی",
+        "کهربا",
+        "آکورد عود",
+        "دانه تونکا",
+        "چوب صندل",
+        "وتیور"
+      ],
+      "expected_old_notice": "این محصول بازآفرینی دست‌ساز است و محصول اورجینال برند اصلی نیست. نام رایحه مرجع از وب‌سایت رسمی برند بررسی شده؛ هویت و کیفیت اسانس تأمین‌کننده مستقلاً تأیید نشده است.",
+      "verified_notice": "این محصول بازآفرینی دست‌ساز است و محصول اورجینال برند اصلی نیست. اطلاعات رایحه مرجع از وب‌سایت رسمی برند گرفته شده؛ هویت و نسخه اسانس تأمین‌کننده مستقلاً تأیید نشده است."
+    }
+  ]
+}

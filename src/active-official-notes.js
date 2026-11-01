@@ -3,9 +3,10 @@
 // Never edits sale prices, availability, stock, customer data or existing orders.
 const fs=require('fs');
 const VERSION='active_official_notes_2026_11_v1';
+const VERSIONS={[VERSION]:8,active_official_notes_2026_11_v2:8};
 function applyActiveOfficialNotes(db,file){
  const m=JSON.parse(fs.readFileSync(file,'utf8'));
- if(m.version!==VERSION||!Array.isArray(m.items)||m.items.length!==8)throw Error('Invalid active reference manifest');
+ if(!Object.hasOwn(VERSIONS,m.version)||!Array.isArray(m.items)||m.items.length!==VERSIONS[m.version])throw Error('Invalid active reference manifest');
  const seen=new Set();
  for(const x of m.items){let url;try{url=new URL(x.source_url)}catch{throw Error('Invalid reference source')}
   if(!x.product_id||!x.product_slug||!x.expected_name_en||!x.expected_brand||!x.expected_concentration||typeof x.expected_usd_per_kg!=='string'||url.protocol!=='https:'||url.username||url.password||seen.has(x.product_id)||typeof x.expected_old_notice!=='string'||typeof x.verified_notice!=='string'||!Array.isArray(x.expected_old_accords)||!Array.isArray(x.verified_accords))throw Error('Invalid active reference item');
@@ -13,7 +14,7 @@ function applyActiveOfficialNotes(db,file){
   if(!x.verified_accords.every(s=>typeof s==='string'&&s.trim()&&s.length<=60))throw Error('Invalid reference accords');seen.add(x.product_id);
  }
  return db.transaction(()=>{
-  if(db.prepare('SELECT 1 FROM settings WHERE key=?').get(VERSION))return {updated:0,skipped:0,reason:'already_applied'};
+  if(db.prepare('SELECT 1 FROM settings WHERE key=?').get(m.version))return {updated:0,skipped:0,reason:'already_applied'};
   if(!db.prepare("SELECT 1 FROM settings WHERE key='approved_made_to_order_2026_11_v1'").get())return {updated:0,skipped:0,reason:'approval_missing'};
   const get=db.prepare('SELECT id,slug,name_en,brand_en,concentration,supply_mode,essence_usd_per_kg,notes_top,notes_middle,notes_base,accords,transparency_notice FROM products WHERE id=?');
   const evidence=db.prepare('SELECT official_url,status FROM official_identity_evidence WHERE product_id=?');
@@ -26,7 +27,7 @@ function applyActiveOfficialNotes(db,file){
    if(!ok){skipped++;continue}
    update.run(...['top','middle','base'].map(k=>JSON.stringify(x.verified_notes[k])),JSON.stringify(x.verified_accords),x.verified_notice,p.id);updated++;
   }
-  const result={updated,skipped,at:new Date().toISOString()};db.prepare('INSERT INTO settings(key,value) VALUES(?,?)').run(VERSION,JSON.stringify(result));return result;
+  const result={updated,skipped,at:new Date().toISOString()};db.prepare('INSERT INTO settings(key,value) VALUES(?,?)').run(m.version,JSON.stringify(result));return result;
  })();
 }
 module.exports={applyActiveOfficialNotes,VERSION};
