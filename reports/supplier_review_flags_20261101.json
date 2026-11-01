@@ -3,16 +3,6 @@
   "description": "Manual advisory only; not an import block or supplier verification.",
   "items": [
     {
-      "brand": "JOOP",
-      "model": "Joop Night Flight (Green)",
-      "supplier_gender": "Men",
-      "expected_fa": "جوپ قرمز",
-      "warning": "رنگ فارسی قرمز و انگلیسی سبز متناقض است؛ مدل قابل تعیین نیست.",
-      "reference_urls": [
-        "https://www.fragrantica.com/perfume/Joop/Nightflight-1721.html"
-      ]
-    },
-    {
       "brand": "Nikos",
       "model": "Sculpture",
       "supplier_gender": "Men",

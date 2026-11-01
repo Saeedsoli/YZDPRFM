@@ -1,0 +1,27 @@
+{
+  "version": "secondary_reference_prices_2026_11_v18",
+  "supplier_file_sha256": "bbe8f40610bc765bda0a7d2da9dbe78f4e397458a6991239c3c18d0853f33f5c",
+  "description": "Owner choice for contradictory row; independent reference; provisional price and no activation.",
+  "items": [
+    {
+      "product_id": "SUP-TP-910041",
+      "slug": "joop-homme-original",
+      "brand_en": "Joop!",
+      "expected_name_en": "Joop! Homme",
+      "reference_name": "Joop! Homme",
+      "source_url": "https://www.fragrantica.com/perfume/Joop/Joop-Homme-1251.html",
+      "provider": "Fragrantica",
+      "status": "secondary_original_found_supplier_essence_unverified",
+      "checked_date": "2026-11-01",
+      "supplier_brand": "JOOP",
+      "supplier_model": "Joop Night Flight (Green)",
+      "supplier_gender": "Men",
+      "usd_per_kg": "83.6",
+      "quality": "H",
+      "match_status": "name_matched_supplier_identity_unverified",
+      "owner_version_confirmation": "Owner selected red Joop Homme for conflicting source row; actual supplier essence identity unverified.",
+      "expected_edps": [],
+      "legacy_backfill": false
+    }
+  ]
+}

@@ -772,3 +772,5 @@ node_modules/   با npm install برمی‌گردد
 - `scripts/test_official_reference_v38.js` — قیمت و نت دلینا طبق انتخاب مالک در ردیف متناقض.
 
 - `scripts/test_secondary_reference_v17.js` — قیمت و مرجع مستقل جوپ سبز طبق انتخاب مالک.
+
+- `scripts/test_secondary_reference_v18.js` — قیمت و مرجع مستقل جوپ قرمز طبق انتخاب مالک.
