@@ -1,0 +1,323 @@
+{
+  "version": "active_official_notes_2026_11_v3",
+  "description": "Guarded reference notes for approved active products; supplier essence unverified.",
+  "items": [
+    {
+      "product_id": "YZD-PROD-0591",
+      "product_slug": "xerjoff-torino22",
+      "expected_name_en": "XERJOFF - Torino22",
+      "expected_brand": "Xerjoff",
+      "expected_concentration": "EDP",
+      "expected_usd_per_kg": "277.2",
+      "source_url": "https://www.xerjoff.com/products/torino22-eau-de-parfum",
+      "expected_old_notes": {
+        "top": [
+          "اکالیپتوس",
+          "ترنج",
+          "زعفران"
+        ],
+        "middle": [
+          "مته (چای ماته)",
+          "مریم‌گلی اسکلاریا",
+          "چوب گایاک"
+        ],
+        "base": [
+          "مشک",
+          "روایح چوبی خشک"
+        ]
+      },
+      "verified_notes": {
+        "top": [],
+        "middle": [],
+        "base": []
+      },
+      "expected_old_accords": [
+        "هوای باطراوت آلپ با آکورد ماته و اکالیپتوس انرژی‌بخش"
+      ],
+      "verified_accords": [],
+      "expected_old_notice": "این محصول بازآفرینی دست‌ساز است و محصول اورجینال برند اصلی نیست. نام رایحه مرجع از وب‌سایت رسمی برند بررسی شده؛ هویت و کیفیت اسانس تأمین‌کننده مستقلاً تأیید نشده است.",
+      "verified_notice": "این محصول بازآفرینی دست‌ساز است و محصول اورجینال برند اصلی نیست. برند نت‌های رایحه مرجع را منتشر نکرده است؛ هویت و نسخه اسانس تأمین‌کننده مستقلاً تأیید نشده است."
+    },
+    {
+      "product_id": "SUP-XJ-900007",
+      "product_slug": "xerjoff-torino24",
+      "expected_name_en": "XERJOFF - Torino24",
+      "expected_brand": "Xerjoff",
+      "expected_concentration": "EDP",
+      "expected_usd_per_kg": "330",
+      "source_url": "https://www.xerjoff.com/en-us/products/torino24-eau-de-parfum-15ml",
+      "expected_old_notes": {
+        "top": [],
+        "middle": [],
+        "base": []
+      },
+      "verified_notes": {
+        "top": [],
+        "middle": [],
+        "base": []
+      },
+      "expected_old_accords": [],
+      "verified_accords": [],
+      "expected_old_notice": "این محصول بازآفرینی دست‌ساز است و محصول اورجینال برند زرژوف نیست.",
+      "verified_notice": "این محصول بازآفرینی دست‌ساز است و محصول اورجینال برند اصلی نیست. برند نت‌های رایحه مرجع را منتشر نکرده است؛ هویت و نسخه اسانس تأمین‌کننده مستقلاً تأیید نشده است."
+    },
+    {
+      "product_id": "YZD-PROD-0688",
+      "product_slug": "kilian-paris-good-girl-gone-bad",
+      "expected_name_en": "KILIAN PARIS - Good Girl Gone Bad",
+      "expected_brand": "Kilian Paris",
+      "expected_concentration": "EDP",
+      "expected_usd_per_kg": "300.3",
+      "source_url": "https://www.bykilian.com/product/19797/147603/perfume/good-girl-gone-bad-the-icon-set/the-narcotics",
+      "expected_old_notes": {
+        "top": [
+          "گل اسمانتوس (زردآلو)",
+          "رز دای می",
+          "گل یاس سامباک"
+        ],
+        "middle": [
+          "گل مریم هندی",
+          "گل نرگس"
+        ],
+        "base": [
+          "عنبر سائل",
+          "سدر ویرجینیا"
+        ]
+      },
+      "verified_notes": {
+        "top": [],
+        "middle": [],
+        "base": []
+      },
+      "expected_old_accords": [
+        "وسوسه‌انگیزترین دسته گل سفید تاریخ",
+        "معصومیت هلو که به اغوای گل مریم بدل می‌شود"
+      ],
+      "verified_accords": [
+        "شکوفه پرتقال",
+        "عثمانتوس",
+        "گل مریم"
+      ],
+      "expected_old_notice": "این محصول بازآفرینی دست‌ساز است و محصول اورجینال برند اصلی نیست. نام رایحه مرجع از وب‌سایت رسمی برند بررسی شده؛ هویت و کیفیت اسانس تأمین‌کننده مستقلاً تأیید نشده است.",
+      "verified_notice": "این محصول بازآفرینی دست‌ساز است و محصول اورجینال برند اصلی نیست. اطلاعات رایحه مرجع از وب‌سایت رسمی برند گرفته شده؛ هویت و نسخه اسانس تأمین‌کننده مستقلاً تأیید نشده است."
+    },
+    {
+      "product_id": "YZD-PROD-1505",
+      "product_slug": "yves-saint-laurent-libre-intense",
+      "expected_name_en": "YVES SAINT LAURENT - Libre Intense",
+      "expected_brand": "Yves Saint Laurent",
+      "expected_concentration": "EDP",
+      "expected_usd_per_kg": "119.9",
+      "source_url": "https://www.yslbeautyus.com/fragrance/womens-fragrances/libre/libre-eau-de-parfum-intense/306YSL.html",
+      "expected_old_notes": {
+        "top": [
+          "اسطوخودوس",
+          "ترنج کالابریا",
+          "نارنگی ماندارین"
+        ],
+        "middle": [
+          "اسطوخودوس",
+          "ارکیده وحشی",
+          "شکوفه پرتقال",
+          "یاس سامباک"
+        ],
+        "base": [
+          "وانیل ماداگاسکار",
+          "دانه تونکا برزیل",
+          "عنبر سائل",
+          "خس‌خس"
+        ]
+      },
+      "verified_notes": {
+        "top": [],
+        "middle": [],
+        "base": []
+      },
+      "expected_old_accords": [
+        "نسخه غلیظ‌تر با مایع کهربایی طلایی و نت اغواگر گل ارکیده شب‌بو در کنار تونکای کاراملی"
+      ],
+      "verified_accords": [
+        "اسطوخودوس",
+        "شکوفه پرتقال",
+        "آکورد ارکیده",
+        "وانیل"
+      ],
+      "expected_old_notice": "این محصول بازآفرینی دست‌ساز است و محصول اورجینال برند اصلی نیست. نام رایحه مرجع از وب‌سایت رسمی برند بررسی شده؛ هویت و کیفیت اسانس تأمین‌کننده مستقلاً تأیید نشده است.",
+      "verified_notice": "این محصول بازآفرینی دست‌ساز است و محصول اورجینال برند اصلی نیست. اطلاعات رایحه مرجع از وب‌سایت رسمی برند گرفته شده؛ هویت و نسخه اسانس تأمین‌کننده مستقلاً تأیید نشده است."
+    },
+    {
+      "product_id": "YZD-PROD-1677",
+      "product_slug": "tom-ford-lost-cherry",
+      "expected_name_en": "TOM FORD - Lost Cherry",
+      "expected_brand": "Tom Ford",
+      "expected_concentration": "EDP",
+      "expected_usd_per_kg": "262.9",
+      "source_url": "https://www.tomfordbeauty.com/products/lost-cherry-eau-de-parfum-set",
+      "expected_old_notes": {
+        "top": [
+          "گیلاس سیاه",
+          "لیکور آلبالو",
+          "بادام تلخ"
+        ],
+        "middle": [
+          "شربت آلبالو",
+          "رز ترکی",
+          "گل یاس سامباک",
+          "آلو"
+        ],
+        "base": [
+          "بلسان پرو",
+          "دانه تونکا",
+          "چوب صندل",
+          "خس‌خس",
+          "سدر",
+          "وانیل"
+        ]
+      },
+      "verified_notes": {
+        "top": [],
+        "middle": [],
+        "base": []
+      },
+      "expected_old_accords": [
+        "جنجالی‌ترین عطر میوه‌ای تاریخ تام فورد با رنگ سرخ یاقوتی",
+        "وسوسه گاز زدن به گیلاس سیاه آغشته به بادام"
+      ],
+      "verified_accords": [
+        "آکورد گیلاس سیاه",
+        "بادام تلخ",
+        "دانه تونکا",
+        "آکورد لیکور گیلاس"
+      ],
+      "expected_old_notice": "این محصول بازآفرینی دست‌ساز است و محصول اورجینال برند اصلی نیست. نام رایحه مرجع از وب‌سایت رسمی برند بررسی شده؛ هویت و کیفیت اسانس تأمین‌کننده مستقلاً تأیید نشده است.",
+      "verified_notice": "این محصول بازآفرینی دست‌ساز است و محصول اورجینال برند اصلی نیست. اطلاعات رایحه مرجع از وب‌سایت رسمی برند گرفته شده؛ هویت و نسخه اسانس تأمین‌کننده مستقلاً تأیید نشده است."
+    },
+    {
+      "product_id": "YZD-PROD-1684",
+      "product_slug": "tom-ford-fucking-fabulous",
+      "expected_name_en": "TOM FORD - Fucking Fabulous",
+      "expected_brand": "Tom Ford",
+      "expected_concentration": "EDP",
+      "expected_usd_per_kg": "331.1",
+      "source_url": "https://www.tomfordbeauty.com/products/fucking-fabulous-eau-de-parfum",
+      "expected_old_notes": {
+        "top": [
+          "مریم‌گلی اسکلاریا",
+          "اسطوخودوس"
+        ],
+        "middle": [
+          "بادام تلخ",
+          "چرم",
+          "وانیل",
+          "ریشه زنبق"
+        ],
+        "base": [
+          "چرم تیره",
+          "دانه تونکا",
+          "چوب کشمیر",
+          "کهربا",
+          "چوب سفید"
+        ]
+      },
+      "verified_notes": {
+        "top": [],
+        "middle": [],
+        "base": []
+      },
+      "expected_old_accords": [
+        "نام جسورانه با برچسب قرمز روی شیشه مشکی مات",
+        "ترکیب اغواگر بادام تلخ با چرم و تونکا"
+      ],
+      "verified_accords": [
+        "بادام تلخ",
+        "دانه تونکا",
+        "آکورد زنبق",
+        "کشمیران",
+        "آکورد چرم",
+        "مریم‌گلی"
+      ],
+      "expected_old_notice": "این محصول بازآفرینی دست‌ساز است و محصول اورجینال برند اصلی نیست. نام رایحه مرجع از وب‌سایت رسمی برند بررسی شده؛ هویت و کیفیت اسانس تأمین‌کننده مستقلاً تأیید نشده است.",
+      "verified_notice": "این محصول بازآفرینی دست‌ساز است و محصول اورجینال برند اصلی نیست. اطلاعات رایحه مرجع از وب‌سایت رسمی برند گرفته شده؛ هویت و نسخه اسانس تأمین‌کننده مستقلاً تأیید نشده است."
+    },
+    {
+      "product_id": "YZD-PROD-1688",
+      "product_slug": "tom-ford-vanilla-sex-2024",
+      "expected_name_en": "TOM FORD - Vanilla Sex 2024",
+      "expected_brand": "Tom Ford",
+      "expected_concentration": "EDP",
+      "expected_usd_per_kg": "205.7",
+      "source_url": "https://www.tomfordbeauty.com/products/vanilla-sex-eau-de-parfum",
+      "expected_old_notes": {
+        "top": [
+          "بادام تلخ"
+        ],
+        "middle": [
+          "نت‌های گلی",
+          "وانیل خالص"
+        ],
+        "base": [
+          "عصاره وانیل سیاه انحصاری تام فورد",
+          "دانه تونکا",
+          "چوب صندل"
+        ]
+      },
+      "verified_notes": {
+        "top": [],
+        "middle": [],
+        "base": []
+      },
+      "expected_old_accords": [
+        "شاهکار سال ۲۰۲۴ تام فورد در شیشه کرم با قاب طلایی",
+        "خالص‌ترین و اغواگرترین عصاره وانیل جهان"
+      ],
+      "verified_accords": [
+        "وانیل",
+        "چوب صندل",
+        "یاس",
+        "آکورد زنبق",
+        "آکورد حیوانی"
+      ],
+      "expected_old_notice": "این محصول بازآفرینی دست‌ساز است و محصول اورجینال برند اصلی نیست. نام رایحه مرجع از وب‌سایت رسمی برند بررسی شده؛ هویت و کیفیت اسانس تأمین‌کننده مستقلاً تأیید نشده است.",
+      "verified_notice": "این محصول بازآفرینی دست‌ساز است و محصول اورجینال برند اصلی نیست. اطلاعات رایحه مرجع از وب‌سایت رسمی برند گرفته شده؛ هویت و نسخه اسانس تأمین‌کننده مستقلاً تأیید نشده است."
+    },
+    {
+      "product_id": "SUP-CR-900009",
+      "product_slug": "creed-white-flowers",
+      "expected_name_en": "CREED - White Flowers",
+      "expected_brand": "Creed",
+      "expected_concentration": null,
+      "expected_usd_per_kg": "427.9",
+      "source_url": "https://www.creedfragrance.com/p/royales-exclusives-white-flowers/12900138/",
+      "expected_old_notes": {
+        "top": [
+          "سیب سبز",
+          "بنفشه",
+          "لیمو"
+        ],
+        "middle": [
+          "یاس",
+          "شمعدانی",
+          "رز"
+        ],
+        "base": [
+          "مشک",
+          "نرگس",
+          "چوب سدر"
+        ]
+      },
+      "verified_notes": {
+        "top": [],
+        "middle": [],
+        "base": []
+      },
+      "expected_old_accords": [],
+      "verified_accords": [
+        "یاس",
+        "آکورد گلی",
+        "آکورد میوه‌ای"
+      ],
+      "expected_old_notice": "این محصول بازآفرینی دست‌ساز است و محصول اورجینال برند کرید نیست.",
+      "verified_notice": "این محصول بازآفرینی دست‌ساز است و محصول اورجینال برند اصلی نیست. اطلاعات رایحه مرجع از وب‌سایت رسمی برند گرفته شده؛ هویت و نسخه اسانس تأمین‌کننده مستقلاً تأیید نشده است."
+    }
+  ]
+}

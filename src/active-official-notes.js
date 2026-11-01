@@ -3,13 +3,13 @@
 // Never edits sale prices, availability, stock, customer data or existing orders.
 const fs=require('fs');
 const VERSION='active_official_notes_2026_11_v1';
-const VERSIONS={[VERSION]:8,active_official_notes_2026_11_v2:8};
+const VERSIONS={[VERSION]:8,active_official_notes_2026_11_v2:8,active_official_notes_2026_11_v3:8};
 function applyActiveOfficialNotes(db,file){
  const m=JSON.parse(fs.readFileSync(file,'utf8'));
  if(!Object.hasOwn(VERSIONS,m.version)||!Array.isArray(m.items)||m.items.length!==VERSIONS[m.version])throw Error('Invalid active reference manifest');
  const seen=new Set();
  for(const x of m.items){let url;try{url=new URL(x.source_url)}catch{throw Error('Invalid reference source')}
-  if(!x.product_id||!x.product_slug||!x.expected_name_en||!x.expected_brand||!x.expected_concentration||typeof x.expected_usd_per_kg!=='string'||url.protocol!=='https:'||url.username||url.password||seen.has(x.product_id)||typeof x.expected_old_notice!=='string'||typeof x.verified_notice!=='string'||!Array.isArray(x.expected_old_accords)||!Array.isArray(x.verified_accords))throw Error('Invalid active reference item');
+  if(!x.product_id||!x.product_slug||!x.expected_name_en||!x.expected_brand||!(x.expected_concentration===null||(typeof x.expected_concentration==='string'&&x.expected_concentration.trim()))||typeof x.expected_usd_per_kg!=='string'||url.protocol!=='https:'||url.username||url.password||seen.has(x.product_id)||typeof x.expected_old_notice!=='string'||typeof x.verified_notice!=='string'||!Array.isArray(x.expected_old_accords)||!Array.isArray(x.verified_accords))throw Error('Invalid active reference item');
   for(const k of ['top','middle','base'])if(!Array.isArray(x.expected_old_notes?.[k])||!Array.isArray(x.verified_notes?.[k])||!x.verified_notes[k].every(s=>typeof s==='string'&&s.trim()&&s.length<=60))throw Error('Invalid reference notes');
   if(!x.verified_accords.every(s=>typeof s==='string'&&s.trim()&&s.length<=60))throw Error('Invalid reference accords');seen.add(x.product_id);
  }
