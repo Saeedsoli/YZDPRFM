@@ -1,0 +1,86 @@
+{
+  "version": "official_identity_evidence_v31",
+  "scope": "Official reference-original name only; actual supplier essence identity is unverified. No supplier pricing.",
+  "items": [
+    {
+      "product_id": "YZD-PROD-1431",
+      "slug": "christian-dior-fahrenheit-edt",
+      "brand_en": "Christian Dior",
+      "expected_name_en": "CHRISTIAN DIOR - Fahrenheit EDT",
+      "reference_name": "Fahrenheit Eau de Toilette",
+      "official_url": "https://www.dior.com/en_us/beauty/products/fahrenheit-eau-de-toilette-Y0066001.html",
+      "status": "official_original_found_supplier_essence_unverified",
+      "checked_date": "2026-11-01"
+    },
+    {
+      "product_id": "YZD-PROD-1432",
+      "slug": "christian-dior-fahrenheit-le-parfum",
+      "brand_en": "Christian Dior",
+      "expected_name_en": "CHRISTIAN DIOR - Fahrenheit Le Parfum",
+      "reference_name": "Fahrenheit Parfum",
+      "official_url": "https://www.dior.com/en_int/beauty/products/fahrenheit-parfum-Y0866230.html",
+      "status": "official_original_found_supplier_essence_unverified",
+      "checked_date": "2026-11-01"
+    },
+    {
+      "product_id": "YZD-PROD-1546",
+      "slug": "herms-terre-dherms-edt",
+      "brand_en": "Hermès",
+      "expected_name_en": "HERMÈS - Terre d'Hermès EDT",
+      "reference_name": "Terre d’Hermès Eau de Toilette",
+      "official_url": "https://www.hermes.com/us/en/product/terre-d-hermes-eau-de-toilette-V107188V0/",
+      "status": "official_original_found_supplier_essence_unverified",
+      "checked_date": "2026-11-01"
+    },
+    {
+      "product_id": "YZD-PROD-1547",
+      "slug": "herms-terre-dherms-pure-parfum",
+      "brand_en": "Hermès",
+      "expected_name_en": "HERMÈS - Terre d'Hermès Pure Parfum",
+      "reference_name": "Terre d’Hermès Parfum",
+      "official_url": "https://www.hermes.com/us/en/product/terre-d-hermes-parfum-V107757V0/",
+      "status": "official_original_found_supplier_essence_unverified",
+      "checked_date": "2026-11-01"
+    },
+    {
+      "product_id": "YZD-PROD-1548",
+      "slug": "herms-terre-dherms-eau-givre",
+      "brand_en": "Hermès",
+      "expected_name_en": "HERMÈS - Terre d'Hermès Eau Givrée",
+      "reference_name": "Terre d’Hermès Eau Givrée",
+      "official_url": "https://www.hermes.com/us/en/product/terre-d-hermes-eau-givree-eau-de-parfum-V107522V0/",
+      "status": "official_original_found_supplier_essence_unverified",
+      "checked_date": "2026-11-01"
+    },
+    {
+      "product_id": "YZD-PROD-1549",
+      "slug": "herms-terre-dherms-eau-intense-vtiver",
+      "brand_en": "Hermès",
+      "expected_name_en": "HERMÈS - Terre d'Hermès Eau Intense Vétiver",
+      "reference_name": "Terre d’Hermès Eau Intense Vétiver",
+      "official_url": "https://www.hermes.com/us/en/product/terre-d-hermes-eau-intense-vetiver-eau-de-parfum-V40946/",
+      "status": "official_original_found_supplier_essence_unverified",
+      "checked_date": "2026-11-01"
+    },
+    {
+      "product_id": "YZD-PROD-1773",
+      "slug": "cartier-pasha-de-cartier-parfum",
+      "brand_en": "Cartier",
+      "expected_name_en": "CARTIER - Pasha de Cartier Parfum",
+      "reference_name": "Pasha de Cartier Parfum",
+      "official_url": "https://www.cartier.com/en-us/art-of-living/fragrances/mens-fragrances/pasha-de-cartier-parfum-100ml-65100036.html",
+      "status": "official_original_found_supplier_essence_unverified",
+      "checked_date": "2026-11-01"
+    },
+    {
+      "product_id": "YZD-PROD-2041",
+      "slug": "cartier-pasha-de-cartier-edt",
+      "brand_en": "Cartier",
+      "expected_name_en": "CARTIER - Pasha de Cartier EDT",
+      "reference_name": "Pasha de Cartier Eau de Toilette",
+      "official_url": "https://www.cartier.com/en-fr/fragrances/fragrances/pasha-de-cartier/pasha-de-cartier-CR65200003",
+      "status": "official_original_found_supplier_essence_unverified",
+      "checked_date": "2026-11-01"
+    }
+  ]
+}

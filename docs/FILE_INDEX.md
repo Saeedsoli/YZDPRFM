@@ -686,3 +686,10 @@ node_modules/   با npm install برمی‌گردد
 - `seed/official_identity_evidence_v30.json`
 - `seed/official_note_corrections_v26.json`
 - `scripts/test_official_notes_v26.js`
+
+
+### هشت شناسنامه رسمی دیور، هرمس و کارتیر
+
+- `seed/official_identity_evidence_v31.json`
+- `seed/official_note_corrections_v27.json`
+- `scripts/test_official_notes_v27.js`

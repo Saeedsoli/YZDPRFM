@@ -508,3 +508,21 @@ Guidance با Guidance 46 یکی نشده است. Platinium نام کوتاه‌
 | Memoir Woman | https://amouage.com/products/memoir-woman |
 
 نسخه‌های Man، Woman و Extrait جداگانه باقی مانده‌اند. در Epic Woman، Honour Woman و Memoir Woman بخش‌های مختلف صفحات رسمی در بعضی نت‌ها یکسان نبودند؛ موارد متعارض کنار گذاشته شدند. آکوردهای ابسنت، چرم و کاستورئوم توصیف رایحه مرجع‌اند و اثبات حضور این مواد در اسانس واقعی نیستند.
+
+
+## هشت شناسنامه رسمی دیور، هرمس و کارتیر — ۱ نوامبر ۲۰۲۶
+
+هشت محصول موجود براساس منابع رسمی و بدون انتساب قیمت فایل تصحیح شدند؛ داده‌های مدیر، واریانت‌ها، سفارش‌ها و قیمت‌ها محفوظ ماندند. همه محصولات غیرقابل سفارش‌اند و منبع عطر اصلی هویت، نسخه یا کیفیت اسانس واقعی تأمین‌کننده را ثابت نمی‌کند. نت‌ها بدون ساخت هرم اضافی ثبت شده‌اند.
+
+| رایحه مرجع | صفحه رسمی |
+|---|---|
+| Fahrenheit EDT | https://www.dior.com/en_us/beauty/products/fahrenheit-eau-de-toilette-Y0066001.html |
+| Fahrenheit Parfum | https://www.dior.com/en_int/beauty/products/fahrenheit-parfum-Y0866230.html |
+| Terre d’Hermès EDT | https://www.hermes.com/us/en/product/terre-d-hermes-eau-de-toilette-V107188V0/ |
+| Terre d’Hermès Parfum | https://www.hermes.com/us/en/product/terre-d-hermes-parfum-V107757V0/ |
+| Terre d’Hermès Eau Givrée | https://www.hermes.com/us/en/product/terre-d-hermes-eau-givree-eau-de-parfum-V107522V0/ |
+| Terre d’Hermès Eau Intense Vétiver | https://www.hermes.com/us/en/product/terre-d-hermes-eau-intense-vetiver-eau-de-parfum-V40946/ |
+| Pasha de Cartier Parfum | https://www.cartier.com/en-us/art-of-living/fragrances/mens-fragrances/pasha-de-cartier-parfum-100ml-65100036.html |
+| Pasha de Cartier EDT | https://www.cartier.com/en-fr/fragrances/fragrances/pasha-de-cartier/pasha-de-cartier-CR65200003 |
+
+نسخه‌های متفاوت هر مجموعه جداگانه باقی مانده‌اند؛ ردیف‌های فایل قیمت که نسخه مشخص ندارند به هیچ‌کدام منتسب نشده‌اند. آکورد چرم و سایر توصیف‌های بویایی به عطر مرجع مربوط‌اند و وجود مواد متناظر در اسانس را ثابت نمی‌کنند.

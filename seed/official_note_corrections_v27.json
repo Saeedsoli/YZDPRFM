@@ -1,0 +1,354 @@
+{
+  "version": "official_notes_2026_11_v27",
+  "description": "Guarded notes for named official originals; source does not establish supplier essence, pricing or stock.",
+  "items": [
+    {
+      "product_id": "YZD-PROD-1431",
+      "product_slug": "christian-dior-fahrenheit-edt",
+      "expected_name_en": "CHRISTIAN DIOR - Fahrenheit EDT",
+      "official_brand": "Christian Dior",
+      "official_name": "Fahrenheit Eau de Toilette",
+      "source_url": "https://www.dior.com/en_us/beauty/products/fahrenheit-eau-de-toilette-Y0066001.html",
+      "source_scope": "EDT reference distinct from Fahrenheit Parfum. Manufacturer reference only; supplier essence and version unverified.",
+      "expected_old_notes": {
+        "top": [
+          "اسطوخودوس",
+          "پرتقال ماندارین",
+          "جوز هندی",
+          "سدر",
+          "ترنج",
+          "بابونه",
+          "لیمو"
+        ],
+        "middle": [
+          "برگ بنفشه",
+          "جوز هندی",
+          "میخک",
+          "چوب صندل",
+          "یاس",
+          "سوسن"
+        ],
+        "base": [
+          "چرم",
+          "خس‌خس",
+          "مشک",
+          "نعناع هندی",
+          "دانه تونکا",
+          "کهربا"
+        ]
+      },
+      "verified_notes": {
+        "top": [],
+        "middle": [],
+        "base": []
+      },
+      "expected_old_accords": [
+        "انقلابی‌ترین عطر مردانه تاریخ با آکورد بی‌نظیر برگ بنفشه و گازوئیل",
+        "جاودانه و تکرارنشدنی"
+      ],
+      "verified_accords": [
+        "نارنگی",
+        "نت‌های چوبی",
+        "آکورد چرم",
+        "آکورد بنفشه"
+      ],
+      "requires_unavailable": true,
+      "expected_old_notice": "این محصول، بازآفرینی دست‌ساز با عصاره خالص اولیه و فرمولاسیون اختصاصی عطر یزد است.",
+      "verified_notice": "این محصول بازآفرینی دست‌ساز است و محصول اورجینال برند اصلی نیست. نت‌های عطر مرجع از وب‌سایت رسمی برند هستند؛ هویت و نسخه اسانس تأمین‌کننده مستقلاً تأیید نشده است."
+    },
+    {
+      "product_id": "YZD-PROD-1432",
+      "product_slug": "christian-dior-fahrenheit-le-parfum",
+      "expected_name_en": "CHRISTIAN DIOR - Fahrenheit Le Parfum",
+      "official_brand": "Christian Dior",
+      "official_name": "Fahrenheit Parfum",
+      "source_url": "https://www.dior.com/en_int/beauty/products/fahrenheit-parfum-Y0866230.html",
+      "source_scope": "Parfum reference distinct from Fahrenheit EDT. Manufacturer reference only; supplier essence and version unverified.",
+      "expected_old_notes": {
+        "top": [
+          "جیر چرمی",
+          "برگ بنفشه",
+          "شیرین‌بیان",
+          "پرتقال سیسیلی"
+        ],
+        "middle": [
+          "عرق رام کارائیبی",
+          "گشنیز",
+          "زیره سبز"
+        ],
+        "base": [
+          "وانیل ماداگاسکار بوربون خالص"
+        ]
+      },
+      "verified_notes": {
+        "top": [],
+        "middle": [],
+        "base": []
+      },
+      "expected_old_accords": [
+        "تلفیق شاهکار فارنهایت با وانیل داغ بوربون و مشروب رام",
+        "یکی از محبوب‌ترین‌های زمستان"
+      ],
+      "verified_accords": [
+        "آکورد بنفشه",
+        "آکورد چرم",
+        "وانیل بوربون"
+      ],
+      "requires_unavailable": true,
+      "expected_old_notice": "این محصول، بازآفرینی دست‌ساز با عصاره خالص اولیه و فرمولاسیون اختصاصی عطر یزد است.",
+      "verified_notice": "این محصول بازآفرینی دست‌ساز است و محصول اورجینال برند اصلی نیست. نت‌های عطر مرجع از وب‌سایت رسمی برند هستند؛ هویت و نسخه اسانس تأمین‌کننده مستقلاً تأیید نشده است."
+    },
+    {
+      "product_id": "YZD-PROD-1546",
+      "product_slug": "herms-terre-dherms-edt",
+      "expected_name_en": "HERMÈS - Terre d'Hermès EDT",
+      "official_brand": "Hermès",
+      "official_name": "Terre d’Hermès Eau de Toilette",
+      "source_url": "https://www.hermes.com/us/en/product/terre-d-hermes-eau-de-toilette-V107188V0/",
+      "source_scope": "EDT reference distinct from Terre Parfum, Eau Givrée and Eau Intense Vétiver; supplier essence unverified.",
+      "expected_old_notes": {
+        "top": [
+          "پرتقال سیسیلی",
+          "گریپ‌فروت"
+        ],
+        "middle": [
+          "سنگ چخماق معدنی",
+          "فلفل سیاه",
+          "فلفل صورتی",
+          "گل شمعدانی"
+        ],
+        "base": [
+          "چوب سدر ویرجینیا",
+          "خس‌خس",
+          "نعناع هندی",
+          "صمغ بنزوئین"
+        ]
+      },
+      "verified_notes": {
+        "top": [],
+        "middle": [],
+        "base": []
+      },
+      "expected_old_accords": [
+        "شاهکار بدون تکرار ژان کلود النا در سال ۲۰۰۶",
+        "پیوند آسمان و خاک با بوی پرتقال تلخ و سنگ چخماق داغ"
+      ],
+      "verified_accords": [
+        "گریپ‌فروت",
+        "چوب سدر",
+        "آکورد سنگ چخماق"
+      ],
+      "requires_unavailable": true,
+      "expected_old_notice": "این محصول، بازآفرینی دست‌ساز با عصاره خالص اولیه و فرمولاسیون اختصاصی عطر یزد است.",
+      "verified_notice": "این محصول بازآفرینی دست‌ساز است و محصول اورجینال برند اصلی نیست. نت‌های عطر مرجع از وب‌سایت رسمی برند هستند؛ هویت و نسخه اسانس تأمین‌کننده مستقلاً تأیید نشده است."
+    },
+    {
+      "product_id": "YZD-PROD-1547",
+      "product_slug": "herms-terre-dherms-pure-parfum",
+      "expected_name_en": "HERMÈS - Terre d'Hermès Pure Parfum",
+      "official_brand": "Hermès",
+      "official_name": "Terre d’Hermès Parfum",
+      "source_url": "https://www.hermes.com/us/en/product/terre-d-hermes-parfum-V107757V0/",
+      "source_scope": "Parfum reference distinct from Terre EDT, Eau Givrée and Eau Intense Vétiver; supplier essence unverified.",
+      "expected_old_notes": {
+        "top": [
+          "پرتقال شیرین",
+          "گریپ‌فروت"
+        ],
+        "middle": [
+          "سنگ چخماق معدنی",
+          "روایح فلزی"
+        ],
+        "base": [
+          "خزه درخت بلوط",
+          "روایح چوبی",
+          "صمغ بنزوئین"
+        ]
+      },
+      "verified_notes": {
+        "top": [],
+        "middle": [],
+        "base": []
+      },
+      "expected_old_accords": [
+        "نسخه خالص پارفوم با پرتقال پخته‌تر و خزه بلوط بیشتر برای مردان جاافتاده و باوقار"
+      ],
+      "verified_accords": [
+        "گریپ‌فروت",
+        "چوب سدر",
+        "شیسو"
+      ],
+      "requires_unavailable": true,
+      "expected_old_notice": "این محصول، بازآفرینی دست‌ساز با عصاره خالص اولیه و فرمولاسیون اختصاصی عطر یزد است.",
+      "verified_notice": "این محصول بازآفرینی دست‌ساز است و محصول اورجینال برند اصلی نیست. نت‌های عطر مرجع از وب‌سایت رسمی برند هستند؛ هویت و نسخه اسانس تأمین‌کننده مستقلاً تأیید نشده است."
+    },
+    {
+      "product_id": "YZD-PROD-1548",
+      "product_slug": "herms-terre-dherms-eau-givre",
+      "expected_name_en": "HERMÈS - Terre d'Hermès Eau Givrée",
+      "official_brand": "Hermès",
+      "official_name": "Terre d’Hermès Eau Givrée",
+      "source_url": "https://www.hermes.com/us/en/product/terre-d-hermes-eau-givree-eau-de-parfum-V107522V0/",
+      "source_scope": "Eau Givrée EDP reference distinct from Terre EDT, Parfum and Eau Intense Vétiver; supplier essence unverified.",
+      "expected_old_notes": {
+        "top": [
+          "بالنگ ایتالیایی (سیترون)"
+        ],
+        "middle": [
+          "دانه سرو کوهی (جونیپر)",
+          "فلفل تیمور نپالی"
+        ],
+        "base": [
+          "سنگ چخماق معدنی",
+          "روایح چوبی"
+        ]
+      },
+      "verified_notes": {
+        "top": [],
+        "middle": [],
+        "base": []
+      },
+      "expected_old_accords": [
+        "برخورد سرمای یخ‌زده زمستان به خاک گرم تابستان",
+        "خنک‌ترین و پرانرژی‌ترین نسخه تق د هرمس با بالنگ آبدار"
+      ],
+      "verified_accords": [
+        "سیترون",
+        "سرو کوهی",
+        "فلفل تیموت"
+      ],
+      "requires_unavailable": true,
+      "expected_old_notice": "این محصول، بازآفرینی دست‌ساز با عصاره خالص اولیه و فرمولاسیون اختصاصی عطر یزد است.",
+      "verified_notice": "این محصول بازآفرینی دست‌ساز است و محصول اورجینال برند اصلی نیست. نت‌های عطر مرجع از وب‌سایت رسمی برند هستند؛ هویت و نسخه اسانس تأمین‌کننده مستقلاً تأیید نشده است."
+    },
+    {
+      "product_id": "YZD-PROD-1549",
+      "product_slug": "herms-terre-dherms-eau-intense-vtiver",
+      "expected_name_en": "HERMÈS - Terre d'Hermès Eau Intense Vétiver",
+      "official_brand": "Hermès",
+      "official_name": "Terre d’Hermès Eau Intense Vétiver",
+      "source_url": "https://www.hermes.com/us/en/product/terre-d-hermes-eau-intense-vetiver-eau-de-parfum-V40946/",
+      "source_scope": "Eau Intense Vétiver EDP reference distinct from Terre EDT, Parfum and Eau Givrée; supplier essence unverified.",
+      "expected_old_notes": {
+        "top": [
+          "ترنج کالابریا",
+          "گریپ‌فروت",
+          "لیمو"
+        ],
+        "middle": [
+          "فلفل سیچوان",
+          "شمعدانی"
+        ],
+        "base": [
+          "خس‌خس هائیتی دوبرابر",
+          "صمغ بنزوئین",
+          "پچولی"
+        ]
+      },
+      "verified_notes": {
+        "top": [],
+        "middle": [],
+        "base": []
+      },
+      "expected_old_accords": [
+        "نسخه با تمرکز اصلی بر روی ریشه‌های خاکی وتیور هائیتی با تندی فلفل سیچوان توسط کریستین ناگل"
+      ],
+      "verified_accords": [
+        "ترنج سبز",
+        "فلفل سیچوان",
+        "وتیور"
+      ],
+      "requires_unavailable": true,
+      "expected_old_notice": "این محصول، بازآفرینی دست‌ساز با عصاره خالص اولیه و فرمولاسیون اختصاصی عطر یزد است.",
+      "verified_notice": "این محصول بازآفرینی دست‌ساز است و محصول اورجینال برند اصلی نیست. نت‌های عطر مرجع از وب‌سایت رسمی برند هستند؛ هویت و نسخه اسانس تأمین‌کننده مستقلاً تأیید نشده است."
+    },
+    {
+      "product_id": "YZD-PROD-1773",
+      "product_slug": "cartier-pasha-de-cartier-parfum",
+      "expected_name_en": "CARTIER - Pasha de Cartier Parfum",
+      "official_brand": "Cartier",
+      "official_name": "Pasha de Cartier Parfum",
+      "source_url": "https://www.cartier.com/en-us/art-of-living/fragrances/mens-fragrances/pasha-de-cartier-parfum-100ml-65100036.html",
+      "source_scope": "Parfum reference distinct from Pasha EDT and Edition Noire; no proof of supplier essence identity.",
+      "expected_old_notes": {
+        "top": [
+          "عرق لیکور داغ",
+          "نارنگی ماندارین"
+        ],
+        "middle": [
+          "صمغ بنزوئین",
+          "اسطوخودوس"
+        ],
+        "base": [
+          "چوب صندل میسور خالص",
+          "دانه تونکا",
+          "نعناع هندی",
+          "کهربا"
+        ]
+      },
+      "verified_notes": {
+        "top": [],
+        "middle": [],
+        "base": []
+      },
+      "expected_old_accords": [
+        "شیشه شیاردار با نگین آبی کلمبیایی کارتیه",
+        "پاشای مدرن با مایع طلایی و چوب صندل غرق در لیکور شیرین"
+      ],
+      "verified_accords": [
+        "آکورد فوژه",
+        "چوب صندل",
+        "آکورد کهربایی"
+      ],
+      "requires_unavailable": true,
+      "expected_old_notice": "این محصول، بازآفرینی دست‌ساز با عصاره خالص اولیه و فرمولاسیون اختصاصی عطر یزد است.",
+      "verified_notice": "این محصول بازآفرینی دست‌ساز است و محصول اورجینال برند اصلی نیست. نت‌های عطر مرجع از وب‌سایت رسمی برند هستند؛ هویت و نسخه اسانس تأمین‌کننده مستقلاً تأیید نشده است."
+    },
+    {
+      "product_id": "YZD-PROD-2041",
+      "product_slug": "cartier-pasha-de-cartier-edt",
+      "expected_name_en": "CARTIER - Pasha de Cartier EDT",
+      "official_brand": "Cartier",
+      "official_name": "Pasha de Cartier Eau de Toilette",
+      "source_url": "https://www.cartier.com/en-fr/fragrances/fragrances/pasha-de-cartier/pasha-de-cartier-CR65200003",
+      "source_scope": "EDT reference distinct from Pasha Parfum and Edition Noire; no proof of supplier essence identity.",
+      "expected_old_notes": {
+        "top": [
+          "اسطوخودوس",
+          "نعناع",
+          "ماندارین",
+          "ترنج",
+          "آویشن"
+        ],
+        "middle": [
+          "گشنیز",
+          "چوب بلسان بنفش"
+        ],
+        "base": [
+          "خزه درخت بلوط",
+          "چوب صندل",
+          "نعناع هندی",
+          "لادن"
+        ]
+      },
+      "verified_notes": {
+        "top": [],
+        "middle": [],
+        "base": []
+      },
+      "expected_old_accords": [
+        "الهام از ساعت مچی پاشا برای پاشای مراکش در سال ۱۹۳۲",
+        "نماد اقتدار و اشرافیت دهه ۹۰"
+      ],
+      "verified_accords": [
+        "آکورد فوژه",
+        "مرکبات",
+        "اسطوخودوس",
+        "پچولی"
+      ],
+      "requires_unavailable": true,
+      "expected_old_notice": "این محصول، بازآفرینی دست‌ساز با عصاره خالص اولیه و فرمولاسیون اختصاصی عطر یزد است.",
+      "verified_notice": "این محصول بازآفرینی دست‌ساز است و محصول اورجینال برند اصلی نیست. نت‌های عطر مرجع از وب‌سایت رسمی برند هستند؛ هویت و نسخه اسانس تأمین‌کننده مستقلاً تأیید نشده است."
+    }
+  ]
+}
