@@ -788,3 +788,5 @@ node_modules/   با npm install برمی‌گردد
 - `scripts/test_official_reference_v39.js` — قیمت لو بو پارادایز گاردن با انتخاب مالک.
 
 - `scripts/test_secondary_reference_v20.js` — قیمت کریستال نویر ادوپرفیوم و منبع مستقل.
+
+- `scripts/test_official_reference_v40.js` — قیمت اروس پور فم ادوپرفیوم با انتخاب مالک.

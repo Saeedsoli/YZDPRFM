@@ -1,0 +1,16 @@
+{
+  "version": "official_identity_evidence_v45",
+  "scope": "Official reference-original name only; supplier essence identity unverified.",
+  "items": [
+    {
+      "product_id": "SUP-VS-900001",
+      "slug": "versace-eros-pour-femme-edp",
+      "brand_en": "Versace",
+      "expected_name_en": "VERSACE - Eros Pour Femme",
+      "reference_name": "Eros Pour Femme Eau de Parfum",
+      "official_url": "https://www.versace.com/row/en/women/accessories/fragrances-body-care/eros-pour-femme/eros-pour-femme-edp-100-ml/R750032-R100MLS_RNUL.html",
+      "status": "official_original_found_supplier_essence_unverified",
+      "checked_date": "2026-11-01"
+    }
+  ]
+}
