@@ -177,10 +177,25 @@ def apply_review_flags(root, source_sha, rows):
         r.setdefault('review_sources','')
     return len(seen)
 
+def check_flagged_manifest_candidates(groups, candidates, rows):
+    """Fail the audit for manifest candidates touching an unresolved flagged row.
+
+    Examine all manifest entries, including entries not yet applied to the DB.
+    A model shared by two gender-labelled source groups is permitted only when
+    the source row can be uniquely identified as the unflagged group. These
+    labels describe source rows, not the fragrance's gender.
+    """
+    flagged={(r['brand'],r['model'],r['supplier_gender']) for r in rows if r['review_warning']}
+    for candidate in candidates:
+        targets, why=group_candidate(groups,candidate)
+        if flagged.intersection(targets):
+            raise ValueError(f"unresolved supplier review flag in {candidate['origin']}: {candidate['product_id']} ({why})")
+
 def audit(root,db_path):
     rows,sha=read_rows(root/SOURCE);groups=group_rows(rows);products,evidence,legacy_marker,secondary=read_db(db_path)
     candidates=manifests(root,sha);result,unmapped=assess(groups,candidates,products,evidence,sha,legacy_marker,secondary)
     flag_count=apply_review_flags(root,sha,result)
+    check_flagged_manifest_candidates(groups,candidates,result)
     counts=collections.Counter(r['state'] for r in result)
     summary={'source_sha256':sha,'supplier_rows':len(rows),'supplier_groups':len(groups),
              'definition':'exact supplier brand + model + supplier gender; not proven unique fragrances',

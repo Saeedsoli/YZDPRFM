@@ -38,6 +38,9 @@ fi
 STAGE_ROOT=$(pwd -P)
 case "$STAGE_ROOT" in /tmp/yazd-smoke-????????) ;; *) echo 'Unsafe smoke stage; refusing to run' >&2; exit 2;; esac
 if [ "$(realpath -m "${DB_PATH:-}")" != "$STAGE_ROOT/data/yazd.db" ]; then echo 'Unsafe smoke DB_PATH; refusing to run' >&2; exit 2; fi
+# Reject unresolved flagged supplier mappings before seeding even the test DB.
+# This is a preflight check, not a runtime importer guard.
+if ! python3 scripts/test_supplier_coverage.py; then echo 'Supplier reconciliation preflight failed' >&2; exit 1; fi
 # Do not kill unrelated servers or accidentally hit an existing service.
 if ! python3 -c 'import socket; s=socket.socket(); s.bind(("127.0.0.1",3000)); s.close()'; then echo 'Port 3000 is occupied; refusing to run' >&2; exit 2; fi
 MAINPID= BRPID= LNKPID=

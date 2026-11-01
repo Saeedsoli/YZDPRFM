@@ -59,6 +59,19 @@ assert [r['state'] for r in raw_results]==before_states
 flagged={(r['brand'],r['model']):r for r in raw_results if r['review_warning']}
 assert ('PARFUMS de MARLY','Layton') in flagged and 'دلینا' in flagged[('PARFUMS de MARLY','Layton')]['review_warning']
 assert ('AMUAGE','Jubilation XXV') in flagged
+# Check manifests before DB application, including flagged rows without prices.
+actual_candidates=a.manifests(ROOT,source_sha)
+a.check_flagged_manifest_candidates(actual_groups,actual_candidates,raw_results)
+bad={'supplier_brand':'AMUAGE','supplier_model':'Jubilation XXV','supplier_gender':'Men',
+     'product_id':'test','quality':'H','usd_per_kg':'1','origin':'test.json'}
+try: a.check_flagged_manifest_candidates(actual_groups,[bad],raw_results); assert False, 'flagged candidate must fail even before import'
+except ValueError as exc: assert 'unresolved supplier review flag' in str(exc)
+# Layton's separately identified men's source group is not the flagged women's row.
+layton=next(x for x in actual_candidates if x['product_id']=='YZD-PROD-0636')
+a.check_flagged_manifest_candidates(actual_groups,[layton],raw_results)
+bad_layton={**layton,'supplier_gender':'Women'}
+try: a.check_flagged_manifest_candidates(actual_groups,[bad_layton],raw_results); assert False, 'flagged Layton row must fail'
+except ValueError: pass
 try: a.apply_review_flags(ROOT,'0'*64,raw_results); assert False, 'stale source must fail'
 except ValueError: pass
 with tempfile.TemporaryDirectory(prefix='coverage-flags-') as d:
