@@ -37,6 +37,7 @@ python3 scripts/test_approved_mto_v4.py
 python3 scripts/test_approved_mto_v5.py
 python3 scripts/test_approved_mto_v6.py
 python3 scripts/test_approved_mto_v7.py
+python3 scripts/test_approved_mto_v8.py
 node scripts/test_generic_product_images.js
 DB_PATH="$PWD/data/imagery-check.db" BACKUP_DISABLED=1 node scripts/test_images.js
 node scripts/test_active_official_notes_v1.js

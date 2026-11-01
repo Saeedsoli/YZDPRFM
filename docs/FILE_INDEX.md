@@ -836,3 +836,8 @@ node_modules/   با npm install برمی‌گردد
 
 - `src/approved-made-to-order-v7.js` — فعال‌سازی محافظت‌شده باربری هر.
 - `scripts/test_approved_mto_v7.py` — خرید، سقف، ویرایش مدیر و ری‌استارت.
+
+- `scripts/test_official_reference_v49.js` — قیمت اترنیتی مردانه ادوپرفیوم با انتخاب مالک.
+
+- `src/approved-made-to-order-v8.js` — تأیید محافظت‌شده اترنیتی ادوپرفیوم.
+- `scripts/test_approved_mto_v8.py` — خرید و محافظ تأیید اترنیتی.

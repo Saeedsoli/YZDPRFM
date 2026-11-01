@@ -1,0 +1,16 @@
+{
+  "version": "official_identity_evidence_v47",
+  "scope": "Official reference-original name only; supplier essence identity unverified.",
+  "items": [
+    {
+      "product_id": "SUP-CK-900001",
+      "slug": "calvin-klein-eternity-for-men-edp",
+      "brand_en": "Calvin Klein",
+      "expected_name_en": "CALVIN KLEIN - Eternity for Men EDP",
+      "reference_name": "Eternity for Men Eau de Parfum",
+      "official_url": "https://www.calvinklein.us/en/eternity-for-men-eau-de-parfum/LX000725.html",
+      "status": "official_original_found_supplier_essence_unverified",
+      "checked_date": "2026-11-01"
+    }
+  ]
+}

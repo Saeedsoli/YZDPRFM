@@ -1,0 +1,17 @@
+{
+  "version": "approved_made_to_order_2026_11_v8",
+  "source_sha256": "bbe8f40610bc765bda0a7d2da9dbe78f4e397458a6991239c3c18d0853f33f5c",
+  "description": "Owner selected this reference and previously authorized activation of future owner-confirmed selections; supplier essence identity unverified.",
+  "items": [
+    {
+      "product_id": "SUP-CK-900001",
+      "slug": "calvin-klein-eternity-for-men-edp",
+      "expected_name_en": "CALVIN KLEIN - Eternity for Men EDP",
+      "brand_en": "Calvin Klein",
+      "usd_per_kg": "73.7",
+      "quality": "I",
+      "source_type": "provisional",
+      "reference_url": "https://www.calvinklein.us/en/eternity-for-men-eau-de-parfum/LX000725.html"
+    }
+  ]
+}
