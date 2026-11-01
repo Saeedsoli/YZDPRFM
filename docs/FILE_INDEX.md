@@ -485,6 +485,7 @@ node_modules/   با npm install برمی‌گردد
 ### ایزوله‌سازی آزمون دود
 
 - `scripts/test_smoke_isolation.py`
+- `scripts/test_node22_integration.sh`
 
 ### کنترل رمز واقعی مدیر در آمادگی
 
