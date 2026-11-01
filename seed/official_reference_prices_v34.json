@@ -1,0 +1,52 @@
+{
+  "version": "official_reference_prices_2026_11_v34",
+  "supplier_file_sha256": "bbe8f40610bc765bda0a7d2da9dbe78f4e397458a6991239c3c18d0853f33f5c",
+  "description": "Owner-confirmed reference version, provisional name-level supplier price; no activation or essence verification.",
+  "items": [
+    {
+      "product_id": "YZD-PROD-0614",
+      "slug": "maison-francis-kurkdjian-baccarat-rouge-540-edp",
+      "brand_en": "Maison Francis Kurkdjian",
+      "expected_name_en": "MAISON FRANCIS KURKDJIAN - Baccarat Rouge 540 EDP",
+      "reference_name": "Baccarat Rouge 540 EDP",
+      "official_url": "https://www.franciskurkdjian.com/us-en/p/baccarat-rouge-540-eau-de-parfum---refills-RA12235.html",
+      "supplier_brand": "Francic Kurkdjian",
+      "supplier_model": "Baccarat Rouge 540",
+      "supplier_gender": "Unisex",
+      "usd_per_kg": "319",
+      "quality": "H",
+      "match_status": "name_matched_supplier_identity_unverified",
+      "owner_version_confirmation": "Owner selected Eau de Parfum for this supplier row; not independent supplier essence verification.",
+      "expected_edps": [
+        {
+          "sku": "YZD-0614-EDP-010",
+          "volume_ml": 10,
+          "price_toman": 605000,
+          "stock": 0,
+          "price_usd": 6.5
+        },
+        {
+          "sku": "YZD-0614-EDP-030",
+          "volume_ml": 30,
+          "price_toman": 1515000,
+          "stock": 0,
+          "price_usd": 6.5
+        },
+        {
+          "sku": "YZD-0614-EDP-050",
+          "volume_ml": 50,
+          "price_toman": 2425000,
+          "stock": 0,
+          "price_usd": 6.5
+        },
+        {
+          "sku": "YZD-0614-EDP-100",
+          "volume_ml": 100,
+          "price_toman": 4700000,
+          "stock": 0,
+          "price_usd": 6.5
+        }
+      ]
+    }
+  ]
+}

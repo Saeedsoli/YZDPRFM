@@ -760,3 +760,5 @@ node_modules/   با npm install برمی‌گردد
 - `scripts/test_official_notes_v33.js`
 - `scripts/test_official_notes_v34.js`
 - `scripts/test_official_notes_v35.js`
+
+- `scripts/test_official_reference_v34.js` — بررسی قیمت با تأیید نسخه توسط مالک و حفظ وضعیت غیرفعال.
