@@ -490,3 +490,21 @@ Guidance با Guidance 46 یکی نشده است. Platinium نام کوتاه‌
 | Gris Charnel Extrait | https://us.bdkparfums.com/products/gris-charnel-extrait |
 
 این عطرهای مرجع با نسخه‌های EDP، EDT یا نسخه‌های دیگر با نام مشابه یکی نشده‌اند. تنها Gris Charnel Extrait بر اساس هرم صریح رسمی دسته‌بندی شده و نت‌های بقیه بدون هرم ذخیره شده‌اند. آکورد رام Black Orchid درباره عطر مرجع است و اثبات ماده در اسانس واقعی نیست.
+
+
+## هشت شناسنامه رسمی آمواج بدون انتساب قیمت — ۱ نوامبر ۲۰۲۶
+
+هشت محصول موجود با منابع رسمی و با محافظ ویرایش مدیر اصلاح شدند. قیمت، واریانت‌ها، سفارش‌ها و موجودی تغییر نکردند؛ هویت و نسخه واقعی اسانس تأمین‌کننده تأیید نشده است. جنسیت ثبت‌شده در فایل قیمت مبنای انتخاب نسخه اصلی نیست، بنابراین ردیف‌های فاقد نسخه روشن به این محصولات منتسب نشده‌اند.
+
+| رایحه مرجع | صفحه رسمی |
+|---|---|
+| Epic Man | https://amouage.com/products/epic-man-100ml |
+| Epic Woman | https://amouage.com/products/epic-woman |
+| Epic 56 Woman | https://amouage.com/products/epic56 |
+| Honour Man | https://amouage.com/products/honour-man |
+| Honour Woman | https://amouage.com/products/honour-woman-100ml |
+| Honour 43 Woman | https://amouage.com/products/honour-43 |
+| Memoir Man | https://amouage.com/products/memoir-man |
+| Memoir Woman | https://amouage.com/products/memoir-woman |
+
+نسخه‌های Man، Woman و Extrait جداگانه باقی مانده‌اند. در Epic Woman، Honour Woman و Memoir Woman بخش‌های مختلف صفحات رسمی در بعضی نت‌ها یکسان نبودند؛ موارد متعارض کنار گذاشته شدند. آکوردهای ابسنت، چرم و کاستورئوم توصیف رایحه مرجع‌اند و اثبات حضور این مواد در اسانس واقعی نیستند.

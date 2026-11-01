@@ -1,0 +1,86 @@
+{
+  "version": "official_identity_evidence_v30",
+  "scope": "Official reference-original name only; actual supplier essence identity is unverified. No supplier pricing.",
+  "items": [
+    {
+      "product_id": "YZD-PROD-0545",
+      "slug": "amouage-epic-man",
+      "brand_en": "Amouage",
+      "expected_name_en": "AMOUAGE - Epic Man",
+      "reference_name": "Epic Man",
+      "official_url": "https://amouage.com/products/epic-man-100ml",
+      "status": "official_original_found_supplier_essence_unverified",
+      "checked_date": "2026-11-01"
+    },
+    {
+      "product_id": "YZD-PROD-0546",
+      "slug": "amouage-epic-woman",
+      "brand_en": "Amouage",
+      "expected_name_en": "AMOUAGE - Epic Woman",
+      "reference_name": "Epic Woman",
+      "official_url": "https://amouage.com/products/epic-woman",
+      "status": "official_original_found_supplier_essence_unverified",
+      "checked_date": "2026-11-01"
+    },
+    {
+      "product_id": "YZD-PROD-0547",
+      "slug": "amouage-epic-56-woman",
+      "brand_en": "Amouage",
+      "expected_name_en": "AMOUAGE - Epic 56 Woman",
+      "reference_name": "Epic 56 Woman",
+      "official_url": "https://amouage.com/products/epic56",
+      "status": "official_original_found_supplier_essence_unverified",
+      "checked_date": "2026-11-01"
+    },
+    {
+      "product_id": "YZD-PROD-0552",
+      "slug": "amouage-honour-man",
+      "brand_en": "Amouage",
+      "expected_name_en": "AMOUAGE - Honour Man",
+      "reference_name": "Honour Man",
+      "official_url": "https://amouage.com/products/honour-man",
+      "status": "official_original_found_supplier_essence_unverified",
+      "checked_date": "2026-11-01"
+    },
+    {
+      "product_id": "YZD-PROD-0553",
+      "slug": "amouage-honour-woman",
+      "brand_en": "Amouage",
+      "expected_name_en": "AMOUAGE - Honour Woman",
+      "reference_name": "Honour Woman",
+      "official_url": "https://amouage.com/products/honour-woman-100ml",
+      "status": "official_original_found_supplier_essence_unverified",
+      "checked_date": "2026-11-01"
+    },
+    {
+      "product_id": "YZD-PROD-0554",
+      "slug": "amouage-honour-43-woman",
+      "brand_en": "Amouage",
+      "expected_name_en": "AMOUAGE - Honour 43 Woman",
+      "reference_name": "Honour 43 Woman",
+      "official_url": "https://amouage.com/products/honour-43",
+      "status": "official_original_found_supplier_essence_unverified",
+      "checked_date": "2026-11-01"
+    },
+    {
+      "product_id": "YZD-PROD-0543",
+      "slug": "amouage-memoir-man",
+      "brand_en": "Amouage",
+      "expected_name_en": "AMOUAGE - Memoir Man",
+      "reference_name": "Memoir Man",
+      "official_url": "https://amouage.com/products/memoir-man",
+      "status": "official_original_found_supplier_essence_unverified",
+      "checked_date": "2026-11-01"
+    },
+    {
+      "product_id": "YZD-PROD-0544",
+      "slug": "amouage-memoir-woman",
+      "brand_en": "Amouage",
+      "expected_name_en": "AMOUAGE - Memoir Woman",
+      "reference_name": "Memoir Woman",
+      "official_url": "https://amouage.com/products/memoir-woman",
+      "status": "official_original_found_supplier_essence_unverified",
+      "checked_date": "2026-11-01"
+    }
+  ]
+}

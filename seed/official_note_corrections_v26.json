@@ -1,0 +1,497 @@
+{
+  "version": "official_notes_2026_11_v26",
+  "description": "Guarded notes for named official originals; source does not establish supplier essence, pricing or stock.",
+  "items": [
+    {
+      "product_id": "YZD-PROD-0545",
+      "product_slug": "amouage-epic-man",
+      "expected_name_en": "AMOUAGE - Epic Man",
+      "official_brand": "Amouage",
+      "official_name": "Epic Man",
+      "source_url": "https://amouage.com/products/epic-man-100ml",
+      "source_scope": "Epic Man EDP reference; distinct from Epic Woman and Epic 56. Animalic/leather are scent accords, not evidence of contents.",
+      "expected_old_notes": {
+        "top": [
+          "فلفل صورتی",
+          "هل",
+          "زعفران",
+          "جوز هندی",
+          "زیره",
+          "کندر",
+          "مرزه"
+        ],
+        "middle": [
+          "صمغ مر",
+          "گل شمعدانی"
+        ],
+        "base": [
+          "چوب عود",
+          "بخور",
+          "چرم",
+          "نعناع هندی",
+          "سدر",
+          "چوب صندل",
+          "مشک",
+          "کاستوریوم"
+        ]
+      },
+      "verified_notes": {
+        "top": [
+          "فلفل صورتی",
+          "کندر",
+          "زیره",
+          "هل",
+          "زعفران",
+          "پوست جوز هندی",
+          "جوز هندی",
+          "مورد"
+        ],
+        "middle": [
+          "شمعدانی",
+          "مر"
+        ],
+        "base": [
+          "عود",
+          "چوب صندل",
+          "پچولی",
+          "آکورد چرم",
+          "کندر",
+          "چوب سدر",
+          "مشک",
+          "آکورد کاستورئوم"
+        ]
+      },
+      "expected_old_accords": [
+        "افسانه جاده ابریشم کهن",
+        "ادویه‌جات تند و صمغ‌های کاروانی"
+      ],
+      "verified_accords": [],
+      "requires_unavailable": true,
+      "expected_old_notice": "این محصول، بازآفرینی دست‌ساز با عصاره خالص اولیه و فرمولاسیون اختصاصی عطر یزد است.",
+      "verified_notice": "این محصول بازآفرینی دست‌ساز است و محصول اورجینال برند اصلی نیست. نت‌های عطر مرجع از وب‌سایت رسمی برند هستند؛ هویت و نسخه اسانس تأمین‌کننده مستقلاً تأیید نشده است."
+    },
+    {
+      "product_id": "YZD-PROD-0546",
+      "product_slug": "amouage-epic-woman",
+      "expected_name_en": "AMOUAGE - Epic Woman",
+      "official_brand": "Amouage",
+      "official_name": "Epic Woman",
+      "source_url": "https://amouage.com/products/epic-woman",
+      "source_scope": "Epic Woman reference; page labels pink bay and pink pepper inconsistently, so that top note is omitted. Distinct from Epic Man and Epic 56.",
+      "expected_old_notes": {
+        "top": [
+          "زیره سبز",
+          "دارچین",
+          "گل خرزهره صورتی"
+        ],
+        "middle": [
+          "رز دمشقی",
+          "شمعدانی",
+          "یاس",
+          "چای سیاه"
+        ],
+        "base": [
+          "چوب عود",
+          "صمغ کندر",
+          "نعناع هندی",
+          "چوب صندل",
+          "کهربا",
+          "وانیل",
+          "مشک"
+        ]
+      },
+      "verified_notes": {
+        "top": [
+          "زیره",
+          "دارچین"
+        ],
+        "middle": [
+          "رز",
+          "شمعدانی",
+          "یاس",
+          "چای"
+        ],
+        "base": [
+          "کهربا",
+          "مشک",
+          "عود",
+          "کندر",
+          "چوب گایاک",
+          "زنبق",
+          "چوب صندل",
+          "پچولی",
+          "وانیل"
+        ]
+      },
+      "expected_old_accords": [
+        "رز جاده ابریشم در کنار ادویه‌جات و چای سیاه"
+      ],
+      "verified_accords": [],
+      "requires_unavailable": true,
+      "expected_old_notice": "این محصول، بازآفرینی دست‌ساز با عصاره خالص اولیه و فرمولاسیون اختصاصی عطر یزد است.",
+      "verified_notice": "این محصول بازآفرینی دست‌ساز است و محصول اورجینال برند اصلی نیست. نت‌های عطر مرجع از وب‌سایت رسمی برند هستند؛ هویت و نسخه اسانس تأمین‌کننده مستقلاً تأیید نشده است."
+    },
+    {
+      "product_id": "YZD-PROD-0547",
+      "product_slug": "amouage-epic-56-woman",
+      "expected_name_en": "AMOUAGE - Epic 56 Woman",
+      "official_brand": "Amouage",
+      "official_name": "Epic 56 Woman",
+      "source_url": "https://amouage.com/products/epic56",
+      "source_scope": "Epic 56 Woman exceptional extrait reference, distinct from Epic Woman EDP.",
+      "expected_old_notes": {
+        "top": [
+          "زیره",
+          "دارچین",
+          "گل خرزهره صورتی"
+        ],
+        "middle": [
+          "رز دمشقی",
+          "شمعدانی",
+          "یاس",
+          "چای سیاه چینی"
+        ],
+        "base": [
+          "صمغ کندر",
+          "چوب عود",
+          "صندل",
+          "نعناع هندی",
+          "چوب گایاک",
+          "مشک"
+        ]
+      },
+      "verified_notes": {
+        "top": [
+          "زیره",
+          "فلفل صورتی",
+          "دارچین"
+        ],
+        "middle": [
+          "رز",
+          "شمعدانی",
+          "چای یاس"
+        ],
+        "base": [
+          "کهربا",
+          "مشک",
+          "عود",
+          "کندر",
+          "چوب گایاک",
+          "زنبق",
+          "چوب صندل",
+          "پچولی",
+          "وانیل"
+        ]
+      },
+      "expected_old_accords": [
+        "۵۶٪ غلظت روغن اعجاب‌انگیز",
+        "رز و چای با ماندگاری جاودانه"
+      ],
+      "verified_accords": [],
+      "requires_unavailable": true,
+      "expected_old_notice": "این محصول، بازآفرینی دست‌ساز با عصاره خالص اولیه و فرمولاسیون اختصاصی عطر یزد است.",
+      "verified_notice": "این محصول بازآفرینی دست‌ساز است و محصول اورجینال برند اصلی نیست. نت‌های عطر مرجع از وب‌سایت رسمی برند هستند؛ هویت و نسخه اسانس تأمین‌کننده مستقلاً تأیید نشده است."
+    },
+    {
+      "product_id": "YZD-PROD-0552",
+      "product_slug": "amouage-honour-man",
+      "expected_name_en": "AMOUAGE - Honour Man",
+      "official_brand": "Amouage",
+      "official_name": "Honour Man",
+      "source_url": "https://amouage.com/products/honour-man",
+      "source_scope": "Honour Man EDP reference, distinct from Honour Woman and Honour 43.",
+      "expected_old_notes": {
+        "top": [
+          "فلفل صورتی",
+          "فلفل سیاه"
+        ],
+        "middle": [
+          "گل شمعدانی",
+          "جوز هندی",
+          "صمغ المی"
+        ],
+        "base": [
+          "چوب سدر ویرجینیا",
+          "خس‌خس",
+          "نعناع هندی",
+          "بخور",
+          "دانه تونکا"
+        ]
+      },
+      "verified_notes": {
+        "top": [
+          "فلفل صورتی",
+          "فلفل سیاه"
+        ],
+        "middle": [
+          "شمعدانی",
+          "جوز هندی",
+          "صمغ المی"
+        ],
+        "base": [
+          "پچولی",
+          "کندر",
+          "چوب سدر",
+          "وتیور",
+          "دانه تونکا",
+          "مشک"
+        ]
+      },
+      "expected_old_accords": [
+        "فلفل صورتی درخشان و خنک",
+        "اداری و بسیار باشخصیت"
+      ],
+      "verified_accords": [],
+      "requires_unavailable": true,
+      "expected_old_notice": "این محصول، بازآفرینی دست‌ساز با عصاره خالص اولیه و فرمولاسیون اختصاصی عطر یزد است.",
+      "verified_notice": "این محصول بازآفرینی دست‌ساز است و محصول اورجینال برند اصلی نیست. نت‌های عطر مرجع از وب‌سایت رسمی برند هستند؛ هویت و نسخه اسانس تأمین‌کننده مستقلاً تأیید نشده است."
+    },
+    {
+      "product_id": "YZD-PROD-0553",
+      "product_slug": "amouage-honour-woman",
+      "expected_name_en": "AMOUAGE - Honour Woman",
+      "official_brand": "Amouage",
+      "official_name": "Honour Woman",
+      "source_url": "https://amouage.com/products/honour-woman-100ml",
+      "source_scope": "Honour Woman EDP reference; the page omits vetiver from one of its two base lists, so only shared base notes retained. Distinct from Honour 43.",
+      "expected_old_notes": {
+        "top": [
+          "فلفل",
+          "گشنیز",
+          "ریواس ترش"
+        ],
+        "middle": [
+          "گل مریم",
+          "گل یاس",
+          "گاردنیا",
+          "زنبق دره",
+          "میخک"
+        ],
+        "base": [
+          "کندر هندی",
+          "عنبر سائل",
+          "چرم",
+          "خس‌خس",
+          "اوپوپوناکس"
+        ]
+      },
+      "verified_notes": {
+        "top": [
+          "فلفل",
+          "برگ ریواس",
+          "گشنیز"
+        ],
+        "middle": [
+          "یاس",
+          "گل مریم",
+          "گاردنیا",
+          "گل برف",
+          "میخک"
+        ],
+        "base": [
+          "کندر",
+          "کهربا",
+          "اوپوپوناکس",
+          "آکورد چرم"
+        ]
+      },
+      "expected_old_accords": [
+        "الهام از اپرای مادام باترفلای",
+        "عطر ملکه گل‌های سفید عروس"
+      ],
+      "verified_accords": [],
+      "requires_unavailable": true,
+      "expected_old_notice": "این محصول، بازآفرینی دست‌ساز با عصاره خالص اولیه و فرمولاسیون اختصاصی عطر یزد است.",
+      "verified_notice": "این محصول بازآفرینی دست‌ساز است و محصول اورجینال برند اصلی نیست. نت‌های عطر مرجع از وب‌سایت رسمی برند هستند؛ هویت و نسخه اسانس تأمین‌کننده مستقلاً تأیید نشده است."
+    },
+    {
+      "product_id": "YZD-PROD-0554",
+      "product_slug": "amouage-honour-43-woman",
+      "expected_name_en": "AMOUAGE - Honour 43 Woman",
+      "official_brand": "Amouage",
+      "official_name": "Honour 43 Woman",
+      "source_url": "https://amouage.com/products/honour-43",
+      "source_scope": "Honour 43 exceptional extrait reference, distinct from Honour Woman EDP; leather is a scent accord.",
+      "expected_old_notes": {
+        "top": [
+          "فلفل",
+          "گشنیز",
+          "ریواس"
+        ],
+        "middle": [
+          "گل مریم",
+          "یاس",
+          "گاردنیا",
+          "زنبق دره",
+          "گل میخک"
+        ],
+        "base": [
+          "چوب صندل",
+          "صمغ کندر",
+          "لادن",
+          "خس‌خس",
+          "چرم"
+        ]
+      },
+      "verified_notes": {
+        "top": [
+          "فلفل",
+          "برگ ریواس",
+          "گشنیز"
+        ],
+        "middle": [
+          "یاس",
+          "گل مریم",
+          "گاردنیا",
+          "گل برف",
+          "میخک"
+        ],
+        "base": [
+          "چوب صندل",
+          "لابدانوم",
+          "وتیور",
+          "کندر",
+          "اوپوپوناکس",
+          "آکورد چرم"
+        ]
+      },
+      "expected_old_accords": [
+        "۴۳٪ غلظت عصاره خالص",
+        "هانر در اوج ماندگاری و شکوه"
+      ],
+      "verified_accords": [],
+      "requires_unavailable": true,
+      "expected_old_notice": "این محصول، بازآفرینی دست‌ساز با عصاره خالص اولیه و فرمولاسیون اختصاصی عطر یزد است.",
+      "verified_notice": "این محصول بازآفرینی دست‌ساز است و محصول اورجینال برند اصلی نیست. نت‌های عطر مرجع از وب‌سایت رسمی برند هستند؛ هویت و نسخه اسانس تأمین‌کننده مستقلاً تأیید نشده است."
+    },
+    {
+      "product_id": "YZD-PROD-0543",
+      "product_slug": "amouage-memoir-man",
+      "expected_name_en": "AMOUAGE - Memoir Man",
+      "official_brand": "Amouage",
+      "official_name": "Memoir Man",
+      "source_url": "https://amouage.com/products/memoir-man",
+      "source_scope": "Memoir Man reference, distinct from Memoir Woman. Absinthe/leather are reference scent accords, not evidence of ingredients.",
+      "expected_old_notes": {
+        "top": [
+          "درمنه (خاراگوش)",
+          "نعناع",
+          "ریحان"
+        ],
+        "middle": [
+          "بخور کندر",
+          "رز",
+          "اسطوخودوس"
+        ],
+        "base": [
+          "تنباکو",
+          "چرم",
+          "چوب صندل",
+          "خس‌خس",
+          "چوب گایاک",
+          "وانیل",
+          "خزه بلوط",
+          "کهربا"
+        ]
+      },
+      "verified_notes": {
+        "top": [
+          "آکورد ابسنت",
+          "درمنه",
+          "ریحان",
+          "نعناع"
+        ],
+        "middle": [
+          "رز",
+          "کندر",
+          "اسطوخودوس"
+        ],
+        "base": [
+          "چوب صندل",
+          "وتیور",
+          "چوب گایاک",
+          "کهربا",
+          "وانیل",
+          "مشک",
+          "خزه بلوط",
+          "آکورد چرم",
+          "تنباکو"
+        ]
+      },
+      "expected_old_accords": [
+        "فضای تاریک و فلسفی",
+        "درمنه سبز و خاکستر چوب دودی"
+      ],
+      "verified_accords": [],
+      "requires_unavailable": true,
+      "expected_old_notice": "این محصول، بازآفرینی دست‌ساز با عصاره خالص اولیه و فرمولاسیون اختصاصی عطر یزد است.",
+      "verified_notice": "این محصول بازآفرینی دست‌ساز است و محصول اورجینال برند اصلی نیست. نت‌های عطر مرجع از وب‌سایت رسمی برند هستند؛ هویت و نسخه اسانس تأمین‌کننده مستقلاً تأیید نشده است."
+    },
+    {
+      "product_id": "YZD-PROD-0544",
+      "product_slug": "amouage-memoir-woman",
+      "expected_name_en": "AMOUAGE - Memoir Woman",
+      "official_brand": "Amouage",
+      "official_name": "Memoir Woman",
+      "source_url": "https://amouage.com/products/memoir-woman",
+      "source_scope": "Memoir Woman reference; page differs between white blossoms and tuberose, so that unconfirmed heart note is omitted. Animalic/leather are scent accords.",
+      "expected_old_notes": {
+        "top": [
+          "هل",
+          "پرتقال ماندارین",
+          "فلفل صورتی",
+          "درمنه"
+        ],
+        "middle": [
+          "بخور کندر",
+          "گل میخک",
+          "روایح چوبی",
+          "رز",
+          "یاس",
+          "شکوفه پرتقال"
+        ],
+        "base": [
+          "چرم",
+          "بوته وحشی جاوی",
+          "خزه بلوط",
+          "نعناع هندی",
+          "دانه تونکا",
+          "مشک"
+        ]
+      },
+      "verified_notes": {
+        "top": [
+          "نارنگی",
+          "هل",
+          "آکورد ابسنت",
+          "فلفل صورتی"
+        ],
+        "middle": [
+          "فلفل",
+          "میخک",
+          "رز",
+          "یاس",
+          "نت‌های چوبی تیره",
+          "کندر"
+        ],
+        "base": [
+          "استیراکس",
+          "خزه بلوط",
+          "آکورد کاستورئوم",
+          "آکورد چرم",
+          "لابدانوم",
+          "شنبلیله",
+          "مشک"
+        ]
+      },
+      "expected_old_accords": [
+        "رازآلود و شبانه",
+        "چرم و بخور میخک زنانه"
+      ],
+      "verified_accords": [],
+      "requires_unavailable": true,
+      "expected_old_notice": "این محصول، بازآفرینی دست‌ساز با عصاره خالص اولیه و فرمولاسیون اختصاصی عطر یزد است.",
+      "verified_notice": "این محصول بازآفرینی دست‌ساز است و محصول اورجینال برند اصلی نیست. نت‌های عطر مرجع از وب‌سایت رسمی برند هستند؛ هویت و نسخه اسانس تأمین‌کننده مستقلاً تأیید نشده است."
+    }
+  ]
+}
