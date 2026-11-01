@@ -59,7 +59,7 @@ python3 scripts/sqlite_delta_backup.py restore \
 
 ## آرشیو تاریخچه فشرده — ۱ نوامبر ۲۰۲۶
 
-برای جلوگیری از حذف داده در سقف فضای محیط، ۱۲ پشتیبان افزایشی قدیمی در `data/backups/archive_legacy_20261101.tar.xz` کنار هم نگهداری می‌شوند. محتوای هر manifest و صفحات با ZIP قبلی بایت‌به‌بایت مقایسه شد و **هر ۱۲ نسخه** قبل و بعد از حذف نسخه تکراری، جداگانه با پایه XZ بازسازی و هش و سلامت SQLite آن کنترل شد. این آرشیو نیز حاوی داده حساس است، به Git نمی‌رود و همراه پایه باید حفظ شود.
+برای جلوگیری از حذف داده در سقف فضای محیط، ۲۲ پشتیبان افزایشی قدیمی در `data/backups/archive_legacy_20261101.tar.xz` کنار هم نگهداری می‌شوند. محتوای هر manifest و صفحات با ZIP قبلی بایت‌به‌بایت مقایسه شد و **تمام این نسخه‌ها** قبل و بعد از حذف نسخه تکراری، جداگانه با پایه XZ بازسازی و هش و سلامت SQLite آن کنترل شد. این آرشیو نیز حاوی داده حساس است، به Git نمی‌رود و همراه پایه باید حفظ شود.
 
 فایل ZIPهای تاریخی زیر ممکن است در فهرست پوشه دیده نشوند. فرمان `restore` با همان مسیر و نام قبلی، در صورت نبود ZIP، خودکار آن را از آرشیو بازسازی می‌کند؛ سپس همان کنترل‌های هش و صحت SQLite را اجرا می‌کند. ZIP موجود همیشه بر آرشیو اولویت دارد. نمونه:
 
@@ -70,4 +70,4 @@ python3 scripts/sqlite_delta_backup.py restore \
   --output /tmp/restored-old.sqlite
 ```
 
-نام نسخه‌های آرشیوشده: `post-reference-v4-delta-20261031.zip`، `post-reference-v5-delta-20261031.zip`، `post-outlands-final-v6-20261031.zip`، `post-five-v7-20261031.zip`، `post-three-v8-20261031.zip`، `post-baccarat-v9-20261031.zip`، `post-creed-armani-v10-20261031.zip`، `post-six-v11-20261031.zip`، `post-casamorati-v12-20261031.zip`، `post-five-v13-20261031.zip`، `post-seven-v14-20261031.zip` و `post-six-v15-20261031.zip`. سایر پشتیبان‌ها و نسخه‌های جدیدتر همچنان جداگانه‌اند.
+نام نسخه‌های آرشیوشده: `post-reference-v4-delta-20261031.zip`، `post-reference-v5-delta-20261031.zip`، `post-outlands-final-v6-20261031.zip`، `post-five-v7-20261031.zip`، `post-three-v8-20261031.zip`، `post-baccarat-v9-20261031.zip`، `post-creed-armani-v10-20261031.zip`، `post-six-v11-20261031.zip`، `post-casamorati-v12-20261031.zip`، `post-five-v13-20261031.zip`، `post-seven-v14-20261031.zip`، `post-six-v15-20261031.zip`، `post-six-v16-20261031.zip`، `post-two-v17-20261031.zip`، `post-aquakiss-v18-20261101.zip`، `post-secondary-v1-20261101.zip`، `post-secondary-v2-20261101.zip`، `post-secondary-v3-20261101.zip`، `post-secondary-v4-20261101.zip`، `post-mixed-v5-20261101.zip`، `post-mixed-v6-20261101.zip` و `post-official-v21-20261101.zip`. سایر پشتیبان‌ها و نسخه‌های جدیدتر همچنان جداگانه‌اند.
