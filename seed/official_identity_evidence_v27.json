@@ -1,0 +1,66 @@
+{
+  "version": "official_identity_evidence_v27",
+  "scope": "Official reference-original name only; actual supplier essence identity is unverified. No supplier pricing.",
+  "items": [
+    {
+      "product_id": "YZD-PROD-1462",
+      "slug": "chanel-bleu-de-chanel-edp",
+      "brand_en": "Chanel",
+      "expected_name_en": "CHANEL - Bleu de Chanel EDP",
+      "reference_name": "Bleu de Chanel EDP",
+      "official_url": "https://www.chanel.com/gr/fragrance/p/107360/bleu-de-chanel-eau-de-parfum-spray/",
+      "status": "official_original_found_supplier_essence_unverified",
+      "checked_date": "2026-11-01"
+    },
+    {
+      "product_id": "YZD-PROD-1474",
+      "slug": "chanel-coco-mademoiselle-edp",
+      "brand_en": "Chanel",
+      "expected_name_en": "CHANEL - Coco Mademoiselle EDP",
+      "reference_name": "Coco Mademoiselle EDP",
+      "official_url": "https://www.chanel.com/ca-en/fragrance/p/116570/coco-mademoiselle-eau-de-parfum-spray/",
+      "status": "official_original_found_supplier_essence_unverified",
+      "checked_date": "2026-11-01"
+    },
+    {
+      "product_id": "YZD-PROD-0756",
+      "slug": "bdk-parfums-gris-charnel-edp",
+      "brand_en": "BDK Parfums",
+      "expected_name_en": "BDK PARFUMS - Gris Charnel EDP",
+      "reference_name": "Gris Charnel EDP",
+      "official_url": "https://us.bdkparfums.com/products/gris-charnel",
+      "status": "official_original_found_supplier_essence_unverified",
+      "checked_date": "2026-11-01"
+    },
+    {
+      "product_id": "YZD-PROD-0781",
+      "slug": "marc-antoine-barrois-ganymede-edp",
+      "brand_en": "Marc-Antoine Barrois",
+      "expected_name_en": "MARC-ANTOINE BARROIS - Ganymede EDP",
+      "reference_name": "Ganymede EDP",
+      "official_url": "https://us.marcantoinebarrois.com/products/ganymede",
+      "status": "official_original_found_supplier_essence_unverified",
+      "checked_date": "2026-11-01"
+    },
+    {
+      "product_id": "YZD-PROD-0614",
+      "slug": "maison-francis-kurkdjian-baccarat-rouge-540-edp",
+      "brand_en": "Maison Francis Kurkdjian",
+      "expected_name_en": "MAISON FRANCIS KURKDJIAN - Baccarat Rouge 540 EDP",
+      "reference_name": "Baccarat Rouge 540 EDP",
+      "official_url": "https://www.franciskurkdjian.com/us-en/p/baccarat-rouge-540-eau-de-parfum---refills-RA12235.html",
+      "status": "official_original_found_supplier_essence_unverified",
+      "checked_date": "2026-11-01"
+    },
+    {
+      "product_id": "YZD-PROD-1696",
+      "slug": "tom-ford-ombr-leather-edp",
+      "brand_en": "Tom Ford",
+      "expected_name_en": "TOM FORD - Ombré Leather EDP",
+      "reference_name": "Ombré Leather EDP",
+      "official_url": "https://www.tomfordbeauty.com/products/ombre-leather-eau-de-parfum",
+      "status": "official_original_found_supplier_essence_unverified",
+      "checked_date": "2026-11-01"
+    }
+  ]
+}

@@ -658,3 +658,10 @@ node_modules/   با npm install برمی‌گردد
 - `seed/secondary_reference_prices_v10.json`
 - `seed/secondary_supplement_v9.json`
 - `scripts/test_decision_original_batch.js`
+
+
+### شش شناسنامه رسمی بدون انتساب قیمت
+
+- `seed/official_identity_evidence_v27.json`
+- `seed/official_note_corrections_v23.json`
+- `scripts/test_official_notes_v23.js`

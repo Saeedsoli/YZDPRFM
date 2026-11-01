@@ -442,3 +442,19 @@ Guidance با Guidance 46 یکی نشده است. Platinium نام کوتاه‌
 | Narciso Rodriguez for Him | 145.2 | P | مستقل | https://www.fragrantica.com/perfume/Narciso-Rodriguez/Narciso-Rodriguez-for-Him-1063.html |
 
 هر دو قیمت موقت نام‌محور و غیرقابل سفارش‌اند. نسخه Decision 42 و نسخه‌های Bleu Noir، Intense و Vetiver Musc با این دو یکی نشده‌اند. اطلاعات وب درباره مرجع اصلی است و هویت، نسخه یا کیفیت اسانس تأمین‌کننده را اثبات نمی‌کند. منبع مستقل برای محصول نارسیسو در متن عمومی جداگانه ذکر شده است.
+
+
+## شش شناسنامه رسمی بدون انتساب قیمت — ۱ نوامبر ۲۰۲۶
+
+اطلاعات شش محصول موجود بر اساس صفحه رسمی نسخه مشخص‌شده تصحیح شد. نت‌ها و متن شفافیت فقط در صورت دست‌نخورده بودن داده و غیرفعال بودن محصول تغییر می‌کنند. این اقدام هیچ قیمت، واریانت، سفارش یا موجودی را تغییر نمی‌دهد؛ نسخه اسانس تأمین‌کننده همچنان تأیید نشده و نسخه‌های دیگر یکی نشده‌اند.
+
+| رایحه مرجع | منبع رسمی |
+|---|---|
+| Bleu de Chanel EDP | https://www.chanel.com/gr/fragrance/p/107360/bleu-de-chanel-eau-de-parfum-spray/ |
+| Coco Mademoiselle EDP | https://www.chanel.com/ca-en/fragrance/p/116570/coco-mademoiselle-eau-de-parfum-spray/ |
+| Gris Charnel EDP | https://us.bdkparfums.com/products/gris-charnel |
+| Ganymede EDP | https://us.marcantoinebarrois.com/products/ganymede |
+| Baccarat Rouge 540 EDP | https://www.franciskurkdjian.com/us-en/p/baccarat-rouge-540-eau-de-parfum---refills-RA12235.html |
+| Ombré Leather EDP | https://www.tomfordbeauty.com/products/ombre-leather-eau-de-parfum |
+
+قیمت‌های فایل برای این نام‌ها بدون شواهد کافی درباره نسخه اسانس منتسب نشده‌اند. صفحه مرجع باکارا مربوط به ریفیل EDP اصلی است، نه ریفیل فروشی این فروشگاه. نت‌ها تنها ویژگی‌های بویایی مرجع‌اند و اثبات مواد موجود در محصول دست‌ساز نیستند.

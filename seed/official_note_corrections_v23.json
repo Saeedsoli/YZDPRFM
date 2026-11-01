@@ -1,0 +1,284 @@
+{
+  "version": "official_notes_2026_11_v23",
+  "description": "Guarded notes for named official originals; source does not establish supplier essence, pricing or stock.",
+  "items": [
+    {
+      "product_id": "YZD-PROD-1462",
+      "product_slug": "chanel-bleu-de-chanel-edp",
+      "expected_name_en": "CHANEL - Bleu de Chanel EDP",
+      "official_brand": "Chanel",
+      "official_name": "Bleu de Chanel EDP",
+      "source_url": "https://www.chanel.com/gr/fragrance/p/107360/bleu-de-chanel-eau-de-parfum-spray/",
+      "source_scope": "EDP reference only, distinct from EDT and Parfum; no assignment of supplier price or essence identity.",
+      "expected_old_notes": {
+        "top": [
+          "گریپ‌فروت",
+          "لیمو",
+          "ترنج",
+          "فلفل صورتی",
+          "نعناع",
+          "آلدهیدها"
+        ],
+        "middle": [
+          "زنجبیل",
+          "جوز هندی",
+          "گل یاس",
+          "خربزه"
+        ],
+        "base": [
+          "بخور کندر",
+          "کهربا",
+          "چوب سدر",
+          "چوب صندل",
+          "نعناع هندی"
+        ]
+      },
+      "verified_notes": {
+        "top": [],
+        "middle": [],
+        "base": []
+      },
+      "expected_old_accords": [
+        "نسخه با غلظت ادوپرفیوم با اضافه شدن کهربای نرم و حذف تندی فلفل",
+        "پخته‌تر",
+        "غنی‌تر و بسیار شیک"
+      ],
+      "verified_accords": [
+        "کهربا",
+        "مشک",
+        "چوب سدر",
+        "چوب صندل"
+      ],
+      "requires_unavailable": true,
+      "expected_old_notice": "این محصول، بازآفرینی دست‌ساز با عصاره خالص اولیه و فرمولاسیون اختصاصی عطر یزد است.",
+      "verified_notice": "این محصول بازآفرینی دست‌ساز است و محصول اورجینال برند اصلی نیست. نت‌های عطر مرجع از وب‌سایت رسمی برند هستند؛ هویت و نسخه اسانس تأمین‌کننده مستقلاً تأیید نشده است."
+    },
+    {
+      "product_id": "YZD-PROD-1474",
+      "product_slug": "chanel-coco-mademoiselle-edp",
+      "expected_name_en": "CHANEL - Coco Mademoiselle EDP",
+      "official_brand": "Chanel",
+      "official_name": "Coco Mademoiselle EDP",
+      "source_url": "https://www.chanel.com/ca-en/fragrance/p/116570/coco-mademoiselle-eau-de-parfum-spray/",
+      "source_scope": "EDP reference only, distinct from Intense and L’Eau Privée; no assignment of supplier price or essence identity.",
+      "expected_old_notes": {
+        "top": [
+          "پرتقال سیسیلی",
+          "پرتقال ماندارین",
+          "ترنج",
+          "شکوفه پرتقال"
+        ],
+        "middle": [
+          "رز دمشقی ترکی",
+          "گل یاس سامباک",
+          "گل ابریشم",
+          "یلانگ"
+        ],
+        "base": [
+          "نعناع هندی اندونزی",
+          "مشک سفید",
+          "وانیل",
+          "دانه تونکا",
+          "خس‌خس",
+          "اوپوپوناکس"
+        ]
+      },
+      "verified_notes": {
+        "top": [],
+        "middle": [],
+        "base": []
+      },
+      "expected_old_accords": [
+        "پرفروش‌ترین و محبوب‌ترین عطر زنانه هزاره سوم در جهان",
+        "مظهر ظرافت دختر پاریسی مستقل و آزاد"
+      ],
+      "verified_accords": [
+        "پرتقال",
+        "رز",
+        "یاس",
+        "پچولی",
+        "وتیور"
+      ],
+      "requires_unavailable": true,
+      "expected_old_notice": "این محصول، بازآفرینی دست‌ساز با عصاره خالص اولیه و فرمولاسیون اختصاصی عطر یزد است.",
+      "verified_notice": "این محصول بازآفرینی دست‌ساز است و محصول اورجینال برند اصلی نیست. نت‌های عطر مرجع از وب‌سایت رسمی برند هستند؛ هویت و نسخه اسانس تأمین‌کننده مستقلاً تأیید نشده است."
+    },
+    {
+      "product_id": "YZD-PROD-0756",
+      "product_slug": "bdk-parfums-gris-charnel-edp",
+      "expected_name_en": "BDK PARFUMS - Gris Charnel EDP",
+      "official_brand": "BDK Parfums",
+      "official_name": "Gris Charnel EDP",
+      "source_url": "https://us.bdkparfums.com/products/gris-charnel",
+      "source_scope": "EDP reference only, distinct from Gris Charnel Extrait; no assignment of supplier price or essence identity.",
+      "expected_old_notes": {
+        "top": [
+          "هل گواتمالا",
+          "انجیر سیاه",
+          "چای سیاه"
+        ],
+        "middle": [
+          "زنبق فلورانس",
+          "خس‌خس بوربون"
+        ],
+        "base": [
+          "چوب صندل میسور",
+          "دانه تونکا"
+        ]
+      },
+      "verified_notes": {
+        "top": [
+          "انجیر",
+          "چای سیاه",
+          "هل"
+        ],
+        "middle": [
+          "زنبق",
+          "وتیور"
+        ],
+        "base": [
+          "چوب صندل",
+          "دانه تونکا"
+        ]
+      },
+      "expected_old_accords": [
+        "پرفروش‌ترین عطر تاریخ بی دی کی",
+        "قدم زدن در غروب پاییز پاریس با پالتو خاکستری"
+      ],
+      "verified_accords": [],
+      "requires_unavailable": true,
+      "expected_old_notice": "این محصول، بازآفرینی دست‌ساز با عصاره خالص اولیه و فرمولاسیون اختصاصی عطر یزد است.",
+      "verified_notice": "این محصول بازآفرینی دست‌ساز است و محصول اورجینال برند اصلی نیست. نت‌های عطر مرجع از وب‌سایت رسمی برند هستند؛ هویت و نسخه اسانس تأمین‌کننده مستقلاً تأیید نشده است."
+    },
+    {
+      "product_id": "YZD-PROD-0781",
+      "product_slug": "marc-antoine-barrois-ganymede-edp",
+      "expected_name_en": "MARC-ANTOINE BARROIS - Ganymede EDP",
+      "official_brand": "Marc-Antoine Barrois",
+      "official_name": "Ganymede EDP",
+      "source_url": "https://us.marcantoinebarrois.com/products/ganymede",
+      "source_scope": "EDP reference only, distinct from Ganymede Extrait; no assignment of supplier price or essence identity.",
+      "expected_old_notes": {
+        "top": [
+          "نارنگی ماندارین ایتالیایی",
+          "زعفران"
+        ],
+        "middle": [
+          "گل ابدی (ایمورتل)",
+          "برگ بنفشه",
+          "گل عثمانتوس"
+        ],
+        "base": [
+          "چرم جیر ایتالیایی",
+          "آکیگالاوود",
+          "نت‌های معدنی سیارک گانیمد"
+        ]
+      },
+      "verified_notes": {
+        "top": [],
+        "middle": [],
+        "base": []
+      },
+      "expected_old_accords": [
+        "پدیده‌سازترین عطر مدرن قرن ۲۱",
+        "چرم مینرال و فضایی با ماندگاری خارق‌العاده"
+      ],
+      "verified_accords": [
+        "نارنگی",
+        "اوسمانتوس",
+        "آکورد چرم",
+        "آکیگالاوود",
+        "گل جاودان"
+      ],
+      "requires_unavailable": true,
+      "expected_old_notice": "این محصول، بازآفرینی دست‌ساز با عصاره خالص اولیه و فرمولاسیون اختصاصی عطر یزد است.",
+      "verified_notice": "این محصول بازآفرینی دست‌ساز است و محصول اورجینال برند اصلی نیست. نت‌های عطر مرجع از وب‌سایت رسمی برند هستند؛ هویت و نسخه اسانس تأمین‌کننده مستقلاً تأیید نشده است."
+    },
+    {
+      "product_id": "YZD-PROD-0614",
+      "product_slug": "maison-francis-kurkdjian-baccarat-rouge-540-edp",
+      "expected_name_en": "MAISON FRANCIS KURKDJIAN - Baccarat Rouge 540 EDP",
+      "official_brand": "Maison Francis Kurkdjian",
+      "official_name": "Baccarat Rouge 540 EDP",
+      "source_url": "https://www.franciskurkdjian.com/us-en/p/baccarat-rouge-540-eau-de-parfum---refills-RA12235.html",
+      "source_scope": "EDP reference on official refill page, distinct from Extrait; no assignment of supplier price or essence identity.",
+      "expected_old_notes": {
+        "top": [
+          "زعفران سرخ",
+          "گل یاس سفید"
+        ],
+        "middle": [
+          "عنبر چوبی (امبروود)",
+          "عنبر سائل"
+        ],
+        "base": [
+          "صمغ درخت صنوبر",
+          "چوب سدر ویرجینیا"
+        ]
+      },
+      "verified_notes": {
+        "top": [],
+        "middle": [],
+        "base": []
+      },
+      "expected_old_accords": [
+        "افسانه‌ای‌ترین عطر قرن ۲۱",
+        "ترکیب کریستال قرمز",
+        "زعفران و پشمک سوخته اشرافی"
+      ],
+      "verified_accords": [
+        "یاس",
+        "زعفران",
+        "آکورد کهربای خاکستری",
+        "نت‌های چوبی",
+        "اتیل مالتول"
+      ],
+      "requires_unavailable": true,
+      "expected_old_notice": "این محصول، بازآفرینی دست‌ساز با عصاره خالص اولیه و فرمولاسیون اختصاصی عطر یزد است.",
+      "verified_notice": "این محصول بازآفرینی دست‌ساز است و محصول اورجینال برند اصلی نیست. نت‌های عطر مرجع از وب‌سایت رسمی برند هستند؛ هویت و نسخه اسانس تأمین‌کننده مستقلاً تأیید نشده است."
+    },
+    {
+      "product_id": "YZD-PROD-1696",
+      "product_slug": "tom-ford-ombr-leather-edp",
+      "expected_name_en": "TOM FORD - Ombré Leather EDP",
+      "official_brand": "Tom Ford",
+      "official_name": "Ombré Leather EDP",
+      "source_url": "https://www.tomfordbeauty.com/products/ombre-leather-eau-de-parfum",
+      "source_scope": "EDP reference only, distinct from Parfum and Eau d’Ombré Leather; no assignment of supplier price or essence identity.",
+      "expected_old_notes": {
+        "top": [
+          "هل سبز گواتمالا"
+        ],
+        "middle": [
+          "چرم تیره دباغی‌شده",
+          "گل یاس سامباک"
+        ],
+        "base": [
+          "خزه درخت بلوط",
+          "نعناع هندی اندونزی",
+          "کهربا"
+        ]
+      },
+      "verified_notes": {
+        "top": [],
+        "middle": [],
+        "base": []
+      },
+      "expected_old_accords": [
+        "پرفروش‌ترین عطر چرمی تاریخ تام فورد در شیشه مشکی مات چرمی",
+        "چرم مخملی مدرن و بدون خشونت"
+      ],
+      "verified_accords": [
+        "آکورد چرم سیاه",
+        "هل",
+        "یاس سامباک",
+        "پچولی",
+        "خزه سفید",
+        "کهربا"
+      ],
+      "requires_unavailable": true,
+      "expected_old_notice": "این محصول، بازآفرینی دست‌ساز با عصاره خالص اولیه و فرمولاسیون اختصاصی عطر یزد است.",
+      "verified_notice": "این محصول بازآفرینی دست‌ساز است و محصول اورجینال برند اصلی نیست. نت‌های عطر مرجع از وب‌سایت رسمی برند هستند؛ هویت و نسخه اسانس تأمین‌کننده مستقلاً تأیید نشده است."
+    }
+  ]
+}
