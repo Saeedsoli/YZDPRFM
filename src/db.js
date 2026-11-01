@@ -2751,9 +2751,12 @@ if (isFreshInstallation && process.env.APPROVED_MTO_AUTOSTART !== '0') {
   approved.correctApprovedNotices(db, path.join(SEED_DIR, 'approved_made_to_order_v1.json'));
   if (result.skipped.length) console.warn('[DB] approved made-to-order items skipped:', result.skipped.length);
 }
+// Active-product correction is guarded by original evidence, owner-approved mode,
+// unchanged price and exact prior content; it never touches order data.
+const activeNotesResult = require('./active-official-notes').applyActiveOfficialNotes(db, path.join(SEED_DIR, 'active_official_note_corrections_v1.json'));
 buildSearchIndex();
 // Rebuild note lookup after sourced notes change or new supplement products arrive.
-buildNotesIndex(supplementInserted > 0 || secondaryNotesResults.some(r => r.updated > 0) || officialNotesResults.some(r => r.updated > 0));
+buildNotesIndex(activeNotesResult.updated > 0 || supplementInserted > 0 || secondaryNotesResults.some(r => r.updated > 0) || officialNotesResults.some(r => r.updated > 0));
 
 startMaintenance();
 

@@ -1,0 +1,407 @@
+{
+  "version": "active_official_notes_2026_11_v1",
+  "description": "Owner-approved active products: verified reference notes only; supplier essence is unverified.",
+  "items": [
+    {
+      "product_id": "YZD-PROD-0429",
+      "product_slug": "creed-aventus",
+      "expected_name_en": "CREED - Aventus",
+      "expected_brand": "Creed",
+      "expected_concentration": "EDP",
+      "expected_usd_per_kg": "709.5",
+      "source_url": "https://www.creedfragrance.com/p/aventus/12870029/",
+      "expected_old_notes": {
+        "top": [
+          "آناناس",
+          "ترنج",
+          "انگور فرنگی سیاه",
+          "سیب"
+        ],
+        "middle": [
+          "چوب توس (توسکا)",
+          "نعناع هندی",
+          "یاس مراکشی",
+          "رز"
+        ],
+        "base": [
+          "مشک",
+          "خزه بلوط",
+          "عنبر سائل",
+          "وانیل"
+        ]
+      },
+      "verified_notes": {
+        "top": [],
+        "middle": [],
+        "base": []
+      },
+      "expected_old_accords": [
+        "میوه‌ای",
+        "چوبی دودی",
+        "چرمی",
+        "مرکباتی"
+      ],
+      "verified_accords": [
+        "ترنج",
+        "آکورد آناناس",
+        "آکورد چوب درخت غان"
+      ],
+      "expected_old_notice": "این محصول بازآفرینی دست‌ساز است و محصول اورجینال برند اصلی نیست. نام رایحه مرجع از وب‌سایت رسمی برند بررسی شده؛ هویت و کیفیت اسانس تأمین‌کننده مستقلاً تأیید نشده است.",
+      "verified_notice": "این محصول بازآفرینی دست‌ساز است و محصول اورجینال برند اصلی نیست. اطلاعات رایحه مرجع از وب‌سایت رسمی برند گرفته شده؛ هویت و نسخه اسانس تأمین‌کننده مستقلاً تأیید نشده است."
+    },
+    {
+      "product_id": "YZD-PROD-0439",
+      "product_slug": "creed-erolfa",
+      "expected_name_en": "CREED - Erolfa",
+      "expected_brand": "Creed",
+      "expected_concentration": "EDP",
+      "expected_usd_per_kg": "366.3",
+      "source_url": "https://www.creedfragrance.com/p/erolfa/12870033/",
+      "expected_old_notes": {
+        "top": [
+          "ترنج",
+          "لیمو",
+          "زیره سبز",
+          "برگ بنفشه",
+          "خربزه",
+          "رزماری"
+        ],
+        "middle": [
+          "زنجبیل",
+          "فلفل سیاه",
+          "گالبانوم",
+          "جوز هندی",
+          "گل رز"
+        ],
+        "base": [
+          "عنبر سائل",
+          "چوب صندل",
+          "سدر",
+          "خزه بلوط",
+          "مشک"
+        ]
+      },
+      "verified_notes": {
+        "top": [],
+        "middle": [],
+        "base": []
+      },
+      "expected_old_accords": [
+        "دریایی نمکی",
+        "بالزامیک گیاهی",
+        "امبرگریس خالص"
+      ],
+      "verified_accords": [
+        "ترنج",
+        "نارنگی",
+        "ریحان",
+        "چوب صندل",
+        "سدر",
+        "مشک"
+      ],
+      "expected_old_notice": "این محصول بازآفرینی دست‌ساز است و محصول اورجینال برند اصلی نیست. نام رایحه مرجع از وب‌سایت رسمی برند بررسی شده؛ هویت و کیفیت اسانس تأمین‌کننده مستقلاً تأیید نشده است.",
+      "verified_notice": "این محصول بازآفرینی دست‌ساز است و محصول اورجینال برند اصلی نیست. اطلاعات رایحه مرجع از وب‌سایت رسمی برند گرفته شده؛ هویت و نسخه اسانس تأمین‌کننده مستقلاً تأیید نشده است."
+    },
+    {
+      "product_id": "YZD-PROD-0442",
+      "product_slug": "creed-original-vetiver",
+      "expected_name_en": "CREED - Original Vetiver",
+      "expected_brand": "Creed",
+      "expected_concentration": "EDP",
+      "expected_usd_per_kg": "110",
+      "source_url": "https://www.creedfragrance.com/p/original-vetiver/12870044/",
+      "expected_old_notes": {
+        "top": [
+          "ترنج",
+          "نارنگی ماندارین",
+          "برگ نارنج",
+          "زنجبیل"
+        ],
+        "middle": [
+          "خس‌خس هائیتی",
+          "زنبق",
+          "فلفل صورتی"
+        ],
+        "base": [
+          "مشک سفید",
+          "عنبر سائل",
+          "سدر",
+          "چوب صندل"
+        ]
+      },
+      "verified_notes": {
+        "top": [],
+        "middle": [],
+        "base": []
+      },
+      "expected_old_accords": [
+        "صابونی لوکس تمیز",
+        "خس‌خس سبز",
+        "مرکباتی"
+      ],
+      "verified_accords": [
+        "لیمو",
+        "نت‌های سبز",
+        "زنجبیل",
+        "مشک",
+        "وتیور"
+      ],
+      "expected_old_notice": "این محصول بازآفرینی دست‌ساز است و محصول اورجینال برند اصلی نیست. نام رایحه مرجع از وب‌سایت رسمی برند بررسی شده؛ هویت و کیفیت اسانس تأمین‌کننده مستقلاً تأیید نشده است.",
+      "verified_notice": "این محصول بازآفرینی دست‌ساز است و محصول اورجینال برند اصلی نیست. اطلاعات رایحه مرجع از وب‌سایت رسمی برند گرفته شده؛ هویت و نسخه اسانس تأمین‌کننده مستقلاً تأیید نشده است."
+    },
+    {
+      "product_id": "YZD-PROD-0575",
+      "product_slug": "xerjoff-naxos",
+      "expected_name_en": "XERJOFF - Naxos",
+      "expected_brand": "Xerjoff",
+      "expected_concentration": "EDP",
+      "expected_usd_per_kg": "354.2",
+      "source_url": "https://www.xerjoff.com/products/naxos-eau-de-parfum",
+      "expected_old_notes": {
+        "top": [
+          "ترنج",
+          "لیمو سیسیلی",
+          "اسطوخودوس"
+        ],
+        "middle": [
+          "عسل طبیعی",
+          "دارچین",
+          "چوب کشمیر",
+          "گل یاس سامباک"
+        ],
+        "base": [
+          "برگ تنباکو",
+          "دانه تونکا",
+          "وانیل"
+        ]
+      },
+      "verified_notes": {
+        "top": [
+          "لیمو",
+          "ترنج",
+          "اسطوخودوس",
+          "بخور"
+        ],
+        "middle": [
+          "یاس سامباک",
+          "عسل",
+          "دارچین",
+          "آکورد کشمیر"
+        ],
+        "base": [
+          "وانیل",
+          "برگ تنباکو",
+          "دانه تونکا"
+        ]
+      },
+      "expected_old_accords": [
+        "محبوب‌ترین عطر تاریخ زرجوف",
+        "افتخار سیسیل با عسل و تنباکو"
+      ],
+      "verified_accords": [],
+      "expected_old_notice": "این محصول بازآفرینی دست‌ساز است و محصول اورجینال برند اصلی نیست. نام رایحه مرجع از وب‌سایت رسمی برند بررسی شده؛ هویت و کیفیت اسانس تأمین‌کننده مستقلاً تأیید نشده است.",
+      "verified_notice": "این محصول بازآفرینی دست‌ساز است و محصول اورجینال برند اصلی نیست. اطلاعات رایحه مرجع از وب‌سایت رسمی برند گرفته شده؛ هویت و نسخه اسانس تأمین‌کننده مستقلاً تأیید نشده است."
+    },
+    {
+      "product_id": "YZD-PROD-0645",
+      "product_slug": "parfums-de-marly-percival",
+      "expected_name_en": "PARFUMS DE MARLY - Percival",
+      "expected_brand": "Parfums de Marly",
+      "expected_concentration": "EDP",
+      "expected_usd_per_kg": "393.8",
+      "source_url": "https://us.parfums-de-marly.com/products/percival",
+      "expected_old_notes": {
+        "top": [
+          "نارنگی ماندارین",
+          "ترنج",
+          "اسطوخودوس",
+          "گل شمعدانی"
+        ],
+        "middle": [
+          "گشنیز",
+          "بنفشه",
+          "یاس",
+          "دارچین",
+          "فلفل صورتی"
+        ],
+        "base": [
+          "امبروکسان",
+          "درخت بلسان صنوبر",
+          "چوب عنبر",
+          "مشک"
+        ]
+      },
+      "verified_notes": {
+        "top": [
+          "ترنج",
+          "نارنگی",
+          "فلفل صورتی"
+        ],
+        "middle": [
+          "اسطوخودوس",
+          "زنبق",
+          "هل"
+        ],
+        "base": [
+          "صمغ نراد",
+          "دانه تونکا",
+          "آمبروکس",
+          "مشک سفید"
+        ]
+      },
+      "expected_old_accords": [
+        "عطر همه‌کاره و هایپرلوکس خنک مارلی با ماندگاری فوق‌العاده"
+      ],
+      "verified_accords": [],
+      "expected_old_notice": "این محصول بازآفرینی دست‌ساز است و محصول اورجینال برند اصلی نیست. نام رایحه مرجع از وب‌سایت رسمی برند بررسی شده؛ هویت و کیفیت اسانس تأمین‌کننده مستقلاً تأیید نشده است.",
+      "verified_notice": "این محصول بازآفرینی دست‌ساز است و محصول اورجینال برند اصلی نیست. اطلاعات رایحه مرجع از وب‌سایت رسمی برند گرفته شده؛ هویت و نسخه اسانس تأمین‌کننده مستقلاً تأیید نشده است."
+    },
+    {
+      "product_id": "YZD-PROD-0646",
+      "product_slug": "parfums-de-marly-sedley",
+      "expected_name_en": "PARFUMS DE MARLY - Sedley",
+      "expected_brand": "Parfums de Marly",
+      "expected_concentration": "EDP",
+      "expected_usd_per_kg": "300.3",
+      "source_url": "https://us.parfums-de-marly.com/products/sedley",
+      "expected_old_notes": {
+        "top": [
+          "لیمو",
+          "نعناع تند",
+          "ترنج",
+          "گریپ‌فروت",
+          "نارنگی ماندارین"
+        ],
+        "middle": [
+          "اسطوخودوس",
+          "رزماری",
+          "صمغ کندر",
+          "شمعدانی"
+        ],
+        "base": [
+          "امبروکسان",
+          "خس‌خس",
+          "سدر",
+          "چوب صندل",
+          "نعناع هندی"
+        ]
+      },
+      "verified_notes": {
+        "top": [
+          "ترنج",
+          "نعناع",
+          "پرتقال"
+        ],
+        "middle": [
+          "شمعدانی",
+          "لاواندین",
+          "کاج"
+        ],
+        "base": [
+          "چوب صندل",
+          "آمبروکس",
+          "مشک سفید"
+        ]
+      },
+      "expected_old_accords": [
+        "کوکتل لیموناد نعناعی گازدار روی تکه‌های یخ در تابستان داغ"
+      ],
+      "verified_accords": [],
+      "expected_old_notice": "این محصول بازآفرینی دست‌ساز است و محصول اورجینال برند اصلی نیست. نام رایحه مرجع از وب‌سایت رسمی برند بررسی شده؛ هویت و کیفیت اسانس تأمین‌کننده مستقلاً تأیید نشده است.",
+      "verified_notice": "این محصول بازآفرینی دست‌ساز است و محصول اورجینال برند اصلی نیست. اطلاعات رایحه مرجع از وب‌سایت رسمی برند گرفته شده؛ هویت و نسخه اسانس تأمین‌کننده مستقلاً تأیید نشده است."
+    },
+    {
+      "product_id": "YZD-PROD-1674",
+      "product_slug": "tom-ford-tobacco-vanille",
+      "expected_name_en": "TOM FORD - Tobacco Vanille",
+      "expected_brand": "Tom Ford",
+      "expected_concentration": "EDP",
+      "expected_usd_per_kg": "382.8",
+      "source_url": "https://www.tomfordbeauty.com/products/tobacco-vanille-eau-de-parfum",
+      "expected_old_notes": {
+        "top": [
+          "برگ تنباکو",
+          "ادویه‌جات تند"
+        ],
+        "middle": [
+          "دانه تونکا",
+          "شکوفه تنباکو",
+          "وانیل",
+          "کاکائو تلخ"
+        ],
+        "base": [
+          "میوه‌های خشک",
+          "روایح چوبی",
+          "بلسان"
+        ]
+      },
+      "verified_notes": {
+        "top": [],
+        "middle": [],
+        "base": []
+      },
+      "expected_old_accords": [
+        "شاهکار قرن ۲۱ اولیویه پولژ در پرایوت بلند تام فورد",
+        "گرمای کلاب‌های اختصاصی لندن با دود پیپ و وانیل"
+      ],
+      "verified_accords": [
+        "برگ تنباکو",
+        "زنجبیل",
+        "نت‌های ادویه‌ای",
+        "دانه تونکا",
+        "کاکائو",
+        "آکورد میوه",
+        "وانیل"
+      ],
+      "expected_old_notice": "این محصول بازآفرینی دست‌ساز است و محصول اورجینال برند اصلی نیست. نام رایحه مرجع از وب‌سایت رسمی برند بررسی شده؛ هویت و کیفیت اسانس تأمین‌کننده مستقلاً تأیید نشده است.",
+      "verified_notice": "این محصول بازآفرینی دست‌ساز است و محصول اورجینال برند اصلی نیست. اطلاعات رایحه مرجع از وب‌سایت رسمی برند گرفته شده؛ هویت و نسخه اسانس تأمین‌کننده مستقلاً تأیید نشده است."
+    },
+    {
+      "product_id": "YZD-PROD-1675",
+      "product_slug": "tom-ford-tuscan-leather",
+      "expected_name_en": "TOM FORD - Tuscan Leather",
+      "expected_brand": "Tom Ford",
+      "expected_concentration": "EDP",
+      "expected_usd_per_kg": "202.4",
+      "source_url": "https://www.tomfordbeauty.com/products/tuscan-leather-eau-de-parfum",
+      "expected_old_notes": {
+        "top": [
+          "تمشک سیاه",
+          "زعفران",
+          "آویشن"
+        ],
+        "middle": [
+          "صمغ کندر عمان",
+          "گل یاس شب‌بو"
+        ],
+        "base": [
+          "چرم دست‌ساز ایتالیایی",
+          "جیر",
+          "روایح چوبی",
+          "کهربا"
+        ]
+      },
+      "verified_notes": {
+        "top": [],
+        "middle": [],
+        "base": []
+      },
+      "expected_old_accords": [
+        "اسطوره عطر چرمی جهان که تمام استانداردهای تاریخ را تغییر داد",
+        "بوی چرم ماشین‌های سوپر اسپرت و کاپشن‌های لوکس"
+      ],
+      "verified_accords": [
+        "زعفران",
+        "تمشک",
+        "آویشن",
+        "کندر",
+        "یاس شب‌بوی",
+        "آکورد چرم",
+        "آکورد جیر",
+        "چوب عنبری"
+      ],
+      "expected_old_notice": "این محصول بازآفرینی دست‌ساز است و محصول اورجینال برند اصلی نیست. نام رایحه مرجع از وب‌سایت رسمی برند بررسی شده؛ هویت و کیفیت اسانس تأمین‌کننده مستقلاً تأیید نشده است.",
+      "verified_notice": "این محصول بازآفرینی دست‌ساز است و محصول اورجینال برند اصلی نیست. اطلاعات رایحه مرجع از وب‌سایت رسمی برند گرفته شده؛ هویت و نسخه اسانس تأمین‌کننده مستقلاً تأیید نشده است."
+    }
+  ]
+}
