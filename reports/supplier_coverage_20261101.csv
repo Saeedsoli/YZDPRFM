@@ -112,7 +112,7 @@ HAVOC,HAVOC,Unisex,هاواک,2,"349,350",110,H,pending,هنوز قیمت مرج
 HERMES,Terre D`Hermes,Men,تق هرمس,1,356,247.5,H,pending,هنوز قیمت مرجع منتسب نشده,,,,,
 HERMES,Voyage d`Hermes,Unisex,ویاج هرمس,1,357,94.6,H,pending,هنوز قیمت مرجع منتسب نشده,,,,,
 HUGO BOSS,VERSUS,Unisex,ورسوز,4,"363,364,365,366",93.5,"H,P",pending,هنوز قیمت مرجع منتسب نشده,,,,,
-HUGO BOSS,BOSS 98,Men,بوس 98,1,367,88,I,pending,هنوز قیمت مرجع منتسب نشده,,,,,
+HUGO BOSS,BOSS 98,Men,بوس 98,1,367,88,I,provisional,قیمت موقت با شاهد نام؛ هویت اسانس تأییدنشده,YZD-PROD-1798,https://www.hugoboss.com/boss-bottled-eau-de-toilette-50ml/hbeu58000035_999.html,official_reference_prices_v33.json,,
 HUGO BOSS,Boss Famme,Women,هوگو زنانه,2,"368,369",278.3,H,provisional,قیمت موقت با شاهد نام؛ هویت اسانس تأییدنشده,SUP-BS-900050,https://www.hugoboss.com/fr/eau-de-parfum-femme-by-boss-50%C2%A0ml/0737052041285.html,official_reference_prices_v19.json,,
 HUGO BOSS,Boss,Men,هوگو مردانه,1,370,119.9,I,pending,هنوز قیمت مرجع منتسب نشده,,,,,
 Initio,OUD FOR GREATNESS,Unisex,عود فور گریتنس,1,376,352,H,provisional,قیمت موقت با شاهد نام؛ هویت اسانس تأییدنشده,YZD-PROD-0662,https://us.initioparfums.com/products/oud-for-greatness,official_reference_prices_v7.json,,
@@ -128,7 +128,7 @@ JENNIFER LOPEZ,Still,Women,استیل جنیفر,3,"419,420,421",190.3,H,seconda
 JESUS DEL POZO,Halloween,Women,هالووین,2,"427,428",190.3,H,secondary,قیمت موقت با منبع مستقل؛ هویت اسانس تأییدنشده,SUP-TP-910011,https://www.fragrantica.com/perfume/Halloween/Halloween-1444.html,secondary_reference_prices_v2.json,,
 JOOP,JOOP HOMME (Red),Men,جوپ سبز,1,434,113.3,H,pending,هنوز قیمت مرجع منتسب نشده,,,,رنگ فارسی سبز و انگلیسی قرمز متناقض است؛ مدل قابل تعیین نیست.,https://www.fragrantica.com/perfume/Joop/Nightflight-1721.html
 JOOP,Joop Night Flight (Green),Men,جوپ قرمز,1,435,83.6,H,pending,هنوز قیمت مرجع منتسب نشده,,,,رنگ فارسی قرمز و انگلیسی سبز متناقض است؛ مدل قابل تعیین نیست.,https://www.fragrantica.com/perfume/Joop/Nightflight-1721.html
-JOOP,Joop yellow,Men,جوپ زرد,1,436,77,H,pending,هنوز قیمت مرجع منتسب نشده,,,,,
+JOOP,Joop yellow,Men,جوپ زرد,1,436,77,H,secondary,قیمت موقت با منبع مستقل؛ هویت اسانس تأییدنشده,SUP-TP-910038,https://www.fragrantica.com/perfume/Joop/Joop-Femme-3100.html,secondary_reference_prices_v16.json,,
 JUICY COUTURE,Viva La Juicy,Women,ویوالا جویسی,2,"442,443",132,I,provisional,قیمت موقت با شاهد نام؛ هویت اسانس تأییدنشده,SUP-JC-900024,https://juicycouture.com/products/juicy-couture-viva-la-juicy-eau-de-parfum-spray-3-4oz,official_reference_prices_v16.json,,
 LACOSTE,Essential,Men,لاگوست اسنشیال (سبز),1,449,140.8,H,provisional,قیمت موقت با شاهد نام؛ هویت اسانس تأییدنشده,SUP-LC-900017,https://www.lacoste.com/se/lacoste/men/accessories/fragrance/LC011A01.html,official_reference_prices_v15.json,,
 LACOSTE,Pour Femme,Women,لاگوست الیگیتور,1,450,128.7,B,provisional,قیمت موقت با شاهد نام؛ هویت اسانس تأییدنشده,SUP-LC-900018,https://www.lacoste.com/it/lacoste/donna/accessori/profumi/LC014A01.html,official_reference_prices_v15.json,,
@@ -155,7 +155,7 @@ LOUIS VUITTON,L`IMMENSITÉ,Men,ال ایمنسیت,2,"528,529",478.5,H,provision
 LOUIS VUITTON,OMBRE NOMADE,Unisex,امبر نومد,1,530,425.7,H,provisional,قیمت موقت با شاهد نام؛ هویت اسانس تأییدنشده,SUP-LV-900004,https://me.louisvuitton.com/eng-ae/products/Ombre-Nomade-nvprod990245v/LP0096,lv_reference_prices_v1.json,,
 LOUIS VUITTON,STELLAR TIMES,Unisex,استلارتایمز,1,531,429,H,provisional,قیمت موقت با شاهد نام؛ هویت اسانس تأییدنشده,SUP-LV-900005,https://my.louisvuitton.com/eng-my/products/stellar-times-nvprod7340023v/LP0526,lv_reference_prices_v1.json,,
 LOUIS VUITTON,California Dream,Men,کالیفرنیا دریم,1,532,126.5,I,provisional,قیمت موقت با شاهد نام؛ هویت اسانس تأییدنشده,SUP-LV-900006,https://uk.louisvuitton.com/eng-gb/products/california-dream-nvprod2210033v/LP0175,lv_reference_prices_v1.json,,
-MAXI,MAXI,Men,مکسی,1,538,116.6,I,pending,هنوز قیمت مرجع منتسب نشده,,,,,
+MAXI,MAXI,Men,مکسی,1,538,116.6,I,secondary,قیمت موقت با منبع مستقل؛ هویت اسانس تأییدنشده,SUP-TP-910039,https://www.fragrantica.com/perfume/Max-Factor/Just-Call-Me-Maxi-41450.html,secondary_reference_prices_v16.json,,
 MEMO,Irish Leader,Unisex,آیریش لدر,1,544,265.1,H,provisional,قیمت موقت با شاهد نام؛ هویت اسانس تأییدنشده,YZD-PROD-1159,https://us.memoparis.com/products/irish-leather-eau-de-parfum-30ml,official_reference_prices_v11.json,,
 MEMO,JAMAL`S PALACE,Men,جمال پالاس,1,545,467.5,H,secondary,قیمت موقت با منبع مستقل؛ هویت اسانس تأییدنشده,SUP-TP-910001,https://www.fragrantica.com/perfume/Memo-Paris/Jamal-s-Palace-60077.html,secondary_reference_prices_v1.json,,
 MEMO,RETBA,Unisex,رتبا,1,546,332.2,H,secondary,قیمت موقت با منبع مستقل؛ هویت اسانس تأییدنشده,SUP-TP-910002,https://www.fragrantica.com/perfume/Memo-Paris/Retba-60076.html,secondary_reference_prices_v1.json,,

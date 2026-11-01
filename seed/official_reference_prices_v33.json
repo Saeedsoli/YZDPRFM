@@ -1,0 +1,50 @@
+{
+  "version": "official_reference_prices_2026_11_v33",
+  "supplier_file_sha256": "bbe8f40610bc765bda0a7d2da9dbe78f4e397458a6991239c3c18d0853f33f5c",
+  "description": "Provisional name-based prices; supplier essence unverified; no activation.",
+  "items": [
+    {
+      "product_id": "YZD-PROD-1798",
+      "slug": "hugo-boss-boss-bottled-edt",
+      "brand_en": "Hugo Boss",
+      "expected_name_en": "HUGO BOSS - Boss Bottled EDT",
+      "reference_name": "Boss Bottled EDT",
+      "official_url": "https://www.hugoboss.com/boss-bottled-eau-de-toilette-50ml/hbeu58000035_999.html",
+      "supplier_brand": "HUGO BOSS",
+      "supplier_model": "BOSS 98",
+      "usd_per_kg": "88",
+      "quality": "I",
+      "match_status": "name_matched_supplier_identity_unverified",
+      "expected_edps": [
+        {
+          "sku": "YZD-1798-EDP-010",
+          "volume_ml": 10,
+          "price_toman": 394999,
+          "stock": 0,
+          "price_usd": 3.5
+        },
+        {
+          "sku": "YZD-1798-EDP-030",
+          "volume_ml": 30,
+          "price_toman": 885000,
+          "stock": 0,
+          "price_usd": 3.5
+        },
+        {
+          "sku": "YZD-1798-EDP-050",
+          "volume_ml": 50,
+          "price_toman": 1375000,
+          "stock": 0,
+          "price_usd": 3.5
+        },
+        {
+          "sku": "YZD-1798-EDP-100",
+          "volume_ml": 100,
+          "price_toman": 2600000,
+          "stock": 0,
+          "price_usd": 3.5
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,43 @@
+{
+  "version": "secondary_reference_prices_2026_11_v16",
+  "supplier_file_sha256": "bbe8f40610bc765bda0a7d2da9dbe78f4e397458a6991239c3c18d0853f33f5c",
+  "description": "Independent sources; provisional name matches, supplier essence identity unverified.",
+  "items": [
+    {
+      "product_id": "SUP-TP-910038",
+      "slug": "joop-femme-original",
+      "brand_en": "Joop!",
+      "expected_name_en": "Joop! Femme",
+      "reference_name": "Joop! Femme",
+      "source_url": "https://www.fragrantica.com/perfume/Joop/Joop-Femme-3100.html",
+      "provider": "Fragrantica",
+      "status": "secondary_original_found_supplier_essence_unverified",
+      "checked_date": "2026-11-01",
+      "supplier_brand": "JOOP",
+      "supplier_model": "Joop yellow",
+      "usd_per_kg": "77",
+      "quality": "H",
+      "match_status": "name_matched_supplier_identity_unverified",
+      "expected_edps": [],
+      "legacy_backfill": false
+    },
+    {
+      "product_id": "SUP-TP-910039",
+      "slug": "max-factor-just-call-me-maxi",
+      "brand_en": "Max Factor",
+      "expected_name_en": "MAX FACTOR - Just Call Me Maxi",
+      "reference_name": "Just Call Me Maxi",
+      "source_url": "https://www.fragrantica.com/perfume/Max-Factor/Just-Call-Me-Maxi-41450.html",
+      "provider": "Fragrantica",
+      "status": "secondary_original_found_supplier_essence_unverified",
+      "checked_date": "2026-11-01",
+      "supplier_brand": "MAXI",
+      "supplier_model": "MAXI",
+      "usd_per_kg": "116.6",
+      "quality": "I",
+      "match_status": "name_matched_supplier_identity_unverified",
+      "expected_edps": [],
+      "legacy_backfill": false
+    }
+  ]
+}

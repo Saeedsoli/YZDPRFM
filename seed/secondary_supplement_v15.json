@@ -1,0 +1,80 @@
+[
+  {
+    "id": "SUP-TP-910038",
+    "slug": "joop-femme-original",
+    "name_fa": "جوپ فم",
+    "name_en": "Joop! Femme",
+    "title_fa_base": "جوپ فم",
+    "full_display_fa": "جوپ — جوپ فم",
+    "inspired_brand_en": "Joop!",
+    "inspired_brand_fa": "جوپ",
+    "gender": null,
+    "notes": {
+      "top": [
+        "آلدهیدها",
+        "گشنیز",
+        "نت‌های میوه‌ای",
+        "ترنج",
+        "لیمو"
+      ],
+      "middle": [
+        "یاس",
+        "شکوفه پرتقال",
+        "رز",
+        "گل برف"
+      ],
+      "base": [
+        "آکورد سیوت",
+        "چوب صندل",
+        "وانیل",
+        "کهربا",
+        "تونکا",
+        "مشک",
+        "پچولی",
+        "خزه بلوط",
+        "سدر"
+      ]
+    },
+    "accords": [],
+    "transclaimer_notice": "این محصول بازآفرینی دست‌ساز است و محصول اورجینال برند اصلی نیست. اطلاعات رایحه مرجع از فراگرانتیکا، یک منبع مستقل، گرفته شده و هویت اسانس تأمین‌کننده مستقلاً تأیید نشده است.",
+    "source_url": "https://www.fragrantica.com/perfume/Joop/Joop-Femme-3100.html",
+    "source_note": "Provisional local-market name/colour alias; no verification of supplier essence, material or version.",
+    "variants": []
+  },
+  {
+    "id": "SUP-TP-910039",
+    "slug": "max-factor-just-call-me-maxi",
+    "name_fa": "جاست کال می مکسی",
+    "name_en": "Just Call Me Maxi",
+    "title_fa_base": "جاست کال می مکسی",
+    "full_display_fa": "مکس فکتور — جاست کال می مکسی",
+    "inspired_brand_en": "Max Factor",
+    "inspired_brand_fa": "مکس فکتور",
+    "gender": null,
+    "notes": {
+      "top": [
+        "گالبانوم",
+        "آلدهیدها"
+      ],
+      "middle": [
+        "یلانگ یلانگ",
+        "یاس",
+        "پیچ امین‌الدوله"
+      ],
+      "base": [
+        "کهربا",
+        "خزه بلوط",
+        "پچولی",
+        "چوب صندل",
+        "وانیل",
+        "لابدانوم",
+        "دانه تونکا"
+      ]
+    },
+    "accords": [],
+    "transclaimer_notice": "این محصول بازآفرینی دست‌ساز است و محصول اورجینال برند اصلی نیست. اطلاعات رایحه مرجع از فراگرانتیکا، یک منبع مستقل، گرفته شده و هویت اسانس تأمین‌کننده مستقلاً تأیید نشده است.",
+    "source_url": "https://www.fragrantica.com/perfume/Max-Factor/Just-Call-Me-Maxi-41450.html",
+    "source_note": "Provisional local-market name/colour alias; no verification of supplier essence, material or version.",
+    "variants": []
+  }
+]
