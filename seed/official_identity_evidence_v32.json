@@ -1,0 +1,86 @@
+{
+  "version": "official_identity_evidence_v32",
+  "scope": "Official reference-original name only; actual supplier essence identity is unverified. No supplier pricing.",
+  "items": [
+    {
+      "product_id": "YZD-PROD-1817",
+      "slug": "montblanc-montblanc-legend-edt",
+      "brand_en": "Montblanc",
+      "expected_name_en": "Montblanc Legend EDT",
+      "reference_name": "Montblanc Legend EDT",
+      "official_url": "https://www.montblanc.com/en-us/fragrances/collection/legend",
+      "status": "official_original_found_supplier_essence_unverified",
+      "checked_date": "2026-11-01"
+    },
+    {
+      "product_id": "YZD-PROD-0320",
+      "slug": "montblanc-legend-blue-2024",
+      "brand_en": "Montblanc",
+      "expected_name_en": "MONTBLANC - Legend Blue 2024",
+      "reference_name": "Montblanc Legend Blue EDP",
+      "official_url": "https://www.montblanc.com/en-si/montblanc-legend-blue-eau-de-parfum-100-ml-MB133517.html",
+      "status": "official_original_found_supplier_essence_unverified",
+      "checked_date": "2026-11-01"
+    },
+    {
+      "product_id": "YZD-PROD-1698",
+      "slug": "versace-eros-edt",
+      "brand_en": "Versace",
+      "expected_name_en": "VERSACE - Eros EDT",
+      "reference_name": "Versace Eros EDT",
+      "official_url": "https://www.versace.com/us/en/men/accessories/fragrances-body-care/eros/eros-edt-100-ml-blue/R740010-R100MLS_RNUL.html",
+      "status": "official_original_found_supplier_essence_unverified",
+      "checked_date": "2026-11-01"
+    },
+    {
+      "product_id": "YZD-PROD-1699",
+      "slug": "versace-eros-flame",
+      "brand_en": "Versace",
+      "expected_name_en": "VERSACE - Eros Flame",
+      "reference_name": "Versace Eros Flame EDP",
+      "official_url": "https://www.versace.com/row/en/men/accessories/fragrances-body-care/eros-flame/eros-flame-edp-100-ml/R741010-R100MLS_RNUL.html",
+      "status": "official_original_found_supplier_essence_unverified",
+      "checked_date": "2026-11-01"
+    },
+    {
+      "product_id": "YZD-PROD-1700",
+      "slug": "versace-eros-energy-2024",
+      "brand_en": "Versace",
+      "expected_name_en": "VERSACE - Eros Energy 2024",
+      "reference_name": "Versace Eros Energy EDP",
+      "official_url": "https://www.versace.com/us/en/men/accessories/fragrances-body-care/eros-energy/eros-energy-edp-100-ml-yellow/R742010-R100MLS_RNUL.html",
+      "status": "official_original_found_supplier_essence_unverified",
+      "checked_date": "2026-11-01"
+    },
+    {
+      "product_id": "YZD-PROD-1802",
+      "slug": "burberry-burberry-london-for-men",
+      "brand_en": "Burberry",
+      "expected_name_en": "Burberry London for Men",
+      "reference_name": "Burberry London for Men EDT",
+      "official_url": "https://us.burberry.com/burberry-london-eau-de-toilette-100ml-p34547291",
+      "status": "official_original_found_supplier_essence_unverified",
+      "checked_date": "2026-11-01"
+    },
+    {
+      "product_id": "YZD-PROD-2062",
+      "slug": "burberry-burberry-london-for-women",
+      "brand_en": "Burberry",
+      "expected_name_en": "Burberry London for Women",
+      "reference_name": "Burberry London for Women EDP",
+      "official_url": "https://us.burberry.com/burberry-london-eau-de-parfum-100ml-p34547261",
+      "status": "official_original_found_supplier_essence_unverified",
+      "checked_date": "2026-11-01"
+    },
+    {
+      "product_id": "YZD-PROD-1585",
+      "slug": "jean-paul-gaultier-le-beau-paradise-garden-2024",
+      "brand_en": "Jean Paul Gaultier",
+      "expected_name_en": "JEAN PAUL GAULTIER - Le Beau Paradise Garden 2024",
+      "reference_name": "Le Beau Paradise Garden EDP",
+      "official_url": "https://www.jeanpaulgaultier.com/fr/fr/p/gamme-le-beau/le-beau-paradise-garden-eau-de-parfum-000000000065199801",
+      "status": "official_original_found_supplier_essence_unverified",
+      "checked_date": "2026-11-01"
+    }
+  ]
+}

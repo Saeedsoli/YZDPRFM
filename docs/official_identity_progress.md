@@ -526,3 +526,21 @@ Guidance با Guidance 46 یکی نشده است. Platinium نام کوتاه‌
 | Pasha de Cartier EDT | https://www.cartier.com/en-fr/fragrances/fragrances/pasha-de-cartier/pasha-de-cartier-CR65200003 |
 
 نسخه‌های متفاوت هر مجموعه جداگانه باقی مانده‌اند؛ ردیف‌های فایل قیمت که نسخه مشخص ندارند به هیچ‌کدام منتسب نشده‌اند. آکورد چرم و سایر توصیف‌های بویایی به عطر مرجع مربوط‌اند و وجود مواد متناظر در اسانس را ثابت نمی‌کنند.
+
+
+## هشت شناسنامه رسمی دیگر — ۱ نوامبر ۲۰۲۶
+
+اطلاعات هشت محصول موجود براساس صفحه رسمی هر نسخه و با محافظ ویرایش مدیر اصلاح شد. قیمت، واریانت و سفارش‌ها تغییر نکردند و محصولات غیرقابل سفارش‌اند. نسخه اسانس تحویلی هنوز تأیید نشده و قیمت‌های نامشخص فایل به این نسخه‌ها نسبت داده نشده‌اند.
+
+| رایحه مرجع | صفحه رسمی |
+|---|---|
+| Montblanc Legend EDT | https://www.montblanc.com/en-us/fragrances/collection/legend |
+| Montblanc Legend Blue EDP | https://www.montblanc.com/en-si/montblanc-legend-blue-eau-de-parfum-100-ml-MB133517.html |
+| Versace Eros EDT | https://www.versace.com/us/en/men/accessories/fragrances-body-care/eros/eros-edt-100-ml-blue/R740010-R100MLS_RNUL.html |
+| Versace Eros Flame EDP | https://www.versace.com/row/en/men/accessories/fragrances-body-care/eros-flame/eros-flame-edp-100-ml/R741010-R100MLS_RNUL.html |
+| Versace Eros Energy EDP | https://www.versace.com/us/en/men/accessories/fragrances-body-care/eros-energy/eros-energy-edp-100-ml-yellow/R742010-R100MLS_RNUL.html |
+| Burberry London for Men EDT | https://us.burberry.com/burberry-london-eau-de-toilette-100ml-p34547291 |
+| Burberry London for Women EDP | https://us.burberry.com/burberry-london-eau-de-parfum-100ml-p34547261 |
+| Le Beau Paradise Garden EDP | https://www.jeanpaulgaultier.com/fr/fr/p/gamme-le-beau/le-beau-paradise-garden-eau-de-parfum-000000000065199801 |
+
+مراجع هر نسخه از نسخه‌های متفاوت همان مجموعه جدا هستند. صفحه رسمی Legend دو فهرست متفاوت برای نسخه کلاسیک و EDT دارد؛ فقط نت‌های مشترک بدون هرم ثبت شدند. نت‌های اعلام‌شده درباره رایحه مرجع هستند و مواد اسانس تحویلی را اثبات نمی‌کنند.

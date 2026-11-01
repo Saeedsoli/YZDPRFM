@@ -693,3 +693,10 @@ node_modules/   با npm install برمی‌گردد
 - `seed/official_identity_evidence_v31.json`
 - `seed/official_note_corrections_v27.json`
 - `scripts/test_official_notes_v27.js`
+
+
+### هشت شناسنامه رسمی جدید
+
+- `seed/official_identity_evidence_v32.json`
+- `seed/official_note_corrections_v28.json`
+- `scripts/test_official_notes_v28.js`
