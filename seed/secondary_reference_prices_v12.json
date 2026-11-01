@@ -1,0 +1,61 @@
+{
+  "version": "secondary_reference_prices_2026_11_v12",
+  "supplier_file_sha256": "bbe8f40610bc765bda0a7d2da9dbe78f4e397458a6991239c3c18d0853f33f5c",
+  "description": "Independent references, provisional name matches; supplier essence identity unverified.",
+  "items": [
+    {
+      "product_id": "SUP-TP-910032",
+      "slug": "remy-marquis-shalis-cologne",
+      "brand_en": "Remy Marquis",
+      "expected_name_en": "REMY MARQUIS - Shalis Cologne",
+      "reference_name": "Shalis Cologne",
+      "source_url": "https://www.fragrantica.com/perfume/Remy-Marquis/Shalis-Cologne-20850.html",
+      "provider": "Fragrantica",
+      "status": "secondary_original_found_supplier_essence_unverified",
+      "checked_date": "2026-11-01",
+      "supplier_brand": "Remy Marquis",
+      "supplier_model": "Shalis for men",
+      "usd_per_kg": "92.4",
+      "quality": "B",
+      "match_status": "name_matched_supplier_identity_unverified",
+      "expected_edps": [],
+      "legacy_backfill": false
+    },
+    {
+      "product_id": "SUP-TP-910033",
+      "slug": "sapil-chichi-original-women",
+      "brand_en": "Sapil",
+      "expected_name_en": "SAPIL - Chichi",
+      "reference_name": "Chichi",
+      "source_url": "https://www.fragrantica.com/perfume/Sapil/Chichi-25560.html",
+      "provider": "Fragrantica",
+      "status": "secondary_original_found_supplier_essence_unverified",
+      "checked_date": "2026-11-01",
+      "supplier_brand": "Sapil",
+      "supplier_model": "Chi Chi",
+      "usd_per_kg": "75.9",
+      "quality": "I",
+      "match_status": "name_matched_supplier_identity_unverified",
+      "expected_edps": [],
+      "legacy_backfill": false
+    },
+    {
+      "product_id": "SUP-TP-910034",
+      "slug": "escada-collection-1997",
+      "brand_en": "Escada",
+      "expected_name_en": "Escada Collection",
+      "reference_name": "Escada Collection",
+      "source_url": "https://www.fragrantica.com/perfume/Escada/Escada-Collection-1369.html",
+      "provider": "Fragrantica",
+      "status": "secondary_original_found_supplier_essence_unverified",
+      "checked_date": "2026-11-01",
+      "supplier_brand": "ESCADA",
+      "supplier_model": "Collection",
+      "usd_per_kg": "81.4",
+      "quality": "I",
+      "match_status": "name_matched_supplier_identity_unverified",
+      "expected_edps": [],
+      "legacy_backfill": false
+    }
+  ]
+}
