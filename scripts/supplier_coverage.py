@@ -159,14 +159,34 @@ def read_db(path):
         return products,evidence,legacy_marker,secondary
     finally:db.close()
 
+def apply_review_flags(root, source_sha, rows):
+    """Attach manually reviewed ambiguity advisories; never alter price state."""
+    flags=json.loads((root/'reports/supplier_review_flags_20261101.json').read_text(encoding='utf-8'))
+    if flags.get('source_sha256') != source_sha: raise ValueError('review flags source hash mismatch')
+    by_key={(r['brand'],r['model'],r['supplier_gender']):r for r in rows}
+    seen=set()
+    for item in flags['items']:
+        key=(item['brand'],item['model'],item['supplier_gender'])
+        if key in seen or key not in by_key or item['expected_fa'] not in by_key[key]['supplier_names'].split(' / ') or not item['warning'] or not item['reference_urls']:
+            raise ValueError('review flag does not match source group')
+        seen.add(key)
+        by_key[key]['review_warning']=item['warning']
+        by_key[key]['review_sources']=' | '.join(item['reference_urls'])
+    for r in rows:
+        r.setdefault('review_warning','')
+        r.setdefault('review_sources','')
+    return len(seen)
+
 def audit(root,db_path):
     rows,sha=read_rows(root/SOURCE);groups=group_rows(rows);products,evidence,legacy_marker,secondary=read_db(db_path)
     candidates=manifests(root,sha);result,unmapped=assess(groups,candidates,products,evidence,sha,legacy_marker,secondary)
+    flag_count=apply_review_flags(root,sha,result)
     counts=collections.Counter(r['state'] for r in result)
     summary={'source_sha256':sha,'supplier_rows':len(rows),'supplier_groups':len(groups),
              'definition':'exact supplier brand + model + supplier gender; not proven unique fragrances',
              'groups_by_state':{k:counts[k] for k in STATES},
              'rows_by_state':{k:sum(r['row_count'] for r in result if r['state']==k) for k in STATES},
+             'manual_review_flags':flag_count,
              'local_products':len(products),'local_priced_products':sum(p['price'] is not None for p in products.values()),
              'local_modes':dict(collections.Counter(p['mode'] for p in products.values())),
              'unmapped_priced_manifest_ids':unmapped,

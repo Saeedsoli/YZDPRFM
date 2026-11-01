@@ -1,0 +1,90 @@
+{
+  "source_sha256": "bbe8f40610bc765bda0a7d2da9dbe78f4e397458a6991239c3c18d0853f33f5c",
+  "description": "Manual advisory only; not an import block or supplier verification.",
+  "items": [
+    {
+      "brand": "AMUAGE",
+      "model": "Jubilation XXV",
+      "supplier_gender": "Men",
+      "expected_fa": "آمواج جوبیلیشن 40",
+      "warning": "نام فارسی ۴۰ با نام انگلیسی XXV متفاوت است؛ نسخه اسانس نامشخص.",
+      "reference_urls": [
+        "https://amouage.com/products/new-jubilation-40-man-exceptional-extrait"
+      ]
+    },
+    {
+      "brand": "PARFUMS de MARLY",
+      "model": "Layton",
+      "supplier_gender": "Women",
+      "expected_fa": "دلینا",
+      "warning": "نام فارسی دلینا و نام انگلیسی لیتون دو رایحه جدا هستند؛ انتساب نامشخص.",
+      "reference_urls": [
+        "https://ae.parfums-de-marly.com/products/layton",
+        "https://us.parfums-de-marly.com/collections/delina-family"
+      ]
+    },
+    {
+      "brand": "JOOP",
+      "model": "JOOP HOMME (Red)",
+      "supplier_gender": "Men",
+      "expected_fa": "جوپ سبز",
+      "warning": "رنگ فارسی سبز و انگلیسی قرمز متناقض است؛ مدل قابل تعیین نیست.",
+      "reference_urls": [
+        "https://www.fragrantica.com/perfume/Joop/Nightflight-1721.html"
+      ]
+    },
+    {
+      "brand": "JOOP",
+      "model": "Joop Night Flight (Green)",
+      "supplier_gender": "Men",
+      "expected_fa": "جوپ قرمز",
+      "warning": "رنگ فارسی قرمز و انگلیسی سبز متناقض است؛ مدل قابل تعیین نیست.",
+      "reference_urls": [
+        "https://www.fragrantica.com/perfume/Joop/Nightflight-1721.html"
+      ]
+    },
+    {
+      "brand": "Nikos",
+      "model": "Sculpture",
+      "supplier_gender": "Men",
+      "expected_fa": "اسکالیپچر",
+      "warning": "Sculpture Homme و Sculpture Parfum جدا هستند؛ نسخه فایل تعیین نشده است.",
+      "reference_urls": [
+        "https://www.fragrantica.com/perfume/Nikos/Sculpture-Homme-925.html",
+        "https://www.fragrantica.com/perfume/Nikos/Sculpture-Parfum-74214.html"
+      ]
+    },
+    {
+      "brand": "Paco rabanne",
+      "model": "Black XS L`exces",
+      "supplier_gender": "Men",
+      "expected_fa": "بلک ایکس اس",
+      "warning": "نام فارسی نسخه L’Exces را مشخص نمی‌کند و دو رایحه For Him و For Her وجود دارند؛ جنسیت فایل به تنهایی شاهد نسخه نیست.",
+      "reference_urls": [
+        "https://www.fragrantica.com/perfume/Paco-Rabanne/Black-XS-L-Exces-for-Her-13804.html",
+        "https://www.fragrantica.com/perfume/Paco-Rabanne/Black-XS-L-Exces-for-Him-13805.html"
+      ]
+    },
+    {
+      "brand": "JEAN PAUL GAULTIER",
+      "model": "PARADISE GARDEN",
+      "supplier_gender": "Men",
+      "expected_fa": "پارادایز گاردن",
+      "warning": "نسخه Le Beau و La Belle وجود دارد؛ نام فایل نسخه را صریح نمی‌کند.",
+      "reference_urls": [
+        "https://www.jeanpaulgaultier.com/ww/es/p/linea-le-beau/le-beau-paradise-garden-eau-de-parfum-000000000065199801"
+      ]
+    },
+    {
+      "brand": "American Perfume",
+      "model": "TEA ROSE",
+      "supplier_gender": "Unisex",
+      "expected_fa": "تی رز",
+      "warning": "برند فایل و نسخه Tea Rose اصلی یا EDP با منابع مستقل به طور قطعی تطبیق نشده است.",
+      "reference_urls": [
+        "https://www.fragrantica.com/perfume/Perfumer-s-Workshop/Tea-Rose-5512.html",
+        "https://www.fragrantica.com/perfume/Perfumer-s-Workshop/Eau-de-Parfum-Tea-Rose-29757.html"
+      ]
+    }
+  ]
+}

@@ -50,6 +50,24 @@ secondary_ev={'legacy':{'sha':sha,'price':'20','quality':'H','match_status':'nam
 result,_=a.assess(groups,[secondary_candidate],products,{},sha,True,secondary_ev);assert next(r for r in result if r['brand']=='E')['state']=='secondary'
 result,_=a.assess(groups,[secondary_candidate],products,{},sha,True,{});assert next(r for r in result if r['brand']=='E')['state']=='conflict'
 actual,source_sha=a.read_rows(ROOT/a.SOURCE);assert len(actual)==342;assert len(a.group_rows(actual))==265
+# Manual advisories are tied to the exact source file and never assign a price.
+actual_groups=a.group_rows(actual)
+raw_results,_=a.assess(actual_groups,[],{}, {},source_sha,False)
+before_states=[r['state'] for r in raw_results]
+assert a.apply_review_flags(ROOT,source_sha,raw_results)==8
+assert [r['state'] for r in raw_results]==before_states
+flagged={(r['brand'],r['model']):r for r in raw_results if r['review_warning']}
+assert ('PARFUMS de MARLY','Layton') in flagged and 'دلینا' in flagged[('PARFUMS de MARLY','Layton')]['review_warning']
+assert ('AMUAGE','Jubilation XXV') in flagged
+try: a.apply_review_flags(ROOT,'0'*64,raw_results); assert False, 'stale source must fail'
+except ValueError: pass
+with tempfile.TemporaryDirectory(prefix='coverage-flags-') as d:
+    temp=Path(d);(temp/'reports').mkdir()
+    flags=json.loads((ROOT/'reports/supplier_review_flags_20261101.json').read_text(encoding='utf8'))
+    flags['items'].append(flags['items'][0])
+    (temp/'reports/supplier_review_flags_20261101.json').write_text(json.dumps(flags),encoding='utf8')
+    try: a.apply_review_flags(temp,source_sha,raw_results); assert False, 'duplicate flag must fail'
+    except ValueError: pass
 # Minimal SQLite ensures reads never initialize application schema or mutate data.
 with tempfile.TemporaryDirectory(prefix='coverage-db-') as d:
     p=Path(d)/'test.sqlite';db=sqlite3.connect(p)
