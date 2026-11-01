@@ -187,7 +187,9 @@ const combos = db.prepare(`
   SELECT family_slug, gender, COUNT(*) n FROM products
   GROUP BY family_slug, gender ORDER BY n DESC`).all();
 const TAG = { MEN: 'm', WOMEN: 'w', UNISEX: 'u' };
-const uncovered = combos.filter(c =>
+// Unknown family or gender is not a real combination to fabricate assets for.
+// Its images are audited separately below; no guessed gender/family is assigned.
+const uncovered = combos.filter(c => c.family_slug && TAG[c.gender] &&
   !fs.existsSync(path.join(IMG, `fam-${c.family_slug}-${TAG[c.gender]}-1.jpg`)));
 const uncoveredBig = uncovered.filter(c => c.n >= 20);
 
@@ -204,6 +206,17 @@ for (const r of rows) perImage.set(r.image_url, (perImage.get(r.image_url) || 0)
 const worst = Math.max(...perImage.values());
 add('پرمصرف‌ترین تصویر زیر ۵۰ محصول است', worst < 50,
     `${worst} محصول · میانگین ${Math.round(rows.length / perImage.size)}`);
+const unclassifiedDefault = rows.filter(x => !x.family_slug && /\/family-woody\.jpg$/.test(x.image_url || ''));
+add('تصویر پیش‌فرض رایحه‌های بدون خانواده بیش از حد تکرار نشده', unclassifiedDefault.length <= 20,
+    unclassifiedDefault.length ? `${unclassifiedDefault.length} محصول` : 'تصاویر نمادین یا انتخاب اختصاصی');
+const neutral = dist.filter(x => /\/generic-neutral-[1-5]\.jpg$/.test(x.image_url));
+add('تصاویر نمادین متنوع و حداکثر ۲۰ محصولی هستند', neutral.every(x=>x.n <= 20),
+    neutral.length ? neutral.map(x=>x.n).join('، ') : 'تصاویر اختصاصی جایگزین شده‌اند');
+for (const x of neutral) {
+  const base=path.basename(x.image_url).replace(/\.jpg$/, '');
+  add(`نسخه‌های تصویر نمادین ${base} موجودند`, ['.webp','-sm.jpg','-sm.webp'].every(ext=>fs.existsSync(path.join(IMG,base+ext))));
+}
+
 
 // ══ ۷) لوگوی برند ══
 console.log(d('\n  لوگوی برند روی بطری'));

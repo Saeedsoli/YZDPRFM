@@ -1,0 +1,836 @@
+{
+  "version": "generic_product_images_2026_11_v1",
+  "description": "Owner-approved illustrative generic images; not photographs of products.",
+  "items": [
+    {
+      "product_id": "SUP-AG-900014",
+      "slug": "ariana-grande-ari",
+      "expected_name_en": "ARIANA GRANDE - Ari",
+      "expected_brand": "Ariana Grande",
+      "expected_family": null,
+      "expected_gender": null,
+      "old_url": "/images/products/family-woody.jpg",
+      "image_url": "/images/products/generic-neutral-1.jpg"
+    },
+    {
+      "product_id": "SUP-AT-900013",
+      "slug": "atkinsons-her-majesty-the-oud",
+      "expected_name_en": "ATKINSONS - Her Majesty The Oud",
+      "expected_brand": "Atkinsons",
+      "expected_family": null,
+      "expected_gender": null,
+      "old_url": "/images/products/family-woody.jpg",
+      "image_url": "/images/products/generic-neutral-2.jpg"
+    },
+    {
+      "product_id": "SUP-ATKINSONS-OUD-SAVE-THE-KING",
+      "slug": "atkinsons-oud-save-the-king",
+      "expected_name_en": "ATKINSONS - Oud Save the King",
+      "expected_brand": "Atkinsons",
+      "expected_family": "oriental",
+      "expected_gender": null,
+      "old_url": "/images/products/family-woody.jpg",
+      "image_url": "/images/products/generic-neutral-3.jpg"
+    },
+    {
+      "product_id": "SUP-BS-900050",
+      "slug": "boss-femme",
+      "expected_name_en": "HUGO BOSS - Femme",
+      "expected_brand": "Hugo Boss",
+      "expected_family": null,
+      "expected_gender": null,
+      "old_url": "/images/products/family-woody.jpg",
+      "image_url": "/images/products/generic-neutral-4.jpg"
+    },
+    {
+      "product_id": "SUP-CH-900001",
+      "slug": "carolina-herrera-212-vip-women",
+      "expected_name_en": "CAROLINA HERRERA - 212 VIP",
+      "expected_brand": "Carolina Herrera",
+      "expected_family": null,
+      "expected_gender": null,
+      "old_url": "/images/products/family-woody.jpg",
+      "image_url": "/images/products/generic-neutral-5.jpg"
+    },
+    {
+      "product_id": "SUP-CH-900003",
+      "slug": "carolina-herrera-212-sexy-men",
+      "expected_name_en": "CAROLINA HERRERA - 212 Sexy Men",
+      "expected_brand": "Carolina Herrera",
+      "expected_family": null,
+      "expected_gender": null,
+      "old_url": "/images/products/family-woody.jpg",
+      "image_url": "/images/products/generic-neutral-1.jpg"
+    },
+    {
+      "product_id": "SUP-CH-900004",
+      "slug": "carolina-herrera-212-sexy-women",
+      "expected_name_en": "CAROLINA HERRERA - 212 Sexy",
+      "expected_brand": "Carolina Herrera",
+      "expected_family": null,
+      "expected_gender": null,
+      "old_url": "/images/products/family-woody.jpg",
+      "image_url": "/images/products/generic-neutral-2.jpg"
+    },
+    {
+      "product_id": "SUP-DG-900001",
+      "slug": "dolce-gabbana-dgvib3",
+      "expected_name_en": "DOLCE & GABBANA - DGVIB3",
+      "expected_brand": "Dolce & Gabbana",
+      "expected_family": null,
+      "expected_gender": null,
+      "old_url": "/images/products/family-woody.jpg",
+      "image_url": "/images/products/generic-neutral-3.jpg"
+    },
+    {
+      "product_id": "SUP-EP-900001",
+      "slug": "emper-epic-adventure",
+      "expected_name_en": "EMPER - Epic Adventure",
+      "expected_brand": "Emper",
+      "expected_family": null,
+      "expected_gender": null,
+      "old_url": "/images/products/family-woody.jpg",
+      "image_url": "/images/products/generic-neutral-4.jpg"
+    },
+    {
+      "product_id": "SUP-EP-900002",
+      "slug": "emper-chifon",
+      "expected_name_en": "EMPER - Chifon",
+      "expected_brand": "Emper",
+      "expected_family": null,
+      "expected_gender": null,
+      "old_url": "/images/products/family-woody.jpg",
+      "image_url": "/images/products/generic-neutral-5.jpg"
+    },
+    {
+      "product_id": "SUP-EV-900001",
+      "slug": "evaflor-whisky-silver",
+      "expected_name_en": "EVAFLOR - Whisky Silver",
+      "expected_brand": "Evaflor",
+      "expected_family": null,
+      "expected_gender": null,
+      "old_url": "/images/products/family-woody.jpg",
+      "image_url": "/images/products/generic-neutral-1.jpg"
+    },
+    {
+      "product_id": "SUP-EX-900011",
+      "slug": "ex-nihilo-fleur-narcotique",
+      "expected_name_en": "EX NIHILO - Fleur Narcotique",
+      "expected_brand": "Ex Nihilo",
+      "expected_family": null,
+      "expected_gender": null,
+      "old_url": "/images/products/family-woody.jpg",
+      "image_url": "/images/products/generic-neutral-2.jpg"
+    },
+    {
+      "product_id": "SUP-EX-900012",
+      "slug": "ex-nihilo-blue-talisman",
+      "expected_name_en": "EX NIHILO - Blue Talisman",
+      "expected_brand": "Ex Nihilo",
+      "expected_family": null,
+      "expected_gender": null,
+      "old_url": "/images/products/family-woody.jpg",
+      "image_url": "/images/products/generic-neutral-3.jpg"
+    },
+    {
+      "product_id": "SUP-GC-900015",
+      "slug": "gucci-rush",
+      "expected_name_en": "GUCCI - Rush",
+      "expected_brand": "Gucci",
+      "expected_family": null,
+      "expected_gender": null,
+      "old_url": "/images/products/family-woody.jpg",
+      "image_url": "/images/products/generic-neutral-4.jpg"
+    },
+    {
+      "product_id": "SUP-GC-900016",
+      "slug": "gucci-bloom",
+      "expected_name_en": "GUCCI - Bloom",
+      "expected_brand": "Gucci",
+      "expected_family": null,
+      "expected_gender": null,
+      "old_url": "/images/products/family-woody.jpg",
+      "image_url": "/images/products/generic-neutral-5.jpg"
+    },
+    {
+      "product_id": "SUP-GL-900027",
+      "slug": "guy-laroche-drakkar-noir",
+      "expected_name_en": "GUY LAROCHE - Drakkar Noir",
+      "expected_brand": "Guy Laroche",
+      "expected_family": null,
+      "expected_gender": null,
+      "old_url": "/images/products/family-woody.jpg",
+      "image_url": "/images/products/generic-neutral-1.jpg"
+    },
+    {
+      "product_id": "SUP-GU-900029",
+      "slug": "guerlain-baiser-de-russie",
+      "expected_name_en": "GUERLAIN - Baiser de Russie",
+      "expected_brand": "Guerlain",
+      "expected_family": null,
+      "expected_gender": null,
+      "old_url": "/images/products/family-woody.jpg",
+      "image_url": "/images/products/generic-neutral-2.jpg"
+    },
+    {
+      "product_id": "SUP-GU-900050",
+      "slug": "givenchy-xeryus",
+      "expected_name_en": "GIVENCHY - Xeryus",
+      "expected_brand": "Givenchy",
+      "expected_family": null,
+      "expected_gender": null,
+      "old_url": "/images/products/family-woody.jpg",
+      "image_url": "/images/products/generic-neutral-3.jpg"
+    },
+    {
+      "product_id": "SUP-GU-900051",
+      "slug": "givenchy-mmw",
+      "expected_name_en": "GIVENCHY - MMW",
+      "expected_brand": "Givenchy",
+      "expected_family": null,
+      "expected_gender": null,
+      "old_url": "/images/products/family-woody.jpg",
+      "image_url": "/images/products/generic-neutral-4.jpg"
+    },
+    {
+      "product_id": "SUP-JC-900024",
+      "slug": "juicy-couture-viva-la-juicy",
+      "expected_name_en": "JUICY COUTURE - Viva La Juicy",
+      "expected_brand": "Juicy Couture",
+      "expected_family": null,
+      "expected_gender": null,
+      "old_url": "/images/products/family-woody.jpg",
+      "image_url": "/images/products/generic-neutral-5.jpg"
+    },
+    {
+      "product_id": "SUP-JG-900025",
+      "slug": "jaguar-classic-black",
+      "expected_name_en": "JAGUAR - Classic Black",
+      "expected_brand": "Jaguar",
+      "expected_family": null,
+      "expected_gender": null,
+      "old_url": "/images/products/family-woody.jpg",
+      "image_url": "/images/products/generic-neutral-1.jpg"
+    },
+    {
+      "product_id": "SUP-JH-900028",
+      "slug": "juliette-has-a-gun-metal-chypre",
+      "expected_name_en": "JULIETTE HAS A GUN - Metal Chypré",
+      "expected_brand": "Juliette Has A Gun",
+      "expected_family": null,
+      "expected_gender": null,
+      "old_url": "/images/products/family-woody.jpg",
+      "image_url": "/images/products/generic-neutral-2.jpg"
+    },
+    {
+      "product_id": "SUP-KY-900001",
+      "slug": "kayali-wedding-velvet-santal-35",
+      "expected_name_en": "KAYALI - The Wedding Velvet Santal 35",
+      "expected_brand": "Kayali",
+      "expected_family": null,
+      "expected_gender": null,
+      "old_url": "/images/products/family-woody.jpg",
+      "image_url": "/images/products/generic-neutral-3.jpg"
+    },
+    {
+      "product_id": "SUP-LC-900017",
+      "slug": "lacoste-essential",
+      "expected_name_en": "LACOSTE - Essential",
+      "expected_brand": "Lacoste",
+      "expected_family": null,
+      "expected_gender": null,
+      "old_url": "/images/products/family-woody.jpg",
+      "image_url": "/images/products/generic-neutral-4.jpg"
+    },
+    {
+      "product_id": "SUP-LC-900018",
+      "slug": "lacoste-pour-femme",
+      "expected_name_en": "LACOSTE - Pour Femme",
+      "expected_brand": "Lacoste",
+      "expected_family": null,
+      "expected_gender": null,
+      "old_url": "/images/products/family-woody.jpg",
+      "image_url": "/images/products/generic-neutral-5.jpg"
+    },
+    {
+      "product_id": "SUP-LC-900023",
+      "slug": "lacoste-touch-of-pink",
+      "expected_name_en": "LACOSTE - Touch of Pink",
+      "expected_brand": "Lacoste",
+      "expected_family": null,
+      "expected_gender": null,
+      "old_url": "/images/products/family-woody.jpg",
+      "image_url": "/images/products/generic-neutral-1.jpg"
+    },
+    {
+      "product_id": "SUP-LL-900019",
+      "slug": "lalique-lamour",
+      "expected_name_en": "LALIQUE - L’Amour",
+      "expected_brand": "Lalique",
+      "expected_family": null,
+      "expected_gender": null,
+      "old_url": "/images/products/family-woody.jpg",
+      "image_url": "/images/products/generic-neutral-2.jpg"
+    },
+    {
+      "product_id": "SUP-LV-900001",
+      "slug": "louis-vuitton-afternoon-swim",
+      "expected_name_en": "LOUIS VUITTON - Afternoon Swim",
+      "expected_brand": "Louis Vuitton",
+      "expected_family": null,
+      "expected_gender": null,
+      "old_url": "/images/products/family-woody.jpg",
+      "image_url": "/images/products/generic-neutral-3.jpg"
+    },
+    {
+      "product_id": "SUP-LV-900002",
+      "slug": "louis-vuitton-imagination",
+      "expected_name_en": "LOUIS VUITTON - Imagination",
+      "expected_brand": "Louis Vuitton",
+      "expected_family": null,
+      "expected_gender": "UNISEX",
+      "old_url": "/images/products/family-woody.jpg",
+      "image_url": "/images/products/generic-neutral-4.jpg"
+    },
+    {
+      "product_id": "SUP-LV-900003",
+      "slug": "louis-vuitton-limmensite",
+      "expected_name_en": "LOUIS VUITTON - L'Immensité",
+      "expected_brand": "Louis Vuitton",
+      "expected_family": null,
+      "expected_gender": "MEN",
+      "old_url": "/images/products/family-woody.jpg",
+      "image_url": "/images/products/generic-neutral-5.jpg"
+    },
+    {
+      "product_id": "SUP-LV-900004",
+      "slug": "louis-vuitton-ombre-nomade",
+      "expected_name_en": "LOUIS VUITTON - Ombre Nomade",
+      "expected_brand": "Louis Vuitton",
+      "expected_family": null,
+      "expected_gender": "UNISEX",
+      "old_url": "/images/products/family-woody.jpg",
+      "image_url": "/images/products/generic-neutral-1.jpg"
+    },
+    {
+      "product_id": "SUP-LV-900005",
+      "slug": "louis-vuitton-stellar-times",
+      "expected_name_en": "LOUIS VUITTON - Stellar Times",
+      "expected_brand": "Louis Vuitton",
+      "expected_family": null,
+      "expected_gender": null,
+      "old_url": "/images/products/family-woody.jpg",
+      "image_url": "/images/products/generic-neutral-2.jpg"
+    },
+    {
+      "product_id": "SUP-LV-900006",
+      "slug": "louis-vuitton-california-dream",
+      "expected_name_en": "LOUIS VUITTON - California Dream",
+      "expected_brand": "Louis Vuitton",
+      "expected_family": null,
+      "expected_gender": null,
+      "old_url": "/images/products/family-woody.jpg",
+      "image_url": "/images/products/generic-neutral-3.jpg"
+    },
+    {
+      "product_id": "SUP-MB-900010",
+      "slug": "montblanc-emblem",
+      "expected_name_en": "MONTBLANC - Emblem",
+      "expected_brand": "Montblanc",
+      "expected_family": null,
+      "expected_gender": null,
+      "old_url": "/images/products/family-woody.jpg",
+      "image_url": "/images/products/generic-neutral-4.jpg"
+    },
+    {
+      "product_id": "SUP-ML-900001",
+      "slug": "milton-lloyd-hawaii",
+      "expected_name_en": "MILTON LLOYD - Hawaii",
+      "expected_brand": "Milton Lloyd",
+      "expected_family": null,
+      "expected_gender": null,
+      "old_url": "/images/products/family-woody.jpg",
+      "image_url": "/images/products/generic-neutral-5.jpg"
+    },
+    {
+      "product_id": "SUP-NT-900026",
+      "slug": "nautica-voyage",
+      "expected_name_en": "NAUTICA - Voyage",
+      "expected_brand": "Nautica",
+      "expected_family": null,
+      "expected_gender": null,
+      "old_url": "/images/products/family-woody.jpg",
+      "image_url": "/images/products/generic-neutral-1.jpg"
+    },
+    {
+      "product_id": "SUP-RL-900020",
+      "slug": "ralph-lauren-polo-black",
+      "expected_name_en": "RALPH LAUREN - Polo Black",
+      "expected_brand": "Ralph Lauren",
+      "expected_family": null,
+      "expected_gender": null,
+      "old_url": "/images/products/family-woody.jpg",
+      "image_url": "/images/products/generic-neutral-2.jpg"
+    },
+    {
+      "product_id": "SUP-SE-900001",
+      "slug": "seris-splendor",
+      "expected_name_en": "SERIS PARFUMS - Splendor",
+      "expected_brand": "Seris Parfums",
+      "expected_family": null,
+      "expected_gender": null,
+      "old_url": "/images/products/family-woody.jpg",
+      "image_url": "/images/products/generic-neutral-3.jpg"
+    },
+    {
+      "product_id": "SUP-SF-900001",
+      "slug": "salvatore-ferragamo-signorina-edp",
+      "expected_name_en": "SALVATORE FERRAGAMO - Signorina",
+      "expected_brand": "Salvatore Ferragamo",
+      "expected_family": null,
+      "expected_gender": null,
+      "old_url": "/images/products/family-woody.jpg",
+      "image_url": "/images/products/generic-neutral-4.jpg"
+    },
+    {
+      "product_id": "SUP-SH-900022",
+      "slug": "shiseido-zen",
+      "expected_name_en": "SHISEIDO - Zen",
+      "expected_brand": "Shiseido",
+      "expected_family": null,
+      "expected_gender": null,
+      "old_url": "/images/products/family-woody.jpg",
+      "image_url": "/images/products/generic-neutral-5.jpg"
+    },
+    {
+      "product_id": "SUP-SP-900050",
+      "slug": "sapil-nice-feelings-black",
+      "expected_name_en": "SAPIL - Nice Feeling Black",
+      "expected_brand": "Sapil",
+      "expected_family": null,
+      "expected_gender": null,
+      "old_url": "/images/products/family-woody.jpg",
+      "image_url": "/images/products/generic-neutral-1.jpg"
+    },
+    {
+      "product_id": "SUP-TP-910001",
+      "slug": "memo-paris-jamals-palace",
+      "expected_name_en": "MEMO PARIS - Jamal's Palace",
+      "expected_brand": "Memo Paris",
+      "expected_family": null,
+      "expected_gender": null,
+      "old_url": "/images/products/family-woody.jpg",
+      "image_url": "/images/products/generic-neutral-2.jpg"
+    },
+    {
+      "product_id": "SUP-TP-910002",
+      "slug": "memo-paris-retba",
+      "expected_name_en": "MEMO PARIS - Retba",
+      "expected_brand": "Memo Paris",
+      "expected_family": null,
+      "expected_gender": null,
+      "old_url": "/images/products/family-woody.jpg",
+      "image_url": "/images/products/generic-neutral-3.jpg"
+    },
+    {
+      "product_id": "SUP-TP-910003",
+      "slug": "dsquared2-he-wood-rocky-mountain-wood",
+      "expected_name_en": "DSQUARED2 - He Wood Rocky Mountain Wood",
+      "expected_brand": "Dsquared2",
+      "expected_family": null,
+      "expected_gender": null,
+      "old_url": "/images/products/family-woody.jpg",
+      "image_url": "/images/products/generic-neutral-4.jpg"
+    },
+    {
+      "product_id": "SUP-TP-910004",
+      "slug": "bvlgari-le-gemme-amarena",
+      "expected_name_en": "BVLGARI - Le Gemme Amarena",
+      "expected_brand": "Bvlgari",
+      "expected_family": null,
+      "expected_gender": null,
+      "old_url": "/images/products/family-woody.jpg",
+      "image_url": "/images/products/generic-neutral-5.jpg"
+    },
+    {
+      "product_id": "SUP-TP-910005",
+      "slug": "lanvin-marry-me",
+      "expected_name_en": "LANVIN - Marry Me",
+      "expected_brand": "Lanvin",
+      "expected_family": null,
+      "expected_gender": null,
+      "old_url": "/images/products/family-woody.jpg",
+      "image_url": "/images/products/generic-neutral-1.jpg"
+    },
+    {
+      "product_id": "SUP-TP-910006",
+      "slug": "lanvin-eclat-darpege",
+      "expected_name_en": "LANVIN - Eclat d’Arpège",
+      "expected_brand": "Lanvin",
+      "expected_family": null,
+      "expected_gender": null,
+      "old_url": "/images/products/family-woody.jpg",
+      "image_url": "/images/products/generic-neutral-2.jpg"
+    },
+    {
+      "product_id": "SUP-TP-910007",
+      "slug": "jacques-bogart-silver-scent",
+      "expected_name_en": "JACQUES BOGART - Silver Scent",
+      "expected_brand": "Jacques Bogart",
+      "expected_family": null,
+      "expected_gender": null,
+      "old_url": "/images/products/family-woody.jpg",
+      "image_url": "/images/products/generic-neutral-3.jpg"
+    },
+    {
+      "product_id": "SUP-TP-910008",
+      "slug": "sospiro-accento",
+      "expected_name_en": "SOSPIRO PERFUMES - Accento",
+      "expected_brand": "Sospiro Perfumes",
+      "expected_family": null,
+      "expected_gender": null,
+      "old_url": "/images/products/family-woody.jpg",
+      "image_url": "/images/products/generic-neutral-4.jpg"
+    },
+    {
+      "product_id": "SUP-TP-910009",
+      "slug": "davidoff-champion",
+      "expected_name_en": "DAVIDOFF - Champion",
+      "expected_brand": "Davidoff",
+      "expected_family": null,
+      "expected_gender": null,
+      "old_url": "/images/products/family-woody.jpg",
+      "image_url": "/images/products/generic-neutral-5.jpg"
+    },
+    {
+      "product_id": "SUP-TP-910010",
+      "slug": "kilian-smoke-for-the-soul",
+      "expected_name_en": "KILIAN PARIS - Smoke for the Soul",
+      "expected_brand": "Kilian Paris",
+      "expected_family": null,
+      "expected_gender": null,
+      "old_url": "/images/products/family-woody.jpg",
+      "image_url": "/images/products/generic-neutral-1.jpg"
+    },
+    {
+      "product_id": "SUP-TP-910011",
+      "slug": "halloween-halloween",
+      "expected_name_en": "Halloween",
+      "expected_brand": "Halloween",
+      "expected_family": null,
+      "expected_gender": null,
+      "old_url": "/images/products/family-woody.jpg",
+      "image_url": "/images/products/generic-neutral-2.jpg"
+    },
+    {
+      "product_id": "SUP-TP-910012",
+      "slug": "chloe-chloe-narcisse",
+      "expected_name_en": "Chloé Narcisse",
+      "expected_brand": "Chloé",
+      "expected_family": null,
+      "expected_gender": null,
+      "old_url": "/images/products/family-woody.jpg",
+      "image_url": "/images/products/generic-neutral-3.jpg"
+    },
+    {
+      "product_id": "SUP-TP-910013",
+      "slug": "jennifer-lopez-still",
+      "expected_name_en": "JENNIFER LOPEZ - Still",
+      "expected_brand": "Jennifer Lopez",
+      "expected_family": null,
+      "expected_gender": null,
+      "old_url": "/images/products/family-woody.jpg",
+      "image_url": "/images/products/generic-neutral-4.jpg"
+    },
+    {
+      "product_id": "SUP-TP-910014",
+      "slug": "rochas-aquawoman",
+      "expected_name_en": "ROCHAS - Aquawoman",
+      "expected_brand": "Rochas",
+      "expected_family": null,
+      "expected_gender": null,
+      "old_url": "/images/products/family-woody.jpg",
+      "image_url": "/images/products/generic-neutral-5.jpg"
+    },
+    {
+      "product_id": "SUP-TP-910015",
+      "slug": "rihanna-riri",
+      "expected_name_en": "RIHANNA - RiRi",
+      "expected_brand": "Rihanna",
+      "expected_family": null,
+      "expected_gender": null,
+      "old_url": "/images/products/family-woody.jpg",
+      "image_url": "/images/products/generic-neutral-1.jpg"
+    },
+    {
+      "product_id": "SUP-TP-910016",
+      "slug": "malizia-uomo-vetyver",
+      "expected_name_en": "Malizia Uomo Vetyver",
+      "expected_brand": "Malizia",
+      "expected_family": null,
+      "expected_gender": null,
+      "old_url": "/images/products/family-woody.jpg",
+      "image_url": "/images/products/generic-neutral-2.jpg"
+    },
+    {
+      "product_id": "SUP-TP-910017",
+      "slug": "rasasi-afshan",
+      "expected_name_en": "RASASI - Afshan",
+      "expected_brand": "Rasasi",
+      "expected_family": null,
+      "expected_gender": null,
+      "old_url": "/images/products/family-woody.jpg",
+      "image_url": "/images/products/generic-neutral-3.jpg"
+    },
+    {
+      "product_id": "SUP-TP-910018",
+      "slug": "rasasi-blue-for-men",
+      "expected_name_en": "RASASI - Blue For Men",
+      "expected_brand": "Rasasi",
+      "expected_family": null,
+      "expected_gender": null,
+      "old_url": "/images/products/family-woody.jpg",
+      "image_url": "/images/products/generic-neutral-4.jpg"
+    },
+    {
+      "product_id": "SUP-TP-910019",
+      "slug": "tommy-hilfiger-tommy-jeans",
+      "expected_name_en": "TOMMY HILFIGER - Tommy Jeans",
+      "expected_brand": "Tommy Hilfiger",
+      "expected_family": null,
+      "expected_gender": null,
+      "old_url": "/images/products/family-woody.jpg",
+      "image_url": "/images/products/generic-neutral-5.jpg"
+    },
+    {
+      "product_id": "SUP-TP-910020",
+      "slug": "mugler-angel-passion-star",
+      "expected_name_en": "MUGLER - Angel Passion Star",
+      "expected_brand": "Mugler",
+      "expected_family": null,
+      "expected_gender": null,
+      "old_url": "/images/products/family-woody.jpg",
+      "image_url": "/images/products/generic-neutral-1.jpg"
+    },
+    {
+      "product_id": "SUP-TP-910021",
+      "slug": "roger-gallet-open",
+      "expected_name_en": "ROGER & GALLET - Open",
+      "expected_brand": "Roger & Gallet",
+      "expected_family": null,
+      "expected_gender": null,
+      "old_url": "/images/products/family-woody.jpg",
+      "image_url": "/images/products/generic-neutral-2.jpg"
+    },
+    {
+      "product_id": "SUP-TP-910022",
+      "slug": "john-richmond-for-men",
+      "expected_name_en": "John Richmond for Men",
+      "expected_brand": "John Richmond",
+      "expected_family": null,
+      "expected_gender": null,
+      "old_url": "/images/products/family-woody.jpg",
+      "image_url": "/images/products/generic-neutral-3.jpg"
+    },
+    {
+      "product_id": "SUP-TP-910023",
+      "slug": "givenchy-absolutely-irresistible",
+      "expected_name_en": "GIVENCHY - Absolutely Irresistible",
+      "expected_brand": "Givenchy",
+      "expected_family": null,
+      "expected_gender": null,
+      "old_url": "/images/products/family-woody.jpg",
+      "image_url": "/images/products/generic-neutral-4.jpg"
+    },
+    {
+      "product_id": "SUP-TP-910024",
+      "slug": "sospiro-erba-pura-original",
+      "expected_name_en": "SOSPIRO PERFUMES - Erba Pura",
+      "expected_brand": "Sospiro Perfumes",
+      "expected_family": null,
+      "expected_gender": null,
+      "old_url": "/images/products/family-woody.jpg",
+      "image_url": "/images/products/generic-neutral-5.jpg"
+    },
+    {
+      "product_id": "SUP-TP-910025",
+      "slug": "aramis-900",
+      "expected_name_en": "Aramis 900",
+      "expected_brand": "Aramis",
+      "expected_family": null,
+      "expected_gender": null,
+      "old_url": "/images/products/family-woody.jpg",
+      "image_url": "/images/products/generic-neutral-1.jpg"
+    },
+    {
+      "product_id": "SUP-TP-910026",
+      "slug": "bvlgari-jasmin-noir-original",
+      "expected_name_en": "BVLGARI - Jasmin Noir",
+      "expected_brand": "Bvlgari",
+      "expected_family": null,
+      "expected_gender": null,
+      "old_url": "/images/products/family-woody.jpg",
+      "image_url": "/images/products/generic-neutral-2.jpg"
+    },
+    {
+      "product_id": "SUP-TP-910027",
+      "slug": "kilian-apple-brandy-original",
+      "expected_name_en": "KILIAN PARIS - Apple Brandy",
+      "expected_brand": "Kilian Paris",
+      "expected_family": null,
+      "expected_gender": null,
+      "old_url": "/images/products/family-woody.jpg",
+      "image_url": "/images/products/generic-neutral-3.jpg"
+    },
+    {
+      "product_id": "SUP-TP-910028",
+      "slug": "cacharel-amor-amor",
+      "expected_name_en": "CACHAREL - Amor Amor",
+      "expected_brand": "Cacharel",
+      "expected_family": null,
+      "expected_gender": null,
+      "old_url": "/images/products/family-woody.jpg",
+      "image_url": "/images/products/generic-neutral-4.jpg"
+    },
+    {
+      "product_id": "SUP-TP-910029",
+      "slug": "billie-eilish-eilish",
+      "expected_name_en": "BILLIE EILISH - Eilish",
+      "expected_brand": "Billie Eilish",
+      "expected_family": null,
+      "expected_gender": null,
+      "old_url": "/images/products/family-woody.jpg",
+      "image_url": "/images/products/generic-neutral-5.jpg"
+    },
+    {
+      "product_id": "SUP-TP-910030",
+      "slug": "narciso-rodriguez-for-him-original",
+      "expected_name_en": "Narciso Rodriguez for Him",
+      "expected_brand": "Narciso Rodriguez",
+      "expected_family": null,
+      "expected_gender": null,
+      "old_url": "/images/products/family-woody.jpg",
+      "image_url": "/images/products/generic-neutral-1.jpg"
+    },
+    {
+      "product_id": "SUP-TP-910032",
+      "slug": "remy-marquis-shalis-cologne",
+      "expected_name_en": "REMY MARQUIS - Shalis Cologne",
+      "expected_brand": "Remy Marquis",
+      "expected_family": null,
+      "expected_gender": null,
+      "old_url": "/images/products/family-woody.jpg",
+      "image_url": "/images/products/generic-neutral-2.jpg"
+    },
+    {
+      "product_id": "SUP-TP-910033",
+      "slug": "sapil-chichi-original-women",
+      "expected_name_en": "SAPIL - Chichi",
+      "expected_brand": "Sapil",
+      "expected_family": null,
+      "expected_gender": null,
+      "old_url": "/images/products/family-woody.jpg",
+      "image_url": "/images/products/generic-neutral-3.jpg"
+    },
+    {
+      "product_id": "SUP-TP-910034",
+      "slug": "escada-collection-1997",
+      "expected_name_en": "Escada Collection",
+      "expected_brand": "Escada",
+      "expected_family": null,
+      "expected_gender": null,
+      "old_url": "/images/products/family-woody.jpg",
+      "image_url": "/images/products/generic-neutral-4.jpg"
+    },
+    {
+      "product_id": "SUP-TP-910035",
+      "slug": "orlane-derrick-1978",
+      "expected_name_en": "ORLANE - Derrick",
+      "expected_brand": "Orlane",
+      "expected_family": null,
+      "expected_gender": null,
+      "old_url": "/images/products/family-woody.jpg",
+      "image_url": "/images/products/generic-neutral-5.jpg"
+    },
+    {
+      "product_id": "SUP-TP-910036",
+      "slug": "chopard-vanille-de-madagascar",
+      "expected_name_en": "CHOPARD - Vanille de Madagascar",
+      "expected_brand": "Chopard",
+      "expected_family": null,
+      "expected_gender": null,
+      "old_url": "/images/products/family-woody.jpg",
+      "image_url": "/images/products/generic-neutral-1.jpg"
+    },
+    {
+      "product_id": "SUP-TP-910037",
+      "slug": "salvatore-ferragamo-incanto-2003",
+      "expected_name_en": "SALVATORE FERRAGAMO - Incanto",
+      "expected_brand": "Salvatore Ferragamo",
+      "expected_family": null,
+      "expected_gender": null,
+      "old_url": "/images/products/family-woody.jpg",
+      "image_url": "/images/products/generic-neutral-2.jpg"
+    },
+    {
+      "product_id": "SUP-TP-910038",
+      "slug": "joop-femme-original",
+      "expected_name_en": "Joop! Femme",
+      "expected_brand": "Joop!",
+      "expected_family": null,
+      "expected_gender": null,
+      "old_url": "/images/products/family-woody.jpg",
+      "image_url": "/images/products/generic-neutral-3.jpg"
+    },
+    {
+      "product_id": "SUP-TP-910039",
+      "slug": "max-factor-just-call-me-maxi",
+      "expected_name_en": "MAX FACTOR - Just Call Me Maxi",
+      "expected_brand": "Max Factor",
+      "expected_family": null,
+      "expected_gender": null,
+      "old_url": "/images/products/family-woody.jpg",
+      "image_url": "/images/products/generic-neutral-4.jpg"
+    },
+    {
+      "product_id": "SUP-VS-900021",
+      "slug": "victorias-secret-bombshell",
+      "expected_name_en": "VICTORIA'S SECRET - Bombshell",
+      "expected_brand": "Victoria's Secret",
+      "expected_family": null,
+      "expected_gender": null,
+      "old_url": "/images/products/family-woody.jpg",
+      "image_url": "/images/products/generic-neutral-5.jpg"
+    },
+    {
+      "product_id": "SUP-VS-900030",
+      "slug": "victorias-secret-very-sexy",
+      "expected_name_en": "VICTORIA'S SECRET - Very Sexy",
+      "expected_brand": "Victoria's Secret",
+      "expected_family": null,
+      "expected_gender": null,
+      "old_url": "/images/products/family-woody.jpg",
+      "image_url": "/images/products/generic-neutral-1.jpg"
+    },
+    {
+      "product_id": "SUP-VS-900032",
+      "slug": "victorias-secret-aqua-kiss",
+      "expected_name_en": "VICTORIA'S SECRET - Aqua Kiss",
+      "expected_brand": "Victoria's Secret",
+      "expected_family": null,
+      "expected_gender": null,
+      "old_url": "/images/products/family-woody.jpg",
+      "image_url": "/images/products/generic-neutral-2.jpg"
+    },
+    {
+      "product_id": "SUP-XJ-900007",
+      "slug": "xerjoff-torino24",
+      "expected_name_en": "XERJOFF - Torino24",
+      "expected_brand": "Xerjoff",
+      "expected_family": null,
+      "expected_gender": null,
+      "old_url": "/images/products/family-woody.jpg",
+      "image_url": "/images/products/generic-neutral-3.jpg"
+    }
+  ]
+}

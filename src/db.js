@@ -909,10 +909,13 @@ function variantImageFor(productId, familySlug, gender) {
  * @param {string} [productId] برای تخصیص پایدار واریانت
  * @param {string} [gender]    MEN | WOMEN | UNISEX
  */
+const genericImageModule = require('./generic-product-images');
+const genericImageManifest = genericImageModule.loadAssignments(path.join(SEED_DIR, 'generic_image_assignments_v1.json'));
 function imageForProduct(brandEn, familySlug, productId, gender) {
   return variantImageFor(productId, familySlug, gender)
       || BRAND_IMAGES[brandEn]
       || FAMILY_IMAGES[familySlug]
+      || genericImageModule.genericFor(productId, genericImageManifest)
       || DEFAULT_IMAGE;
 }
 
@@ -2693,6 +2696,8 @@ const supplementInserted = (seedVerifiedSupplement('supplier_verified_supplement
   (seedVerifiedSupplement('official_supplement_v27.json') || 0) +
   (seedVerifiedSupplement('secondary_supplement_v14.json') || 0) +
   (seedVerifiedSupplement('secondary_supplement_v15.json') || 0);
+// Only approved generic replacements; preserve all manager-selected images.
+genericImageModule.applyGenericImages(db, genericImageManifest, path.join(ROOT_DIR, 'public', 'images', 'products'));
 // Repair the known year/name mismatch only for unchanged unavailable seed data.
 require('./decision-identity-correction').applyDecisionIdentityCorrection(db, path.join(SEED_DIR, 'decision_identity_correction_v1.json'));
 // This records reference-original evidence only; it never verifies supplier essence.

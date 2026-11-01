@@ -377,6 +377,8 @@ node_modules/   با npm install برمی‌گردد
 - `scripts/retire_sample3.js`
 - `scripts/test_availability_consistency.py`
 - `scripts/test_availability_rules.js`
+- `scripts/test_generic_product_images.js`
+- `scripts/test_generic_product_images_browser.py`
 - `scripts/test_approved_mto.py`
 - `scripts/test_active_official_notes_v1.js`
 - `scripts/test_active_official_notes_v2.js`
@@ -416,6 +418,7 @@ node_modules/   با npm install برمی‌گردد
 ### ماژول‌های سرور
 
 - `src/availability.js`
+- `src/generic-product-images.js`
 - `src/active-official-notes.js`
 - `src/approved-made-to-order.js`
 - `src/essence-pricing-store.js`

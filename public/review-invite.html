@@ -156,10 +156,11 @@ function render(d) {
     </div>
 
     <div class="ri-prod">
-      <img src="${cardImage(p.image_url)}" alt="تصویر ${esc(full)}" width="74" height="74">
+      <img src="${cardImage(p.image_url)}" alt="${isGenericProductImage(p.image_url) ? 'تصویر نمادین' : 'تصویر'} ${esc(full)}" width="74" height="74">
       <div>
         <div class="n">${esc(full)}</div>
         <div class="e">${esc(p.name_en || '')}</div>
+        ${isGenericProductImage(p.image_url) ? '<div class="m">تصویر نمادین است</div>' : ''}
         <div class="m">دعوت‌نامه برای <bdi>${toFa(esc(d.mobile_masked))}</bdi></div>
       </div>
     </div>

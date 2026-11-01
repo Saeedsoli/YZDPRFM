@@ -285,7 +285,8 @@ function card(p) {
   return `
   <article class="sc">
     <a href="/perfume/${p.slug}" class="img" aria-label="${esc(full)}">
-      <img src="${cardImage(p.image_url)}" alt="" loading="lazy" width="215" height="215">
+      <img src="${cardImage(p.image_url)}" alt="${isGenericProductImage(p.image_url) ? 'تصویر نمادین' : ''}" loading="lazy" width="215" height="215">
+      ${isGenericProductImage(p.image_url) ? '<span class="card-illustrative">تصویر نمادین</span>' : ''}
       <span class="tag">سمپل ۵ میل</span>
     </a>
     <div class="bd">

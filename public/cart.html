@@ -245,9 +245,10 @@ function render() {
         const low = live && live.stock > 0 && live.stock <= 3;
         return `
         <div class="cart-item${m.out ? ' dead' : m.oldPrice ? ' stale' : ''}">
-          <img src="${i.image}" alt="${i.name}" width="78" height="78">
+          <img src="${i.image}" alt="${isGenericProductImage(i.image) ? 'تصویر نمادین ' : ''}${i.name}" width="78" height="78">
           <div style="flex:1">
             <div class="ci-name">${i.name}</div>
+            ${isGenericProductImage(i.image) ? '<span class="ci-flag">تصویر نمادین است</span>' : ''}
             <div class="ci-price">
               ${m.oldPrice ? `<span class="ci-old">${money(m.oldPrice)}</span>` : ''}
               ${money(i.price)} تومان

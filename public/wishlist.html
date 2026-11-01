@@ -75,7 +75,8 @@ function wishCard(p) {
 
     <a href="/perfume/${esc(p.slug)}" style="text-decoration:none;color:inherit;display:block">
       <div class="img-wrap">
-        <img src="${p.image_url}" alt="تصویر ${esc(p.name_fa)}" loading="lazy" width="300" height="300">
+        <img src="${cardImage(p.image_url)}" alt="${isGenericProductImage(p.image_url) ? 'تصویر نمادین' : 'تصویر'} ${esc(p.name_fa)}" loading="lazy" width="300" height="300">
+        ${isGenericProductImage(p.image_url) ? '<span class="card-illustrative">تصویر نمادین</span>' : ''}
         ${genderLabel(p.gender) ? `<span class="card-badge">${genderLabel(p.gender)}</span>` : ''}
       </div>
       <div class="body">

@@ -26,6 +26,8 @@ node scripts/test_product_essence_rollback.js
 python3 scripts/test_product_essence_api.py
 python3 scripts/test_unavailable_cart.py
 python3 scripts/test_approved_mto.py
+node scripts/test_generic_product_images.js
+DB_PATH="$PWD/data/imagery-check.db" BACKUP_DISABLED=1 node scripts/test_images.js
 node scripts/test_active_official_notes_v1.js
 node scripts/test_active_official_notes_v2.js
 node scripts/test_active_official_notes_v3.js

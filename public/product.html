@@ -32,6 +32,9 @@
   .gallery-track > img,
   .gallery-track > picture { min-width: 100%; width: 100%; height: 100%; display: block; }
   .gallery-track img { width: 100%; height: 100%; object-fit: cover; pointer-events: none; }
+  .gallery-illustrative { position:absolute; bottom:14px; right:14px; z-index:4;
+    background:rgba(18,18,18,.80); color:#fff; border-radius:30px;
+    padding:5px 10px; font-size:.7rem; font-weight:700; }
   .gallery-dots { position: absolute; bottom: 14px; left: 0; right: 0;
                   display: flex; justify-content: center; gap: 7px; }
   .gallery-dots span { width: 7px; height: 7px; border-radius: var(--r-full);
@@ -337,6 +340,7 @@
       <span class="g-badge" id="gBadge"></span>
       <div class="gallery" id="gallery" role="region" aria-label="گالری تصاویر محصول">
         <div class="gallery-track" id="track"></div>
+        <span id="imageDisclosure" class="gallery-illustrative" hidden>تصویر نمادین است</span>
         <div class="gallery-dots" id="dots"></div>
       </div>
       </div>
@@ -356,11 +360,11 @@
           <svg width="17" height="17" viewBox="0 0 24 24" fill="var(--gold)" aria-hidden="true">
             <path d="M12 2L4 7v10l8 5 8-5V7l-8-5zm0 2.3L18 8v8l-6 3.7L6 16V8l6-3.7z"/>
           </svg>
-          اسانس از خانه‌های معتبر جهانی
+          خانه‌های شناخته‌شده اسانس
         </div>
         <div>
           <span class="names">ژیوودان · فیرمنیش · ایبرکم · لوزی</span> —
-          همان خانه‌هایی که برای برندهای بین‌المللی اسانس می‌سازند.
+          هویت و کیفیت اسانس این رایحه مستقلاً تأیید نشده است.
         </div>
         <a href="/essences">چرا این مهم است؟ ←</a>
       </div>
@@ -559,6 +563,8 @@ function render() {
 
   // گالری (سه نمای یکسان تا عکاسی واقعی جایگزین شود)
   const imgs = [p.image_url, p.image_url, '/images/products/variant-sample.jpg'];
+  const illustrative = isGenericProductImage(p.image_url);
+  document.getElementById('imageDisclosure').hidden = !illustrative;
   const capt = ['نمای اصلی', 'جزئیات', 'سمپل'];
   /* تصویر نخست با <picture> ساخته می‌شود تا با همان فایل WebP که
      سرور preload کرده یکی باشد.
@@ -574,9 +580,9 @@ function render() {
   document.getElementById('track').innerHTML = imgs.map((s, i) => i === 0
     ? `<picture>
          <source srcset="${webpOf(s)}" type="image/webp">
-         <img src="${s}" alt="${full}" fetchpriority="high" decoding="async">
+         <img src="${s}" alt="${illustrative ? 'تصویر نمادین ' : ''}${full}" fetchpriority="high" decoding="async">
        </picture>`
-    : `<img src="${s}" alt="${full}" loading="lazy" decoding="async">`
+    : `<img src="${s}" alt="${illustrative && i === 1 ? 'تصویر نمادین ' : ''}${full}" loading="lazy" decoding="async">`
   ).join('');
   document.getElementById('dots').innerHTML = imgs.map((_, i) =>
     `<span class="${i === 0 ? 'on' : ''}"></span>`).join('');
@@ -595,7 +601,7 @@ function render() {
   document.getElementById('titleFa').innerHTML = `${full} <span class="tag">«دست‌ساز»</span>`;
   document.getElementById('titleEn').textContent = p.name_en;
   document.getElementById('transparency').textContent =
-    p.transparency_notice || 'این محصول بازآفرینی دست‌ساز با عصاره خالص اولیه و فرمولاسیون اختصاصی عطر یزد است و ادعای اورجینال بودن ندارد.';
+    p.transparency_notice || 'این محصول بازآفرینی دست‌ساز است و محصول اورجینال برند اصلی نیست؛ هویت اسانس تأمین‌کننده مستقلاً تأیید نشده است.';
 
   const chips = [
     p.gender === 'MEN' ? 'مردانه' : p.gender === 'WOMEN' ? 'زنانه' : p.gender === 'UNISEX' ? 'یونیسکس' : null,

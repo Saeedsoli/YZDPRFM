@@ -292,11 +292,11 @@ function renderFooter() {
       </div>
       <div>
         <h4>اسانس</h4>
-        <p style="line-height:2">اسانس محصولات از خانه‌های معتبر جهانی
+        <p style="line-height:2">خانه‌های شناخته‌شده اسانس شامل
         <strong style="color:var(--gold)">ژیوودان</strong>،
         <strong style="color:var(--gold)">فیرمنیش</strong>،
         <strong style="color:var(--gold)">ایبرکم</strong> و
-        <strong style="color:var(--gold)">لوزی</strong> تأمین می‌شود.</p>
+        <strong style="color:var(--gold)">لوزی</strong> هستند. هویت اسانس هر رایحه مستقلاً تأیید نشده است.</p>
         <a href="/essences" style="color:var(--gold);font-weight:700">بیشتر بدانید ←</a>
       </div>
       <div>
@@ -338,8 +338,11 @@ function fullName(p) {
  * فقط برای تصاویر واریانت‌دار `fam-…` ساخته شده؛ برای بقیه همان
  * فایل اصلی برمی‌گردد.
  */
+function isGenericProductImage(url) {
+  return /\/generic-neutral-[1-5](?:-sm)?\.(?:jpg|webp)$/i.test(url || '');
+}
 function cardImage(url) {
-  return /\/fam-[a-z0-9-]+\.jpg$/.test(url || '')
+  return (/\/fam-[a-z0-9-]+\.jpg$/.test(url || '') || isGenericProductImage(url))
     ? url.replace(/\.jpg$/, '-sm.jpg')
     : url;
 }
@@ -347,6 +350,7 @@ function cardImage(url) {
 function productCard(p) {
   const notes = (p.notes?.top || []).slice(0, 3).join('، ');
   const img = cardImage(p.image_url);
+  const illustrative = isGenericProductImage(p.image_url);
 
   /* ── قیمت جشنواره ──
      `campaign_percent` را سرور می‌دهد (۰ یعنی جشنواره‌ای شامل این
@@ -408,7 +412,8 @@ function productCard(p) {
      href="/perfume/${p.slug}"
      aria-label="${fullName(p)} — ${aria}">
     <div class="img-wrap">
-      <img src="${img}" alt="تصویر ${fullName(p)}" loading="lazy" width="300" height="300">
+      <img src="${img}" alt="${illustrative ? 'تصویر نمادین' : 'تصویر'} ${fullName(p)}" loading="lazy" width="300" height="300">
+      ${illustrative ? '<span class="card-illustrative">تصویر نمادین</span>' : ''}
       ${genderLabel(p.gender) ? `<span class="card-badge">${genderLabel(p.gender)}</span>` : ''}
       ${stateLabel ? `<span class="card-out${madeToOrder ? ' mto' : ''}">${stateLabel}</span>` : ''}
       ${off > 0 && inStock ? `<span class="card-off"><bdi>${toFa(pct)}٪</bdi> تخفیف</span>` : ''}

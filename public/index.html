@@ -10,7 +10,7 @@
 <link rel="manifest" href="/site.webmanifest">
 <meta name="theme-color" content="#121212">
 <title>عطر یزد | Yazd Perfume — مرجع تخصصی عطر دست‌ساز</title>
-<meta name="description" content="عطر یزد — بازآفرینی دست‌ساز رایحه‌های ماندگار با اسانس خانه‌های معتبر جهانی. اطلاعات رایحه و سمپل ۵ میل برای محصولات قابل سفارش.">
+<meta name="description" content="عطر یزد — بازآفرینی دست‌ساز رایحه‌های ماندگار؛ اطلاعات رایحه و سمپل ۵ میل برای محصولات قابل سفارش.">
 <!-- فونت عمداً preload نمی‌شود.
      با font-display:swap متن بلافاصله با فونت سیستمی دیده می‌شود،
      پس preload فقط پهنای باند را از تصویر اصلی می‌دزدد. روی ۳G
@@ -573,9 +573,8 @@
     <span class="ic" aria-hidden="true">
       <svg viewBox="0 0 24 24"><path d="M12 3v4M8.5 7h7l1.5 10a3 3 0 0 1-3 3.5h-4A3 3 0 0 1 7 17z"/><path d="M9 13h6"/></svg>
     </span>
-    <b>اسانس از خانه‌های معتبر جهانی</b>
-    <span class="t">ژیوودان، فیرمنیش، ایبرکم و لوزی — با نام،
-      نه ادعای کلی.</span>
+    <b>آشنایی با خانه‌های اسانس</b>
+    <span class="t">ژیوودان، فیرمنیش، ایبرکم و لوزی؛ هویت اسانس هر رایحه مستقلاً تأیید نشده است.</span>
   </a>
   <a class="trust-card" href="/why-us">
     <span class="ic" aria-hidden="true">
@@ -625,8 +624,7 @@
       </div>
       <p style="font-size:.9rem;opacity:.82;line-height:2.1">
         <span style="color:var(--gold);font-weight:700">ژیوودان · فیرمنیش · ایبرکم · لوزی</span><br>
-        همان خانه‌هایی که برای برندهای بین‌المللی اسانس می‌سازند.
-        تفاوت در نام روی شیشه است، نه در منبع مواد اولیه.
+        خانه‌های شناخته‌شده در صنعت عطرسازی؛ هویت و کیفیت اسانس هر رایحه به‌طور مستقل تأیید نشده است.
       </p>
     </div>
     <a href="/essences" class="btn" style="white-space:nowrap">آشنایی با خانه‌ها ←</a>
@@ -1118,7 +1116,8 @@ async function fetchSugg(term) {
         <span style="min-width:0">
           <span class="sugg-t">${esc(fullName(p))}</span>
           <span class="sugg-s">${esc(p.name_en || '')}</span>
-          ${p.in_stock ? '' : '<span class="sugg-out">ناموجود</span>'}
+          ${isGenericProductImage(p.image_url) ? '<span class="sugg-s">تصویر نمادین است</span>' : ''}
+          ${p.in_stock ? '' : p.supply_mode === 'MADE_TO_ORDER' && Number(p.min_price) > 0 ? '<span class="sugg-out">به سفارش</span>' : '<span class="sugg-out">ناموجود</span>'}
         </span>
         <span class="sugg-p">${money(p.min_price)}</span>
       </a>`).join('') +
