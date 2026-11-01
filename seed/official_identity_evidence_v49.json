@@ -1,0 +1,57 @@
+{
+  "version": "official_identity_evidence_v49",
+  "scope": "Official reference-original name only; supplier essence identity unverified.",
+  "items": [
+    {
+      "product_id": "SUP-AG-900002",
+      "slug": "giorgio-armani-acqua-di-gio-edp",
+      "brand_en": "Giorgio Armani",
+      "expected_name_en": "GIORGIO ARMANI - Acqua di Giò EDP",
+      "reference_name": "Acqua di Giò Eau de Parfum",
+      "official_url": "https://www.giorgioarmanibeauty-usa.com/fragrances/mens-cologne/acqua-di-gio-eau-de-parfum/ww-00631-arm.html",
+      "status": "official_original_found_supplier_essence_unverified",
+      "checked_date": "2026-11-01"
+    },
+    {
+      "product_id": "SUP-PR-900001",
+      "slug": "paco-rabanne-invictus-parfum",
+      "brand_en": "Paco Rabanne",
+      "expected_name_en": "PACO RABANNE - Invictus Parfum",
+      "reference_name": "Invictus Parfum",
+      "official_url": "https://www.rabanne.com/ww/en/fragrance/p/invictus-parfum--000000000065199570",
+      "status": "official_original_found_supplier_essence_unverified",
+      "checked_date": "2026-11-01"
+    },
+    {
+      "product_id": "SUP-VS-900002",
+      "slug": "versace-eros-men-edp",
+      "brand_en": "Versace",
+      "expected_name_en": "VERSACE - Eros Men EDP",
+      "reference_name": "Eros Eau de Parfum for Men",
+      "official_url": "https://www.versace.com/us/en/men/accessories/fragrances-body-care/eros/eros-edp-100-ml-blue/R740110-R100MLS_RNUL.html",
+      "status": "official_original_found_supplier_essence_unverified",
+      "checked_date": "2026-11-01"
+    },
+    {
+      "product_id": "SUP-RD-900001",
+      "slug": "roja-elysium-pour-homme-edp",
+      "brand_en": "Roja Dove",
+      "expected_name_en": "ROJA DOVE - Elysium Pour Homme EDP",
+      "reference_name": "Elysium Pour Homme Eau de Parfum",
+      "official_url": "https://rojalondon.com/products/elysium-homme-edp",
+      "status": "official_original_found_supplier_essence_unverified",
+      "checked_date": "2026-11-01"
+    },
+    {
+      "product_id": "YZD-PROD-1620",
+      "slug": "mugler-alien-edp",
+      "brand_en": "Mugler",
+      "expected_name_en": "MUGLER - Alien EDP",
+      "expected_concentration": "EDP",
+      "reference_name": "Alien Eau de Parfum",
+      "official_url": "https://inter.mugler.com/int/fragrance/women-s-fragrances/alien/alien-eau-de-parfum/M010401002.html",
+      "status": "official_original_found_supplier_essence_unverified",
+      "checked_date": "2026-11-01"
+    }
+  ]
+}

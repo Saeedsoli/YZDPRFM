@@ -329,6 +329,11 @@ if python3 scripts/test_approved_mto_v11.py >/tmp/test_approved_mto_v11.log 2>&1
 run_test test_default_reference_v51.js "owner default reference batch"
 if python3 scripts/test_approved_mto_v12.py >/tmp/test_approved_mto_v12.log 2>&1; then P=$((P+1)); else F=$((F+1)); echo "  X owner Parfum batch approval"; fi
 run_test test_default_reference_v52.js "owner Parfum reference batch"
+if python3 scripts/test_approved_mto_v13.py >/tmp/test_approved_mto_v13.log 2>&1; then P=$((P+1)); else F=$((F+1)); echo "  X owner default six approvals"; fi
+run_test test_default_reference_v53.js "six sourced default references"
+run_test test_generic_image_rebalance.js "approved neutral image balance"
+if python3 scripts/test_approved_mto_v13.py >/tmp/test_approved_mto_v13.log 2>&1; then P=$((P+1)); else F=$((F+1)); echo "  X owner default six approvals"; fi
+run_test test_default_reference_v53.js "six sourced default references"
 run_test test_journal_lcp.js "journal server-side render + LCP guards"
 run_test test_invoice_legal.js "invoice: plain vs formal (legal info)"
 run_test test_customer_note.js "customer note + label + real contact"

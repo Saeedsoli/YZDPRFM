@@ -1,0 +1,141 @@
+[
+  {
+    "id": "SUP-AG-900002",
+    "slug": "giorgio-armani-acqua-di-gio-edp",
+    "name_fa": "آکوا دی جیو ادوپرفیوم",
+    "name_en": "Acqua di Giò EDP",
+    "title_fa_base": "آکوا دی جیو ادوپرفیوم",
+    "full_display_fa": "جورجیو آرمانی — آکوا دی جیو ادوپرفیوم",
+    "inspired_brand_en": "Giorgio Armani",
+    "inspired_brand_fa": "جورجیو آرمانی",
+    "gender": "MEN",
+    "notes": {
+      "top": [],
+      "middle": [],
+      "base": []
+    },
+    "accords": [
+      "نت دریایی",
+      "نارنگی سبز",
+      "مریم‌گلی",
+      "وتیور",
+      "پچولی"
+    ],
+    "transclaimer_notice": "این محصول بازآفرینی دست‌ساز است و محصول اورجینال برند اصلی نیست. اطلاعات رایحه مرجع از وب‌سایت رسمی برند گرفته شده و هویت و نسخه اسانس تأمین‌کننده مستقلاً تأیید نشده است.",
+    "source_url": "https://www.giorgioarmanibeauty-usa.com/fragrances/mens-cologne/acqua-di-gio-eau-de-parfum/ww-00631-arm.html",
+    "source_note": "Official EDP page defaults to a refill; scent reference only, no refill product represented. Owner default is provisional; supplier essence unverified.",
+    "variants": []
+  },
+  {
+    "id": "SUP-PR-900001",
+    "slug": "paco-rabanne-invictus-parfum",
+    "name_fa": "اینویکتوس پارفوم",
+    "name_en": "Invictus Parfum",
+    "title_fa_base": "اینویکتوس پارفوم",
+    "full_display_fa": "پاکو رابان — اینویکتوس پارفوم",
+    "inspired_brand_en": "Paco Rabanne",
+    "inspired_brand_fa": "پاکو رابان",
+    "gender": "MEN",
+    "notes": {
+      "top": [
+        "اسطوخودوس"
+      ],
+      "middle": [
+        "آکورد صابون سیاه"
+      ],
+      "base": [
+        "چوب صندل"
+      ]
+    },
+    "accords": [],
+    "transclaimer_notice": "این محصول بازآفرینی دست‌ساز است و محصول اورجینال برند اصلی نیست. اطلاعات رایحه مرجع از وب‌سایت رسمی برند گرفته شده و هویت و نسخه اسانس تأمین‌کننده مستقلاً تأیید نشده است.",
+    "source_url": "https://www.rabanne.com/ww/en/fragrance/p/invictus-parfum--000000000065199570",
+    "source_note": "Official named Parfum reference only; notes do not establish supplied ingredients. Owner default is provisional; supplier essence unverified.",
+    "variants": []
+  },
+  {
+    "id": "SUP-VS-900002",
+    "slug": "versace-eros-men-edp",
+    "name_fa": "اروس مردانه ادوپرفیوم",
+    "name_en": "Eros Men EDP",
+    "title_fa_base": "اروس مردانه ادوپرفیوم",
+    "full_display_fa": "ورساچه — اروس مردانه ادوپرفیوم",
+    "inspired_brand_en": "Versace",
+    "inspired_brand_fa": "ورساچه",
+    "gender": "MEN",
+    "notes": {
+      "top": [
+        "لیمو ایتالیایی",
+        "نارنگی ایتالیایی",
+        "نعناع",
+        "سیب شیرین"
+      ],
+      "middle": [
+        "شمعدانی",
+        "مریم‌گلی",
+        "امبرمکس"
+      ],
+      "base": [
+        "چوب سدر",
+        "وتیور",
+        "پچولی",
+        "چوب صندل",
+        "وانیل"
+      ]
+    },
+    "accords": [],
+    "transclaimer_notice": "این محصول بازآفرینی دست‌ساز است و محصول اورجینال برند اصلی نیست. اطلاعات رایحه مرجع از وب‌سایت رسمی برند گرفته شده و هویت و نسخه اسانس تأمین‌کننده مستقلاً تأیید نشده است.",
+    "source_url": "https://www.versace.com/us/en/men/accessories/fragrances-body-care/eros/eros-edp-100-ml-blue/R740110-R100MLS_RNUL.html",
+    "source_note": "Official named EDP reference only; notes do not establish supplied ingredients. Owner default is provisional; supplier essence unverified.",
+    "variants": []
+  },
+  {
+    "id": "SUP-RD-900001",
+    "slug": "roja-elysium-pour-homme-edp",
+    "name_fa": "الیسیوم مردانه ادوپرفیوم",
+    "name_en": "Elysium Pour Homme EDP",
+    "title_fa_base": "الیسیوم مردانه ادوپرفیوم",
+    "full_display_fa": "روژا داو — الیسیوم مردانه ادوپرفیوم",
+    "inspired_brand_en": "Roja Dove",
+    "inspired_brand_fa": "روژا داو",
+    "gender": "MEN",
+    "notes": {
+      "top": [
+        "لیمو",
+        "ترنج",
+        "گریپ‌فروت",
+        "لیموی سبز",
+        "اسطوخودوس",
+        "آویشن",
+        "درمنه",
+        "مشک"
+      ],
+      "middle": [
+        "گل برف",
+        "رز",
+        "یاس",
+        "سیب",
+        "انگور فرنگی سیاه"
+      ],
+      "base": [
+        "گالبانوم",
+        "فلفل صورتی",
+        "ناگارموتا",
+        "وتیور",
+        "سدر",
+        "سرو کوهی",
+        "بنزوئین",
+        "وانیل",
+        "لابدانوم",
+        "آکورد چرم",
+        "آکورد عنبر",
+        "مشک"
+      ]
+    },
+    "accords": [],
+    "transclaimer_notice": "این محصول بازآفرینی دست‌ساز است و محصول اورجینال برند اصلی نیست. اطلاعات رایحه مرجع از وب‌سایت رسمی برند گرفته شده و هویت و نسخه اسانس تأمین‌کننده مستقلاً تأیید نشده است.",
+    "source_url": "https://rojalondon.com/products/elysium-homme-edp",
+    "source_note": "Official EDP page offers multiple concentrations; selected EDP only. Owner default is provisional; supplier essence unverified.",
+    "variants": []
+  }
+]

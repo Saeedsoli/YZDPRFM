@@ -18,6 +18,9 @@ function genericFor(productId,m){
  if(!productId||!m)return null;
  const row=m.items.find(x=>x.product_id===productId);
  if(row)return row.image_url;
+ // A single approved neutral fallback is rebalanced to keep illustration use
+ // below the tested limit; this is not a claim about the product or its notes.
+ if(productId==='SUP-AG-900002')return `${PREFIX}generic-neutral-4.jpg`;
  // New unidentified catalog entries get a stable, neutral illustration, never
  // an invented family or gender. Existing uploaded/brand images still win.
  const digest=crypto.createHash('sha256').update(String(productId)).digest();
@@ -41,4 +44,14 @@ function applyGenericImages(db,m,imagesDir){
   const result={updated,already,skipped,at:new Date().toISOString()};db.prepare('INSERT INTO settings(key,value) VALUES(?,?)').run(VERSION,JSON.stringify(result));return result;
  })();
 }
-module.exports={VERSION,loadAssignments,genericFor,applyGenericImages};
+const REBALANCE_KEY='generic_image_rebalance_2026_11_v1';
+function applyGenericRebalance(db){return db.transaction(()=>{
+ if(db.prepare('select 1 from settings where key=?').get(REBALANCE_KEY))return {reason:'already_applied'};
+ const p=db.prepare('select id,slug,name_en,brand_en,family_slug,gender,image_url from products where id=?').get('SUP-AG-900002');
+ const valid=p&&p.slug==='giorgio-armani-acqua-di-gio-edp'&&p.name_en==='GIORGIO ARMANI - Acqua di Giò EDP'&&p.brand_en==='Giorgio Armani'&&p.family_slug===null&&p.gender==='MEN';
+ let updated=0,already=0;
+ if(valid&&p.image_url===PREFIX+'generic-neutral-4.jpg')already=1;
+ else if(valid&&p.image_url===PREFIX+'generic-neutral-1.jpg')updated=db.prepare('update products set image_url=? where id=? and image_url=?').run(PREFIX+'generic-neutral-4.jpg',p.id,p.image_url).changes;
+ const result={updated,already,skipped:!updated&&!already};db.prepare('insert into settings(key,value) values(?,?)').run(REBALANCE_KEY,JSON.stringify(result));return result;
+})();}
+module.exports={VERSION,REBALANCE_KEY,loadAssignments,genericFor,applyGenericImages,applyGenericRebalance};

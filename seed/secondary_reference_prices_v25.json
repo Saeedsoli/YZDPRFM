@@ -1,0 +1,27 @@
+{
+  "version": "secondary_reference_prices_2026_11_v25",
+  "supplier_file_sha256": "bbe8f40610bc765bda0a7d2da9dbe78f4e397458a6991239c3c18d0853f33f5c",
+  "description": "Owner-default provisional EDP choice; independent source; supplier essence unverified.",
+  "items": [
+    {
+      "product_id": "SUP-TP-910046",
+      "slug": "gucci-flora-by-gucci-edp-2010",
+      "brand_en": "Gucci",
+      "expected_name_en": "GUCCI - Flora by Gucci Eau de Parfum",
+      "reference_name": "Flora by Gucci Eau de Parfum",
+      "source_url": "https://www.fragrantica.com/perfume/Gucci/Flora-by-Gucci-Eau-de-Parfum-7610.html",
+      "provider": "Fragrantica",
+      "status": "secondary_original_found_supplier_essence_unverified",
+      "checked_date": "2026-11-01",
+      "supplier_brand": "GUCCI",
+      "supplier_model": "FLORA BY GUCCI",
+      "supplier_gender": "Women",
+      "usd_per_kg": "94.6",
+      "quality": "B",
+      "match_status": "name_matched_supplier_identity_unverified",
+      "owner_version_confirmation": "Owner authorized base EDP and source-row label as provisional selection; supplier essence identity unverified.",
+      "expected_edps": [],
+      "legacy_backfill": false
+    }
+  ]
+}

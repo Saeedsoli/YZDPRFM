@@ -861,3 +861,10 @@ node_modules/   با npm install برمی‌گردد
 
 - `src/approved-made-to-order-v12.js` — تأیید محافظت‌شده چهار تطبیق پرفیوم.
 - `scripts/test_approved_mto_v12.py` — خرید و محافظ تأیید دسته پرفیوم.
+
+- `scripts/test_default_reference_v53.js` — شش تطبیق موقت رسمی و مستقل بر مبنای پیش‌فرض مالک.
+
+- `src/approved-made-to-order-v13.js` — تأیید محافظت‌شده شش تطبیق جدید.
+- `scripts/test_approved_mto_v13.py` — خرید و محافظ تأیید دسته جدید.
+
+- `scripts/test_generic_image_rebalance.js` — تعادل تصویر نمادین و حفاظت انتخاب مدیر.

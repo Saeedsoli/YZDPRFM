@@ -1,0 +1,7 @@
+'use strict';
+const a=require('assert/strict'),D=require('better-sqlite3'),f=require('../src/generic-product-images');
+function setup(image){const db=new D(':memory:');db.exec('CREATE TABLE settings(key TEXT PRIMARY KEY,value TEXT);CREATE TABLE products(id TEXT PRIMARY KEY,slug TEXT,name_en TEXT,brand_en TEXT,family_slug TEXT,gender TEXT,image_url TEXT)');db.prepare('insert into products values(?,?,?,?,?,?,?)').run('SUP-AG-900002','giorgio-armani-acqua-di-gio-edp','GIORGIO ARMANI - Acqua di Giò EDP','Giorgio Armani',null,'MEN',image);return db;}
+let db=setup('/images/products/generic-neutral-1.jpg');a.deepEqual(f.applyGenericRebalance(db),{updated:1,already:0,skipped:false});a.equal(db.prepare('select image_url from products').get().image_url,'/images/products/generic-neutral-4.jpg');db.prepare('update products set image_url=?').run('/owner.jpg');a.equal(f.applyGenericRebalance(db).reason,'already_applied');a.equal(db.prepare('select image_url from products').get().image_url,'/owner.jpg');db.close();
+db=setup('/owner.jpg');a.deepEqual(f.applyGenericRebalance(db),{updated:0,already:0,skipped:true});a.equal(db.prepare('select image_url from products').get().image_url,'/owner.jpg');db.close();
+db=setup('/images/products/generic-neutral-4.jpg');a.deepEqual(f.applyGenericRebalance(db),{updated:0,already:1,skipped:false});db.close();
+a.equal(f.genericFor('SUP-AG-900002',{items:[]}),'/images/products/generic-neutral-4.jpg');console.log('PASS approved neutral image rebalance and owner edit guard');

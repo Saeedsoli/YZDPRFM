@@ -1,0 +1,67 @@
+{
+  "version": "approved_made_to_order_2026_11_v13",
+  "source_sha256": "bbe8f40610bc765bda0a7d2da9dbe78f4e397458a6991239c3c18d0853f33f5c",
+  "description": "Owner approved EDP-first default, Parfum fallback, source-label gender and activation; named originals do not verify supplied essence.",
+  "items": [
+    {
+      "product_id": "SUP-AG-900002",
+      "slug": "giorgio-armani-acqua-di-gio-edp",
+      "expected_name_en": "GIORGIO ARMANI - Acqua di Giò EDP",
+      "brand_en": "Giorgio Armani",
+      "usd_per_kg": "133.1",
+      "quality": "A",
+      "source_type": "provisional",
+      "reference_url": "https://www.giorgioarmanibeauty-usa.com/fragrances/mens-cologne/acqua-di-gio-eau-de-parfum/ww-00631-arm.html"
+    },
+    {
+      "product_id": "SUP-PR-900001",
+      "slug": "paco-rabanne-invictus-parfum",
+      "expected_name_en": "PACO RABANNE - Invictus Parfum",
+      "brand_en": "Paco Rabanne",
+      "usd_per_kg": "198",
+      "quality": "H",
+      "source_type": "provisional",
+      "reference_url": "https://www.rabanne.com/ww/en/fragrance/p/invictus-parfum--000000000065199570"
+    },
+    {
+      "product_id": "SUP-VS-900002",
+      "slug": "versace-eros-men-edp",
+      "expected_name_en": "VERSACE - Eros Men EDP",
+      "brand_en": "Versace",
+      "usd_per_kg": "243.1",
+      "quality": "H",
+      "source_type": "provisional",
+      "reference_url": "https://www.versace.com/us/en/men/accessories/fragrances-body-care/eros/eros-edp-100-ml-blue/R740110-R100MLS_RNUL.html"
+    },
+    {
+      "product_id": "SUP-RD-900001",
+      "slug": "roja-elysium-pour-homme-edp",
+      "expected_name_en": "ROJA DOVE - Elysium Pour Homme EDP",
+      "brand_en": "Roja Dove",
+      "usd_per_kg": "403.7",
+      "quality": "H",
+      "source_type": "provisional",
+      "reference_url": "https://rojalondon.com/products/elysium-homme-edp"
+    },
+    {
+      "product_id": "YZD-PROD-1620",
+      "slug": "mugler-alien-edp",
+      "expected_name_en": "MUGLER - Alien EDP",
+      "brand_en": "Mugler",
+      "usd_per_kg": "294.8",
+      "quality": "H",
+      "source_type": "provisional",
+      "reference_url": "https://inter.mugler.com/int/fragrance/women-s-fragrances/alien/alien-eau-de-parfum/M010401002.html"
+    },
+    {
+      "product_id": "SUP-TP-910046",
+      "slug": "gucci-flora-by-gucci-edp-2010",
+      "expected_name_en": "GUCCI - Flora by Gucci Eau de Parfum",
+      "brand_en": "Gucci",
+      "usd_per_kg": "94.6",
+      "quality": "B",
+      "source_type": "secondary",
+      "reference_url": "https://www.fragrantica.com/perfume/Gucci/Flora-by-Gucci-Eau-de-Parfum-7610.html"
+    }
+  ]
+}
