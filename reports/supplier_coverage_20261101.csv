@@ -1,5 +1,5 @@
 ﻿brand,model,supplier_gender,supplier_names,row_count,lines,max_usd_per_kg,max_quality,state,status_fa,product_ids,reference_urls,source_manifests,review_warning,review_sources
-AMUAGE,Epic,Men,آمواج اپیک,2,"11,12",276.1,H,pending,هنوز قیمت مرجع منتسب نشده,,,,,
+AMUAGE,Epic,Men,آمواج اپیک,2,"11,12",276.1,H,provisional,قیمت موقت با شاهد نام؛ هویت اسانس تأییدنشده,YZD-PROD-0545,https://amouage.com/products/epic-man-100ml,official_reference_prices_v42.json,,
 AMUAGE,DECISION,Unisex,دسیژن,1,13,330,H,provisional,قیمت موقت با شاهد نام؛ هویت اسانس تأییدنشده,YZD-PROD-1996,https://amouage.com/products/new-decision,official_reference_prices_v27.json,,
 AMUAGE,OUTLADNS,Unisex,اوتلندررز,1,14,408.1,H,provisional,قیمت موقت با شاهد نام؛ هویت اسانس تأییدنشده,SUP-AM-900008,https://amouage.com/products/new-outlands,official_reference_prices_v6.json,,
 AMUAGE,Honour,Women,آمواج عانر,1,15,365.2,H,pending,هنوز قیمت مرجع منتسب نشده,,,,,
