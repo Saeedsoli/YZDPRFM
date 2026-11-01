@@ -87,16 +87,6 @@
       ]
     },
     {
-      "brand": "CHANEL",
-      "model": "BLEU de chanel",
-      "supplier_gender": "Men",
-      "expected_fa": "بلو د شنل",
-      "warning": "ادو تویلت، ادوپرفیوم و پرفیوم نسخه‌های مرجع جدا هستند؛ نسخه اسانس فایل مشخص نیست.",
-      "reference_urls": [
-        "https://www.chanel.com/us/fragrance/men/c/7x1x2x34/bleu-de-chanel/"
-      ]
-    },
-    {
       "brand": "VERSACE",
       "model": "Crysral Noir",
       "supplier_gender": "Women",

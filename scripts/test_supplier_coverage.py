@@ -54,13 +54,12 @@ actual,source_sha=a.read_rows(ROOT/a.SOURCE);assert len(actual)==342;assert len(
 actual_groups=a.group_rows(actual)
 raw_results,_=a.assess(actual_groups,[],{}, {},source_sha,False)
 before_states=[r['state'] for r in raw_results]
-assert a.apply_review_flags(ROOT,source_sha,raw_results)==12
+assert a.apply_review_flags(ROOT,source_sha,raw_results)==11
 assert [r['state'] for r in raw_results]==before_states
 flagged={(r['brand'],r['model']):r for r in raw_results if r['review_warning']}
 assert ('PARFUMS de MARLY','Layton') in flagged and 'دلینا' in flagged[('PARFUMS de MARLY','Layton')]['review_warning']
 assert ('AMUAGE','Jubilation XXV') in flagged
-for key in [('CHANEL','BLEU de chanel'),
-            ('VERSACE','Crysral Noir'),
+for key in [('VERSACE','Crysral Noir'),
             ('VERSACE','Eros pour Femme'),('Marc-Antoine Barrois','Ganymede')]:
     assert key in flagged and flagged[key]['state']=='pending'
 # Check manifests before DB application, including flagged rows without prices.
