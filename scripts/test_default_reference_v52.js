@@ -1,0 +1,13 @@
+'use strict';
+// Disposable DB only: source row, exact baseline, provenance and guarded notes.
+const a=require('assert/strict'),fs=require('fs'),os=require('os'),path=require('path'),crypto=require('crypto'),{spawnSync}=require('child_process');
+const root=path.join(__dirname,'..'),m=require('../seed/official_reference_prices_v52.json');
+const raw=fs.readFileSync(path.join(root,'uploads/لیست_قیمت_عمده.md'));a.equal(crypto.createHash('sha256').update(raw).digest('hex'),m.supplier_file_sha256);a.equal(m.items.length,4);
+let brand='',rows=[];for(const line of raw.toString('utf8').split(/\r?\n/)){if(line.startsWith('## '))brand=line.slice(3).trim();if(!line.startsWith('|'))continue;const c=line.slice(1).replace(/\|\s*$/,'').split('|').map(x=>x.trim());if(c.length===5&&/^\d+(?:\.\d+)?$/.test(c[4]))rows.push({brand,model:c[1],gender:c[2],quality:c[3],price:Number(c[4])});}
+for(const x of m.items){const r=rows.filter(y=>y.brand===x.supplier_brand&&y.model===x.supplier_model&&y.gender===x.supplier_gender).sort((p,q)=>q.price-p.price);a(r.length);a.equal(r[0].price,Number(x.usd_per_kg));a.equal(r[0].quality,x.quality);a.match(x.owner_version_confirmation,/Owner authorized base Parfum/);}
+const dir=fs.mkdtempSync(path.join(os.tmpdir(),'yazd-default51-')),env={...process.env,DB_PATH:path.join(dir,'db.sqlite'),BACKUP_DISABLED:'1',APPROVED_MTO_AUTOSTART:'0'};
+function run(code){const p=spawnSync(process.execPath,['-e',code],{cwd:root,env,encoding:'utf8',timeout:120000});if(p.status!==0)throw Error(p.stdout+'\n'+p.stderr);}
+try{
+ run(`const a=require('assert/strict'),{db}=require('./src/db'),m=require('./seed/official_reference_prices_v52.json'),price=require('./src/essence-pricing').priceFromUsdPerKg;const log=JSON.parse(db.prepare('select value from settings where key=?').get(m.version).value);a.equal(log.applied,4);a.deepEqual(log.skipped,[]);for(const x of m.items){const p=db.prepare('select * from products where id=?').get(x.product_id);a.equal(p.supply_mode,'UNAVAILABLE');a.equal(p.essence_usd_per_kg,x.usd_per_kg);a.equal(db.prepare('select official_url from official_identity_evidence where product_id=?').get(p.id).official_url,x.official_url);const vs=db.prepare("select * from variants where product_id=? and ((type='EDP' and volume_ml in (10,30,50,100)) or (type='SAMPLE' and volume_ml=5) or (type='BODY_SPLASH' and volume_ml=120))").all(p.id);a.equal(vs.length,6);for(const v of vs){a.equal(v.stock,0);a.equal(v.price_toman,price(x.usd_per_kg,300000,v.type,v.volume_ml));}}db.close()`);
+ console.log('PASS four default references, source maxima, exact price formula, six variants, no stock');
+}finally{fs.rmSync(dir,{recursive:true,force:true});}

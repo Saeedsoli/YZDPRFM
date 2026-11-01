@@ -856,3 +856,8 @@ node_modules/   با npm install برمی‌گردد
 
 - `src/approved-made-to-order-v11.js` — تأیید محافظت‌شده هفت تطبیق پیش‌فرض.
 - `scripts/test_approved_mto_v11.py` — خرید و محافظ تأیید دسته پیش‌فرض.
+
+- `scripts/test_default_reference_v52.js` — چهار تطبیق موقت پرفیوم بر مبنای پیش‌فرض مالک.
+
+- `src/approved-made-to-order-v12.js` — تأیید محافظت‌شده چهار تطبیق پرفیوم.
+- `scripts/test_approved_mto_v12.py` — خرید و محافظ تأیید دسته پرفیوم.

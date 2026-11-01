@@ -1,0 +1,187 @@
+{
+  "version": "official_reference_prices_2026_11_v52",
+  "supplier_file_sha256": "bbe8f40610bc765bda0a7d2da9dbe78f4e397458a6991239c3c18d0853f33f5c",
+  "description": "Four provisional choices using owner-approved default; reference does not verify supplied essence.",
+  "items": [
+    {
+      "product_id": "YZD-PROD-1552",
+      "slug": "herms-voyage-dherms-parfum",
+      "brand_en": "Hermès",
+      "expected_name_en": "HERMÈS - Voyage d'Hermès Parfum",
+      "reference_name": "Voyage d’Hermès Parfum",
+      "official_url": "https://www.hermes.com/us/en/product/voyage-d-hermes-parfum-V107569V0/",
+      "supplier_brand": "HERMES",
+      "supplier_model": "Voyage d`Hermes",
+      "supplier_gender": "Unisex",
+      "usd_per_kg": "94.6",
+      "quality": "H",
+      "match_status": "name_matched_supplier_identity_unverified",
+      "owner_version_confirmation": "Owner authorized base Parfum when no base Eau de Parfum and source-row label as provisional selection; supplier essence identity unverified.",
+      "expected_edps": [
+        {
+          "sku": "YZD-1552-EDP-010",
+          "volume_ml": 10,
+          "price_toman": 465000,
+          "stock": 0,
+          "price_usd": 4.5
+        },
+        {
+          "sku": "YZD-1552-EDP-030",
+          "volume_ml": 30,
+          "price_toman": 1094999,
+          "stock": 0,
+          "price_usd": 4.5
+        },
+        {
+          "sku": "YZD-1552-EDP-050",
+          "volume_ml": 50,
+          "price_toman": 1725000,
+          "stock": 0,
+          "price_usd": 4.5
+        },
+        {
+          "sku": "YZD-1552-EDP-100",
+          "volume_ml": 100,
+          "price_toman": 3300000,
+          "stock": 0,
+          "price_usd": 4.5
+        }
+      ]
+    },
+    {
+      "product_id": "YZD-PROD-1595",
+      "slug": "paco-rabanne-1-million-parfum",
+      "brand_en": "Paco Rabanne",
+      "expected_name_en": "PACO RABANNE - 1 Million Parfum",
+      "reference_name": "1 Million Parfum",
+      "official_url": "https://www.rabanne.com/ww/en/fragrance/p/1-million-parfum--000000000065156001",
+      "supplier_brand": "Paco rabanne",
+      "supplier_model": "1 Million",
+      "supplier_gender": "Men",
+      "usd_per_kg": "273.9",
+      "quality": "H",
+      "match_status": "name_matched_supplier_identity_unverified",
+      "owner_version_confirmation": "Owner authorized base Parfum when no base Eau de Parfum and source-row label as provisional selection; supplier essence identity unverified.",
+      "expected_edps": [
+        {
+          "sku": "YZD-1595-EDP-010",
+          "volume_ml": 10,
+          "price_toman": 465000,
+          "stock": 0,
+          "price_usd": 4.5
+        },
+        {
+          "sku": "YZD-1595-EDP-030",
+          "volume_ml": 30,
+          "price_toman": 1094999,
+          "stock": 0,
+          "price_usd": 4.5
+        },
+        {
+          "sku": "YZD-1595-EDP-050",
+          "volume_ml": 50,
+          "price_toman": 1725000,
+          "stock": 0,
+          "price_usd": 4.5
+        },
+        {
+          "sku": "YZD-1595-EDP-100",
+          "volume_ml": 100,
+          "price_toman": 3300000,
+          "stock": 0,
+          "price_usd": 4.5
+        }
+      ]
+    },
+    {
+      "product_id": "YZD-PROD-1606",
+      "slug": "paco-rabanne-phantom-parfum",
+      "brand_en": "Paco Rabanne",
+      "expected_name_en": "PACO RABANNE - Phantom Parfum",
+      "reference_name": "Phantom Parfum",
+      "official_url": "https://www.rabanne.com/us/en_US/fragrance/p/phantom-parfum--000000000065188737",
+      "supplier_brand": "Paco rabanne",
+      "supplier_model": "PHANTOM",
+      "supplier_gender": "Men",
+      "usd_per_kg": "286",
+      "quality": "H",
+      "match_status": "name_matched_supplier_identity_unverified",
+      "owner_version_confirmation": "Owner authorized base Parfum when no base Eau de Parfum and source-row label as provisional selection; supplier essence identity unverified.",
+      "expected_edps": [
+        {
+          "sku": "YZD-1606-EDP-010",
+          "volume_ml": 10,
+          "price_toman": 500000,
+          "stock": 0,
+          "price_usd": 5.0
+        },
+        {
+          "sku": "YZD-1606-EDP-030",
+          "volume_ml": 30,
+          "price_toman": 1200000,
+          "stock": 0,
+          "price_usd": 5.0
+        },
+        {
+          "sku": "YZD-1606-EDP-050",
+          "volume_ml": 50,
+          "price_toman": 1900000,
+          "stock": 0,
+          "price_usd": 5.0
+        },
+        {
+          "sku": "YZD-1606-EDP-100",
+          "volume_ml": 100,
+          "price_toman": 3650000,
+          "stock": 0,
+          "price_usd": 5.0
+        }
+      ]
+    },
+    {
+      "product_id": "YZD-PROD-1432",
+      "slug": "christian-dior-fahrenheit-le-parfum",
+      "brand_en": "Christian Dior",
+      "expected_name_en": "CHRISTIAN DIOR - Fahrenheit Le Parfum",
+      "reference_name": "Fahrenheit Parfum",
+      "official_url": "https://www.dior.com/en_int/beauty/products/fahrenheit-parfum-Y0866230.html",
+      "supplier_brand": "Dior",
+      "supplier_model": "Fahrenheit",
+      "supplier_gender": "Men",
+      "usd_per_kg": "287.1",
+      "quality": "H",
+      "match_status": "name_matched_supplier_identity_unverified",
+      "owner_version_confirmation": "Owner authorized base Parfum when no base Eau de Parfum and source-row label as provisional selection; supplier essence identity unverified.",
+      "expected_edps": [
+        {
+          "sku": "YZD-1432-EDP-010",
+          "volume_ml": 10,
+          "price_toman": 535000,
+          "stock": 0,
+          "price_usd": 5.5
+        },
+        {
+          "sku": "YZD-1432-EDP-030",
+          "volume_ml": 30,
+          "price_toman": 1305000,
+          "stock": 0,
+          "price_usd": 5.5
+        },
+        {
+          "sku": "YZD-1432-EDP-050",
+          "volume_ml": 50,
+          "price_toman": 2074999,
+          "stock": 0,
+          "price_usd": 5.5
+        },
+        {
+          "sku": "YZD-1432-EDP-100",
+          "volume_ml": 100,
+          "price_toman": 3999999,
+          "stock": 0,
+          "price_usd": 5.5
+        }
+      ]
+    }
+  ]
+}
