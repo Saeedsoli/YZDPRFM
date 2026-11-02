@@ -1,0 +1,266 @@
+﻿product_id,slug,brand_fa,name_fa,status,candidate_categories,candidate_manifests,candidate_urls
+GEN-SCENT-0001,generic-gol-yakh,,گل یخ,no_pyramid_notes,,,
+GEN-SCENT-0002,generic-yas,,یاس,no_pyramid_notes,,,
+GEN-SCENT-0003,generic-gol-mohammadi,,گل محمدی,no_pyramid_notes,,,
+GEN-SCENT-0004,generic-gol-sorkh,,گل سرخ,no_pyramid_notes,,,
+GEN-SCENT-0005,generic-rose,,رز,no_pyramid_notes,,,
+GEN-SCENT-0006,generic-senjed,,سنجد,no_pyramid_notes,,,
+GEN-SCENT-0007,generic-captain-black-black,,کاپیتان بلک مشکی,no_pyramid_notes,,,
+GEN-SCENT-0008,generic-captain-black-yellow,,کاپیتان بلک زرد,no_pyramid_notes,,,
+GEN-SCENT-0009,generic-feroon,,فرعون,no_pyramid_notes,,,
+GEN-SCENT-0010,generic-havoc,,هاواک,no_pyramid_notes,,,
+GEN-SCENT-0011,generic-prestige,,پرستیژ,no_pyramid_notes,,,
+OWNER-REF-0001,davidoff-cool-water-parfum-for-her-2021,دیویدوف,کول واتر پرفیوم زنانه,candidate_match,owner_selected,owner_reference_selection_v1.json,https://www.fragrantica.com/perfume/Davidoff/Cool-Water-Parfum-for-Her-66526.html
+OWNER-REF-0002,dior-miss-dior-cherie-edp-2011,دیور,میس دیور چری ادوپرفیوم ۲۰۱۱,candidate_match,owner_selected,owner_reference_selection_v1.json,https://www.fragrantica.com/perfume/Dior/Miss-Dior-Cherie-Eau-de-Parfum-11588.html
+OWNER-REF-0003,lattafa-sheikh-al-shuyukh-base,لطافه,شیخ الشیوخ,candidate_match,owner_selected,owner_reference_selection_v1.json,https://www.fragrantica.com/perfume/Lattafa-Perfumes/Sheikh-Al-Shuyukh-25808.html
+OWNER-REF-0004,ard-al-zaafaran-ahlam-al-arab-edp,ارض الزعفران,احلام العرب,candidate_match,owner_selected,owner_reference_selection_v1.json,https://alrashad.com/products/ahlam-al-arab-eau-de-parfum-80ml-2-72-fl-oz-by-ard-al-zaafaran
+OWNER-REF-0005,mercedes-benz-for-men-edt-2012,مرسدس بنز,فور من,candidate_match,owner_selected,owner_reference_selection_v2.json,https://www.fragrantica.com/perfume/Mercedes-Benz/Mercedes-Benz-13496.html
+OWNER-REF-0006,tommy-hilfiger-tommy-now-edt-2018,تامی هیلفیگر,تامی ناو مردانه,candidate_match,owner_selected,owner_reference_selection_v2.json,https://www.fragrantica.com/perfume/Tommy-Hilfiger/Tommy-Now-51929.html
+OWNER-REF-0007,al-rehab-sultan-edp,الرحاب,سلطان,candidate_match,owner_selected,owner_reference_selection_v2.json,https://www.fragrantica.com/perfume/Al-Rehab/Sultan-20117.html
+OWNER-REF-0008,hugo-boss-boss-bottled-edp-2020-owner,هوگو باس,باس باتلد ادوپرفیوم,candidate_match,owner_selected,owner_reference_selection_v3.json,https://www.hugoboss.com/boss-bottled-eau-de-parfum-100ml-gift-set/hbeu58351977_999.html
+SUP-AG-900002,giorgio-armani-acqua-di-gio-edp,جورجیو آرمانی,آکوا دی جیو ادوپرفیوم,no_pyramid_notes,,,
+SUP-AG-900014,ariana-grande-ari,آریانا گرانده,آری,no_candidate_match,,,
+SUP-AM-900008,amouage-outlands,آمواج,اوتلندز,no_candidate_match,,,
+SUP-AT-900013,atkinsons-her-majesty-the-oud,اتکینسونز,هر مجستی د عود,no_pyramid_notes,,,
+SUP-ATKINSONS-OUD-SAVE-THE-KING,atkinsons-oud-save-the-king,اتکینسونز,عود سیو د کینگ,no_candidate_match,,,
+SUP-BS-900001,burberry-weekend-woman-edp,باربری,ویکند زنانه,candidate_match,official,official_supplement_v29.json,https://us.burberry.com/burberry-weekend-eau-de-parfum-100ml-p34547061
+SUP-BS-900050,boss-femme,هوگو باس,فم,no_pyramid_notes,,,
+SUP-CH-900001,carolina-herrera-212-vip-women,کارولینا هررا,۲۱۲ وی‌آی‌پی,no_pyramid_notes,,,
+SUP-CH-900003,carolina-herrera-212-sexy-men,کارولینا هررا,۲۱۲ سکسی مردانه,candidate_match,official,official_supplement_v26.json,https://www.carolinaherrera.com/ww/en/p-fragrance/212-sexy-men
+SUP-CH-900004,carolina-herrera-212-sexy-women,کارولینا هررا,۲۱۲ سکسی زنانه,no_pyramid_notes,,,
+SUP-CH-900005,chanel-coco-edp,شنل,کوکو ادوپرفیوم,candidate_match,official,official_supplement_v34.json,https://www.chanel.com/us/fragrance/p/113530/coco-eau-de-parfum-spray/
+SUP-CH-900006,carolina-herrera-ch-men-edt,کارولینا هررا,سی اچ مردانه,no_pyramid_notes,,,
+SUP-CK-900001,calvin-klein-eternity-for-men-edp,کلوین کلاین,اترنیتی مردانه ادوپرفیوم,candidate_match,official,official_supplement_v30.json,https://www.calvinklein.us/en/eternity-for-men-eau-de-parfum/LX000725.html
+SUP-CL-900001,clinique-happy-for-men-edt,کلینیک,هپی مردانه,candidate_match,official,official_supplement_v35.json,https://www.ch.clinique.com/fr/product/clinique-happy-for-men-eau-de-toilette-spray
+SUP-CR-900009,creed-white-flowers,کرید,وایت فلاورز,no_pyramid_notes,,,
+SUP-CR-900050,creed-absolu-aventus,کرید,ابسولو اونتوس,no_pyramid_notes,,,
+SUP-DG-900001,dolce-gabbana-dgvib3,دولچه و گابانا,دی‌جی وی‌آی‌بی ۳,candidate_match,official,official_supplement_v23.json,https://www.dolcegabbana.com/en-us/beauty/perfumes-for-him/dgvib3/dgvib3---VP003HVP0009V000.html
+SUP-EP-900001,emper-epic-adventure,امپر,اپیک ادونچر,no_pyramid_notes,,,
+SUP-EP-900002,emper-chifon,امپر,چیفون,no_pyramid_notes,,,
+SUP-EV-900001,evaflor-whisky-silver,اوافلور,ویسکی سیلور,candidate_match,official,official_supplement_v21.json,https://www.evaflor.com/en/products/whisky-silver-coffret-parfum-homme-serviette-money-clip
+SUP-EX-900011,ex-nihilo-fleur-narcotique,اِکس نیهیلو,فلور نارکوتیک,no_candidate_match,,,
+SUP-EX-900012,ex-nihilo-blue-talisman,اِکس نیهیلو,بلو تالیسمان,no_candidate_match,,,
+SUP-GC-900015,gucci-rush,گوچی,راش,no_candidate_match,,,
+SUP-GC-900016,gucci-bloom,گوچی,بلوم,no_pyramid_notes,,,
+SUP-GL-900027,guy-laroche-drakkar-noir,گی لاروش,دراکار نویر,no_pyramid_notes,,,
+SUP-GU-900029,guerlain-baiser-de-russie,گرلن,بیزه د روسی,no_candidate_match,,,
+SUP-GU-900050,givenchy-xeryus,ژیوانشی,اگزریوس,candidate_match,official,official_supplement_v19.json,https://www.givenchybeauty.com/ca/en/p/xeryus-F10100073.html
+SUP-GU-900051,givenchy-mmw,ژیوانشی,ام‌ام‌دبلیو,candidate_match,official,official_supplement_v23.json,https://www.givenchybeauty.com/fr/fr/p/3-avenue-george-v-F10100184.html
+SUP-JC-900024,juicy-couture-viva-la-juicy,جویسی کوتور,ویوا لا جویسی,no_candidate_match,,,
+SUP-JG-900025,jaguar-classic-black,جگوار,کلاسیک بلک,no_candidate_match,,,
+SUP-JH-900028,juliette-has-a-gun-metal-chypre,ژولیت هز ا گان,متال شیپر,no_candidate_match,,,
+SUP-KY-900001,kayali-wedding-velvet-santal-35,کیالی,ولت سانتال ۳۵,no_pyramid_notes,,,
+SUP-LC-900017,lacoste-essential,لاکوست,اسنشیال,no_candidate_match,,,
+SUP-LC-900018,lacoste-pour-femme,لاکوست,پور فم,no_candidate_match,,,
+SUP-LC-900023,lacoste-touch-of-pink,لاکوست,تاچ آو پینک,no_candidate_match,,,
+SUP-LL-900019,lalique-lamour,لالیک,لامور,no_candidate_match,,,
+SUP-LV-900001,louis-vuitton-afternoon-swim,لویی ویتون,افترنون سوئیم,no_pyramid_notes,,,
+SUP-LV-900002,louis-vuitton-imagination,لویی ویتون,ایمجینیشن,no_pyramid_notes,,,
+SUP-LV-900003,louis-vuitton-limmensite,لویی ویتون,ال ایمنسیت,no_pyramid_notes,,,
+SUP-LV-900004,louis-vuitton-ombre-nomade,لویی ویتون,امبر نومد,no_pyramid_notes,,,
+SUP-LV-900005,louis-vuitton-stellar-times,لویی ویتون,استلار تایمز,no_pyramid_notes,,,
+SUP-LV-900006,louis-vuitton-california-dream,لویی ویتون,کالیفرنیا دریم,no_pyramid_notes,,,
+SUP-MB-900010,montblanc-emblem,مون بلان,امبلم,no_candidate_match,,,
+SUP-MB-900013,montblanc-legend-edp,مون بلان,لجند ادوپرفیوم,no_pyramid_notes,,,
+SUP-ML-900001,milton-lloyd-hawaii,میلتون لوید,هاوایی,candidate_match,official,official_supplement_v25.json,https://milton-lloyd.com/products/hawaii
+SUP-NT-900026,nautica-voyage,ناتیکا,وویاج,no_pyramid_notes,,,
+SUP-PR-900001,paco-rabanne-invictus-parfum,پاکو رابان,اینویکتوس پارفوم,candidate_match,official,official_supplement_v31.json,https://www.rabanne.com/ww/en/fragrance/p/invictus-parfum--000000000065199570
+SUP-RD-900001,roja-elysium-pour-homme-edp,روژا داو,الیسیوم مردانه ادوپرفیوم,candidate_match,official,official_supplement_v31.json,https://rojalondon.com/products/elysium-homme-edp
+SUP-RL-900020,ralph-lauren-polo-black,رالف لورن,پولو بلک,no_candidate_match,,,
+SUP-SE-900001,seris-splendor,سریس,اسپلندور,no_pyramid_notes,,,
+SUP-SF-900001,salvatore-ferragamo-signorina-edp,سالواتوره فراگامو,سیگنورینا,candidate_match,official,official_supplement_v27.json,https://www.ferragamo.com/shop/esp/es/mujer/fragancias/signorina-781424--5
+SUP-SH-900022,shiseido-zen,شیسیدو,زن,no_pyramid_notes,,,
+SUP-SP-900050,sapil-nice-feelings-black,ساپیل,نایس فیلینگ بلک,candidate_match,official,official_supplement_v20.json,https://sapil.com/products/nice_feeling_black
+SUP-TB-900003,the-body-shop-black-musk-edp,بادی شاپ,بلک ماسک ادوپرفیوم,no_pyramid_notes,,,
+SUP-TP-910001,memo-paris-jamals-palace,ممو پاریس,جمالز پالاس,candidate_match,independent,secondary_supplement_v1.json,https://www.fragrantica.com/perfume/Memo-Paris/Jamal-s-Palace-60077.html
+SUP-TP-910002,memo-paris-retba,ممو پاریس,رتبا,no_pyramid_notes,,,
+SUP-TP-910003,dsquared2-he-wood-rocky-mountain-wood,دیسکوارد تو,هی وود راکی مانتین وود,no_pyramid_notes,,,
+SUP-TP-910004,bvlgari-le-gemme-amarena,بولگاری,له جم آمارنا,no_pyramid_notes,,,
+SUP-TP-910005,lanvin-marry-me,لانوین,مری می,candidate_match,independent,secondary_supplement_v1.json,https://www.fragrantica.com/perfume/Lanvin/Marry-Me-9405.html
+SUP-TP-910006,lanvin-eclat-darpege,لانوین,اکلت د آرپژ,no_pyramid_notes,,,
+SUP-TP-910007,jacques-bogart-silver-scent,ژاک بوگارت,سیلور سنت,candidate_match,independent,secondary_supplement_v1.json,https://www.fragrantica.com/perfume/Jacques-Bogart/Silver-Scent-7794.html
+SUP-TP-910008,sospiro-accento,سوسپیرو,اکسنتو,candidate_match,independent,secondary_supplement_v2.json,https://www.fragrantica.com/perfume/Sospiro-Perfumes/Accento-13816.html
+SUP-TP-910009,davidoff-champion,دیویدوف,چمپیون,candidate_match,independent,secondary_supplement_v2.json,https://www.fragrantica.com/perfume/Davidoff/Champion-9109.html
+SUP-TP-910010,kilian-smoke-for-the-soul,کیلیان,اسموک فور د سول,no_pyramid_notes,,,
+SUP-TP-910011,halloween-halloween,هالووین,هالووین,candidate_match,independent,secondary_supplement_v2.json,https://www.fragrantica.com/perfume/Halloween/Halloween-1444.html
+SUP-TP-910012,chloe-chloe-narcisse,کلوئه,نارسیس,candidate_match,independent,secondary_supplement_v3.json,https://www.fragrantica.com/perfume/Chloe/Chloe-Narcisse-344.html
+SUP-TP-910013,jennifer-lopez-still,جنیفر لوپز,استیل,candidate_match,independent,secondary_supplement_v3.json,https://www.fragrantica.com/perfume/Jennifer-Lopez/Still-868.html
+SUP-TP-910014,rochas-aquawoman,روشاس,آکوا وومن,candidate_match,independent,secondary_supplement_v3.json,https://www.fragrantica.com/perfume/Rochas/Aquawoman-1427.html
+SUP-TP-910015,rihanna-riri,ریحانا,ری‌ری,candidate_match,independent,secondary_supplement_v4.json,https://www.fragrantica.com/perfume/Rihanna/RiRi-31629.html
+SUP-TP-910016,malizia-uomo-vetyver,مالیزیا,اومو وتیور,no_pyramid_notes,,,
+SUP-TP-910017,rasasi-afshan,رصاصی,افشان,candidate_match,independent,secondary_supplement_v4.json,https://www.fragrantica.com/perfume/Rasasi/Afshan-19525.html
+SUP-TP-910018,rasasi-blue-for-men,رصاصی,بلو فور من,candidate_match,independent,secondary_supplement_v4.json,https://www.fragrantica.com/perfume/Rasasi/Blue-For-Men-8630.html
+SUP-TP-910019,tommy-hilfiger-tommy-jeans,تامی هیلفیگر,تامی جینز,no_pyramid_notes,,,
+SUP-TP-910020,mugler-angel-passion-star,موگلر,آنجل پشن استار,candidate_match,independent,secondary_supplement_v5.json,https://www.fragrantica.com/perfume/Mugler/Angel-Passion-Star-31849.html
+SUP-TP-910021,roger-gallet-open,روژه گاله,اوپن,candidate_match,independent,secondary_supplement_v6.json,https://www.fragrantica.com/perfume/Roger-Gallet/Open-5973.html
+SUP-TP-910022,john-richmond-for-men,جان ریچموند,فور من,candidate_match,independent,secondary_supplement_v6.json,https://www.fragrantica.com/perfume/John-Richmond/John-Richmond-for-Men-9117.html
+SUP-TP-910023,givenchy-absolutely-irresistible,ژیوانشی,ابسولوتلی ایرزیستیبل,candidate_match,independent,secondary_supplement_v7.json,https://www.fragrantica.com/perfume/Givenchy/Absolutely-Irresistible-4613.html
+SUP-TP-910024,sospiro-erba-pura-original,سوسپیرو,اربا پورا,candidate_match,independent,secondary_supplement_v7.json,https://www.fragrantica.com/perfume/Sospiro-Perfumes/Erba-Pura-18652.html
+SUP-TP-910025,aramis-900,آرامیس,۹۰۰,candidate_match,independent,secondary_supplement_v8.json,https://www.fragrantica.com/perfume/Aramis/Aramis-900-116.html
+SUP-TP-910026,bvlgari-jasmin-noir-original,بولگاری,جاسمین نویر,candidate_match,independent,secondary_supplement_v8.json,https://www.fragrantica.com/perfume/Bvlgari/Jasmin-Noir-3750.html
+SUP-TP-910027,kilian-apple-brandy-original,کیلیان,اپل برندی,candidate_match,independent,secondary_supplement_v8.json,https://www.fragrantica.com/perfume/By-Kilian/Apple-Brandy-22614.html
+SUP-TP-910028,cacharel-amor-amor,کاچارل,آمور آمور,candidate_match,independent,secondary_supplement_v8.json,https://www.fragrantica.com/perfume/Cacharel/Amor-Amor-238.html
+SUP-TP-910029,billie-eilish-eilish,بیلی آیلیش,ایلیش,candidate_match,independent,secondary_supplement_v8.json,https://www.fragrantica.com/perfume/Billie-Eilish/Eilish-70052.html
+SUP-TP-910030,narciso-rodriguez-for-him-original,نارسیسو رودریگز,فور هیم,no_pyramid_notes,,,
+SUP-TP-910031,creed-pour-enfants,کرید,پور انفانت,candidate_match,independent,secondary_supplement_v10.json,https://www.fragrantica.com/perfume/Creed/Creed-Pour-Enfants-37549.html
+SUP-TP-910032,remy-marquis-shalis-cologne,رمی مارکیز,شالیز,candidate_match,independent,secondary_supplement_v11.json,https://www.fragrantica.com/perfume/Remy-Marquis/Shalis-Cologne-20850.html
+SUP-TP-910033,sapil-chichi-original-women,سپیل,چی چی زنانه,candidate_match,independent,secondary_supplement_v11.json,https://www.fragrantica.com/perfume/Sapil/Chichi-25560.html
+SUP-TP-910034,escada-collection-1997,اسکادا,کالکشن,candidate_match,independent,secondary_supplement_v11.json,https://www.fragrantica.com/perfume/Escada/Escada-Collection-1369.html
+SUP-TP-910035,orlane-derrick-1978,اورلن,دریک,candidate_match,independent,secondary_supplement_v12.json,https://www.fragrantica.com/perfume/Orlane/Derrick-15441.html
+SUP-TP-910036,chopard-vanille-de-madagascar,شوپارد,وانیل ماداگاسکار,candidate_match,independent,secondary_supplement_v13.json,https://www.fragrantica.com/perfume/Chopard/Vanille-de-Madagascar-45225.html
+SUP-TP-910037,salvatore-ferragamo-incanto-2003,سالواتوره فراگامو,اینکانتو,candidate_match,independent,secondary_supplement_v14.json,https://www.fragrantica.com/perfume/Salvatore-Ferragamo/Incanto-651.html
+SUP-TP-910038,joop-femme-original,جوپ,جوپ فم,candidate_match,independent,secondary_supplement_v15.json,https://www.fragrantica.com/perfume/Joop/Joop-Femme-3100.html
+SUP-TP-910039,max-factor-just-call-me-maxi,مکس فکتور,جاست کال می مکسی,candidate_match,independent,secondary_supplement_v15.json,https://www.fragrantica.com/perfume/Max-Factor/Just-Call-Me-Maxi-41450.html
+SUP-TP-910040,joop-nightflight-original,جوپ,نایت فلایت,candidate_match,independent,secondary_supplement_v16.json,https://www.fragrantica.com/perfume/Joop/Nightflight-1721.html
+SUP-TP-910041,joop-homme-original,جوپ,هوم,candidate_match,independent,secondary_supplement_v17.json,https://www.fragrantica.com/perfume/Joop/Joop-Homme-1251.html
+SUP-TP-910042,nikos-sculpture-homme-original,نیکوس,اسکالیپچر هوم,candidate_match,independent,secondary_supplement_v18.json,https://www.fragrantica.com/perfume/Nikos/Sculpture-Homme-925.html
+SUP-TP-910043,paco-rabanne-black-xs-l-exces-for-him,پاکو رابان,بلک ایکس اس ال اکسس مردانه,candidate_match,independent,secondary_supplement_v19.json,https://www.fragrantica.com/perfume/Rabanne/Black-XS-L-Exces-for-Him-13805.html
+SUP-TP-910044,perfumers-workshop-tea-rose-edp,پرفیومرز ورکشاپ,تی رز ادوپرفیوم,candidate_match,independent,secondary_supplement_v20.json,https://www.fragrantica.com/perfume/Perfumer-s-Workshop/Eau-de-Parfum-Tea-Rose-29757.html
+SUP-TP-910045,azzaro-chrome-eau-de-parfum,آزارو,کروم ادوپرفیوم,candidate_match,independent,secondary_supplement_v21.json,https://www.fragrantica.com/perfume/Azzaro/Chrome-Eau-de-Parfum-72608.html
+SUP-TP-910046,gucci-flora-by-gucci-edp-2010,گوچی,فلورا بای گوچی ادوپرفیوم,candidate_match,independent,secondary_supplement_v22.json,https://www.fragrantica.com/perfume/Gucci/Flora-by-Gucci-Eau-de-Parfum-7610.html
+SUP-TP-910047,loewe-quizas-quizas-quizas-edp,لوئوه,کوئیزاس ادوپرفیوم,candidate_match,independent,secondary_supplement_v23.json,https://www.fragrantica.com/perfume/Loewe/Quizas-Quizas-Quizas-2576.html
+SUP-TP-910048,alfred-dunhill-brown-man-2003,دانهیل,قهوه‌ای مردانه,candidate_match,independent,secondary_supplement_v24.json,https://www.fragrantica.com/perfume/Alfred-Dunhill/Dunhill-1939.html
+SUP-VS-900001,versace-eros-pour-femme-edp,ورساچه,اروس پور فم,no_pyramid_notes,,,
+SUP-VS-900002,versace-eros-men-edp,ورساچه,اروس مردانه ادوپرفیوم,candidate_match,official,official_supplement_v31.json,https://www.versace.com/us/en/men/accessories/fragrances-body-care/eros/eros-edp-100-ml-blue/R740110-R100MLS_RNUL.html
+SUP-VS-900021,victorias-secret-bombshell,ویکتوریا سکرت,بامب شل,no_pyramid_notes,,,
+SUP-VS-900030,victorias-secret-very-sexy,ویکتوریا سکرت,وری سکسی,no_pyramid_notes,,,
+SUP-VS-900032,victorias-secret-aqua-kiss,ویکتوریا سکرت,آکوا کیس,no_candidate_match,,,
+SUP-XJ-900007,xerjoff-torino24,زرژوف,تورینو ۲۴,no_pyramid_notes,,,
+YZD-PROD-0031,parfums-de-marly-akaster,پارفومز د مارلی,آکاستر,candidate_match,independent,secondary_note_corrections_v1.json,https://www.fragrantica.com/perfume/Parfums-de-Marly/Akaster-33513.html
+YZD-PROD-0032,parfums-de-marly-nisean,پارفومز د مارلی,نیسین,candidate_match,independent,secondary_note_corrections_v1.json,https://www.fragrantica.com/perfume/Parfums-de-Marly/Nisean-36540.html
+YZD-PROD-0089,jean-paul-gaultier-kokorico,ژان پل گوتیه,کوکوریکو,candidate_match,independent,secondary_note_corrections_v1.json,https://www.fragrantica.com/perfume/Jean-Paul-Gaultier/Kokorico-12711.html
+YZD-PROD-0145,paco-rabanne-invictus-intense,پاکو رابان,اینویکتوس اینتنس,candidate_match,independent,secondary_reference_prices_v28.json,https://www.fragrantica.com/perfume/Rabanne/Invictus-Intense-42891.html
+YZD-PROD-0308,issey-miyake-leau-bleue-dissey-pour-homme,ایسی میاکی,لئو بلو د ایسی,candidate_match,independent,secondary_note_corrections_v1.json,https://www.fragrantica.com/perfume/Issey-Miyake/L-Eau-Bleue-d-Issey-Pour-Homme-724.html
+YZD-PROD-0362,yves-saint-laurent-supreme-bouquet,ایو سن لوران,سوپریم بوکه,candidate_match,independent,secondary_reference_prices_v28.json,https://www.fragrantica.com/perfume/Yves-Saint-Laurent/Supreme-Bouquet-18369.html
+YZD-PROD-0429,creed-aventus,کرید,اونتوس,no_pyramid_notes,,,
+YZD-PROD-0430,creed-green-irish-tweed,کرید,گرین ایریش توید,candidate_match,official,official_note_corrections_v1.json,https://www.creedfragrance.com/p/green-irish-tweed/12870035/
+YZD-PROD-0431,creed-silver-mountain-water,کرید,سیلور مانتین واتر,candidate_match,official,official_note_corrections_v1.json,https://www.creedfragrance.com/p/silver-mountain-water/12870049/
+YZD-PROD-0432,creed-millesime-imperial,کرید,میلسیم ایمپریال,candidate_match,official,official_note_corrections_v7.json,https://www.creedfragrance.com/p/millesime-imperial/12870041/
+YZD-PROD-0436,creed-viking,کرید,وایکینگ,candidate_match,official,official_note_corrections_v1.json,https://www.creedfragrance.com/p/viking/12870053/
+YZD-PROD-0439,creed-erolfa,کرید,ارولفا,no_pyramid_notes,,,
+YZD-PROD-0442,creed-original-vetiver,کرید,اوریجینال وتیور,no_pyramid_notes,,,
+YZD-PROD-0485,clive-christian-x-men,کلایو کریستین,ایکس مردانه,candidate_match,official,official_note_corrections_v16.json,https://us.clivechristian.com/products/x-masculine
+YZD-PROD-0501,penhaligons-the-tragedy-of-lord-george,پنهالیگونز,لرد جورج,no_pyramid_notes,,,
+YZD-PROD-0502,penhaligons-the-blazing-mr-sam,پنهالیگونز,د بلیزینگ مستر سم,no_pyramid_notes,,,
+YZD-PROD-0542,amouage-jubilation-40-man,آمواج,جوبیلایشن ۴۰ اکستریت,candidate_match,official,official_note_corrections_v36.json,https://amouage.com/products/new-jubilation-40-man-exceptional-extrait
+YZD-PROD-0543,amouage-memoir-man,آمواج,ممویر مردانه,candidate_match,official,official_note_corrections_v26.json,https://amouage.com/products/memoir-man
+YZD-PROD-0545,amouage-epic-man,آمواج,اپیک مردانه,candidate_match,official,official_note_corrections_v26.json,https://amouage.com/products/epic-man-100ml
+YZD-PROD-0548,amouage-guidance,آمواج,گایدنس,candidate_match,official,official_note_corrections_v21.json,https://amouage.com/products/100ml-guidance
+YZD-PROD-0553,amouage-honour-woman,آمواج,آنر زنانه,candidate_match,official,official_note_corrections_v26.json,https://amouage.com/products/honour-woman-100ml
+YZD-PROD-0564,amouage-purpose,آمواج,پرپوس,candidate_match,official,official_note_corrections_v7.json,https://amouage.com/products/100ml-purpose
+YZD-PROD-0566,amouage-search,آمواج,سرچ,candidate_match,official,official_note_corrections_v7.json,https://amouage.com/en-ch/products/100ml-search
+YZD-PROD-0575,xerjoff-naxos,زرجوف,ناکسوس ۱۸۶۱,candidate_match,official,active_official_note_corrections_v1.json,https://www.xerjoff.com/products/naxos-eau-de-parfum
+YZD-PROD-0576,xerjoff-alexandria-ii,زرجوف,الکساندریا ۲,candidate_match,official,official_note_corrections_v3.json,https://www.xerjoff.com/en-us/products/alexandria-ll-parfum
+YZD-PROD-0591,xerjoff-torino22,زرجوف,تورینو ۲۲,no_pyramid_notes,,,
+YZD-PROD-0601,casamorati-lira,کازاموراتی,لیرا,candidate_match,official,official_note_corrections_v14.json,https://www.xerjoff.com/en-us/products/lira-eau-de-parfum
+YZD-PROD-0602,casamorati-dama-bianca,کازاموراتی,داما بیانکا,candidate_match,official,official_note_corrections_v14.json,https://www.xerjoff.com/en-us/products/dama-bianca-eau-de-parfum
+YZD-PROD-0603,casamorati-bouquet-ideale,کازاموراتی,بوکه ایده آل,candidate_match,official,official_note_corrections_v14.json,https://www.xerjoff.com/products/bouquet-ideale-eau-de-parfum
+YZD-PROD-0604,casamorati-mefisto,کازاموراتی,مفیستو,candidate_match,official,official_note_corrections_v14.json,https://www.xerjoff.com/en-us/products/mefisto-eau-de-parfum
+YZD-PROD-0611,casamorati-gran-ballo,کازاموراتی,گران بالو,candidate_match,official,official_note_corrections_v14.json,https://www.xerjoff.com/en-us/products/gran-ballo-eau-de-parfum
+YZD-PROD-0614,maison-francis-kurkdjian-baccarat-rouge-540-edp,میسون فرانسیس کورکجان,باکارات رژ ۵۴۰ ادوپرفیوم,no_pyramid_notes,,,
+YZD-PROD-0615,maison-francis-kurkdjian-baccarat-rouge-540-extrait-de-parfum,میسون فرانسیس کورکجان,باکارات رژ ۵۴۰ اکستریت,candidate_match,official,official_note_corrections_v11.json,https://www.franciskurkdjian.com/int-en/p/baccarat-rouge-540-extrait-de-parfum-RA142321.html
+YZD-PROD-0636,parfums-de-marly-layton,پارفومز د مارلی,لیتون,candidate_match,official,official_note_corrections_v13.json,https://us.parfums-de-marly.com/products/layton
+YZD-PROD-0639,parfums-de-marly-herod,پارفومز د مارلی,هرود,candidate_match,official,official_note_corrections_v2.json,https://us.parfums-de-marly.com/products/herod
+YZD-PROD-0640,parfums-de-marly-pegasus,پارفومز د مارلی,پگاسوس,candidate_match,official,official_note_corrections_v2.json,https://us.parfums-de-marly.com/products/pegasus
+YZD-PROD-0642,parfums-de-marly-haltane,پارفومز د مارلی,هالتان,candidate_match,official,official_note_corrections_v2.json,https://us.parfums-de-marly.com/products/haltane
+YZD-PROD-0645,parfums-de-marly-percival,پارفومز د مارلی,پرسیوال,candidate_match,official,active_official_note_corrections_v1.json,https://us.parfums-de-marly.com/products/percival
+YZD-PROD-0646,parfums-de-marly-sedley,پارفومز د مارلی,سدلی,candidate_match,official,active_official_note_corrections_v1.json,https://us.parfums-de-marly.com/products/sedley
+YZD-PROD-0647,parfums-de-marly-greenley,پارفومز د مارلی,گرینلی,candidate_match,official,official_note_corrections_v1.json,https://us.parfums-de-marly.com/products/greenley
+YZD-PROD-0648,parfums-de-marly-godolphin,پارفومز د مارلی,گودولفین,candidate_match,official,official_note_corrections_v2.json,https://us.parfums-de-marly.com/products/godolphin
+YZD-PROD-0650,parfums-de-marly-kalan,پارفومز د مارلی,کالان,candidate_match,official,official_note_corrections_v2.json,https://us.parfums-de-marly.com/products/kalan
+YZD-PROD-0651,parfums-de-marly-galloway,پارفومز د مارلی,گالووی,candidate_match,official,official_note_corrections_v4.json,https://us.parfums-de-marly.com/products/galloway
+YZD-PROD-0653,parfums-de-marly-delina,پارفومز د مارلی,دلینا,candidate_match,official,official_note_corrections_v37.json,https://us.parfums-de-marly.com/products/delina
+YZD-PROD-0656,parfums-de-marly-valaya,پارفومز د مارلی,والایا,candidate_match,official,official_note_corrections_v2.json,https://us.parfums-de-marly.com/products/valaya
+YZD-PROD-0662,initio-parfums-prives-oud-for-greatness,اینیشیو پارفومز پرایوز,عود فور گریتنس,no_pyramid_notes,,,
+YZD-PROD-0665,initio-parfums-prives-side-effect,اینیشیو پارفومز پرایوز,ساید افکت,no_pyramid_notes,,,
+YZD-PROD-0677,kilian-paris-angels-share,کیلیان,انجلز شر,candidate_match,official,active_official_note_corrections_v2.json,https://www.bykilian.com/product/19797/82905/perfume/angels-share/the-liquors
+YZD-PROD-0679,kilian-paris-black-phantom-memento-mori,کیلیان,بلک فانتوم,no_pyramid_notes,,,
+YZD-PROD-0684,kilian-paris-moonlight-in-heaven,کیلیان,مون لایت این هیون,candidate_match,official,official_note_corrections_v6.json,https://www.bykilian.com/product/19797/52771/perfume/moonlight-in-heaven/the-fresh
+YZD-PROD-0688,kilian-paris-good-girl-gone-bad,کیلیان,گود گرل گان بد,no_pyramid_notes,,,
+YZD-PROD-0756,bdk-parfums-gris-charnel-edp,بی دی کی پارفومز,گریس شارنل ادوپرفیوم,candidate_match,official,official_note_corrections_v23.json,https://us.bdkparfums.com/products/gris-charnel
+YZD-PROD-0781,marc-antoine-barrois-ganymede-edp,مارک آنتوان باروآ,گانیمد ادوپرفیوم,no_pyramid_notes,,,
+YZD-PROD-0919,nasomatto-black-afgano,ناسوماتو,بلک افغان,no_pyramid_notes,,,
+YZD-PROD-0921,nasomatto-baraonda,ناسوماتو,بارائوندا,no_pyramid_notes,,,
+YZD-PROD-0925,nasomatto-hindu-grass,ناسوماتو,هیندو گراس,no_pyramid_notes,,,
+YZD-PROD-0928,nasomatto-fantomas,ناسوماتو,فانتوماس,no_pyramid_notes,,,
+YZD-PROD-0931,orto-parisi-megamare,اورتو پاریزی,مگاماره,no_pyramid_notes,,,
+YZD-PROD-0989,byredo-rouge-chaotique,بایردو,روژ شائوتیک,candidate_match,official,official_note_corrections_v3.json,https://www.byredo.com/us_en/p/rouge-chaotique-night-veils-perfume-extract-70ml
+YZD-PROD-0990,byredo-de-los-santos,بایردو,د لوس سانتوس,candidate_match,official,official_note_corrections_v3.json,https://www.byredo.com/us_en/de-los-santos-50ml
+YZD-PROD-0993,le-labo-santal-33,له لابو,سانتال ۳۳,no_pyramid_notes,,,
+YZD-PROD-1159,memo-paris-irish-leather,ممو پاریس,ایریش لدر,candidate_match,official,official_note_corrections_v13.json,https://us.memoparis.com/products/irish-leather-eau-de-parfum-30ml
+YZD-PROD-1245,escentric-molecules-molecule-01,اسنتریک مولکولز,مولکول ۰۱,no_pyramid_notes,,,
+YZD-PROD-1246,escentric-molecules-molecule-02,اسنتریک مولکولز,مولکول ۰۲,no_pyramid_notes,,,
+YZD-PROD-1248,escentric-molecules-molecule-04,اسنتریک مولکولز,مولکول ۰۴,no_pyramid_notes,,,
+YZD-PROD-1328,sospiro-perfumes-opera,سوسپیرو,اپرا,candidate_match,independent,secondary_note_corrections_v2.json,https://www.fragrantica.com/perfume/Sospiro-Perfumes/Opera-26282.html
+YZD-PROD-1351,tiziana-terenzi-kirke,تیزیانا ترنزی,کیرکه,no_pyramid_notes,,,
+YZD-PROD-1423,christian-dior-sauvage-edp,دیور,ساواج ادوپرفیوم,no_pyramid_notes,,,
+YZD-PROD-1425,christian-dior-sauvage-elixir,دیور,ساواج الکسیر,no_pyramid_notes,,,
+YZD-PROD-1427,christian-dior-dior-homme-intense,دیور,هوم اینتنس,no_pyramid_notes,,,
+YZD-PROD-1432,christian-dior-fahrenheit-le-parfum,دیور,فارنهایت له پارفوم,no_pyramid_notes,,,
+YZD-PROD-1462,chanel-bleu-de-chanel-edp,شنل,بلو د شنل ادوپرفیوم,no_pyramid_notes,,,
+YZD-PROD-1464,chanel-allure-homme-sport,شنل,الور هوم اسپرت,no_pyramid_notes,,,
+YZD-PROD-1467,chanel-platinum-goste,شنل,پلاتینیوم اگویست,candidate_match,official,official_note_corrections_v21.json,https://www.chanel.com/lt/fragrance/p/124460/platinum-egoiste-eau-de-toilette-spray/
+YZD-PROD-1477,chanel-chance-chanel,شنل,چنس زرد,no_pyramid_notes,,,
+YZD-PROD-1492,yves-saint-laurent-y-eau-de-parfum,ایو سن لوران,وای ادوپرفیوم,no_pyramid_notes,,,
+YZD-PROD-1501,yves-saint-laurent-black-opium-edp,ایو سن لوران,بلک اوپیوم,no_pyramid_notes,,,
+YZD-PROD-1504,yves-saint-laurent-libre-edp,ایو سن لوران,لیبر ادوپرفیوم,no_pyramid_notes,,,
+YZD-PROD-1505,yves-saint-laurent-libre-intense,ایو سن لوران,لیبر اینتنس,no_pyramid_notes,,,
+YZD-PROD-1507,yves-saint-laurent-mon-paris,ایو سن لوران,مون پاریس,candidate_match,official,official_note_corrections_v7.json,https://www.yslbeautyus.com/fragrance/womens-fragrances/mon-paris/mon-paris-eau-de-parfum/4150YSL.html
+YZD-PROD-1511,yves-saint-laurent-tuxedo,ایو سن لوران,تاکسیدو,candidate_match,official,active_official_note_corrections_v2.json,https://www.yslbeautyus.com/fragrance/le-vestiaire-des-parfums/the-signature-collection/tuxedo---le-vestiaire-des-parfums/809YSL.html
+YZD-PROD-1512,yves-saint-laurent-babycat,ایو سن لوران,بیبی کت,candidate_match,official,official_note_corrections_v4.json,https://www.yslbeautyus.com/fragrance/le-vestiaire-des-parfums/the-signature-collection/babycat---le-vestiaire-des-parfums/WW-50920YSL.html
+YZD-PROD-1547,herms-terre-dherms-pure-parfum,هرمس,تق د هرمس پیور پارفوم,no_pyramid_notes,,,
+YZD-PROD-1552,herms-voyage-dherms-parfum,هرمس,ویاژ د هرمس پارفوم,no_pyramid_notes,,,
+YZD-PROD-1566,givenchy-gentleman-edp,ژیوانشی,جنتلمن ادوپرفیوم,candidate_match,official,official_note_corrections_v40.json,https://www.givenchybeauty.com/en/si/p/gentleman-givenchy-F10100026.html
+YZD-PROD-1576,givenchy-ange-ou-dmon-le-secret,ژیوانشی,آنژو دمون لِ سکرت,candidate_match,official,official_note_corrections_v9.json,https://www.givenchybeauty.com/us/p/ange-ou-demon-le-secret-F10100004.html
+YZD-PROD-1581,jean-paul-gaultier-le-male-elixir,ژان پل گوتیه,له مل الکسیر,no_pyramid_notes,,,
+YZD-PROD-1585,jean-paul-gaultier-le-beau-paradise-garden-2024,ژان پل گوتیه,له بو پارادایس گاردن,no_pyramid_notes,,,
+YZD-PROD-1595,paco-rabanne-1-million-parfum,پاکو رابان,وان میلیون پارفوم,no_pyramid_notes,,,
+YZD-PROD-1606,paco-rabanne-phantom-parfum,پاکو رابان,فانتوم پارفوم,candidate_match,official,official_note_corrections_v35.json,https://www.rabanne.com/us/en_US/fragrance/p/phantom-parfum--000000000065188737
+YZD-PROD-1620,mugler-alien-edp,موگلر,الین,candidate_match,official,official_note_corrections_v39.json,https://inter.mugler.com/int/fragrance/women-s-fragrances/alien/alien-eau-de-parfum/M010401002.html
+YZD-PROD-1625,mugler-womanity,موگلر,وومنیتی,no_pyramid_notes,,,
+YZD-PROD-1627,lancme-la-vie-est-belle-edp,لانکوم,لاویه بل,no_pyramid_notes,,,
+YZD-PROD-1631,lancme-trsor-midnight-rose,لانکوم,ترزور میدنایت رز,candidate_match,official,official_note_corrections_v8.json,https://www.lancome-usa.com/fragrance/fragrance-by-collection/tresor/tresor-midnight-rose-eau-de-parfum/10033.html
+YZD-PROD-1635,lancme-miracle,لانکوم,میراکل,candidate_match,official,official_note_corrections_v8.json,https://www.lancome-usa.com/fragrance/fragrance-by-collection/miracle/miracle-eau-de-parfum/022055.html
+YZD-PROD-1642,caron-paris-pour-un-homme-de-caron,کارون,پور اون اوم دو کارون,candidate_match,official,official_note_corrections_v13.json,https://www.parfumscaron.com/en/products/pour-un-homme-vaporisateur
+YZD-PROD-1651,giorgio-armani-acqua-di-gi-profumo,جورجو آرمانی,آکوا دی جیو پروفومو,no_pyramid_notes,,,
+YZD-PROD-1658,giorgio-armani-stronger-with-you,جورجو آرمانی,استرانگر ویت یو,no_pyramid_notes,,,
+YZD-PROD-1662,giorgio-armani-armani-s-edp,جورجو آرمانی,آرمانی سی ادوپرفیوم,no_pyramid_notes,,,
+YZD-PROD-1664,giorgio-armani-my-way-edp,جورجو آرمانی,مای وی,no_pyramid_notes,,,
+YZD-PROD-1674,tom-ford-tobacco-vanille,تام فورد,توباکو وانیل,no_pyramid_notes,,,
+YZD-PROD-1675,tom-ford-tuscan-leather,تام فورد,توسکن لدر,no_pyramid_notes,,,
+YZD-PROD-1676,tom-ford-oud-wood,تام فورد,عود وود,no_pyramid_notes,,,
+YZD-PROD-1677,tom-ford-lost-cherry,تام فورد,لاست چری,no_pyramid_notes,,,
+YZD-PROD-1684,tom-ford-fucking-fabulous,تام فورد,فاکینگ فابولوس,no_pyramid_notes,,,
+YZD-PROD-1688,tom-ford-vanilla-sex-2024,تام فورد,وانیلا سکس ۲۰۲۴,no_pyramid_notes,,,
+YZD-PROD-1690,tom-ford-black-orchid-edp,تام فورد,بلک ارکید,no_pyramid_notes,,,
+YZD-PROD-1696,tom-ford-ombr-leather-edp,تام فورد,امبره لدر,no_pyramid_notes,,,
+YZD-PROD-1702,versace-versace-pour-homme,ورساچه,پور هوم کلاسیک,candidate_match,official,official_note_corrections_v13.json,https://www.versace.com/us/en/men/accessories/fragrances-body-care/pour-homme/pour-homme-edt-100-ml-blue/R720010-R100MLS_RNUL.html
+YZD-PROD-1706,versace-bright-crystal,ورساچه,برایت کریستال,candidate_match,official,official_note_corrections_v4.json,https://www.versace.com/us/en/women/accessories/fragrances-body-care/bright-crystal/bright-crystal-edt-90-ml-pink/R510032-R090MLS_RNUL.html
+YZD-PROD-1707,versace-crystal-noir-edp,ورساچه,کریستال نویر ادوپرفیوم (ورساچه مشکی),candidate_match,independent,secondary_note_corrections_v4.json,https://www.fragrantica.com/perfume/Versace/Crystal-Noir-631.html
+YZD-PROD-1719,dolce-gabbana-k-by-dolce-gabbana-edp,دولچه و گابانا,کی بای دولچه گابانا,candidate_match,official,official_note_corrections_v38.json,https://www.dolcegabbana.com/en-us/beauty/perfumes-for-him/k-by-dolceandgabbana/k-by-dolceandgabbana-eau-de-parfum---VP001UVP0009V000.html
+YZD-PROD-1737,carolina-herrera-good-girl-edp,کارولینا هررا,گود گرل,no_pyramid_notes,,,
+YZD-PROD-1744,carolina-herrera-212-vip-men,کارولینا هررا,۲۱۲ وی آی پی مردانه,candidate_match,official,official_note_corrections_v6.json,https://www.carolinaherrera.com/ww/en/p-fragrance/212-vip-men
+YZD-PROD-1748,viktor-rolf-spicebomb-edt,ویکتور و رولف,اسپایس بمب,candidate_match,official,official_note_corrections_v20.json,https://us.viktor-rolf.com/fragrance/spicebomb-eau-de-toilette-VKR_030.html
+YZD-PROD-1758,bvlgari-bvlgari-aqva-pour-homme,بولگاری,آکوا,candidate_match,independent,secondary_note_corrections_v2.json,https://www.fragrantica.com/perfume/Bvlgari/Aqva-Pour-Homme-153.html
+YZD-PROD-1763,bvlgari-le-gemme-tygar,بولگاری,ل جم تایگار,no_pyramid_notes,,,
+YZD-PROD-1766,lalique-encre-noire,لالیک,انکر نوآر (لالیک مشکی),candidate_match,official,official_note_corrections_v16.json,https://us.lalique.com/products/encre-noire-eau-de-toilette-m13201-1-1/
+YZD-PROD-1773,cartier-pasha-de-cartier-parfum,کارتیه,پاشا د کارتیه پارفوم,no_pyramid_notes,,,
+YZD-PROD-1798,hugo-boss-boss-bottled-edt,هوگو باس,بوس ۹۸,no_pyramid_notes,,,
+YZD-PROD-1801,hugo-boss-hugo-man,هوگو باس,هوگو من (ورسوز),candidate_match,independent,secondary_note_corrections_v6.json,https://www.fragrantica.com/perfume/Hugo-Boss/Hugo-570.html
+YZD-PROD-1804,burberry-burberry-goddess-edp,باربری,گادس,no_pyramid_notes,,,
+YZD-PROD-1805,burberry-burberry-her-edp,باربری,هر,no_pyramid_notes,,,
+YZD-PROD-1808,calvin-klein-euphoria-men,کلوین کلاین,ایفوریا مردانه,candidate_match,independent,secondary_note_corrections_v5.json,https://www.fragrantica.com/perfume/Calvin-Klein/Euphoria-Men-799.html
+YZD-PROD-1809,calvin-klein-euphoria-women,کلوین کلاین,ایفوریا زنانه,no_pyramid_notes,,,
+YZD-PROD-1814,bentley-bentley-for-men-intense,بنتلی,اینتنس,candidate_match,official,official_note_corrections_v16.json,https://bentley-fragrances.com/en/for-men-intense
+YZD-PROD-1816,montblanc-montblanc-explorer,مونبلان,اکسپلورر,no_pyramid_notes,,,
+YZD-PROD-1820,lattafa-perfumes-khamrah,لطافه,خمره,candidate_match,official,official_note_corrections_v5.json,https://lattafa.com/product/khamrah/
+YZD-PROD-1824,lattafa-perfumes-yara-pink,لطافه,یارا صورتی,candidate_match,official,official_note_corrections_v17.json,https://lattafa.com/product/yara/
+YZD-PROD-1840,lattafa-perfumes-hayaati,لطافه,حیاتی,candidate_match,official,official_note_corrections_v5.json,https://lattafa.com/product/hayaati/
+YZD-PROD-1936,alfred-dunhill-icon,دانهیل,آیکون,no_pyramid_notes,,,
+YZD-PROD-1941,alfred-dunhill-dunhill-desire-blue,دانهیل,آبی,candidate_match,independent,secondary_note_corrections_v3.json,https://www.fragrantica.com/perfume/Alfred-Dunhill/Desire-Blue-1937.html
+YZD-PROD-1996,amouage-decision-2024,آمواج,دسیژن,candidate_match,official,official_note_corrections_v22.json,https://amouage.com/products/new-decision
+YZD-PROD-2016,bvlgari-le-gemme-falkar,بولگاری,ل جم فالکار,no_pyramid_notes,,,
+YZD-PROD-2017,bvlgari-le-gemme-onekh,بولگاری,ل جم اونخ,no_pyramid_notes,,,
+YZD-PROD-2019,bvlgari-le-gemme-ambero,بولگاری,ل جم آمبرو,no_pyramid_notes,,,
+YZD-PROD-2062,burberry-burberry-london-for-women,باربری,لندن زنانه,candidate_match,official,official_note_corrections_v28.json,https://us.burberry.com/burberry-london-eau-de-parfum-100ml-p34547261
+YZD-PROD-2081,montblanc-legend-spirit,مونبلان,لجند اسپریت,candidate_match,official,official_note_corrections_v3.json,https://www.montblanc.com/en-cl/montblanc-legend-spirit-eau-de-toilette-50-ml-MB115366VG.html

@@ -534,6 +534,8 @@ node_modules/   با npm install برمی‌گردد
 
 - `scripts/supplier_coverage.py`
 - `scripts/test_supplier_coverage.py`
+- `scripts/audit_reference_notes.py` — ممیزی فقط‌خواندنی تطابق نت‌ها با اسناد؛ نتیجه اثبات هویت اسانس نیست.
+- `scripts/test_audit_reference_notes.py` — آزمون مجزای ممیزی نت و حفظ دیتابیس.
 - `reports/supplier_coverage_20261031.csv`
 - `reports/supplier_coverage_20261031.json`
 - `docs/supplier_coverage_snapshot.md`
