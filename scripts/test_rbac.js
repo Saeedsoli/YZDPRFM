@@ -107,7 +107,7 @@ const login = (username, password) =>
   // ══ ساخت کارکنان آزمایشی ══
   console.log(d('\n  ساخت کارکنان با نقش‌های مختلف'));
   /* makeStaff کل چرخه را انجام می‌دهد: ساخت با کد ملی، ورود با
-     رمز موقت (موبایل بدون صفر)، و تغییر اجباری رمز. */
+     رمز موقت تصادفی، و تغییر اجباری رمز. */
   const s1 = await makeStaff(api, OWNER, 't_support', 'support');
   const s2 = await makeStaff(api, OWNER, 't_wh', 'warehouse');
   const s3 = await makeStaff(api, OWNER, 't_editor', 'editor');

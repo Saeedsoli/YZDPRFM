@@ -37,6 +37,15 @@ async function send(mobile, text, tag = 'SMS') {
   return !!r.ok;
 }
 
+// Staff onboarding never sends credentials by SMS or logs a credential.
+// A console/no-credentials fallback is not an actual provider submission.
+async function sendStaffNotice(mobile) {
+  if (!sms.isConfigured()) return false;
+  const text = 'عطر یزد — حساب کارمندی شما ساخته شد. رمز موقت را از مدیر دریافت کنید و در نخستین ورود آن را تغییر دهید.';
+  try { const r = await sms.send(mobile, text, 'حساب کارمند'); return !!(r && r.ok && !r.logged); }
+  catch { return false; }
+}
+
 /* ═══════════ قالب‌های پیام ═══════════ */
 
 const TEMPLATES = {
@@ -111,7 +120,7 @@ async function ticketReplied(ticket, mobile) {
 }
 
 module.exports = {
-  send, orderPaid, statusChanged, ticketReceived, ticketReplied,
+  send, sendStaffNotice, orderPaid, statusChanged, ticketReceived, ticketReplied,
   // بررسی سلامت به لایه مشترک واگذار شد
   testConnection: sms.testConnection,
   get PROVIDER() { return sms.PROVIDER; },

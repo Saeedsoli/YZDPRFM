@@ -70,6 +70,7 @@ python3 scripts/test_scent_description_gate.py
 python3 scripts/test_destructive_tool_guards.py
 python3 scripts/test_admin_account_rate_limit.py
 python3 scripts/test_production_admin_guard.py
+python3 scripts/test_staff_temporary_password.py
 python3 scripts/test_approved_mto_v13.py
 node scripts/test_default_reference_v53.js
 node scripts/test_generic_product_images.js

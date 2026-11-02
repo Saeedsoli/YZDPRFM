@@ -17,6 +17,7 @@
 
 'use strict';
 const {strongInitialSecret} = require('../production-admin-guard');
+const crypto = require('crypto');
 
 /** کمکی: پاسخ می‌فرستد و `true` برمی‌گرداند (یعنی رسیدگی شد) */
 function send(fn, ...args) { fn(...args); return true; }
@@ -27,7 +28,7 @@ function send(fn, ...args) { fn(...args); return true; }
  */
 async function handle(ctx) {
   const {
-    method, pathname, req, sendJSON, can, logAudit, who,
+    method, pathname, req, res, sendJSON, can, logAudit, who,
     parseBody, db, appLog, perms, cleanText, normalizeDigits,
     getStaff, getStaffByUsername, listStaff, listRoles, getRole,
     hashPassword, verifyPassword,
@@ -214,18 +215,14 @@ async function handle(ctx) {
       return send(sendJSON, 403, { error: 'تنها مدیر کل می‌تواند مدیر کل تعریف کند.' });
     }
 
-    /* شماره موبایل الزامی است چون هم رمز اولیه از آن ساخته
-       می‌شود و هم اطلاعات حساب برایش پیامک می‌شود. */
+    // Mobile identifies the recipient for an optional notice, not a password.
     const mobile = otp.normalizeMobile(b.mobile);
     if (!otp.isValidMobile(mobile)) {
       return send(sendJSON, 400, { error: 'شماره موبایل معتبر نیست.' });
     }
-
-    /* ── رمز موقت خودکار: موبایل بدون صفر ──
-       ۰۹۱۲۱۲۳۴۵۶۷ → 9121234567 (ده رقم، بالای حداقل ۸ نویسه).
-       کارمند در نخستین ورود مجبور به تغییرش است، پس موقت بودنش
-       ریسکی ندارد. */
-    const tempPassword = mobile.replace(/^0+/, '');
+    // 144 random bits, independent of public personal data. Force a change on
+    // first login and reveal once only to the authorized staff manager.
+    const tempPassword = crypto.randomBytes(18).toString('base64url');
 
     const { hash, salt } = hashPassword(tempPassword);
     const info = db.prepare(`
@@ -242,31 +239,19 @@ async function handle(ctx) {
       target: nid, detail: { action: 'create', role: role.key }
     });
 
-    /* ── پیامک اطلاع‌رسانی ──
-       بدون این، مدیر باید دستی رمز را به کارمند بگوید — که هم
-       فراموش می‌شود و هم از راه ناامن (پیام‌رسان) رد و بدل
-       می‌شود. ناهمگام فرستاده می‌شود تا اگر پیامک قطع بود،
-       ساخت حساب شکست نخورد. */
-    const site = (process.env.SITE_URL || 'https://yazdperfume.ir').replace(/\/$/, '');
-    const smsText =
-      `عطر یزد — حساب کارمندی شما ساخته شد\n\n` +
-      `نقش: ${role.name}\n` +
-      `نام کاربری: ${nid}\n` +
-      `رمز موقت: ${tempPassword}\n\n` +
-      `در نخستین ورود باید رمز را عوض کنید.\n${site}/admin`;
-
+    // Notification contains no credentials; a provider acceptance is not a
+    // guarantee of delivery. No secret goes to SMS or console fallback.
     let smsSent = false;
-    try {
-      const r = await notify.send(mobile, smsText, 'حساب کارمند');
-      smsSent = !!(r && r.ok !== false);
-    } catch { smsSent = false; }
+    try { smsSent = !!(await notify.sendStaffNotice(mobile)); } catch { smsSent = false; }
+    res.setHeader('Cache-Control', 'no-store');
+    res.setHeader('Pragma', 'no-cache');
 
     return send(sendJSON, 201, {
       message: smsSent
-        ? `حساب «${display}» ساخته شد و اطلاعات ورود پیامک شد.`
-        : `حساب «${display}» ساخته شد. پیامک ارسال نشد — رمز موقت: ${tempPassword}`,
+        ? `حساب «${display}» ساخته شد؛ درخواست پیامک اطلاع‌رسانی پذیرفته شد.`
+        : `حساب «${display}» ساخته شد؛ پیامک اطلاع‌رسانی ارسال نشد.`,
       sms_sent: smsSent,
-      temp_password: smsSent ? undefined : tempPassword,
+      temp_password: tempPassword,
       staff: publicStaff(getStaff(info.lastInsertRowid))
     });
   }

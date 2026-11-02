@@ -3525,7 +3525,7 @@ function openStaffForm(id) {
         <input id="sfMobile" dir="ltr" style="text-align:right" inputmode="numeric"
           maxlength="13" value="${u && u.mobile ? esc(u.mobile) : ''}"
           placeholder="۰۹۱۲۳۴۵۶۷۸۹">
-        ${u ? '' : '<div class="hint">رمز موقت از این شماره ساخته و پیامک می‌شود</div>'}</div>
+        ${u ? '' : '<div class="hint">شماره برای اطلاع‌رسانی اختیاری پیامکی استفاده می‌شود</div>'}</div>
       <div class="field"><label>نقش و دسترسی *</label>
         <select id="sfRole" onchange="showRolePerms()">${ROLES.map(rl =>
           `<option value="${esc(rl.key)}" ${u && u.role_key === rl.key ? 'selected' : ''}>
@@ -3542,8 +3542,8 @@ function openStaffForm(id) {
     </div>
     ${u ? '' : `<div style="background:#FDF9F0;border:1px solid rgba(197,155,39,.3);
         border-radius:10px;padding:11px 14px;margin-top:12px;font-size:.82rem;line-height:1.9">
-      رمز موقت خودکار ساخته می‌شود (شماره موبایل بدون صفر) و همراه نقش و
-      نام کاربری برای کارمند پیامک می‌شود. در نخستین ورود باید عوضش کند.
+      رمز موقت تصادفی ساخته و فقط یک‌بار به مدیر نشان داده می‌شود؛
+      رمز از طریق پیامک ارسال نمی‌شود. کارمند در نخستین ورود باید آن را تغییر دهد.
     </div>`}
     <div id="sfErr" style="color:#C0392B;font-size:.8rem;margin:8px 0"></div>
     <div style="display:flex;gap:8px;flex-wrap:wrap">
@@ -3590,8 +3590,7 @@ async function saveStaff(id) {
   const act = document.getElementById('sfActive');
 
   if (!id) {
-    /* رمز اینجا فرستاده نمی‌شود — سرور خودش رمز موقت را از
-       شماره موبایل می‌سازد و پیامک می‌کند. */
+    /* رمز موقت مستقل از شماره، فقط یک‌بار به مدیر نشان داده می‌شود. */
     payload.national_id = document.getElementById('sfNid').value.trim();
     if (!payload.mobile) { err.textContent = 'شماره تماس الزامی است.'; return; }
   } else {
@@ -3606,6 +3605,9 @@ async function saveStaff(id) {
   if (!r.ok) { err.textContent = d.error; return; }
 
   document.getElementById('staffForm').classList.add('hidden');
+  if (!id && d.temp_password) {
+    prompt('حساب ساخته شد. رمز موقت را از کادر کپی کنید؛ این رمز فقط یک‌بار نمایش داده می‌شود. آن را امن به کارمند برسانید.', d.temp_password);
+  }
   toast(d.message);
   loadStaffTab();
 }

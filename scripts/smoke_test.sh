@@ -319,6 +319,7 @@ run_test test_backup_stream_safety.js "backup concurrency, recovery and stream c
 if python3 scripts/test_destructive_tool_guards.py >/tmp/test_destructive_tool_guards.log 2>&1; then P=$((P+1)); else F=$((F+1)); echo "  X destructive tool guards"; fi
 if python3 scripts/test_admin_account_rate_limit.py >/tmp/test_admin_account_rate_limit.log 2>&1; then P=$((P+1)); else F=$((F+1)); echo "  X admin account rate limit"; fi
 if python3 scripts/test_production_admin_guard.py >/tmp/test_production_admin_guard.log 2>&1; then P=$((P+1)); else F=$((F+1)); echo "  X production admin guard"; fi
+if python3 scripts/test_staff_temporary_password.py >/tmp/test_staff_temporary_password.log 2>&1; then P=$((P+1)); else F=$((F+1)); echo "  X secure staff onboarding"; fi
 if python3 scripts/test_approved_mto_v2.py >/tmp/test_approved_mto_v2.log 2>&1; then P=$((P+1)); else F=$((F+1)); echo "  X seven owner approvals"; fi
 if python3 scripts/test_approved_mto_v3.py >/tmp/test_approved_mto_v3.log 2>&1; then P=$((P+1)); else F=$((F+1)); echo "  X four owner approvals"; fi
 if python3 scripts/test_approved_mto_v4.py >/tmp/test_approved_mto_v4.log 2>&1; then P=$((P+1)); else F=$((F+1)); echo "  X three owner approvals"; fi

@@ -3,7 +3,7 @@
  *
  * چرا وجود دارد:
  *   نام کاربری کارمند از «حرفی دلخواه» به «کد ملی ۱۰ رقمی» تغییر
- *   کرد و رمز اولیه هم خودکار از شماره موبایل ساخته می‌شود. پنج
+ *   کرد و رمز اولیه تصادفی و مستقل از شماره موبایل ساخته می‌شود. پنج
  *   آزمون این منطق را تکرار می‌کردند و همه با هم شکستند.
  *
  *   حالا یک جا تعریف شده: اگر قاعده دوباره عوض شود، فقط همین
@@ -35,7 +35,7 @@ function mobileFor(alias) {
 /**
  * ساخت کارمند و آماده‌سازی برای کار.
  *
- * سرور رمز موقت را خودش از موبایل می‌سازد (بدون صفر ابتدایی) و
+ * سرور رمز موقت تصادفی را یک‌بار به مدیر می‌دهد و
  * کارمند تا عوض نکردنش هیچ کاری نمی‌تواند بکند — پس اینجا هم
  * عوضش می‌کنیم تا آزمون بتواند مرزهای دسترسی را بسنجد.
  *
@@ -60,7 +60,8 @@ async function makeStaff(api, ownerToken, alias, roleKey) {
     return { token: null, nid, mobile, id: null, error: created.json.error };
   }
 
-  const tempPassword = mobile.replace(/^0+/, '');
+  const tempPassword = created.json.temp_password;
+  if (!tempPassword) return {token:null,nid,mobile,id:created.json.staff?.id,error:'missing temporary credential'};
   const freshPassword = 'Tst' + nid.slice(0, 8);
 
   const login = p => api('/api/admin/login', {

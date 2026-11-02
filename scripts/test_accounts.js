@@ -9,7 +9,7 @@
  *   ۴) بازیابی رمز با پیامک
  *   ۵) نام کاربری کارمند = کد ملی
  *   ۶) فرم کارمند: نام، خانوادگی، نقش، کد ملی، موبایل
- *   ۷) رمز موقت خودکار = موبایل بدون صفر
+ *   ۷) رمز موقت تصادفی و مستقل از شماره موبایل
  *   ۸) پیامک اطلاع‌رسانی به کارمند
  *
  * اجرا: node scripts/test_accounts.js
@@ -261,23 +261,23 @@ const api = (p, opt = {}, token = null) =>
   add('نام کامل از دو فیلد ساخته می‌شود',
       mk.json.staff?.display_name === 'مهدی رضایی', mk.json.staff?.display_name);
 
-  /* ۷) رمز موقت = موبایل بدون صفر ابتدایی */
-  const expectedPw = staffMobile.replace(/^0+/, '');
-  const staffLogin = await api('/api/admin/login', {
-    method: 'POST',
-    body: JSON.stringify({ username: TEST_NID, password: expectedPw })
+  /* ۷) رمز تصادفی یک‌بار به مدیر داده می‌شود، نه در لاگ یا پیامک. */
+  const expectedPw = mk.json.temp_password;
+  add('رمز موقت تصادفی و مستقل از شماره است',
+      typeof expectedPw === 'string' && expectedPw.length >= 20 && expectedPw !== staffMobile.replace(/^0+/, ''));
+  const phoneGuess = await api('/api/admin/login', {
+    method: 'POST', body: JSON.stringify({ username: TEST_NID, password: staffMobile.replace(/^0+/, '') })
   });
-  add('رمز موقت = موبایل بدون صفر', staffLogin.status === 200,
-      `${expectedPw}`);
-  add('کارمند باید رمز را عوض کند',
-      staffLogin.json.user?.must_change === true);
-
-  /* ۸) پیامک با نقش، نام کاربری و رمز */
+  add('شماره موبایل رمز ورود نیست', phoneGuess.status === 401);
+  const staffLogin = await api('/api/admin/login', {
+    method: 'POST', body: JSON.stringify({ username: TEST_NID, password: expectedPw })
+  });
+  add('ورود با رمز موقت ممکن است', staffLogin.status === 200);
+  add('کارمند باید رمز را عوض کند', staffLogin.json.user?.must_change === true);
   await sleep(400);
-  add('پیامک اطلاع‌رسانی فرستاده شد', /حساب کارمندی/.test(logBuf));
-  add('پیامک شامل نقش است', /نقش:/.test(logBuf));
-  add('پیامک شامل نام کاربری است', logBuf.includes(TEST_NID));
-  add('پیامک شامل رمز موقت است', logBuf.includes(expectedPw));
+  add('حالت console ارسال واقعی ادعا نمی‌کند', mk.json.sms_sent === false);
+  add('رمز موقت در لاگ چاپ نمی‌شود', !!expectedPw && !logBuf.includes(expectedPw));
+  add('اطلاعات ورود به پیامک لاگ‌شده نمی‌رود', !/حساب کارمندی/.test(logBuf));
 
   // اعتبارسنجی ورودی
   console.log(d('\n  اعتبارسنجی فرم کارمند'));

@@ -254,14 +254,14 @@ const login = (u, p) =>
   console.log(d('\n  حساب با رمز اولیه'));
   const fNid = nidFor('pf_new');
   const fMob = mobileFor('pf_new');
-  await api('/api/admin/staff', {
+  const createdFresh = await api('/api/admin/staff', {
     method: 'POST',
     body: JSON.stringify({
       first_name: 'تازه', last_name: 'وارد',
       national_id: fNid, mobile: fMob, role_key: 'warehouse'
     })
   }, OWNER);
-  const freshTok = (await login(fNid, fMob.replace(/^0+/, ''))).json.token;
+  const freshTok = (await login(fNid, createdFresh.json.temp_password)).json.token;
   if (freshTok) {
     const fa = await api('/api/admin/me/activity', {}, freshTok);
     add('حساب با رمز اولیه کارنامه نمی‌گیرد', fa.status === 403, `کد ${fa.status}`);

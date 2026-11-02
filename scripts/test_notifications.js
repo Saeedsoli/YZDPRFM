@@ -270,20 +270,19 @@ const login = (u, p) =>
   // ══ ۶) رمز اولیه ══
   console.log(d('\n  حساب با رمز اولیه'));
 
-  /* حسابی که تازه ساخته شده و هنوز رمز موقت دارد. رمز موقت را
-     سرور خودش از موبایل می‌سازد، پس اینجا هم همان را می‌زنیم. */
+  /* حساب تازه با رمز تصادفی یک‌بارنمایش‌داده‌شده. */
   const { nidFor, mobileFor } = require('./lib/test_staff');
   const freshNid = nidFor('n_fresh');
   const freshMobile = mobileFor('n_fresh');
 
-  await api('/api/admin/staff', {
+  const createdFresh = await api('/api/admin/staff', {
     method: 'POST',
     body: JSON.stringify({
       first_name: 'تازه', last_name: 'وارد',
       national_id: freshNid, mobile: freshMobile, role_key: 'warehouse'
     })
   }, OWNER);
-  const fresh = (await login(freshNid, freshMobile.replace(/^0+/, ''))).json.token;
+  const fresh = (await login(freshNid, createdFresh.json.temp_password)).json.token;
   if (fresh) {
     const fn = await api('/api/admin/notifications', {}, fresh);
     add('حساب با رمز اولیه اعلان نمی‌گیرد', fn.status === 403, `کد ${fn.status}`);

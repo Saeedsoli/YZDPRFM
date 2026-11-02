@@ -1841,7 +1841,7 @@ const server = http.createServer(async (req, res) => {
 
     // ═══════════ نقش‌ها، کارکنان، دسترسی (ماژول جدا) ═══════════
     if (await routeRbac.handle({
-      method, pathname, req, sendJSON, can, logAudit, who,
+      method, pathname, req, res, sendJSON, can, logAudit, who,
       parseBody, db, appLog, perms, cleanText, normalizeDigits,
       getStaff, getStaffByUsername, listStaff, listRoles, getRole,
       hashPassword, verifyPassword,

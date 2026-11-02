@@ -929,3 +929,6 @@ node_modules/   با npm install برمی‌گردد
 - `scripts/test_admin_account_rate_limit.py` — محدودیت ورود حساب مدیریت با IP متغیر، بازراه‌اندازی و حفظ استقلال حساب‌ها.
 - `src/production-admin-guard.js` — جلوگیری از اجرای محیط تولید با مدیر پیش‌فرض یا حساب نامعتبر.
 - `scripts/test_production_admin_guard.py` — آزمون محافظ حساب تازه و موجود، بدون افشای رمز.
+
+- `scripts/test_staff_temporary_password.py` — آزمون رمز تصادفی، تحویل یک‌باره، حریم پیامک و خطا.
+- `scripts/test_staff_temporary_password_browser.py` — آزمون مرورگر واقعی پنل برای نمایش یک‌باره رمز در موبایل و دسکتاپ.
