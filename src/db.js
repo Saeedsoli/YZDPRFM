@@ -13,6 +13,7 @@ const path = require('path');
    می‌کند و آن تابع بالاتر از بخش نشست‌هاست. `const` هویست نمی‌شود،
    پس ترتیب تعریف اهمیت دارد. */
 const crypto = require('crypto');
+const stockReservations = require('./order-stock-reservations');
 
 const ROOT_DIR = path.resolve(__dirname, '..');
 
@@ -2518,47 +2519,33 @@ const PENDING_TTL_MIN = parseInt(process.env.PENDING_ORDER_TTL_MIN) || 30;
 /** آزادسازی موجودی سفارش‌های پرداخت‌نشده */
 function releaseStaleOrders() {
   const cutoff = new Date(Date.now() - PENDING_TTL_MIN * 60 * 1000).toISOString();
-  const stale = db.prepare(
-    `SELECT order_id FROM orders WHERE status='PENDING' AND created_at < ?`).all(cutoff);
-  /* قرارداد بازگشتی همیشه یک شکل دارد: `{ count, skus }`.
-     نسخه قبلی در حالت «چیزی نبود» عدد `0` برمی‌گرداند و در حالت
-     عادی شیء — پس `res.count` می‌شد `undefined` و پیام پنل
-     «undefined سفارش منقضی پردازش شد» نشان می‌داد.
-
-     باگ از قبل بود؛ تفکیک ماژول فقط آشکارش کرد چون آزمون تازه
-     مقدار پیام را واقعاً خواند. */
-  if (!stale.length) return { count: 0, skus: [] };
-
-  const inc = db.prepare('UPDATE variants SET stock = stock + ? WHERE sku = ?');
-  const items = db.prepare('SELECT sku, quantity FROM order_items WHERE order_id=?');
-  const upd = db.prepare(`UPDATE orders SET status='EXPIRED', updated_at=? WHERE order_id=?`);
-  const log = db.prepare('INSERT INTO order_status_log (order_id, status, note) VALUES (?,?,?)');
-
-  /* SKUهای آزادشده برگردانده می‌شوند تا لایه بالاتر بتواند به
-     منتظران «خبرم کن وقتی موجود شد» اطلاع دهد. این ماژول خودش به
-     notify دسترسی ندارد (وابستگی حلقوی می‌شد). */
-  const freed = new Set();
-
-  db.transaction(() => {
-    for (const o of stale) {
-      items.all(o.order_id).forEach(i => {
-        inc.run(i.quantity, i.sku);
-        freed.add(i.sku);
-      });
-      // ظرفیت کد تخفیف هم برمی‌گردد
-      const cu = db.prepare('SELECT code FROM coupon_usage WHERE order_id=?').get(o.order_id);
-      if (cu) {
-        db.prepare('UPDATE coupons SET used_count = MAX(0, used_count - 1) WHERE UPPER(code)=UPPER(?)')
-          .run(cu.code);
-        db.prepare('DELETE FROM coupon_usage WHERE order_id=?').run(o.order_id);
-      }
-      upd.run(new Date().toISOString(), o.order_id);
-      log.run(o.order_id, 'EXPIRED', `پرداخت نشد — موجودی پس از ${PENDING_TTL_MIN} دقیقه آزاد شد`);
+  const stale = db.prepare("SELECT order_id FROM orders WHERE status='PENDING' AND created_at < ?").all(cutoff);
+  if (!stale.length) return { count:0, skus:[], review_count:0 };
+  const upd = db.prepare("UPDATE orders SET status='EXPIRED',updated_at=? WHERE order_id=? AND status='PENDING'");
+  const log = db.prepare('INSERT INTO order_status_log (order_id,status,note) VALUES (?,?,?)');
+  const freed=new Set();let count=0,review_count=0;
+  const current=db.prepare('SELECT status,payment_gateway FROM orders WHERE order_id=?');
+  db.transaction(()=>{
+    for(const o of stale){
+      // Another worker may already have settled this order after the scan.
+      const row=current.get(o.order_id);
+      if(row?.status!=='PENDING')continue;
+      // An external gateway may still accept a late payment. Expiry cannot
+      // infer that it failed; hold the order and reservation for reconciliation.
+      if(['ZARINPAL','ZARINPAL_SANDBOX'].includes(String(row.payment_gateway||'').toUpperCase())){review_count++;continue;}
+      // Old or inconsistent orders cannot be inferred from current stock.
+      if(!stockReservations.inspect(db,o.order_id).ok){review_count++;continue;}
+      if(!upd.run(new Date().toISOString(),o.order_id).changes)continue;
+      const released=stockReservations.release(db,o.order_id);
+      if(!released.ok)throw Error('Reservation changed during expiry');
+      released.skus.forEach(sku=>freed.add(sku));
+      releaseCouponUse(o.order_id);
+      log.run(o.order_id,'EXPIRED',`پرداخت نشد — رزرو انبار پس از ${PENDING_TTL_MIN} دقیقه آزاد شد`);
+      count++;
     }
-  })();
-
-  appLog('INFO', 'cleanup', `${stale.length} سفارش منقضی و موجودی آزاد شد`);
-  return { count: stale.length, skus: [...freed] };
+  }).immediate();
+  if(count||review_count)appLog('INFO','cleanup',`${count} سفارش منقضی؛ ${review_count} سفارش نیازمند بررسی رزرو`);
+  return {count,skus:[...freed],review_count};
 }
 
 function purgeExpired() {
@@ -2681,6 +2668,9 @@ function otpPurgeExpired() {
 initSchema();
 // Only a genuinely empty installation may receive the owner's default approval.
 const isFreshInstallation = !DB_WAS_EXISTING && db.prepare('SELECT COUNT(*) AS c FROM products').get().c === 0;
+// Only a genuinely fresh store gets the ledger automatically. Existing stores
+// require the explicit backup-first migration; no historical reservation is inferred.
+if (isFreshInstallation) stockReservations.install(db);
 // Historical order reporting remains valid after retired SKUs leave the catalog.
 require('./variant-history').ensureVariantHistory(db);
 // Storage only: rates do not change prices until an explicit, atomic reprice.

@@ -35,6 +35,7 @@
 const fs = require('fs');
 const path = require('path');
 const {publicVariantSql} = require('../variant-visibility');
+const stockReservations = require('../order-stock-reservations');
 
 // Backup files contain customer and order data. Destroy the read stream when
 // the client disconnects; always clean up our private temporary directory.
@@ -362,10 +363,13 @@ async function handle(ctx) {
       WHERE p.supply_mode IN ('IN_STOCK','MADE_TO_ORDER') AND v.price_toman>0
         AND v.stock>=0 AND ${publicVariantSql('v')}`).get();
     const sellable = supply.in_stock + supply.made_to_order;
+    const ledgerReady = stockReservations.ready(db);
     push('stock', 'آمادگی تأمین کالا',
-      sellable ? 'ok' : 'error',
-      sellable ? `${supply.in_stock} محصول دارای موجودی و ${supply.made_to_order} محصول دارای گزینه ساخت پس از سفارش است.` : 'محصول قابل سفارش با قیمت معتبر پیدا نشد.',
-      sellable ? undefined : 'پنل → محصولات → بررسی قیمت و وضعیت تأمین');
+      sellable && ledgerReady ? 'ok' : 'error',
+      !ledgerReady ? 'ثبت رزرو انبار هنوز آماده نیست؛ سفارش تازه پذیرفته نمی‌شود.' :
+        sellable ? `${supply.in_stock} محصول دارای موجودی و ${supply.made_to_order} محصول دارای گزینه ساخت پس از سفارش است.` : 'محصول قابل سفارش با قیمت معتبر پیدا نشد.',
+      !ledgerReady ? 'پس از پشتیبان معتبر، مهاجرت محافظت‌شده رزرو انبار لازم است.' :
+        sellable ? undefined : 'پنل → محصولات → بررسی قیمت و وضعیت تأمین');
 
     // ── دیسک پایدار ──
     const onLiara = /^\/app\//.test(DB_PATH);

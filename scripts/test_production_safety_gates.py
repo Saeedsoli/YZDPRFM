@@ -9,7 +9,7 @@ opener=urllib.request.build_opener(NoRedirect)
 with tempfile.TemporaryDirectory(prefix='production-safety-') as td:
  td=Path(td);mock=td/'fake_https.js';network=td/'network.log'
  mock.write_text('''const https=require('https'),{EventEmitter}=require('events'),fs=require('fs');
-https.request=(opt,cb)=>{const q=new EventEmitter();let body='';q.write=x=>{body+=x};q.destroy=()=>{};q.end=()=>setImmediate(()=>{const b=JSON.parse(body||'{}');fs.appendFileSync(process.env.MOCK_NETWORK_LOG,JSON.stringify({path:opt.path,authority:b.authority||null})+'\\n');if(b.authority==='AUTH-ERR'){q.emit('error',Error('fixture unavailable'));return}const r=new EventEmitter();cb(r);setImmediate(()=>{r.emit('data',JSON.stringify({data:{code:b.authority==='AUTH-101'?101:100,ref_id:'FAKE-REF-'+(b.authority||'REQUEST'),authority:'AUTH-CREATE'}}));r.emit('end')})});return q};''')
+https.request=(opt,cb)=>{const q=new EventEmitter();let body='';q.write=x=>{body+=x};q.destroy=()=>{};q.end=()=>setImmediate(()=>{const b=JSON.parse(body||'{}');fs.appendFileSync(process.env.MOCK_NETWORK_LOG,JSON.stringify({path:opt.path,authority:b.authority||null})+'\\n');if(b.authority==='AUTH-ERR'||(opt.path.includes('/request.json')&&process.env.MOCK_REQUEST_FAIL==='1')){q.emit('error',Error('fixture unavailable'));return}const r=new EventEmitter();cb(r);setImmediate(()=>{r.emit('data',JSON.stringify({data:{code:b.authority==='AUTH-101'?101:100,ref_id:'FAKE-REF-'+(b.authority||'REQUEST'),authority:'AUTH-CREATE'}}));r.emit('end')})});return q};''')
  def freeport():
   s=socket.socket();s.bind(('127.0.0.1',0));p=s.getsockname()[1];s.close();return p
  def setup(mode,extra):
@@ -59,6 +59,17 @@ https.request=(opt,cb)=>{const q=new EventEmitter();let body='';q.write=x=>{body
   r=subprocess.run(['node','-e',probe],cwd=root,env=env,capture_output=True,text=True,timeout=30);assert r.returncode==0,r.stderr
   assert json.loads(r.stdout.strip().splitlines()[-1])=={'a':False,'b':False,'c':False,'live':False}
   assert all(v not in r.stdout+r.stderr for v in ['PRIVATE-MESSAGE-FIXTURE','PRIVATE-SMART-FIXTURE','24680'])
+ # A failed provider request releases only physical units actually reserved.
+ failsettings={'PAYMENT_GATEWAY':'zarinpal','ZARINPAL_MERCHANT_ID':'12345678-1234-4234-8234-123456789abc','NODE_OPTIONS':'--require='+str(mock),'MOCK_NETWORK_LOG':str(network),'MOCK_REQUEST_FAIL':'1'}
+ db,port,p,out,log=setup('request_fail',failsettings)
+ try:
+  c=sqlite3.connect(db);pair=c.execute("select p.id,v.sku from products p join variants v on v.product_id=p.id where p.supply_mode='MADE_TO_ORDER' and v.type='EDP' and v.volume_ml=10 and v.price_toman>0 order by p.id limit 2").fetchall()
+  (mto_pid,mto),(physical_pid,physical)=pair;c.execute("update products set supply_mode='IN_STOCK' where id=?",(physical_pid,));c.execute('update variants set stock=2 where sku=?',(physical,));c.execute('update variants set stock=0 where sku=?',(mto,));c.commit();c.close()
+  code,body,_=api(port,'POST','/api/orders',{'customer_name':'Test','mobile':'09120000005','items':[{'sku':mto,'quantity':2},{'sku':physical,'quantity':1}]});assert code==502,(code,body)
+  c=sqlite3.connect(db);assert c.execute('select stock from variants where sku=?',(mto,)).fetchone()[0]==0;assert c.execute('select stock from variants where sku=?',(physical,)).fetchone()[0]==2
+  assert c.execute("select count(*) from orders where mobile='09120000005' and status='FAILED'").fetchone()[0]==1;c.close()
+ finally:stop(p,out)
+ if network.exists():network.unlink()
  # Stubbed provider: authority is bound to the actual pending order.
  settings={'PAYMENT_GATEWAY':'zarinpal','ZARINPAL_MERCHANT_ID':'12345678-1234-4234-8234-123456789abc','NODE_OPTIONS':'--require='+str(mock),'MOCK_NETWORK_LOG':str(network)}
  db,port,p,out,log=setup('live_mock',settings)
@@ -66,7 +77,10 @@ https.request=(opt,cb)=>{const q=new EventEmitter();let body='';q.write=x=>{body
   c=sqlite3.connect(db);now=time.strftime('%Y-%m-%dT%H:%M:%SZ',time.gmtime())
   for oid,auth in [('PAY-A','AUTH-A'),('PAY-B','AUTH-B'),('PAY-101','AUTH-101'),('PAY-ERR','AUTH-ERR'),('PAY-CANCEL','AUTH-CANCEL')]:
    c.execute("insert into orders(order_id,created_at,customer_name,mobile,subtotal,shipping_fee,total_paid,payment_gateway,payment_ref,status) values(?,?,'Test','09120000001',1000,0,1000,'ZARINPAL',?,'PENDING')",(oid,now,auth))
-  # Test coupon release for a valid cancellation even when there are no SKUs.
+  # Test a known zero-stock reservation and coupon release on cancellation.
+  sku=c.execute("select v.sku from variants v join products p on p.id=v.product_id where p.supply_mode='MADE_TO_ORDER' and v.stock=0 and v.type='EDP' and v.volume_ml=10 limit 1").fetchone()[0]
+  item=c.execute("insert into order_items(order_id,sku,product_name,unit_price,quantity,line_total) values('PAY-CANCEL',?,'Test',1000,1,1000)",(sku,)).lastrowid
+  c.execute('insert into order_stock_reservations(item_id,reserved_qty,released) values(?,0,0)',(item,))
   c.execute("insert into coupons(code,type,value,used_count,active) values('TESTCALLBACK','PERCENT',10,1,1)")
   c.execute("insert into coupon_usage(code,mobile,order_id,used_at) values('TESTCALLBACK','09120000001','PAY-CANCEL',?)",(now,));c.commit();c.close()
   code,_,_=api(port,'POST','/api/payment/verify',{'order_id':'PAY-B','authority':'AUTH-A','result':'success'});assert code==405
@@ -85,8 +99,8 @@ https.request=(opt,cb)=>{const q=new EventEmitter();let body='';q.write=x=>{body
   upkeep={**os.environ,'NODE_ENV':'production','DB_PATH':str(db),'BACKUP_DISABLED':'1'}
   subprocess.run(['node','-e',"const x=require('./src/db');x.releaseStaleOrders();x.db.close()"],cwd=root,env=upkeep,check=True,stdout=subprocess.DEVNULL,timeout=120)
   c=sqlite3.connect(db);assert c.execute("select count(*) from orders where order_id in ('PAY-101','PAY-ERR') and status='VERIFYING'").fetchone()[0]==2;c.close()
-  code,_,_=api(port,'GET','/payment/callback?order=PAY-CANCEL&Authority=AUTH-CANCEL&Status=NOK');assert code==302
-  c=sqlite3.connect(db);assert c.execute("select status from orders where order_id='PAY-CANCEL'").fetchone()[0]=='CANCELLED';assert c.execute("select used_count from coupons where code='TESTCALLBACK'").fetchone()[0]==0;assert c.execute("select count(*) from coupon_usage where order_id='PAY-CANCEL'").fetchone()[0]==0;c.close()
+  code,_,_=api(port,'GET','/payment/callback?order=PAY-CANCEL&Authority=AUTH-CANCEL&Status=NOK');assert code==503
+  c=sqlite3.connect(db);assert c.execute("select status from orders where order_id='PAY-CANCEL'").fetchone()[0]=='VERIFYING';assert c.execute("select used_count from coupons where code='TESTCALLBACK'").fetchone()[0]==1;assert c.execute("select count(*) from coupon_usage where order_id='PAY-CANCEL'").fetchone()[0]==1;assert c.execute('select stock from variants where sku=?',(sku,)).fetchone()[0]==0;c.close()
   # Existing passwordless account cannot be claimed without its own session.
   c=sqlite3.connect(db);c.execute("insert into customers(mobile,first_name) values('09120009999','Test')");c.execute("insert into sessions(token,kind,subject,expires_at) values(?,?,?,?)",('a'*48,'CUSTOMER','09120009999',int(time.time()*1000)+600000));c.execute("insert into sessions(token,kind,subject,expires_at) values(?,?,?,?)",('b'*48,'CUSTOMER','09120008888',int(time.time()*1000)+600000));c.commit();c.close()
   data={'first_name':'Test','mobile':'09120009999','password':'Private-Test-879'}
@@ -99,4 +113,4 @@ https.request=(opt,cb)=>{const q=new EventEmitter();let body='';q.write=x=>{body
   req=urllib.request.Request(f'http://127.0.0.1:{port}/api/auth/register',data=json.dumps(data).encode(),headers={'Content-Type':'application/json','X-Customer-Token':'a'*48},method='POST')
   with opener.open(req,timeout=5) as r:assert r.status==200
  finally:stop(p,out)
-print('PASS production payment/OTP fail closed, authority binding, uncertain-payment preservation, coupon release and existing-account ownership (fake providers only)')
+print('PASS production payment/OTP fail closed, authority binding, uncertain-payment and coupon preservation and existing-account ownership (fake providers only)')

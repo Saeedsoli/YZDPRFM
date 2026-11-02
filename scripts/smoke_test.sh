@@ -322,6 +322,9 @@ if python3 scripts/test_production_admin_guard.py >/tmp/test_production_admin_gu
 if python3 scripts/test_staff_temporary_password.py >/tmp/test_staff_temporary_password.log 2>&1; then P=$((P+1)); else F=$((F+1)); echo "  X secure staff onboarding"; fi
 if python3 scripts/test_production_safety_gates.py >/tmp/test_production_safety_gates.log 2>&1; then P=$((P+1)); else F=$((F+1)); echo "  X production payment/OTP guards"; fi
 run_test test_payment_sandbox_result.js "sandbox result guard"
+if python3 scripts/test_order_stock_reservations.py >/tmp/test_order_stock_reservations.log 2>&1; then P=$((P+1)); else F=$((F+1)); echo "  X order stock reservation"; fi
+if python3 scripts/test_order_stock_cross_process.py >/tmp/test_order_stock_cross_process.log 2>&1; then P=$((P+1)); else F=$((F+1)); echo "  X cross-process stock race"; fi
+if python3 scripts/test_order_stock_migration.py >/tmp/test_order_stock_migration.log 2>&1; then P=$((P+1)); else F=$((F+1)); echo "  X stock reservation migration"; fi
 if python3 scripts/test_approved_mto_v2.py >/tmp/test_approved_mto_v2.log 2>&1; then P=$((P+1)); else F=$((F+1)); echo "  X seven owner approvals"; fi
 if python3 scripts/test_approved_mto_v3.py >/tmp/test_approved_mto_v3.log 2>&1; then P=$((P+1)); else F=$((F+1)); echo "  X four owner approvals"; fi
 if python3 scripts/test_approved_mto_v4.py >/tmp/test_approved_mto_v4.log 2>&1; then P=$((P+1)); else F=$((F+1)); echo "  X three owner approvals"; fi

@@ -13,6 +13,7 @@ const crypto = require('crypto');
 const zlib = require('zlib');
 const { isPublicVariant, publicVariantSql } = require('./variant-visibility');
 const { variantAvailability } = require('./availability');
+const stockReservations = require('./order-stock-reservations');
 
 const {
   db, parseProduct, attachVariants, DB_PATH,
@@ -416,6 +417,7 @@ function validateCart(items) {
   `);
 
   const validated = [];
+  const seenSkus = new Set();
   let subtotal = 0;
 
   if (items.length > 30) {
@@ -423,6 +425,9 @@ function validateCart(items) {
   }
 
   for (const item of items) {
+    if (!item || typeof item.sku !== 'string' || !item.sku.trim()) return { ok:false, error:'شناسه کالا نامعتبر است.' };
+    if (seenSkus.has(item.sku)) return { ok:false, error:'هر کالا باید فقط یک بار در سبد باشد.' };
+    seenSkus.add(item.sku);
     const raw = Number(item.quantity);
     if (!Number.isInteger(raw) || raw < 1) {
       return { ok: false, error: 'تعداد کالا باید عددی صحیح و بزرگ‌تر از صفر باشد.' };
@@ -997,6 +1002,7 @@ const server = http.createServer(async (req, res) => {
     if (method === 'POST' && pathname === '/api/orders') {
       // Never create/reserve an order when production would use a test gateway.
       if (!pay.productionReady()) return sendJSON(503, { error: 'درگاه پرداخت واقعی هنوز آماده نیست.' });
+      if (!stockReservations.ready(db)) return sendJSON(503, { error: 'سامانه ثبت رزرو موجودی هنوز آماده نیست.' });
       const ip = clientIP(req);
       const rl = rateLimit(`order:${ip}`, RL.order.limit, RL.order.window, RL.order.block);
       if (!rl.ok) {
@@ -1150,19 +1156,22 @@ const server = http.createServer(async (req, res) => {
           INSERT INTO order_items (order_id, sku, product_name, unit_price, quantity, line_total)
           VALUES (?, ?, ?, ?, ?, ?)
         `);
-        /* 🔴 موجودی هرگز منفی نشود.
-           کالای «به سفارش» موجودی صفر دارد؛ کم کردن از صفر عدد
-           منفی می‌سازد که هم گزارش انبار را خراب می‌کند هم
-           آزادسازی هنگام لغو سفارش را. */
-        const decStock = db.prepare(
-          'UPDATE variants SET stock = MAX(0, stock - ?) WHERE sku = ?');
+        // Revalidate under the write transaction and record the exact physical
+        // quantity deducted for every item (zero for made-to-order).
         for (const it of v.items) {
-          insItem.run(orderId, it.sku, it.product_name, it.unit_price, it.quantity, it.line_total);
-          decStock.run(it.quantity, it.sku);
+          const item = insItem.run(orderId, it.sku, it.product_name, it.unit_price, it.quantity, it.line_total);
+          stockReservations.reserveItem(db, item.lastInsertRowid);
         }
         logStatus(orderId, 'PENDING', 'ثبت سفارش');
       });
-      tx();
+      try { tx.immediate(); }
+      catch (e) {
+        // Coupon reservation preceded the order transaction; release it if the
+        // cart changed or any transactional insert fails.
+        releaseCouponUse(orderId);
+        if (e.code === 'CART_CHANGED') return sendJSON(409, { error:'قیمت یا موجودی سبد تغییر کرده است؛ دوباره بررسی کنید.' });
+        throw e;
+      }
 
       // درخواست پرداخت از درگاه فعال
       const pr = await pay.requestPayment({
@@ -1181,12 +1190,11 @@ const server = http.createServer(async (req, res) => {
           ).run(new Date().toISOString(), orderId);
           if (!failed.changes) return;
 
-          const its = db.prepare('SELECT sku, quantity FROM order_items WHERE order_id=?').all(orderId);
-          const inc = db.prepare('UPDATE variants SET stock = stock + ? WHERE sku = ?');
-          its.forEach(i => inc.run(i.quantity, i.sku));
-          logStatus(orderId, 'FAILED', 'اتصال به درگاه ممکن نشد — موجودی آزاد شد');
+          const released = stockReservations.release(db, orderId);
+          if (!released.ok) throw Error('Reservation requires manual review');
+          releaseCouponUse(orderId);
+          logStatus(orderId, 'FAILED', 'اتصال به درگاه ممکن نشد — رزرو انبار آزاد شد');
         })();
-        releaseCouponUse(orderId);
         return sendJSON(502, { error: 'اتصال به درگاه پرداخت ممکن نشد: ' + pr.error });
       }
 
@@ -1288,6 +1296,11 @@ const server = http.createServer(async (req, res) => {
       }
 
       let freed = [];
+      if (!stockReservations.inspect(db, order.order_id).ok) {
+        // Leave VERIFYING for manual reconciliation; never infer old stock.
+        logStatus(order.order_id, 'VERIFYING', 'سابقه رزرو انبار نامشخص است؛ بررسی دستی لازم است');
+        return sendJSON(409, { error:'سابقه رزرو انبار نامشخص است؛ سفارش نیازمند بررسی دستی است.' });
+      }
       /* ناموفق: بازگرداندن موجودی — تنها یک بار.
          شرط status='PENDING' داخل همان تراکنش تضمین می‌کند حتی اگر
          چند درخواست هم‌زمان به اینجا برسند، موجودی یک بار برگردد. */
@@ -1298,14 +1311,12 @@ const server = http.createServer(async (req, res) => {
         ).run(new Date().toISOString(), order.order_id);
         if (!cancelled.changes) return;   // درخواست دیگری زودتر رسیدگی کرده
 
-        const items = db.prepare('SELECT sku, quantity FROM order_items WHERE order_id=?')
-          .all(order.order_id);
-        const inc = db.prepare('UPDATE variants SET stock = stock + ? WHERE sku = ?');
-        items.forEach(i => inc.run(i.quantity, i.sku));
-        logStatus(order.order_id, 'CANCELLED', 'پرداخت ناموفق — موجودی آزاد شد');
-        freed = items.map(i => i.sku);
-      })();
-      releaseCouponUse(order.order_id);   // ظرفیت کد تخفیف هم برمی‌گردد
+        const released = stockReservations.release(db, order.order_id);
+        if (!released.ok) throw Error('Reservation requires manual review');
+        logStatus(order.order_id, 'CANCELLED', 'پرداخت ناموفق — رزرو انبار آزاد شد');
+        releaseCouponUse(order.order_id);
+        freed = released.skus;
+      })();   // ظرفیت کد تخفیف هم برمی‌گردد
       notifyStockWatchers(freed, 'پرداخت ناموفق');
       return sendJSON(200, { message: vr.error || 'پرداخت لغو شد', order_id: order.order_id, failed: true });
     }
@@ -1359,15 +1370,23 @@ const server = http.createServer(async (req, res) => {
         ).run(new Date().toISOString(), orderId);
         if (!done.changes) return false;   // درخواست دیگری زودتر رسیدگی کرد
 
-        const its = db.prepare('SELECT sku, quantity FROM order_items WHERE order_id=?').all(orderId);
-        const inc = db.prepare('UPDATE variants SET stock = stock + ? WHERE sku = ?');
-        its.forEach(i => inc.run(i.quantity, i.sku));
+        const released = stockReservations.release(db, orderId);
+        if (!released.ok) throw Error('Reservation requires manual review');
         logStatus(orderId, 'CANCELLED', note);
-        releasedSkus = its.map(i => i.sku);
+        releasedSkus = released.skus;
         return true;
       })();
-      // کاربر در صفحه بانک «انصراف» زده است
+      // A real-gateway callback is a public GET and its status can be forged.
+      // Do not cancel/release from an unverified NOK; hold it for reconciliation.
+      if (status !== 'OK' && pay.GATEWAY === 'zarinpal') {
+        const held=db.prepare("UPDATE orders SET status='VERIFYING',updated_at=? WHERE order_id=? AND status='PENDING'")
+          .run(new Date().toISOString(),orderId);
+        if (held.changes) logStatus(orderId,'VERIFYING','وضعیت بازگشت درگاه نیازمند بررسی دستی است');
+        return sendJSON(503,{error:'وضعیت پرداخت نیازمند بررسی است؛ سفارش لغو نشده است.',order_id:orderId});
+      }
+      // کاربر در صفحه بانک آزمایشی «انصراف» زده است
       if (status !== 'OK') {
+        if (!stockReservations.inspect(db, orderId).ok) return sendJSON(409, { error:'سابقه رزرو انبار نامشخص است؛ سفارش نیازمند بررسی دستی است.' });
         if (releaseStock('پرداخت توسط کاربر لغو شد')) releaseCouponUse(orderId);
         notifyStockWatchers(releasedSkus, 'انصراف در درگاه');
         return goto(false, null, 'پرداخت توسط شما لغو شد');
@@ -1410,6 +1429,10 @@ const server = http.createServer(async (req, res) => {
         return goto(true, vr.ref_id);
       }
 
+      if (!stockReservations.inspect(db, orderId).ok) {
+        logStatus(orderId, 'VERIFYING', 'سابقه رزرو انبار نامشخص است؛ بررسی دستی لازم است');
+        return sendJSON(409, { error:'سابقه رزرو انبار نامشخص است؛ سفارش نیازمند بررسی دستی است.' });
+      }
       alerts.fireAsync('paymentFailed', { order_id: orderId });
       if (releaseStock('پرداخت تأیید نشد — موجودی آزاد شد')) releaseCouponUse(orderId);
       notifyStockWatchers(releasedSkus, 'پرداخت تأیید نشد');

@@ -75,10 +75,13 @@ function seedOrder(sku, qty = 1) {
       .run(oid, new Date().toISOString(), 'آزمون گام دو', '09121110044',
            'یزد', 'یزد', 'خیابان آزمون', '8913694865',
            sub, ship, sub + ship, 'PAID', 'sandbox');
-    db.prepare(`INSERT INTO order_items
+    const item = db.prepare(`INSERT INTO order_items
       (order_id, sku, product_name, unit_price, quantity, line_total)
       VALUES (?,?,?,?,?,?)`)
       .run(oid, sku, `${p.brand_fa} — ${p.name_fa}`, v.price_toman, qty, sub);
+    // Test fixture models a genuine physical reservation.
+    db.prepare('UPDATE variants SET stock=stock-? WHERE sku=? AND stock>=?').run(qty,sku,qty);
+    db.prepare('INSERT INTO order_stock_reservations(item_id,reserved_qty,released) VALUES(?,?,0)').run(item.lastInsertRowid,qty);
   })();
   return { oid, sku, qty, price: v.price_toman, stockBefore: v.stock };
 }

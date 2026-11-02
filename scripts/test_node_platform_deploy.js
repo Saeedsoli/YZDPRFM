@@ -165,7 +165,7 @@ function copyRespectingIgnore(src, dst, patterns, base = src) {
   add('پیش‌نمایش طراحی در بسته نیست',
     !staged.some(f => f.startsWith('design-preview')));
 
-  for (const need of ['package.json', 'src/server.js', 'src/retire-sample3-cli.js', 'seed/perfumes_catalogue_seed.json',
+  for (const need of ['package.json', 'src/server.js', 'src/retire-sample3-cli.js', 'src/order-stock-reservation-cli.js', 'seed/perfumes_catalogue_seed.json',
                       'seed/articles_db.json', 'public/index.html', 'public/assets/app.js']) {
     add(`${need} در بسته هست`, staged.includes(need));
   }

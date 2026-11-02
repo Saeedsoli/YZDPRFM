@@ -31,6 +31,7 @@
  */
 
 'use strict';
+const stockReservations = require('../order-stock-reservations');
 
 /**
  * @param {object}   ctx
@@ -120,7 +121,7 @@ async function handle(ctx) {
     /* پیشبرد عادی و لغو دو کار متفاوت‌اند.
        پشتیبان باید سفارش را جلو ببرد ولی لغو نکند — لغو موجودی
        را برمی‌گرداند، کد تخفیف را آزاد می‌کند و اثر مالی دارد. */
-    const isDestructive = next === 'CANCELLED' || next === 'RETURNED';
+    const isDestructive = ['CANCELLED','RETURNED','FAILED'].includes(next);
     if (isDestructive) {
       if (!can('orders.cancel')) return true;
     } else {
@@ -138,27 +139,31 @@ async function handle(ctx) {
       });
     }
 
-    // بازگرداندن موجودی هنگام لغو یا مرجوع
-    let restored = [];
-    if (next === 'CANCELLED' || next === 'RETURNED') {
-      db.transaction(() => {
-        const its = db.prepare('SELECT sku, quantity FROM order_items WHERE order_id=?').all(oid);
-        const inc = db.prepare('UPDATE variants SET stock = stock + ? WHERE sku = ?');
-        its.forEach(i => inc.run(i.quantity, i.sku));
-        restored = its.map(i => i.sku);
-      })();
-      // سفارش لغوشده نباید ظرفیت کد تخفیف را اشغال نگه دارد
-      if (next === 'CANCELLED') releaseCouponUse(oid);
-    }
+    // Status and actual reserved-stock release are a single transaction.
+    // Old orders without evidence are held for manual reconciliation.
+    const change = db.transaction(() => {
+      const current=db.prepare('SELECT status FROM orders WHERE order_id=?').get(oid);
+      if(!current || current.status!==order.status) return {conflict:true};
+      let restored=[];
+      if(isDestructive){
+        const plan=stockReservations.inspect(db,oid);
+        if(!plan.ok)return {needsReview:true};
+        const release=stockReservations.release(db,oid);
+        if(!release.ok)throw Error('Reservation changed during transition');
+        restored=release.skus;
+      }
+      const changed=db.prepare(`UPDATE orders SET status=?,tracking_code=COALESCE(?,tracking_code),
+        carrier=COALESCE(?,carrier),admin_note=COALESCE(?,admin_note),updated_at=?
+        WHERE order_id=? AND status=?`).run(next,b.tracking_code||null,b.carrier||null,b.note||null,new Date().toISOString(),oid,order.status);
+      if(!changed.changes)throw Error('Concurrent order status conflict');
+      if(next==='CANCELLED'||next==='FAILED')releaseCouponUse(oid);
+      logStatus(oid,next,b.note||null);
+      return {restored};
+    }).immediate();
+    if(change.needsReview)return sendJSON(409,{error:'سابقه رزرو انبار این سفارش نامشخص است؛ بررسی دستی لازم است.'});
+    if(change.conflict)return sendJSON(409,{error:'وضعیت سفارش تغییر کرده است؛ دوباره بررسی کنید.'});
+    const restored=change.restored;
 
-    db.prepare(`
-      UPDATE orders SET status=?, tracking_code=COALESCE(?, tracking_code),
-        carrier=COALESCE(?, carrier), admin_note=COALESCE(?, admin_note), updated_at=?
-      WHERE order_id=?
-    `).run(next, b.tracking_code || null, b.carrier || null,
-           b.note || null, new Date().toISOString(), oid);
-
-    logStatus(oid, next, b.note || null);
     logAudit(isDestructive ? 'orders.cancel' : 'orders.status', {
       target: oid, detail: { from: order.status, to: next }
     });
@@ -168,7 +173,7 @@ async function handle(ctx) {
 
     // کالایی که برگشته ممکن است کسی منتظرش باشد
     const alerted = notifyStockWatchers(restored,
-      next === 'RETURNED' ? 'مرجوعی' : 'لغو سفارش');
+      next === 'RETURNED' ? 'مرجوعی' : next === 'FAILED' ? 'پرداخت ناموفق' : 'لغو سفارش');
 
     return sendJSON(200, {
       message: `وضعیت سفارش به «${STATUS_FA[next]}» تغییر کرد.`

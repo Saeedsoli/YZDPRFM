@@ -73,6 +73,9 @@ python3 scripts/test_production_admin_guard.py
 python3 scripts/test_staff_temporary_password.py
 python3 scripts/test_production_safety_gates.py
 node scripts/test_payment_sandbox_result.js
+python3 scripts/test_order_stock_reservations.py
+python3 scripts/test_order_stock_cross_process.py
+python3 scripts/test_order_stock_migration.py
 python3 scripts/test_approved_mto_v13.py
 node scripts/test_default_reference_v53.js
 node scripts/test_generic_product_images.js

@@ -113,10 +113,9 @@ function orderState(oid) {
   /* موجودی موقت — موجودی تولید صفر است تا کالای تأییدنشده فروخته نشود */
   lease = withStock(DB, 4, 200);
 
-  const cat = await (await fetch(`${BASE}/api/products?limit=1&full=1`)).json();
-  const sku = (cat.products[0].variants.find(v => lease.skus.includes(v.sku))
-            || cat.products[0].variants.find(v => v.stock > 5)
-            || cat.products[0].variants[0]).sku;
+  // Select the actual physical-stock fixture, not an unrelated MTO variant.
+  const sku = lease.skus[0];
+  if (!sku || stockOf(sku) !== 200) throw new Error('Physical stock fixture missing');
 
   const checks = [];
 

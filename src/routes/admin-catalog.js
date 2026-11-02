@@ -395,8 +395,10 @@ async function handle(ctx) {
     const alerted = notifyStockWatchers(res_.skus, 'انقضای سفارش');
     return sendJSON(200, {
       message: `${res_.count} سفارش منقضی پردازش شد.`
+        + (res_.review_count ? ` ${res_.review_count} سفارش قدیمی نیازمند بررسی دستی رزرو است.` : '')
         + (alerted ? ` به ${alerted} نفر منتظر اطلاع داده شد.` : ''),
       released: res_.count,
+      review_count: res_.review_count || 0,
       notified: alerted
     });
   }
