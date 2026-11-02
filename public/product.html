@@ -550,12 +550,12 @@ function render() {
     .setAttribute('content', `${full} — ${p.name_en}. عطر دست‌ساز ${p.family_fa || ''} از عطر یزد.`);
 
   // مسیر راهنما — کمک به کاربر و به خزنده گوگل
-  const famLink = p.family_slug ? `/?family=${p.family_slug}` : '/';
+  const famLink = p.family_slug ? `/?family=${encodeURIComponent(p.family_slug)}` : '/';
   document.getElementById('crumbs').innerHTML = `
     <a href="/">کاتالوگ</a><span class="sep">›</span>
-    <a href="/?brand=${encodeURIComponent(p.brand_fa || '')}">${p.brand_fa || 'برند'}</a>
-    ${p.family_fa ? `<span class="sep">›</span><a href="${famLink}">${p.family_fa}</a>` : ''}
-    <span class="sep">›</span><span class="cur">${p.name_fa}</span>`;
+    <a href="/?brand=${encodeURIComponent(p.brand_fa || '')}">${esc(p.brand_fa || 'برند')}</a>
+    ${p.family_fa ? `<span class="sep">›</span><a href="${famLink}">${esc(p.family_fa)}</a>` : ''}
+    <span class="sep">›</span><span class="cur">${esc(p.name_fa)}</span>`;
 
   // نشان جنسیت روی گالری
   document.getElementById('gBadge').textContent =
@@ -579,10 +579,10 @@ function render() {
   const webpOf = s => s.replace(/\.(jpe?g|png)$/i, '.webp');
   document.getElementById('track').innerHTML = imgs.map((s, i) => i === 0
     ? `<picture>
-         <source srcset="${webpOf(s)}" type="image/webp">
-         <img src="${s}" alt="${illustrative ? 'تصویر نمادین ' : ''}${full}" fetchpriority="high" decoding="async">
+         <source srcset="${esc(webpOf(s))}" type="image/webp">
+         <img src="${esc(s)}" alt="${illustrative ? 'تصویر نمادین ' : ''}${esc(full)}" fetchpriority="high" decoding="async">
        </picture>`
-    : `<img src="${s}" alt="${illustrative && i === 1 ? 'تصویر نمادین ' : ''}${full}" loading="lazy" decoding="async">`
+    : `<img src="${esc(s)}" alt="${illustrative && i === 1 ? 'تصویر نمادین ' : ''}${esc(full)}" loading="lazy" decoding="async">`
   ).join('');
   document.getElementById('dots').innerHTML = imgs.map((_, i) =>
     `<span class="${i === 0 ? 'on' : ''}"></span>`).join('');
@@ -593,12 +593,12 @@ function render() {
   document.getElementById('thumbs').innerHTML = imgs.map((s, i) => {
     const sm = s.replace(/(\.[a-z]+)$/i, '-sm$1');
     return `<button class="${i === 0 ? 'on' : ''}" data-i="${i}" aria-label="${capt[i]}">
-       <img src="${sm}" alt="${capt[i]}" loading="lazy" decoding="async"
-            onerror="this.onerror=null;this.src='${s}'"></button>`;
+       <img src="${esc(sm)}" data-fallback="${esc(s)}" alt="${capt[i]}" loading="lazy" decoding="async"
+            onerror="this.onerror=null;this.src=this.dataset.fallback"></button>`;
   }).join('');
   initGallery(imgs.length);
 
-  document.getElementById('titleFa').innerHTML = `${full} <span class="tag">«دست‌ساز»</span>`;
+  document.getElementById('titleFa').innerHTML = `${esc(full)} <span class="tag">«دست‌ساز»</span>`;
   document.getElementById('titleEn').textContent = p.name_en;
   document.getElementById('transparency').textContent =
     p.transparency_notice || 'این محصول بازآفرینی دست‌ساز است و محصول اورجینال برند اصلی نیست؛ هویت اسانس تأمین‌کننده مستقلاً تأیید نشده است.';
@@ -609,7 +609,7 @@ function render() {
     p.longevity ? 'ماندگاری: ' + p.longevity : null,
     p.sillage ? 'پخش بو: ' + p.sillage : null
   ].filter(Boolean);
-  document.getElementById('chips').innerHTML = chips.map(c => `<span class="chip">${c}</span>`).join('');
+  document.getElementById('chips').innerHTML = chips.map(c => `<span class="chip">${esc(c)}</span>`).join('');
 
   /* جمع‌بندی — چیزی که خریدار اول از همه می‌خواهد بداند.
      «سال عرضه» برای داده‌های دارای منبع اضافه شده است.
@@ -622,7 +622,7 @@ function render() {
     ['فصل', p.season],
     ['سال عرضه', p.release_year ? toFa(p.release_year) : null]
   ].filter(([, v]) => v)
-   .map(([k, v]) => `<div><div class="k">${k}</div><div class="v">${v}</div></div>`).join('');
+   .map(([k, v]) => `<div><div class="k">${k}</div><div class="v">${esc(v)}</div></div>`).join('');
 
   /* ── یادداشت عطرساز ──
      تجربه دست‌اول سازنده. اگر نبود، جعبه اصلاً ساخته نمی‌شود.
@@ -671,7 +671,7 @@ function render() {
     .filter(([, , arr]) => arr && arr.length)
     .map(([name, when, arr]) => `<div class="layer">
         <div class="lb"><b>${name}</b><i>${when}</i></div>
-        <div class="note-tags">${arr.map(n => `<span class="note-tag">${n}</span>`).join('')}</div>
+        <div class="note-tags">${arr.map(n => `<span class="note-tag">${esc(n)}</span>`).join('')}</div>
       </div>`).join('') ||
     '<div style="font-size:.84rem;color:var(--muted)">هرم نُت برای این رایحه ثبت نشده است.</div>';
 
