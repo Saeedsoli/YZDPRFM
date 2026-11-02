@@ -35,7 +35,7 @@ with tempfile.TemporaryDirectory(prefix='accord-display-') as td:
                 context=browser.new_context(viewport={'width':width,'height':844},service_workers='block');page=context.new_page();errors=[];page.on('pageerror',lambda e:errors.append(str(e)))
                 page.goto(base+'/perfume/creed-aventus',wait_until='domcontentloaded');expect(page.locator('#content')).to_be_visible()
                 expect(page.locator('#referenceAccords')).to_be_visible();expect(page.locator('#referenceAccords')).to_contain_text('آکورد آناناس')
-                expect(page.locator('#referenceAccords')).to_contain_text('وجود این مواد در اسانس دست‌ساز را تأیید نمی‌کنند')
+                assert 'اسانس دست‌ساز' not in page.locator('#referenceAccords').inner_text()
                 assert page.locator('#pyramid .layer').count()==0
                 assert page.evaluate('document.documentElement.scrollWidth <= innerWidth + 1')
                 page.goto(base+'/perfume/ariana-grande-ari',wait_until='domcontentloaded');expect(page.locator('#content')).to_be_visible();expect(page.locator('#referenceAccords')).to_be_hidden();assert page.locator('#pyramid .layer').count()==3

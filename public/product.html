@@ -681,8 +681,7 @@ function render() {
   referenceBox.hidden = referenceAccords.length === 0;
   referenceBox.innerHTML = referenceAccords.length ? `
     <div style="${pyramidHTML ? 'border-top:1px solid var(--border);margin-top:16px;padding-top:16px;' : ''}font-size:.84rem;font-weight:700;margin-bottom:12px">نت‌های معرفی‌شده بدون تفکیک هرم</div>
-    <div class="note-tags">${referenceAccords.map(n => `<span class="note-tag">${esc(n)}</span>`).join('')}</div>
-    <div style="font-size:.74rem;color:var(--muted);line-height:2;margin-top:15px">این نت‌ها توصیف رایحه مرجع‌اند و وجود این مواد در اسانس دست‌ساز را تأیید نمی‌کنند.</div>` : '';
+    <div class="note-tags">${referenceAccords.map(n => `<span class="note-tag">${esc(n)}</span>`).join('')}</div>` : '';
 
   const vg = document.getElementById('variants');
   /* آیا درصد جشنواره بین واریانت‌ها فرق می‌کند؟ */

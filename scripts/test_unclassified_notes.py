@@ -30,7 +30,7 @@ with tempfile.TemporaryDirectory(prefix='yazd-unclassified-') as tmp:
             page.goto(base+'/perfume/'+slug,wait_until='domcontentloaded')
             assert page.locator('#pyramid .layer').count()==0
             expect(page.locator('#referenceAccords')).to_contain_text('جاوانول (Javanol)')
-            expect(page.locator('#referenceAccords')).to_contain_text('اسانس دست‌ساز را تأیید نمی‌کنند')
+            assert 'اسانس دست‌ساز' not in page.locator('#referenceAccords').inner_text()
             assert 'چوب صندل شیری' not in page.locator('#pyramid').inner_text()
             assert not errors,errors;browser.close()
         print('PASS official single-molecule record, no fabricated note tiers, updated index and honest public fallback')
