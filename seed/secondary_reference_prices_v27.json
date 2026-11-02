@@ -1,0 +1,78 @@
+{
+  "version": "secondary_reference_prices_2026_11_v27",
+  "supplier_file_sha256": "bbe8f40610bc765bda0a7d2da9dbe78f4e397458a6991239c3c18d0853f33f5c",
+  "description": "Two provisional market aliases with independent reference sources; supplier essence identity unverified.",
+  "items": [
+    {
+      "product_id": "SUP-TP-910048",
+      "slug": "alfred-dunhill-brown-man-2003",
+      "brand_en": "Alfred Dunhill",
+      "expected_name_en": "ALFRED DUNHILL - Dunhill for Men 2003",
+      "reference_name": "Dunhill for Men 2003 EDT",
+      "source_url": "https://www.fragrantica.com/perfume/Alfred-Dunhill/Dunhill-1939.html",
+      "provider": "Fragrantica",
+      "status": "secondary_original_found_supplier_essence_unverified",
+      "checked_date": "2026-11-02",
+      "supplier_brand": "dunhıll",
+      "supplier_model": "DUNHILL Brown",
+      "supplier_gender": "Men",
+      "usd_per_kg": "128.7",
+      "quality": "H",
+      "match_status": "name_matched_supplier_identity_unverified",
+      "owner_version_confirmation": "Owner authorized EDT fallback; Brown is a provisional market alias. Supplier essence identity unverified.",
+      "additional_independent_alias_url": "https://sangegolestanperfume.com/product/dunhill-brown-for-men/",
+      "expected_edps": [],
+      "legacy_backfill": false
+    },
+    {
+      "product_id": "YZD-PROD-1801",
+      "slug": "hugo-boss-hugo-man",
+      "brand_en": "Hugo Boss",
+      "expected_name_en": "HUGO BOSS - Hugo Man",
+      "reference_name": "Hugo Man 1995 EDT",
+      "source_url": "https://www.fragrantica.com/perfume/Hugo-Boss/Hugo-570.html",
+      "provider": "Fragrantica",
+      "status": "secondary_original_found_supplier_essence_unverified",
+      "checked_date": "2026-11-02",
+      "supplier_brand": "HUGO BOSS",
+      "supplier_model": "VERSUS",
+      "supplier_gender": "Unisex",
+      "usd_per_kg": "93.5",
+      "quality": "H",
+      "match_status": "name_matched_supplier_identity_unverified",
+      "owner_version_confirmation": "Owner allowed EDT fallback; Versus is a provisional market alias, row labels unisex while reference is marketed for men. Supplier essence unverified.",
+      "additional_independent_alias_url": "https://flower-perfume.com/product/%D9%87%D9%88%DA%AF%D9%88-%D8%A8%D8%A7%D8%B3-%D9%88%D8%B1%D8%B3%D9%88%D8%B2-hugo-boss-versus/",
+      "expected_edps": [
+        {
+          "sku": "YZD-1801-EDP-010",
+          "volume_ml": 10,
+          "price_toman": 360000,
+          "stock": 0,
+          "price_usd": 3.0
+        },
+        {
+          "sku": "YZD-1801-EDP-030",
+          "volume_ml": 30,
+          "price_toman": 780000,
+          "stock": 0,
+          "price_usd": 3.0
+        },
+        {
+          "sku": "YZD-1801-EDP-050",
+          "volume_ml": 50,
+          "price_toman": 1200000,
+          "stock": 0,
+          "price_usd": 3.0
+        },
+        {
+          "sku": "YZD-1801-EDP-100",
+          "volume_ml": 100,
+          "price_toman": 2250000,
+          "stock": 0,
+          "price_usd": 3.0
+        }
+      ],
+      "legacy_backfill": false
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "version": "official_identity_evidence_v53",
+  "scope": "Official reference-original name only; supplier essence identity unverified.",
+  "items": [
+    {
+      "product_id": "SUP-CH-900006",
+      "slug": "carolina-herrera-ch-men-edt",
+      "brand_en": "Carolina Herrera",
+      "expected_name_en": "CAROLINA HERRERA - CH Men EDT",
+      "reference_name": "CH Men Eau de Toilette",
+      "official_url": "https://www.carolinaherrera.com/us/en/p-fragrance/ch-men-edt-100ml",
+      "status": "official_original_found_supplier_essence_unverified",
+      "checked_date": "2026-11-02"
+    },
+    {
+      "product_id": "SUP-CL-900001",
+      "slug": "clinique-happy-for-men-edt",
+      "brand_en": "Clinique",
+      "expected_name_en": "CLINIQUE - Happy for Men EDT",
+      "reference_name": "Clinique Happy for Men Eau de Toilette",
+      "official_url": "https://www.ch.clinique.com/fr/product/clinique-happy-for-men-eau-de-toilette-spray",
+      "status": "official_original_found_supplier_essence_unverified",
+      "checked_date": "2026-11-02"
+    }
+  ]
+}

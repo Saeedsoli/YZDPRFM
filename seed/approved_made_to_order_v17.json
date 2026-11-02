@@ -1,0 +1,57 @@
+{
+  "version": "approved_made_to_order_2026_11_v17",
+  "source_sha256": "bbe8f40610bc765bda0a7d2da9dbe78f4e397458a6991239c3c18d0853f33f5c",
+  "description": "Owner authorized EDT fallback and activation; reference names and market aliases do not verify supplied essence.",
+  "items": [
+    {
+      "product_id": "SUP-CH-900006",
+      "slug": "carolina-herrera-ch-men-edt",
+      "expected_name_en": "CAROLINA HERRERA - CH Men EDT",
+      "brand_en": "Carolina Herrera",
+      "usd_per_kg": "210.1",
+      "quality": "H",
+      "source_type": "provisional",
+      "reference_url": "https://www.carolinaherrera.com/us/en/p-fragrance/ch-men-edt-100ml"
+    },
+    {
+      "product_id": "SUP-CL-900001",
+      "slug": "clinique-happy-for-men-edt",
+      "expected_name_en": "CLINIQUE - Happy for Men EDT",
+      "brand_en": "Clinique",
+      "usd_per_kg": "174.9",
+      "quality": "H",
+      "source_type": "provisional",
+      "reference_url": "https://www.ch.clinique.com/fr/product/clinique-happy-for-men-eau-de-toilette-spray"
+    },
+    {
+      "product_id": "YZD-PROD-1464",
+      "slug": "chanel-allure-homme-sport",
+      "expected_name_en": "CHANEL - Allure Homme Sport",
+      "brand_en": "Chanel",
+      "usd_per_kg": "262.9",
+      "quality": "H",
+      "source_type": "provisional",
+      "reference_url": "https://www.chanel.com/us/fragrance/p/123630/allure-homme-sport-eau-de-toilette-spray/"
+    },
+    {
+      "product_id": "SUP-TP-910048",
+      "slug": "alfred-dunhill-brown-man-2003",
+      "expected_name_en": "ALFRED DUNHILL - Dunhill for Men 2003",
+      "brand_en": "Alfred Dunhill",
+      "usd_per_kg": "128.7",
+      "quality": "H",
+      "source_type": "secondary",
+      "reference_url": "https://www.fragrantica.com/perfume/Alfred-Dunhill/Dunhill-1939.html"
+    },
+    {
+      "product_id": "YZD-PROD-1801",
+      "slug": "hugo-boss-hugo-man",
+      "expected_name_en": "HUGO BOSS - Hugo Man",
+      "brand_en": "Hugo Boss",
+      "usd_per_kg": "93.5",
+      "quality": "H",
+      "source_type": "secondary",
+      "reference_url": "https://www.fragrantica.com/perfume/Hugo-Boss/Hugo-570.html"
+    }
+  ]
+}

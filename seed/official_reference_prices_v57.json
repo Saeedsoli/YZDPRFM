@@ -1,0 +1,84 @@
+{
+  "version": "official_reference_prices_2026_11_v57",
+  "supplier_file_sha256": "bbe8f40610bc765bda0a7d2da9dbe78f4e397458a6991239c3c18d0853f33f5c",
+  "description": "Three owner-authorized EDT fallback references; supplier essence identity unverified.",
+  "items": [
+    {
+      "product_id": "SUP-CH-900006",
+      "slug": "carolina-herrera-ch-men-edt",
+      "brand_en": "Carolina Herrera",
+      "expected_name_en": "CAROLINA HERRERA - CH Men EDT",
+      "reference_name": "CH Men Eau de Toilette",
+      "official_url": "https://www.carolinaherrera.com/us/en/p-fragrance/ch-men-edt-100ml",
+      "supplier_brand": "CAROLINA HRRERA",
+      "supplier_model": "CH",
+      "supplier_gender": "Men",
+      "usd_per_kg": "210.1",
+      "quality": "H",
+      "match_status": "name_matched_supplier_identity_unverified",
+      "owner_version_confirmation": "Owner authorized base EDT fallback when EDP or Parfum unavailable; named reference does not verify supplier essence.",
+      "expected_edps": []
+    },
+    {
+      "product_id": "SUP-CL-900001",
+      "slug": "clinique-happy-for-men-edt",
+      "brand_en": "Clinique",
+      "expected_name_en": "CLINIQUE - Happy for Men EDT",
+      "reference_name": "Clinique Happy for Men Eau de Toilette",
+      "official_url": "https://www.ch.clinique.com/fr/product/clinique-happy-for-men-eau-de-toilette-spray",
+      "supplier_brand": "CLINIQUE",
+      "supplier_model": "Happy",
+      "supplier_gender": "Men",
+      "usd_per_kg": "174.9",
+      "quality": "H",
+      "match_status": "name_matched_supplier_identity_unverified",
+      "owner_version_confirmation": "Owner authorized base EDT fallback when EDP or Parfum unavailable; named reference does not verify supplier essence.",
+      "expected_edps": []
+    },
+    {
+      "product_id": "YZD-PROD-1464",
+      "slug": "chanel-allure-homme-sport",
+      "brand_en": "Chanel",
+      "expected_name_en": "CHANEL - Allure Homme Sport",
+      "reference_name": "Allure Homme Sport EDT",
+      "official_url": "https://www.chanel.com/us/fragrance/p/123630/allure-homme-sport-eau-de-toilette-spray/",
+      "supplier_brand": "CHANEL",
+      "supplier_model": "Allure Sport",
+      "supplier_gender": "Men",
+      "usd_per_kg": "262.9",
+      "quality": "H",
+      "match_status": "name_matched_supplier_identity_unverified",
+      "owner_version_confirmation": "Owner authorized base EDT fallback; Eau Extrême is a different named reference; supplier essence unverified.",
+      "expected_edps": [
+        {
+          "sku": "YZD-1464-EDP-010",
+          "volume_ml": 10,
+          "price_toman": 465000,
+          "stock": 0,
+          "price_usd": 4.5
+        },
+        {
+          "sku": "YZD-1464-EDP-030",
+          "volume_ml": 30,
+          "price_toman": 1094999,
+          "stock": 0,
+          "price_usd": 4.5
+        },
+        {
+          "sku": "YZD-1464-EDP-050",
+          "volume_ml": 50,
+          "price_toman": 1725000,
+          "stock": 0,
+          "price_usd": 4.5
+        },
+        {
+          "sku": "YZD-1464-EDP-100",
+          "volume_ml": 100,
+          "price_toman": 3300000,
+          "stock": 0,
+          "price_usd": 4.5
+        }
+      ]
+    }
+  ]
+}

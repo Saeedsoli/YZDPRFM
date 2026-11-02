@@ -21,7 +21,7 @@ function genericFor(productId,m){
  // A single approved neutral fallback is rebalanced to keep illustration use
  // below the tested limit; this is not a claim about the product or its notes.
  if(productId==='SUP-AG-900002')return `${PREFIX}generic-neutral-4.jpg`;
- if(productId==='SUP-CH-900005')return `${PREFIX}generic-neutral-6.jpg`;
+ if(['SUP-CH-900005','SUP-CH-900006','SUP-CL-900001','SUP-TP-910048'].includes(productId))return `${PREFIX}generic-neutral-6.jpg`;
  // New unidentified catalog entries get a stable, neutral illustration, never
  // an invented family or gender. Existing uploaded/brand images still win.
  const digest=crypto.createHash('sha256').update(String(productId)).digest();

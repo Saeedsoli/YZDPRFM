@@ -1,0 +1,58 @@
+[
+  {
+    "id": "SUP-CH-900006",
+    "slug": "carolina-herrera-ch-men-edt",
+    "name_fa": "سی اچ مردانه",
+    "name_en": "CH Men EDT",
+    "title_fa_base": "سی اچ مردانه",
+    "full_display_fa": "کارولینا هررا — سی اچ مردانه",
+    "inspired_brand_en": "Carolina Herrera",
+    "inspired_brand_fa": "کارولینا هررا",
+    "gender": "MEN",
+    "notes": {
+      "top": [],
+      "middle": [],
+      "base": []
+    },
+    "accords": [
+      "آکورد چرم",
+      "آکورد چوبی",
+      "زعفران"
+    ],
+    "transclaimer_notice": "این محصول بازآفرینی دست‌ساز است و محصول اورجینال برند اصلی نیست. اطلاعات رایحه مرجع از وب‌سایت رسمی برند گرفته شده و هویت و نسخه اسانس تأمین‌کننده مستقلاً تأیید نشده است.",
+    "source_url": "https://www.carolinaherrera.com/us/en/p-fragrance/ch-men-edt-100ml",
+    "source_note": "Owner allowed EDT fallback; official product image and collection say Eau de Toilette. Website has generic concentration educational text; no concentration claim for supplier. Supplier essence unverified.",
+    "variants": []
+  },
+  {
+    "id": "SUP-CL-900001",
+    "slug": "clinique-happy-for-men-edt",
+    "name_fa": "هپی مردانه",
+    "name_en": "Happy for Men EDT",
+    "title_fa_base": "هپی مردانه",
+    "full_display_fa": "کلینیک — هپی مردانه",
+    "inspired_brand_en": "Clinique",
+    "inspired_brand_fa": "کلینیک",
+    "gender": "MEN",
+    "notes": {
+      "top": [
+        "لیموی کافیر"
+      ],
+      "middle": [
+        "کالامانسی",
+        "نارنگی",
+        "یوزو"
+      ],
+      "base": [
+        "سدر",
+        "سرو مدیترانه‌ای",
+        "چوب گایاک"
+      ]
+    },
+    "accords": [],
+    "transclaimer_notice": "این محصول بازآفرینی دست‌ساز است و محصول اورجینال برند اصلی نیست. اطلاعات رایحه مرجع از وب‌سایت رسمی برند گرفته شده و هویت و نسخه اسانس تأمین‌کننده مستقلاً تأیید نشده است.",
+    "source_url": "https://www.ch.clinique.com/fr/product/clinique-happy-for-men-eau-de-toilette-spray",
+    "source_note": "Official Swiss page names EDT; original product allergy-tested or product claims are not transferred to handmade perfume. Supplier essence unverified.",
+    "variants": []
+  }
+]

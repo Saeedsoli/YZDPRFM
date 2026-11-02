@@ -886,3 +886,11 @@ node_modules/   با npm install برمی‌گردد
 - `scripts/test_generic_image_six.js` — ششمین تصویر نمادین و نمایش برچسب آن.
 
 - `scripts/test_generic_image_six_browser.py` — آزمون مرورگر تصویر نمادین ششم در موبایل و دسکتاپ.
+
+- `scripts/test_edt_reference_v57.js` — پنج تطبیق ادوتویلت و منابع رسمی و مستقل.
+- `src/hugo-versus-name.js` — نام رایج ورسوز با محافظ ویرایش مدیر.
+
+- `src/approved-made-to-order-v17.js` — تأیید محافظت‌شده پنج انتخاب ادوتویلت.
+- `scripts/test_approved_mto_v17.py` — خرید و محافظ دسته ادوتویلت.
+
+- `scripts/test_hugo_versus_name.js` — محافظ نام انتخابی مدیر.
