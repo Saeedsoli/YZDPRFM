@@ -7,7 +7,7 @@ items=json.loads((root/'seed/approved_made_to_order_v2.json').read_text())['item
 assert len(items)==7 and len({x['product_id'] for x in items})==7
 with tempfile.TemporaryDirectory(prefix='mto-v2-') as td:
  db=str(Path(td)/'fresh.sqlite');s=socket.socket();s.bind(('127.0.0.1',0));port=s.getsockname()[1];s.close()
- env={**os.environ,'OWNER_REFERENCE_V2_AUTOSTART':'0','OWNER_REFERENCE_AUTOSTART':'0','GENERIC_SCENTS_AUTOSTART':'0','DB_PATH':db,'BACKUP_DISABLED':'1','PORT':str(port)}
+ env={**os.environ,'OWNER_REFERENCE_V3_AUTOSTART':'0','GENERIC_SCENTS_V2_AUTOSTART':'0','OWNER_REFERENCE_V2_AUTOSTART':'0','OWNER_REFERENCE_AUTOSTART':'0','GENERIC_SCENTS_AUTOSTART':'0','DB_PATH':db,'BACKUP_DISABLED':'1','PORT':str(port)}
  env.pop('APPROVED_MTO_AUTOSTART',None);env.pop('APPROVED_MTO_V2_AUTOSTART',None);env['APPROVED_MTO_V3_AUTOSTART']='0';env['APPROVED_MTO_V4_AUTOSTART']='0';env['APPROVED_MTO_V5_AUTOSTART']='0';env['APPROVED_MTO_V6_AUTOSTART']='0';env['APPROVED_MTO_V7_AUTOSTART']='0';env['APPROVED_MTO_V8_AUTOSTART']='0';env['APPROVED_MTO_V9_AUTOSTART']='0';env['APPROVED_MTO_V10_AUTOSTART']='0';env['APPROVED_MTO_V11_AUTOSTART']='0';env['APPROVED_MTO_V12_AUTOSTART']='0';env['APPROVED_MTO_V13_AUTOSTART']='0';env['APPROVED_MTO_V14_AUTOSTART']='0';env['APPROVED_MTO_V15_AUTOSTART']='0';env['APPROVED_MTO_V16_AUTOSTART']='0';env['APPROVED_MTO_V17_AUTOSTART']='0'
  server=subprocess.Popen(['node','src/server.js'],cwd=root,env=env,stdout=subprocess.DEVNULL,stderr=subprocess.PIPE)
  def post(sku,n):

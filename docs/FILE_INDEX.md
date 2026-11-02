@@ -907,3 +907,12 @@ node_modules/   با npm install برمی‌گردد
 - `src/owner-reference-import-v2.js` — ثبت امن سه انتخاب دیگر با منبع و نام مرجع.
 - `scripts/apply_owner_references_v2.js` — اجرای صریح مصوبه دوم روی دیتابیس پشتیبان‌گرفته‌شده.
 - `scripts/test_owner_reference_import_v2.py` — آزمون انتخاب‌ها، قیمت، سبد و محافظ داده.
+
+- `src/generic-scent-import-v2.js` — پنج رایحه با نام بازاری بدون برند مرجع.
+- `src/owner-reference-import-v3.js` — ثبت باس باتلد انتخابی و محافظ نام بوس ۹۸.
+- `scripts/apply_generic_scents_v2.js` — اجرای صریح مصوبه رایحه‌های بازاری.
+- `scripts/apply_owner_references_v3.js` — اجرای صریح انتخاب باس باتلد.
+- `scripts/test_generic_scent_import_v2.py` — آزمون پنج رایحه بازاری.
+- `scripts/test_owner_reference_import_v3.py` — آزمون باس باتلد و حفظ قیمت بوس ۹۸.
+- `scripts/test_generic_image_seven.js` — آزمون برچسب تصویر نمادین هفتم.
+- `scripts/apply_pending_six.js` — اجرای اتمی هر دو مصوبه پس از پشتیبان‌گیری.

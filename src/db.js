@@ -2849,6 +2849,12 @@ if (isFreshInstallation && process.env.APPROVED_MTO_AUTOSTART !== '0') {
     const v16 = require('./approved-made-to-order-v16').applyApprovedMadeToOrder(db, path.join(SEED_DIR, 'approved_made_to_order_v16.json'));
     if (v16.skipped.length) console.warn('[DB] Coco approval skipped:', v16.skipped.length);
   }
+  if (process.env.OWNER_REFERENCE_V3_AUTOSTART !== '0') {
+    require('./owner-reference-import-v3').applyOwnerReferences(db, path.join(SEED_DIR, 'owner_reference_selection_v3.json'));
+  }
+  if (process.env.GENERIC_SCENTS_V2_AUTOSTART !== '0') {
+    require('./generic-scent-import-v2').applyGenericScents(db, path.join(SEED_DIR, 'generic_scent_owner_approved_v2.json'));
+  }
   if (process.env.OWNER_REFERENCE_V2_AUTOSTART !== '0') {
     require('./owner-reference-import-v2').applyOwnerReferences(db, path.join(SEED_DIR, 'owner_reference_selection_v2.json'));
   }

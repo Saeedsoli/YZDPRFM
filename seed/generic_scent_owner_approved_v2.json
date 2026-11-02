@@ -1,0 +1,62 @@
+{
+  "version": "generic_scent_owner_approved_2026_11_v2",
+  "supplier_file_sha256": "bbe8f40610bc765bda0a7d2da9dbe78f4e397458a6991239c3c18d0853f33f5c",
+  "decision": "Owner authorized five separate handmade market-name scents without reference brand or verified composition. Supplier labels alone do not prove identity.",
+  "items": [
+    {
+      "product_id": "GEN-SCENT-0007",
+      "name_fa": "کاپیتان بلک مشکی",
+      "name_en": "Captain Black Black",
+      "slug": "generic-captain-black-black",
+      "supplier_brand": "Captain Black",
+      "supplier_model": "Black",
+      "supplier_gender": "Men",
+      "usd_per_kg": "147.4",
+      "quality": "H"
+    },
+    {
+      "product_id": "GEN-SCENT-0008",
+      "name_fa": "کاپیتان بلک زرد",
+      "name_en": "Captain Black Yellow",
+      "slug": "generic-captain-black-yellow",
+      "supplier_brand": "Captain Black",
+      "supplier_model": "Yellow",
+      "supplier_gender": "Men",
+      "usd_per_kg": "97.9",
+      "quality": "B"
+    },
+    {
+      "product_id": "GEN-SCENT-0009",
+      "name_fa": "فرعون",
+      "name_en": "Feroon",
+      "slug": "generic-feroon",
+      "supplier_brand": "Fakhamat Al Sharq",
+      "supplier_model": "Feroon",
+      "supplier_gender": "Men",
+      "usd_per_kg": "319",
+      "quality": "I"
+    },
+    {
+      "product_id": "GEN-SCENT-0010",
+      "name_fa": "هاواک",
+      "name_en": "Havoc",
+      "slug": "generic-havoc",
+      "supplier_brand": "HAVOC",
+      "supplier_model": "HAVOC",
+      "supplier_gender": "Unisex",
+      "usd_per_kg": "110",
+      "quality": "H"
+    },
+    {
+      "product_id": "GEN-SCENT-0011",
+      "name_fa": "پرستیژ",
+      "name_en": "Prestige",
+      "slug": "generic-prestige",
+      "supplier_brand": "GIVENCHY",
+      "supplier_model": "Prestige",
+      "supplier_gender": "Unisex",
+      "usd_per_kg": "204.6",
+      "quality": "I"
+    }
+  ]
+}

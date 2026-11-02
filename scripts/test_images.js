@@ -209,7 +209,7 @@ add('پرمصرف‌ترین تصویر زیر ۵۰ محصول است', worst < 
 const unclassifiedDefault = rows.filter(x => !x.family_slug && /\/family-woody\.jpg$/.test(x.image_url || ''));
 add('تصویر پیش‌فرض رایحه‌های بدون خانواده بیش از حد تکرار نشده', unclassifiedDefault.length <= 20,
     unclassifiedDefault.length ? `${unclassifiedDefault.length} محصول` : 'تصاویر نمادین یا انتخاب اختصاصی');
-const neutral = dist.filter(x => /\/generic-neutral-[1-6]\.jpg$/.test(x.image_url));
+const neutral = dist.filter(x => /\/generic-neutral-[1-7]\.jpg$/.test(x.image_url));
 add('تصاویر نمادین متنوع و حداکثر ۲۰ محصولی هستند', neutral.every(x=>x.n <= 20),
     neutral.length ? neutral.map(x=>x.n).join('، ') : 'تصاویر اختصاصی جایگزین شده‌اند');
 for (const x of neutral) {

@@ -1,0 +1,36 @@
+{
+  "version": "owner_reference_selection_2026_11_v3",
+  "supplier_file_sha256": "bbe8f40610bc765bda0a7d2da9dbe78f4e397458a6991239c3c18d0853f33f5c",
+  "disclaimer": "Owner-selected provisional reference; official name witness plus independent year source; supplier essence identity unverified.",
+  "items": [
+    {
+      "product_id": "OWNER-REF-0008",
+      "slug": "hugo-boss-boss-bottled-edp-2020-owner",
+      "name_fa": "باس باتلد ادوپرفیوم",
+      "name_en": "HUGO BOSS - Boss Bottled Eau de Parfum 2020",
+      "brand_fa": "هوگو باس",
+      "brand_en": "Hugo Boss",
+      "gender": "MEN",
+      "supplier_brand": "HUGO BOSS",
+      "supplier_model": "Boss",
+      "supplier_gender": "Men",
+      "usd_per_kg": "119.9",
+      "quality": "I",
+      "reference_name": "Boss Bottled Eau de Parfum 2020",
+      "provider": "Fragrantica",
+      "source_url": "https://www.fragrantica.com/perfume/Hugo-Boss/Boss-Bottled-Eau-de-Parfum-62744.html",
+      "additional_official_url": "https://www.hugoboss.com/us/boss-bottled-eau-de-parfum-200ml/hbna58089322_999.html",
+      "additional_note_url": "https://www.hugoboss.com/boss-bottled-eau-de-parfum-100ml-gift-set/hbeu58351977_999.html",
+      "notes": {
+        "top": [],
+        "middle": [
+          "هل"
+        ],
+        "base": [
+          "وتیور"
+        ]
+      },
+      "caveat": "Owner chose two separate products: 1998 EDT at 88 USD/kg and this 2020 EDP at 119.9 USD/kg; supplier essence versions and identity unverified. Official source supports EDP and middle cardamom/base vetiver; Fragrantica independently states 2020."
+    }
+  ]
+}

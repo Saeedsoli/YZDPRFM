@@ -97,7 +97,7 @@ async function boot() {
   // Only the fixed, evidenced generic IDs are exempt; other gaps still fail.
   const genericTable = !!db.prepare("SELECT 1 FROM sqlite_master WHERE type='table' AND name='generic_scent_price_evidence'").get();
   const missing = db.prepare("SELECT id,brand_en FROM products WHERE brand_fa IS NULL OR brand_fa=''").all();
-  const allowed = new Set(['GEN-SCENT-0001','GEN-SCENT-0002','GEN-SCENT-0003','GEN-SCENT-0004','GEN-SCENT-0005','GEN-SCENT-0006']);
+  const allowed = new Set(['GEN-SCENT-0001','GEN-SCENT-0002','GEN-SCENT-0003','GEN-SCENT-0004','GEN-SCENT-0005','GEN-SCENT-0006','GEN-SCENT-0007','GEN-SCENT-0008','GEN-SCENT-0009','GEN-SCENT-0010','GEN-SCENT-0011']);
   const evidence = genericTable ? db.prepare("SELECT 1 FROM generic_scent_price_evidence WHERE product_id=? AND status='owner_approved_generic_supplier_composition_unverified'") : null;
   const bad = missing.filter(p => !allowed.has(p.id) || p.brand_en || !evidence || !evidence.get(p.id));
   add('برند فارسی محصولات مشخص است؛ رایحه عمومی شاهد جداگانه دارد', bad.length === 0, `${bad.length} مورد`);

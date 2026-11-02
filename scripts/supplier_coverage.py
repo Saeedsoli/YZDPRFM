@@ -91,12 +91,13 @@ def manifests(root, source_sha):
             if x['product_id'] in ids:raise ValueError('duplicate independent product reference')
             ids.add(x['product_id']);candidates.append({**x,'origin':secondary.name,'legacy':False,'secondary':True})
     # Generic scents have owner approval and supplier-price evidence, not brand evidence.
-    gm=json.loads((base/'generic_scent_owner_approved_v1.json').read_text(encoding='utf-8'))
-    if gm['supplier_file_sha256'] != source_sha: raise ValueError('generic supplier hash mismatch')
-    for x in gm['items']:
-        if x['product_id'] in ids: raise ValueError('duplicate generic product reference')
-        ids.add(x['product_id']);candidates.append({**x,'origin':'generic_scent_owner_approved_v1.json','legacy':False,'generic':True})
-    for file in ['owner_reference_selection_v1.json','owner_reference_selection_v2.json']:
+    for file in ['generic_scent_owner_approved_v1.json','generic_scent_owner_approved_v2.json']:
+        gm=json.loads((base/file).read_text(encoding='utf-8'))
+        if gm['supplier_file_sha256'] != source_sha: raise ValueError('generic supplier hash mismatch')
+        for x in gm['items']:
+            if x['product_id'] in ids: raise ValueError('duplicate generic product reference')
+            ids.add(x['product_id']);candidates.append({**x,'origin':file,'legacy':False,'generic':True})
+    for file in ['owner_reference_selection_v1.json','owner_reference_selection_v2.json','owner_reference_selection_v3.json']:
         om=json.loads((base/file).read_text(encoding='utf-8'))
         if om['supplier_file_sha256'] != source_sha: raise ValueError('owner reference supplier hash mismatch')
         for x in om['items']:
