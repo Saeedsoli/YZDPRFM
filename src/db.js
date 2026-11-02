@@ -1091,11 +1091,15 @@ function parseProduct(row, options = {}) {
     brand_en: row.brand_en,
     gender: row.gender,
     concentration: row.concentration,
-    family_fa: row.family_fa,
+    // The single-molecule wording describes the original, not proof of the
+    // supplier's handmade formulation. Preserve the underlying admin value.
+    family_fa: !options.includeDrafts && row.id === 'YZD-PROD-1245' && row.family_fa === 'چوبی مخملی تک‌مولکولی' ? 'چوبی' : row.family_fa,
     family_en: row.family_en,
     family_slug: row.family_slug,
     temperature: row.temperature,
-    taste: row.taste,
+    // Unreviewed seed descriptions sometimes assert purity or ingredients in
+    // the handmade formula. Keep drafts in the admin; do not publish them.
+    taste: options.includeDrafts ? (row.taste || null) : null,
     notes: {
       top: JSON.parse(row.notes_top || '[]'),
       middle: JSON.parse(row.notes_middle || '[]'),

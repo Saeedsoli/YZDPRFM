@@ -107,7 +107,7 @@ function productPage(html, p) {
   const detail =
       taste    ? `طبع ${p.temperature || ''}، ${taste}`.replace(/طبع ، /, '')
     : occasion ? `مناسب ${occasion}`
-    : notes    ? `نُت‌های ${notes}`
+    : notes    ? `نُت‌های رایحه مرجع: ${notes}`
     : '';
 
   /* سه اسکلت جمله؛ انتخاب با هش پایدار. */
