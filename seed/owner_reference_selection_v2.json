@@ -1,0 +1,113 @@
+{
+  "version": "owner_reference_selection_2026_11_v2",
+  "supplier_file_sha256": "bbe8f40610bc765bda0a7d2da9dbe78f4e397458a6991239c3c18d0853f33f5c",
+  "disclaimer": "Owner-selected provisional reference. Primary notes are independent, Mercedes official name witness additional; supplier essence identity unverified.",
+  "items": [
+    {
+      "product_id": "OWNER-REF-0005",
+      "slug": "mercedes-benz-for-men-edt-2012",
+      "name_fa": "فور من",
+      "name_en": "MERCEDES-BENZ - For Men EDT",
+      "brand_fa": "مرسدس بنز",
+      "brand_en": "Mercedes-Benz",
+      "gender": "MEN",
+      "supplier_brand": "EMPER",
+      "supplier_model": "MERCEDES BENZ",
+      "supplier_gender": "Men",
+      "usd_per_kg": "124.3",
+      "quality": "P",
+      "reference_name": "Mercedes-Benz For Men EDT 2012",
+      "provider": "Fragrantica",
+      "source_url": "https://www.fragrantica.com/perfume/Mercedes-Benz/Mercedes-Benz-13496.html",
+      "additional_official_url": "https://parfums.mercedes-benz.com/en/products/for-men",
+      "notes": {
+        "top": [
+          "لیمو آمالفی",
+          "ترنج",
+          "نارنگی"
+        ],
+        "middle": [
+          "بنفشه",
+          "فلفل",
+          "گالبانوم",
+          "جوز هندی"
+        ],
+        "base": [
+          "وتیور",
+          "سدر ویرجینیا",
+          "پچولی"
+        ]
+      },
+      "caveat": "Owner chose base For Men EDT. Official name and independent 2012 notes; supplier brand EMPER is contradictory and essence identity unverified."
+    },
+    {
+      "product_id": "OWNER-REF-0006",
+      "slug": "tommy-hilfiger-tommy-now-edt-2018",
+      "name_fa": "تامی ناو مردانه",
+      "name_en": "TOMMY HILFIGER - Tommy Now EDT",
+      "brand_fa": "تامی هیلفیگر",
+      "brand_en": "Tommy Hilfiger",
+      "gender": "MEN",
+      "supplier_brand": "TOMMY HILFIGER",
+      "supplier_model": "Tommy New",
+      "supplier_gender": "Unisex",
+      "usd_per_kg": "92.4",
+      "quality": "H",
+      "reference_name": "Tommy Now EDT 2018",
+      "provider": "Fragrantica",
+      "source_url": "https://www.fragrantica.com/perfume/Tommy-Hilfiger/Tommy-Now-51929.html",
+      "additional_url": "https://leparfumier.com/en/products/tommy-hilfiger-now-for-men-eau-de-toilette",
+      "notes": {
+        "top": [
+          "ترنج",
+          "نارنگی"
+        ],
+        "middle": [
+          "زنجبیل",
+          "هل",
+          "شمعدانی"
+        ],
+        "base": [
+          "خزه",
+          "آمبر وود"
+        ]
+      },
+      "caveat": "Owner specified Tommy Now, not Tommy New York. Supplier labels unisex; independent reference markets it for men. Supplier essence unverified."
+    },
+    {
+      "product_id": "OWNER-REF-0007",
+      "slug": "al-rehab-sultan-edp",
+      "name_fa": "سلطان",
+      "name_en": "AL REHAB - Sultan Eau de Parfum",
+      "brand_fa": "الرحاب",
+      "brand_en": "Al Rehab",
+      "gender": "MEN",
+      "supplier_brand": "SULTAN",
+      "supplier_model": "Sultan",
+      "supplier_gender": "Unisex",
+      "usd_per_kg": "584.1",
+      "quality": "P",
+      "reference_name": "Sultan Eau de Parfum",
+      "provider": "Fragrantica",
+      "source_url": "https://www.fragrantica.com/perfume/Al-Rehab/Sultan-20117.html",
+      "additional_url": "https://basenotes.com/fragrances/sultan-by-al-rehab.26132016",
+      "notes": {
+        "top": [
+          "عرعر",
+          "هل",
+          "ترنج"
+        ],
+        "middle": [
+          "دارچین",
+          "وانیل"
+        ],
+        "base": [
+          "سدر",
+          "چوب صندل",
+          "مشک"
+        ]
+      },
+      "caveat": "Owner provisionally selected common Al Rehab Sultan. Basenotes independently specifies EDP and note placements, Fragrantica has same notes unranked and describes male; supplier labels unisex. Supplier essence unverified."
+    }
+  ]
+}

@@ -7,7 +7,7 @@ items=json.loads((root/'seed/approved_made_to_order_v11.json').read_text())['ite
 assert len(items)==7 and len({x['product_id'] for x in items})==7
 with tempfile.TemporaryDirectory(prefix='mto-v11-') as td:
  db=str(Path(td)/'fresh.sqlite');s=socket.socket();s.bind(('127.0.0.1',0));port=s.getsockname()[1];s.close()
- env={**os.environ,'OWNER_REFERENCE_AUTOSTART':'0','GENERIC_SCENTS_AUTOSTART':'0','DB_PATH':db,'BACKUP_DISABLED':'1','PORT':str(port)}
+ env={**os.environ,'OWNER_REFERENCE_V2_AUTOSTART':'0','OWNER_REFERENCE_AUTOSTART':'0','GENERIC_SCENTS_AUTOSTART':'0','DB_PATH':db,'BACKUP_DISABLED':'1','PORT':str(port)}
  for k in ['APPROVED_MTO_AUTOSTART']+[f'APPROVED_MTO_V{i}_AUTOSTART' for i in range(2,12)]:env.pop(k,None)
  env['APPROVED_MTO_V12_AUTOSTART']='0'
  env['APPROVED_MTO_V13_AUTOSTART']='0';env['APPROVED_MTO_V14_AUTOSTART']='0';env['APPROVED_MTO_V15_AUTOSTART']='0';env['APPROVED_MTO_V16_AUTOSTART']='0';env['APPROVED_MTO_V17_AUTOSTART']='0'

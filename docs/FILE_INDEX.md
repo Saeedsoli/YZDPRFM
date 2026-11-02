@@ -903,3 +903,7 @@ node_modules/   با npm install برمی‌گردد
 - `src/owner-reference-import.js` — ثبت محافظت‌شده چهار مرجع انتخابی با شواهد مستقل.
 - `scripts/apply_owner_references.js` — اجرای صریح روی دیتابیس پشتیبان‌گرفته‌شده.
 - `scripts/test_owner_reference_import.py` — آزمون قیمت فایل، منبع، خرید و محافظ داده.
+
+- `src/owner-reference-import-v2.js` — ثبت امن سه انتخاب دیگر با منبع و نام مرجع.
+- `scripts/apply_owner_references_v2.js` — اجرای صریح مصوبه دوم روی دیتابیس پشتیبان‌گرفته‌شده.
+- `scripts/test_owner_reference_import_v2.py` — آزمون انتخاب‌ها، قیمت، سبد و محافظ داده.

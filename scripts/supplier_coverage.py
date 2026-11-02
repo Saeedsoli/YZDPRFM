@@ -96,11 +96,12 @@ def manifests(root, source_sha):
     for x in gm['items']:
         if x['product_id'] in ids: raise ValueError('duplicate generic product reference')
         ids.add(x['product_id']);candidates.append({**x,'origin':'generic_scent_owner_approved_v1.json','legacy':False,'generic':True})
-    om=json.loads((base/'owner_reference_selection_v1.json').read_text(encoding='utf-8'))
-    if om['supplier_file_sha256'] != source_sha: raise ValueError('owner reference supplier hash mismatch')
-    for x in om['items']:
-        if x['product_id'] in ids: raise ValueError('duplicate owner reference')
-        ids.add(x['product_id']);candidates.append({**x,'origin':'owner_reference_selection_v1.json','legacy':False,'owner_independent':True})
+    for file in ['owner_reference_selection_v1.json','owner_reference_selection_v2.json']:
+        om=json.loads((base/file).read_text(encoding='utf-8'))
+        if om['supplier_file_sha256'] != source_sha: raise ValueError('owner reference supplier hash mismatch')
+        for x in om['items']:
+            if x['product_id'] in ids: raise ValueError('duplicate owner reference')
+            ids.add(x['product_id']);candidates.append({**x,'origin':file,'legacy':False,'owner_independent':True})
     # Previously imported records without official or independent references.
     staged=json.loads((base/'supplier_exact_prices_staged.json').read_text(encoding='utf-8'))
     for x in staged['prices']:
