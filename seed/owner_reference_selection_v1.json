@@ -1,0 +1,141 @@
+{
+  "version": "owner_reference_selection_2026_11_v1",
+  "supplier_file_sha256": "bbe8f40610bc765bda0a7d2da9dbe78f4e397458a6991239c3c18d0853f33f5c",
+  "disclaimer": "Owner-selected provisional reference. Independent sources only; supplier essence identity and composition unverified.",
+  "items": [
+    {
+      "product_id": "OWNER-REF-0001",
+      "slug": "davidoff-cool-water-parfum-for-her-2021",
+      "name_fa": "کول واتر پرفیوم زنانه",
+      "name_en": "DAVIDOFF - Cool Water Parfum for Her 2021",
+      "brand_fa": "دیویدوف",
+      "brand_en": "Davidoff",
+      "gender": "WOMEN",
+      "supplier_brand": "DAVIDOFF",
+      "supplier_model": "Cool Water",
+      "supplier_gender": "Women",
+      "usd_per_kg": "99",
+      "quality": "E",
+      "reference_name": "Cool Water Parfum for Her 2021",
+      "provider": "Fragrantica",
+      "source_url": "https://www.fragrantica.com/perfume/Davidoff/Cool-Water-Parfum-for-Her-66526.html",
+      "notes": {
+        "top": [
+          "رز"
+        ],
+        "middle": [
+          "وتیور هائیتی"
+        ],
+        "base": [
+          "دانه تونکا"
+        ]
+      },
+      "caveat": "The owner chose the 2021 reference after correction that its name is Parfum, not proven supplier concentration."
+    },
+    {
+      "product_id": "OWNER-REF-0002",
+      "slug": "dior-miss-dior-cherie-edp-2011",
+      "name_fa": "میس دیور چری ادوپرفیوم ۲۰۱۱",
+      "name_en": "CHRISTIAN DIOR - Miss Dior Cherie Eau de Parfum 2011",
+      "brand_fa": "دیور",
+      "brand_en": "Christian Dior",
+      "gender": "WOMEN",
+      "supplier_brand": "Dior",
+      "supplier_model": "Miss Dior Cherie",
+      "supplier_gender": "Women",
+      "usd_per_kg": "257.4",
+      "quality": "H",
+      "reference_name": "Miss Dior Cherie Eau de Parfum 2011",
+      "provider": "Fragrantica",
+      "source_url": "https://www.fragrantica.com/perfume/Dior/Miss-Dior-Cherie-Eau-de-Parfum-11588.html",
+      "notes": {
+        "top": [
+          "توت‌فرنگی",
+          "نارنگی"
+        ],
+        "middle": [
+          "رز",
+          "یاس"
+        ],
+        "base": [
+          "پچولی",
+          "چوب صندل",
+          "کهربا",
+          "خزه بلوط",
+          "وتیور"
+        ]
+      },
+      "caveat": "Owner chose 2011 instead of the distinct 2005 reference; supplier essence identity unverified."
+    },
+    {
+      "product_id": "OWNER-REF-0003",
+      "slug": "lattafa-sheikh-al-shuyukh-base",
+      "name_fa": "شیخ الشیوخ",
+      "name_en": "LATTAFA PERFUMES - Sheikh Al Shuyukh",
+      "brand_fa": "لطافه",
+      "brand_en": "Lattafa Perfumes",
+      "gender": "UNISEX",
+      "supplier_brand": "Lattafa",
+      "supplier_model": "Shaikh al Shuyukh",
+      "supplier_gender": "Unisex",
+      "usd_per_kg": "381.7",
+      "quality": "H",
+      "reference_name": "Sheikh Al Shuyukh",
+      "provider": "Fragrantica",
+      "source_url": "https://www.fragrantica.com/perfume/Lattafa-Perfumes/Sheikh-Al-Shuyukh-25808.html",
+      "notes": {
+        "top": [
+          "آکورد عود",
+          "سدر"
+        ],
+        "middle": [
+          "مریم‌گلی",
+          "اسطوخودوس",
+          "رزماری"
+        ],
+        "base": [
+          "وتیور",
+          "پچولی"
+        ]
+      },
+      "caveat": "Owner chose base, not Luxe; a separate retailer presents an EDP bearing this name, but formulation of supplier essence is unverified.",
+      "additional_url": "https://www.oriental-style.de/en/products/sheikh-al-shuyukh-lattafa-spray"
+    },
+    {
+      "product_id": "OWNER-REF-0004",
+      "slug": "ard-al-zaafaran-ahlam-al-arab-edp",
+      "name_fa": "احلام العرب",
+      "name_en": "ARD AL ZAAFARAN - Ahlam Al Arab Eau de Parfum",
+      "brand_fa": "ارض الزعفران",
+      "brand_en": "Ard Al Zaafaran",
+      "gender": "UNISEX",
+      "supplier_brand": "Ajmal Layali",
+      "supplier_model": "Saffron",
+      "supplier_gender": "Women",
+      "usd_per_kg": "115.5",
+      "quality": "B",
+      "reference_name": "Ahlam Al Arab Eau de Parfum",
+      "provider": "Al-Rashad retailer",
+      "source_url": "https://alrashad.com/products/ahlam-al-arab-eau-de-parfum-80ml-2-72-fl-oz-by-ard-al-zaafaran",
+      "notes": {
+        "top": [
+          "رایحه میوه‌ای",
+          "مرکبات"
+        ],
+        "middle": [
+          "آکورد چوبی",
+          "دارچین",
+          "جوز هندی",
+          "سدر"
+        ],
+        "base": [
+          "مشک",
+          "وانیل",
+          "کهربا"
+        ]
+      },
+      "caveat": "Owner chose Ahlam Al Arab rather than Ajmal Layali or Ahlam Al Khaleej. Supplier labels women; retailer recommends men, another retailer describes unisex; no gender conclusion from file.",
+      "additional_url": "https://www.thouq-shop.com/product-page/%D8%B9%D8%B7%D8%B1-%D8%A7%D8%AD%D9%84%D8%A7%D9%85-%D8%A7%D9%84%D8%B9%D8%B1%D8%A8-1"
+    }
+  ]
+}

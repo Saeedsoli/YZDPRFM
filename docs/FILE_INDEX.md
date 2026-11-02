@@ -899,3 +899,7 @@ node_modules/   با npm install برمی‌گردد
 - `scripts/apply_generic_scents.js` — اجرای صریح روی دیتابیس پشتیبان‌گرفته‌شده.
 - `scripts/test_generic_scent_staging.py` — بررسی ردیف‌های قیمت و بالاترین کیفیت.
 - `scripts/test_generic_scent_import.py` — آزمون سفارش، تکرار و برخورد شناسه‌ها.
+
+- `src/owner-reference-import.js` — ثبت محافظت‌شده چهار مرجع انتخابی با شواهد مستقل.
+- `scripts/apply_owner_references.js` — اجرای صریح روی دیتابیس پشتیبان‌گرفته‌شده.
+- `scripts/test_owner_reference_import.py` — آزمون قیمت فایل، منبع، خرید و محافظ داده.

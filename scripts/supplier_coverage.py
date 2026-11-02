@@ -29,6 +29,7 @@ STATES = {
     'provisional': 'قیمت موقت با شاهد نام؛ هویت اسانس تأییدنشده',
     'secondary': 'قیمت موقت با منبع مستقل؛ هویت اسانس تأییدنشده',
     'generic': 'رایحه عمومی با قیمت فایل و تأیید مالک؛ ترکیب اسانس تأییدنشده',
+    'owner_independent': 'مرجع انتخابی مالک با منبع مستقل؛ هویت اسانس تأییدنشده',
     'legacy': 'قیمت قدیمی فقط نام؛ شاهد رسمی مرجع کامل نیست',
     'ambiguous': 'دارای انتساب اما ردیف مبهم؛ بررسی دستی',
     'conflict': 'اختلاف قیمت یا سابقه؛ بررسی دستی',
@@ -95,6 +96,11 @@ def manifests(root, source_sha):
     for x in gm['items']:
         if x['product_id'] in ids: raise ValueError('duplicate generic product reference')
         ids.add(x['product_id']);candidates.append({**x,'origin':'generic_scent_owner_approved_v1.json','legacy':False,'generic':True})
+    om=json.loads((base/'owner_reference_selection_v1.json').read_text(encoding='utf-8'))
+    if om['supplier_file_sha256'] != source_sha: raise ValueError('owner reference supplier hash mismatch')
+    for x in om['items']:
+        if x['product_id'] in ids: raise ValueError('duplicate owner reference')
+        ids.add(x['product_id']);candidates.append({**x,'origin':'owner_reference_selection_v1.json','legacy':False,'owner_independent':True})
     # Previously imported records without official or independent references.
     staged=json.loads((base/'supplier_exact_prices_staged.json').read_text(encoding='utf-8'))
     for x in staged['prices']:
@@ -116,6 +122,10 @@ def assess(groups,candidates,products,evidence,source_sha,legacy_marker,secondar
         key=targets[0]
         if Decimal(str(p['price']))!=Decimal(x['usd_per_kg']):conflicts[key].append(pid);continue
         ev=evidence.get(pid)
+        if x.get('owner_independent'):
+            if not ev or ev.get('owner_independent') is not True or ev['sha']!=source_sha or ev['status']!='owner_selected_independent_supplier_essence_unverified' or Decimal(ev['price'])!=Decimal(x['usd_per_kg']) or ev['quality']!=x['quality'] or (ev['brand'],ev['model'],ev['gender'],ev['url'],ev['provider'],ev['reference_name'])!=(x['supplier_brand'],x['supplier_model'],x['supplier_gender'],x['source_url'],x['provider'],x['reference_name']):
+                conflicts[key].append(pid);continue
+            assigned[key].append((pid,'owner_independent',x));continue
         if x.get('generic'):
             if not ev or ev.get('generic') is not True or ev['sha']!=source_sha or ev['status']!='owner_approved_generic_supplier_composition_unverified' or Decimal(ev['price'])!=Decimal(x['usd_per_kg']) or ev['quality']!=x['quality'] or (ev['brand'],ev['model'],ev['gender'])!=(x['supplier_brand'],x['supplier_model'],x['supplier_gender']):
                 conflicts[key].append(pid);continue
@@ -167,6 +177,10 @@ def read_db(path):
             for r in db.execute('SELECT product_id,supplier_file_sha256,usd_per_kg,quality,status,supplier_brand,supplier_model,supplier_gender FROM generic_scent_price_evidence'):
                 if r[0] in evidence: raise ValueError('generic product also has official evidence')
                 evidence[r[0]]={'sha':r[1],'price':r[2],'quality':r[3],'status':r[4],'brand':r[5],'model':r[6],'gender':r[7],'generic':True}
+        if db.execute("SELECT 1 FROM sqlite_master WHERE type='table' AND name='owner_reference_price_evidence'").fetchone():
+            for r in db.execute('SELECT product_id,supplier_file_sha256,usd_per_kg,quality,status,supplier_brand,supplier_model,supplier_gender,source_url,provider,reference_name FROM owner_reference_price_evidence'):
+                if r[0] in evidence: raise ValueError('owner reference has another evidence type')
+                evidence[r[0]]={'sha':r[1],'price':r[2],'quality':r[3],'status':r[4],'brand':r[5],'model':r[6],'gender':r[7],'url':r[8],'provider':r[9],'reference_name':r[10],'owner_independent':True}
         legacy_marker=bool(db.execute("SELECT 1 FROM settings WHERE key='supplier_exact_price_import_v1'").fetchone())
         secondary={}
         if db.execute("SELECT 1 FROM sqlite_master WHERE type='table' AND name='secondary_reference_evidence'").fetchone():
