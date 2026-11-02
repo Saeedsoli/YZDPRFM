@@ -237,7 +237,7 @@ function render() {
     <div>
       ${syncNotes.map(n => `<div class="cart-alert ${n.kind}">
         <svg viewBox="0 0 24 24">${ALERT_IC[n.kind]}</svg>
-        <span>${n.text}</span></div>`).join('')}
+        <span>${esc(n.text)}</span></div>`).join('')}
 
       ${items.map(i => {
         const m = meta[i.sku] || {};
@@ -245,9 +245,9 @@ function render() {
         const low = live && live.stock > 0 && live.stock <= 3;
         return `
         <div class="cart-item${m.out ? ' dead' : m.oldPrice ? ' stale' : ''}">
-          <img src="${i.image}" alt="${isGenericProductImage(i.image) ? 'تصویر نمادین ' : ''}${i.name}" width="78" height="78">
+          <img src="${esc(i.image)}" alt="${isGenericProductImage(i.image) ? 'تصویر نمادین ' : ''}${esc(i.name)}" width="78" height="78">
           <div style="flex:1">
-            <div class="ci-name">${i.name}</div>
+            <div class="ci-name">${esc(i.name)}</div>
             ${isGenericProductImage(i.image) ? '<span class="ci-flag">تصویر نمادین است</span>' : ''}
             <div class="ci-price">
               ${m.oldPrice ? `<span class="ci-old">${money(m.oldPrice)}</span>` : ''}
@@ -258,13 +258,13 @@ function render() {
             ${m.out ? '<span class="ci-flag out">ناموجود</span>'
               : live?.state === 'MADE_TO_ORDER' ? '<span class="ci-flag">به سفارش ساخته می‌شود</span>'
               : low ? `<span class="ci-flag low">تنها ${toFa(live.stock)} عدد باقی مانده</span>` : ''}
-            <button class="rm-btn" onclick="rm('${i.sku}')">حذف از سبد</button>
+            <button class="rm-btn" data-action="remove" data-sku="${esc(i.sku)}">حذف از سبد</button>
           </div>
           <div style="text-align:center">
             <div class="qty-ctrl">
-              <button onclick="q('${i.sku}',${i.quantity - 1})" aria-label="کاهش تعداد">−</button>
-              <span>${toFa(i.quantity)}</span>
-              <button onclick="q('${i.sku}',${i.quantity + 1})" aria-label="افزایش تعداد">+</button>
+              <button data-action="decrement" data-sku="${esc(i.sku)}" aria-label="کاهش تعداد">−</button>
+              <span>${esc(toFa(i.quantity))}</span>
+              <button data-action="increment" data-sku="${esc(i.sku)}" aria-label="افزایش تعداد">+</button>
             </div>
             <div style="font-weight:800;font-size:.86rem;margin-top:7px">
               ${money(i.price * i.quantity)}
@@ -279,10 +279,10 @@ function render() {
       ${campOff > 0 ? `<div class="sum-row camp-row">
         <span>تخفیف جشنواره</span><strong>− ${money(campOff)}</strong></div>
         <div class="camp-note">${campLines.map(l =>
-          `${l.title} — <bdi>${toFa(l.percent)}٪</bdi>`).filter((v, i, a) => a.indexOf(v) === i).join(' · ')}
+          `${esc(l.title)} — <bdi>${esc(toFa(l.percent))}٪</bdi>`).filter((v, i, a) => a.indexOf(v) === i).join(' · ')}
         </div>` : ''}
       ${discount > 0 ? `<div class="sum-row discount-row">
-        <span>تخفیف (${appliedCoupon.code})</span><strong>− ${money(discount)}</strong></div>` : ''}
+        <span>تخفیف (${esc(appliedCoupon.code)})</span><strong>− ${money(discount)}</strong></div>` : ''}
       <div class="sum-row">
         <span>هزینه ارسال</span>
         <strong>${freeShipCoupon ? 'رایگان (کد تخفیف)' : freeShip ? 'رایگان' : 'در مرحله بعد'}</strong>
@@ -298,15 +298,15 @@ function render() {
       <div class="coupon-box">
         ${appliedCoupon ? `
           <div class="coupon-applied">
-            <span>✓ ${appliedCoupon.code} — ${appliedCoupon.description || ''}</span>
+            <span>✓ ${esc(appliedCoupon.code)} — ${esc(appliedCoupon.description || '')}</span>
             <button onclick="removeCoupon()">حذف</button>
           </div>` : `
           <div class="coupon-row">
-            <input id="couponInput" aria-label="کد تخفیف" placeholder="کد تخفیف" value="${couponDraft}"
+            <input id="couponInput" aria-label="کد تخفیف" placeholder="کد تخفیف" value="${esc(couponDraft)}"
                    onkeydown="if(event.key==='Enter')applyCoupon()">
             <button onclick="applyCoupon()">اعمال</button>
           </div>
-          ${couponError ? `<div class="coupon-err">${couponError}</div>` : ''}
+          ${couponError ? `<div class="coupon-err">${esc(couponError)}</div>` : ''}
           <div class="coupon-hint">اگر کد تخفیف دارید اینجا وارد کنید.</div>`}
       </div>
 
@@ -326,6 +326,18 @@ function render() {
       </a>
     </div>`;
 }
+
+// Read SKU from a quoted data attribute rather than embedding it in JavaScript.
+document.getElementById('wrap').addEventListener('click', event => {
+  const button = event.target.closest('button[data-action][data-sku]');
+  if (!button || !event.currentTarget.contains(button)) return;
+  const sku = button.dataset.sku;
+  if (button.dataset.action === 'remove') return rm(sku);
+  const item = YazdCart.get().find(x => x.sku === sku);
+  if (!item || !Number.isInteger(item.quantity)) return;
+  if (button.dataset.action === 'increment') q(sku, item.quantity + 1);
+  if (button.dataset.action === 'decrement') q(sku, item.quantity - 1);
+});
 
 function rm(sku) { YazdCart.remove(sku); render(); toast('کالا حذف شد'); }
 function q(sku, n) {

@@ -955,3 +955,4 @@ node_modules/   با npm install برمی‌گردد
 - `scripts/test_login_redirect_safety.js` — جلوگیری از انتقال خارجی یا اجرای نشانی خطرناک پس از ورود.
 - `scripts/test_seo_html_safety.js` — محافظت داده‌های ساختاریافته و ویژگی‌های HTML در رندر سمت سرور.
 - `scripts/test_product_data_xss_browser.py` — آزمون مرورگر صفحه محصول با داده مخرب و تصویر جایگزین روی دیتابیس موقت.
+- `scripts/test_cart_checkout_data_xss_browser.py` — آزمون مرورگر امنیت سبد و تسویه و عملکرد دکمه‌های سبد روی دیتابیس موقت.

@@ -247,23 +247,23 @@ async function renderSummary() {
   document.getElementById('summary').innerHTML = `
     <div style="font-weight:800;font-size:1rem;margin-bottom:10px">سفارش شما</div>
     ${items.map(i => `<div class="mini-item">
-       <span style="flex:1">${i.name}</span>
-       <span style="color:var(--muted)">×${toFa(i.quantity)}</span>
+       <span style="flex:1">${esc(i.name)}</span>
+       <span style="color:var(--muted)">×${esc(toFa(i.quantity))}</span>
        <strong>${money(i.price * i.quantity)}</strong>
      </div>`).join('')}
     <div class="sum-row" style="margin-top:10px"><span>جمع کالاها</span><strong>${money(sub)}</strong></div>
     ${campOff > 0 ? `<div class="sum-row" style="color:#B3261E;font-weight:700">
       <span>تخفیف جشنواره</span><strong>− ${money(campOff)}</strong></div>
       <div style="font-size:.72rem;color:var(--muted);line-height:1.8;margin-top:2px">
-        ${campLines.map(l => `${l.title} — <bdi>${toFa(l.percent)}٪</bdi>`)
+        ${campLines.map(l => `${esc(l.title)} — <bdi>${esc(toFa(l.percent))}٪</bdi>`)
           .filter((v, i, a) => a.indexOf(v) === i).join(' · ')}
       </div>` : ''}
     ${discount > 0 ? `<div class="sum-row" style="color:#1E8449;font-weight:700">
-      <span>تخفیف (${couponCode})</span><strong>− ${money(discount)}</strong></div>` : ''}
-    <div class="sum-row"><span>ارسال — ${shipLabel}</span><strong>${shipFee ? money(shipFee) : 'رایگان'}</strong></div>
+      <span>تخفیف (${esc(couponCode)})</span><strong>− ${money(discount)}</strong></div>` : ''}
+    <div class="sum-row"><span>ارسال — ${esc(shipLabel)}</span><strong>${shipFee ? money(shipFee) : 'رایگان'}</strong></div>
     ${wrapFee > 0 ? `<div class="sum-row">
       <span>بسته‌بندی کادویی</span><strong>${money(wrapFee)}</strong></div>` : ''}
-    ${cErr ? `<div style="color:#C0392B;font-size:.76rem;padding:6px 0">${cErr}</div>` : ''}
+    ${cErr ? `<div style="color:#C0392B;font-size:.76rem;padding:6px 0">${esc(cErr)}</div>` : ''}
 
     <label class="gift-opt">
       <input type="checkbox" id="fGift" ${giftWrap ? 'checked' : ''} onchange="toggleGift(this.checked)">
