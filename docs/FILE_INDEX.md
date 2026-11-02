@@ -947,6 +947,7 @@ node_modules/   با npm install برمی‌گردد
 
 - `scripts/test_private_order_tracking.py` — حریم پیگیری، دو شناسه، محدودیت نرخ و حفظ شناسه قدیمی.
 - `scripts/test_payment_result_safety.js` — جلوگیری از موفقیت ساختگی و تزریق داده نشانی.
+- `scripts/test_payment_provider_races.py` — آزمون تغییر وضعیت سفارش هنگام ایجاد یا تأیید پرداخت با درگاه شبیه‌سازی‌شده.
 - `scripts/test_order_safety_browser.py` — آزمون مرورگر پیگیری و نتیجه پرداخت در موبایل و دسکتاپ.
 - `src/customer-phone-verification.js` — ثبت تأیید شماره و اعتماد جداگانه به رمز مشتری بدون حدس برای سوابق قدیمی.
 - `src/customer-phone-verification-cli.js` — مهاجرت افزایشی با پشتیبان مستقل و حفظ سوابق.

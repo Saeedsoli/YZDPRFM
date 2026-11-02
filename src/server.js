@@ -1165,7 +1165,16 @@ const server = http.createServer(async (req, res) => {
         return sendJSON(502, { error: 'اتصال به درگاه پرداخت ممکن نشد: ' + pr.error });
       }
 
-      db.prepare('UPDATE orders SET payment_ref=? WHERE order_id=?').run(pr.authority, orderId);
+      // The provider call was asynchronous: an administrator or maintenance
+      // may have changed the order in the meantime. Never return a payment
+      // link for an order that is no longer pending, and never overwrite a
+      // reference already attached by another operation.
+      const bound=db.prepare("UPDATE orders SET payment_ref=? WHERE order_id=? AND status='PENDING' AND payment_ref IS NULL AND payment_gateway=?")
+        .run(pr.authority,orderId,pay.gatewayName());
+      if (!bound.changes) {
+        appLog('WARN','payment','وضعیت سفارش هنگام ایجاد پرداخت تغییر کرد؛ پیوند پرداخت ارائه نشد',{order_id:orderId});
+        return sendJSON(409,{error:'وضعیت سفارش تغییر کرده است؛ پیوند پرداخت ارائه نشد. وضعیت سفارش را بررسی کنید.',order_id:orderId});
+      }
 
       return sendJSON(201, {
         message: 'سفارش ثبت شد. در حال انتقال به درگاه پرداخت…',
@@ -1242,9 +1251,9 @@ const server = http.createServer(async (req, res) => {
         ).run(vr.ref_id, new Date().toISOString(), order.order_id);
 
         if (!paid.changes) {
-          return sendJSON(200, {
-            message: 'این سفارش قبلاً پرداخت شده است',
-            order_id: order.order_id, payment_ref: order.payment_ref
+          return sendJSON(409, {
+            error: 'وضعیت سفارش هنگام بررسی تغییر کرد؛ وضعیت فعلی را بررسی کنید.',
+            order_id: order.order_id
           });
         }
         logStatus(order.order_id, 'PAID', 'پرداخت تأیید شد');
@@ -1386,7 +1395,13 @@ const server = http.createServer(async (req, res) => {
           "WHERE order_id=? AND status='VERIFYING'"
         ).run(vr.ref_id, new Date().toISOString(), orderId);
 
-        if (!paid.changes) return goto(true, order.payment_ref);   // دیگری زودتر ثبت کرد
+        if (!paid.changes) {
+          // The provider confirmed payment, but the order changed while the
+          // request was in flight. Do not claim a successful settlement or
+          // silently release anything; this case needs reconciliation.
+          appLog('ERROR','payment','پرداخت تأیید شد اما وضعیت سفارش تغییر کرده؛ بررسی دستی لازم است',{order_id:orderId});
+          return sendJSON(503,{error:'وضعیت سفارش و پرداخت نیازمند بررسی دستی است.',order_id:orderId});
+        }
 
         logStatus(orderId, 'PAID', 'پرداخت تأیید شد');
         // کوپن هنگام ثبت سفارش رزرو شده است؛ اینجا کاری لازم نیست.
