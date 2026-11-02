@@ -1,0 +1,101 @@
+{
+  "version": "active_secondary_notes_2026_11_v2",
+  "description": "Independent reference notes only; supplier identity, ingredients, quality and version not verified. 212 Sexy official descriptions name gardenia, cotton candy and vanilla without a full pyramid.",
+  "items": [
+    {
+      "product_id": "SUP-CH-900004",
+      "slug": "carolina-herrera-212-sexy-women",
+      "expected_name_en": "CAROLINA HERRERA - 212 Sexy",
+      "expected_brand": "Carolina Herrera",
+      "expected_concentration": null,
+      "expected_usd_per_kg": "188.1",
+      "expected_notice": "این محصول بازآفرینی دست‌ساز است و محصول اورجینال برند اصلی نیست. اطلاعات رایحه مرجع از وب‌سایت رسمی برند گرفته شده و هویت اسانس تأمین‌کننده مستقلاً تأیید نشده است.",
+      "official_identity_url": "https://www.carolinaherrera.com/fr/en/p-fragrance/212-sexy",
+      "source_url": "https://www.fragrantica.com/perfume/Carolina-Herrera/212-Sexy-306.html",
+      "provider": "Fragrantica",
+      "checked_date": "2026-11-02",
+      "notes": {
+        "top": [
+          "فلفل صورتی",
+          "نارنگی",
+          "ترنج"
+        ],
+        "middle": [
+          "آکورد پشمک",
+          "گاردنیا",
+          "نت‌های گلی",
+          "شمعدانی",
+          "رز"
+        ],
+        "base": [
+          "وانیل",
+          "مشک",
+          "چوب صندل",
+          "کارامل",
+          "بنفشه",
+          "پچولی"
+        ]
+      }
+    },
+    {
+      "product_id": "YZD-PROD-1809",
+      "slug": "calvin-klein-euphoria-women",
+      "expected_name_en": "CALVIN KLEIN - Euphoria Women",
+      "expected_brand": "Calvin Klein",
+      "expected_concentration": "EDP",
+      "expected_usd_per_kg": "155.1",
+      "expected_notice": "این محصول بازآفرینی دست‌ساز است و محصول اورجینال برند اصلی نیست. اطلاعات رایحه مرجع از وب‌سایت رسمی برند گرفته شده؛ هویت و نسخه اسانس تأمین‌کننده مستقلاً تأیید نشده است.",
+      "official_identity_url": "https://www.calvinklein.us/en/women/fragrance/fragrance/euphoria-eau-de-parfum/LX000718-000.html",
+      "source_url": "https://www.fragrantica.com/perfume/Calvin-Klein/Euphoria-253.html",
+      "provider": "Fragrantica",
+      "checked_date": "2026-11-02",
+      "notes": {
+        "top": [
+          "انار",
+          "خرمالو",
+          "آکورد سبز"
+        ],
+        "middle": [
+          "ارکیده سیاه",
+          "نیلوفر آبی",
+          "چمپاکا"
+        ],
+        "base": [
+          "چوب ماهون",
+          "کهربا",
+          "بنفشه سیاه",
+          "آکورد خامه"
+        ]
+      }
+    },
+    {
+      "product_id": "YZD-PROD-0931",
+      "slug": "orto-parisi-megamare",
+      "expected_name_en": "ORTO PARISI - Megamare",
+      "expected_brand": "Orto Parisi",
+      "expected_concentration": "Extrait de Parfum",
+      "expected_usd_per_kg": "1118.7",
+      "expected_notice": "این محصول بازآفرینی دست‌ساز است و محصول اورجینال برند اصلی نیست. نام رایحه مرجع از وب‌سایت رسمی برند بررسی شده؛ هویت و کیفیت اسانس تأمین‌کننده مستقلاً تأیید نشده است.",
+      "official_identity_url": "https://ortoparisi.com/products/megamare",
+      "source_url": "https://www.fragrantica.com/perfume/Orto-Parisi/Megamare-53471.html",
+      "provider": "Fragrantica",
+      "checked_date": "2026-11-02",
+      "notes": {
+        "top": [
+          "ترنج",
+          "لیمو"
+        ],
+        "middle": [
+          "آکورد جلبک دریایی",
+          "کالون",
+          "هدیون"
+        ],
+        "base": [
+          "مشک",
+          "آمبروکسان",
+          "سدر"
+        ]
+      }
+    }
+  ]
+}

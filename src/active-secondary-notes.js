@@ -3,26 +3,35 @@
 // supplier essence or actual ingredients. Never change orders, prices or stock.
 const fs=require('fs');
 const VERSION='active_secondary_notes_2026_11_v1';
-const SOURCES={
- 'YZD-PROD-0591':'https://www.fragrantica.com/perfume/Xerjoff/Torino22-77059.html',
- 'SUP-AT-900013':'https://www.fragrantica.com/perfume/Atkinsons/Atkinsons-Her-Majesty-The-Oud-38960.html',
- 'SUP-GL-900027':'https://www.fragrantica.com/perfume/Guy-Laroche/Drakkar-Noir-2069.html',
- 'SUP-MB-900013':'https://www.fragrantica.com/perfume/Montblanc/Legend-Eau-de-Parfum-62583.html'
+const VERSION_2='active_secondary_notes_2026_11_v2';
+const BATCHES={
+ [VERSION]:{
+  'YZD-PROD-0591':'https://www.fragrantica.com/perfume/Xerjoff/Torino22-77059.html',
+  'SUP-AT-900013':'https://www.fragrantica.com/perfume/Atkinsons/Atkinsons-Her-Majesty-The-Oud-38960.html',
+  'SUP-GL-900027':'https://www.fragrantica.com/perfume/Guy-Laroche/Drakkar-Noir-2069.html',
+  'SUP-MB-900013':'https://www.fragrantica.com/perfume/Montblanc/Legend-Eau-de-Parfum-62583.html'
+ },
+ [VERSION_2]:{
+  'SUP-CH-900004':'https://www.fragrantica.com/perfume/Carolina-Herrera/212-Sexy-306.html',
+  'YZD-PROD-1809':'https://www.fragrantica.com/perfume/Calvin-Klein/Euphoria-253.html',
+  'YZD-PROD-0931':'https://www.fragrantica.com/perfume/Orto-Parisi/Megamare-53471.html'
+ }
 };
 // Keep normalization identical to the catalog index without importing db.js,
 // which would run unrelated initialization on an offline database.
 function normalizeFa(s){return String(s||'').replace(/[\u064B-\u0652\u0670]/g,'').replace(/[\u0623\u0625\u0622]/g,'ا').replace(/\u0649|\u064A/g,'ی').replace(/\u0643/g,'ک').replace(/\u0629/g,'ه').replace(/[\u200c\u200f\u200e]/g,' ').replace(/[۰-۹]/g,d=>'۰۱۲۳۴۵۶۷۸۹'.indexOf(d)).replace(/[٠-٩]/g,d=>'٠١٢٣٤٥٦٧٨٩'.indexOf(d)).replace(/\s+/g,' ').trim().toLowerCase()}
 function apply(db,file,{indexExisting=false}={}){
  const m=JSON.parse(fs.readFileSync(file,'utf8'));
- if(m.version!==VERSION||!Array.isArray(m.items)||m.items.length!==Object.keys(SOURCES).length)throw Error('Invalid independent note additions');
+ const sources=BATCHES[m.version];
+ if(!sources||!Array.isArray(m.items)||m.items.length!==Object.keys(sources).length)throw Error('Invalid independent note additions');
  const ids=new Set();
  for(const x of m.items){
-  if(!Object.hasOwn(SOURCES,x.product_id)||ids.has(x.product_id)||x.source_url!==SOURCES[x.product_id]||x.provider!=='Fragrantica'||!x.slug||!x.expected_name_en||!x.expected_brand||typeof x.expected_usd_per_kg!=='string'||typeof x.expected_notice!=='string'||!x.official_identity_url||!/^\d{4}-\d{2}-\d{2}$/.test(x.checked_date))throw Error('Invalid note addition');
+  if(!Object.hasOwn(sources,x.product_id)||ids.has(x.product_id)||x.source_url!==sources[x.product_id]||x.provider!=='Fragrantica'||!x.slug||!x.expected_name_en||!x.expected_brand||typeof x.expected_usd_per_kg!=='string'||typeof x.expected_notice!=='string'||!x.official_identity_url||!/^\d{4}-\d{2}-\d{2}$/.test(x.checked_date))throw Error('Invalid note addition');
   for(const k of ['top','middle','base'])if(!Array.isArray(x.notes?.[k])||!x.notes[k].length||!x.notes[k].every(n=>typeof n==='string'&&n.trim()&&n.length<=60))throw Error('Invalid note list');
   ids.add(x.product_id);
  }
  return db.transaction(()=>{
-  if(db.prepare('select 1 from settings where key=?').get(VERSION))return {reason:'already_applied',updated_ids:[],skipped_ids:[]};
+  if(db.prepare('select 1 from settings where key=?').get(m.version))return {reason:'already_applied',updated_ids:[],skipped_ids:[]};
   const get=db.prepare('select id,slug,name_en,brand_en,concentration,supply_mode,essence_usd_per_kg,transparency_notice,notes_top,notes_middle,notes_base,accords,search_blob from products where id=?');
   const evidence=db.prepare('select official_url,status from official_identity_evidence where product_id=?');
   const price=db.prepare('select official_url,usd_per_kg,match_status from supplier_price_evidence where product_id=?');
@@ -40,8 +49,8 @@ function apply(db,file,{indexExisting=false}={}){
    if(indexExisting)for(const pos of ['top','middle','base'])for(const n of x.notes[pos])ins.run(x.product_id,n,normalizeFa(n),pos);
    updated.push(x.product_id);
   }
-  db.prepare('insert into settings(key,value) values(?,?)').run(VERSION,JSON.stringify({updated,skipped,at:new Date().toISOString()}));
+  db.prepare('insert into settings(key,value) values(?,?)').run(m.version,JSON.stringify({updated,skipped,at:new Date().toISOString()}));
   return {updated_ids:updated,skipped_ids:skipped};
  }).immediate();
 }
-module.exports={VERSION,apply,normalizeFa};
+module.exports={VERSION,VERSION_2,apply,normalizeFa};

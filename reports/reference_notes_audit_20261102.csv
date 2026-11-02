@@ -27,7 +27,7 @@ SUP-BS-900001,burberry-weekend-woman-edp,باربری,ویکند زنانه,cand
 SUP-BS-900050,boss-femme,هوگو باس,فم,no_pyramid_notes,,,
 SUP-CH-900001,carolina-herrera-212-vip-women,کارولینا هررا,۲۱۲ وی‌آی‌پی,no_pyramid_notes,,,
 SUP-CH-900003,carolina-herrera-212-sexy-men,کارولینا هررا,۲۱۲ سکسی مردانه,candidate_match,official,official_supplement_v26.json,https://www.carolinaherrera.com/ww/en/p-fragrance/212-sexy-men
-SUP-CH-900004,carolina-herrera-212-sexy-women,کارولینا هررا,۲۱۲ سکسی زنانه,no_pyramid_notes,,,
+SUP-CH-900004,carolina-herrera-212-sexy-women,کارولینا هررا,۲۱۲ سکسی زنانه,candidate_match,independent,active_secondary_note_additions_v2.json,https://www.fragrantica.com/perfume/Carolina-Herrera/212-Sexy-306.html
 SUP-CH-900005,chanel-coco-edp,شنل,کوکو ادوپرفیوم,candidate_match,official,official_supplement_v34.json,https://www.chanel.com/us/fragrance/p/113530/coco-eau-de-parfum-spray/
 SUP-CH-900006,carolina-herrera-ch-men-edt,کارولینا هررا,سی اچ مردانه,no_pyramid_notes,,,
 SUP-CK-900001,calvin-klein-eternity-for-men-edp,کلوین کلاین,اترنیتی مردانه ادوپرفیوم,candidate_match,official,official_supplement_v30.json,https://www.calvinklein.us/en/eternity-for-men-eau-de-parfum/LX000725.html
@@ -183,7 +183,7 @@ YZD-PROD-0919,nasomatto-black-afgano,ناسوماتو,بلک افغان,no_pyram
 YZD-PROD-0921,nasomatto-baraonda,ناسوماتو,بارائوندا,no_pyramid_notes,,,
 YZD-PROD-0925,nasomatto-hindu-grass,ناسوماتو,هیندو گراس,no_pyramid_notes,,,
 YZD-PROD-0928,nasomatto-fantomas,ناسوماتو,فانتوماس,no_pyramid_notes,,,
-YZD-PROD-0931,orto-parisi-megamare,اورتو پاریزی,مگاماره,no_pyramid_notes,,,
+YZD-PROD-0931,orto-parisi-megamare,اورتو پاریزی,مگاماره,candidate_match,independent,active_secondary_note_additions_v2.json,https://www.fragrantica.com/perfume/Orto-Parisi/Megamare-53471.html
 YZD-PROD-0989,byredo-rouge-chaotique,بایردو,روژ شائوتیک,candidate_match,official,official_note_corrections_v3.json,https://www.byredo.com/us_en/p/rouge-chaotique-night-veils-perfume-extract-70ml
 YZD-PROD-0990,byredo-de-los-santos,بایردو,د لوس سانتوس,candidate_match,official,official_note_corrections_v3.json,https://www.byredo.com/us_en/de-los-santos-50ml
 YZD-PROD-0993,le-labo-santal-33,له لابو,سانتال ۳۳,no_pyramid_notes,,,
@@ -250,7 +250,7 @@ YZD-PROD-1801,hugo-boss-hugo-man,هوگو باس,هوگو من (ورسوز),cand
 YZD-PROD-1804,burberry-burberry-goddess-edp,باربری,گادس,no_pyramid_notes,,,
 YZD-PROD-1805,burberry-burberry-her-edp,باربری,هر,no_pyramid_notes,,,
 YZD-PROD-1808,calvin-klein-euphoria-men,کلوین کلاین,ایفوریا مردانه,candidate_match,independent,secondary_note_corrections_v5.json,https://www.fragrantica.com/perfume/Calvin-Klein/Euphoria-Men-799.html
-YZD-PROD-1809,calvin-klein-euphoria-women,کلوین کلاین,ایفوریا زنانه,no_pyramid_notes,,,
+YZD-PROD-1809,calvin-klein-euphoria-women,کلوین کلاین,ایفوریا زنانه,candidate_match,independent,active_secondary_note_additions_v2.json,https://www.fragrantica.com/perfume/Calvin-Klein/Euphoria-253.html
 YZD-PROD-1814,bentley-bentley-for-men-intense,بنتلی,اینتنس,candidate_match,official,official_note_corrections_v16.json,https://bentley-fragrances.com/en/for-men-intense
 YZD-PROD-1816,montblanc-montblanc-explorer,مونبلان,اکسپلورر,no_pyramid_notes,,,
 YZD-PROD-1820,lattafa-perfumes-khamrah,لطافه,خمره,candidate_match,official,official_note_corrections_v5.json,https://lattafa.com/product/khamrah/

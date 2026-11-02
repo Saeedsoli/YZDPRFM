@@ -332,7 +332,7 @@ if python3 scripts/test_order_stock_migration.py >/tmp/test_order_stock_migratio
 if python3 scripts/test_private_order_tracking.py >/tmp/test_private_order_tracking.log 2>&1; then P=$((P+1)); else F=$((F+1)); echo "  X private order tracking"; fi
 run_test test_payment_result_safety.js "verified payment result"
 if python3 scripts/test_customer_phone_verification.py >/tmp/test_customer_phone_verification.log 2>&1; then P=$((P+1)); else F=$((F+1)); echo "  X customer phone ownership"; fi
-if python3 scripts/test_active_secondary_notes.py >/tmp/test_active_secondary_notes.log 2>&1; then P=$((P+1)); else F=$((F+1)); echo "  X active independent reference notes"; fi
+if python3 scripts/test_active_secondary_notes.py >/tmp/test_active_secondary_notes.log 2>&1 && NOTE_TEST_BATCH=2 python3 scripts/test_active_secondary_notes.py >/tmp/test_active_secondary_notes_v2.log 2>&1; then P=$((P+1)); else F=$((F+1)); echo "  X active independent reference notes"; fi
 if python3 scripts/test_otp_request_race.py >/tmp/test_otp_request_race.log 2>&1; then P=$((P+1)); else F=$((F+1)); echo "  X concurrent OTP send reservation"; fi
 if python3 scripts/test_rate_limit_cross_process.py >/tmp/test_rate_limit_cross_process.log 2>&1; then P=$((P+1)); else F=$((F+1)); echo "  X cross-process rate limit"; fi
 if python3 scripts/test_concurrent_db_startup.py >/tmp/test_concurrent_db_startup.log 2>&1; then P=$((P+1)); else F=$((F+1)); echo "  X concurrent database startup and rollback"; fi

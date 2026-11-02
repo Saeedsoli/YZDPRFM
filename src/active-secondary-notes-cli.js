@@ -2,9 +2,10 @@
 // Explicit, offline, backup-first scoped update of reference-note data.
 const fs=require('fs'),path=require('path'),Database=require('better-sqlite3');
 const args=process.argv.slice(2);
-if(args.length!==5||args[0]!=='--db'||args[2]!=='--backup'||args[4]!=='--offline-confirmed'){
- console.error('Usage: node src/active-secondary-notes-cli.js --db <existing> --backup <new-file> --offline-confirmed');process.exit(2);
+if(![5,7].includes(args.length)||args[0]!=='--db'||args[2]!=='--backup'||args[4]!=='--offline-confirmed'||(args.length===7&&(args[5]!=='--batch'||args[6]!=='2'))){
+ console.error('Usage: node src/active-secondary-notes-cli.js --db <existing> --backup <new-file> --offline-confirmed [--batch 2]');process.exit(2);
 }
+const batch=args.length===7?'v2':'v1';
 const source=path.resolve(args[1]),backup=path.resolve(args[3]);
 function quote(x){return '"'+String(x).replace(/"/g,'""')+'"';}
 function compare(a,b){
@@ -32,7 +33,7 @@ function compare(a,b){
   live=new Database(real,{fileMustExist:true});await live.backup(target);
   snapshot=new Database(target,{readonly:true,fileMustExist:true});
   if(snapshot.pragma('integrity_check',{simple:true})!=='ok')throw Error('Backup integrity failed');
-  const result=live.transaction(()=>{compare(live,snapshot);return require('./active-secondary-notes').apply(live,path.join(__dirname,'../seed/active_secondary_note_additions_v1.json'),{indexExisting:true});}).immediate();
+  const result=live.transaction(()=>{compare(live,snapshot);return require('./active-secondary-notes').apply(live,path.join(__dirname,`../seed/active_secondary_note_additions_${batch}.json`),{indexExisting:true});}).immediate();
   console.log(JSON.stringify({backup_verified:true,result}));
  }finally{if(snapshot)snapshot.close();if(live)live.close();}
 })().catch(e=>{console.error('Note migration failed; orders were not changed: '+e.message);process.exitCode=1;});

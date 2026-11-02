@@ -3,7 +3,8 @@
 import json,os,sqlite3,subprocess,tempfile
 from pathlib import Path
 root=Path(__file__).resolve().parent.parent
-manifest=json.loads((root/'seed/active_secondary_note_additions_v1.json').read_text());ids={x['product_id'] for x in manifest['items']}
+batch=os.environ.get('NOTE_TEST_BATCH','1');assert batch in ('1','2')
+manifest=json.loads((root/f'seed/active_secondary_note_additions_v{batch}.json').read_text());ids={x['product_id'] for x in manifest['items']}
 with tempfile.TemporaryDirectory(prefix='secondary-active-notes-') as td:
  td=Path(td);base=td/'baseline.sqlite'
  env={**os.environ,'DB_PATH':str(base),'BACKUP_DISABLED':'1','NODE_ENV':'test','ACTIVE_SECONDARY_NOTES_AUTOSTART':'0'}
@@ -16,7 +17,9 @@ with tempfile.TemporaryDirectory(prefix='secondary-active-notes-') as td:
    assert c.execute('pragma integrity_check').fetchone()[0]=='ok'
    return {n:sorted(c.execute('select * from "'+n.replace('"','""')+'"').fetchall(),key=repr) for (n,) in c.execute("select name from sqlite_master where type='table' order by name").fetchall()}
  def apply(path,backup):
-  r=subprocess.run(['node','src/active-secondary-notes-cli.js','--db',str(path),'--backup',str(backup),'--offline-confirmed'],cwd=root,env=env,capture_output=True,text=True,timeout=120)
+  cmd=['node','src/active-secondary-notes-cli.js','--db',str(path),'--backup',str(backup),'--offline-confirmed']
+  if batch=='2':cmd+=['--batch','2']
+  r=subprocess.run(cmd,cwd=root,env=env,capture_output=True,text=True,timeout=120)
   assert r.returncode==0,(r.stdout,r.stderr);return json.loads(r.stdout)
  before=dump(base);saved=td/'before.sqlite';r=apply(base,saved);assert set(r['result']['updated_ids'])==ids and not r['result']['skipped_ids'];assert dump(saved)==before
  after=dump(base)
@@ -40,7 +43,7 @@ with tempfile.TemporaryDirectory(prefix='secondary-active-notes-') as td:
  with sqlite3.connect(edited) as c:
   c.execute("update products set notes_top='[\"مدیر\"]' where id=?",(manifest['items'][0]['product_id'],))
   c.execute("update products set essence_usd_per_kg='9999' where id=?",(manifest['items'][1]['product_id'],))
- r=apply(edited,td/'before-edited.sqlite')['result'];assert len(r['updated_ids'])==2 and set(r['skipped_ids'])=={manifest['items'][0]['product_id'],manifest['items'][1]['product_id']}
+ r=apply(edited,td/'before-edited.sqlite')['result'];assert len(r['updated_ids'])==len(ids)-2 and set(r['skipped_ids'])=={manifest['items'][0]['product_id'],manifest['items'][1]['product_id']}
  with sqlite3.connect(edited) as c:
   assert json.loads(c.execute('select notes_top from products where id=?',(manifest['items'][0]['product_id'],)).fetchone()[0])==['مدیر']
   assert c.execute('select essence_usd_per_kg from products where id=?',(manifest['items'][1]['product_id'],)).fetchone()[0]=='9999'

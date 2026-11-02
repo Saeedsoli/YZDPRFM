@@ -4,7 +4,8 @@ import json,os,socket,subprocess,tempfile,time,urllib.request
 from pathlib import Path
 from playwright.sync_api import sync_playwright,expect
 root=Path(__file__).resolve().parent.parent
-manifest=json.loads((root/'seed/active_secondary_note_additions_v1.json').read_text())
+batch=os.environ.get('NOTE_TEST_BATCH','1');assert batch in ('1','2')
+manifest=json.loads((root/f'seed/active_secondary_note_additions_v{batch}.json').read_text())
 with tempfile.TemporaryDirectory(prefix='secondary-notes-browser-') as td:
  s=socket.socket();s.bind(('127.0.0.1',0));port=s.getsockname()[1];s.close();base=f'http://127.0.0.1:{port}'
  env={**os.environ,'DB_PATH':str(Path(td)/'db.sqlite'),'BACKUP_DISABLED':'1','NODE_ENV':'test','PORT':str(port)}
@@ -28,7 +29,7 @@ with tempfile.TemporaryDirectory(prefix='secondary-notes-browser-') as td:
      assert page.evaluate('document.documentElement.scrollWidth <= innerWidth + 1'),(x['slug'],width)
     assert not errors,errors;context.close()
    browser.close()
-  print('PASS four note pyramids and mobile/desktop layouts on fresh isolated store')
+  print(f"PASS {len(manifest['items'])} note pyramids and mobile/desktop layouts on fresh isolated store")
  finally:
   p.terminate()
   try:p.wait(timeout=5)

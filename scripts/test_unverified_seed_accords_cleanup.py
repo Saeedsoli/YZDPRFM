@@ -10,7 +10,8 @@ assert len(items)==31 and len({x['product_id'] for x in items})==31
 for x in items:assert seed[x['product_id']]['accords']==x['expected_accords']
 def node(code,env):subprocess.run(['node','-e',code],cwd=root,env=env,check=True,stdout=subprocess.DEVNULL,timeout=120)
 with tempfile.TemporaryDirectory(prefix='accord-cleanup-') as td:
- fresh=str(Path(td)/'fresh.sqlite');env={**os.environ,'DB_PATH':fresh,'BACKUP_DISABLED':'1'}
+ # Isolate this historical cleanup milestone from later independent note batches.
+ fresh=str(Path(td)/'fresh.sqlite');env={**os.environ,'DB_PATH':fresh,'BACKUP_DISABLED':'1','ACTIVE_SECONDARY_NOTES_AUTOSTART':'0'}
  for k in ['UNVERIFIED_ACCORD_CLEANUP_AUTOSTART','APPROVED_MTO_AUTOSTART']:env.pop(k,None)
  node("require('./src/db').db.close()",env)
  c=sqlite3.connect(fresh);log=json.loads(c.execute('select value from settings where key=?',(m['version'],)).fetchone()[0]);assert log['updated']==31 and log['skipped']==0
