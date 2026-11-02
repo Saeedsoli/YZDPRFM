@@ -756,6 +756,21 @@ const server = http.createServer(async (req, res) => {
         ? getStaffByUsername(username)
         : getStaffByUsername(process.env.ADMIN_USERNAME || 'owner');
 
+      // The forwarded IP can vary behind a proxy (or be forged if a proxy is
+      // misconfigured). A persistent account bucket also bounds attempts at a
+      // single username across IPs and restarts. Hash the bucket identifier;
+      // never store a password or raw username in the rate-limit key.
+      const accountName = String(target?.username || username || process.env.ADMIN_USERNAME || 'owner').trim().toLowerCase();
+      const accountKey = 'login-account:' + crypto.createHash('sha256').update(accountName).digest('hex');
+      const accountLimit = rateLimit(accountKey, RL.login.limit, RL.login.window, RL.login.block);
+      if (!accountLimit.ok) {
+        appLog('WARN', 'security', 'محدودیت تعداد تلاش ورود برای حساب', { ip });
+        return sendJSON(429, {
+          error: `تلاش‌های ناموفق بیش از حد. ${Math.ceil(accountLimit.retry_after / 60)} دقیقه دیگر تلاش کنید.`,
+          retry_after: accountLimit.retry_after
+        });
+      }
+
       const bad = () => {
         appLog('WARN', 'security', 'ورود ناموفق کارمند', { ip, username: username || '—' });
         audit({ username: username || '—', action: 'auth.login', method, path: pathname,
@@ -775,6 +790,7 @@ const server = http.createServer(async (req, res) => {
       }
 
       resetRateLimit(`login:${ip}`);
+      resetRateLimit(accountKey);
       db.prepare('UPDATE staff SET last_login=? WHERE id=?')
         .run(new Date().toISOString(), target.id);
 
