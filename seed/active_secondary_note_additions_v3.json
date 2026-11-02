@@ -1,0 +1,63 @@
+{
+  "version": "active_secondary_notes_2026_11_v3",
+  "description": "Independent source lists unclassified reference notes; no invented note tiers or claim of actual ingredients.",
+  "items": [
+    {
+      "product_id": "YZD-PROD-0921",
+      "slug": "nasomatto-baraonda",
+      "expected_name_en": "NASOMATTO - Baraonda",
+      "expected_brand": "Nasomatto",
+      "expected_concentration": "Extrait de Parfum",
+      "expected_usd_per_kg": "931.7",
+      "expected_notice": "این محصول بازآفرینی دست‌ساز است و محصول اورجینال برند اصلی نیست. نام رایحه مرجع از وب‌سایت رسمی برند بررسی شده؛ هویت و کیفیت اسانس تأمین‌کننده مستقلاً تأیید نشده است.",
+      "official_identity_url": "https://nasomatto.com/products/baraonda",
+      "source_url": "https://www.fragrantica.com/perfume/Nasomatto/Baraonda-40200.html",
+      "provider": "Fragrantica",
+      "checked_date": "2026-11-02",
+      "notes": {
+        "top": [],
+        "middle": [],
+        "base": []
+      },
+      "accords": [
+        "آکورد ویسکی",
+        "نت‌های چوبی",
+        "آمبریت",
+        "رز",
+        "آمبروکسان",
+        "مشک"
+      ]
+    },
+    {
+      "product_id": "YZD-PROD-0928",
+      "slug": "nasomatto-fantomas",
+      "expected_name_en": "NASOMATTO - Fantomas",
+      "expected_brand": "Nasomatto",
+      "expected_concentration": "Extrait de Parfum",
+      "expected_usd_per_kg": "530.2",
+      "expected_notice": "این محصول بازآفرینی دست‌ساز است و محصول اورجینال برند اصلی نیست. نام رایحه مرجع از وب‌سایت رسمی برند بررسی شده؛ هویت و کیفیت اسانس تأمین‌کننده مستقلاً تأیید نشده است.",
+      "official_identity_url": "https://nasomatto.com/products/fantomas",
+      "source_url": "https://www.fragrantica.com/perfume/Nasomatto/Fantomas-62775.html",
+      "provider": "Fragrantica",
+      "checked_date": "2026-11-02",
+      "notes": {
+        "top": [],
+        "middle": [],
+        "base": []
+      },
+      "accords": [
+        "خربزه",
+        "آکورد پلاستیک",
+        "آکورد لاستیک",
+        "نت‌های شیرین",
+        "آکورد دود",
+        "آکورد باروت",
+        "کارامل",
+        "میوه‌های استوایی",
+        "نت‌های خاکی",
+        "کشمیران",
+        "پچولی"
+      ]
+    }
+  ]
+}

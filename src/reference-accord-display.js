@@ -1,12 +1,14 @@
 'use strict';
 // Conservative display guard: never infer handmade ingredients from a
 // reference. A changed product identity or accord list is not approved.
-const manifest = require('../seed/reference_accord_display_v1.json');
+const manifests = [require('../seed/reference_accord_display_v1.json'),require('../seed/reference_accord_display_v2.json')];
 const records = new Map();
-if (manifest.version !== 'reference_accord_display_2026_11_v1' || !Array.isArray(manifest.items)) throw Error('Invalid reference accord display manifest');
-for (const x of manifest.items) {
+for (const [i,manifest] of manifests.entries()) {
+ if (manifest.version !== `reference_accord_display_2026_11_v${i+1}` || !Array.isArray(manifest.items)) throw Error('Invalid reference accord display manifest');
+ for (const x of manifest.items) {
   if (!x.product_id || records.has(x.product_id) || !Array.isArray(x.accords) || !x.accords.length || !x.accords.every(v=>typeof v==='string' && v.trim())) throw Error('Invalid reference accord display entry');
   records.set(x.product_id,x);
+ }
 }
 function referenceAccords(row) {
   const x=records.get(row.id);

@@ -1,0 +1,47 @@
+{
+  "version": "reference_accord_display_2026_11_v2",
+  "scope": "Unclassified independent source notes, not actual ingredients or supplier verification.",
+  "items": [
+    {
+      "product_id": "YZD-PROD-0921",
+      "slug": "nasomatto-baraonda",
+      "name_en": "NASOMATTO - Baraonda",
+      "brand_en": "Nasomatto",
+      "concentration": "Extrait de Parfum",
+      "accords": [
+        "آکورد ویسکی",
+        "نت‌های چوبی",
+        "آمبریت",
+        "رز",
+        "آمبروکسان",
+        "مشک"
+      ],
+      "source_manifest": "active_secondary_note_additions_v3.json",
+      "source_url": "https://www.fragrantica.com/perfume/Nasomatto/Baraonda-40200.html",
+      "source_kind": "independent"
+    },
+    {
+      "product_id": "YZD-PROD-0928",
+      "slug": "nasomatto-fantomas",
+      "name_en": "NASOMATTO - Fantomas",
+      "brand_en": "Nasomatto",
+      "concentration": "Extrait de Parfum",
+      "accords": [
+        "خربزه",
+        "آکورد پلاستیک",
+        "آکورد لاستیک",
+        "نت‌های شیرین",
+        "آکورد دود",
+        "آکورد باروت",
+        "کارامل",
+        "میوه‌های استوایی",
+        "نت‌های خاکی",
+        "کشمیران",
+        "پچولی"
+      ],
+      "source_manifest": "active_secondary_note_additions_v3.json",
+      "source_url": "https://www.fragrantica.com/perfume/Nasomatto/Fantomas-62775.html",
+      "source_kind": "independent"
+    }
+  ]
+}

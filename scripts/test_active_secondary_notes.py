@@ -3,7 +3,7 @@
 import json,os,sqlite3,subprocess,tempfile
 from pathlib import Path
 root=Path(__file__).resolve().parent.parent
-batch=os.environ.get('NOTE_TEST_BATCH','1');assert batch in ('1','2')
+batch=os.environ.get('NOTE_TEST_BATCH','1');assert batch in ('1','2','3')
 manifest=json.loads((root/f'seed/active_secondary_note_additions_v{batch}.json').read_text());ids={x['product_id'] for x in manifest['items']}
 with tempfile.TemporaryDirectory(prefix='secondary-active-notes-') as td:
  td=Path(td);base=td/'baseline.sqlite'
@@ -18,7 +18,7 @@ with tempfile.TemporaryDirectory(prefix='secondary-active-notes-') as td:
    return {n:sorted(c.execute('select * from "'+n.replace('"','""')+'"').fetchall(),key=repr) for (n,) in c.execute("select name from sqlite_master where type='table' order by name").fetchall()}
  def apply(path,backup):
   cmd=['node','src/active-secondary-notes-cli.js','--db',str(path),'--backup',str(backup),'--offline-confirmed']
-  if batch=='2':cmd+=['--batch','2']
+  if batch!='1':cmd+=['--batch',batch]
   r=subprocess.run(cmd,cwd=root,env=env,capture_output=True,text=True,timeout=120)
   assert r.returncode==0,(r.stdout,r.stderr);return json.loads(r.stdout)
  before=dump(base);saved=td/'before.sqlite';r=apply(base,saved);assert set(r['result']['updated_ids'])==ids and not r['result']['skipped_ids'];assert dump(saved)==before
@@ -27,13 +27,15 @@ with tempfile.TemporaryDirectory(prefix='secondary-active-notes-') as td:
   if name not in ('products','product_notes','settings'):assert before[name]==after[name],name
  with sqlite3.connect(base) as c:
   cols=[x[1] for x in c.execute('pragma table_info(products)')];before_p={r[0]:r for r in before['products']};after_p={r[0]:r for r in after['products']}
-  mutable={cols.index(x) for x in ('notes_top','notes_middle','notes_base','search_blob')}
+  mutable={cols.index(x) for x in ('notes_top','notes_middle','notes_base','accords','search_blob')}
   for pid in ids:
    old,new=before_p[pid],after_p[pid];assert all(old[i]==new[i] for i in range(len(cols)) if i not in mutable),pid
    x=next(x for x in manifest['items'] if x['product_id']==pid)
    for pos in ('top','middle','base'):
     assert json.loads(new[cols.index('notes_'+pos)])==x['notes'][pos]
     assert c.execute('select count(*) from product_notes where product_id=? and position=?',(pid,pos)).fetchone()[0]==len(x['notes'][pos])
+   assert json.loads(new[cols.index('accords')])==x.get('accords',[])
+   assert c.execute("select count(*) from product_notes where product_id=? and position='accord'",(pid,)).fetchone()[0]==len(x.get('accords',[]))
    assert new[cols.index('search_blob')]!=old[cols.index('search_blob')]
   for pid in set(before_p)-ids:assert before_p[pid]==after_p[pid]
  # One-time marker; re-running cannot modify note data.

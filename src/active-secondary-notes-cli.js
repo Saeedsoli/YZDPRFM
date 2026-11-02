@@ -2,10 +2,10 @@
 // Explicit, offline, backup-first scoped update of reference-note data.
 const fs=require('fs'),path=require('path'),Database=require('better-sqlite3');
 const args=process.argv.slice(2);
-if(![5,7].includes(args.length)||args[0]!=='--db'||args[2]!=='--backup'||args[4]!=='--offline-confirmed'||(args.length===7&&(args[5]!=='--batch'||args[6]!=='2'))){
- console.error('Usage: node src/active-secondary-notes-cli.js --db <existing> --backup <new-file> --offline-confirmed [--batch 2]');process.exit(2);
+if(![5,7].includes(args.length)||args[0]!=='--db'||args[2]!=='--backup'||args[4]!=='--offline-confirmed'||(args.length===7&&(args[5]!=='--batch'||!['2','3'].includes(args[6])))){
+ console.error('Usage: node src/active-secondary-notes-cli.js --db <existing> --backup <new-file> --offline-confirmed [--batch 2|3]');process.exit(2);
 }
-const batch=args.length===7?'v2':'v1';
+const batch=args.length===7?'v'+args[6]:'v1';
 const source=path.resolve(args[1]),backup=path.resolve(args[3]);
 function quote(x){return '"'+String(x).replace(/"/g,'""')+'"';}
 function compare(a,b){

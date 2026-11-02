@@ -2906,7 +2906,7 @@ const unverifiedAccordResult = isFreshInstallation && process.env.APPROVED_MTO_A
   ? require('./unverified-seed-accords-cleanup').applyUnverifiedSeedAccordsCleanup(db, path.join(SEED_DIR,'unverified_seed_accords_cleanup_v1.json')) : null;
 // Fresh stores only; existing stores require the explicit backup-first tool.
 const activeSecondaryNotes = isFreshInstallation && process.env.APPROVED_MTO_AUTOSTART !== '0' && process.env.ACTIVE_SECONDARY_NOTES_AUTOSTART !== '0'
-  ? ['active_secondary_note_additions_v1.json','active_secondary_note_additions_v2.json'].map(file=>require('./active-secondary-notes').apply(db,path.join(SEED_DIR,file))) : [];
+  ? ['active_secondary_note_additions_v1.json','active_secondary_note_additions_v2.json','active_secondary_note_additions_v3.json'].map(file=>require('./active-secondary-notes').apply(db,path.join(SEED_DIR,file))) : [];
 buildSearchIndex();
 // Rebuild note lookup after sourced notes change or new supplement products arrive.
 buildNotesIndex(activeSecondaryNotes.some(r=>r.updated_ids?.length > 0) || unverifiedAccordResult?.updated > 0 || legacyReferenceResult?.activated > 0 || activeNotesResults.some(r => r.updated > 0) || supplementInserted > 0 || secondaryNotesResults.some(r => r.updated > 0) || officialNotesResults.some(r => r.updated > 0));
