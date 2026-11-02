@@ -45,10 +45,12 @@ fs.mkdirSync(path.dirname(DB_PATH), { recursive: true });
 
 const db = new Database(DB_PATH);
 
-// تنظیمات پایداری و کارایی
-db.pragma('journal_mode = WAL');   // تحمل نوشتن همزمان
+// Configure the timeout before WAL setup: another process may be opening or
+// initializing the same SQLite database. Restore the normal timeout once the
+// serialized startup transaction commits.
+db.pragma('busy_timeout = 30000');
+db.pragma('journal_mode = WAL');
 db.pragma('foreign_keys = ON');
-db.pragma('busy_timeout = 5000');
 
 // ═══════════════════════════════════════════
 // SCHEMA
@@ -2672,6 +2674,12 @@ function otpPurgeExpired() {
   return r.changes;
 }
 
+// Keep schema checks, seed guards and their writes under one SQLite write
+// lock. Deferred read-then-write migrations could otherwise race other startup
+// processes and fail with SQLITE_BUSY or observe partial initialization.
+// Nested migration transactions become SQLite savepoints; an exception rolls
+// the entire initialization back. Maintenance starts only after commit.
+db.transaction(() => {
 initSchema();
 // Only a genuinely empty installation may receive the owner's default approval.
 const isFreshInstallation = !DB_WAS_EXISTING && db.prepare('SELECT COUNT(*) AS c FROM products').get().c === 0;
@@ -2909,6 +2917,8 @@ const unverifiedAccordResult = isFreshInstallation && process.env.APPROVED_MTO_A
 buildSearchIndex();
 // Rebuild note lookup after sourced notes change or new supplement products arrive.
 buildNotesIndex(unverifiedAccordResult?.updated > 0 || legacyReferenceResult?.activated > 0 || activeNotesResults.some(r => r.updated > 0) || supplementInserted > 0 || secondaryNotesResults.some(r => r.updated > 0) || officialNotesResults.some(r => r.updated > 0));
+}).immediate();
+db.pragma('busy_timeout = 5000');
 
 startMaintenance();
 
