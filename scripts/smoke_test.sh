@@ -330,6 +330,8 @@ if python3 scripts/test_private_order_tracking.py >/tmp/test_private_order_track
 run_test test_payment_result_safety.js "verified payment result"
 if python3 scripts/test_customer_phone_verification.py >/tmp/test_customer_phone_verification.log 2>&1; then P=$((P+1)); else F=$((F+1)); echo "  X customer phone ownership"; fi
 if python3 scripts/test_otp_request_race.py >/tmp/test_otp_request_race.log 2>&1; then P=$((P+1)); else F=$((F+1)); echo "  X concurrent OTP send reservation"; fi
+if python3 scripts/test_rate_limit_cross_process.py >/tmp/test_rate_limit_cross_process.log 2>&1; then P=$((P+1)); else F=$((F+1)); echo "  X cross-process rate limit"; fi
+if python3 scripts/test_password_recovery_abuse.py >/tmp/test_password_recovery_abuse.log 2>&1; then P=$((P+1)); else F=$((F+1)); echo "  X password recovery privacy and SMS limits"; fi
 if python3 scripts/test_customer_verification_migration.py >/tmp/test_customer_verification_migration.log 2>&1; then P=$((P+1)); else F=$((F+1)); echo "  X customer verification migration"; fi
 if python3 scripts/test_customer_password_reset_race.py >/tmp/test_customer_password_reset_race.log 2>&1; then P=$((P+1)); else F=$((F+1)); echo "  X customer password reset race"; fi
 run_test test_login_redirect_safety.js "safe customer login redirect"

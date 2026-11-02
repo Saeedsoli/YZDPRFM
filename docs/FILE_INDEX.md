@@ -954,6 +954,8 @@ node_modules/   با npm install برمی‌گردد
 - `scripts/test_customer_verification_migration.py` — آزمون مهاجرت بدون فرض تأیید شماره‌های قبلی.
 
 - `scripts/test_otp_request_race.py` — آزمون رقابت ارسال کد در دو فرایند، بازیابی خطا و توقف ناگهانی با پیامک شبیه‌سازی‌شده.
+- `scripts/test_rate_limit_cross_process.py` — آزمون محدودیت نرخ اتمی در چند فرایند و دیتابیس موقت.
+- `scripts/test_password_recovery_abuse.py` — آزمون حریم خصوصی بازیابی و سقف مشترک پیامک با ارائه‌دهنده شبیه‌سازی‌شده.
 - `scripts/test_customer_password_reset_race.py` — جلوگیری از احیای نشست با رمز قدیمی در رقابت چندفرایندی.
 - `scripts/test_customer_phone_browser.py` — آزمون مرورگر ثبت‌نام، ورود پیامکی و بازیابی حساب قدیمی.
 - `scripts/test_login_redirect_safety.js` — جلوگیری از انتقال خارجی یا اجرای نشانی خطرناک پس از ورود.

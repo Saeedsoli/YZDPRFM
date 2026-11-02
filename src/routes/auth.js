@@ -209,18 +209,22 @@ async function handle(ctx) {
       });
     }
 
+    // Share SMS abuse limits with ordinary code requests; otherwise this
+    // endpoint can bypass the per-IP and per-phone limits for sending codes.
+    const ipRl = rateLimit(`otp-ip:${ip}`, RL.otpIp.limit, RL.otpIp.window, RL.otpIp.block);
+    if (!ipRl.ok) return sendJSON(429,{error:'درخواست‌های بیش از حد. لطفاً بعداً تلاش کنید.',retry_after:ipRl.retry_after});
+    const pRl = rateLimit(`otp-ph:${mobile}`, RL.otpPhone.limit, RL.otpPhone.window, RL.otpPhone.block);
+    if (!pRl.ok) return sendJSON(429,{error:'برای این شماره درخواست‌های زیادی ثبت شده. یک ساعت دیگر تلاش کنید.',retry_after:pRl.retry_after});
+
     if (!phoneVerification.ready(db) || !(await otp.deliveryAvailable())) return sendJSON(503,{error:'سامانه پیامک یا تأیید شماره هنوز آماده نیست.'});
-    const c = getCustomer(mobile);
-    if (c) {
-      // requestCode خودش کد می‌سازد، ذخیره و پیامک می‌کند
-      const sent = await otp.requestCode(mobile);
-      if (sent.ok) {
-        appLog('INFO', 'auth', 'کد بازیابی رمز ارسال شد', { mobile });
-      }
-    }
+    // Both existing and unknown numbers take the same provider path. Merely
+    // returning the same text while sending only for existing accounts leaks
+    // account existence through provider latency. Code ownership is still
+    // required; reset-password will not create a missing account.
+    await otp.requestCode(mobile);
 
     return sendJSON(200, {
-      message: 'اگر این شماره ثبت شده باشد و سرویس پیامک فعال باشد، کد بازیابی ارسال می‌شود.'
+      message: 'درخواست بازیابی ثبت شد. در صورت امکان، کد به این شماره ارسال می‌شود.'
     });
   }
 

@@ -2470,7 +2470,9 @@ function destroySession(token) {
  * @param windowMs  طول پنجره
  * @param blockMs   مدت مسدودی پس از عبور از حد
  */
-function rateLimit(key, limit, windowMs, blockMs = 0) {
+// The read/check/increment must be serialized across server processes. Without
+// a write lock two requests can both see the last available slot and pass.
+const rateLimitTransaction = db.transaction((key, limit, windowMs, blockMs) => {
   const now = Date.now();
   const row = db.prepare('SELECT * FROM rate_limits WHERE bucket=?').get(key);
 
@@ -2495,6 +2497,9 @@ function rateLimit(key, limit, windowMs, blockMs = 0) {
 
   db.prepare('UPDATE rate_limits SET count=count+1 WHERE bucket=?').run(key);
   return { ok: true, remaining: limit - row.count - 1 };
+});
+function rateLimit(key, limit, windowMs, blockMs = 0) {
+  return rateLimitTransaction.immediate(key, limit, windowMs, blockMs);
 }
 
 function resetRateLimit(key) {
