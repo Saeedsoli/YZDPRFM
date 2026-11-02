@@ -1,0 +1,13 @@
+{
+  "version": "generic_scent_owner_approved_2026_11_v1",
+  "supplier_file_sha256": "bbe8f40610bc765bda0a7d2da9dbe78f4e397458a6991239c3c18d0853f33f5c",
+  "decision": "Owner authorized six separate generic handmade scents for made-to-order sale; no reference brand or natural-ingredient claim. This file is a staging record, not an importer or evidence of actual essence composition.",
+  "items": [
+    {"product_id":"GEN-SCENT-0001","name_fa":"گل یخ","slug":"generic-gol-yakh","supplier_brand":"GOLE YAKH","supplier_model":"GOLE YAKH","supplier_gender":"Unisex","usd_per_kg":"60.5","quality":"I"},
+    {"product_id":"GEN-SCENT-0002","name_fa":"یاس","slug":"generic-yas","supplier_brand":"JASMINN","supplier_model":"JASMINN","supplier_gender":"Unisex","usd_per_kg":"132","quality":"I"},
+    {"product_id":"GEN-SCENT-0003","name_fa":"گل محمدی","slug":"generic-gol-mohammadi","supplier_brand":"MOHAMMADI","supplier_model":"MOHAMMADI","supplier_gender":"Unisex","usd_per_kg":"99","quality":"H"},
+    {"product_id":"GEN-SCENT-0004","name_fa":"گل سرخ","slug":"generic-gol-sorkh","supplier_brand":"MOHAMMADI","supplier_model":"RED ROSE","supplier_gender":"Unisex","usd_per_kg":"77","quality":"B"},
+    {"product_id":"GEN-SCENT-0005","name_fa":"رز","slug":"generic-rose","supplier_brand":"ROSE","supplier_model":"ROSE","supplier_gender":"Unisex","usd_per_kg":"117.7","quality":"P"},
+    {"product_id":"GEN-SCENT-0006","name_fa":"سنجد","slug":"generic-senjed","supplier_brand":"SENJED","supplier_model":"SENJED","supplier_gender":"Unisex","usd_per_kg":"55","quality":"I"}
+  ]
+}
