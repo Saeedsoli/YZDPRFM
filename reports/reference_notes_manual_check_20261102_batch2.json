@@ -1,0 +1,199 @@
+{
+  "checked_date": "2026-11-02",
+  "scope": "Manual check of reference note tiers only. Independent retail and Fragrantica sources are not official. Not evidence of supplier essence, identity, formulation, quality or ingredients. No database changes.",
+  "entries": [
+    {
+      "product_id": "SUP-GC-900015",
+      "slug": "gucci-rush",
+      "reference_name": "Rush",
+      "source_type": "official",
+      "source_url": "https://www.gucci.com/us/en/pr/beauty/fragrances/fragrances-for-women/gucci-rush-75ml-eau-de-toilette-p-012769999990099",
+      "status": "full_tier_match",
+      "checked_existing_notes": {
+        "top": [
+          "فریزیا",
+          "آکورد هلو",
+          "گاردنیا"
+        ],
+        "middle": [
+          "رز",
+          "یاس",
+          "چوب کشمیر"
+        ],
+        "base": [
+          "آکورد پچولی",
+          "وانیل",
+          "خزه"
+        ]
+      },
+      "observation": "Official EDT tier list matches current notes, including peach and patchouli as accords."
+    },
+    {
+      "product_id": "SUP-LC-900017",
+      "slug": "lacoste-essential",
+      "reference_name": "Essential",
+      "source_type": "official",
+      "source_url": "https://www.lacoste.com/se/lacoste/men/accessories/fragrance/LC011A01.html",
+      "status": "full_tier_match",
+      "checked_existing_notes": {
+        "top": [
+          "آکورد مرکبات"
+        ],
+        "middle": [
+          "فلفل سیاه",
+          "رز"
+        ],
+        "base": [
+          "چوب صندل",
+          "پچولی"
+        ]
+      },
+      "observation": "Official EDT tier list matches the recorded citrus accord, pepper, rose, sandalwood and patchouli."
+    },
+    {
+      "product_id": "SUP-LC-900023",
+      "slug": "lacoste-touch-of-pink",
+      "reference_name": "Touch of Pink",
+      "source_type": "official",
+      "source_url": "https://www.lacoste.com/fr/lacoste/femme/accessoires/parfums/LC015A02.html",
+      "status": "partial_tier_match",
+      "checked_existing_notes": {
+        "top": [
+          "پرتقال",
+          "هل"
+        ],
+        "middle": [
+          "یاس",
+          "برگ بنفشه"
+        ],
+        "base": [
+          "چوب صندل",
+          "مشک"
+        ]
+      },
+      "observation": "Official EDT lists blood orange, cardamom, jasmine, violet leaves, sandalwood and musks. Catalog uses the broader term orange."
+    },
+    {
+      "product_id": "SUP-JH-900028",
+      "slug": "juliette-has-a-gun-metal-chypre",
+      "reference_name": "Metal Chypré",
+      "source_type": "official",
+      "source_url": "https://us.juliettehasagun.com/pages/luxury-collection",
+      "status": "full_tier_match",
+      "checked_existing_notes": {
+        "top": [
+          "ترنج"
+        ],
+        "middle": [
+          "فلفل صورتی"
+        ],
+        "base": [
+          "پچولی"
+        ]
+      },
+      "observation": "Official collection page Metal Chypré pyramid lists bergamot, pink pepper, patchouli. This is the collection page, not the original product URL."
+    },
+    {
+      "product_id": "SUP-VS-900032",
+      "slug": "victorias-secret-aqua-kiss",
+      "reference_name": "Aqua Kiss",
+      "source_type": "official",
+      "source_url": "https://www.victoriassecret.com/ca/vs/beauty-catalog/5000011041?genericId=11259203&choice=4760",
+      "status": "full_tier_match",
+      "checked_existing_notes": {
+        "top": [
+          "گریپ‌فروت صورتی",
+          "فریزیا"
+        ],
+        "middle": [
+          "نیلوفر آبی",
+          "گلابی"
+        ],
+        "base": [
+          "کهربای سفید",
+          "مشک معدنی"
+        ]
+      },
+      "observation": "Official reference is a fragrance mist, not EDP. Page gives pink grapefruit, freesia, water lily, pear drops, white amber and mineral musk."
+    },
+    {
+      "product_id": "SUP-GU-900029",
+      "slug": "guerlain-baiser-de-russie",
+      "reference_name": "Baiser de Russie",
+      "source_type": "independent",
+      "source_url": "https://www.fragrantica.com/perfume/Guerlain/Baiser-de-Russie-48679.html",
+      "status": "full_tier_match",
+      "checked_existing_notes": {
+        "top": [
+          "ترنج",
+          "آلو",
+          "سوزن کاج",
+          "لیمو",
+          "ابسنت"
+        ],
+        "middle": [
+          "کرنبری",
+          "گلبرگ یاس"
+        ],
+        "base": [
+          "کارامل",
+          "چوب صندل",
+          "دانه تونکا",
+          "مشک سفید",
+          "وانیل"
+        ]
+      },
+      "observation": "Official US and Spanish links redirected to homepage; Fragrantica separately provides equivalent tier descriptions including jasmine petals."
+    },
+    {
+      "product_id": "SUP-JG-900025",
+      "slug": "jaguar-classic-black",
+      "reference_name": "Classic Black",
+      "source_type": "independent",
+      "source_url": "https://perfumania.com/products/jaguar-classic-black-by-jaguar-for-men-eau-de-toilette-spray",
+      "status": "partial_tier_match",
+      "checked_existing_notes": {
+        "top": [
+          "سیب سبز",
+          "ماندارین",
+          "پرتقال"
+        ],
+        "middle": [
+          "هل",
+          "جوز هندی",
+          "چای سیاه"
+        ],
+        "base": [
+          "چوب صندل",
+          "مشک سفید",
+          "چوب سدر"
+        ]
+      },
+      "observation": "Official Jaguar page could not be fetched. Retailer lists tea and bitter orange without specifying black tea or plain orange; other displayed notes occur in the same tiers."
+    },
+    {
+      "product_id": "SUP-MB-900010",
+      "slug": "montblanc-emblem",
+      "reference_name": "Emblem",
+      "source_type": "independent",
+      "source_url": "https://www.nordstromrack.com/s/montblanc-emblem-eau-de-toilette/7746898",
+      "status": "partial_tier_match",
+      "checked_existing_notes": {
+        "top": [
+          "مریم‌گلی",
+          "هل",
+          "گریپ‌فروت"
+        ],
+        "middle": [
+          "برگ بنفشه",
+          "برگ دارچین"
+        ],
+        "base": [
+          "دانه تونکا",
+          "چوب‌های گران‌بها"
+        ]
+      },
+      "observation": "Official product links redirected to generic fragrance listing. Retailer lists cinnamon and woody notes more generally than cinnamon leaves and precious woods."
+    }
+  ]
+}
