@@ -64,6 +64,7 @@ python3 scripts/test_generic_scent_import_v2.py
 python3 scripts/test_owner_reference_import_v3.py
 node scripts/test_generic_image_seven.js
 python3 scripts/test_legacy_reference_approval.py
+python3 scripts/test_performance_claim_gate.py
 python3 scripts/test_approved_mto_v13.py
 node scripts/test_default_reference_v53.js
 node scripts/test_generic_product_images.js

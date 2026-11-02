@@ -1104,8 +1104,12 @@ function parseProduct(row, options = {}) {
     accords: JSON.parse(row.accords || '[]'),
     season: row.season,
     occasion: row.occasion,
-    longevity: row.longevity,
-    sillage: row.sillage,
+    // Seeded performance descriptions are not measurements of our handmade
+    // product. Keep drafts visible in the admin, but never publish unverified
+    // claims via catalog, suggestions or server-rendered SEO. Customer review
+    // scores are a separate data source and are not affected by this gate.
+    longevity: options.includeDrafts ? (row.longevity || null) : null,
+    sillage: options.includeDrafts ? (row.sillage || null) : null,
     country: row.country,
     market_segment: row.market_segment,
     /* شناسنامه فنی — عطار و سال عرضه.

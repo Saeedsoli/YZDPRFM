@@ -919,3 +919,4 @@ node_modules/   با npm install برمی‌گردد
 - `src/legacy-reference-approval.js` — رفع محافظت‌شده ابهام دو قیمت قدیمی با منابع مستقل.
 - `scripts/apply_legacy_references.js` — اعمال صریح پس از پشتیبان و بازسازی ایندکس‌ها.
 - `scripts/test_legacy_reference_approval.py` — آزمون قیمت قدیمی، سفارش، نت‌ها و محافظ ویرایش مدیر.
+- `scripts/test_performance_claim_gate.py` — پنهان‌بودن ماندگاری و پخش تأییدنشده از خروجی عمومی همراه با حفظ داده پنل.
