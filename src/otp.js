@@ -14,6 +14,7 @@
 const crypto = require('crypto');
 const store = require('./db');
 const sms = require('./sms');
+const phoneVerification = require('./customer-phone-verification');
 
 const OTP_TTL      = 2 * 60 * 1000;   // اعتبار کد: ۲ دقیقه
 const RESEND_GAP   = 60 * 1000;       // فاصله ارسال مجدد: ۶۰ ثانیه
@@ -36,8 +37,15 @@ function normalizeMobile(input) {
 
 function isValidMobile(m) { return /^09\d{9}$/.test(m); }
 
+// Configuration-only check; it does not send an SMS or prove delivery.
+async function deliveryAvailable() {
+  if (String(process.env.NODE_ENV||'').trim().toLowerCase() !== 'production') return true;
+  try { const r=await sms.testConnection();return !!(r && r.ok && r.live); } catch { return false; }
+}
+
 /** درخواست ارسال کد */
 async function requestCode(rawMobile) {
+  if (!phoneVerification.ready(store.db)) return {ok:false,error:'سامانه تأیید شماره هنوز آماده نیست.'};
   const mobile = normalizeMobile(rawMobile);
   if (!isValidMobile(mobile)) {
     return { ok: false, error: 'شماره موبایل معتبر نیست.' };
@@ -70,51 +78,43 @@ async function requestCode(rawMobile) {
   };
 }
 
-/** بررسی کد و ساخت نشست */
+/** Consume a code only within an immediate SQLite transaction. */
+function consumeCode(rawMobile, inputCode) {
+  return store.db.transaction(()=>{
+    if (!phoneVerification.ready(store.db)) return {ok:false,error:'سامانه تأیید شماره هنوز آماده نیست.'};
+    const mobile=normalizeMobile(rawMobile);
+    if(!isValidMobile(mobile))return {ok:false,error:'شماره موبایل معتبر نیست.'};
+    const rec=store.otpGet(mobile);
+    if(!rec)return {ok:false,error:'ابتدا درخواست کد بدهید.'};
+    if(Date.now()>rec.expires){store.otpDelete(mobile);return {ok:false,error:'کد منقضی شده است. دوباره درخواست دهید.'};}
+    if(rec.attempts>=MAX_ATTEMPTS){store.otpDelete(mobile);return {ok:false,error:'تعداد تلاش بیش از حد. دوباره درخواست دهید.'};}
+    const clean=String(inputCode||'').replace(/[۰-۹]/g,d=>'۰۱۲۳۴۵۶۷۸۹'.indexOf(d)).replace(/[٠-٩]/g,d=>'٠١٢٣٤٥٦٧٨٩'.indexOf(d)).replace(/\s/g,'').trim();
+    const expected=String(rec.code||'');
+    const valid=/^\d{5}$/.test(clean)&&/^\d{5}$/.test(expected)&&crypto.timingSafeEqual(Buffer.from(clean),Buffer.from(expected));
+    if(!valid){store.otpBumpAttempts(mobile);const left=MAX_ATTEMPTS-(rec.attempts+1);return {ok:false,error:left>0?`کد نادرست است. ${left} تلاش باقی مانده.`:'تعداد تلاش بیش از حد. دوباره درخواست دهید.'};}
+    store.otpDelete(mobile);return {ok:true,mobile};
+  }).immediate();
+}
+
+/** Verify ownership and issue a session that cannot be confused with legacy sessions. */
 function verifyCode(rawMobile, inputCode) {
-  const mobile = normalizeMobile(rawMobile);
-  const rec = store.otpGet(mobile);
-
-  if (!rec) return { ok: false, error: 'ابتدا درخواست کد بدهید.' };
-  if (Date.now() > rec.expires) {
-    store.otpDelete(mobile);
-    return { ok: false, error: 'کد منقضی شده است. دوباره درخواست دهید.' };
-  }
-  if (rec.attempts >= MAX_ATTEMPTS) {
-    store.otpDelete(mobile);
-    return { ok: false, error: 'تعداد تلاش بیش از حد. دوباره درخواست دهید.' };
-  }
-
-  const clean = String(inputCode || '')
-    .replace(/[۰-۹]/g, d => '۰۱۲۳۴۵۶۷۸۹'.indexOf(d))
-    .replace(/[٠-٩]/g, d => '٠١٢٣٤٥٦٧٨٩'.indexOf(d))
-    .replace(/\s/g, '')
-    .trim();
-
-  /* مقایسه زمان‌ثابت — جلوگیری از حدس کد از روی تفاوت زمان پاسخ.
-     کد فقط ۵ رقم است، پس این محافظت ارزان و بجاست. */
-  const a = Buffer.from(clean.padEnd(8, '\0'));
-  const b = Buffer.from(String(rec.code).padEnd(8, '\0'));
-  if (clean.length !== String(rec.code).length || !crypto.timingSafeEqual(a, b)) {
-    store.otpBumpAttempts(mobile);
-    const left = MAX_ATTEMPTS - (rec.attempts + 1);
-    return {
-      ok: false,
-      error: left > 0
-        ? `کد نادرست است. ${left} تلاش باقی مانده.`
-        : 'تعداد تلاش بیش از حد. دوباره درخواست دهید.'
-    };
-  }
-
-  store.otpDelete(mobile);
-  const token = store.createSession('CUSTOMER', mobile, SESSION_TTL);
-  return { ok: true, token, mobile };
+  return store.db.transaction(()=>{
+    const check=consumeCode(rawMobile,inputCode);if(!check.ok)return check;
+    const customer=store.getCustomer(check.mobile);
+    if(customer&&!customer.active)return {ok:false,error:'حساب شما غیرفعال شده است.'};
+    phoneVerification.markVerified(store.db,check.mobile,false);
+    const token=store.createSession('CUSTOMER_VERIFIED',check.mobile,SESSION_TTL);
+    return {ok:true,token,mobile:check.mobile};
+  }).immediate();
 }
 
 /** بازگرداندن شماره موبایل از توکن */
 function mobileFromToken(token) {
-  const s = store.readSession(token, 'CUSTOMER');
-  return s ? s.subject : null;
+  if (!phoneVerification.ready(store.db)) return null;
+  const s = store.readSession(token, 'CUSTOMER_VERIFIED');
+  if (!s || !phoneVerification.verified(store.db,s.subject)) return null;
+  const customer=store.getCustomer(s.subject);
+  return customer && !customer.active ? null : s.subject;
 }
 
 function destroySession(token) { store.destroySession(token); }
@@ -122,7 +122,7 @@ function destroySession(token) { store.destroySession(token); }
 // پاکسازی کدهای منقضی در db.js انجام می‌شود (هر ۵ دقیقه)
 
 module.exports = {
-  requestCode, verifyCode, mobileFromToken, destroySession,
+  requestCode, deliveryAvailable, consumeCode, verifyCode, mobileFromToken, destroySession,
   normalizeMobile, isValidMobile, SESSION_TTL,
   get PROVIDER() { return sms.PROVIDER; }
 };

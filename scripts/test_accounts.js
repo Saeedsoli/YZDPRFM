@@ -43,7 +43,8 @@ function cleanup() {
     db.prepare('DELETE FROM audit_log WHERE staff_id=?').run(st.id);
     db.prepare('DELETE FROM staff WHERE id=?').run(st.id);
   }
-  db.prepare("DELETE FROM sessions WHERE kind='CUSTOMER' AND subject=?").run(TEST_MOBILE);
+  db.prepare("DELETE FROM sessions WHERE kind IN ('CUSTOMER','CUSTOMER_VERIFIED') AND subject=?").run(TEST_MOBILE);
+  db.prepare('DELETE FROM customer_phone_verifications WHERE mobile=?').run(TEST_MOBILE);
   db.prepare('DELETE FROM otp_codes WHERE mobile=?').run(TEST_MOBILE);
   db.prepare('DELETE FROM rate_limits').run();
   db.close();
@@ -103,11 +104,13 @@ const api = (p, opt = {}, token = null) =>
   // ══ ۲+۳) ثبت‌نام مشتری ══
   console.log(d('  ثبت‌نام مشتری'));
 
+  await api('/api/auth/request-code', {method:'POST',body:JSON.stringify({mobile:TEST_MOBILE})});
+  const regCode=db.prepare('SELECT code FROM otp_codes WHERE mobile=?').get(TEST_MOBILE)?.code;
   const reg = await api('/api/auth/register', {
     method: 'POST',
     body: JSON.stringify({
       first_name: 'سارا', last_name: 'کریمی',
-      mobile: TEST_MOBILE, password: 'MyPass12345'
+      mobile: TEST_MOBILE, password: 'MyPass12345', code: regCode
     })
   });
   add('ثبت‌نام موفق است', reg.status === 201, `کد ${reg.status}`);
@@ -135,10 +138,12 @@ const api = (p, opt = {}, token = null) =>
   });
   add('موبایل نامعتبر رد می‌شود', badMobile.status === 400);
 
+  await api('/api/auth/request-code', {method:'POST',body:JSON.stringify({mobile:TEST_MOBILE})});
+  const dupCode=db.prepare('SELECT code FROM otp_codes WHERE mobile=?').get(TEST_MOBILE)?.code;
   const dup = await api('/api/auth/register', {
     method: 'POST',
     body: JSON.stringify({
-      first_name: 'دیگری', mobile: TEST_MOBILE, password: 'OtherPass123'
+      first_name: 'دیگری', mobile: TEST_MOBILE, password: 'OtherPass123', code: dupCode
     })
   });
   add('موبایل تکراری رد می‌شود', dup.status === 409, `کد ${dup.status}`);
@@ -148,14 +153,18 @@ const api = (p, opt = {}, token = null) =>
      پر می‌شود، پس پاکش می‌کنیم — هدف اینجا سنجش قاعده است نه
      محدودیت نرخ که جدا آزمون دارد. */
   db.prepare('DELETE FROM rate_limits').run();
+  await api('/api/auth/request-code', {method:'POST',body:JSON.stringify({mobile:'09190009988'})});
+  const noLastCode=db.prepare('SELECT code FROM otp_codes WHERE mobile=?').get('09190009988')?.code;
   const noLast = await api('/api/auth/register', {
     method: 'POST',
     body: JSON.stringify({
-      first_name: 'مینا', mobile: '09190009988', password: 'MinaPass123'
+      first_name: 'مینا', mobile: '09190009988', password: 'MinaPass123', code: noLastCode
     })
   });
   add('نام خانوادگی اختیاری است', noLast.status === 201, `کد ${noLast.status}`);
   db.prepare('DELETE FROM customers WHERE mobile=?').run('09190009988');
+  db.prepare('DELETE FROM customer_phone_verifications WHERE mobile=?').run('09190009988');
+  db.prepare("DELETE FROM sessions WHERE kind='CUSTOMER_VERIFIED' AND subject=?").run('09190009988');
 
   // ══ ورود با رمز ══
   console.log(d('\n  ورود مشتری'));

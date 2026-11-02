@@ -34,6 +34,8 @@
  */
 
 'use strict';
+const phoneVerification = require('../customer-phone-verification');
+const crypto = require('crypto');
 
 /**
  * @param {object}   ctx
@@ -74,6 +76,12 @@ async function handle(ctx) {
      `res.setHeader` برای کوکی نشست‌اند که **پیش از** بدنه اجرا
      می‌شوند، پس تداخلی ندارند. */
   const sendJSON = (code, data) => { ctx.sendJSON(code, data); return true; };
+  if (pathname.startsWith('/api/auth/')) res.setHeader('Cache-Control','no-store');
+  function issueCustomerCookie(token) {
+    const secure=String(process.env.NODE_ENV||'').trim().toLowerCase()==='production' ? '; Secure' : '';
+    res.setHeader('Cache-Control','no-store');
+    res.setHeader('Set-Cookie',`yazd_customer=${token}; HttpOnly; Path=/; Max-Age=${otp.SESSION_TTL / 1000}; SameSite=Lax${secure}`);
+  }
 
   if (method === 'POST' && pathname === '/api/auth/register') {
     const b = await parseBody(req);
@@ -103,39 +111,28 @@ async function handle(ctx) {
       return sendJSON(400, { error: 'رمز عبور باید حداقل ۸ نویسه باشد.' });
     }
 
-    const exists = getCustomer(mobile);
-    if (exists) {
-      /* Existing OTP-only accounts must never be claimed just by knowing the
-         phone number. Require an already authenticated session for this exact
-         mobile before assigning its first password. */
-      if (!exists.pass_hash && otp.mobileFromToken(getCustomerToken(req)) === mobile) {
-        setCustomerPassword(exists.id, password);
-        const token = createSession('CUSTOMER', mobile, otp.SESSION_TTL);
-        appLog('INFO', 'auth', 'مشتری برای حساب موجود رمز گذاشت', { mobile });
-        return sendJSON(200, {
-          message: 'رمز عبور برای حساب شما ثبت شد.',
-          token, customer: publicCustomer(getCustomer(mobile))
-        });
-      }
-      return sendJSON(409, {
-        error: 'با این شماره قبلاً حساب ساخته شده است. وارد شوید.'
-      });
-    }
-
-    const c = createCustomer({
-      mobile, first_name: first, last_name: last,
-      email: b.email ? cleanText(b.email, 80) : null,
-      password
-    });
-
-    const token = createSession('CUSTOMER', mobile, otp.SESSION_TTL);
-    appLog('INFO', 'auth', 'حساب مشتری ساخته شد', { mobile });
-    analytics.track('register', null, null, req);
-
-    return sendJSON(201, {
-      message: `خوش آمدید ${first}!`,
-      token, customer: publicCustomer(c)
-    });
+    if (!phoneVerification.ready(db)) return sendJSON(503,{error:'سامانه تأیید شماره هنوز آماده نیست.'});
+    // OTP consumption, ownership record, customer mutation and session are
+    // one transaction. Legacy accounts/passwords are not implicitly trusted.
+    const result=db.transaction(()=>{
+      const check=otp.consumeCode(mobile,b.code);
+      if(!check.ok)return {status:400,error:check.error};
+      const exists=getCustomer(mobile);
+      if(exists && !exists.active)return {status:403,error:'حساب شما غیرفعال شده است.'};
+      if(exists && exists.pass_hash)return {status:409,error:'با این شماره قبلاً حساب ساخته شده است. از ورود یا بازیابی رمز استفاده کنید.'};
+      let customer;
+      if(exists){setCustomerPassword(exists.id,password);customer=getCustomer(mobile);}
+      else customer=createCustomer({mobile,first_name:first,last_name:last,email:b.email?cleanText(b.email,80):null,password});
+      phoneVerification.markVerified(db,mobile,true);
+      db.prepare("DELETE FROM sessions WHERE kind IN ('CUSTOMER','CUSTOMER_VERIFIED') AND subject=?").run(mobile);
+      const token=createSession('CUSTOMER_VERIFIED',mobile,otp.SESSION_TTL);
+      return {status:exists?200:201,token,customer:publicCustomer(customer)};
+    }).immediate();
+    if(result.error)return sendJSON(result.status,{error:result.error});
+    issueCustomerCookie(result.token);
+    appLog('INFO','auth','حساب مشتری با تأیید شماره ثبت شد',{mobile});
+    analytics.track('register',null,null,req);
+    return sendJSON(result.status,{message:`خوش آمدید ${first}!`,token:result.token,customer:result.customer});
   }
 
   /** ورود با شماره موبایل و رمز */
@@ -152,8 +149,12 @@ async function handle(ctx) {
       });
     }
 
+    if (!phoneVerification.ready(db)) return sendJSON(503,{error:'سامانه تأیید شماره هنوز آماده نیست.'});
     const mobile = otp.normalizeMobile(b.mobile);
     const password = String(b.password || '');
+    // Distributed guesses remain bounded even if the forwarded IP changes.
+    const phoneKey = otp.isValidMobile(mobile) ? 'clogin-phone:'+crypto.createHash('sha256').update(mobile).digest('hex') : null;
+    if(phoneKey){const ph=rateLimit(phoneKey,8,15*60e3,15*60e3);if(!ph.ok)return sendJSON(429,{error:'تلاش‌های ورود برای این شماره بیش از حد است. کمی بعد تلاش کنید.',retry_after:ph.retry_after});}
     const c = getCustomer(mobile);
 
     // پیام یکسان برای «حساب نیست» و «رمز غلط» تا شماره‌های
@@ -165,20 +166,24 @@ async function handle(ctx) {
 
     if (!c || !c.pass_hash) return bad();
     if (!verifyPassword(password, c.pass_hash, c.pass_salt)) return bad();
-    if (!c.active) {
-      return sendJSON(403, { error: 'حساب شما غیرفعال شده است.' });
-    }
-
+    // Verify the same stored credential again under a write lock before issuing
+    // a session: a concurrent OTP reset must not resurrect an old password.
+    const auth=db.transaction(()=>{
+      const latest=getCustomer(mobile);
+      if(!latest || latest.pass_hash!==c.pass_hash || latest.pass_salt!==c.pass_salt)return {kind:'bad'};
+      if(!latest.active)return {kind:'disabled'};
+      if(!phoneVerification.trustedPassword(db,mobile))return {kind:'untrusted'};
+      db.prepare('UPDATE customers SET last_login=? WHERE id=?').run(new Date().toISOString(),latest.id);
+      return {kind:'ok',token:createSession('CUSTOMER_VERIFIED',mobile,otp.SESSION_TTL),customer:publicCustomer(latest)};
+    }).immediate();
+    if(auth.kind==='bad')return bad();
+    if(auth.kind==='disabled')return sendJSON(403,{error:'حساب شما غیرفعال شده است.'});
+    if(auth.kind==='untrusted')return sendJSON(403,{error:'برای امنیت حساب، یک‌بار رمز را با کد پیامکی از بخش بازیابی رمز تغییر دهید.',phone_verification_required:true});
     resetRateLimit(`clogin:${ip}`);
-    db.prepare('UPDATE customers SET last_login=? WHERE id=?')
-      .run(new Date().toISOString(), c.id);
-
-    const token = createSession('CUSTOMER', mobile, otp.SESSION_TTL);
-    appLog('INFO', 'auth', 'ورود موفق مشتری', { mobile });
-
-    return sendJSON(200, {
-      message: 'ورود موفق', token, customer: publicCustomer(c)
-    });
+    if(phoneKey)resetRateLimit(phoneKey);
+    issueCustomerCookie(auth.token);
+    appLog('INFO','auth','ورود موفق مشتری',{mobile});
+    return sendJSON(200,{message:'ورود موفق',token:auth.token,customer:auth.customer});
   }
 
   /**
@@ -204,6 +209,7 @@ async function handle(ctx) {
       });
     }
 
+    if (!phoneVerification.ready(db) || !(await otp.deliveryAvailable())) return sendJSON(503,{error:'سامانه پیامک یا تأیید شماره هنوز آماده نیست.'});
     const c = getCustomer(mobile);
     if (c) {
       // requestCode خودش کد می‌سازد، ذخیره و پیامک می‌کند
@@ -229,26 +235,21 @@ async function handle(ctx) {
       return sendJSON(400, { error: 'رمز تازه باید حداقل ۸ نویسه باشد.' });
     }
 
-    const check = otp.verifyCode(mobile, code);
-    if (!check.ok) return sendJSON(400, { error: check.error });
-
-    const c = getCustomer(mobile);
-    if (!c) return sendJSON(404, { error: 'حسابی با این شماره یافت نشد.' });
-
-    setCustomerPassword(c.id, next);
-
-    /* همه نشست‌های باز باطل می‌شوند جز همینی که تازه ساخته شد.
-       اگر کسی رمز را دزدیده و وارد شده بود، بیرون می‌افتد. */
-    db.prepare("DELETE FROM sessions WHERE kind='CUSTOMER' AND subject=? AND token!=?")
-      .run(mobile, check.token);
-
-    appLog('INFO', 'auth', 'رمز مشتری بازیابی شد', { mobile });
-    const token = check.token;
-
-    return sendJSON(200, {
-      message: 'رمز عبور شما تغییر کرد.',
-      token, customer: publicCustomer(getCustomer(mobile))
-    });
+    if (!phoneVerification.ready(db)) return sendJSON(503,{error:'سامانه تأیید شماره هنوز آماده نیست.'});
+    const result=db.transaction(()=>{
+      const check=otp.consumeCode(mobile,code);if(!check.ok)return {status:400,error:check.error};
+      const c=getCustomer(mobile);
+      if(!c)return {status:404,error:'حسابی با این شماره یافت نشد.'};
+      if(!c.active)return {status:403,error:'حساب شما غیرفعال شده است.'};
+      setCustomerPassword(c.id,next);phoneVerification.markVerified(db,mobile,true);
+      db.prepare("DELETE FROM sessions WHERE kind IN ('CUSTOMER','CUSTOMER_VERIFIED') AND subject=?").run(mobile);
+      const token=createSession('CUSTOMER_VERIFIED',mobile,otp.SESSION_TTL);
+      return {status:200,token,customer:publicCustomer(getCustomer(mobile))};
+    }).immediate();
+    if(result.error)return sendJSON(result.status,{error:result.error});
+    issueCustomerCookie(result.token);
+    appLog('INFO','auth','رمز مشتری با تأیید شماره بازیابی شد',{mobile});
+    return sendJSON(200,{message:'رمز عبور شما تغییر کرد.',token:result.token,customer:result.customer});
   }
 
   if (method === 'POST' && pathname === '/api/auth/request-code') {
@@ -279,9 +280,9 @@ async function handle(ctx) {
     const r = await otp.requestCode(b.mobile);
     if (!r.ok) return sendJSON(400, { error: r.error, retry_after: r.retry_after });
     return sendJSON(200, {
-      message: 'کد ورود ارسال شد.',
+      message: r.dev_hint ? 'کد فقط در محیط آزمایشی تولید شد.' : 'درخواست ارسال کد پذیرفته شد.',
       mobile: r.mobile, ttl: r.ttl,
-      dev_mode: otp.PROVIDER === 'console'
+      dev_mode: !!r.dev_hint
     });
   }
 
@@ -289,8 +290,7 @@ async function handle(ctx) {
     const b = await parseBody(req);
     const r = otp.verifyCode(b.mobile, b.code);
     if (!r.ok) return sendJSON(400, { error: r.error });
-    res.setHeader('Set-Cookie',
-      `yazd_customer=${r.token}; HttpOnly; Path=/; Max-Age=${otp.SESSION_TTL / 1000}; SameSite=Lax`);
+    issueCustomerCookie(r.token);
     return sendJSON(200, { message: 'ورود موفق', token: r.token, mobile: r.mobile });
   }
 
@@ -315,11 +315,16 @@ async function handle(ctx) {
     if (!mobile) return sendJSON(401, { error: 'ابتدا وارد شوید.' });
     const rows = db.prepare(
       'SELECT * FROM orders WHERE mobile=? ORDER BY created_at DESC').all(mobile);
+    res.setHeader('Cache-Control','no-store');
     return sendJSON(200, {
       total: rows.length,
       orders: rows.map(o => ({
-        ...o,
-        items: db.prepare('SELECT * FROM order_items WHERE order_id=?').all(o.order_id)
+        order_id:o.order_id,created_at:o.created_at,status:o.status,
+        province:o.province,city:o.city,total_paid:o.total_paid,
+        discount_amount:o.discount_amount,discount_code:o.discount_code,
+        tracking_code:o.tracking_code,carrier:o.carrier,
+        payment_ref:['PAID','PROCESSING','SHIPPED','DELIVERED'].includes(o.status)?o.payment_ref:null,
+        items:db.prepare('SELECT sku,product_name,unit_price,quantity,line_total FROM order_items WHERE order_id=?').all(o.order_id)
       }))
     });
   }

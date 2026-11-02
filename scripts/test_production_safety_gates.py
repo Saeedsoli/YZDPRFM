@@ -101,16 +101,16 @@ https.request=(opt,cb)=>{const q=new EventEmitter();let body='';q.write=x=>{body
   c=sqlite3.connect(db);assert c.execute("select count(*) from orders where order_id in ('PAY-101','PAY-ERR') and status='VERIFYING'").fetchone()[0]==2;c.close()
   code,_,_=api(port,'GET','/payment/callback?order=PAY-CANCEL&Authority=AUTH-CANCEL&Status=NOK');assert code==503
   c=sqlite3.connect(db);assert c.execute("select status from orders where order_id='PAY-CANCEL'").fetchone()[0]=='VERIFYING';assert c.execute("select used_count from coupons where code='TESTCALLBACK'").fetchone()[0]==1;assert c.execute("select count(*) from coupon_usage where order_id='PAY-CANCEL'").fetchone()[0]==1;assert c.execute('select stock from variants where sku=?',(sku,)).fetchone()[0]==0;c.close()
-  # Existing passwordless account cannot be claimed without its own session.
-  c=sqlite3.connect(db);c.execute("insert into customers(mobile,first_name) values('09120009999','Test')");c.execute("insert into sessions(token,kind,subject,expires_at) values(?,?,?,?)",('a'*48,'CUSTOMER','09120009999',int(time.time()*1000)+600000));c.execute("insert into sessions(token,kind,subject,expires_at) values(?,?,?,?)",('b'*48,'CUSTOMER','09120008888',int(time.time()*1000)+600000));c.commit();c.close()
+  # Existing passwordless account cannot be claimed using legacy sessions.
+  c=sqlite3.connect(db);c.execute("insert into customers(mobile,first_name) values('09120009999','Test')");c.execute("insert into sessions(token,kind,subject,expires_at) values(?,?,?,?)",('a'*48,'CUSTOMER','09120009999',int(time.time()*1000)+600000));c.commit();c.close()
   data={'first_name':'Test','mobile':'09120009999','password':'Private-Test-879'}
-  assert api(port,'POST','/api/auth/register',data)[0]==409
-  # Customer token is separate from the administrative Authorization header.
-  req=urllib.request.Request(f'http://127.0.0.1:{port}/api/auth/register',data=json.dumps(data).encode(),headers={'Content-Type':'application/json','X-Customer-Token':'b'*48},method='POST')
-  try:opener.open(req,timeout=5);raise AssertionError('wrong customer accepted')
-  except urllib.error.HTTPError as ex:assert ex.code==409
-  c=sqlite3.connect(db);assert c.execute("select pass_hash from customers where mobile='09120009999'").fetchone()[0] is None;c.close()
+  assert api(port,'POST','/api/auth/register',data)[0]==400
   req=urllib.request.Request(f'http://127.0.0.1:{port}/api/auth/register',data=json.dumps(data).encode(),headers={'Content-Type':'application/json','X-Customer-Token':'a'*48},method='POST')
-  with opener.open(req,timeout=5) as r:assert r.status==200
+  try:opener.open(req,timeout=5);raise AssertionError('unverified legacy token accepted')
+  except urllib.error.HTTPError as ex:assert ex.code==400
+  c=sqlite3.connect(db);assert c.execute("select pass_hash from customers where mobile='09120009999'").fetchone()[0] is None
+  nowms=int(time.time()*1000);c.execute("insert into otp_codes(mobile,code,expires_at,last_sent,attempts) values('09120009999','24680',?,?,0)",(nowms+120000,nowms));c.commit();c.close()
+  data['code']='24680';code,_,headers=api(port,'POST','/api/auth/register',data);assert code==200 and headers.get('Cache-Control')=='no-store' and 'Secure' in headers.get('Set-Cookie','') and 'HttpOnly' in headers.get('Set-Cookie','')
+
  finally:stop(p,out)
 print('PASS production payment/OTP fail closed, authority binding, uncertain-payment and coupon preservation and existing-account ownership (fake providers only)')

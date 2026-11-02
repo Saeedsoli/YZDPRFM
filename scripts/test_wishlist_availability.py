@@ -10,10 +10,12 @@ with tempfile.TemporaryDirectory(prefix='yazd-wishlist-') as tmp:
     subprocess.run(['node','-e',"require('./src/db')"],cwd=root,env=env,check=True,stdout=subprocess.DEVNULL,timeout=120)
     con=sqlite3.connect(dbfile);mobile='09120001234';token='c'*48
     con.execute('insert into customers(mobile,first_name) values(?,?)',(mobile,'تست'))
-    con.execute('insert into sessions(token,kind,subject,expires_at) values(?,?,?,?)',(token,'CUSTOMER',mobile,int(time.time()*1000)+600000))
+    con.execute('insert into customer_phone_verifications(mobile,verified_at,password_trusted) values(?,?,0)',(mobile,int(time.time()*1000)));con.execute('insert into sessions(token,kind,subject,expires_at) values(?,?,?,?)',(token,'CUSTOMER_VERIFIED',mobile,int(time.time()*1000)+600000))
     rows=[('YZD-PROD-0429','UNAVAILABLE',5,100000),('YZD-PROD-0430','MADE_TO_ORDER',None,None),('YZD-PROD-0431','MADE_TO_ORDER',0,260000),('YZD-PROD-0432','IN_STOCK',2,0)]
     for pid,mode,stock,price in rows:
         con.execute('update products set supply_mode=? where id=?',(mode,pid));con.execute('update variants set stock=0 where product_id=?',(pid,))
+        # Fresh catalog now includes real 5ml samples; remove them only from this disposable fixture.
+        con.execute("delete from variants where product_id=? and type='SAMPLE' and volume_ml=5",(pid,))
         con.execute('insert into wishlist(mobile,product_id) values(?,?)',(mobile,pid))
         if stock is not None:con.execute('insert into variants(sku,product_id,type,type_label,volume_ml,price_toman,stock) values(?,?,?,?,?,?,?)',('sample-'+pid,pid,'SAMPLE','سمپل',5,price,stock))
     con.commit();slugs={pid:con.execute('select slug from products where id=?',(pid,)).fetchone()[0] for pid,_,_,_ in rows}

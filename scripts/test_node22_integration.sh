@@ -78,6 +78,10 @@ python3 scripts/test_order_stock_cross_process.py
 python3 scripts/test_order_stock_migration.py
 python3 scripts/test_private_order_tracking.py
 node scripts/test_payment_result_safety.js
+python3 scripts/test_customer_phone_verification.py
+python3 scripts/test_customer_verification_migration.py
+python3 scripts/test_customer_password_reset_race.py
+node scripts/test_login_redirect_safety.js
 python3 scripts/test_approved_mto_v13.py
 node scripts/test_default_reference_v53.js
 node scripts/test_generic_product_images.js

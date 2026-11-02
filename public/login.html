@@ -140,7 +140,8 @@
         </div>
 
         <button class="btn btn-block" id="lgBtn" onclick="doLogin()">ورود</button>
-        <div style="margin-top:13px">
+        <div style="margin-top:13px;display:flex;gap:16px;flex-wrap:wrap">
+          <button class="link-btn" onclick="showView('otp')">ورود با کد پیامکی</button>
           <button class="link-btn" onclick="showView('forgot')">رمز عبور را فراموش کرده‌ام</button>
         </div>
       </div>
@@ -148,7 +149,7 @@
       <!-- ثبت‌نام -->
       <div id="paneReg" style="display:none">
         <h2>ساخت حساب کاربری</h2>
-        <p class="sub">یک بار ثبت‌نام کنید، سفارش‌های بعدی سریع‌تر می‌شود.</p>
+        <p class="sub">برای امنیت حساب، ابتدا شماره موبایل را با کد پیامکی تأیید کنید.</p>
 
         <div class="row2">
           <div class="fld">
@@ -174,8 +175,34 @@
           <div class="hint">دست‌کم ۸ نویسه انتخاب کنید.</div>
         </div>
 
-        <button class="btn btn-block" id="rgBtn" onclick="doRegister()">ساخت حساب</button>
+        <button class="btn btn-block" id="rgSendBtn" onclick="requestSignupCode()">ارسال کد تأیید</button>
+        <div id="rgVerify" style="display:none">
+          <div class="fld"><label for="rgCode">کد تأیید پیامکی</label>
+            <input id="rgCode" type="text" inputmode="numeric" autocomplete="one-time-code" dir="ltr"
+                   style="text-align:center;letter-spacing:.25em" maxlength="5" placeholder="کد ۵ رقمی"></div>
+          <button class="btn btn-block" id="rgBtn" onclick="doRegister()">تأیید و ساخت حساب</button>
+        </div>
       </div>
+    </div>
+
+    <!-- ورود صرفاً با کد، برای شماره تأییدشده و سفارش‌های مهمان -->
+    <div id="viewOtp" style="display:none">
+      <h2>ورود با کد پیامکی</h2>
+      <p class="sub">شماره موبایل خود را وارد کنید.</p>
+      <div class="fld"><label for="otpMobile">شماره موبایل</label>
+        <input id="otpMobile" type="tel" inputmode="numeric" dir="ltr" style="text-align:right"
+               placeholder="۰۹۱۲۳۴۵۶۷۸۹" maxlength="13" autocomplete="tel"></div>
+      <button class="btn btn-block" id="otpSendBtn" onclick="doOtpRequest()">ارسال کد تأیید</button>
+      <div style="margin-top:13px"><button class="link-btn" onclick="showView('main')">بازگشت به ورود</button></div>
+    </div>
+    <div id="viewOtpCode" style="display:none">
+      <h2>تأیید شماره موبایل</h2>
+      <p class="sub">کد دریافتی برای <strong id="otpSentMobile" dir="ltr"></strong> را وارد کنید.</p>
+      <div class="fld"><label for="otpCode">کد تأیید پیامکی</label>
+        <input id="otpCode" type="text" inputmode="numeric" autocomplete="one-time-code" dir="ltr"
+               style="text-align:center;letter-spacing:.25em" maxlength="5" placeholder="کد ۵ رقمی"></div>
+      <button class="btn btn-block" id="otpVerifyBtn" onclick="doOtpVerify()">تأیید و ورود</button>
+      <div style="margin-top:13px"><button class="link-btn" onclick="showView('otp')">تغییر شماره یا ارسال دوباره</button></div>
     </div>
 
     <!-- ═══ بازیابی رمز — گام یک ═══ -->
@@ -198,7 +225,7 @@
     <!-- ═══ بازیابی رمز — گام دو ═══ -->
     <div id="viewReset" style="display:none">
       <h2>رمز تازه</h2>
-      <p class="sub">کد ۵ رقمی ارسال‌شده به
+      <p class="sub">اگر این شماره ثبت شده و ارسال موفق باشد، کد دریافتی برای
         <strong id="rsMobile" dir="ltr"></strong> را وارد کنید.</p>
 
       <div class="fld">
@@ -235,7 +262,16 @@ document.getElementById('hdr').innerHTML = renderHeader('');
 document.getElementById('ftr').innerHTML = renderFooter();
 
 /* اگر از صفحه دیگری آمده، بعد از ورود همان‌جا برگردد */
-const RETURN_TO = new URLSearchParams(location.search).get('next') || '/account';
+const requestedNext = new URLSearchParams(location.search).get('next') || '/account';
+// Never execute or navigate to an external/ambiguous URL after login.
+function safeReturnTo(raw) {
+  try {
+    if (!/^\/(?!\/)[^\\\u0000-\u001f]*$/.test(raw)) return '/account';
+    const u=new URL(raw,location.origin);
+    return u.origin===location.origin ? u.pathname+u.search+u.hash : '/account';
+  } catch { return '/account'; }
+}
+const RETURN_TO = safeReturnTo(requestedNext);
 
 const $ = id => document.getElementById(id);
 const enDigits = v => String(v || '')
@@ -267,6 +303,8 @@ function showView(v) {
   $('viewMain').style.display   = v === 'main'   ? '' : 'none';
   $('viewForgot').style.display = v === 'forgot' ? '' : 'none';
   $('viewReset').style.display  = v === 'reset'  ? '' : 'none';
+  $('viewOtp').style.display = v === 'otp' ? '' : 'none';
+  $('viewOtpCode').style.display = v === 'otpCode' ? '' : 'none';
 }
 
 /** ذخیره نشست و رفتن به مقصد */
@@ -300,32 +338,61 @@ async function doLogin() {
   }
 }
 
-async function doRegister() {
-  clearMsg();
-  const first = $('rgFirst').value.trim();
-  const last = $('rgLast').value.trim();
-  const mobile = enDigits($('rgMobile').value);
-  const password = $('rgPass').value;
-
-  if (first.length < 2) return showErr('نام را وارد کنید (حداقل ۲ نویسه).');
-  if (!/^09\d{9}$/.test(mobile)) return showErr('شماره موبایل باید با ۰۹ شروع شود و ۱۱ رقم باشد.');
-  if (password.length < 8) return showErr('رمز عبور باید حداقل ۸ نویسه باشد.');
-
-  const btn = $('rgBtn');
-  btn.disabled = true; btn.textContent = 'در حال ساخت حساب…';
+let signupMobile = '';
+function signupInput() {
+  const first=$('rgFirst').value.trim(), last=$('rgLast').value.trim();
+  const mobile=enDigits($('rgMobile').value), password=$('rgPass').value;
+  if(first.length<2){showErr('نام را وارد کنید (حداقل ۲ نویسه).');return null;}
+  if(!/^09\d{9}$/.test(mobile)){showErr('شماره موبایل باید با ۰۹ شروع شود و ۱۱ رقم باشد.');return null;}
+  if(password.length<8){showErr('رمز عبور باید حداقل ۸ نویسه باشد.');return null;}
+  return {first,last,mobile,password};
+}
+async function requestSignupCode() {
+  clearMsg();const data=signupInput();if(!data)return;
+  const btn=$('rgSendBtn');btn.disabled=true;btn.textContent='در حال ارسال…';
   try {
-    const r = await fetch('/api/auth/register', {
-      method: 'POST', headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ first_name: first, last_name: last || undefined,
-                             mobile, password })
-    });
-    const d = await r.json();
-    if (!r.ok) throw new Error(d.error || 'ثبت‌نام ناموفق');
+    const r=await fetch('/api/auth/request-code',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({mobile:data.mobile})});
+    const d=await r.json();if(!r.ok)throw new Error(d.error||'ارسال کد ناموفق بود.');
+    signupMobile=data.mobile;$('rgVerify').style.display='';$('rgCode').value='';$('rgCode').focus();
+    btn.textContent='ارسال دوباره کد';showOk(d.dev_mode?'کد در حالت آزمایشی تولید شد؛ پیامک واقعی ارسال نشده است.':'درخواست ارسال کد پذیرفته شد. کد را وارد کنید.');
+  } catch(e) {showErr(e.message);btn.textContent=signupMobile?'ارسال دوباره کد':'ارسال کد تأیید';}
+  finally {btn.disabled=false;}
+}
+async function doRegister() {
+  clearMsg();const data=signupInput();if(!data)return;
+  if(!signupMobile||data.mobile!==signupMobile)return showErr('شماره تغییر کرده است؛ دوباره کد تأیید بگیرید.');
+  const code=enDigits($('rgCode').value);
+  if(!/^\d{5}$/.test(code))return showErr('کد تأیید ۵ رقمی را وارد کنید.');
+  const btn=$('rgBtn');btn.disabled=true;btn.textContent='در حال ساخت حساب…';
+  try {
+    const r=await fetch('/api/auth/register',{method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({first_name:data.first,last_name:data.last||undefined,mobile:data.mobile,password:data.password,code})});
+    const d=await r.json();if(!r.ok)throw new Error(d.error||'ثبت‌نام ناموفق');
     afterAuth(d);
-  } catch (e) {
-    showErr(e.message);
-    btn.disabled = false; btn.textContent = 'ساخت حساب';
-  }
+  } catch(e) {showErr(e.message);btn.disabled=false;btn.textContent='تأیید و ساخت حساب';}
+}
+
+let otpLoginMobile = '';
+async function doOtpRequest() {
+  clearMsg();const mobile=enDigits($('otpMobile').value);
+  if(!/^09\d{9}$/.test(mobile))return showErr('شماره موبایل معتبر وارد کنید.');
+  const btn=$('otpSendBtn');btn.disabled=true;btn.textContent='در حال ارسال…';
+  try {
+    const r=await fetch('/api/auth/request-code',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({mobile})});
+    const d=await r.json();if(!r.ok)throw new Error(d.error||'ارسال کد ناموفق بود.');
+    otpLoginMobile=mobile;$('otpSentMobile').textContent=toFa(mobile);$('otpCode').value='';showView('otpCode');
+    showOk(d.dev_mode?'کد در حالت آزمایشی تولید شد؛ پیامک واقعی ارسال نشده است.':'درخواست ارسال کد پذیرفته شد. کد را وارد کنید.');$('otpCode').focus();
+  } catch(e) {showErr(e.message);} finally {btn.disabled=false;btn.textContent='ارسال کد تأیید';}
+}
+async function doOtpVerify() {
+  clearMsg();const code=enDigits($('otpCode').value);
+  if(!otpLoginMobile||!/^\d{5}$/.test(code))return showErr('کد تأیید ۵ رقمی را وارد کنید.');
+  const btn=$('otpVerifyBtn');btn.disabled=true;btn.textContent='در حال بررسی…';
+  try {
+    const r=await fetch('/api/auth/verify-code',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({mobile:otpLoginMobile,code})});
+    const d=await r.json();if(!r.ok)throw new Error(d.error||'تأیید ناموفق بود.');
+    afterAuth({token:d.token,customer:{mobile:d.mobile}});
+  } catch(e) {showErr(e.message);btn.disabled=false;btn.textContent='تأیید و ورود';}
 }
 
 let resetMobile = '';
@@ -399,7 +466,10 @@ async function doReset() {
 
 // Enter در هر فیلد دکمه همان بخش را می‌زند
 $('lgPass').addEventListener('keydown', e => { if (e.key === 'Enter') doLogin(); });
-$('rgPass').addEventListener('keydown', e => { if (e.key === 'Enter') doRegister(); });
+$('rgPass').addEventListener('keydown', e => { if (e.key === 'Enter') requestSignupCode(); });
+$('rgCode').addEventListener('keydown', e => { if (e.key === 'Enter') doRegister(); });
+$('otpMobile').addEventListener('keydown', e => { if (e.key === 'Enter') doOtpRequest(); });
+$('otpCode').addEventListener('keydown', e => { if (e.key === 'Enter') doOtpVerify(); });
 $('fgMobile').addEventListener('keydown', e => { if (e.key === 'Enter') doForgot(); });
 $('rsPass').addEventListener('keydown', e => { if (e.key === 'Enter') doReset(); });
 

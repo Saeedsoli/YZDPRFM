@@ -151,10 +151,10 @@ document.getElementById('ftr').innerHTML = renderFooter();
 const TOKEN = localStorage.getItem('yazd_customer_token');
 const H = { 'X-Customer-Token': TOKEN || '' };
 const ST = {
-  PENDING:['در انتظار پرداخت','b-pending'], PAID:['پرداخت شده','b-paid'],
+  PENDING:['در انتظار پرداخت','b-pending'], VERIFYING:['در حال بررسی پرداخت','b-pending'], PAID:['پرداخت شده','b-paid'],
   PROCESSING:['در حال آماده‌سازی','b-pending'], SHIPPED:['ارسال شده','b-pending'],
   DELIVERED:['تحویل داده شده','b-paid'], CANCELLED:['لغو شده','b-cancel'],
-  FAILED:['ناموفق','b-cancel'], RETURNED:['مرجوع شده','b-cancel']
+  FAILED:['ناموفق','b-cancel'], RETURNED:['مرجوع شده','b-cancel'], EXPIRED:['منقضی شده','b-cancel']
 };
 const STEPS = ['PAID','PROCESSING','SHIPPED','DELIVERED'];
 const STEP_FA = { PAID:'ثبت', PROCESSING:'آماده‌سازی', SHIPPED:'ارسال', DELIVERED:'تحویل' };
@@ -215,7 +215,7 @@ async function init() {
         <div style="display:flex;align-items:center;gap:10px">
           <svg class="chev" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg>
           <div>
-            <strong dir="ltr" style="font-size:.92rem">${o.order_id}</strong>
+            <strong dir="ltr" style="font-size:.92rem">${esc(o.order_id)}</strong>
             <div style="font-size:.76rem;color:var(--muted);margin-top:3px">
               ${new Date(o.created_at).toLocaleDateString('fa-IR')} · ${money(o.total_paid)} تومان
             </div>
@@ -230,23 +230,23 @@ async function init() {
       ${progressBar(o.status)}
       ${o.tracking_code ? `<div style="background:var(--sand);border-radius:9px;padding:10px 12px;
         margin:12px 0;font-size:.8rem">
-        کد رهگیری ${o.carrier ? o.carrier : 'پستی'}:
+        کد رهگیری ${esc(o.carrier || 'پستی')}:
         <strong dir="ltr">${esc(o.tracking_code)}</strong></div>` : ''}
       ${o.items.map(i => `<div class="oi">
         <span>${esc(i.product_name)}</span>
         <span style="white-space:nowrap">${toFa(i.quantity)} × ${money(i.unit_price)}</span>
       </div>`).join('')}
       ${o.discount_amount > 0 ? `<div class="oi" style="color:#1E8449">
-        <span>تخفیف ${o.discount_code || ''}</span><span>− ${money(o.discount_amount)}</span></div>` : ''}
+        <span>تخفیف ${esc(o.discount_code || '')}</span><span>− ${money(o.discount_amount)}</span></div>` : ''}
       <div class="oi" style="font-weight:800;padding-top:10px">
         <span>مبلغ کل</span><span>${money(o.total_paid)} تومان</span>
       </div>
       ${o.payment_ref && ['PAID','PROCESSING','SHIPPED','DELIVERED'].includes(o.status)
         ? `<div style="font-size:.75rem;color:var(--muted);margin-top:8px">
-             کد پیگیری بانکی: <span dir="ltr">${o.payment_ref}</span></div>` : ''}
+             کد پیگیری بانکی: <span dir="ltr">${esc(o.payment_ref)}</span></div>` : ''}
       <div style="margin-top:11px;display:flex;gap:12px;flex-wrap:wrap;align-items:center">
         ${['PAID','PROCESSING','SHIPPED','DELIVERED'].includes(o.status)
-          ? `<a href="/invoice?order=${o.order_id}" target="_blank"
+          ? `<a href="/invoice?order=${encodeURIComponent(o.order_id)}" target="_blank"
                style="font-size:.78rem;color:var(--gold);font-weight:700">مشاهده فاکتور ←</a>` : ''}
         ${['DELIVERED','SHIPPED'].includes(o.status)
           ? `<a href="/contact" style="font-size:.78rem;color:var(--gold);font-weight:700">

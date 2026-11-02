@@ -19,7 +19,7 @@ with tempfile.TemporaryDirectory(prefix='yazd-generic-browser-') as td:
   else:raise RuntimeError('server did not start')
   with urllib.request.urlopen(base+'/api/products/'+x['slug']) as response:p=json.load(response)
   assert p['image_url']==x['image_url'] and p['supply_mode']=='MADE_TO_ORDER'
-  con=sqlite3.connect(db);mobile='09120001234';token='c'*48;con.execute('insert into customers(mobile,first_name) values(?,?)',(mobile,'تست'));con.execute('insert into sessions(token,kind,subject,expires_at) values(?,?,?,?)',(token,'CUSTOMER',mobile,int(time.time()*1000)+600000));con.execute('insert into wishlist(mobile,product_id) values(?,?)',(mobile,x['product_id']));con.commit();con.close()
+  con=sqlite3.connect(db);mobile='09120001234';token='c'*48;con.execute('insert into customers(mobile,first_name) values(?,?)',(mobile,'تست'));con.execute('insert into customer_phone_verifications(mobile,verified_at,password_trusted) values(?,?,0)',(mobile,int(time.time()*1000)));con.execute('insert into sessions(token,kind,subject,expires_at) values(?,?,?,?)',(token,'CUSTOMER_VERIFIED',mobile,int(time.time()*1000)+600000));con.execute('insert into wishlist(mobile,product_id) values(?,?)',(mobile,x['product_id']));con.commit();con.close()
   with sync_playwright() as pw:
    executable=os.environ.get('CHROME_EXECUTABLE');browser=pw.chromium.launch(executable_path=executable or None,headless=True,args=['--no-sandbox'])
    for width in (390,1440):

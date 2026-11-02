@@ -134,6 +134,7 @@ seed پیدا نشد» شکست می‌خورد.
 | POST | `/api/cart/calculate` | محاسبه سبد + اعمال کد تخفیف |
 | POST | `/api/coupons/validate` | بررسی اعتبار کد تخفیف |
 | GET | `/api/orders/:id/history` | تاریخچه وضعیت سفارش |
+| POST | `/api/auth/register` | ساخت حساب فقط با کد تأیید شماره |
 | POST | `/api/orders` | ثبت سفارش |
 | POST | `/api/payment/verify` | تأیید پرداخت آزمایشی؛ پرداخت واقعی فقط از بازگشت درگاه |
 | POST | `/api/orders/track` | پیگیری مهمان با شماره موبایل و شماره سفارش |

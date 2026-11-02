@@ -2671,6 +2671,7 @@ const isFreshInstallation = !DB_WAS_EXISTING && db.prepare('SELECT COUNT(*) AS c
 // Only a genuinely fresh store gets the ledger automatically. Existing stores
 // require the explicit backup-first migration; no historical reservation is inferred.
 if (isFreshInstallation) stockReservations.install(db);
+if (isFreshInstallation) require('./customer-phone-verification').install(db);
 // Historical order reporting remains valid after retired SKUs leave the catalog.
 require('./variant-history').ensureVariantHistory(db);
 // Storage only: rates do not change prices until an explicit, atomic reprice.
