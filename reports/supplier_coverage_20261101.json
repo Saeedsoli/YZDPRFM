@@ -6,27 +6,29 @@
   "groups_by_state": {
     "provisional": 185,
     "secondary": 59,
+    "generic": 6,
     "legacy": 2,
     "ambiguous": 0,
     "conflict": 0,
-    "pending": 19,
+    "pending": 13,
     "no_positive": 0
   },
   "rows_by_state": {
     "provisional": 233,
     "secondary": 80,
+    "generic": 9,
     "legacy": 2,
     "ambiguous": 0,
     "conflict": 0,
-    "pending": 27,
+    "pending": 18,
     "no_positive": 0
   },
   "manual_review_flags": 0,
-  "local_products": 2219,
-  "local_priced_products": 246,
+  "local_products": 2225,
+  "local_priced_products": 252,
   "local_modes": {
     "UNAVAILABLE": 1975,
-    "MADE_TO_ORDER": 244
+    "MADE_TO_ORDER": 250
   },
   "unmapped_priced_manifest_ids": [],
   "priced_products_without_manifest": [],

@@ -56,6 +56,8 @@ node scripts/test_generic_image_six.js
 python3 scripts/test_approved_mto_v17.py
 node scripts/test_edt_reference_v57.js
 node scripts/test_hugo_versus_name.js
+python3 scripts/test_generic_scent_staging.py
+python3 scripts/test_generic_scent_import.py
 python3 scripts/test_approved_mto_v13.py
 node scripts/test_default_reference_v53.js
 node scripts/test_generic_product_images.js

@@ -894,3 +894,8 @@ node_modules/   با npm install برمی‌گردد
 - `scripts/test_approved_mto_v17.py` — خرید و محافظ دسته ادوتویلت.
 
 - `scripts/test_hugo_versus_name.js` — محافظ نام انتخابی مدیر.
+
+- `src/generic-scent-import.js` — ثبت تراکنشی رایحه‌های عمومی تأییدشده، جدا از شواهد برند.
+- `scripts/apply_generic_scents.js` — اجرای صریح روی دیتابیس پشتیبان‌گرفته‌شده.
+- `scripts/test_generic_scent_staging.py` — بررسی ردیف‌های قیمت و بالاترین کیفیت.
+- `scripts/test_generic_scent_import.py` — آزمون سفارش، تکرار و برخورد شناسه‌ها.

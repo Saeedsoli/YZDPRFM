@@ -28,6 +28,7 @@ LV_SOURCE = {
 STATES = {
     'provisional': 'قیمت موقت با شاهد نام؛ هویت اسانس تأییدنشده',
     'secondary': 'قیمت موقت با منبع مستقل؛ هویت اسانس تأییدنشده',
+    'generic': 'رایحه عمومی با قیمت فایل و تأیید مالک؛ ترکیب اسانس تأییدنشده',
     'legacy': 'قیمت قدیمی فقط نام؛ شاهد رسمی مرجع کامل نیست',
     'ambiguous': 'دارای انتساب اما ردیف مبهم؛ بررسی دستی',
     'conflict': 'اختلاف قیمت یا سابقه؛ بررسی دستی',
@@ -88,6 +89,12 @@ def manifests(root, source_sha):
         for x in sm['items']:
             if x['product_id'] in ids:raise ValueError('duplicate independent product reference')
             ids.add(x['product_id']);candidates.append({**x,'origin':secondary.name,'legacy':False,'secondary':True})
+    # Generic scents have owner approval and supplier-price evidence, not brand evidence.
+    gm=json.loads((base/'generic_scent_owner_approved_v1.json').read_text(encoding='utf-8'))
+    if gm['supplier_file_sha256'] != source_sha: raise ValueError('generic supplier hash mismatch')
+    for x in gm['items']:
+        if x['product_id'] in ids: raise ValueError('duplicate generic product reference')
+        ids.add(x['product_id']);candidates.append({**x,'origin':'generic_scent_owner_approved_v1.json','legacy':False,'generic':True})
     # Previously imported records without official or independent references.
     staged=json.loads((base/'supplier_exact_prices_staged.json').read_text(encoding='utf-8'))
     for x in staged['prices']:
@@ -109,6 +116,10 @@ def assess(groups,candidates,products,evidence,source_sha,legacy_marker,secondar
         key=targets[0]
         if Decimal(str(p['price']))!=Decimal(x['usd_per_kg']):conflicts[key].append(pid);continue
         ev=evidence.get(pid)
+        if x.get('generic'):
+            if not ev or ev.get('generic') is not True or ev['sha']!=source_sha or ev['status']!='owner_approved_generic_supplier_composition_unverified' or Decimal(ev['price'])!=Decimal(x['usd_per_kg']) or ev['quality']!=x['quality'] or (ev['brand'],ev['model'],ev['gender'])!=(x['supplier_brand'],x['supplier_model'],x['supplier_gender']):
+                conflicts[key].append(pid);continue
+            assigned[key].append((pid,'generic',x));continue
         if x.get('secondary'):
             sev=secondary_evidence.get(pid)
             if ev or not sev or sev['sha']!=source_sha or sev['status']!='secondary_original_found_supplier_essence_unverified' or sev['match_status']!='name_matched_supplier_identity_unverified' or sev['provider']!='Fragrantica' or Decimal(sev['price'])!=Decimal(x['usd_per_kg']) or sev['quality']!=x['quality'] or sev['url']!=x['source_url']:
@@ -152,6 +163,10 @@ def read_db(path):
         if db.execute('PRAGMA integrity_check').fetchone()[0]!='ok':raise ValueError('SQLite integrity check failed')
         products={r[0]:{'price':r[1],'mode':r[2]} for r in db.execute('SELECT id,essence_usd_per_kg,supply_mode FROM products')}
         evidence={r[0]:{'sha':r[1],'price':r[2],'quality':r[3],'status':r[4],'url':r[5]} for r in db.execute('SELECT product_id,supplier_file_sha256,usd_per_kg,quality,match_status,official_url FROM supplier_price_evidence')}
+        if db.execute("SELECT 1 FROM sqlite_master WHERE type='table' AND name='generic_scent_price_evidence'").fetchone():
+            for r in db.execute('SELECT product_id,supplier_file_sha256,usd_per_kg,quality,status,supplier_brand,supplier_model,supplier_gender FROM generic_scent_price_evidence'):
+                if r[0] in evidence: raise ValueError('generic product also has official evidence')
+                evidence[r[0]]={'sha':r[1],'price':r[2],'quality':r[3],'status':r[4],'brand':r[5],'model':r[6],'gender':r[7],'generic':True}
         legacy_marker=bool(db.execute("SELECT 1 FROM settings WHERE key='supplier_exact_price_import_v1'").fetchone())
         secondary={}
         if db.execute("SELECT 1 FROM sqlite_master WHERE type='table' AND name='secondary_reference_evidence'").fetchone():

@@ -2849,6 +2849,9 @@ if (isFreshInstallation && process.env.APPROVED_MTO_AUTOSTART !== '0') {
     const v16 = require('./approved-made-to-order-v16').applyApprovedMadeToOrder(db, path.join(SEED_DIR, 'approved_made_to_order_v16.json'));
     if (v16.skipped.length) console.warn('[DB] Coco approval skipped:', v16.skipped.length);
   }
+  if (process.env.GENERIC_SCENTS_AUTOSTART !== '0') {
+    require('./generic-scent-import').applyGenericScents(db, path.join(SEED_DIR, 'generic_scent_owner_approved_v1.json'));
+  }
   if (process.env.APPROVED_MTO_V17_AUTOSTART !== '0') {
     const v17 = require('./approved-made-to-order-v17').applyApprovedMadeToOrder(db, path.join(SEED_DIR, 'approved_made_to_order_v17.json'));
     if (v17.skipped.length) console.warn('[DB] EDT fallback approvals skipped:', v17.skipped.length);
