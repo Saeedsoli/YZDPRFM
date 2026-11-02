@@ -13,5 +13,8 @@
   ],
   "node": {
     "version": "22"
+  },
+  "envs": {
+    "NODE_ENV": "production"
   }
 }

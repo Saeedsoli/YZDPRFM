@@ -87,6 +87,8 @@ function copyRespectingIgnore(src, dst, patterns, base = src) {
     process.exit(1);
   }
 
+  const liaraConfig = JSON.parse(fs.readFileSync(path.join(ROOT, 'liara.json'), 'utf8'));
+  add('Liara production mode is explicit', liaraConfig.envs?.NODE_ENV === 'production');
   const pkg = JSON.parse(fs.readFileSync(path.join(ROOT, 'package.json'), 'utf8'));
   add('package.json اسکریپت start دارد', !!pkg.scripts?.start, pkg.scripts?.start);
   add('نسخه Node در engines قید شده', !!pkg.engines?.node, pkg.engines?.node);
@@ -184,9 +186,10 @@ function copyRespectingIgnore(src, dst, patterns, base = src) {
   const dbPath = path.join(STAGE, 'data', 'yazd.db');
   add('پوشه data در بسته خالی است (مثل سرور تازه)', !fs.existsSync(dbPath));
 
+  const testProductionPassword='Test-Deploy-Private-4832';
   const proc = spawn('npm', ['start'], {
     cwd: STAGE,
-    env: { ...process.env, PORT: String(PORT), BACKUP_DISABLED: '1', DB_PATH: dbPath },
+    env: { ...process.env, NODE_ENV: 'production', ADMIN_PASSWORD: testProductionPassword, PORT: String(PORT), BACKUP_DISABLED: '1', DB_PATH: dbPath },
     stdio: 'ignore', detached: process.platform !== 'win32'
   });
   // npm spawns a shell and node child; terminate the whole test process group.

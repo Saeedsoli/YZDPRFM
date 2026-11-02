@@ -927,3 +927,5 @@ node_modules/   با npm install برمی‌گردد
 
 - `scripts/test_destructive_tool_guards.py` — محافظ حذف و بازیابی در فایل جدید.
 - `scripts/test_admin_account_rate_limit.py` — محدودیت ورود حساب مدیریت با IP متغیر، بازراه‌اندازی و حفظ استقلال حساب‌ها.
+- `src/production-admin-guard.js` — جلوگیری از اجرای محیط تولید با مدیر پیش‌فرض یا حساب نامعتبر.
+- `scripts/test_production_admin_guard.py` — آزمون محافظ حساب تازه و موجود، بدون افشای رمز.

@@ -16,6 +16,7 @@
  */
 
 'use strict';
+const {strongInitialSecret} = require('../production-admin-guard');
 
 /** کمکی: پاسخ می‌فرستد و `true` برمی‌گرداند (یعنی رسیدگی شد) */
 function send(fn, ...args) { fn(...args); return true; }
@@ -375,6 +376,10 @@ async function handle(ctx) {
 
     // بازنشانی رمز توسط مدیر
     if (b.password) {
+      if (String(process.env.NODE_ENV||'').trim().toLowerCase()==='production' &&
+          (target.role_key==='owner' || b.role_key==='owner') && !strongInitialSecret(String(b.password))) {
+        return send(sendJSON, 400, { error: 'رمز مدیر کل باید دست‌کم ۱۲ نویسه باشد و از الگوهای ساده استفاده نکند.' });
+      }
       if (String(b.password).length < 8) {
         return send(sendJSON, 400, { error: 'رمز باید حداقل ۸ نویسه باشد.' });
       }
@@ -452,6 +457,9 @@ async function handle(ctx) {
     }
 
     const next = String(b.new_password || '');
+    if (String(process.env.NODE_ENV||'').trim().toLowerCase()==='production' && cur.role_key==='owner' && !strongInitialSecret(next)) {
+      return send(sendJSON, 400, { error: 'رمز مدیر کل باید دست‌کم ۱۲ نویسه باشد و از الگوهای ساده استفاده نکند.' });
+    }
     if (next.length < 8) {
       return send(sendJSON, 400, { error: 'رمز تازه باید حداقل ۸ نویسه باشد.' });
     }

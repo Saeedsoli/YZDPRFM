@@ -91,9 +91,6 @@ const PORT = process.env.PORT || 3000;
 const ROOT_DIR = path.resolve(__dirname, '..');
 const PUBLIC_DIR = path.join(ROOT_DIR, 'public');
 
-// رمز ادمین — روی Liara از متغیر محیطی ADMIN_PASSWORD خوانده می‌شود
-const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || 'yazd1404';
-
 const SESSION_TTL = 8 * 3600 * 1000; // نشست ادمین: ۸ ساعت
 
 function isValidSession(token) {

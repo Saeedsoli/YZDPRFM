@@ -21,6 +21,8 @@ const ROOT_DIR = path.resolve(__dirname, '..');
 const DB_PATH = process.env.DB_PATH || path.join(ROOT_DIR, 'data', 'yazd.db');
 // A pre-existing nonempty SQLite file must never be treated as a new store.
 const DB_WAS_EXISTING = fs.existsSync(DB_PATH) && fs.statSync(DB_PATH).size > 0;
+// Validate production owner before opening the writable database or running migrations.
+require('./production-admin-guard').assertProductionAdmin({Database,dbPath:DB_PATH,existing:DB_WAS_EXISTING});
 
 /**
  * پوشه داده‌های اولیه — عمداً بیرون از `data/`.
