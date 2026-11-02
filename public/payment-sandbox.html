@@ -64,7 +64,7 @@ function renderGate() {
         پس از دریافت نماد اعتماد، درگاه واقعی جایگزین خواهد شد.
       </div>
 
-      <div class="row"><span>شماره سفارش</span><strong dir="ltr">${orderId || '—'}</strong></div>
+      <div class="row"><span>شماره سفارش</span><strong dir="ltr">${esc(orderId || '—')}</strong></div>
       <div class="row"><span>پذیرنده</span><strong>عطر یزد</strong></div>
       <div class="amount" id="amt">در حال دریافت…</div>
 
@@ -88,7 +88,7 @@ async function loadAmount() {
   const m = sessionStorage.getItem('yazd_last_mobile');
   if (!m) { document.getElementById('amt').textContent = '—'; return; }
   try {
-    const r = await fetch(`/api/orders/track?mobile=${m}&order_id=${orderId}`);
+    const r = await fetch('/api/orders/track', {method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({mobile:m,order_id:orderId})});
     const d = await r.json();
     const o = d.orders?.[0];
     if (o) document.getElementById('amt').innerHTML =
@@ -121,8 +121,8 @@ async function finish(result) {
         <div class="icon">✅</div>
         <h2 style="font-size:1.2rem;font-weight:800;margin-bottom:8px">پرداخت با موفقیت انجام شد</h2>
         <p style="font-size:.86rem;color:var(--muted);line-height:1.9">
-          سفارش <strong dir="ltr">${orderId}</strong> ثبت شد.<br>
-          کد پیگیری: <strong dir="ltr">${d.payment_ref}</strong><br>
+          سفارش <strong dir="ltr">${esc(orderId)}</strong> ثبت شد.<br>
+          کد پیگیری: <strong dir="ltr">${esc(d.payment_ref)}</strong><br>
           سفارش شما ظرف ۳ تا ۷ روز کاری ارسال می‌شود.
         </p>
         <a href="/track" class="btn" style="margin-top:18px;display:inline-block">پیگیری سفارش</a>

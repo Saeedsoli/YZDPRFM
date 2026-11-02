@@ -939,3 +939,7 @@ node_modules/   با npm install برمی‌گردد
 - `scripts/test_order_stock_reservations.py` — آزمون ساخت پس از سفارش، کالای انبار، لغو، انقضا و ردیف تکراری.
 - `scripts/test_order_stock_cross_process.py` — آزمون همزمانی آخرین موجودی در دو فرایند Node.
 - `scripts/test_order_stock_migration.py` — آزمون نصب پشتیبان‌محور روی دیتابیس قدیمی بدون تغییر سفارش‌ها.
+
+- `scripts/test_private_order_tracking.py` — حریم پیگیری، دو شناسه، محدودیت نرخ و حفظ شناسه قدیمی.
+- `scripts/test_payment_result_safety.js` — جلوگیری از موفقیت ساختگی و تزریق داده نشانی.
+- `scripts/test_order_safety_browser.py` — آزمون مرورگر پیگیری و نتیجه پرداخت در موبایل و دسکتاپ.

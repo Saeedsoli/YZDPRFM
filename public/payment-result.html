@@ -89,7 +89,7 @@
 <div id="hdr" class="hdr-reserve"></div>
 
 <main id="main" class="res-wrap">
-  <div class="res-card" id="card"></div>
+  <div class="res-card" id="card" aria-live="polite"></div>
 </main>
 
 <div id="ftr"></div>
@@ -99,52 +99,50 @@
 document.getElementById('hdr').innerHTML = renderHeader();
 document.getElementById('ftr').innerHTML = renderFooter();
 
-const q = new URLSearchParams(location.search);
-const ok = q.get('ok') === '1';
-const order = q.get('order') || '';
-const ref = q.get('ref') || '';
-const msg = q.get('msg') || '';
-
+const query = new URLSearchParams(location.search);
+const rawOrder = query.get('order') || '';
+const order = /^[A-Za-z0-9_-]{1,80}$/.test(rawOrder) ? rawOrder.toUpperCase() : '';
+const mobile = sessionStorage.getItem('yazd_last_mobile') || '';
+const lastOrder = sessionStorage.getItem('yazd_last_order') || '';
 const ring = '<circle cx="37" cy="37" r="32"/>';
+const card = document.getElementById('card');
 
-if (ok) {
-  YazdCart.clear();
-  document.getElementById('card').innerHTML = `
-    <div class="mark ok">
-      <svg viewBox="0 0 74 74">${ring}<path d="M23 38.5l9.5 9.5L52 27"/></svg>
-    </div>
-    <h1>پرداخت با موفقیت انجام شد</h1>
-    <p>سفارش شما ثبت شد و همین حالا وارد صف آماده‌سازی شده است.</p>
-    <div class="ref-box">
-      <div class="row">شماره سفارش<strong dir="ltr">${order}</strong></div>
-      ${ref ? `<div class="row">کد پیگیری بانکی<strong dir="ltr">${ref}</strong></div>` : ''}
-    </div>
-    <div class="res-acts">
-      <a href="/account" class="btn btn-block">مشاهده سفارش‌های من</a>
-      <a href="/" class="btn btn-outline btn-block">ادامه خرید</a>
-    </div>
-    <div class="res-next">
-      <b>مرحله بعد:</b> بسته‌بندی و ارسال ظرف <b>۳ تا ۷ روز کاری</b>.<br>
-      کد رهگیری مرسوله به‌محض ارسال برایتان پیامک می‌شود.
-    </div>`;
-} else {
-  document.getElementById('card').innerHTML = `
-    <div class="mark bad">
-      <svg viewBox="0 0 74 74">${ring}<path d="M27 27l20 20M47 27L27 47"/></svg>
-    </div>
-    <h1>پرداخت انجام نشد</h1>
-    <p>${msg || 'تراکنش لغو شد یا با خطا مواجه شد.'}<br>
-       <b style="color:var(--text)">مبلغی از حساب شما کسر نشده است.</b></p>
-    ${order ? `<div class="ref-box"><div class="row">شماره سفارش<strong dir="ltr">${order}</strong></div></div>` : ''}
-    <div class="res-acts">
-      <a href="/cart" class="btn btn-block">بازگشت به سبد خرید</a>
-      <a href="/contact" class="btn btn-outline btn-block">تماس با پشتیبانی</a>
-    </div>
-    <div class="res-next">
-      اگر مبلغ از حسابتان کسر شده، معمولاً ظرف <b>۷۲ ساعت</b> به‌صورت خودکار برمی‌گردد.
-      در غیر این صورت با ما تماس بگیرید.
-    </div>`;
+function reviewResult(title, text) {
+  const orderBox = order ? `<div class="ref-box"><div class="row">شماره سفارش<strong dir="ltr" style="overflow-wrap:anywhere">${esc(order)}</strong></div></div>` : '';
+  card.innerHTML = `
+    <div class="mark bad"><svg viewBox="0 0 74 74">${ring}<path d="M37 21v19M37 50v1"/></svg></div>
+    <h1>${esc(title)}</h1><p>${esc(text)}</p>${orderBox}
+    <div class="res-acts"><a href="/track${order ? '?order='+encodeURIComponent(order) : ''}" class="btn btn-block">پیگیری سفارش</a>
+      <a href="/contact" class="btn btn-outline btn-block">تماس با پشتیبانی</a></div>`;
 }
+
+async function renderPaymentResult() {
+  // URL query flags and reference text are not proof of payment. Only an
+  // independently retrieved order status may drive the success screen.
+  reviewResult('وضعیت پرداخت در حال بررسی است', 'برای اطلاع از وضعیت، با شماره سفارش و موبایل خود پیگیری کنید.');
+  if (!order || !/^09\d{9}$/.test(mobile)) return;
+  try {
+    const r = await fetch('/api/orders/track', {method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({mobile,order_id:order})});
+    if (!r.ok) return;
+    const data=await r.json(), record=Array.isArray(data.orders) ? data.orders[0] : null;
+    if (!record || record.order_id !== order) return;
+    if (['PAID','PROCESSING','SHIPPED','DELIVERED'].includes(record.status)) {
+      if (lastOrder === order) YazdCart.clear();
+      card.innerHTML = `
+        <div class="mark ok"><svg viewBox="0 0 74 74">${ring}<path d="M23 38.5l9.5 9.5L52 27"/></svg></div>
+        <h1>پرداخت با موفقیت انجام شد</h1>
+        <p>وضعیت پرداخت این سفارش تأیید شده است.</p>
+        <div class="ref-box"><div class="row">شماره سفارش<strong dir="ltr" style="overflow-wrap:anywhere">${esc(order)}</strong></div></div>
+        <div class="res-acts"><a href="/track?order=${encodeURIComponent(order)}" class="btn btn-block">پیگیری سفارش</a>
+          <a href="/" class="btn btn-outline btn-block">ادامه خرید</a></div>`;
+    } else if (['FAILED','CANCELLED','EXPIRED','RETURNED'].includes(record.status)) {
+      reviewResult('سفارش تکمیل نشده است', 'برای اطلاع از جزئیات سفارش یا وجه احتمالی، وضعیت را پیگیری کنید یا با پشتیبانی تماس بگیرید.');
+    }
+  } catch { /* Preserve neutral status and cart on network or parsing failure. */ }
+}
+renderPaymentResult();
+
 </script>
 </body>
 </html>

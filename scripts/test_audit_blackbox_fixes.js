@@ -103,7 +103,7 @@ const clearRl = () =>
      تایپ کرده، برای تلاش درست بعدی جریمه می‌شود. */
   clearRl();
   for (let i = 0; i < 20; i++) await api('/api/orders/track?mobile=xx');
-  const afterBad = await api('/api/orders/track?mobile=' + sample.mobile);
+  const afterBad = await api('/api/orders/track?mobile=' + sample.mobile + '&order_id=' + encodeURIComponent(sample.order_id));
   add('ورودی بدقالب سطل را نمی‌سوزاند', afterBad.status === 200,
       'کاربر بابت اشتباه تایپی جریمه نمی‌شود');
 
@@ -115,7 +115,7 @@ const clearRl = () =>
   let ok200 = 0, got429 = 0, msg = '';
   for (let i = 0; i < 25; i++) {
     // شماره‌های متفاوت: شبیه‌سازی پویش فهرست
-    const res = await api(`/api/orders/track?mobile=0912111${String(1000 + i).slice(-4)}`);
+    const res = await api(`/api/orders/track?mobile=0912111${String(1000 + i).slice(-4)}&order_id=YZD-TEST-${i}`);
     if (res.status === 200) ok200++;
     else if (res.status === 429) { got429++; msg = msg || res.json.error || ''; }
   }
@@ -134,7 +134,7 @@ const clearRl = () =>
   clearRl();
   let phBlocked = false, phMsg = '';
   for (let i = 0; i < 12; i++) {
-    const res = await api('/api/orders/track?mobile=09121119999');
+    const res = await api('/api/orders/track?mobile=09121119999&order_id=YZD-PHONE-'+i);
     if (res.status === 429) {
       phBlocked = true; phMsg = res.json.error || '';
       break;
@@ -149,14 +149,14 @@ const clearRl = () =>
   console.log(h('  ۴) نشت داده — فهرست سفید'));
 
   clearRl();
-  const real = await api('/api/orders/track?mobile=' + sample.mobile);
+  const real = await api('/api/orders/track?mobile=' + sample.mobile + '&order_id=' + encodeURIComponent(sample.order_id));
   add('سفارش واقعی برمی‌گردد', real.status === 200 && real.json.total > 0,
       `${real.json.total} سفارش`);
 
   if (real.json.orders && real.json.orders[0]) {
     const o = real.json.orders[0];
     const LEAK = ['admin_note', 'payment_ref', 'payment_gateway',
-                  'campaign_note', 'email', 'first_name', 'last_name'];
+                  'campaign_note', 'email', 'first_name', 'last_name', 'customer_name', 'address', 'postal_code', 'province', 'city', 'customer_note'];
     const leaked = LEAK.filter(k => k in o);
     add('🔴 یادداشت داخلی کارکنان نشت نمی‌کند', !('admin_note' in o));
     add('شناسه تراکنش درگاه نشت نمی‌کند', !('payment_ref' in o));
@@ -186,7 +186,7 @@ const clearRl = () =>
   console.log(h('  ۵) شماره ناموجود'));
 
   clearRl();
-  const none = await api('/api/orders/track?mobile=09999999999');
+  const none = await api('/api/orders/track?mobile=09999999999&order_id=YZD-MISSING');
   add('۲۰۰ با فهرست خالی، نه ۴۰۴',
       none.status === 200 && none.json.total === 0,
       'وگرنه می‌شد فهمید کدام شماره‌ها مشتری‌اند');
@@ -271,7 +271,7 @@ const clearRl = () =>
   console.log();
   console.log(h('  ۸) محافظ‌های پیشین'));
 
-  const cors = await api('/api/orders/track?mobile=09121110000',
+  const cors = await api('/api/orders/track?mobile=09121110000&order_id=YZD-MISSING',
     { headers: { Origin: 'https://evil.ir' } });
   add('CORS روی پیگیری بسته است',
       !cors.headers['access-control-allow-origin'],

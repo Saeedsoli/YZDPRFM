@@ -199,7 +199,7 @@ async function timed(fn) {
     const t0 = Date.now();
     await pool(orderIds, CONCURRENCY, async (o) => {
       const res = await timed(async () => {
-        const r2 = await fetch(`${BASE}/api/orders/track?mobile=${o.mobile}`);
+        const r2 = await fetch(`${BASE}/api/orders/track?mobile=${encodeURIComponent(o.mobile)}&order_id=${encodeURIComponent(o.id)}`);
         return r2.ok;
       });
       if (res.ok) lat.push(Math.round(res.ms)); else err++;

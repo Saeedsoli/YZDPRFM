@@ -389,6 +389,7 @@ async function submitOrder() {
     const d = await r.json();
     if (!r.ok) throw new Error(d.error || 'خطا در ثبت سفارش');
     sessionStorage.setItem('yazd_last_mobile', mobile);
+    sessionStorage.setItem('yazd_last_order', d.order_id);
     localStorage.removeItem('yazd_coupon');
     location.href = d.payment_url;
   } catch (e) {

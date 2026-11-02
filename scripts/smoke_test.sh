@@ -184,7 +184,7 @@ OID=$(curl -s -X POST http://localhost:3000/api/orders -H 'Content-Type: applica
   -d "{\"customer_name\":\"سارا کریمی\",\"mobile\":\"09195554433\",\"province\":\"اصفهان\",\"city\":\"اصفهان\",\"address\":\"خیابان چهارباغ، کوچه ۷، پلاک ۲۲\",\"postal_code\":\"8134567890\",\"items\":[{\"sku\":\"$SKU\",\"quantity\":2}]}" \
   | node -e "let d='';process.stdin.on('data',c=>d+=c).on('end',()=>{try{console.log(JSON.parse(d).order_id||'')}catch{console.log('')}})")
 if [ -n "$OID" ]; then P=$((P+1)); echo "  order: $OID"; else F=$((F+1)); echo "  X order failed"; fi
-chk "$(curl -s -o /dev/null -w '%{http_code}' "http://localhost:3000/api/orders/track?mobile=09195554433")" "200" "track"
+chk "$(curl -s -o /dev/null -w '%{http_code}' "http://localhost:3000/api/orders/track?mobile=09195554433&order_id=$OID")" "200" "track"
 # Restore both stock and availability (even in the disposable fixture).
 node -e "const D=require('better-sqlite3');const db=new D('data/yazd.db');db.prepare('UPDATE variants SET stock=? WHERE sku=?').run(Number(process.argv[1]),process.argv[2]);db.prepare('UPDATE products SET supply_mode=? WHERE id=?').run(process.argv[3],process.argv[4]);db.close();" "${PREV_STOCK:-0}" "$SKU" "$PREV_MODE" "$FIXTURE_PRODUCT" 2>/dev/null
 
@@ -325,6 +325,8 @@ run_test test_payment_sandbox_result.js "sandbox result guard"
 if python3 scripts/test_order_stock_reservations.py >/tmp/test_order_stock_reservations.log 2>&1; then P=$((P+1)); else F=$((F+1)); echo "  X order stock reservation"; fi
 if python3 scripts/test_order_stock_cross_process.py >/tmp/test_order_stock_cross_process.log 2>&1; then P=$((P+1)); else F=$((F+1)); echo "  X cross-process stock race"; fi
 if python3 scripts/test_order_stock_migration.py >/tmp/test_order_stock_migration.log 2>&1; then P=$((P+1)); else F=$((F+1)); echo "  X stock reservation migration"; fi
+if python3 scripts/test_private_order_tracking.py >/tmp/test_private_order_tracking.log 2>&1; then P=$((P+1)); else F=$((F+1)); echo "  X private order tracking"; fi
+run_test test_payment_result_safety.js "verified payment result"
 if python3 scripts/test_approved_mto_v2.py >/tmp/test_approved_mto_v2.log 2>&1; then P=$((P+1)); else F=$((F+1)); echo "  X seven owner approvals"; fi
 if python3 scripts/test_approved_mto_v3.py >/tmp/test_approved_mto_v3.log 2>&1; then P=$((P+1)); else F=$((F+1)); echo "  X four owner approvals"; fi
 if python3 scripts/test_approved_mto_v4.py >/tmp/test_approved_mto_v4.log 2>&1; then P=$((P+1)); else F=$((F+1)); echo "  X three owner approvals"; fi

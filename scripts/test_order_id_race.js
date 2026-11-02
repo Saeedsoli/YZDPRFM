@@ -135,7 +135,7 @@ async function placeOrder(i, sku) {
 
     if (first.orderId) {
       add('شماره الگوی YZD-<زمان>-<تصادفی> دارد',
-        /^YZD-[A-Z0-9]+-[A-Z0-9]{4}$/.test(first.orderId), first.orderId);
+        /^YZD-[A-Z0-9]+-[A-F0-9]{24}$/.test(first.orderId), first.orderId);
       add('شماره از الگوی صفحه تماس رد می‌شود',
         /^YZD-[A-Z0-9-]{4,}$/i.test(first.orderId));
     }

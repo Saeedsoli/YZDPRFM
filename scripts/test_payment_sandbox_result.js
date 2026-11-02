@@ -6,7 +6,7 @@ const a=html.indexOf('async function finish(result) {'),b=html.indexOf('\n\nrend
 const code=html.slice(a,b)+'\nthis.invoke=finish;';
 async function scenario(result,response,throws=false){
  let cleared=0,msg='',element={innerHTML:''};
- const ctx={orderId:'fixture-order',YazdCart:{clear(){cleared++}},toast(x){msg=x},document:{getElementById(){return element}},fetch:async()=>{if(throws)throw Error('fixture offline');return {ok:response.ok,json:async()=>response.body}}};
+ const ctx={orderId:'fixture-order',esc:s=>String(s??'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\"/g,'&quot;').replace(/'/g,'&#39;'),YazdCart:{clear(){cleared++}},toast(x){msg=x},document:{getElementById(){return element}},fetch:async()=>{if(throws)throw Error('fixture offline');return {ok:response.ok,json:async()=>response.body}}};
  vm.runInNewContext(code,ctx);await ctx.invoke(result);return {cleared,msg,html:element.innerHTML};
 }
 (async()=>{

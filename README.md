@@ -135,8 +135,8 @@ seed پیدا نشد» شکست می‌خورد.
 | POST | `/api/coupons/validate` | بررسی اعتبار کد تخفیف |
 | GET | `/api/orders/:id/history` | تاریخچه وضعیت سفارش |
 | POST | `/api/orders` | ثبت سفارش |
-| POST | `/api/payment/verify` | تأیید پرداخت |
-| GET | `/api/orders/track?mobile=` | پیگیری سفارش |
+| POST | `/api/payment/verify` | تأیید پرداخت آزمایشی؛ پرداخت واقعی فقط از بازگشت درگاه |
+| POST | `/api/orders/track` | پیگیری مهمان با شماره موبایل و شماره سفارش |
 | POST | `/api/tickets` | ثبت تیکت مرجوعی |
 | GET/POST | `/api/wishlist` | علاقه‌مندی (نیازمند ورود) |
 | GET | `/api/reviews/:slug` | نظرات یک محصول |

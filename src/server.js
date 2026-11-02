@@ -165,24 +165,11 @@ const RL = {
      با block صفر، پس از پایان پنجره یک‌دقیقه‌ای بلافاصله دوباره
      کار می‌کند — سقف هست، مجازات نیست. */
   taste:    { limit: 30,  window: 60e3,      block: 0 },
-  /* ── پیگیری سفارش (ممیزی جعبه‌سیاه مرداد ۱۴۰۵) ──
-     این مسیر با **فقط شماره موبایل** و بدون احراز هویت، نام،
-     نشانی کامل و کد پستی مشتری را برمی‌گرداند. هیچ محدودیتی
-     نداشت: ۲۵ درخواست پیاپی، هر ۲۵ تا پذیرفته شد.
-
-     یعنی کسی که فهرستی از شماره‌ها دارد — که در ایران به‌سادگی
-     به دست می‌آید — می‌توانست نشانی منزل مشتریان را استخراج کند.
-     این ریسک امنیت فیزیکی است، نه فقط حریم خصوصی.
-
-     ── چرا دو سطل جدا ──
-     `trackIp` جلوی پویش انبوه از یک منبع را می‌گیرد.
-     `trackPhone` جلوی حالتی را می‌گیرد که مهاجم IP عوض می‌کند
-     ولی یک شماره هدف را می‌کوبد.
-
-     سقف‌ها برای کاربر واقعی سخاوتمندانه‌اند: کسی که سفارشش را
-     پیگیری می‌کند، دو سه بار در روز صفحه را باز می‌کند. */
+  /* Guest tracking requires mobile plus order ID, with IP, phone and
+     order-specific rate limits. Legacy IDs remain valid. */
   trackIp:    { limit: 15, window: 10 * 60e3, block: 30 * 60e3 },
-  trackPhone: { limit: 8,  window: 60 * 60e3, block: 60 * 60e3 }
+  trackPhone: { limit: 8,  window: 60 * 60e3, block: 60 * 60e3 },
+  trackOrder: { limit: 10, window: 60 * 60e3, block: 60 * 60e3 }
 };
 function getToken(req) {
   const auth = req.headers['authorization'] || '';
@@ -202,34 +189,11 @@ function getCustomerToken(req) {
 }
 
 // ═══════════════════════════════════════════
-/**
- * شماره سفارش یکتا.
- *
- * چرا این تابع لازم شد: نسخه پیش فقط `Date.now()` بود و دقتش
- * میلی‌ثانیه است. بنچمارک نشان داد از **دومین خریدار همزمان**
- * به بعد ۲۲ تا ۳۵ درصد سفارش‌ها با خطای دیتابیس رد می‌شوند:
- *   UNIQUE constraint failed: orders.order_id
- * مشتری فقط «خطای داخلی سرور» می‌دید — سبدش را از دست داده بود
- * بی‌آنکه بداند چرا.
- *
- * ساختار: YZD-<زمان بر مبنای ۳۶><۴ نویسه تصادفی>
- * مثال:   YZD-MS4MSMI0-K7QX
- *
- * بخش زمان مرتب‌پذیری را حفظ می‌کند (شماره‌های جدیدتر بزرگ‌ترند)
- * و بخش تصادفی برخورد را عملاً غیرممکن می‌سازد: ۳۶^۴ = ۱٬۶۷۹٬۶۱۶
- * حالت در هر میلی‌ثانیه. حتی با ۱۰۰ سفارش در همان میلی‌ثانیه،
- * احتمال برخورد حدود ۰٫۰۰۳ درصد است.
- *
- * از randomBytes استفاده می‌شود نه Math.random — شماره سفارش در
- * پیامک و لینک پیگیری می‌رود و نباید قابل حدس باشد.
- */
+/** An unpredictable order identifier; old IDs remain valid and unchanged. */
 function newOrderId() {
   const t = Date.now().toString(36).toUpperCase();
-  const A = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-  const b = crypto.randomBytes(4);
-  let r = '';
-  for (let i = 0; i < 4; i++) r += A[b[i] % A.length];
-  return `YZD-${t}-${r}`;
+  // At least 96 unpredictable bits: the order ID is part of the guest lookup.
+  return `YZD-${t}-${crypto.randomBytes(12).toString('hex').toUpperCase()}`;
 }
 
 // ═══════════════════════════════════════════
@@ -856,7 +820,7 @@ const server = http.createServer(async (req, res) => {
        همه بدون `can`. سه مسیر داده شخصی برمی‌گردانند و
        محافظشان ماسک شماره، پاسخ یکسان و ۴۰۱ است. */
     if (await routeEngagement.handle({
-      method, pathname, parsed, req, reqIP, db,
+      method, pathname, parsed, req, res, reqIP, db,
       sendJSON, parseBody, rateLimit, RL, appLog, cleanText,
       parseProduct, attachVariants, reviewSummary, hasPurchased,
       readReviewInvite, consumeReviewInvite,
@@ -1330,10 +1294,10 @@ const server = http.createServer(async (req, res) => {
       const order = db.prepare('SELECT * FROM orders WHERE order_id=?').get(orderId);
 
       const goto = (ok, ref, msg) => {
+        // Only the order ID is carried forward; payment status is re-read
+        // from the server and provider messages/references stay out of URLs.
         const u = `/payment/result?order=${encodeURIComponent(orderId || '')}`
-          + `&ok=${ok ? '1' : '0'}`
-          + (ref ? `&ref=${encodeURIComponent(ref)}` : '')
-          + (msg ? `&msg=${encodeURIComponent(msg)}` : '');
+          + `&ok=${ok ? '1' : '0'}`;
         res.writeHead(302, { Location: u });
         res.end();
       };

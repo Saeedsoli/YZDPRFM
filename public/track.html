@@ -35,14 +35,14 @@
   <div class="inner">
     <span class="eyebrow">وضعیت مرسوله</span>
     <h1>پیگیری <em>سفارش</em></h1>
-    <p>با شماره موبایلی که هنگام ثبت سفارش وارد کرده‌اید.</p>
+    <p>شماره موبایل و شماره سفارش را وارد کنید.</p>
   </div>
 </section>
 
 <div class="container" style="max-width:760px;margin-top:26px">
   <div class="panel focus-panel">
     <div class="field">
-      <label>شماره موبایل ثبت‌شده در سفارش</label>
+      <label for="m">شماره موبایل ثبت‌شده در سفارش</label>
       <!-- type=tel و inputmode=numeric صفحه‌کلید عددی موبایل را
            باز می‌کنند. بدون این، کاربر با صفحه‌کلید حروف روبه‌رو
            می‌شد و باید دستی به حالت عدد سوییچ می‌کرد.
@@ -51,7 +51,13 @@
              maxlength="11" placeholder="۰۹۱۲۳۴۵۶۷۸۹" dir="ltr" style="text-align:right"
              onkeydown="if(event.key==='Enter')track()">
     </div>
-    <button class="btn btn-block" onclick="track()">مشاهده سفارش‌ها</button>
+    <div class="field">
+      <label for="orderId">شماره سفارش</label>
+      <input id="orderId" type="text" autocomplete="off" maxlength="80"
+             placeholder="YZD-…" dir="ltr" style="text-align:right"
+             onkeydown="if(event.key==='Enter')track()">
+    </div>
+    <button class="btn btn-block" onclick="track()">مشاهده سفارش</button>
   </div>
   <div id="out"></div>
 </div>
@@ -61,9 +67,12 @@
 document.getElementById('hdr').innerHTML=renderHeader();
 document.getElementById('ftr').innerHTML=renderFooter();
 const saved=sessionStorage.getItem('yazd_last_mobile'); if(saved) document.getElementById('m').value=saved;
+const savedOrder=new URLSearchParams(location.search).get('order')||sessionStorage.getItem('yazd_last_order')||'';
+if (/^[A-Za-z0-9_-]{1,80}$/.test(savedOrder)) document.getElementById('orderId').value=savedOrder;
 /* هر ۸ وضعیت سرور — قبلاً فقط ۳ تا شناخته می‌شد و بقیه «نامشخص» بودند */
 const ST = {
   PENDING:    ['در انتظار پرداخت',   'b-pending'],
+  VERIFYING:  ['در حال بررسی پرداخت', 'b-pending'],
   PAID:       ['پرداخت شده',         'b-paid'],
   PROCESSING: ['در حال آماده‌سازی',  'b-pending'],
   SHIPPED:    ['ارسال شده',          'b-pending'],
@@ -124,28 +133,31 @@ async function track() {
     .replace(/[٠-٩]/g, d => '٠١٢٣٤٥٦٧٨٩'.indexOf(d))
     .replace(/[\s\-‌]/g, '');
   if (!/^09\d{9}$/.test(m)) return toast('شماره موبایل معتبر وارد کنید');
+  const oid=document.getElementById('orderId').value.replace(/[۰-۹]/g,d=>'۰۱۲۳۴۵۶۷۸۹'.indexOf(d)).replace(/[٠-٩]/g,d=>'٠١٢٣٤٥٦٧٨٩'.indexOf(d)).trim().toUpperCase();
+  if (!/^[A-Z0-9_-]{1,80}$/.test(oid)) return toast('شماره سفارش معتبر وارد کنید');
 
   btn.disabled = true; btn.textContent = 'در حال جستجو…';
   const o = document.getElementById('out');
 
   let d;
   try {
-    const r = await fetch('/api/orders/track?mobile=' + m);
-    if (!r.ok) throw 0;
+    const r = await fetch('/api/orders/track', {method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({mobile:m,order_id:oid})});
     d = await r.json();
-  } catch {
-    o.innerHTML = `<div class="empty-state soft-card"><h3>ارتباط برقرار نشد</h3>
-      <p style="margin-top:6px">اتصال اینترنت را بررسی کنید.</p></div>`;
-    btn.disabled = false; btn.textContent = 'مشاهده سفارش‌ها';
+    if (!r.ok) throw new Error(d.error || 'پیگیری موقتاً در دسترس نیست.');
+  } catch (e) {
+    o.innerHTML = `<div class="empty-state soft-card"><h3>امکان پیگیری نیست</h3>
+      <p style="margin-top:6px"></p></div>`;
+    o.querySelector('p').textContent = e instanceof TypeError ? 'اتصال اینترنت را بررسی کنید.' : (e.message || 'کمی بعد دوباره تلاش کنید.');
+    btn.disabled = false; btn.textContent = 'مشاهده سفارش';
     return;
   }
-  btn.disabled = false; btn.textContent = 'مشاهده سفارش‌ها';
+  btn.disabled = false; btn.textContent = 'مشاهده سفارش';
 
   if (!d.orders.length) {
     o.innerHTML = `<div class="empty-state soft-card" style="padding:44px 24px">
-      <h3>سفارشی با این شماره پیدا نشد</h3>
+      <h3>سفارشی با این مشخصات پیدا نشد</h3>
       <p style="margin-top:8px;font-size:.87rem;color:var(--muted);line-height:2">
-        مطمئن شوید همان شماره‌ای را وارد کرده‌اید که هنگام ثبت سفارش نوشته‌اید.</p>
+        شماره موبایل و شماره سفارش را بررسی کنید.</p>
       <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:18px">
         <a href="/contact" class="btn btn-outline">تماس با پشتیبانی</a>
       </div></div>`;
@@ -158,11 +170,11 @@ async function track() {
     return `<div class="order-card soft-card">
       <div style="display:flex;justify-content:space-between;align-items:center;
                   margin-bottom:6px;flex-wrap:wrap;gap:8px">
-        <strong dir="ltr" style="font-size:.95rem">${x.order_id}</strong>
+        <strong dir="ltr" style="font-size:.95rem;overflow-wrap:anywhere">${esc(x.order_id)}</strong>
         <span class="badge ${st[1]}">${st[0]}</span>
       </div>
       <div style="font-size:.79rem;color:var(--muted)">
-        ${new Date(x.created_at).toLocaleDateString('fa-IR')} · ${esc(x.province || '')} ${esc(x.city || '')}
+        ${new Date(x.created_at).toLocaleDateString('fa-IR')}
       </div>
 
       ${timeline(x.status)}
@@ -170,7 +182,7 @@ async function track() {
       ${x.tracking_code ? `<div class="track-box">
         <div><div style="font-size:.72rem;color:var(--muted)">کد رهگیری ${esc(x.carrier || 'پستی')}</div>
           <div class="code">${esc(x.tracking_code)}</div></div>
-        <button onclick="copyCode(this,'${esc(x.tracking_code)}')">کپی کد</button>
+        <button data-code="${esc(x.tracking_code)}" onclick="copyCode(this,this.dataset.code)">کپی کد</button>
       </div>` : ''}
 
       ${x.items.map(i => `<div class="oi"><span>${esc(i.product_name)}</span>
@@ -178,16 +190,13 @@ async function track() {
       <div class="oi" style="font-weight:800;padding-top:10px">
         <span>مبلغ کل</span><span>${money(x.total_paid)} تومان</span></div>
 
-      ${x.payment_ref ? `<div style="font-size:.74rem;color:var(--muted);margin-top:8px">
-        کد پیگیری بانکی: <span dir="ltr">${x.payment_ref}</span></div>` : ''}
-
       ${paidLike ? `<div style="margin-top:11px">
-        <a href="/invoice.html?order=${x.order_id}" target="_blank"
+        <a href="/invoice.html?order=${encodeURIComponent(x.order_id)}" target="_blank"
            style="font-size:.79rem;color:var(--gold);font-weight:700">مشاهده فاکتور ←</a>
       </div>` : ''}
     </div>`;
   }).join('');
 }
 
-if(saved) track();
+if(saved && savedOrder && /^[A-Za-z0-9_-]{1,80}$/.test(savedOrder)) track();
 </script></body></html>

@@ -14,7 +14,7 @@
  *   POST   /api/reviews               ثبت نظر (کاربر واردشده)
  *   POST   /api/stock-alert           اطلاع موجود شدن
  *   GET    /api/notice                نوار اعلان
- *   GET    /api/orders/track          پیگیری سفارش با موبایل
+ *   GET|POST /api/orders/track        پیگیری با موبایل و شماره سفارش
  *
  * ── وجه مشترک این یازده مسیر ──
  * همه **بدون `can()`** کار می‌کنند و همه به شکلی «کاربر چیزی
@@ -22,9 +22,8 @@
  * پس هیچ‌کدام تراکنشی نیستند — ولی سه‌تایشان داده‌ی شخصی
  * برمی‌گردانند و محافظشان باید سالم بماند:
  *
- *   ۱) `/api/orders/track` با شماره موبایل کار می‌کند. اگر شماره
- *      ناموجود باشد **۲۰۰ با فهرست خالی** می‌دهد نه ۴۰۴ — وگرنه
- *      می‌شد با آزمون‌وخطا فهمید کدام شماره‌ها مشتری‌اند.
+ *   ۱) `/api/orders/track` موبایل و شناسه سفارش را هر دو می‌خواهد.
+ *      برای عدم تطبیق، فهرست خالی می‌دهد و داده نشانی برنمی‌گرداند.
  *
  *   ۲) `/api/review-invite/:token` شماره را **ماسک‌شده** برمی‌گرداند
  *      (`0913****79`). مشتری مطمئن می‌شود لینک مال خودش است، ولی
@@ -48,6 +47,7 @@
 
 'use strict';
 const { publicVariantSql } = require('../variant-visibility');
+const crypto = require('crypto');
 const { variantAvailability } = require('../availability');
 
 /**
@@ -76,7 +76,7 @@ const { variantAvailability } = require('../availability');
  */
 async function handle(ctx) {
   const {
-    method, pathname, parsed, req, reqIP, db,
+    method, pathname, parsed, req, res, reqIP, db,
     parseBody, rateLimit, RL, appLog, cleanText,
     parseProduct, attachVariants, reviewSummary, hasPurchased,
     readReviewInvite, consumeReviewInvite,
@@ -84,9 +84,8 @@ async function handle(ctx) {
   } = ctx;
 
   /* پوشش `sendJSON` — درس گام ۱.
-     بازبینی انجام‌شده: هیچ `return;` خالی، هیچ `pipe(res)`،
-     هیچ `res.end()`، هیچ `setHeader`. مثل گام ۷، این ماژول
-     اصلاً `res` را در `ctx` نمی‌گیرد.
+     بازبینی انجام‌شده: مسیر پیگیری برای جلوگیری از ذخیره داده
+     محرمانه هدر no-store می‌گذارد؛ بدنه‌ها از پوشش زیر می‌روند.
 
      یک نکته ویژه این ماژول: بلوک `/api/wishlist` بیرونی است و
      درونش `GET` و `POST` تودرتو دارد. اگر متد چیز دیگری باشد
@@ -382,80 +381,29 @@ async function handle(ctx) {
   }
 
   // پیگیری سفارش با موبایل
-  if (method === 'GET' && pathname === '/api/orders/track') {
-    const mobile = String(parsed.query.mobile || '').trim();
-    const oid = parsed.query.order_id || '';
-    if (!mobile) return sendJSON(400, { error: 'شماره موبایل الزامی است.' });
-
-    /* ── قالب شماره پیش از هر کاری ──
-       پیش‌تر هر رشته‌ای پذیرفته می‌شد و به کوئری می‌رفت. حالا
-       ورودی بی‌قالب زودتر رد می‌شود و سطل محدودیت را هم مصرف
-       نمی‌کند — یعنی کاربری که اشتباه تایپ کرده جریمه نمی‌شود. */
-    if (!/^09\d{9}$/.test(mobile)) {
-      return sendJSON(400, { error: 'شماره موبایل معتبر وارد کنید (۰۹xxxxxxxxx).' });
-    }
-
-    /* ── دو سطل محدودیت (ممیزی جعبه‌سیاه) ──
-       این مسیر داده شخصی می‌دهد و احراز هویت ندارد. بدون
-       محدودیت، پویش فهرستی از شماره‌ها نشانی منزل مشتریان را
-       بیرون می‌کشید.
-
-       ترتیب عمدی است: اول IP، چون مهاجم معمولاً از یک منبع
-       شماره‌های زیادی را می‌آزماید. */
-    const ipRl = rateLimit(`track-ip:${reqIP}`,
-      RL.trackIp.limit, RL.trackIp.window, RL.trackIp.block);
-    if (!ipRl.ok) {
-      appLog('WARN', 'security', 'پویش پیگیری سفارش', { ip: reqIP });
-      return sendJSON(429, {
-        error: `درخواست‌های بیش از حد. ${fa(Math.ceil(ipRl.retry_after / 60))} دقیقه دیگر تلاش کنید.`
-      });
-    }
-    const phRl = rateLimit(`track-ph:${mobile}`,
-      RL.trackPhone.limit, RL.trackPhone.window, RL.trackPhone.block);
-    if (!phRl.ok) {
-      return sendJSON(429, {
-        error: `درخواست‌های بیش از حد برای این شماره. ${fa(Math.ceil(phRl.retry_after / 60))} دقیقه دیگر تلاش کنید.`
-      });
-    }
-
-    const rows = oid
-      ? db.prepare('SELECT * FROM orders WHERE mobile=? AND order_id=?').all(mobile, oid)
-      : db.prepare('SELECT * FROM orders WHERE mobile=? ORDER BY created_at DESC LIMIT 20').all(mobile);
-
-    /* ── فهرست سفید میدان‌ها ──
-       پیش‌تر `SELECT *` مستقیم برمی‌گشت و همراهش چیزهایی می‌آمد
-       که مشتری نباید ببیند:
-
-         admin_note     یادداشت داخلی کارکنان درباره سفارش
-         payment_ref    شناسه تراکنش درگاه
-         campaign_note  منطق داخلی تخفیف
-
-       مشتری برای پیگیری سفارشش به هیچ‌کدام نیاز ندارد. */
-    const withItems = rows.map(o => ({
-      order_id: o.order_id,
-      created_at: o.created_at,
-      updated_at: o.updated_at,
-      status: o.status,
-      customer_name: o.customer_name,
-      province: o.province,
-      city: o.city,
-      address: o.address,
-      postal_code: o.postal_code,
-      subtotal: o.subtotal,
-      shipping_fee: o.shipping_fee,
-      gift_wrap_fee: o.gift_wrap_fee || 0,
-      discount_amount: o.discount_amount,
-      campaign_discount: o.campaign_discount,
-      total_paid: o.total_paid,
-      tracking_code: o.tracking_code,
-      carrier: o.carrier,
-      customer_note: o.customer_note,
-      items: db.prepare(
-        'SELECT sku, product_name, quantity, unit_price, line_total FROM order_items WHERE order_id=?'
-      ).all(o.order_id)
-    }));
-    return sendJSON(200, { total: withItems.length, orders: withItems });
+  if ((method === 'GET' || method === 'POST') && pathname === '/api/orders/track') {
+    // No listing by phone alone; both pieces are necessary. POST keeps them out
+    // of access-log query strings. GET remains for existing clients.
+    res.setHeader('Cache-Control','no-store');
+    res.setHeader('Pragma','no-cache');
+    const data=method==='POST' ? await parseBody(req) : parsed.query;
+    const mobile=String(data.mobile||'').trim();
+    const oid=String(data.order_id||'').trim().toUpperCase();
+    if (!/^09\d{9}$/.test(mobile)) return sendJSON(400,{error:'شماره موبایل معتبر وارد کنید.'});
+    if (!/^[A-Z0-9_-]{1,80}$/.test(oid)) return sendJSON(400,{error:'شماره سفارش معتبر الزامی است.'});
+    const ipRl=rateLimit(`track-ip:${reqIP}`,RL.trackIp.limit,RL.trackIp.window,RL.trackIp.block);
+    if(!ipRl.ok)return sendJSON(429,{error:`درخواست‌های بیش از حد. ${fa(Math.ceil(ipRl.retry_after/60))} دقیقه دیگر تلاش کنید.`});
+    const phRl=rateLimit(`track-ph:${mobile}`,RL.trackPhone.limit,RL.trackPhone.window,RL.trackPhone.block);
+    if(!phRl.ok)return sendJSON(429,{error:`برای این شماره درخواست‌های زیادی ثبت شده. ${fa(Math.ceil(phRl.retry_after/60))} دقیقه دیگر تلاش کنید.`});
+    const orderKey='track-order:'+crypto.createHash('sha256').update(oid).digest('hex');
+    const orderRl=rateLimit(orderKey,RL.trackOrder.limit,RL.trackOrder.window,RL.trackOrder.block);
+    if(!orderRl.ok)return sendJSON(429,{error:`برای این سفارش درخواست‌های زیادی ثبت شده. ${fa(Math.ceil(orderRl.retry_after/60))} دقیقه دیگر تلاش کنید.`});
+    const o=db.prepare('SELECT order_id,created_at,status,total_paid,tracking_code,carrier FROM orders WHERE mobile=? AND order_id=?').get(mobile,oid);
+    if(!o)return sendJSON(200,{total:0,orders:[]});
+    const items=db.prepare('SELECT sku,product_name,quantity,unit_price,line_total FROM order_items WHERE order_id=?').all(o.order_id);
+    return sendJSON(200,{total:1,orders:[{...o,items}]});
   }
+
   return false;   // هیچ‌کدام از مسیرهای این ماژول نبود
 }
 

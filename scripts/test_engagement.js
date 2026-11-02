@@ -384,8 +384,9 @@ async function loginCustomer(mobile) {
 
   add('بدون شماره ۴۰۰ می‌دهد',
       (await api('/api/orders/track')).status === 400);
+  add('بدون شماره سفارش هم رد می‌شود', (await api('/api/orders/track?mobile=09120000000')).status === 400);
 
-  const unknown = await api('/api/orders/track?mobile=09999999999');
+  const unknown = await api('/api/orders/track?mobile=09999999999&order_id=YZD-MISSING');
   add('شماره ناموجود ۲۰۰ با فهرست خالی می‌دهد',
       unknown.status === 200 && unknown.json.total === 0,
       'نه ۴۰۴ — وگرنه می‌شد فهمید کدام شماره‌ها مشتری‌اند');
@@ -394,7 +395,7 @@ async function loginCustomer(mobile) {
     'SELECT order_id, mobile FROM orders ORDER BY rowid DESC LIMIT 1'
   ).get();
   if (anyOrder) {
-    const mine = await api('/api/orders/track?mobile=' + anyOrder.mobile);
+    const mine = await api('/api/orders/track?mobile=' + anyOrder.mobile + '&order_id=' + encodeURIComponent(anyOrder.order_id));
     add('سفارش خودم پیدا می‌شود', mine.status === 200 && mine.json.total > 0,
         `${mine.json.total} سفارش`);
     add('اقلام سفارش ضمیمه‌اند',
@@ -485,7 +486,7 @@ async function loginCustomer(mobile) {
   add('هیچ `return;` خالی نیست', !/\breturn;\s*$/m.test(body));
   add('هیچ pipe(res) نیست', !/pipe\(res\)/.test(body));
   add('هیچ res.end() نیست', !/res\.end\(/.test(body));
-  add('هیچ setHeader نیست', !/setHeader/.test(body));
+  add('پیگیری داده شخصی را با no-store برمی‌گرداند', /res\.setHeader\('Cache-Control','no-store'\)/.test(body));
 
   add('server.js ماژول را صدا می‌زند', /routeEngagement\.handle\(/.test(srv));
   add('بلوک /api/track از server.js رفته',
