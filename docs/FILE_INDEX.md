@@ -920,3 +920,6 @@ node_modules/   با npm install برمی‌گردد
 - `scripts/apply_legacy_references.js` — اعمال صریح پس از پشتیبان و بازسازی ایندکس‌ها.
 - `scripts/test_legacy_reference_approval.py` — آزمون قیمت قدیمی، سفارش، نت‌ها و محافظ ویرایش مدیر.
 - `scripts/test_performance_claim_gate.py` — پنهان‌بودن ماندگاری و پخش تأییدنشده از خروجی عمومی همراه با حفظ داده پنل.
+- `src/unverified-seed-accords-cleanup.js` — حذف محافظت‌شده آکوردهای تولیدی و تأییدنشده از ۳۱ محصول فعال.
+- `scripts/apply_unverified_seed_accords.js` — اجرای صریح و بازسازی محدود ایندکس پس از پشتیبان‌گیری.
+- `scripts/test_unverified_seed_accords_cleanup.py` — آزمون محدوده، داده مدیر، سفارش و تکرار مهاجرت.

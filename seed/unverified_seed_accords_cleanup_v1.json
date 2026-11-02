@@ -1,0 +1,802 @@
+{
+  "version": "unverified_seed_accords_cleanup_2026_11_v1",
+  "seed_sha256": "8d045cdd492b681911ab52407b0e6444b51272131a9d80b472a8593daa666131",
+  "description": "Remove untouched, generated descriptive accord drafts from fixed active products; verified note tiers remain intact. Does not assert actual essence composition.",
+  "items": [
+    {
+      "product_id": "YZD-PROD-0430",
+      "slug": "creed-green-irish-tweed",
+      "expected_name_en": "CREED - Green Irish Tweed",
+      "brand_en": "Creed",
+      "usd_per_kg": "212.3",
+      "expected_notes": {
+        "top": [
+          "ترنج",
+          "لیمو",
+          "نعناع فلفلی"
+        ],
+        "middle": [
+          "شمعدانی",
+          "اسطوخودوس"
+        ],
+        "base": [
+          "خزه بلوط",
+          "نت‌های چوبی"
+        ]
+      },
+      "expected_accords": [
+        "سبز علفی",
+        "باطراوت",
+        "پودری",
+        "ازنیک"
+      ]
+    },
+    {
+      "product_id": "YZD-PROD-0431",
+      "slug": "creed-silver-mountain-water",
+      "expected_name_en": "CREED - Silver Mountain Water",
+      "brand_en": "Creed",
+      "usd_per_kg": "690.8",
+      "expected_notes": {
+        "top": [
+          "ترنج",
+          "انگور فرنگی سیاه"
+        ],
+        "middle": [
+          "چای",
+          "آکورد ازونیک"
+        ],
+        "base": [
+          "چوب صندل",
+          "مشک"
+        ]
+      },
+      "expected_accords": [
+        "برفی خنک",
+        "چای سبز",
+        "میوه‌ای ترش",
+        "مشکی"
+      ]
+    },
+    {
+      "product_id": "YZD-PROD-0432",
+      "slug": "creed-millesime-imperial",
+      "expected_name_en": "CREED - Millesime Imperial",
+      "brand_en": "Creed",
+      "usd_per_kg": "453.2",
+      "expected_notes": {
+        "top": [
+          "ترنج",
+          "انگور فرنگی سیاه",
+          "برگ بنفشه"
+        ],
+        "middle": [
+          "ریشه زنبق"
+        ],
+        "base": [
+          "چوب سدر",
+          "چوب صندل",
+          "مشک"
+        ]
+      },
+      "expected_accords": [
+        "شور دریایی",
+        "مرکباتی",
+        "میوه‌ای",
+        "سلطنتی"
+      ]
+    },
+    {
+      "product_id": "YZD-PROD-0436",
+      "slug": "creed-viking",
+      "expected_name_en": "CREED - Viking",
+      "brand_en": "Creed",
+      "usd_per_kg": "844.8",
+      "expected_notes": {
+        "top": [
+          "ترنج",
+          "لیمو",
+          "فلفل صورتی",
+          "فلفل سیاه",
+          "نعناع فلفلی"
+        ],
+        "middle": [],
+        "base": [
+          "چوب سدر",
+          "وتیور هائیتی"
+        ]
+      },
+      "expected_accords": [
+        "ادویه‌ای باطراوت",
+        "فوژه مدرن",
+        "چوبی خنک و گرم"
+      ]
+    },
+    {
+      "product_id": "YZD-PROD-0564",
+      "slug": "amouage-purpose",
+      "expected_name_en": "AMOUAGE - Purpose",
+      "brand_en": "Amouage",
+      "usd_per_kg": "269.5",
+      "expected_notes": {
+        "top": [
+          "ترنج",
+          "فلفل صورتی",
+          "کندر",
+          "دانه فلفل پیمنتو"
+        ],
+        "middle": [
+          "رز",
+          "وتیور شنی",
+          "چوب صندل",
+          "پاپیروس"
+        ],
+        "base": [
+          "زعفران",
+          "جیر",
+          "میستیکال (Mystikal)",
+          "آکیگالاوود"
+        ]
+      },
+      "expected_accords": [
+        "درخت معنوی ایستاده در کوه",
+        "چوبی دودی مدرن و ریشه‌دار"
+      ]
+    },
+    {
+      "product_id": "YZD-PROD-0566",
+      "slug": "amouage-search",
+      "expected_name_en": "AMOUAGE - Search",
+      "brand_en": "Amouage",
+      "usd_per_kg": "348.7",
+      "expected_notes": {
+        "top": [
+          "لیمو",
+          "لایم",
+          "نارنگی ماندارین"
+        ],
+        "middle": [
+          "کندر هوجری",
+          "فلفل سیاه",
+          "المی"
+        ],
+        "base": [
+          "چوب کاد",
+          "وتیور",
+          "چوب گایاک"
+        ]
+      },
+      "expected_accords": [
+        "مرکبات درخشان در آغوش چوب سوخته تاریک و دود"
+      ]
+    },
+    {
+      "product_id": "YZD-PROD-0576",
+      "slug": "xerjoff-alexandria-ii",
+      "expected_name_en": "XERJOFF - Alexandria II",
+      "brand_en": "Xerjoff",
+      "usd_per_kg": "333.3",
+      "expected_notes": {
+        "top": [
+          "سیب",
+          "دارچین",
+          "اسطوخودوس",
+          "چوب رز"
+        ],
+        "middle": [
+          "چوب سدر",
+          "گل برف",
+          "رز بلغاری"
+        ],
+        "base": [
+          "کهربا",
+          "عود لائوس",
+          "مشک",
+          "چوب صندل",
+          "وانیل"
+        ]
+      },
+      "expected_accords": [
+        "عالی‌ترین سطح عطرسازی ایتالیا",
+        "عود پودری اشرافی ۵۰ ساله"
+      ]
+    },
+    {
+      "product_id": "YZD-PROD-0639",
+      "slug": "parfums-de-marly-herod",
+      "expected_name_en": "PARFUMS DE MARLY - Herod",
+      "brand_en": "Parfums de Marly",
+      "usd_per_kg": "199.1",
+      "expected_notes": {
+        "top": [
+          "دارچین",
+          "فلفل"
+        ],
+        "middle": [
+          "برگ تنباکو",
+          "بخور",
+          "لادن صخره‌ای",
+          "اوسمانتوس"
+        ],
+        "base": [
+          "وانیل",
+          "مشک",
+          "چوب سدر"
+        ]
+      },
+      "expected_accords": [
+        "بهترین عطر تنباکویی تاریخ در کنار توباکو وانیل",
+        "دودی شیرین و مخملی"
+      ]
+    },
+    {
+      "product_id": "YZD-PROD-0640",
+      "slug": "parfums-de-marly-pegasus",
+      "expected_name_en": "PARFUMS DE MARLY - Pegasus",
+      "brand_en": "Parfums de Marly",
+      "usd_per_kg": "191.4",
+      "expected_notes": {
+        "top": [
+          "بادیان رومی",
+          "ترنج",
+          "بادام"
+        ],
+        "middle": [
+          "سرو",
+          "برگ بنفشه",
+          "شکوفه پرتقال"
+        ],
+        "base": [
+          "آمبروکس",
+          "وانیل",
+          "چوب صندل"
+        ]
+      },
+      "expected_accords": [
+        "امضای اشرافی اسب نقره‌ای",
+        "بادام تلخ متالیک و وانیل خامه‌ای"
+      ]
+    },
+    {
+      "product_id": "YZD-PROD-0642",
+      "slug": "parfums-de-marly-haltane",
+      "expected_name_en": "PARFUMS DE MARLY - Haltane",
+      "brand_en": "Parfums de Marly",
+      "usd_per_kg": "283.8",
+      "expected_notes": {
+        "top": [
+          "ترنج",
+          "فلفل صورتی"
+        ],
+        "middle": [
+          "زعفران",
+          "پرالین",
+          "اسطوخودوس",
+          "مریم‌گلی کلاری"
+        ],
+        "base": [
+          "عود",
+          "نعناع هندی",
+          "وتیور",
+          "چرم"
+        ]
+      },
+      "expected_accords": [
+        "ترکیب اشرافی عود فور گریتنس با شکلات پرالین و شیرینی لذیذ"
+      ]
+    },
+    {
+      "product_id": "YZD-PROD-0647",
+      "slug": "parfums-de-marly-greenley",
+      "expected_name_en": "PARFUMS DE MARLY - Greenley",
+      "brand_en": "Parfums de Marly",
+      "usd_per_kg": "314.6",
+      "expected_notes": {
+        "top": [
+          "ترنج",
+          "نارنگی ماندارین",
+          "سیب سبز"
+        ],
+        "middle": [
+          "پتی‌گرن"
+        ],
+        "base": [
+          "آمبروکس",
+          "چوب عنبری",
+          "چوب سدر"
+        ]
+      },
+      "expected_accords": [
+        "گاز زدن به یک سیب سبز خنک و آبدار در میان جنگل‌های بلوط"
+      ]
+    },
+    {
+      "product_id": "YZD-PROD-0648",
+      "slug": "parfums-de-marly-godolphin",
+      "expected_name_en": "PARFUMS DE MARLY - Godolphin",
+      "brand_en": "Parfums de Marly",
+      "usd_per_kg": "182.6",
+      "expected_notes": {
+        "top": [
+          "آویشن",
+          "زعفران",
+          "تمشک"
+        ],
+        "middle": [
+          "رز",
+          "زنبق",
+          "یاس"
+        ],
+        "base": [
+          "چرم",
+          "آمبروکس",
+          "چوب‌های روشن"
+        ]
+      },
+      "expected_accords": [
+        "تفسیر مارلی از چرم توسکانی با تمرکز بیشتر بر میوه‌های شیرین و زعفران"
+      ]
+    },
+    {
+      "product_id": "YZD-PROD-0650",
+      "slug": "parfums-de-marly-kalan",
+      "expected_name_en": "PARFUMS DE MARLY - Kalan",
+      "brand_en": "Parfums de Marly",
+      "usd_per_kg": "322.3",
+      "expected_notes": {
+        "top": [
+          "پرتقال خونی",
+          "فلفل سیاه"
+        ],
+        "middle": [
+          "اسطوخودوس",
+          "افسنطین",
+          "شکوفه پرتقال"
+        ],
+        "base": [
+          "دانه تونکا",
+          "چوب سدر",
+          "خزه"
+        ]
+      },
+      "expected_accords": [
+        "شیشه قرمز آتشی",
+        "ادویه تند و خزه مرطوب با انرژی فوق‌العاده"
+      ]
+    },
+    {
+      "product_id": "YZD-PROD-0651",
+      "slug": "parfums-de-marly-galloway",
+      "expected_name_en": "PARFUMS DE MARLY - Galloway",
+      "brand_en": "Parfums de Marly",
+      "usd_per_kg": "191.4",
+      "expected_notes": {
+        "top": [
+          "لیمو",
+          "فلفل",
+          "المی"
+        ],
+        "middle": [
+          "هل",
+          "زنبق"
+        ],
+        "base": [
+          "مشک",
+          "آمبروکس",
+          "سیپریول"
+        ]
+      },
+      "expected_accords": [
+        "سفید",
+        "پاک",
+        "فلفلی و به شدت تمیز و اشرافی"
+      ]
+    },
+    {
+      "product_id": "YZD-PROD-0656",
+      "slug": "parfums-de-marly-valaya",
+      "expected_name_en": "PARFUMS DE MARLY - Valaya",
+      "brand_en": "Parfums de Marly",
+      "usd_per_kg": "123.2",
+      "expected_notes": {
+        "top": [
+          "ترنج",
+          "نارنگی ماندارین",
+          "هلوی سفید"
+        ],
+        "middle": [
+          "شکوفه پرتقال",
+          "گل‌های سفید"
+        ],
+        "base": [
+          "مشک سفید",
+          "آکیگالاوود",
+          "وانیل",
+          "وتیور"
+        ]
+      },
+      "expected_accords": [
+        "نوازش پارچه حریر سفید بر پوست برهنه",
+        "درخشش خیره‌کننده مدرن"
+      ]
+    },
+    {
+      "product_id": "YZD-PROD-0684",
+      "slug": "kilian-paris-moonlight-in-heaven",
+      "expected_name_en": "KILIAN PARIS - Moonlight in Heaven",
+      "brand_en": "Kilian Paris",
+      "usd_per_kg": "438.9",
+      "expected_notes": {
+        "top": [
+          "گریپ‌فروت"
+        ],
+        "middle": [
+          "انبه",
+          "نارگیل"
+        ],
+        "base": [
+          "دانه تونکای برشته",
+          "برنج"
+        ]
+      },
+      "expected_accords": [
+        "دسر سنتی تایلندی انبه و برنج چسبناک زیر نور مهتاب در سواحل سامویی"
+      ]
+    },
+    {
+      "product_id": "YZD-PROD-0919",
+      "slug": "nasomatto-black-afgano",
+      "expected_name_en": "NASOMATTO - Black Afgano",
+      "brand_en": "Nasomatto",
+      "usd_per_kg": "407",
+      "expected_notes": {
+        "top": [],
+        "middle": [],
+        "base": []
+      },
+      "expected_accords": [
+        "معروف‌ترین و جنجالی‌ترین عطر تاریخ نیش",
+        "دود حشیش و رزین‌های سوزان با کلاهک چوبی سوخته"
+      ]
+    },
+    {
+      "product_id": "YZD-PROD-0921",
+      "slug": "nasomatto-baraonda",
+      "expected_name_en": "NASOMATTO - Baraonda",
+      "brand_en": "Nasomatto",
+      "usd_per_kg": "931.7",
+      "expected_notes": {
+        "top": [],
+        "middle": [],
+        "base": []
+      },
+      "expected_accords": [
+        "بهترین عطر مشروبی جهان با درپوش چوب‌پنبه طبیعی",
+        "بوی بشکه‌های ویسکی و گل رز"
+      ]
+    },
+    {
+      "product_id": "YZD-PROD-0928",
+      "slug": "nasomatto-fantomas",
+      "expected_name_en": "NASOMATTO - Fantomas",
+      "brand_en": "Nasomatto",
+      "usd_per_kg": "530.2",
+      "expected_notes": {
+        "top": [],
+        "middle": [],
+        "base": []
+      },
+      "expected_accords": [
+        "آوانگاردترین عطر نیشانه الساندرو گولتیری با الهام از شخصیت خیالی فانتوماس"
+      ]
+    },
+    {
+      "product_id": "YZD-PROD-0931",
+      "slug": "orto-parisi-megamare",
+      "expected_name_en": "ORTO PARISI - Megamare",
+      "brand_en": "Orto Parisi",
+      "usd_per_kg": "1118.7",
+      "expected_notes": {
+        "top": [],
+        "middle": [],
+        "base": []
+      },
+      "expected_accords": [
+        "هیولای ماندگاری و پخش بوی جهان عطر",
+        "طوفان سهمگین اقیانوس آرام با ماندگاری چند روزه روی لباس"
+      ]
+    },
+    {
+      "product_id": "YZD-PROD-0989",
+      "slug": "byredo-rouge-chaotique",
+      "expected_name_en": "BYREDO - Rouge Chaotique",
+      "brand_en": "Byredo",
+      "usd_per_kg": "382.8",
+      "expected_notes": {
+        "top": [
+          "ترنج",
+          "انگور فرنگی سیاه",
+          "زعفران"
+        ],
+        "middle": [
+          "آلو",
+          "پرالین"
+        ],
+        "base": [
+          "پاپیروس",
+          "نعناع هندی",
+          "عود"
+        ]
+      },
+      "expected_accords": [
+        "اولین عطر گورماند لاین نایت وِیلز بایردو",
+        "آلوی شکلاتی عودی بسیار غلیظ"
+      ]
+    },
+    {
+      "product_id": "YZD-PROD-0990",
+      "slug": "byredo-de-los-santos",
+      "expected_name_en": "BYREDO - De Los Santos",
+      "brand_en": "Byredo",
+      "usd_per_kg": "410.3",
+      "expected_notes": {
+        "top": [
+          "مریم‌گلی کلاری",
+          "آلو میرابل"
+        ],
+        "middle": [
+          "ریشه زنبق",
+          "روغن لادن صخره‌ای"
+        ],
+        "base": [
+          "مشک",
+          "آمبروکسان",
+          "پالو سانتو"
+        ]
+      },
+      "expected_accords": [
+        "جشن روز مردگان در مکزیک",
+        "بوی بخور مریم‌گلی و خاک معطر پاک‌کننده روح"
+      ]
+    },
+    {
+      "product_id": "YZD-PROD-1507",
+      "slug": "yves-saint-laurent-mon-paris",
+      "expected_name_en": "YVES SAINT LAURENT - Mon Paris",
+      "brand_en": "Yves Saint Laurent",
+      "usd_per_kg": "388.3",
+      "expected_notes": {
+        "top": [
+          "میوه‌های قرمز"
+        ],
+        "middle": [
+          "گل تاتوره",
+          "گل صدتومانی سفید"
+        ],
+        "base": [
+          "مشک سفید",
+          "نعناع هندی"
+        ]
+      },
+      "expected_accords": [
+        "چرخش عاشقانه در خیابان‌های پاریس با پاپیون مشکی",
+        "توت‌فرنگی‌های آبدار در کنار گل مخدر تاتوره"
+      ]
+    },
+    {
+      "product_id": "YZD-PROD-1512",
+      "slug": "yves-saint-laurent-babycat",
+      "expected_name_en": "YVES SAINT LAURENT - Babycat",
+      "brand_en": "Yves Saint Laurent",
+      "usd_per_kg": "292.6",
+      "expected_notes": {
+        "top": [
+          "فلفل صورتی",
+          "فلفل سیاه",
+          "المی"
+        ],
+        "middle": [
+          "کندر",
+          "زعفران"
+        ],
+        "base": [
+          "وانیل",
+          "چوب سدر",
+          "آکورد جیر"
+        ]
+      },
+      "expected_accords": [
+        "نایاب‌ترین و ترندترین عطر سال‌های اخیر جهان",
+        "لمس نرمی پوست پلنگ با وانیل سیاه و جیر دودی"
+      ]
+    },
+    {
+      "product_id": "YZD-PROD-1631",
+      "slug": "lancme-trsor-midnight-rose",
+      "expected_name_en": "LANCÔME - Trésor Midnight Rose",
+      "brand_en": "Lancôme",
+      "usd_per_kg": "174.9",
+      "expected_notes": {
+        "top": [
+          "تمشک",
+          "جوانه انگور فرنگی سیاه"
+        ],
+        "middle": [
+          "رز",
+          "یاس"
+        ],
+        "base": [
+          "وانیل",
+          "مشک"
+        ]
+      },
+      "expected_accords": [
+        "شیشه بنفش با پاپیون ساتن",
+        "عطر نیمه‌شب در کوچه‌های پاریس با تمشک ترش و شیرین و رز فلفلی"
+      ]
+    },
+    {
+      "product_id": "YZD-PROD-1635",
+      "slug": "lancme-miracle",
+      "expected_name_en": "LANCÔME - Miracle",
+      "brand_en": "Lancôme",
+      "usd_per_kg": "314.6",
+      "expected_notes": {
+        "top": [
+          "لیچی",
+          "فریزیا"
+        ],
+        "middle": [
+          "مگنولیا",
+          "زنجبیل",
+          "فلفل"
+        ],
+        "base": [
+          "کهربا",
+          "مشک"
+        ]
+      },
+      "expected_accords": [
+        "شروع روز نو و معجزه زندگی با رنگ صورتی ملایم",
+        "طراوت زنجبیل تازه و میوه استوایی لیچی"
+      ]
+    },
+    {
+      "product_id": "YZD-PROD-1706",
+      "slug": "versace-bright-crystal",
+      "expected_name_en": "VERSACE - Bright Crystal",
+      "brand_en": "Versace",
+      "usd_per_kg": "166.1",
+      "expected_notes": {
+        "top": [
+          "یوزو",
+          "آکورد یخی",
+          "انار"
+        ],
+        "middle": [
+          "صدتومانی",
+          "مگنولیا",
+          "گل نیلوفر"
+        ],
+        "base": [
+          "چوب ماهون",
+          "کهربای گیاهی",
+          "مشک"
+        ]
+      },
+      "expected_accords": [
+        "پرفروش‌ترین عطر زنانه تاریخ ورساچه با درپوش الماس تراش‌خورده",
+        "انفجار شادابی انار خنک و گل صدتومانی"
+      ]
+    },
+    {
+      "product_id": "YZD-PROD-1744",
+      "slug": "carolina-herrera-212-vip-men",
+      "expected_name_en": "CAROLINA HERRERA - 212 VIP Men",
+      "brand_en": "Carolina Herrera",
+      "usd_per_kg": "114.4",
+      "expected_notes": {
+        "top": [
+          "لایم خاویاری",
+          "نعناع یخ‌زده"
+        ],
+        "middle": [
+          "زنجبیل",
+          "ودکای خنک"
+        ],
+        "base": [
+          "چوب کینگ‌وود",
+          "دانه تونکا"
+        ]
+      },
+      "expected_accords": [
+        "شیشه شمش نقره‌ای با شعار آیا در لیست VIP هستید؟",
+        "کوکتل ودکا و پشن فروت برای پارتی‌های شبانه"
+      ]
+    },
+    {
+      "product_id": "YZD-PROD-1820",
+      "slug": "lattafa-perfumes-khamrah",
+      "expected_name_en": "LATTAFA PERFUMES - Khamrah",
+      "brand_en": "Lattafa Perfumes",
+      "usd_per_kg": "92.4",
+      "expected_notes": {
+        "top": [
+          "ترنج",
+          "دارچین",
+          "جوز هندی"
+        ],
+        "middle": [
+          "آکورد خرما",
+          "گل برف",
+          "پرالین",
+          "گل مریم"
+        ],
+        "base": [
+          "تونکا برشته",
+          "بنزوئین لائوس",
+          "صمغ مر",
+          "آکیگالاوود",
+          "وانیل",
+          "چوب عنبری"
+        ]
+      },
+      "expected_accords": [
+        "پدیده‌سازترین عطر سال‌های اخیر خاورمیانه در شیشه کریستال مشبک ویسکی",
+        "بمب دارچین و خرمای کاراملی"
+      ]
+    },
+    {
+      "product_id": "YZD-PROD-1840",
+      "slug": "lattafa-perfumes-hayaati",
+      "expected_name_en": "LATTAFA PERFUMES - Hayaati",
+      "brand_en": "Lattafa Perfumes",
+      "usd_per_kg": "102.3",
+      "expected_notes": {
+        "top": [
+          "سیب",
+          "ترنج"
+        ],
+        "middle": [
+          "پوست دارچین",
+          "نت‌های چوبی"
+        ],
+        "base": [
+          "مشک",
+          "وانیل"
+        ]
+      },
+      "expected_accords": [
+        "پرفروش‌ترین عطر اقتصادی روزمره خاورمیانه با ترکیب میوه‌ای خنک و ماندگاری بسیار بالا"
+      ]
+    },
+    {
+      "product_id": "YZD-PROD-2081",
+      "slug": "montblanc-legend-spirit",
+      "expected_name_en": "MONTBLANC - Legend Spirit",
+      "brand_en": "Montblanc",
+      "usd_per_kg": "121",
+      "expected_notes": {
+        "top": [
+          "فلفل صورتی",
+          "گریپ‌فروت",
+          "ترنج"
+        ],
+        "middle": [
+          "اسطوخودوس",
+          "هل",
+          "آکورد آبی"
+        ],
+        "base": [
+          "چوب‌های سفید",
+          "خزه بلوط",
+          "مشک سفید"
+        ]
+      },
+      "expected_accords": [
+        "بطری تمام سفید مات و نقره‌ای",
+        "رقیب مستقیم اینویکتوس آکوا با خنکای گریپ‌فروت و مشک برفی"
+      ]
+    }
+  ]
+}

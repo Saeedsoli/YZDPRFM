@@ -1876,7 +1876,9 @@ const BRAND_ALIASES = {
   'Stéphane Humbert Lucas 777': 'استفان هامبرت لوکاس'
 };
 
-function buildSearchIndex(force = false) {
+function buildSearchIndex(force = false, ids = null) {
+  if (ids !== null && (!Array.isArray(ids) || ids.some(x => typeof x !== 'string'))) throw Error('Invalid search index scope');
+  if (ids && !ids.length) return 0;
   const pending = db.prepare(
     'SELECT COUNT(*) c FROM products WHERE search_blob IS NULL').get().c;
   if (!pending && !force) return 0;
@@ -1885,7 +1887,7 @@ function buildSearchIndex(force = false) {
     family_fa, family_en, notes_top, notes_middle, notes_base, accords,
     season, occasion, concentration, gender, temperature, taste,
     longevity, sillage, country, market_segment, perfumer, release_year
-    FROM products`).all();
+    FROM products ${ids ? 'WHERE id IN (' + ids.map(() => '?').join(',') + ')' : ''}`).all(...(ids || []));
 
   const upd = db.prepare('UPDATE products SET search_blob=? WHERE id=?');
   const flat = j => { try { return JSON.parse(j || '[]').join(' '); } catch { return ''; } };
@@ -1999,6 +2001,25 @@ function buildNotesIndex(force = false) {
   const n = db.prepare('SELECT COUNT(*) c FROM product_notes').get().c;
   appLog('INFO', 'search', `ایندکس نُت ساخته شد — ${n} ردیف`);
   return n;
+}
+
+// Rebuild the derived note index for an explicit scope, preserving all others.
+function refreshProductNotes(ids) {
+  if (!Array.isArray(ids) || ids.some(x => typeof x !== 'string')) throw Error('Invalid note index scope');
+  if (!ids.length) return 0;
+  initNotesIndex();
+  const get=db.prepare('SELECT id,notes_top,notes_middle,notes_base,accords FROM products WHERE id=?');
+  const del=db.prepare('DELETE FROM product_notes WHERE product_id=?');
+  const ins=db.prepare('INSERT OR IGNORE INTO product_notes(product_id,note,note_key,position) VALUES(?,?,?,?)');
+  return db.transaction(()=>{let changed=0;
+    for(const id of ids){const row=get.get(id);if(!row)throw Error('Note index product missing');
+      const groups=[['top',row.notes_top],['middle',row.notes_middle],['base',row.notes_base],['accord',row.accords]];
+      const parsed=groups.map(([pos,v])=>{const list=JSON.parse(v||'[]');if(!Array.isArray(list))throw Error('Invalid notes');return [pos,list];});
+      del.run(id);
+      for(const [pos,notes] of parsed)for(const raw of notes){const note=String(raw||'').trim();if(note&&note.length<=60)ins.run(id,note,normalizeFa(note),pos);}
+      changed++;
+    }return changed;
+  })();
 }
 
 /**
@@ -2879,9 +2900,11 @@ if (isFreshInstallation && process.env.APPROVED_MTO_AUTOSTART !== '0') {
 // unchanged price and exact prior content; it never touches order data.
 const activeNotesResults = ['active_official_note_corrections_v1.json','active_official_note_corrections_v2.json','active_official_note_corrections_v3.json'].map(file =>
   require('./active-official-notes').applyActiveOfficialNotes(db, path.join(SEED_DIR, file)));
+const unverifiedAccordResult = isFreshInstallation && process.env.APPROVED_MTO_AUTOSTART !== '0' && process.env.UNVERIFIED_ACCORD_CLEANUP_AUTOSTART !== '0'
+  ? require('./unverified-seed-accords-cleanup').applyUnverifiedSeedAccordsCleanup(db, path.join(SEED_DIR,'unverified_seed_accords_cleanup_v1.json')) : null;
 buildSearchIndex();
 // Rebuild note lookup after sourced notes change or new supplement products arrive.
-buildNotesIndex(legacyReferenceResult?.activated > 0 || activeNotesResults.some(r => r.updated > 0) || supplementInserted > 0 || secondaryNotesResults.some(r => r.updated > 0) || officialNotesResults.some(r => r.updated > 0));
+buildNotesIndex(unverifiedAccordResult?.updated > 0 || legacyReferenceResult?.activated > 0 || activeNotesResults.some(r => r.updated > 0) || supplementInserted > 0 || secondaryNotesResults.some(r => r.updated > 0) || officialNotesResults.some(r => r.updated > 0));
 
 startMaintenance();
 
@@ -2967,7 +2990,7 @@ module.exports = {
   reviewSummary, hasPurchased,
   createReviewInvite, readReviewInvite, consumeReviewInvite, INVITE_TTL_DAYS,
   getSettings, saveSettings, isValidSetting, nextInvoiceNo,
-  buildSearchIndex, buildNotesIndex, listNotes, normalizeFa,
+  buildSearchIndex, buildNotesIndex, refreshProductNotes, listNotes, normalizeFa,
   insertProducts,
   otpGet, otpSave, otpBumpAttempts, otpDelete, otpPurgeExpired,
   hashPassword, verifyPassword,
