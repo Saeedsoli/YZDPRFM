@@ -317,6 +317,7 @@ run_test test_campaign_display.js "campaign price display end-to-end"
 run_test test_review_invites.js "review invites for in-store customers"
 run_test test_readiness.js "launch readiness + no key leakage"
 run_test test_backup_stream_safety.js "backup concurrency, recovery and stream cleanup"
+run_test test_automatic_backup_safety.js "automatic backup verification and atomic publish"
 if python3 scripts/test_destructive_tool_guards.py >/tmp/test_destructive_tool_guards.log 2>&1; then P=$((P+1)); else F=$((F+1)); echo "  X destructive tool guards"; fi
 if python3 scripts/test_admin_account_rate_limit.py >/tmp/test_admin_account_rate_limit.log 2>&1; then P=$((P+1)); else F=$((F+1)); echo "  X admin account rate limit"; fi
 if python3 scripts/test_production_admin_guard.py >/tmp/test_production_admin_guard.log 2>&1; then P=$((P+1)); else F=$((F+1)); echo "  X production admin guard"; fi

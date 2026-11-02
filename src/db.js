@@ -2569,28 +2569,18 @@ function purgeExpired() {
    پشتیبان‌گیری خودکار
    ═══════════════════════════════════════════ */
 const BACKUP_DIR   = path.join(path.dirname(DB_PATH), 'backups');
-const BACKUP_KEEP  = parseInt(process.env.BACKUP_KEEP) || 7;
-const BACKUP_HOURS = parseInt(process.env.BACKUP_INTERVAL_HOURS) || 24;
+const {createAutomaticBackup,positiveInt}=require('./automatic-backup');
+const BACKUP_KEEP  = positiveInt(process.env.BACKUP_KEEP,7);
+// Node's timer overflows above 2^31-1 milliseconds; cap the accepted interval.
+const BACKUP_HOURS = positiveInt(process.env.BACKUP_INTERVAL_HOURS,24,596);
 
 function runBackup() {
   try {
-    fs.mkdirSync(BACKUP_DIR, { recursive: true });
-    const stamp = new Date().toISOString().slice(0, 13).replace(/[:T-]/g, '');
-    const file = path.join(BACKUP_DIR, `yazd-${stamp}.db`);
-    if (fs.existsSync(file)) return null;          // این ساعت گرفته شده
-
-    db.prepare('VACUUM INTO ?').run(file);          // نسخه سازگار
-
-    // نگه‌داشتن فقط N نسخه آخر
-    const all = fs.readdirSync(BACKUP_DIR)
-      .filter(f => f.startsWith('yazd-') && f.endsWith('.db')).sort().reverse();
-    all.slice(BACKUP_KEEP).forEach(f => {
-      try { fs.unlinkSync(path.join(BACKUP_DIR, f)); } catch {}
-    });
-
-    appLog('INFO', 'backup', 'پشتیبان خودکار ایجاد شد',
-           { file: path.basename(file), size: fs.statSync(file).size, kept: Math.min(all.length, BACKUP_KEEP) });
-    return file;
+    const result=createAutomaticBackup({db,dbPath:DB_PATH,dir:BACKUP_DIR,keep:BACKUP_KEEP});
+    if(!result.created)return null;
+    appLog('INFO','backup','پشتیبان خودکار تأیید و ثبت شد',
+      {file:path.basename(result.file),size:fs.statSync(result.file).size});
+    return result.file;
   } catch (e) {
     appLog('ERROR', 'backup', 'پشتیبان‌گیری ناموفق: ' + e.message);
     return null;

@@ -940,6 +940,8 @@ node_modules/   با npm install برمی‌گردد
 - `scripts/test_production_safety_gates.py` — محافظ تولید، اتصال شناسه تراکنش، خطای نامشخص و حساب موجود؛ با درگاه ساختگی.
 - `scripts/test_payment_sandbox_result.js` — جلوگیری از نمایش موفقیت ساختگی یا حذف سبد در خطا.
 - `src/order-stock-reservations.js` — ثبت و آزادسازی دقیق موجودی واقعی برای اقلام سفارش جدید.
+- `src/automatic-backup.js` — پشتیبان محلی موقت، بررسی سلامت، انتشار بدون بازنویسی و نگهداری محافظت‌شده.
+- `scripts/test_automatic_backup_safety.js` — آزمون خرابی، بازیابی، نگهداری و برخورد هم‌زمان پشتیبان‌ها روی دیتابیس موقت.
 - `src/order-stock-reservation-cli.js` — نصب افزایشی محافظت‌شده با پشتیبان مستقل و تأیید توقف نوشتن.
 - `scripts/test_order_stock_reservations.py` — آزمون ساخت پس از سفارش، کالای انبار، لغو، انقضا و ردیف تکراری.
 - `scripts/test_order_stock_cross_process.py` — آزمون همزمانی آخرین موجودی در دو فرایند Node.
