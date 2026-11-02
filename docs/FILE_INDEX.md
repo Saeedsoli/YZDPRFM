@@ -923,6 +923,9 @@ node_modules/   با npm install برمی‌گردد
 - `scripts/test_legacy_reference_approval.py` — آزمون قیمت قدیمی، سفارش، نت‌ها و محافظ ویرایش مدیر.
 - `scripts/test_performance_claim_gate.py` — پنهان‌بودن ماندگاری و پخش تأییدنشده از خروجی عمومی همراه با حفظ داده پنل.
 - `src/unverified-seed-accords-cleanup.js` — حذف محافظت‌شده آکوردهای تولیدی و تأییدنشده از ۳۱ محصول فعال.
+- `src/reference-accord-display.js` — نمایش محافظت‌شده نت‌های تفکیک‌نشده رایحه مرجع؛ بدون ادعای مواد اسانس دست‌ساز.
+- `scripts/test_reference_accord_display.js` — آزمون تطابق مصوبات نمایش با اسناد و محافظت تغییر هویت یا داده.
+- `scripts/test_reference_accord_display_browser.py` — آزمون مرورگر نمایش نت‌های مرجع، حفظ افشا و محافظ تزریق.
 - `scripts/apply_unverified_seed_accords.js` — اجرای صریح و بازسازی محدود ایندکس پس از پشتیبان‌گیری.
 - `scripts/test_unverified_seed_accords_cleanup.py` — آزمون محدوده، داده مدیر، سفارش و تکرار مهاجرت.
 - `scripts/test_scent_description_gate.py` — جلوگیری از انتشار ادعاهای ترکیب و خلوص تأییدنشده و حفظ متن پنل.

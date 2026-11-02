@@ -1,0 +1,1464 @@
+{
+  "version": "reference_accord_display_2026_11_v1",
+  "scope": "Exact reviewed catalog snapshot for display as reference scent notes only, not a claim about handmade ingredients or supplier essence identity. Sources are historical candidates, not a fresh source-page verification.",
+  "items": [
+    {
+      "product_id": "SUP-AG-900002",
+      "slug": "giorgio-armani-acqua-di-gio-edp",
+      "name_en": "GIORGIO ARMANI - Acqua di Giò EDP",
+      "brand_en": "Giorgio Armani",
+      "concentration": null,
+      "accords": [
+        "نت دریایی",
+        "نارنگی سبز",
+        "مریم‌گلی",
+        "وتیور",
+        "پچولی"
+      ],
+      "source_manifest": "official_supplement_v31.json",
+      "source_url": "https://www.giorgioarmanibeauty-usa.com/fragrances/mens-cologne/acqua-di-gio-eau-de-parfum/ww-00631-arm.html",
+      "source_kind": "official_candidate"
+    },
+    {
+      "product_id": "SUP-BS-900050",
+      "slug": "boss-femme",
+      "name_en": "HUGO BOSS - Femme",
+      "brand_en": "Hugo Boss",
+      "concentration": null,
+      "accords": [
+        "انگور فرنگی سیاه",
+        "نارنگی",
+        "مشک",
+        "استفانوتیس",
+        "رز",
+        "سوسن"
+      ],
+      "source_manifest": "official_supplement_v19.json",
+      "source_url": "https://www.hugoboss.com/fr/eau-de-parfum-femme-by-boss-50%C2%A0ml/0737052041285.html",
+      "source_kind": "official_candidate"
+    },
+    {
+      "product_id": "SUP-CH-900001",
+      "slug": "carolina-herrera-212-vip-women",
+      "name_en": "CAROLINA HERRERA - 212 VIP",
+      "brand_en": "Carolina Herrera",
+      "concentration": null,
+      "accords": [
+        "میوه گل ساعتی",
+        "گاردنیا",
+        "آکورد رام"
+      ],
+      "source_manifest": "official_supplement_v22.json",
+      "source_url": "https://www.carolinaherrera.com/br/en/p-fragrance/212-vip",
+      "source_kind": "official_candidate"
+    },
+    {
+      "product_id": "SUP-CH-900006",
+      "slug": "carolina-herrera-ch-men-edt",
+      "name_en": "CAROLINA HERRERA - CH Men EDT",
+      "brand_en": "Carolina Herrera",
+      "concentration": null,
+      "accords": [
+        "آکورد چرم",
+        "آکورد چوبی",
+        "زعفران"
+      ],
+      "source_manifest": "official_supplement_v35.json",
+      "source_url": "https://www.carolinaherrera.com/us/en/p-fragrance/ch-men-edt-100ml",
+      "source_kind": "official_candidate"
+    },
+    {
+      "product_id": "SUP-CR-900009",
+      "slug": "creed-white-flowers",
+      "name_en": "CREED - White Flowers",
+      "brand_en": "Creed",
+      "concentration": null,
+      "accords": [
+        "یاس",
+        "آکورد گلی",
+        "آکورد میوه‌ای"
+      ],
+      "source_manifest": "active_official_note_corrections_v3.json",
+      "source_url": "https://www.creedfragrance.com/p/royales-exclusives-white-flowers/12900138/",
+      "source_kind": "official_candidate"
+    },
+    {
+      "product_id": "SUP-CR-900050",
+      "slug": "creed-absolu-aventus",
+      "name_en": "CREED - Absolu Aventus",
+      "brand_en": "Creed",
+      "concentration": null,
+      "accords": [
+        "ترنج",
+        "آناناس",
+        "هل",
+        "لابدانوم"
+      ],
+      "source_manifest": "official_supplement_v20.json",
+      "source_url": "https://www.creedfragrance.com/p/absolu-aventus/16281794/",
+      "source_kind": "official_candidate"
+    },
+    {
+      "product_id": "SUP-EP-900001",
+      "slug": "emper-epic-adventure",
+      "name_en": "EMPER - Epic Adventure",
+      "brand_en": "Emper",
+      "concentration": null,
+      "accords": [
+        "خیار",
+        "خربزه",
+        "نارنگی",
+        "ترنج",
+        "لیمو",
+        "درمنه",
+        "زیره",
+        "ریحان",
+        "مریم‌گلی",
+        "شمعدانی",
+        "کاج",
+        "پچولی",
+        "چوب صندل",
+        "میخک",
+        "سیکلامن",
+        "یاس",
+        "جیر",
+        "مشک",
+        "خزه بلوط",
+        "تنباکو",
+        "چرم",
+        "کهربا"
+      ],
+      "source_manifest": "official_supplement_v21.json",
+      "source_url": "https://uae.emperperfumes.com/products/epic-adventure",
+      "source_kind": "official_candidate"
+    },
+    {
+      "product_id": "SUP-EP-900002",
+      "slug": "emper-chifon",
+      "name_en": "EMPER - Chifon",
+      "brand_en": "Emper",
+      "concentration": null,
+      "accords": [
+        "ترنج",
+        "نارنگی",
+        "یاس",
+        "رز",
+        "مشک",
+        "چوب صندل"
+      ],
+      "source_manifest": "official_supplement_v21.json",
+      "source_url": "https://uae.emperperfumes.com/products/chifon",
+      "source_kind": "official_candidate"
+    },
+    {
+      "product_id": "SUP-GC-900016",
+      "slug": "gucci-bloom",
+      "name_en": "GUCCI - Bloom",
+      "brand_en": "Gucci",
+      "concentration": null,
+      "accords": [
+        "گل مریم",
+        "یاس",
+        "رانگون کریپر"
+      ],
+      "source_manifest": "supplier_verified_supplement.json",
+      "source_url": "https://www.gucci.com/us/en/pr/beauty/fragrances/fragrances-for-women/gucci-bloom-100ml-eau-de-parfum-p-488830999990099",
+      "source_kind": "official_candidate"
+    },
+    {
+      "product_id": "SUP-KY-900001",
+      "slug": "kayali-wedding-velvet-santal-35",
+      "name_en": "KAYALI - The Wedding Velvet Santal 35",
+      "brand_en": "Kayali",
+      "concentration": null,
+      "accords": [
+        "یاس",
+        "برگ چای",
+        "مشک سفید",
+        "بنزوئین",
+        "چوب صندل",
+        "چوب سدر"
+      ],
+      "source_manifest": "official_supplement_v21.json",
+      "source_url": "https://us.kayali.com/products/the-wedding-velvet-santal-35",
+      "source_kind": "official_candidate"
+    },
+    {
+      "product_id": "SUP-LV-900001",
+      "slug": "louis-vuitton-afternoon-swim",
+      "name_en": "LOUIS VUITTON - Afternoon Swim",
+      "brand_en": "Louis Vuitton",
+      "concentration": null,
+      "accords": [
+        "ترنج",
+        "پرتقال",
+        "زنجبیل"
+      ],
+      "source_manifest": "supplier_verified_supplement.json",
+      "source_url": "https://us.louisvuitton.com/eng-us/products/afternoon-swim-nvprod7330060v/LP0487",
+      "source_kind": "official_candidate"
+    },
+    {
+      "product_id": "SUP-LV-900002",
+      "slug": "louis-vuitton-imagination",
+      "name_en": "LOUIS VUITTON - Imagination",
+      "brand_en": "Louis Vuitton",
+      "concentration": null,
+      "accords": [
+        "آمبروکس",
+        "چای سیاه چینی",
+        "نرولی تونسی",
+        "سدر سیسیلی",
+        "ترنج کالابریا",
+        "زنجبیل نیجریه",
+        "دارچین سیلان"
+      ],
+      "source_manifest": "supplier_verified_supplement.json",
+      "source_url": "https://en.louisvuitton.com/eng-nl/products/Imagination-nvprod7340011v/LP0476",
+      "source_kind": "official_candidate"
+    },
+    {
+      "product_id": "SUP-LV-900003",
+      "slug": "louis-vuitton-limmensite",
+      "name_en": "LOUIS VUITTON - L'Immensité",
+      "brand_en": "Louis Vuitton",
+      "concentration": null,
+      "accords": [
+        "زنجبیل",
+        "گریپ‌فروت",
+        "وتیور"
+      ],
+      "source_manifest": "supplier_verified_supplement.json",
+      "source_url": "https://us.louisvuitton.com/eng-us/products/limmensite-nvprod1030132v/LP0062",
+      "source_kind": "official_candidate"
+    },
+    {
+      "product_id": "SUP-LV-900004",
+      "slug": "louis-vuitton-ombre-nomade",
+      "name_en": "LOUIS VUITTON - Ombre Nomade",
+      "brand_en": "Louis Vuitton",
+      "concentration": null,
+      "accords": [
+        "چوب عود",
+        "بنزوئین",
+        "بخور",
+        "تمشک"
+      ],
+      "source_manifest": "supplier_verified_supplement.json",
+      "source_url": "https://me.louisvuitton.com/eng-ae/products/Ombre-Nomade-nvprod990245v/LP0096",
+      "source_kind": "official_candidate"
+    },
+    {
+      "product_id": "SUP-LV-900005",
+      "slug": "louis-vuitton-stellar-times",
+      "name_en": "LOUIS VUITTON - Stellar Times",
+      "brand_en": "Louis Vuitton",
+      "concentration": null,
+      "accords": [
+        "عنبر سفید",
+        "شکوفه پرتقال",
+        "بالم پرو"
+      ],
+      "source_manifest": "supplier_verified_supplement.json",
+      "source_url": "https://my.louisvuitton.com/eng-my/products/stellar-times-nvprod7340023v/LP0526",
+      "source_kind": "official_candidate"
+    },
+    {
+      "product_id": "SUP-LV-900006",
+      "slug": "louis-vuitton-california-dream",
+      "name_en": "LOUIS VUITTON - California Dream",
+      "brand_en": "Louis Vuitton",
+      "concentration": null,
+      "accords": [
+        "ماندارین",
+        "دانه آمبرت",
+        "بالم بنزوئین"
+      ],
+      "source_manifest": "supplier_verified_supplement.json",
+      "source_url": "https://uk.louisvuitton.com/eng-gb/products/california-dream-nvprod2210033v/LP0175",
+      "source_kind": "official_candidate"
+    },
+    {
+      "product_id": "SUP-NT-900026",
+      "slug": "nautica-voyage",
+      "name_en": "NAUTICA - Voyage",
+      "brand_en": "Nautica",
+      "concentration": null,
+      "accords": [
+        "سیب سبز",
+        "برگ سبز",
+        "لوتوس"
+      ],
+      "source_manifest": "supplier_verified_supplement.json",
+      "source_url": "https://www.nautica.com/nautica-voyage-3.4-oz.-eau-de-toilette/99350078119.html",
+      "source_kind": "official_candidate"
+    },
+    {
+      "product_id": "SUP-TB-900003",
+      "slug": "the-body-shop-black-musk-edp",
+      "name_en": "THE BODY SHOP - Black Musk EDP",
+      "brand_en": "The Body Shop",
+      "concentration": null,
+      "accords": [
+        "فلفل صورتی",
+        "یلانگ یلانگ",
+        "وانیل",
+        "مشک"
+      ],
+      "source_manifest": "official_supplement_v33.json",
+      "source_url": "https://us.thebodyshop.com/products/black-musk-eau-de-parfum",
+      "source_kind": "official_candidate"
+    },
+    {
+      "product_id": "SUP-TP-910003",
+      "slug": "dsquared2-he-wood-rocky-mountain-wood",
+      "name_en": "DSQUARED2 - He Wood Rocky Mountain Wood",
+      "brand_en": "Dsquared2",
+      "concentration": null,
+      "accords": [
+        "بنفشه",
+        "چوب سدر",
+        "وتیور",
+        "فلفل",
+        "بخور",
+        "مشک",
+        "سوسن",
+        "کهربا"
+      ],
+      "source_manifest": "secondary_supplement_v1.json",
+      "source_url": "https://www.fragrantica.com/perfume/DSQUARED2/He-Wood-Rocky-Mountain-Wood-5862.html",
+      "source_kind": "independent"
+    },
+    {
+      "product_id": "SUP-TP-910004",
+      "slug": "bvlgari-le-gemme-amarena",
+      "name_en": "BVLGARI - Le Gemme Amarena",
+      "brand_en": "Bvlgari",
+      "concentration": null,
+      "accords": [
+        "گیلاس",
+        "رز",
+        "گل مریم"
+      ],
+      "source_manifest": "secondary_supplement_v1.json",
+      "source_url": "https://www.fragrantica.com/perfume/Bvlgari/Amarena-27387.html",
+      "source_kind": "independent"
+    },
+    {
+      "product_id": "SUP-TP-910006",
+      "slug": "lanvin-eclat-darpege",
+      "name_en": "LANVIN - Eclat d’Arpège",
+      "brand_en": "Lanvin",
+      "concentration": null,
+      "accords": [
+        "یاس بنفش سبز",
+        "برگ چای",
+        "گل صدتومانی",
+        "شکوفه هلو",
+        "مشک",
+        "ویستریا",
+        "پتیگرین",
+        "اوسمانتوس",
+        "چوب سدر",
+        "کهربا"
+      ],
+      "source_manifest": "secondary_supplement_v1.json",
+      "source_url": "https://www.fragrantica.com/perfume/Lanvin/Eclat-d-Arpege-988.html",
+      "source_kind": "independent"
+    },
+    {
+      "product_id": "SUP-TP-910010",
+      "slug": "kilian-smoke-for-the-soul",
+      "name_en": "KILIAN PARIS - Smoke for the Soul",
+      "brand_en": "Kilian Paris",
+      "concentration": null,
+      "accords": [
+        "آکورد شاهدانه",
+        "اکالیپتوس",
+        "ماته",
+        "توس",
+        "تنباکو",
+        "هل",
+        "گریپ‌فروت",
+        "چوب کشمیر"
+      ],
+      "source_manifest": "secondary_supplement_v2.json",
+      "source_url": "https://www.fragrantica.com/perfume/By-Kilian/Smoke-for-the-Soul-25993.html",
+      "source_kind": "independent"
+    },
+    {
+      "product_id": "SUP-TP-910016",
+      "slug": "malizia-uomo-vetyver",
+      "name_en": "Malizia Uomo Vetyver",
+      "brand_en": "Malizia",
+      "concentration": null,
+      "accords": [
+        "وتیور"
+      ],
+      "source_manifest": "secondary_supplement_v4.json",
+      "source_url": "https://www.fragrantica.com/perfume/Malizia/Malizia-Uomo-Vetyver-12997.html",
+      "source_kind": "independent"
+    },
+    {
+      "product_id": "SUP-TP-910019",
+      "slug": "tommy-hilfiger-tommy-jeans",
+      "name_en": "TOMMY HILFIGER - Tommy Jeans",
+      "brand_en": "Tommy Hilfiger",
+      "concentration": null,
+      "accords": [
+        "نارنگی",
+        "گریپ‌فروت",
+        "پرتقال"
+      ],
+      "source_manifest": "secondary_supplement_v5.json",
+      "source_url": "https://www.fragrantica.com/perfume/Tommy-Hilfiger/Tommy-Jeans-6316.html",
+      "source_kind": "independent"
+    },
+    {
+      "product_id": "SUP-TP-910030",
+      "slug": "narciso-rodriguez-for-him-original",
+      "name_en": "Narciso Rodriguez for Him",
+      "brand_en": "Narciso Rodriguez",
+      "concentration": null,
+      "accords": [
+        "برگ بنفشه",
+        "مشک",
+        "پچولی",
+        "کهربا"
+      ],
+      "source_manifest": "secondary_supplement_v9.json",
+      "source_url": "https://www.fragrantica.com/perfume/Narciso-Rodriguez/Narciso-Rodriguez-for-Him-1063.html",
+      "source_kind": "independent"
+    },
+    {
+      "product_id": "SUP-TP-910042",
+      "slug": "nikos-sculpture-homme-original",
+      "name_en": "Nikos Sculpture Homme",
+      "brand_en": "Nikos",
+      "concentration": null,
+      "accords": [
+        "سدر",
+        "دانه تونکا",
+        "کهربا",
+        "بنزوئین"
+      ],
+      "source_manifest": "secondary_supplement_v18.json",
+      "source_url": "https://www.fragrantica.com/perfume/Nikos/Sculpture-Homme-925.html",
+      "source_kind": "independent"
+    },
+    {
+      "product_id": "SUP-VS-900001",
+      "slug": "versace-eros-pour-femme-edp",
+      "name_en": "VERSACE - Eros Pour Femme",
+      "brand_en": "Versace",
+      "concentration": null,
+      "accords": [
+        "یاس",
+        "مشک",
+        "آکورد چوبی"
+      ],
+      "source_manifest": "official_supplement_v28.json",
+      "source_url": "https://www.versace.com/row/en/women/accessories/fragrances-body-care/eros-pour-femme/eros-pour-femme-edp-100-ml/R750032-R100MLS_RNUL.html",
+      "source_kind": "official_candidate"
+    },
+    {
+      "product_id": "SUP-VS-900021",
+      "slug": "victorias-secret-bombshell",
+      "name_en": "VICTORIA'S SECRET - Bombshell",
+      "brand_en": "Victoria's Secret",
+      "concentration": null,
+      "accords": [
+        "میوه گل ساعتی",
+        "گل صدتومانی",
+        "ارکیده وانیل"
+      ],
+      "source_manifest": "supplier_verified_supplement.json",
+      "source_url": "https://www.victoriassecret.com/us/vs/beauty-catalog/5000010457",
+      "source_kind": "official_candidate"
+    },
+    {
+      "product_id": "SUP-VS-900030",
+      "slug": "victorias-secret-very-sexy",
+      "name_en": "VICTORIA'S SECRET - Very Sexy",
+      "brand_en": "Victoria's Secret",
+      "concentration": null,
+      "accords": [
+        "فلفل صورتی",
+        "گل میموزا",
+        "ارکیده"
+      ],
+      "source_manifest": "supplier_verified_supplement.json",
+      "source_url": "https://www.victoriassecret.com/us/vs/beauty-catalog/5000010459/-/a/generic-11260424-choice-2068/very-sexy-eau-de-parfum-3.4-oz-floral",
+      "source_kind": "official_candidate"
+    },
+    {
+      "product_id": "YZD-PROD-0429",
+      "slug": "creed-aventus",
+      "name_en": "CREED - Aventus",
+      "brand_en": "Creed",
+      "concentration": "EDP",
+      "accords": [
+        "ترنج",
+        "آکورد آناناس",
+        "آکورد چوب درخت غان"
+      ],
+      "source_manifest": "active_official_note_corrections_v1.json",
+      "source_url": "https://www.creedfragrance.com/p/aventus/12870029/",
+      "source_kind": "official_candidate"
+    },
+    {
+      "product_id": "YZD-PROD-0439",
+      "slug": "creed-erolfa",
+      "name_en": "CREED - Erolfa",
+      "brand_en": "Creed",
+      "concentration": "EDP",
+      "accords": [
+        "ترنج",
+        "نارنگی",
+        "ریحان",
+        "چوب صندل",
+        "سدر",
+        "مشک"
+      ],
+      "source_manifest": "active_official_note_corrections_v1.json",
+      "source_url": "https://www.creedfragrance.com/p/erolfa/12870033/",
+      "source_kind": "official_candidate"
+    },
+    {
+      "product_id": "YZD-PROD-0442",
+      "slug": "creed-original-vetiver",
+      "name_en": "CREED - Original Vetiver",
+      "brand_en": "Creed",
+      "concentration": "EDP",
+      "accords": [
+        "لیمو",
+        "نت‌های سبز",
+        "زنجبیل",
+        "مشک",
+        "وتیور"
+      ],
+      "source_manifest": "active_official_note_corrections_v1.json",
+      "source_url": "https://www.creedfragrance.com/p/original-vetiver/12870044/",
+      "source_kind": "official_candidate"
+    },
+    {
+      "product_id": "YZD-PROD-0501",
+      "slug": "penhaligons-the-tragedy-of-lord-george",
+      "name_en": "PENHALIGON'S - The Tragedy of Lord George",
+      "brand_en": "Penhaligon's",
+      "concentration": "EDP",
+      "accords": [
+        "آمبروکس",
+        "آکورد رام",
+        "دانه تونکا",
+        "آکورد صابون اصلاح"
+      ],
+      "source_manifest": "active_official_note_corrections_v2.json",
+      "source_url": "https://www.penhaligons.com/uk/en/p/the-tragedy-of-lord-george-eau-de-parfum-75-ml--000000000065173406",
+      "source_kind": "official_candidate"
+    },
+    {
+      "product_id": "YZD-PROD-0502",
+      "slug": "penhaligons-the-blazing-mr-sam",
+      "name_en": "PENHALIGON'S - The Blazing Mr Sam",
+      "brand_en": "Penhaligon's",
+      "concentration": "EDP",
+      "accords": [
+        "فلفل سیاه",
+        "هل",
+        "چوب سدر"
+      ],
+      "source_manifest": "official_note_corrections_v10.json",
+      "source_url": "https://www.penhaligons.com/fr/en/p/the-blazing-mister-sam-eau-de-parfum-75ml--000000000065173422",
+      "source_kind": "official_candidate"
+    },
+    {
+      "product_id": "YZD-PROD-0614",
+      "slug": "maison-francis-kurkdjian-baccarat-rouge-540-edp",
+      "name_en": "MAISON FRANCIS KURKDJIAN - Baccarat Rouge 540 EDP",
+      "brand_en": "Maison Francis Kurkdjian",
+      "concentration": "EDP",
+      "accords": [
+        "یاس",
+        "زعفران",
+        "آکورد کهربای خاکستری",
+        "نت‌های چوبی",
+        "اتیل مالتول"
+      ],
+      "source_manifest": "official_note_corrections_v23.json",
+      "source_url": "https://www.franciskurkdjian.com/us-en/p/baccarat-rouge-540-eau-de-parfum---refills-RA12235.html",
+      "source_kind": "official_candidate"
+    },
+    {
+      "product_id": "YZD-PROD-0615",
+      "slug": "maison-francis-kurkdjian-baccarat-rouge-540-extrait-de-parfum",
+      "name_en": "MAISON FRANCIS KURKDJIAN - Baccarat Rouge 540 Extrait de Parfum",
+      "brand_en": "Maison Francis Kurkdjian",
+      "concentration": "Extrait de Parfum",
+      "accords": [
+        "بادام تلخ",
+        "اتیل مالتول",
+        "آکورد عنبر سائل",
+        "آکورد چوبی، عنبری و مشکی"
+      ],
+      "source_manifest": "official_note_corrections_v11.json",
+      "source_url": "https://www.franciskurkdjian.com/int-en/p/baccarat-rouge-540-extrait-de-parfum-RA142321.html",
+      "source_kind": "official_candidate"
+    },
+    {
+      "product_id": "YZD-PROD-0662",
+      "slug": "initio-parfums-prives-oud-for-greatness",
+      "name_en": "INITIO PARFUMS PRIVES - Oud for Greatness",
+      "brand_en": "Initio Parfums Prives",
+      "concentration": "EDP",
+      "accords": [
+        "عود",
+        "روغن چوب آگار",
+        "اسطوخودوس",
+        "زعفران",
+        "پچولی",
+        "مشک",
+        "جوز هندی"
+      ],
+      "source_manifest": "official_note_corrections_v9.json",
+      "source_url": "https://us.initioparfums.com/products/oud-for-greatness",
+      "source_kind": "official_candidate"
+    },
+    {
+      "product_id": "YZD-PROD-0665",
+      "slug": "initio-parfums-prives-side-effect",
+      "name_en": "INITIO PARFUMS PRIVES - Side Effect",
+      "brand_en": "Initio Parfums Prives",
+      "concentration": "EDP",
+      "accords": [
+        "دارچین",
+        "رام",
+        "تنباکو",
+        "زعفران",
+        "چوب صندل",
+        "هدیون"
+      ],
+      "source_manifest": "official_note_corrections_v9.json",
+      "source_url": "https://us.initioparfums.com/products/side-effect",
+      "source_kind": "official_candidate"
+    },
+    {
+      "product_id": "YZD-PROD-0679",
+      "slug": "kilian-paris-black-phantom-memento-mori",
+      "name_en": "KILIAN PARIS - Black Phantom - Memento Mori",
+      "brand_en": "Kilian Paris",
+      "concentration": "EDP",
+      "accords": [
+        "رام",
+        "قهوه",
+        "چوب صندل"
+      ],
+      "source_manifest": "official_note_corrections_v10.json",
+      "source_url": "https://www.bykilian.com/product/19797/141058/perfume/black-phantom--memento-mori-icon-set",
+      "source_kind": "official_candidate"
+    },
+    {
+      "product_id": "YZD-PROD-0688",
+      "slug": "kilian-paris-good-girl-gone-bad",
+      "name_en": "KILIAN PARIS - Good Girl Gone Bad",
+      "brand_en": "Kilian Paris",
+      "concentration": "EDP",
+      "accords": [
+        "شکوفه پرتقال",
+        "عثمانتوس",
+        "گل مریم"
+      ],
+      "source_manifest": "active_official_note_corrections_v3.json",
+      "source_url": "https://www.bykilian.com/product/19797/147603/perfume/good-girl-gone-bad-the-icon-set/the-narcotics",
+      "source_kind": "official_candidate"
+    },
+    {
+      "product_id": "YZD-PROD-0781",
+      "slug": "marc-antoine-barrois-ganymede-edp",
+      "name_en": "MARC-ANTOINE BARROIS - Ganymede EDP",
+      "brand_en": "Marc-Antoine Barrois",
+      "concentration": "EDP",
+      "accords": [
+        "نارنگی",
+        "اوسمانتوس",
+        "آکورد چرم",
+        "آکیگالاوود",
+        "گل جاودان"
+      ],
+      "source_manifest": "official_note_corrections_v23.json",
+      "source_url": "https://us.marcantoinebarrois.com/products/ganymede",
+      "source_kind": "official_candidate"
+    },
+    {
+      "product_id": "YZD-PROD-0925",
+      "slug": "nasomatto-hindu-grass",
+      "name_en": "NASOMATTO - Hindu Grass",
+      "brand_en": "Nasomatto",
+      "concentration": "Extrait de Parfum",
+      "accords": [
+        "پچولی",
+        "نت‌های سبز",
+        "علف",
+        "تنباکو"
+      ],
+      "source_manifest": "secondary_note_corrections_v1.json",
+      "source_url": "https://www.fragrantica.com/perfume/Nasomatto/Hindu-Grass-4294.html",
+      "source_kind": "independent"
+    },
+    {
+      "product_id": "YZD-PROD-0993",
+      "slug": "le-labo-santal-33",
+      "name_en": "LE LABO - Santal 33",
+      "brand_en": "Le Labo",
+      "concentration": "EDP",
+      "accords": [
+        "هل",
+        "زنبق",
+        "بنفشه",
+        "چوب صندل",
+        "سدر",
+        "آکورد دود",
+        "آکورد چرم",
+        "مشک"
+      ],
+      "source_manifest": "active_official_note_corrections_v2.json",
+      "source_url": "https://www.lelabofragrances.com/santal-33-147.html",
+      "source_kind": "official_candidate"
+    },
+    {
+      "product_id": "YZD-PROD-1245",
+      "slug": "escentric-molecules-molecule-01",
+      "name_en": "ESCENTRIC MOLECULES - Molecule 01",
+      "brand_en": "Escentric Molecules",
+      "concentration": "EDT",
+      "accords": [
+        "ایزو ای سوپر (Iso E Super)"
+      ],
+      "source_manifest": "official_note_corrections_v8.json",
+      "source_url": "https://www.escentric.com/en-us/products/molecule-01-100ml",
+      "source_kind": "official_candidate"
+    },
+    {
+      "product_id": "YZD-PROD-1246",
+      "slug": "escentric-molecules-molecule-02",
+      "name_en": "ESCENTRIC MOLECULES - Molecule 02",
+      "brand_en": "Escentric Molecules",
+      "concentration": "EDT",
+      "accords": [
+        "آمبروکسان (Ambroxan)"
+      ],
+      "source_manifest": "official_note_corrections_v8.json",
+      "source_url": "https://www.escentric.com/en-us/products/molecule-02-100ml",
+      "source_kind": "official_candidate"
+    },
+    {
+      "product_id": "YZD-PROD-1248",
+      "slug": "escentric-molecules-molecule-04",
+      "name_en": "ESCENTRIC MOLECULES - Molecule 04",
+      "brand_en": "Escentric Molecules",
+      "concentration": "EDT",
+      "accords": [
+        "جاوانول (Javanol)"
+      ],
+      "source_manifest": "official_note_corrections_v8.json",
+      "source_url": "https://www.escentric.com/en-us/products/molecule-04-100ml",
+      "source_kind": "official_candidate"
+    },
+    {
+      "product_id": "YZD-PROD-1351",
+      "slug": "tiziana-terenzi-kirke",
+      "name_en": "TIZIANA TERENZI - Kirke",
+      "brand_en": "Tiziana Terenzi",
+      "concentration": "Extrait de Parfum",
+      "accords": [
+        "میوه گل ساعتی",
+        "هلو",
+        "گلابی",
+        "تمشک",
+        "انگور سیاه",
+        "گل برف",
+        "هلیوتروپین",
+        "پچولی",
+        "مشک"
+      ],
+      "source_manifest": "official_note_corrections_v9.json",
+      "source_url": "https://tizianaterenzi.com/en/fragrance-wheel/",
+      "source_kind": "official_candidate"
+    },
+    {
+      "product_id": "YZD-PROD-1423",
+      "slug": "christian-dior-sauvage-edp",
+      "name_en": "CHRISTIAN DIOR - Sauvage EDP",
+      "brand_en": "Christian Dior",
+      "concentration": "EDP",
+      "accords": [
+        "ترنج",
+        "فلفل سیچوان",
+        "اسطوخودوس",
+        "بادیان ستاره‌ای",
+        "وانیل",
+        "امبروکسان"
+      ],
+      "source_manifest": "official_note_corrections_v24.json",
+      "source_url": "https://www.dior.com/en_us/beauty/products/sauvage-eau-de-parfum-Y0785220.html",
+      "source_kind": "official_candidate"
+    },
+    {
+      "product_id": "YZD-PROD-1425",
+      "slug": "christian-dior-sauvage-elixir",
+      "name_en": "CHRISTIAN DIOR - Sauvage Elixir",
+      "brand_en": "Christian Dior",
+      "concentration": "Elixir",
+      "accords": [
+        "اسطوخودوس",
+        "آکورد ادویه‌ای",
+        "نت‌های چوبی"
+      ],
+      "source_manifest": "active_official_note_corrections_v2.json",
+      "source_url": "https://www.dior.com/en_cz/beauty/products/sauvage-elixir-Y0996460.html",
+      "source_kind": "official_candidate"
+    },
+    {
+      "product_id": "YZD-PROD-1427",
+      "slug": "christian-dior-dior-homme-intense",
+      "name_en": "CHRISTIAN DIOR - Dior Homme Intense",
+      "brand_en": "Christian Dior",
+      "concentration": "EDP",
+      "accords": [
+        "زنبق",
+        "کهربا",
+        "دانه آمبرت",
+        "سدر"
+      ],
+      "source_manifest": "active_official_note_corrections_v2.json",
+      "source_url": "https://www.dior.com/en_int/beauty/products/dior-homme-intense-Y0479201.html",
+      "source_kind": "official_candidate"
+    },
+    {
+      "product_id": "YZD-PROD-1432",
+      "slug": "christian-dior-fahrenheit-le-parfum",
+      "name_en": "CHRISTIAN DIOR - Fahrenheit Le Parfum",
+      "brand_en": "Christian Dior",
+      "concentration": "Parfum",
+      "accords": [
+        "آکورد بنفشه",
+        "آکورد چرم",
+        "وانیل بوربون"
+      ],
+      "source_manifest": "official_note_corrections_v27.json",
+      "source_url": "https://www.dior.com/en_int/beauty/products/fahrenheit-parfum-Y0866230.html",
+      "source_kind": "official_candidate"
+    },
+    {
+      "product_id": "YZD-PROD-1462",
+      "slug": "chanel-bleu-de-chanel-edp",
+      "name_en": "CHANEL - Bleu de Chanel EDP",
+      "brand_en": "Chanel",
+      "concentration": "EDP",
+      "accords": [
+        "کهربا",
+        "مشک",
+        "چوب سدر",
+        "چوب صندل"
+      ],
+      "source_manifest": "official_note_corrections_v23.json",
+      "source_url": "https://www.chanel.com/gr/fragrance/p/107360/bleu-de-chanel-eau-de-parfum-spray/",
+      "source_kind": "official_candidate"
+    },
+    {
+      "product_id": "YZD-PROD-1464",
+      "slug": "chanel-allure-homme-sport",
+      "name_en": "CHANEL - Allure Homme Sport",
+      "brand_en": "Chanel",
+      "concentration": "EDT",
+      "accords": [
+        "نارنگی",
+        "چوب سدر",
+        "دانه تونکا",
+        "مشک سفید"
+      ],
+      "source_manifest": "official_note_corrections_v29.json",
+      "source_url": "https://www.chanel.com/us/fragrance/p/123630/allure-homme-sport-eau-de-toilette-spray/",
+      "source_kind": "official_candidate"
+    },
+    {
+      "product_id": "YZD-PROD-1477",
+      "slug": "chanel-chance-chanel",
+      "name_en": "CHANEL - Chance Chanel",
+      "brand_en": "Chanel",
+      "concentration": "EDP",
+      "accords": [
+        "فلفل صورتی",
+        "یاس",
+        "آکورد پچولی و کهربا",
+        "مشک سفید",
+        "وانیل"
+      ],
+      "source_manifest": "official_note_corrections_v31.json",
+      "source_url": "https://www.chanel.com/us/fragrance/p/126520/chance-eau-de-parfum-spray/",
+      "source_kind": "official_candidate"
+    },
+    {
+      "product_id": "YZD-PROD-1492",
+      "slug": "yves-saint-laurent-y-eau-de-parfum",
+      "name_en": "YVES SAINT LAURENT - Y Eau de Parfum",
+      "brand_en": "Yves Saint Laurent",
+      "concentration": "EDP",
+      "accords": [
+        "مریم‌گلی",
+        "شمعدانی",
+        "نت‌های چوبی"
+      ],
+      "source_manifest": "official_note_corrections_v24.json",
+      "source_url": "https://www.yslbeautyus.com/fragrance/mens-fragrances/y/y-eau-de-parfum/727YSL.html",
+      "source_kind": "official_candidate"
+    },
+    {
+      "product_id": "YZD-PROD-1501",
+      "slug": "yves-saint-laurent-black-opium-edp",
+      "name_en": "YVES SAINT LAURENT - Black Opium EDP",
+      "brand_en": "Yves Saint Laurent",
+      "concentration": "EDP",
+      "accords": [
+        "قهوه",
+        "گل‌های سفید",
+        "وانیل"
+      ],
+      "source_manifest": "official_note_corrections_v20.json",
+      "source_url": "https://www.yslbeautyus.com/fragrance/womens-fragrances/black-opium/black-opium-eau-de-parfum/252YSL.html",
+      "source_kind": "official_candidate"
+    },
+    {
+      "product_id": "YZD-PROD-1504",
+      "slug": "yves-saint-laurent-libre-edp",
+      "name_en": "YVES SAINT LAURENT - Libre EDP",
+      "brand_en": "Yves Saint Laurent",
+      "concentration": "EDP",
+      "accords": [
+        "اسطوخودوس",
+        "شکوفه پرتقال",
+        "آکورد مشک",
+        "وانیل"
+      ],
+      "source_manifest": "official_note_corrections_v18.json",
+      "source_url": "https://www.yslbeautyus.com/fragrance/womens-fragrances/libre/libre-eau-de-parfum/109YSL.html",
+      "source_kind": "official_candidate"
+    },
+    {
+      "product_id": "YZD-PROD-1505",
+      "slug": "yves-saint-laurent-libre-intense",
+      "name_en": "YVES SAINT LAURENT - Libre Intense",
+      "brand_en": "Yves Saint Laurent",
+      "concentration": "EDP",
+      "accords": [
+        "اسطوخودوس",
+        "شکوفه پرتقال",
+        "آکورد ارکیده",
+        "وانیل"
+      ],
+      "source_manifest": "active_official_note_corrections_v3.json",
+      "source_url": "https://www.yslbeautyus.com/fragrance/womens-fragrances/libre/libre-eau-de-parfum-intense/306YSL.html",
+      "source_kind": "official_candidate"
+    },
+    {
+      "product_id": "YZD-PROD-1547",
+      "slug": "herms-terre-dherms-pure-parfum",
+      "name_en": "HERMÈS - Terre d'Hermès Pure Parfum",
+      "brand_en": "Hermès",
+      "concentration": "Pure Parfum",
+      "accords": [
+        "گریپ‌فروت",
+        "چوب سدر",
+        "شیسو"
+      ],
+      "source_manifest": "official_note_corrections_v27.json",
+      "source_url": "https://www.hermes.com/us/en/product/terre-d-hermes-parfum-V107757V0/",
+      "source_kind": "official_candidate"
+    },
+    {
+      "product_id": "YZD-PROD-1552",
+      "slug": "herms-voyage-dherms-parfum",
+      "name_en": "HERMÈS - Voyage d'Hermès Parfum",
+      "brand_en": "Hermès",
+      "concentration": "Parfum",
+      "accords": [
+        "سرو کوهی",
+        "چوب صندل"
+      ],
+      "source_manifest": "official_note_corrections_v29.json",
+      "source_url": "https://www.hermes.com/us/en/product/voyage-d-hermes-parfum-V107569V0/",
+      "source_kind": "official_candidate"
+    },
+    {
+      "product_id": "YZD-PROD-1581",
+      "slug": "jean-paul-gaultier-le-male-elixir",
+      "name_en": "JEAN PAUL GAULTIER - Le Male Elixir",
+      "brand_en": "Jean Paul Gaultier",
+      "concentration": "Elixir",
+      "accords": [
+        "اسطوخودوس",
+        "دانه تونکا",
+        "بنزوئین"
+      ],
+      "source_manifest": "active_official_note_corrections_v2.json",
+      "source_url": "https://www.jeanpaulgaultier.com/nl/nl/p/assortiment-le-male/le-male-elixir-parfum-000000000065188980",
+      "source_kind": "official_candidate"
+    },
+    {
+      "product_id": "YZD-PROD-1585",
+      "slug": "jean-paul-gaultier-le-beau-paradise-garden-2024",
+      "name_en": "JEAN PAUL GAULTIER - Le Beau Paradise Garden 2024",
+      "brand_en": "Jean Paul Gaultier",
+      "concentration": "EDP",
+      "accords": [
+        "آب نارگیل",
+        "انجیر سبز",
+        "چوب صندل"
+      ],
+      "source_manifest": "official_note_corrections_v28.json",
+      "source_url": "https://www.jeanpaulgaultier.com/fr/fr/p/gamme-le-beau/le-beau-paradise-garden-eau-de-parfum-000000000065199801",
+      "source_kind": "official_candidate"
+    },
+    {
+      "product_id": "YZD-PROD-1595",
+      "slug": "paco-rabanne-1-million-parfum",
+      "name_en": "PACO RABANNE - 1 Million Parfum",
+      "brand_en": "Paco Rabanne",
+      "concentration": "Parfum",
+      "accords": [
+        "گریپ‌فروت",
+        "گل مریم",
+        "آکورد چرم"
+      ],
+      "source_manifest": "official_note_corrections_v30.json",
+      "source_url": "https://www.rabanne.com/ww/en/fragrance/p/1-million-parfum--000000000065156001",
+      "source_kind": "official_candidate"
+    },
+    {
+      "product_id": "YZD-PROD-1625",
+      "slug": "mugler-womanity",
+      "name_en": "MUGLER - Womanity",
+      "brand_en": "Mugler",
+      "concentration": "EDP",
+      "accords": [
+        "انجیر",
+        "برگ انجیر",
+        "چوب انجیر",
+        "آکورد خاویار"
+      ],
+      "source_manifest": "official_note_corrections_v10.json",
+      "source_url": "https://inter.mugler.com/default/fragrance/women-s-fragrances/womanity/womanity-eau-de-parfum/M01090105.html",
+      "source_kind": "official_candidate"
+    },
+    {
+      "product_id": "YZD-PROD-1627",
+      "slug": "lancme-la-vie-est-belle-edp",
+      "name_en": "LANCÔME - La Vie Est Belle EDP",
+      "brand_en": "Lancôme",
+      "concentration": "EDP",
+      "accords": [
+        "زنبق",
+        "پچولی",
+        "وانیل",
+        "شکر ریسیده"
+      ],
+      "source_manifest": "official_note_corrections_v15.json",
+      "source_url": "https://www.lancome-usa.com/fragrance/fragrance-by-collection/la-vie-est-belle/la-vie-est-belle-eau-de-parfum/100606.html",
+      "source_kind": "official_candidate"
+    },
+    {
+      "product_id": "YZD-PROD-1651",
+      "slug": "giorgio-armani-acqua-di-gi-profumo",
+      "name_en": "GIORGIO ARMANI - Acqua di Giò Profumo",
+      "brand_en": "Giorgio Armani",
+      "concentration": "Parfum",
+      "accords": [
+        "ترنج",
+        "آکورد دریایی",
+        "بخور"
+      ],
+      "source_manifest": "official_note_corrections_v12.json",
+      "source_url": "https://www.giorgioarmanibeauty-usa.com/discontinued/acqua-di-gio-profumo/A019.html",
+      "source_kind": "official_candidate"
+    },
+    {
+      "product_id": "YZD-PROD-1658",
+      "slug": "giorgio-armani-stronger-with-you",
+      "name_en": "GIORGIO ARMANI - Stronger With You",
+      "brand_en": "Giorgio Armani",
+      "concentration": "EDT",
+      "accords": [
+        "فلفل صورتی",
+        "مریم‌گلی",
+        "شاه‌بلوط شیرین"
+      ],
+      "source_manifest": "official_note_corrections_v9.json",
+      "source_url": "https://www.giorgioarmanibeauty-usa.com/fragrances/view-all-fragrances/stronger-with-you-eau-de-toilette/A2061.html",
+      "source_kind": "official_candidate"
+    },
+    {
+      "product_id": "YZD-PROD-1662",
+      "slug": "giorgio-armani-armani-s-edp",
+      "name_en": "GIORGIO ARMANI - Armani Sì EDP",
+      "brand_en": "Giorgio Armani",
+      "concentration": "EDP",
+      "accords": [
+        "انگور فرنگی سیاه",
+        "رز مِی",
+        "مشک سفید",
+        "فریزیا"
+      ],
+      "source_manifest": "official_note_corrections_v16.json",
+      "source_url": "https://www.giorgioarmanibeauty-usa.com/fragrances/womens-perfume/si/si-eau-de-parfum/A218.html",
+      "source_kind": "official_candidate"
+    },
+    {
+      "product_id": "YZD-PROD-1664",
+      "slug": "giorgio-armani-my-way-edp",
+      "name_en": "GIORGIO ARMANI - My Way EDP",
+      "brand_en": "Giorgio Armani",
+      "concentration": "EDP",
+      "accords": [
+        "ترنج",
+        "شکوفه پرتقال",
+        "گل مریم",
+        "یاس",
+        "وانیل",
+        "چوب سدر",
+        "مشک سفید"
+      ],
+      "source_manifest": "official_note_corrections_v16.json",
+      "source_url": "https://www.giorgioarmanibeauty-usa.com/fragrances/womens-perfume/my-way/my-way-eau-de-parfum/A2259.html",
+      "source_kind": "official_candidate"
+    },
+    {
+      "product_id": "YZD-PROD-1674",
+      "slug": "tom-ford-tobacco-vanille",
+      "name_en": "TOM FORD - Tobacco Vanille",
+      "brand_en": "Tom Ford",
+      "concentration": "EDP",
+      "accords": [
+        "برگ تنباکو",
+        "زنجبیل",
+        "نت‌های ادویه‌ای",
+        "دانه تونکا",
+        "کاکائو",
+        "آکورد میوه",
+        "وانیل"
+      ],
+      "source_manifest": "active_official_note_corrections_v1.json",
+      "source_url": "https://www.tomfordbeauty.com/products/tobacco-vanille-eau-de-parfum",
+      "source_kind": "official_candidate"
+    },
+    {
+      "product_id": "YZD-PROD-1675",
+      "slug": "tom-ford-tuscan-leather",
+      "name_en": "TOM FORD - Tuscan Leather",
+      "brand_en": "Tom Ford",
+      "concentration": "EDP",
+      "accords": [
+        "زعفران",
+        "تمشک",
+        "آویشن",
+        "کندر",
+        "یاس شب‌بوی",
+        "آکورد چرم",
+        "آکورد جیر",
+        "چوب عنبری"
+      ],
+      "source_manifest": "active_official_note_corrections_v1.json",
+      "source_url": "https://www.tomfordbeauty.com/products/tuscan-leather-eau-de-parfum",
+      "source_kind": "official_candidate"
+    },
+    {
+      "product_id": "YZD-PROD-1676",
+      "slug": "tom-ford-oud-wood",
+      "name_en": "TOM FORD - Oud Wood",
+      "brand_en": "Tom Ford",
+      "concentration": "EDP",
+      "accords": [
+        "هل",
+        "فلفل صورتی",
+        "پچولی",
+        "کهربا",
+        "آکورد عود",
+        "دانه تونکا",
+        "چوب صندل",
+        "وتیور"
+      ],
+      "source_manifest": "active_official_note_corrections_v2.json",
+      "source_url": "https://www.tomfordbeauty.com/products/oud-wood-eau-de-parfum",
+      "source_kind": "official_candidate"
+    },
+    {
+      "product_id": "YZD-PROD-1677",
+      "slug": "tom-ford-lost-cherry",
+      "name_en": "TOM FORD - Lost Cherry",
+      "brand_en": "Tom Ford",
+      "concentration": "EDP",
+      "accords": [
+        "آکورد گیلاس سیاه",
+        "بادام تلخ",
+        "دانه تونکا",
+        "آکورد لیکور گیلاس"
+      ],
+      "source_manifest": "active_official_note_corrections_v3.json",
+      "source_url": "https://www.tomfordbeauty.com/products/lost-cherry-eau-de-parfum-set",
+      "source_kind": "official_candidate"
+    },
+    {
+      "product_id": "YZD-PROD-1684",
+      "slug": "tom-ford-fucking-fabulous",
+      "name_en": "TOM FORD - Fucking Fabulous",
+      "brand_en": "Tom Ford",
+      "concentration": "EDP",
+      "accords": [
+        "بادام تلخ",
+        "دانه تونکا",
+        "آکورد زنبق",
+        "کشمیران",
+        "آکورد چرم",
+        "مریم‌گلی"
+      ],
+      "source_manifest": "active_official_note_corrections_v3.json",
+      "source_url": "https://www.tomfordbeauty.com/products/fucking-fabulous-eau-de-parfum",
+      "source_kind": "official_candidate"
+    },
+    {
+      "product_id": "YZD-PROD-1688",
+      "slug": "tom-ford-vanilla-sex-2024",
+      "name_en": "TOM FORD - Vanilla Sex 2024",
+      "brand_en": "Tom Ford",
+      "concentration": "EDP",
+      "accords": [
+        "وانیل",
+        "چوب صندل",
+        "یاس",
+        "آکورد زنبق",
+        "آکورد حیوانی"
+      ],
+      "source_manifest": "active_official_note_corrections_v3.json",
+      "source_url": "https://www.tomfordbeauty.com/products/vanilla-sex-eau-de-parfum",
+      "source_kind": "official_candidate"
+    },
+    {
+      "product_id": "YZD-PROD-1690",
+      "slug": "tom-ford-black-orchid-edp",
+      "name_en": "TOM FORD - Black Orchid EDP",
+      "brand_en": "Tom Ford",
+      "concentration": "EDP",
+      "accords": [
+        "ترافل سیاه",
+        "یلانگ یلانگ",
+        "آکورد ارکیده سیاه",
+        "آلوی سیاه",
+        "آکورد رام",
+        "پچولی"
+      ],
+      "source_manifest": "official_note_corrections_v24.json",
+      "source_url": "https://www.tomfordbeauty.com/products/black-orchid-eau-de-parfum",
+      "source_kind": "official_candidate"
+    },
+    {
+      "product_id": "YZD-PROD-1696",
+      "slug": "tom-ford-ombr-leather-edp",
+      "name_en": "TOM FORD - Ombré Leather EDP",
+      "brand_en": "Tom Ford",
+      "concentration": "EDP",
+      "accords": [
+        "آکورد چرم سیاه",
+        "هل",
+        "یاس سامباک",
+        "پچولی",
+        "خزه سفید",
+        "کهربا"
+      ],
+      "source_manifest": "official_note_corrections_v23.json",
+      "source_url": "https://www.tomfordbeauty.com/products/ombre-leather-eau-de-parfum",
+      "source_kind": "official_candidate"
+    },
+    {
+      "product_id": "YZD-PROD-1702",
+      "slug": "versace-versace-pour-homme",
+      "name_en": "Versace Pour Homme",
+      "brand_en": "Versace",
+      "concentration": "EDT",
+      "accords": [
+        "مشک"
+      ],
+      "source_manifest": "official_note_corrections_v13.json",
+      "source_url": "https://www.versace.com/us/en/men/accessories/fragrances-body-care/pour-homme/pour-homme-edt-100-ml-blue/R720010-R100MLS_RNUL.html",
+      "source_kind": "official_candidate"
+    },
+    {
+      "product_id": "YZD-PROD-1737",
+      "slug": "carolina-herrera-good-girl-edp",
+      "name_en": "CAROLINA HERRERA - Good Girl EDP",
+      "brand_en": "Carolina Herrera",
+      "concentration": "EDP",
+      "accords": [
+        "بادام تلخ",
+        "یاس سامباک",
+        "گل مریم",
+        "دانه تونکا",
+        "کاکائو"
+      ],
+      "source_manifest": "official_note_corrections_v18.json",
+      "source_url": "https://www.carolinaherrera.com/us/en/p-fragrance/good-girl-eau-de-parfum",
+      "source_kind": "official_candidate"
+    },
+    {
+      "product_id": "YZD-PROD-1763",
+      "slug": "bvlgari-le-gemme-tygar",
+      "name_en": "BVLGARI - Le Gemme Tygar",
+      "brand_en": "Bvlgari",
+      "concentration": "EDP",
+      "accords": [
+        "آکورد گریپ‌فروت",
+        "آکورد کهربای خاکستری"
+      ],
+      "source_manifest": "official_note_corrections_v17.json",
+      "source_url": "https://www.bulgari.com/en-int/fragrances/bvlgari-le-gemme/42183.html",
+      "source_kind": "official_candidate"
+    },
+    {
+      "product_id": "YZD-PROD-1773",
+      "slug": "cartier-pasha-de-cartier-parfum",
+      "name_en": "CARTIER - Pasha de Cartier Parfum",
+      "brand_en": "Cartier",
+      "concentration": "Parfum",
+      "accords": [
+        "آکورد فوژه",
+        "چوب صندل",
+        "آکورد کهربایی"
+      ],
+      "source_manifest": "official_note_corrections_v27.json",
+      "source_url": "https://www.cartier.com/en-us/art-of-living/fragrances/mens-fragrances/pasha-de-cartier-parfum-100ml-65100036.html",
+      "source_kind": "official_candidate"
+    },
+    {
+      "product_id": "YZD-PROD-1798",
+      "slug": "hugo-boss-boss-bottled-edt",
+      "name_en": "HUGO BOSS - Boss Bottled EDT",
+      "brand_en": "Hugo Boss",
+      "concentration": "EDT",
+      "accords": [
+        "سیب",
+        "دارچین",
+        "نت‌های چوبی"
+      ],
+      "source_manifest": "official_note_corrections_v33.json",
+      "source_url": "https://www.hugoboss.com/boss-bottled-eau-de-toilette-50ml/hbeu58000035_999.html",
+      "source_kind": "official_candidate"
+    },
+    {
+      "product_id": "YZD-PROD-1804",
+      "slug": "burberry-burberry-goddess-edp",
+      "name_en": "Burberry Goddess EDP",
+      "brand_en": "Burberry",
+      "concentration": "EDP",
+      "accords": [
+        "وانیل",
+        "اسطوخودوس"
+      ],
+      "source_manifest": "official_note_corrections_v18.json",
+      "source_url": "https://us.burberry.com/burberry-goddess-eau-de-parfum-for-women-50ml-p40835971",
+      "source_kind": "official_candidate"
+    },
+    {
+      "product_id": "YZD-PROD-1805",
+      "slug": "burberry-burberry-her-edp",
+      "name_en": "Burberry Her EDP",
+      "brand_en": "Burberry",
+      "concentration": "EDP",
+      "accords": [
+        "توت‌های قرمز",
+        "توت‌های تیره",
+        "آکورد چوب سفید"
+      ],
+      "source_manifest": "official_note_corrections_v32.json",
+      "source_url": "https://us.burberry.com/her-eau-de-parfum-100ml-p40804591",
+      "source_kind": "official_candidate"
+    },
+    {
+      "product_id": "YZD-PROD-1816",
+      "slug": "montblanc-montblanc-explorer",
+      "name_en": "Montblanc Explorer",
+      "brand_en": "Montblanc",
+      "concentration": "EDP",
+      "accords": [
+        "ترنج",
+        "مریم‌گلی",
+        "وتیور",
+        "چرم",
+        "پچولی"
+      ],
+      "source_manifest": "official_note_corrections_v13.json",
+      "source_url": "https://www.montblanc.com/en-be/explorer-eau-de-parfum-60-ml-MB124070.html",
+      "source_kind": "official_candidate"
+    },
+    {
+      "product_id": "YZD-PROD-1936",
+      "slug": "alfred-dunhill-icon",
+      "name_en": "ALFRED DUNHILL - Icon",
+      "brand_en": "Alfred Dunhill",
+      "concentration": "EDP",
+      "accords": [
+        "اسطوخودوس",
+        "عود",
+        "ترنج",
+        "نرولی",
+        "فلفل سیاه",
+        "هل",
+        "آکورد چرم"
+      ],
+      "source_manifest": "official_note_corrections_v19.json",
+      "source_url": "https://www.dunhill.com/il/icon_cod46530312ax.html",
+      "source_kind": "official_candidate"
+    },
+    {
+      "product_id": "YZD-PROD-2016",
+      "slug": "bvlgari-le-gemme-falkar",
+      "name_en": "BVLGARI - Le Gemme Falkar",
+      "brand_en": "Bvlgari",
+      "concentration": "EDP",
+      "accords": [
+        "آکورد مشک سیاه چوبی",
+        "عود"
+      ],
+      "source_manifest": "official_note_corrections_v8.json",
+      "source_url": "https://www.bulgari.com/en-gb/fragrances/bvlgari-le-gemme/bvlgari-le-gemme-falkar-eau-de-parfum-42178",
+      "source_kind": "official_candidate"
+    },
+    {
+      "product_id": "YZD-PROD-2017",
+      "slug": "bvlgari-le-gemme-onekh",
+      "name_en": "BVLGARI - Le Gemme Onekh",
+      "brand_en": "Bvlgari",
+      "concentration": "EDP",
+      "accords": [
+        "نارنگی ماندارین",
+        "عود",
+        "لابدانوم دودی"
+      ],
+      "source_manifest": "official_note_corrections_v8.json",
+      "source_url": "https://www.bulgari.com/en-int/52105.html",
+      "source_kind": "official_candidate"
+    },
+    {
+      "product_id": "YZD-PROD-2019",
+      "slug": "bvlgari-le-gemme-ambero",
+      "name_en": "BVLGARI - Le Gemme Ambero",
+      "brand_en": "Bvlgari",
+      "concentration": "EDP",
+      "accords": [
+        "زنجبیل",
+        "زعفران",
+        "وتیور"
+      ],
+      "source_manifest": "official_note_corrections_v8.json",
+      "source_url": "https://www.bulgari.com/en-int/52104.html",
+      "source_kind": "official_candidate"
+    }
+  ]
+}

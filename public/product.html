@@ -375,9 +375,10 @@
       </div>
 
       <div class="notes-box">
-        <div class="hd"><b>هرم بویایی</b>
-          <span>از لحظه اسپری تا ساعت‌ها بعد</span></div>
+        <div class="hd"><b>رایحه مرجع</b>
+          <span>اطلاعات ثبت‌شده درباره عطر مرجع</span></div>
         <div class="pyramid" id="pyramid"></div>
+        <div id="referenceAccords" hidden></div>
       </div>
 
       <!-- شناسنامه رایحه اصلی — مرداد ۱۴۰۵
@@ -667,13 +668,21 @@ function render() {
     ['نُت میانی',  'قلب رایحه',  p.notes.middle],
     ['نُت پایه',   'ساعت‌ها بعد', p.notes.base]
   ];
-  document.getElementById('pyramid').innerHTML = LAYERS
+  const referenceAccords = Array.isArray(p.reference_accords) ? p.reference_accords : [];
+  const pyramidHTML = LAYERS
     .filter(([, , arr]) => arr && arr.length)
     .map(([name, when, arr]) => `<div class="layer">
         <div class="lb"><b>${name}</b><i>${when}</i></div>
         <div class="note-tags">${arr.map(n => `<span class="note-tag">${esc(n)}</span>`).join('')}</div>
-      </div>`).join('') ||
-    '<div style="font-size:.84rem;color:var(--muted)">هرم نُت برای این رایحه ثبت نشده است.</div>';
+      </div>`).join('');
+  document.getElementById('pyramid').innerHTML = pyramidHTML || (referenceAccords.length ? '' :
+    '<div style="font-size:.84rem;color:var(--muted)">هرم نُت برای این رایحه ثبت نشده است.</div>');
+  const referenceBox = document.getElementById('referenceAccords');
+  referenceBox.hidden = referenceAccords.length === 0;
+  referenceBox.innerHTML = referenceAccords.length ? `
+    <div style="${pyramidHTML ? 'border-top:1px solid var(--border);margin-top:16px;padding-top:16px;' : ''}font-size:.84rem;font-weight:700;margin-bottom:12px">نت‌های معرفی‌شده بدون تفکیک هرم</div>
+    <div class="note-tags">${referenceAccords.map(n => `<span class="note-tag">${esc(n)}</span>`).join('')}</div>
+    <div style="font-size:.74rem;color:var(--muted);line-height:2;margin-top:15px">این نت‌ها توصیف رایحه مرجع‌اند و وجود این مواد در اسانس دست‌ساز را تأیید نمی‌کنند.</div>` : '';
 
   const vg = document.getElementById('variants');
   /* آیا درصد جشنواره بین واریانت‌ها فرق می‌کند؟ */

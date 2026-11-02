@@ -333,6 +333,7 @@ if python3 scripts/test_customer_verification_migration.py >/tmp/test_customer_v
 if python3 scripts/test_customer_password_reset_race.py >/tmp/test_customer_password_reset_race.log 2>&1; then P=$((P+1)); else F=$((F+1)); echo "  X customer password reset race"; fi
 run_test test_login_redirect_safety.js "safe customer login redirect"
 run_test test_seo_html_safety.js "safe SEO structured data and HTML attributes"
+run_test test_reference_accord_display.js "scoped reference accords display"
 if python3 scripts/test_approved_mto_v2.py >/tmp/test_approved_mto_v2.log 2>&1; then P=$((P+1)); else F=$((F+1)); echo "  X seven owner approvals"; fi
 if python3 scripts/test_approved_mto_v3.py >/tmp/test_approved_mto_v3.log 2>&1; then P=$((P+1)); else F=$((F+1)); echo "  X four owner approvals"; fi
 if python3 scripts/test_approved_mto_v4.py >/tmp/test_approved_mto_v4.log 2>&1; then P=$((P+1)); else F=$((F+1)); echo "  X three owner approvals"; fi

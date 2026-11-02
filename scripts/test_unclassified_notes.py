@@ -19,7 +19,8 @@ with tempfile.TemporaryDirectory(prefix='yazd-unclassified-') as tmp:
         with urllib.request.urlopen(base+'/api/products/'+slug) as r:p=json.load(r)
         assert p['notes']=={'top':[],'middle':[],'base':[]},p['notes']
         assert p['accords']==['جاوانول (Javanol)'],p['accords']
-        assert p['supply_mode']=='UNAVAILABLE'
+        assert p['reference_accords']==['جاوانول (Javanol)']
+        assert p['supply_mode']=='MADE_TO_ORDER'
         con=sqlite3.connect(dbfile)
         assert con.execute("select count(*) from product_notes where product_id=? and position='accord' and note=?",(p['id'],'جاوانول (Javanol)')).fetchone()[0]==1
         assert con.execute("select count(*) from product_notes where product_id=? and note='چوب صندل شیری'",(p['id'],)).fetchone()[0]==0
@@ -27,7 +28,9 @@ with tempfile.TemporaryDirectory(prefix='yazd-unclassified-') as tmp:
         with sync_playwright() as pw:
             browser=pw.chromium.launch(headless=True,args=['--no-sandbox']);page=browser.new_page(viewport={'width':390,'height':844});errors=[];page.on('pageerror',lambda e:errors.append(str(e)))
             page.goto(base+'/perfume/'+slug,wait_until='domcontentloaded')
-            expect(page.locator('#pyramid')).to_contain_text('هرم نُت برای این رایحه ثبت نشده است')
+            assert page.locator('#pyramid .layer').count()==0
+            expect(page.locator('#referenceAccords')).to_contain_text('جاوانول (Javanol)')
+            expect(page.locator('#referenceAccords')).to_contain_text('اسانس دست‌ساز را تأیید نمی‌کنند')
             assert 'چوب صندل شیری' not in page.locator('#pyramid').inner_text()
             assert not errors,errors;browser.close()
         print('PASS official single-molecule record, no fabricated note tiers, updated index and honest public fallback')

@@ -14,6 +14,7 @@ const path = require('path');
    پس ترتیب تعریف اهمیت دارد. */
 const crypto = require('crypto');
 const stockReservations = require('./order-stock-reservations');
+const { referenceAccords } = require('./reference-accord-display');
 
 const ROOT_DIR = path.resolve(__dirname, '..');
 
@@ -1109,6 +1110,7 @@ function parseProduct(row, options = {}) {
       base: JSON.parse(row.notes_base || '[]')
     },
     accords: JSON.parse(row.accords || '[]'),
+    reference_accords: referenceAccords(row),
     season: row.season,
     occasion: row.occasion,
     // Seeded performance descriptions are not measurements of our handmade
