@@ -932,3 +932,5 @@ node_modules/   با npm install برمی‌گردد
 
 - `scripts/test_staff_temporary_password.py` — آزمون رمز تصادفی، تحویل یک‌باره، حریم پیامک و خطا.
 - `scripts/test_staff_temporary_password_browser.py` — آزمون مرورگر واقعی پنل برای نمایش یک‌باره رمز در موبایل و دسکتاپ.
+- `scripts/test_production_safety_gates.py` — محافظ تولید، اتصال شناسه تراکنش، خطای نامشخص و حساب موجود؛ با درگاه ساختگی.
+- `scripts/test_payment_sandbox_result.js` — جلوگیری از نمایش موفقیت ساختگی یا حذف سبد در خطا.

@@ -304,14 +304,15 @@ async function login(port, pw) {
         b.sms?.key_hint === null && b.payment?.merchant_hint === null);
       add('«آماده» نیست چون خطا دارد', b.ready === false, `${b.errors} خطا`);
 
-      // موجودی صفر باید خطا باشد
+      // Made-to-order with zero stock is still genuinely orderable.
       const dbx = new Database(DB);
-      const had = dbx.prepare('SELECT COUNT(*) c FROM variants WHERE stock>0').get().c;
+      const vis = require('../src/variant-visibility').publicVariantSql('v');
+      const had = dbx.prepare(`SELECT COUNT(DISTINCT p.id) c FROM variants v JOIN products p ON p.id=v.product_id WHERE p.supply_mode IN ('IN_STOCK','MADE_TO_ORDER') AND v.price_toman>0 AND v.stock>=0 AND (v.stock>0 OR p.supply_mode='MADE_TO_ORDER') AND ${vis}`).get().c;
       dbx.close();
       const stock = b.items.find(i => i.key === 'stock');
-      add('موجودی صفر خطا شمرده می‌شود',
+      add('تأمین قابل سفارش شامل ساخت پس از سفارش است',
         had === 0 ? stock?.level === 'error' : stock?.level === 'ok',
-        `${had} کالای موجود`);
+        `${had} محصول قابل سفارش`);
 
       // دسترسی
       const noAuth = await api(P3, '/api/admin/readiness');

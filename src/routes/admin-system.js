@@ -34,6 +34,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const {publicVariantSql} = require('../variant-visibility');
 
 // Backup files contain customer and order data. Destroy the read stream when
 // the client disconnects; always clean up our private temporary directory.
@@ -354,11 +355,17 @@ async function handle(ctx) {
     } catch { /* نبود ماژول نباید بررسی آمادگی را بشکند */ }
 
     // ── موجودی ──
-    const inStock = db.prepare('SELECT COUNT(*) c FROM variants WHERE stock > 0').get().c;
-    push('stock', 'موجودی کالا',
-      inStock ? 'ok' : 'error',
-      inStock ? `${inStock} کالا موجود است.` : 'موجودی همه کالاها صفر است — هیچ‌چیز قابل خرید نیست.',
-      inStock ? undefined : 'پنل → محصولات → تنظیم موجودی');
+    const supply = db.prepare(`SELECT
+      COUNT(DISTINCT CASE WHEN v.stock>0 THEN p.id END) in_stock,
+      COUNT(DISTINCT CASE WHEN v.stock=0 AND p.supply_mode='MADE_TO_ORDER' THEN p.id END) made_to_order
+      FROM variants v JOIN products p ON p.id=v.product_id
+      WHERE p.supply_mode IN ('IN_STOCK','MADE_TO_ORDER') AND v.price_toman>0
+        AND v.stock>=0 AND ${publicVariantSql('v')}`).get();
+    const sellable = supply.in_stock + supply.made_to_order;
+    push('stock', 'آمادگی تأمین کالا',
+      sellable ? 'ok' : 'error',
+      sellable ? `${supply.in_stock} محصول دارای موجودی و ${supply.made_to_order} محصول دارای گزینه ساخت پس از سفارش است.` : 'محصول قابل سفارش با قیمت معتبر پیدا نشد.',
+      sellable ? undefined : 'پنل → محصولات → بررسی قیمت و وضعیت تأمین');
 
     // ── دیسک پایدار ──
     const onLiara = /^\/app\//.test(DB_PATH);
@@ -379,15 +386,9 @@ async function handle(ctx) {
     } else {
       payInfo = { ok: pay.isLive(), live: pay.isLive(), gateway: pay.gatewayName(),
         message: pay.isLive() ? 'درگاه واقعی پیکربندی شده.' : 'درگاه آزمایشی فعال است.' };
-      /* «واقعی» یعنی ارائه‌دهنده غیر از console انتخاب شده باشد،
-         نه اینکه اسم خاصی داشته باشد. با افزودن پیامیتو معلوم
-         شد بررسی بر اساس نام ارائه‌دهنده شکننده است. */
-      const smsLive = notify.PROVIDER !== 'console';
-      smsInfo = { ok: smsLive, live: smsLive,
-        provider: notify.PROVIDER,
-        message: smsLive
-          ? `ارائه‌دهنده «${notify.PROVIDER}» انتخاب شده.`
-          : 'حالت لاگ — پیامکی ارسال نمی‌شود.' };
+      // No network call without a phone number. Provider name alone does not
+      // imply credentials, a configured sender or actual delivery.
+      smsInfo = await notify.testConnection();
     }
 
     push('payment', 'درگاه پرداخت',

@@ -995,6 +995,8 @@ const server = http.createServer(async (req, res) => {
 
     // ═══════════ سفارش ═══════════
     if (method === 'POST' && pathname === '/api/orders') {
+      // Never create/reserve an order when production would use a test gateway.
+      if (!pay.productionReady()) return sendJSON(503, { error: 'درگاه پرداخت واقعی هنوز آماده نیست.' });
       const ip = clientIP(req);
       const rl = rateLimit(`order:${ip}`, RL.order.limit, RL.order.window, RL.order.block);
       if (!rl.ok) {
@@ -1205,6 +1207,9 @@ const server = http.createServer(async (req, res) => {
 
     // ═══════════ تأیید پرداخت ═══════════
     if (method === 'POST' && pathname === '/api/payment/verify') {
+      if (!pay.productionReady()) return sendJSON(503, { error: 'درگاه پرداخت واقعی هنوز آماده نیست.' });
+      // Real transactions are verified only via the bound provider callback.
+      if (pay.GATEWAY === 'zarinpal') return sendJSON(405, { error: 'تأیید از مسیر بازگشت درگاه انجام می‌شود.' });
       const body = await parseBody(req);
       const order = db.prepare('SELECT * FROM orders WHERE order_id = ?').get(body.order_id);
       if (!order) return sendJSON(404, { error: 'سفارش یافت نشد' });
@@ -1307,6 +1312,7 @@ const server = http.createServer(async (req, res) => {
 
     // بازگشت از درگاه واقعی (زرین‌پال)
     if (method === 'GET' && pathname === '/payment/callback') {
+      if (!pay.productionReady()) return sendJSON(503, { error: 'درگاه پرداخت واقعی هنوز آماده نیست؛ سفارش تغییری نکرده است.' });
       const orderId = parsed.query.order;
       const authority = parsed.query.Authority || parsed.query.authority;
       const status = parsed.query.Status || parsed.query.status;
@@ -1322,6 +1328,13 @@ const server = http.createServer(async (req, res) => {
       };
 
       if (!order) return goto(false, null, 'سفارش یافت نشد');
+      // Do not accept a caller-provided authority belonging to another order,
+      // including cancellation callbacks; refuse without changing stock/order.
+      if (pay.GATEWAY === 'zarinpal' && order.status === 'PENDING' &&
+          (order.payment_gateway !== pay.gatewayName() || !order.payment_ref ||
+           typeof authority !== 'string' || authority !== order.payment_ref)) {
+        return sendJSON(409, { error: 'شناسه پرداخت با سفارش مطابقت ندارد؛ سفارش تغییری نکرده است.' });
+      }
 
       // بازگشت دوباره از درگاه یا رفرش مرورگر — نتیجه قبلی را نشان بده
       if (order.status === 'PAID') return goto(true, order.payment_ref);
@@ -1353,11 +1366,9 @@ const server = http.createServer(async (req, res) => {
         releasedSkus = its.map(i => i.sku);
         return true;
       })();
-      if (releasedSkus.length) releaseCouponUse(orderId);
-
       // کاربر در صفحه بانک «انصراف» زده است
       if (status !== 'OK') {
-        releaseStock('پرداخت توسط کاربر لغو شد');
+        if (releaseStock('پرداخت توسط کاربر لغو شد')) releaseCouponUse(orderId);
         notifyStockWatchers(releasedSkus, 'انصراف در درگاه');
         return goto(false, null, 'پرداخت توسط شما لغو شد');
       }
@@ -1373,7 +1384,15 @@ const server = http.createServer(async (req, res) => {
         return goto(false, null, 'این پرداخت هم‌اکنون در حال بررسی است');
       }
 
-      const vr = await pay.verifyPayment({ authority, amountToman: order.total_paid });
+      const vr = await pay.verifyPayment({ authority: pay.GATEWAY === 'zarinpal' ? order.payment_ref : authority, amountToman: order.total_paid });
+
+      if (vr.requires_review) {
+        // Keep VERIFYING: automatic expiry must not release stock or cancel an
+        // order whose bank outcome is unknown. A manager must reconcile it.
+        logStatus(orderId, 'VERIFYING', 'نتیجه درگاه نامشخص است و بررسی دستی لازم دارد');
+        appLog('WARN', 'payment', 'وضعیت پرداخت نیازمند بررسی دستی است', { order_id: orderId });
+        return sendJSON(503, { error: 'وضعیت پرداخت نیازمند بررسی است؛ سفارش لغو نشده است.', order_id: orderId });
+      }
 
       if (vr.ok) {
         const paid = db.prepare(
@@ -1392,7 +1411,7 @@ const server = http.createServer(async (req, res) => {
       }
 
       alerts.fireAsync('paymentFailed', { order_id: orderId });
-      releaseStock('پرداخت تأیید نشد — موجودی آزاد شد');
+      if (releaseStock('پرداخت تأیید نشد — موجودی آزاد شد')) releaseCouponUse(orderId);
       notifyStockWatchers(releasedSkus, 'پرداخت تأیید نشد');
       return goto(false, null, vr.error);
     }

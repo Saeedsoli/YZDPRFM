@@ -56,7 +56,7 @@ async function requestCode(rawMobile) {
      ۲ دقیقه در «صبر کنید» گیر می‌کند بی‌آنکه پیامکی گرفته باشد. */
   const r = await sms.sendOtp(mobile, code);
   if (!r.ok) {
-    return { ok: false, error: r.message || 'ارسال پیامک انجام نشد. دوباره تلاش کنید.' };
+    return { ok: false, error: String(process.env.NODE_ENV || '').trim().toLowerCase() === 'production' ? 'ارسال پیامک انجام نشد. دوباره تلاش کنید.' : (r.message || 'ارسال پیامک انجام نشد. دوباره تلاش کنید.') };
   }
 
   store.otpSave(mobile, {

@@ -97,11 +97,22 @@ async function loadAmount() {
 }
 
 async function finish(result) {
-  const r = await fetch('/api/payment/verify', {
-    method: 'POST', headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ order_id: orderId, result })
-  });
-  const d = await r.json();
+  let r, d;
+  try {
+    r = await fetch('/api/payment/verify', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ order_id: orderId, result })
+    });
+    d = await r.json();
+  } catch {
+    toast('ارتباط برقرار نشد؛ وضعیت سفارش را بررسی کنید.');
+    return;
+  }
+  // Never clear the cart or claim success/cancellation on an error response.
+  if (!r.ok || (result === 'success' && (d.failed || !d.payment_ref)) || (result !== 'success' && !d.failed)) {
+    toast('وضعیت پرداخت مشخص نیست؛ سفارش را بررسی کنید.');
+    return;
+  }
 
   if (result === 'success') {
     YazdCart.clear();

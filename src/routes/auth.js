@@ -105,9 +105,10 @@ async function handle(ctx) {
 
     const exists = getCustomer(mobile);
     if (exists) {
-      /* حسابی که فقط با کد پیامکی ساخته شده ممکن است رمز نداشته
-         باشد. در آن حالت ثبت‌نام یعنی «رمز بگذار»، نه خطا. */
-      if (!exists.pass_hash) {
+      /* Existing OTP-only accounts must never be claimed just by knowing the
+         phone number. Require an already authenticated session for this exact
+         mobile before assigning its first password. */
+      if (!exists.pass_hash && otp.mobileFromToken(getCustomerToken(req)) === mobile) {
         setCustomerPassword(exists.id, password);
         const token = createSession('CUSTOMER', mobile, otp.SESSION_TTL);
         appLog('INFO', 'auth', 'مشتری برای حساب موجود رمز گذاشت', { mobile });
@@ -213,7 +214,7 @@ async function handle(ctx) {
     }
 
     return sendJSON(200, {
-      message: 'اگر این شماره ثبت شده باشد، کد بازیابی پیامک شد.'
+      message: 'اگر این شماره ثبت شده باشد و سرویس پیامک فعال باشد، کد بازیابی ارسال می‌شود.'
     });
   }
 

@@ -16,10 +16,19 @@ const crypto = require('crypto');
 
 const GATEWAY     = (process.env.PAYMENT_GATEWAY || 'sandbox').toLowerCase();
 const MERCHANT_ID = process.env.ZARINPAL_MERCHANT_ID || '';
-const SITE_URL    = process.env.SITE_URL || 'http://localhost:3000';
+const SITE_URL    = (process.env.SITE_URL || 'http://localhost:3000').replace(/\/+$/, '');
 // زرین‌پال در حالت تست، ساب‌دامین sandbox دارد
 const ZP_SANDBOX  = process.env.ZARINPAL_SANDBOX === 'true';
 const ZP_HOST     = ZP_SANDBOX ? 'sandbox.zarinpal.com' : 'payment.zarinpal.com';
+const PRODUCTION = String(process.env.NODE_ENV || '').trim().toLowerCase() === 'production';
+function productionReady() {
+  if (!PRODUCTION) return true;
+  if (GATEWAY !== 'zarinpal' || ZP_SANDBOX || !/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(MERCHANT_ID)) return false;
+  if (/^0{8}-0{4}-0{4}-0{4}-0{12}$/.test(MERCHANT_ID)) return false;
+  try { const u=new URL(SITE_URL);return u.protocol==='https:' && !u.username && !u.password && u.pathname==='/' && !u.search && !u.hash && !['localhost','127.0.0.1','[::1]'].includes(u.hostname); }
+  catch { return false; }
+}
+
 
 function postJSON(host, path, payload) {
   return new Promise((resolve, reject) => {
@@ -52,6 +61,7 @@ function postJSON(host, path, payload) {
  * @returns {{ok:boolean, redirect_url?:string, authority?:string, error?:string}}
  */
 async function requestPayment({ orderId, amountToman, mobile, description }) {
+  if (!productionReady()) return {ok:false,error:'درگاه پرداخت واقعی هنوز آماده نیست.'};
   if (GATEWAY === 'zarinpal') {
     if (!MERCHANT_ID) {
       return { ok: false, error: 'شناسه پذیرنده زرین‌پال تنظیم نشده است.' };
@@ -73,9 +83,9 @@ async function requestPayment({ orderId, amountToman, mobile, description }) {
         };
       }
       const msg = r?.errors?.message || r?.data?.message || 'خطا در ایجاد تراکنش';
-      return { ok: false, error: msg };
+      return { ok: false, error: PRODUCTION ? 'درخواست پرداخت پذیرفته نشد.' : msg };
     } catch (e) {
-      return { ok: false, error: e.message };
+      return { ok: false, error: PRODUCTION ? 'ارتباط با درگاه پرداخت برقرار نشد.' : e.message };
     }
   }
 
@@ -92,6 +102,7 @@ async function requestPayment({ orderId, amountToman, mobile, description }) {
  * @returns {{ok:boolean, ref_id?:string, error?:string}}
  */
 async function verifyPayment({ authority, amountToman, sandboxResult }) {
+  if (!productionReady()) return {ok:false,requires_review:true,error:'درگاه پرداخت واقعی هنوز آماده نیست.'};
   if (GATEWAY === 'zarinpal') {
     try {
       const r = await postJSON(ZP_HOST, '/pg/v4/payment/verify.json', {
@@ -99,13 +110,14 @@ async function verifyPayment({ authority, amountToman, sandboxResult }) {
         amount: amountToman * 10,
         authority
       });
-      // 100 = موفق، 101 = قبلاً تأیید شده
-      if (r?.data?.code === 100 || r?.data?.code === 101) {
-        return { ok: true, ref_id: String(r.data.ref_id || authority) };
-      }
-      return { ok: false, error: r?.errors?.message || 'پرداخت تأیید نشد' };
+      // A fresh provider confirmation can settle exactly this bound order.
+      // 101 is already verified: for a still-pending order it is ambiguous,
+      // so preserve it for reconciliation instead of marking it paid twice.
+      if (r?.data?.code === 100) return { ok: true, ref_id: String(r.data.ref_id || authority) };
+      if (r?.data?.code === 101) return { ok: false, requires_review: true, error: 'پرداخت پیش‌تر تأیید شده و نیازمند بررسی است.' };
+      return { ok: false, requires_review: true, error: 'وضعیت پرداخت نیازمند بررسی است.' };
     } catch (e) {
-      return { ok: false, error: e.message };
+      return { ok: false, requires_review: true, error: 'وضعیت پرداخت نیازمند بررسی است.' };
     }
   }
 
@@ -122,7 +134,7 @@ function gatewayName() {
     : 'SANDBOX';
 }
 
-function isLive() { return GATEWAY === 'zarinpal' && !!MERCHANT_ID && !ZP_SANDBOX; }
+function isLive() { return GATEWAY === 'zarinpal' && !!MERCHANT_ID && !ZP_SANDBOX && (!PRODUCTION || productionReady()); }
 
 /**
  * بررسی سلامت پیکربندی درگاه — بدون ثبت تراکنش واقعی.
@@ -143,6 +155,10 @@ async function testConnection() {
     ? '••••••••-••••-••••-••••-' + MERCHANT_ID.slice(-6)
     : null;
 
+  if (PRODUCTION && !productionReady()) {
+    return {ok:false,live:false,gateway:gatewayName(),merchant_set:!!MERCHANT_ID,merchant_hint:masked,
+      message:'درگاه واقعی برای تولید پیکربندی نشده است.',hint:'پیش از فروش، درگاه واقعی و نشانی HTTPS را تنظیم و جداگانه آزمایش کنید.'};
+  }
   if (GATEWAY !== 'zarinpal') {
     return {
       ok: true, live: false, gateway: 'sandbox',
@@ -197,18 +213,18 @@ async function testConnection() {
     return {
       ok: false, live: false, gateway: gatewayName(),
       merchant_set: true, merchant_hint: masked,
-      message: r?.errors?.message || r?.data?.message || 'شناسه پذیرنده پذیرفته نشد.',
+      message: PRODUCTION ? 'درخواست بررسی درگاه پذیرفته نشد.' : (r?.errors?.message || r?.data?.message || 'شناسه پذیرنده پذیرفته نشد.'),
       code: r?.errors?.code ?? r?.data?.code ?? null
     };
   } catch (e) {
     return {
       ok: false, live: false, gateway: gatewayName(),
       merchant_set: true, merchant_hint: masked,
-      message: `اتصال برقرار نشد: ${e.message}`
+      message: PRODUCTION ? 'اتصال به درگاه برقرار نشد.' : `اتصال برقرار نشد: ${e.message}`
     };
   }
 }
 
 module.exports = {
-  requestPayment, verifyPayment, gatewayName, isLive, testConnection, GATEWAY
+  requestPayment, verifyPayment, gatewayName, isLive, productionReady, testConnection, GATEWAY
 };

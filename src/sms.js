@@ -39,6 +39,7 @@ const https = require('https');
 const http  = require('http');
 
 const PROVIDER = (process.env.SMS_PROVIDER || 'console').toLowerCase();
+const PRODUCTION = String(process.env.NODE_ENV || '').trim().toLowerCase() === 'production';
 
 /* اعتبارنامه — هیچ‌کدام در کد نیست، همه از محیط.
    `SMS_API_KEY` نام تاریخی است و برای سازگاری با پیکربندی موجود
@@ -424,6 +425,7 @@ async function send(mobile, text, tag = 'SMS') {
   }
 
   if (PROVIDER === 'console' || !isConfigured()) {
+    if (PRODUCTION) return { ok: false, message: 'سامانه پیامک واقعی هنوز آماده نیست.' };
     /* حالت لاگ — متن در خروجی سرور چاپ می‌شود.
        عمداً واضح و قاب‌دار است تا در انبوه لاگ گم نشود. */
     console.log(`\n  ┌─ [${tag}] → ${mobile}`);
@@ -499,6 +501,7 @@ async function sendSmart(mobile, kind, args, text, tag = 'SMS') {
   }
 
   if (PROVIDER === 'console' || !isConfigured()) {
+    if (PRODUCTION) return { ok: false, message: 'سامانه پیامک واقعی هنوز آماده نیست.' };
     const line = patternFor(kind) ? 'خدماتی' : 'اختصاصی';
     console.log(`\n  ┌─ [${tag}] → ${mobile}   ${d_(line)}`);
     String(text).split('\n').forEach(l => console.log(`  │ ${l}`));
@@ -542,6 +545,7 @@ const d_ = s => `\x1b[2m(${s})\x1b[0m`;
  */
 async function sendOtp(mobile, code) {
   if (PROVIDER === 'console' || !isConfigured()) {
+    if (PRODUCTION) return { ok: false, message: 'سامانه پیامک واقعی هنوز آماده نیست.' };
     console.log(`\n  [OTP] ${mobile} → کد ورود: ${code}\n`);
     return { ok: true, logged: true };
   }
@@ -632,8 +636,8 @@ async function testConnection(mobile) {
 
   if (PROVIDER === 'console') {
     return {
-      ...base, ok: true, live: false,
-      message: 'حالت آزمایشی — پیامک‌ها فقط در لاگ سرور چاپ می‌شوند.',
+      ...base, ok: !PRODUCTION, live: false,
+      message: PRODUCTION ? 'پیامک آزمایشی در محیط تولید غیرفعال است.' : 'حالت آزمایشی — پیامک‌ها فقط در لاگ سرور چاپ می‌شوند.',
       hint: 'برای ارسال واقعی: SMS_PROVIDER=payamito و اعتبارنامه را ست کنید.'
     };
   }
