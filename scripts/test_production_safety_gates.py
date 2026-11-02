@@ -47,7 +47,9 @@ https.request=(opt,cb)=>{const q=new EventEmitter();let body='';q.write=x=>{body
    # No fake OTP success or code logging when SMS is unconfigured in production.
    code,msg,_=api(port,'POST','/api/auth/request-code',{'mobile':'09120001234'});assert code==400 and 'dev_mode' not in msg
    c=sqlite3.connect(db);assert c.execute("select count(*) from otp_codes where mobile='09120001234'").fetchone()[0]==0;c.close();out.flush();assert '[OTP]' not in log.read_text()
-   code,login,_=api(port,'POST','/api/admin/login',{'username':'owner','password':'Isolated-Production-3827'});assert code==200;token=json.loads(login)['token']
+   code,login,headers=api(port,'POST','/api/admin/login',{'username':'owner','password':'Isolated-Production-3827'});assert code==200;token=json.loads(login)['token']
+   cookie=headers.get('Set-Cookie','');assert all(x in cookie for x in ['yazd_admin=', 'HttpOnly', 'SameSite=Lax', 'Secure']),cookie
+   assert headers.get('Cache-Control')=='no-store',headers
    code,ready,_=api(port,'GET','/api/admin/readiness',token=token);ready=json.loads(ready);assert code==200
    levels={x['key']:x['level'] for x in ready['items']};assert levels['payment']=='error' and levels['sms']=='error' and levels['stock']=='ok',levels
   finally:stop(p,out)

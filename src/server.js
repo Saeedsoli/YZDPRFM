@@ -768,8 +768,11 @@ const server = http.createServer(async (req, res) => {
       audit({ staff_id: target.id, username: target.username, role_key: target.role_key,
               action: 'auth.login', method, path: pathname, ip });
 
+      // Never send the administrator session cookie over plaintext in production.
+      const secureCookie = String(process.env.NODE_ENV || '').trim().toLowerCase() === 'production' ? '; Secure' : '';
+      res.setHeader('Cache-Control', 'no-store');
       res.setHeader('Set-Cookie',
-        `yazd_admin=${token}; HttpOnly; Path=/; Max-Age=${SESSION_TTL / 1000}; SameSite=Lax`);
+        `yazd_admin=${token}; HttpOnly; Path=/; Max-Age=${SESSION_TTL / 1000}; SameSite=Lax${secureCookie}`);
 
       return sendJSON(200, {
         message: 'ورود موفق',
