@@ -25,6 +25,12 @@ function esc(s) {
     .replace(/"/g, '&quot;');
 }
 
+// JSON embedded in HTML is still parsed by the HTML parser: a literal
+// </script> must never be allowed to terminate the data block.
+function jsonForHtml(value) {
+  return JSON.stringify(value).replace(/[<>&]/g, ch => ({'<':'\\u003c','>':'\\u003e','&':'\\u0026'}[ch]));
+}
+
 function faNum(n) {
   return String(n).replace(/\d/g, d => '۰۱۲۳۴۵۶۷۸۹'[d]);
 }
@@ -33,20 +39,20 @@ function faNum(n) {
 function metaBlock({ title, description, url, image, type = 'website', extra = '' }) {
   const t = esc(title), d = esc(description);
   return `
-  <link rel="canonical" href="${url}">
+  <link rel="canonical" href="${esc(url)}">
   <meta property="og:site_name" content="${BRAND}">
   <meta property="og:locale" content="fa_IR">
-  <meta property="og:type" content="${type}">
+  <meta property="og:type" content="${esc(type)}">
   <meta property="og:title" content="${t}">
   <meta property="og:description" content="${d}">
-  <meta property="og:url" content="${url}">
-  ${image ? `<meta property="og:image" content="${image}">
+  <meta property="og:url" content="${esc(url)}">
+  ${image ? `<meta property="og:image" content="${esc(image)}">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="1200">` : ''}
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="${t}">
   <meta name="twitter:description" content="${d}">
-  ${image ? `<meta name="twitter:image" content="${image}">` : ''}
+  ${image ? `<meta name="twitter:image" content="${esc(image)}">` : ''}
 ${extra}`;
 }
 
@@ -229,8 +235,8 @@ function productPage(html, p) {
      بگیرد و همان JPG معمولی بارگذاری شود — یعنی بی‌خطر است. */
   const webp = p.image_url.replace(/\.(jpe?g|png)$/i, '.webp');
   const preload = webp !== p.image_url
-    ? `  <link rel="preload" as="image" href="${webp}" type="image/webp" fetchpriority="high">\n`
-    : `  <link rel="preload" as="image" href="${p.image_url}" fetchpriority="high">\n`;
+    ? `  <link rel="preload" as="image" href="${esc(webp)}" type="image/webp" fetchpriority="high">\n`
+    : `  <link rel="preload" as="image" href="${esc(p.image_url)}" fetchpriority="high">\n`;
 
   /* ── noindex برای محصولاتی که نمی‌توانیم تأمین کنیم ──
      این‌ها از sitemap بیرون‌اند، ولی گوگل از راه لینک داخلی
@@ -248,8 +254,8 @@ function productPage(html, p) {
     ? '  <meta name="robots" content="noindex, follow">\n' : '';
 
   const extra = noindex + preload +
-  `  <script type="application/ld+json">${JSON.stringify(schema)}</script>
-  <script type="application/ld+json">${JSON.stringify(breadcrumb)}</script>`;
+  `  <script type="application/ld+json">${jsonForHtml(schema)}</script>
+  <script type="application/ld+json">${jsonForHtml(breadcrumb)}</script>`;
 
   let out = inject(html, {
     title, description,
@@ -322,7 +328,7 @@ function homePage(html, stats) {
     meta: metaBlock({
       title, description, url: SITE,
       image: `${SITE}/images/products/scene-signature.jpg`,
-      extra: `  <script type="application/ld+json">${JSON.stringify(org)}</script>`
+      extra: `  <script type="application/ld+json">${jsonForHtml(org)}</script>`
     })
   });
 }
@@ -404,8 +410,8 @@ function featureHTML(a) {
       <div class="im">
         <span class="tag-new">تازه‌ترین</span>
         <picture>
-          <source srcset="${webp}" type="image/webp">
-          <img src="${cover}" alt="" fetchpriority="high" decoding="async">
+          <source srcset="${esc(webp)}" type="image/webp">
+          <img src="${esc(cover)}" alt="" fetchpriority="high" decoding="async">
         </picture>
       </div>
       <div class="bd">
@@ -452,8 +458,8 @@ function journalPage(html, featured) {
   if (featuredCover) {
     const webp = featuredCover.replace(/\.(jpe?g|png)$/i, '.webp');
     extra = webp !== featuredCover
-      ? `  <link rel="preload" as="image" href="${webp}" type="image/webp" fetchpriority="high">`
-      : `  <link rel="preload" as="image" href="${featuredCover}" fetchpriority="high">`;
+      ? `  <link rel="preload" as="image" href="${esc(webp)}" type="image/webp" fetchpriority="high">`
+      : `  <link rel="preload" as="image" href="${esc(featuredCover)}" fetchpriority="high">`;
   }
 
   let out = inject(html, {
@@ -532,12 +538,12 @@ function articlePage(html, a) {
     ? a.cover_image : (covers[a.category] || covers.guide);
   const coverWebp = coverPath.replace(/\.(jpe?g|png)$/i, '.webp');
   const preload = coverWebp !== coverPath
-    ? `  <link rel="preload" as="image" href="${coverWebp}" type="image/webp" fetchpriority="high">\n`
-    : `  <link rel="preload" as="image" href="${coverPath}" fetchpriority="high">\n`;
+    ? `  <link rel="preload" as="image" href="${esc(coverWebp)}" type="image/webp" fetchpriority="high">\n`
+    : `  <link rel="preload" as="image" href="${esc(coverPath)}" fetchpriority="high">\n`;
 
   const extra = preload
-    + `  <script type="application/ld+json">${JSON.stringify(schema)}</script>
-  <script type="application/ld+json">${JSON.stringify(crumb)}</script>`;
+    + `  <script type="application/ld+json">${jsonForHtml(schema)}</script>
+  <script type="application/ld+json">${jsonForHtml(crumb)}</script>`;
 
   let out = inject(html, {
     title, description,
@@ -567,7 +573,7 @@ function articlePage(html, a) {
       .replace(/<div id="loading" role="status">[\s\S]*?<\/div>\s*<\/div>/,
                '<div id="loading" role="status" style="display:none"></div>')
       .replace('<img id="cover" alt="" loading="eager">',
-               `<img id="cover" src="${coverPath}" alt="${esc(a.title)}" loading="eager" fetchpriority="high">`)
+               `<img id="cover" src="${esc(coverPath)}" alt="${esc(a.title)}" loading="eager" fetchpriority="high">`)
       .replace('<h1 id="title"></h1>', `<h1 id="title">${esc(a.title)}</h1>`)
       .replace('<div class="excerpt" id="excerpt"></div>',
                `<div class="excerpt" id="excerpt">${esc(a.excerpt || '')}</div>`)

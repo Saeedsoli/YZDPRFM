@@ -951,3 +951,4 @@ node_modules/   با npm install برمی‌گردد
 - `scripts/test_customer_password_reset_race.py` — جلوگیری از احیای نشست با رمز قدیمی در رقابت چندفرایندی.
 - `scripts/test_customer_phone_browser.py` — آزمون مرورگر ثبت‌نام، ورود پیامکی و بازیابی حساب قدیمی.
 - `scripts/test_login_redirect_safety.js` — جلوگیری از انتقال خارجی یا اجرای نشانی خطرناک پس از ورود.
+- `scripts/test_seo_html_safety.js` — محافظت داده‌های ساختاریافته و ویژگی‌های HTML در رندر سمت سرور.
