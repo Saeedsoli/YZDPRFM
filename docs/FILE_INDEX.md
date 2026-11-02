@@ -203,8 +203,8 @@ bash scripts/smoke_test.sh     # ۹۲ آزمون خودکار
 
 | فایل | کار |
 |---|---|
-| `restore_backup.js` | بازیابی پشتیبان · `--list` |
-| `reset_for_launch.js` | **پاک‌سازی داده آزمونی پیش از افتتاح** · `--dry-run` / `--yes` |
+| `restore_backup.js` | فهرست پشتیبان و بازیابی تأییدشده فقط در فایل جدید · `--to-new` |
+| `reset_for_launch.js` | گزارش فقط‌خواندنی؛ حذف گروهی غیرفعال |
 | `optimize_fonts.py` | زیرمجموعه‌سازی فونت |
 | `make_favicon.py` | ساخت favicon و آیکن‌های نصب از لوگو |
 | `apply_stock_and_volume.js` | صفر کردن موجودی + حجم ۱۵۰ml · `--dry-run` |
@@ -924,3 +924,5 @@ node_modules/   با npm install برمی‌گردد
 - `scripts/apply_unverified_seed_accords.js` — اجرای صریح و بازسازی محدود ایندکس پس از پشتیبان‌گیری.
 - `scripts/test_unverified_seed_accords_cleanup.py` — آزمون محدوده، داده مدیر، سفارش و تکرار مهاجرت.
 - `scripts/test_scent_description_gate.py` — جلوگیری از انتشار ادعاهای ترکیب و خلوص تأییدنشده و حفظ متن پنل.
+
+- `scripts/test_destructive_tool_guards.py` — محافظ حذف و بازیابی در فایل جدید.

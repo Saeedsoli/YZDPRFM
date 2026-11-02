@@ -1,259 +1,51 @@
 #!/usr/bin/env node
-/**
- * بازیابی دیتابیس از نسخه پشتیبان.
- *
- * پشتیبان‌گیری خودکار از روز اول بود، اما راهی برای برگرداندن وجود
- * نداشت. داشتن پشتیبانی که بلد نیستی برگردانی، یعنی پشتیبان نداری.
- *
- * این ابزار عمداً محتاط است:
- *   ۱) فایل را پیش از هر کاری اعتبارسنجی می‌کند
- *   ۲) از وضعیت فعلی یک نسخه ایمنی می‌گیرد
- *   ۳) تفاوت آماری را نشان می‌دهد و تأیید می‌خواهد
- *   ۴) اگر جابه‌جایی شکست بخورد، خودکار برمی‌گرداند
- *
- * اجرا:
- *   node scripts/restore_backup.js --list
- *   node scripts/restore_backup.js data/backups/yazd-2026072518.db
- *   node scripts/restore_backup.js <file> --yes     # بدون پرسش
- */
 'use strict';
-
-const fs = require('fs');
-const path = require('path');
-const readline = require('readline');
-
-const ROOT = path.dirname(__dirname);
-const DB_PATH = process.env.DB_PATH || path.join(ROOT, 'data', 'yazd.db');
-const BACKUP_DIR = path.join(path.dirname(DB_PATH), 'backups');
-
-// جدول‌هایی که وجودشان نشانه سالم بودن نسخه است
-const REQUIRED_TABLES = [
-  'products', 'variants', 'orders', 'order_items',
-  'coupons', 'reviews', 'articles', 'settings'
-];
-
-const c = {
-  dim: s => `\x1b[2m${s}\x1b[0m`,
-  red: s => `\x1b[31m${s}\x1b[0m`,
-  green: s => `\x1b[32m${s}\x1b[0m`,
-  yellow: s => `\x1b[33m${s}\x1b[0m`,
-  bold: s => `\x1b[1m${s}\x1b[0m`
-};
-
-function human(bytes) {
-  if (bytes > 1048576) return (bytes / 1048576).toFixed(1) + ' MB';
-  if (bytes > 1024) return (bytes / 1024).toFixed(0) + ' KB';
-  return bytes + ' B';
+// Read-only inspection and restoration into a NEW isolated file only.
+// Never overwrite the live DB or its WAL/SHM; no --yes bypass exists.
+const fs=require('fs'),path=require('path'),crypto=require('crypto');
+const Database=require('better-sqlite3');
+const ROOT=path.dirname(__dirname), DB_PATH=process.env.DB_PATH||path.join(ROOT,'data','yazd.db');
+const BACKUP_DIR=path.join(path.dirname(DB_PATH),'backups');
+const REQUIRED=['products','variants','orders','order_items','coupons','reviews','articles','settings'];
+function inspect(file){
+ const db=new Database(file,{readonly:true,fileMustExist:true});
+ try{
+  if(db.pragma('integrity_check',{simple:true})!=='ok')throw Error('SQLite integrity check failed');
+  const missing=REQUIRED.filter(t=>!db.prepare("SELECT 1 FROM sqlite_master WHERE type='table' AND name=?").get(t));
+  if(missing.length)throw Error('Required tables missing: '+missing.join(','));
+  return {products:db.prepare('SELECT COUNT(*) n FROM products').get().n,orders:db.prepare('SELECT COUNT(*) n FROM orders').get().n};
+ }finally{db.close();}
 }
-
-/** آمار یک فایل دیتابیس؛ اگر خراب باشد خطا می‌دهد. */
-function inspect(file) {
-  const Database = require('better-sqlite3');
-  const db = new Database(file, { readonly: true, fileMustExist: true });
-  try {
-    const integrity = db.pragma('integrity_check', { simple: true });
-    if (integrity !== 'ok') {
-      throw new Error(`بررسی سلامت ناموفق: ${integrity}`);
-    }
-
-    const tables = db.prepare(
-      "SELECT name FROM sqlite_master WHERE type='table'"
-    ).all().map(r => r.name);
-
-    const missing = REQUIRED_TABLES.filter(t => !tables.includes(t));
-    if (missing.length) {
-      throw new Error(`جدول‌های ضروری نیستند: ${missing.join(', ')}`);
-    }
-
-    const count = t => {
-      try { return db.prepare(`SELECT COUNT(*) n FROM ${t}`).get().n; }
-      catch { return 0; }
-    };
-
-    return {
-      ok: true,
-      size: fs.statSync(file).size,
-      tables: tables.length,
-      products: count('products'),
-      variants: count('variants'),
-      orders: count('orders'),
-      reviews: count('reviews'),
-      articles: count('articles'),
-      tickets: count('tickets')
-    };
-  } finally {
-    db.close();
-  }
+function hash(file){const fd=fs.openSync(file,'r'),h=crypto.createHash('sha256'),buf=Buffer.alloc(1024*1024);try{let n;while((n=fs.readSync(fd,buf,0,buf.length,null))>0)h.update(buf.subarray(0,n));return h.digest('hex');}finally{fs.closeSync(fd);}}
+function canonicalTarget(file){const p=path.resolve(file);return path.join(fs.realpathSync(path.dirname(p)),path.basename(p));}
+function list(){
+ if(!fs.existsSync(BACKUP_DIR)){console.log('پوشه پشتیبان وجود ندارد.');return;}
+ const files=fs.readdirSync(BACKUP_DIR).filter(x=>/\.(db|sqlite3?|xz|zip)$/i.test(x)).sort();
+ console.log(files.length?'پشتیبان‌ها (محرمانه):':'پشتیبانی یافت نشد.');for(const f of files)console.log(f);
+ console.log('دلتاهای فشرده با scripts/sqlite_delta_backup.py فقط در مسیر جدید بازیابی می‌شوند.');
 }
-
-function listBackups() {
-  if (!fs.existsSync(BACKUP_DIR)) {
-    console.log(c.yellow('  هیچ پوشه پشتیبانی وجود ندارد.'));
-    console.log(c.dim(`  انتظار می‌رفت: ${BACKUP_DIR}`));
-    return [];
-  }
-  const files = fs.readdirSync(BACKUP_DIR)
-    .filter(f => f.endsWith('.db'))
-    .map(f => {
-      const full = path.join(BACKUP_DIR, f);
-      const st = fs.statSync(full);
-      return { name: f, full, size: st.size, mtime: st.mtime };
-    })
-    .sort((a, b) => b.mtime - a.mtime);
-
-  if (!files.length) {
-    console.log(c.yellow('  هنوز پشتیبانی گرفته نشده.'));
-    return [];
-  }
-
-  console.log(c.bold(`\n  ${files.length} نسخه پشتیبان:\n`));
-  files.forEach((f, i) => {
-    let extra = '';
-    try {
-      const s = inspect(f.full);
-      extra = c.dim(`${s.products} محصول · ${s.orders} سفارش`);
-    } catch (e) {
-      extra = c.red('خراب: ' + e.message.slice(0, 40));
-    }
-    console.log(`  ${String(i + 1).padStart(2)}. ${f.name}  `
-      + c.dim(human(f.size).padStart(9))
-      + `  ${f.mtime.toISOString().slice(0, 16).replace('T', ' ')}  ${extra}`);
-  });
-  console.log();
-  return files;
+function restoreToNew(source,destination){
+ const src=path.resolve(source),out=canonicalTarget(destination),live=canonicalTarget(DB_PATH);
+ // A configured DB path can itself be a symlink; protect both spellings.
+ const activePaths=new Set([live]);if(fs.existsSync(DB_PATH))activePaths.add(fs.realpathSync(DB_PATH));
+ for(const base of activePaths)if([base,base+'-wal',base+'-shm',base+'-journal'].includes(out))throw Error('Destination is the active database or a sidecar');
+ const stat=fs.lstatSync(src);if(!stat.isFile()||stat.isSymbolicLink())throw Error('Backup must be a regular non-symlink file');
+ if(fs.existsSync(DB_PATH)){const current=fs.statSync(DB_PATH);if(stat.dev===current.dev&&stat.ino===current.ino)throw Error('Source is the active database');}
+ if(fs.existsSync(src+'-wal')||fs.existsSync(src+'-shm')||fs.existsSync(src+'-journal'))throw Error('Source has SQLite sidecars; use a consistent offline backup');
+ const info=inspect(src),before=hash(src);let outFd,created=false;
+ try{
+  outFd=fs.openSync(out,'wx',0o600);created=true;const inFd=fs.openSync(src,'r');
+  try{const buffer=Buffer.alloc(1024*1024);let n;while((n=fs.readSync(inFd,buffer,0,buffer.length,null))>0){let off=0;while(off<n)off+=fs.writeSync(outFd,buffer,off,n-off);}}finally{fs.closeSync(inFd);}
+  fs.fsyncSync(outFd);fs.closeSync(outFd);outFd=undefined;
+  if(hash(out)!==before||hash(src)!==before)throw Error('Backup changed or copy verification failed');
+  const after=inspect(out);if(after.products!==info.products||after.orders!==info.orders)throw Error('Restore verification failed');
+  console.log(JSON.stringify({restored_to_new_file:true,sha256:before,products:after.products,orders:after.orders}));
+ }catch(e){if(outFd!==undefined)fs.closeSync(outFd);if(created)try{fs.unlinkSync(out)}catch{}throw e;}
 }
-
-function ask(question) {
-  const rl = readline.createInterface({
-    input: process.stdin, output: process.stdout
-  });
-  return new Promise(res =>
-    rl.question(question, a => { rl.close(); res(a.trim()); }));
-}
-
-async function restore(src, autoYes) {
-  console.log(c.bold('\n  بازیابی دیتابیس\n'));
-
-  if (!fs.existsSync(src)) {
-    console.error(c.red(`  فایل پیدا نشد: ${src}`));
-    process.exit(1);
-  }
-
-  // ── ۱) اعتبارسنجی نسخه پشتیبان ──
-  console.log(c.dim('  بررسی نسخه پشتیبان…'));
-  let from;
-  try {
-    from = inspect(src);
-  } catch (e) {
-    console.error(c.red(`  ✗ نسخه پشتیبان قابل استفاده نیست: ${e.message}`));
-    console.error(c.dim('    بازیابی انجام نشد. دیتابیس فعلی دست‌نخورده است.'));
-    process.exit(1);
-  }
-
-  // ── ۲) وضعیت فعلی ──
-  let to = null;
-  if (fs.existsSync(DB_PATH)) {
-    try { to = inspect(DB_PATH); }
-    catch { to = { ok: false }; }
-  }
-
-  const row = (label, a, b) => {
-    const same = a === b;
-    const arrow = same ? c.dim('=') : c.yellow('→');
-    console.log(`  ${label.padEnd(12)} ${String(b ?? '—').padStart(8)}`
-      + `  ${arrow}  ${String(a).padStart(8)}`
-      + (same ? '' : c.dim(`   (${a - (b || 0) >= 0 ? '+' : ''}${a - (b || 0)})`)));
-  };
-
-  console.log(c.bold('\n  مقایسه:'));
-  console.log(c.dim('                    فعلی        پشتیبان'));
-  row('محصول', from.products, to?.products);
-  row('متغیر', from.variants, to?.variants);
-  row('سفارش', from.orders, to?.orders);
-  row('نظر', from.reviews, to?.reviews);
-  row('مقاله', from.articles, to?.articles);
-  row('تیکت', from.tickets, to?.tickets);
-
-  // ── ۳) هشدار درباره داده‌ای که از دست می‌رود ──
-  if (to && to.orders > from.orders) {
-    const lost = to.orders - from.orders;
-    console.log(c.red(`\n  ⚠ هشدار: ${lost} سفارش از دست می‌رود.`));
-    console.log(c.dim('    این سفارش‌ها پس از گرفتن این پشتیبان ثبت شده‌اند.'));
-  }
-
-  if (!autoYes) {
-    const a = await ask(c.bold('\n  ادامه؟ ') + c.dim('(بنویسید «بله») '));
-    if (a !== 'بله' && a.toLowerCase() !== 'yes') {
-      console.log(c.dim('\n  لغو شد. هیچ تغییری اعمال نشد.\n'));
-      process.exit(0);
-    }
-  }
-
-  // ── ۴) نسخه ایمنی از وضعیت فعلی ──
-  let safety = null;
-  if (fs.existsSync(DB_PATH)) {
-    const stamp = new Date().toISOString().slice(0, 19).replace(/[:T]/g, '');
-    safety = path.join(path.dirname(DB_PATH), `pre-restore-${stamp}.db`);
-    fs.copyFileSync(DB_PATH, safety);
-    console.log(c.dim(`\n  نسخه ایمنی: ${path.basename(safety)}`));
-  }
-
-  // ── ۵) جابه‌جایی ──
-  try {
-    // فایل‌های جانبی WAL باید پاک شوند وگرنه با دیتابیس تازه ناسازگارند
-    for (const ext of ['-wal', '-shm']) {
-      const f = DB_PATH + ext;
-      if (fs.existsSync(f)) fs.unlinkSync(f);
-    }
-    fs.copyFileSync(src, DB_PATH);
-
-    // ── ۶) تأیید پس از بازیابی ──
-    const after = inspect(DB_PATH);
-    if (after.products !== from.products || after.orders !== from.orders) {
-      throw new Error('آمار پس از بازیابی با نسخه پشتیبان نمی‌خواند');
-    }
-
-    console.log(c.green('\n  ✓ بازیابی انجام شد.'));
-    console.log(`    ${after.products} محصول · ${after.variants} متغیر · ${after.orders} سفارش`);
-    if (safety) {
-      console.log(c.dim(`\n  اگر نتیجه درست نبود، برگردانید با:`));
-      console.log(c.dim(`    node scripts/restore_backup.js ${safety} --yes`));
-    }
-    console.log(c.yellow('\n  سرور را ری‌استارت کنید تا تغییرات اعمال شود.\n'));
-  } catch (e) {
-    console.error(c.red(`\n  ✗ بازیابی شکست خورد: ${e.message}`));
-    if (safety && fs.existsSync(safety)) {
-      fs.copyFileSync(safety, DB_PATH);
-      console.log(c.green('  ↩ وضعیت قبلی خودکار برگردانده شد.'));
-    }
-    process.exit(1);
-  }
-}
-
-// ─────────────────────────────────────────
-const args = process.argv.slice(2);
-
-if (args.includes('--list') || args.length === 0) {
-  const files = listBackups();
-  if (files.length) {
-    console.log(c.dim('  برای بازیابی:'));
-    console.log(c.dim(`    node scripts/restore_backup.js ${files[0].full}\n`));
-  }
-  process.exit(0);
-}
-
-if (args.includes('--help') || args.includes('-h')) {
-  console.log(`
-  بازیابی دیتابیس از نسخه پشتیبان
-
-    node scripts/restore_backup.js --list          فهرست نسخه‌ها
-    node scripts/restore_backup.js <file>          بازیابی با تأیید
-    node scripts/restore_backup.js <file> --yes    بدون پرسش
-`);
-  process.exit(0);
-}
-
-restore(args[0], args.includes('--yes')).catch(e => {
-  console.error(c.red('  خطا: ' + e.message));
-  process.exit(1);
-});
+const args=process.argv.slice(2);
+try{
+ if(args.length===0||(args.length===1&&args[0]==='--list'))list();
+ else if(args.length===1&&['--help','-h'].includes(args[0]))console.log('فقط گزارش --list یا بازیابی غیربازنویسی: --to-new <backup.db> <new-file.db>');
+ else if(args.length===3&&args[0]==='--to-new')restoreToNew(args[1],args[2]);
+ else {console.error('بازیابی روی دیتابیس موجود ممنوع است؛ فقط --to-new و مسیر جدید مجاز است.');process.exitCode=2;}
+}catch(e){console.error('بازیابی انجام نشد: '+e.message);process.exitCode=1;}
