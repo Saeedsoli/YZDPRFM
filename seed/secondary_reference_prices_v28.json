@@ -1,0 +1,237 @@
+{
+  "version": "secondary_reference_prices_2026_11_v28",
+  "supplier_file_sha256": "bbe8f40610bc765bda0a7d2da9dbe78f4e397458a6991239c3c18d0853f33f5c",
+  "description": "Owner-approved EDT fallback and 2013 selection for two legacy prices; independent sources do not verify supplier essence.",
+  "items": [
+    {
+      "product_id": "YZD-PROD-0145",
+      "slug": "paco-rabanne-invictus-intense",
+      "brand_en": "Paco Rabanne",
+      "expected_name_en": "PACO RABANNE - Invictus Intense",
+      "reference_name": "Invictus Intense EDT 2016",
+      "source_url": "https://www.fragrantica.com/perfume/Rabanne/Invictus-Intense-42891.html",
+      "provider": "Fragrantica",
+      "status": "secondary_original_found_supplier_essence_unverified",
+      "checked_date": "2026-11-02",
+      "supplier_brand": "Paco rabanne",
+      "supplier_model": "Invictus Intense",
+      "supplier_gender": "Men",
+      "usd_per_kg": "101.2",
+      "quality": "B",
+      "match_status": "name_matched_supplier_identity_unverified",
+      "legacy_backfill": true,
+      "expected_edps": [],
+      "additional_independent_version_url": "https://www.strawberrynet.com/en-US/paco-rabanne-invictus-intense-eau-de-toilette-spray-100ml-3-4oz/212010",
+      "owner_version_confirmation": "Owner authorized EDT fallback. Reference notes describe scent only; no claim of whiskey or animal-derived ambergris in the handmade formula.",
+      "expected_fields": {
+        "id": "YZD-PROD-0145",
+        "slug": "paco-rabanne-invictus-intense",
+        "name_fa": "اینویکتوس اینتنس",
+        "name_en": "PACO RABANNE - Invictus Intense",
+        "brand_fa": "پاکو رابان",
+        "brand_en": "Paco Rabanne",
+        "gender": "MEN",
+        "concentration": "EDT Intense",
+        "family_fa": "چوبی آروماتیک کهربایی نمکی",
+        "family_en": "Woody Aromatic",
+        "family_slug": "woody",
+        "temperature": "معتدل و گرم",
+        "taste": "شور و شیرین کهربای سیاه، برگ بو، فلفل سیاه و عرق مالت",
+        "notes_top": "[\"فلفل سیاه\",\"هل\",\"شکوفه پرتقال\"]",
+        "notes_middle": "[\"برگ بو\",\"عرق مالت جو\"]",
+        "notes_base": "[\"کهربای سیاه\",\"نمک دریا\",\"چوب گایاک\"]",
+        "accords": "[\"جام قهرمانی با شیشه دودی تیره\",\"نسخه غلیظ‌تر اینویکتوس با کهربا و مالت\"]",
+        "season": "چهارفصل",
+        "occasion": "مهمانی، دانشگاه و قرارهای رمانتیک",
+        "longevity": "بسیار طولانی",
+        "sillage": "بسیار قوی",
+        "perfumer": "Paco Rabanne",
+        "release_year": 2016,
+        "transparency_notice": "این محصول، بازآفرینی دست‌ساز با عصاره خالص اولیه و فرمولاسیون اختصاصی عطر یزد است.",
+        "maker_note_approved": 0
+      },
+      "expected_fresh_variants": [
+        {
+          "sku": "YZD-0145-BS-150",
+          "type": "BODY_SPLASH",
+          "volume_ml": 150,
+          "price_toman": 1180000,
+          "stock": 0,
+          "price_usd": 4.5
+        },
+        {
+          "sku": "YZD-0145-EDP-010",
+          "type": "EDP",
+          "volume_ml": 10,
+          "price_toman": 465000,
+          "stock": 0,
+          "price_usd": 4.5
+        },
+        {
+          "sku": "YZD-0145-EDP-030",
+          "type": "EDP",
+          "volume_ml": 30,
+          "price_toman": 1094999,
+          "stock": 0,
+          "price_usd": 4.5
+        },
+        {
+          "sku": "YZD-0145-EDP-050",
+          "type": "EDP",
+          "volume_ml": 50,
+          "price_toman": 1725000,
+          "stock": 0,
+          "price_usd": 4.5
+        },
+        {
+          "sku": "YZD-0145-EDP-100",
+          "type": "EDP",
+          "volume_ml": 100,
+          "price_toman": 3300000,
+          "stock": 0,
+          "price_usd": 4.5
+        },
+        {
+          "sku": "YZD-0145-HM-150",
+          "type": "HAIR_MIST",
+          "volume_ml": 150,
+          "price_toman": 1110000,
+          "stock": 0,
+          "price_usd": 4.5
+        }
+      ],
+      "notes": {
+        "top": [
+          "شکوفه پرتقال",
+          "فلفل سیاه"
+        ],
+        "middle": [
+          "آکورد ویسکی",
+          "برگ بو"
+        ],
+        "base": [
+          "کهربا",
+          "آکورد عنبرسائل",
+          "نمک"
+        ]
+      },
+      "reference_gender": "MEN"
+    },
+    {
+      "product_id": "YZD-PROD-0362",
+      "slug": "yves-saint-laurent-supreme-bouquet",
+      "brand_en": "Yves Saint Laurent",
+      "expected_name_en": "YVES SAINT LAURENT - Supreme Bouquet",
+      "reference_name": "Supreme Bouquet Eau de Parfum 2013",
+      "source_url": "https://www.fragrantica.com/perfume/Yves-Saint-Laurent/Supreme-Bouquet-18369.html",
+      "provider": "Fragrantica",
+      "status": "secondary_original_found_supplier_essence_unverified",
+      "checked_date": "2026-11-02",
+      "supplier_brand": "Yves Saint Laurent",
+      "supplier_model": "Supreme Bouquet",
+      "supplier_gender": "Women",
+      "usd_per_kg": "264",
+      "quality": "H",
+      "match_status": "name_matched_supplier_identity_unverified",
+      "legacy_backfill": true,
+      "expected_edps": [],
+      "additional_independent_version_url": "https://www.decantx.com/products/yves-saint-laurent-supreme-bouquet-eau-de-parfum-unisex",
+      "owner_version_confirmation": "Owner selected the 2013 reference, not Gold 2025. File labels women; independent original reference unisex. Supplier essence identity unverified.",
+      "expected_fields": {
+        "id": "YZD-PROD-0362",
+        "slug": "yves-saint-laurent-supreme-bouquet",
+        "name_fa": "سوپریم بوکه",
+        "name_en": "YVES SAINT LAURENT - Supreme Bouquet",
+        "brand_fa": "ایو سن لوران",
+        "brand_en": "Yves Saint Laurent",
+        "gender": "WOMEN",
+        "concentration": "EDP",
+        "family_fa": "گلی سفید مریمی عنبری اشرافی",
+        "family_en": "White Floral",
+        "family_slug": "floral",
+        "temperature": "معتدل و گرم",
+        "taste": "شیرین گل مریم هندی، گل یلانگ یلانگ، یاس و چوب عنبر",
+        "notes_top": "[\"ترنج\",\"فلفل صورتی\"]",
+        "notes_middle": "[\"گل مریم هندی\",\"گل یاس سامباک\",\"گل یلانگ\"]",
+        "notes_base": "[\"چوب عنبر (امبروود)\",\"مشک سفید\",\"نعناع هندی\"]",
+        "accords": "[\"شاهکار لاین کلکسیون شرقی با شکوه گل‌های سفید مریم غرق در کهربای طلایی\"]",
+        "season": "چهارفصل",
+        "occasion": "عروسی‌های مجلل، مهمانی شب و قرارهای رمانتیک",
+        "longevity": "ابدی",
+        "sillage": "بسیار قوی",
+        "perfumer": "Dominique Ropion",
+        "release_year": 2013,
+        "transparency_notice": "این محصول، بازآفرینی دست‌ساز با عصاره خالص اولیه و فرمولاسیون اختصاصی عطر یزد است.",
+        "maker_note_approved": 0
+      },
+      "expected_fresh_variants": [
+        {
+          "sku": "YZD-0362-BS-150",
+          "type": "BODY_SPLASH",
+          "volume_ml": 150,
+          "price_toman": 2020000,
+          "stock": 0,
+          "price_usd": 8.0
+        },
+        {
+          "sku": "YZD-0362-EDP-010",
+          "type": "EDP",
+          "volume_ml": 10,
+          "price_toman": 710000,
+          "stock": 0,
+          "price_usd": 8.0
+        },
+        {
+          "sku": "YZD-0362-EDP-030",
+          "type": "EDP",
+          "volume_ml": 30,
+          "price_toman": 1830000,
+          "stock": 0,
+          "price_usd": 8.0
+        },
+        {
+          "sku": "YZD-0362-EDP-050",
+          "type": "EDP",
+          "volume_ml": 50,
+          "price_toman": 2950000,
+          "stock": 0,
+          "price_usd": 8.0
+        },
+        {
+          "sku": "YZD-0362-EDP-100",
+          "type": "EDP",
+          "volume_ml": 100,
+          "price_toman": 5750000,
+          "stock": 0,
+          "price_usd": 8.0
+        },
+        {
+          "sku": "YZD-0362-HM-150",
+          "type": "HAIR_MIST",
+          "volume_ml": 150,
+          "price_toman": 1880000,
+          "stock": 0,
+          "price_usd": 8.0
+        }
+      ],
+      "notes": {
+        "top": [
+          "رایحه میوه‌ای",
+          "گلابی",
+          "فلفل صورتی"
+        ],
+        "middle": [
+          "گل مریم",
+          "یلانگ یلانگ",
+          "یاس"
+        ],
+        "base": [
+          "کهربا",
+          "مشک",
+          "پچولی"
+        ]
+      },
+      "reference_gender": "UNISEX"
+    }
+  ]
+}

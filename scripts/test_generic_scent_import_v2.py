@@ -6,7 +6,7 @@ root=Path(__file__).resolve().parent.parent
 items=json.loads((root/'seed/generic_scent_owner_approved_v2.json').read_text())['items']
 with tempfile.TemporaryDirectory(prefix='generic-scent-') as td:
  db=str(Path(td)/'fresh.sqlite');sock=socket.socket();sock.bind(('127.0.0.1',0));port=sock.getsockname()[1];sock.close()
- env={**os.environ,'DB_PATH':db,'BACKUP_DISABLED':'1','PORT':str(port)}
+ env={**os.environ,'LEGACY_REFERENCES_AUTOSTART':'0','DB_PATH':db,'BACKUP_DISABLED':'1','PORT':str(port)}
 
  for k in ['APPROVED_MTO_AUTOSTART','GENERIC_SCENTS_AUTOSTART','GENERIC_SCENTS_V2_AUTOSTART','OWNER_REFERENCE_AUTOSTART','OWNER_REFERENCE_V2_AUTOSTART','OWNER_REFERENCE_V3_AUTOSTART']:env.pop(k,None)
  for i in range(2,18):env.pop(f'APPROVED_MTO_V{i}_AUTOSTART',None)

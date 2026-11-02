@@ -74,7 +74,11 @@ const genderFixes = [...require('../seed/official_gender_corrections_v1.json').i
 const realDrift = drift.filter(x => {
   if (/brand-/.test(x.image_url)) return false;
   const fix = genderFixes.find(f => f.product_id === x.id && f.official_gender === x.gender);
-  return !(fix && imageForProduct(null, x.family_slug, x.id, fix.expected_old_gender) === x.image_url);
+  // Owner-selected independent reference corrected the gender; preserve the old
+  // illustration rather than silently replacing a previously approved image.
+  const legacy = require('../seed/secondary_reference_prices_v28.json').items.find(f => f.product_id === x.id && f.reference_gender === x.gender);
+  const oldGender = fix?.expected_old_gender || legacy?.expected_fields.gender;
+  return !(oldGender && imageForProduct(null, x.family_slug, x.id, oldGender) === x.image_url);
 });
 add('تخصیص پایدار است (اجرای دوباره تغییری نمی‌دهد)', realDrift.length === 0,
     realDrift.length ? `${realDrift.length} محصول جابه‌جا شد` : '');

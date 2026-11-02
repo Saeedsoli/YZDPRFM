@@ -6,7 +6,7 @@ root=Path(__file__).resolve().parent.parent
 items=json.loads((root/'seed/generic_scent_owner_approved_v1.json').read_text())['items']
 with tempfile.TemporaryDirectory(prefix='generic-scent-') as td:
  db=str(Path(td)/'fresh.sqlite');sock=socket.socket();sock.bind(('127.0.0.1',0));port=sock.getsockname()[1];sock.close()
- env={**os.environ,'OWNER_REFERENCE_V3_AUTOSTART':'0','GENERIC_SCENTS_V2_AUTOSTART':'0','OWNER_REFERENCE_V2_AUTOSTART':'0','OWNER_REFERENCE_AUTOSTART':'0','DB_PATH':db,'BACKUP_DISABLED':'1','PORT':str(port)}
+ env={**os.environ,'LEGACY_REFERENCES_AUTOSTART':'0','OWNER_REFERENCE_V3_AUTOSTART':'0','GENERIC_SCENTS_V2_AUTOSTART':'0','OWNER_REFERENCE_V2_AUTOSTART':'0','OWNER_REFERENCE_AUTOSTART':'0','DB_PATH':db,'BACKUP_DISABLED':'1','PORT':str(port)}
  env.pop('APPROVED_MTO_AUTOSTART',None);env.pop('GENERIC_SCENTS_AUTOSTART',None)
  for i in range(2,18):env.pop(f'APPROVED_MTO_V{i}_AUTOSTART',None)
  proc=subprocess.Popen(['node','src/server.js'],cwd=root,env=env,stdout=subprocess.DEVNULL,stderr=subprocess.PIPE)

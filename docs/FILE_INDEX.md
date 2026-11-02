@@ -916,3 +916,6 @@ node_modules/   با npm install برمی‌گردد
 - `scripts/test_owner_reference_import_v3.py` — آزمون باس باتلد و حفظ قیمت بوس ۹۸.
 - `scripts/test_generic_image_seven.js` — آزمون برچسب تصویر نمادین هفتم.
 - `scripts/apply_pending_six.js` — اجرای اتمی هر دو مصوبه پس از پشتیبان‌گیری.
+- `src/legacy-reference-approval.js` — رفع محافظت‌شده ابهام دو قیمت قدیمی با منابع مستقل.
+- `scripts/apply_legacy_references.js` — اعمال صریح پس از پشتیبان و بازسازی ایندکس‌ها.
+- `scripts/test_legacy_reference_approval.py` — آزمون قیمت قدیمی، سفارش، نت‌ها و محافظ ویرایش مدیر.

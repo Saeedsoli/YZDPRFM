@@ -2784,7 +2784,9 @@ seedCoupons();
 seedShopSettings();
 // Existing installations are never silently migrated: use the guarded approval
 // operation after backup. A clean installation can safely apply the fixed scope.
+let legacyReferenceResult = null;
 if (isFreshInstallation && process.env.APPROVED_MTO_AUTOSTART !== '0') {
+  if (process.env.LEGACY_REFERENCES_AUTOSTART !== '0') legacyReferenceResult = require('./legacy-reference-approval').applyLegacyReferenceApproval(db, path.join(SEED_DIR, 'secondary_reference_prices_v28.json'));
   const approved = require('./approved-made-to-order');
   const result = approved.applyApprovedMadeToOrder(db, path.join(SEED_DIR, 'approved_made_to_order_v1.json'));
   approved.correctApprovedNotices(db, path.join(SEED_DIR, 'approved_made_to_order_v1.json'));
@@ -2875,7 +2877,7 @@ const activeNotesResults = ['active_official_note_corrections_v1.json','active_o
   require('./active-official-notes').applyActiveOfficialNotes(db, path.join(SEED_DIR, file)));
 buildSearchIndex();
 // Rebuild note lookup after sourced notes change or new supplement products arrive.
-buildNotesIndex(activeNotesResults.some(r => r.updated > 0) || supplementInserted > 0 || secondaryNotesResults.some(r => r.updated > 0) || officialNotesResults.some(r => r.updated > 0));
+buildNotesIndex(legacyReferenceResult?.activated > 0 || activeNotesResults.some(r => r.updated > 0) || supplementInserted > 0 || secondaryNotesResults.some(r => r.updated > 0) || officialNotesResults.some(r => r.updated > 0));
 
 startMaintenance();
 

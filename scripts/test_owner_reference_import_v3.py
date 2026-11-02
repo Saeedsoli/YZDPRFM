@@ -13,7 +13,7 @@ for x in items:
  assert maximum==Decimal(x['usd_per_kg']) and any(r['price']==maximum and r['quality']==x['quality'] for r in rs)
 with tempfile.TemporaryDirectory(prefix='owner-ref-') as td:
  db=str(Path(td)/'fresh.sqlite');sock=socket.socket();sock.bind(('127.0.0.1',0));port=sock.getsockname()[1];sock.close()
- env={**os.environ,'DB_PATH':db,'BACKUP_DISABLED':'1','PORT':str(port)}
+ env={**os.environ,'LEGACY_REFERENCES_AUTOSTART':'0','DB_PATH':db,'BACKUP_DISABLED':'1','PORT':str(port)}
  for k in ['APPROVED_MTO_AUTOSTART','GENERIC_SCENTS_AUTOSTART','OWNER_REFERENCE_AUTOSTART','OWNER_REFERENCE_V2_AUTOSTART','OWNER_REFERENCE_V3_AUTOSTART','GENERIC_SCENTS_V2_AUTOSTART']+[f'APPROVED_MTO_V{i}_AUTOSTART' for i in range(2,18)]:env.pop(k,None)
  proc=subprocess.Popen(['node','src/server.js'],cwd=root,env=env,stdout=subprocess.DEVNULL,stderr=subprocess.PIPE)
  try:
