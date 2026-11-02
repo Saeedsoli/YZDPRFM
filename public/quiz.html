@@ -455,16 +455,16 @@ function renderResults() {
     const priceStr = p.min_price ? faNum(p.min_price.toLocaleString('en-US')) + ' تومان' : '';
     const fit = Math.round(((p._score || 0) / best) * 100);
     return `
-      <a class="quiz-result-card" href="/perfume/${p.slug}" style="animation-delay:${i * 80}ms">
+      <a class="quiz-result-card" href="/perfume/${encodeURIComponent(p.slug)}" style="animation-delay:${i * 80}ms">
         <div class="quiz-result-rank">${faNum(i + 1)}</div>
-        ${p.image_url ? `<img src="${cardImage(p.image_url)}" alt="${isGenericProductImage(p.image_url) ? 'تصویر نمادین' : ''}" loading="lazy">` : ''}
+        ${p.image_url ? `<img src="${esc(cardImage(p.image_url))}" alt="${isGenericProductImage(p.image_url) ? 'تصویر نمادین' : ''}" loading="lazy">` : ''}
         <div class="quiz-result-info">
-          <div class="quiz-result-name">${full}
+          <div class="quiz-result-name">${esc(full)}
             <span style="font-size:.7rem;color:var(--gold)">«دست‌ساز»</span></div>
-          <div class="quiz-result-brand">${p.name_en || ''}</div>
+          <div class="quiz-result-brand">${esc(p.name_en || '')}</div>
           ${isGenericProductImage(p.image_url) ? '<div class="quiz-result-notes">تصویر نمادین است</div>' : ''}
-          ${notesStr ? `<div class="quiz-result-notes">${gLabel(p.gender)}${notesStr}</div>` : ''}
-          ${priceStr ? `<div class="quiz-result-price">از ${priceStr}</div>` : ''}
+          ${notesStr ? `<div class="quiz-result-notes">${gLabel(p.gender)}${esc(notesStr)}</div>` : ''}
+          ${priceStr ? `<div class="quiz-result-price">از ${esc(priceStr)}</div>` : ''}
           <div class="fitbar" title="میزان تطابق با سلیقه شما">
             <i style="width:${fit}%;animation-delay:${i * 80 + 200}ms"></i></div>
         </div>

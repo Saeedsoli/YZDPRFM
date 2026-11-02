@@ -71,19 +71,19 @@ function wishCard(p) {
   <div class="product-card wish-card" data-slug="${esc(p.slug)}">
     <button class="rm" title="حذف از علاقه‌مندی"
       aria-label="حذف ${esc(p.name_fa)} از علاقه‌مندی"
-      onclick="removeItem('${esc(p.slug)}', this)">${TRASH}</button>
+      data-action="remove">${TRASH}</button>
 
-    <a href="/perfume/${esc(p.slug)}" style="text-decoration:none;color:inherit;display:block">
+    <a href="/perfume/${encodeURIComponent(p.slug)}" style="text-decoration:none;color:inherit;display:block">
       <div class="img-wrap">
-        <img src="${cardImage(p.image_url)}" alt="${isGenericProductImage(p.image_url) ? 'تصویر نمادین' : 'تصویر'} ${esc(p.name_fa)}" loading="lazy" width="300" height="300">
+        <img src="${esc(cardImage(p.image_url))}" alt="${isGenericProductImage(p.image_url) ? 'تصویر نمادین' : 'تصویر'} ${esc(p.name_fa)}" loading="lazy" width="300" height="300">
         ${isGenericProductImage(p.image_url) ? '<span class="card-illustrative">تصویر نمادین</span>' : ''}
         ${genderLabel(p.gender) ? `<span class="card-badge">${genderLabel(p.gender)}</span>` : ''}
       </div>
       <div class="body">
-        <div class="card-title">${p.brand_fa ? p.brand_fa + ' — ' : ''}${esc(p.name_fa)}
+        <div class="card-title">${esc(p.brand_fa ? p.brand_fa + ' — ' : '')}${esc(p.name_fa)}
           <span class="card-tag">«دست‌ساز»</span></div>
         <div class="card-sub">${esc(p.name_en || '')}</div>
-        ${notes ? `<div class="card-notes">نُت‌های آغازین: ${notes}</div>` : ''}
+        ${notes ? `<div class="card-notes">نُت‌های آغازین: ${esc(notes)}</div>` : ''}
         <div class="card-price-row">
           <span class="price">${p.min_price > 0 ? `از ${money(p.min_price)} <small>تومان</small>` : 'قیمت در دسترس نیست'}</span>
           ${available ? '' : '<span style="font-size:.72rem;color:var(--muted)">ناموجود</span>'}
@@ -92,9 +92,9 @@ function wishCard(p) {
     </a>
 
     <div class="wish-act">
-      <a href="/perfume/${esc(p.slug)}">جزئیات و حجم‌ها</a>
+      <a href="/perfume/${encodeURIComponent(p.slug)}">جزئیات و حجم‌ها</a>
       ${cheapest ? `<button class="gold"
-        onclick="quickAdd('${cheapest.sku}', ${cheapest.price_toman}, '${esc(p.slug)}')">
+        data-action="add-sample" data-sku="${esc(cheapest.sku)}">
         افزودن سمپل</button>` : ''}
     </div>
   </div>`;
@@ -137,6 +137,21 @@ function render() {
   grid.innerHTML = items.map(wishCard).join('');
 }
 
+// Keep product identifiers out of executable inline JavaScript.
+document.getElementById('grid').addEventListener('click', event => {
+  const button=event.target.closest('button[data-action]');
+  if (!button || !event.currentTarget.contains(button)) return;
+  const card=button.closest('.wish-card');
+  if (!card) return;
+  const slug=card.dataset.slug;
+  if (button.dataset.action==='remove') return removeItem(slug,button);
+  if (button.dataset.action==='add-sample') {
+    const p=items.find(x=>x.slug===slug);
+    const v=(p?.variants || []).find(x=>x.sku===button.dataset.sku);
+    if (v) quickAdd(v.sku,v.price_toman,slug);
+  }
+});
+
 /* حذف خوش‌بینانه: کارت بلافاصله محو می‌شود.
    اگر سرور خطا داد، فهرست دوباره بارگذاری می‌شود. */
 async function removeItem(slug, btn) {
@@ -168,7 +183,7 @@ function quickAdd(sku, price, slug) {
   const v = (p.variants || []).find(x => x.sku === sku);
   if (!v || v.type !== 'SAMPLE' || v.volume_ml !== 5 || !wishVariantAvailable(p,v)) return;
   const label = v
-    ? `${p.brand_fa ? p.brand_fa + ' — ' : ''}${esc(p.name_fa)} — ${v.type_label || ''} ${v.volume_ml || ''} میل`.trim()
+    ? `${p.brand_fa ? p.brand_fa + ' — ' : ''}${p.name_fa} — ${v.type_label || ''} ${v.volume_ml || ''} میل`.trim()
     : p.name_fa;
   YazdCart.add(sku, label, price, p.image_url, 1);
 }

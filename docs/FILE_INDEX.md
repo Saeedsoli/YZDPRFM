@@ -967,3 +967,4 @@ node_modules/   با npm install برمی‌گردد
 - `scripts/test_seo_html_safety.js` — محافظت داده‌های ساختاریافته و ویژگی‌های HTML در رندر سمت سرور.
 - `scripts/test_product_data_xss_browser.py` — آزمون مرورگر صفحه محصول با داده مخرب و تصویر جایگزین روی دیتابیس موقت.
 - `scripts/test_cart_checkout_data_xss_browser.py` — آزمون مرورگر امنیت سبد و تسویه و عملکرد دکمه‌های سبد روی دیتابیس موقت.
+- `scripts/test_catalog_cards_xss_browser.py` — آزمون داده مخرب در کارت‌های کاتالوگ، جستجو، سمپل، کوییز و علاقه‌مندی روی دیتابیس موقت.

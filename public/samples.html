@@ -284,8 +284,8 @@ function card(p) {
   const full = fullName(p);
   return `
   <article class="sc">
-    <a href="/perfume/${p.slug}" class="img" aria-label="${esc(full)}">
-      <img src="${cardImage(p.image_url)}" alt="${isGenericProductImage(p.image_url) ? 'تصویر نمادین' : ''}" loading="lazy" width="215" height="215">
+    <a href="/perfume/${encodeURIComponent(p.slug)}" class="img" aria-label="${esc(full)}">
+      <img src="${esc(cardImage(p.image_url))}" alt="${isGenericProductImage(p.image_url) ? 'تصویر نمادین' : ''}" loading="lazy" width="215" height="215">
       ${isGenericProductImage(p.image_url) ? '<span class="card-illustrative">تصویر نمادین</span>' : ''}
       <span class="tag">سمپل ۵ میل</span>
     </a>
@@ -297,7 +297,7 @@ function card(p) {
         <b>${money(p.sample_price)}</b>
         <span style="font-size:.7rem;color:var(--muted)">تومان</span>
       </div>
-      <a class="go" href="/perfume/${p.slug}">مشاهده سمپل</a>
+      <a class="go" href="/perfume/${encodeURIComponent(p.slug)}">مشاهده سمپل</a>
     </div>
   </article>`;
 }

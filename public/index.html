@@ -921,7 +921,7 @@ async function loadShowcase() {
 
   tabs.innerHTML = slots.map((s, i) =>
     `<button class="sc-tab ${i === 0 ? 'on' : ''}" role="tab"
-             aria-selected="${i === 0}" data-slot="${s.key}">${s.label}</button>`
+             aria-selected="${i === 0}" data-slot="${s.key}">${esc(s.label)}</button>`
   ).join('');
 
   const show = (key) => {
@@ -933,7 +933,7 @@ async function loadShowcase() {
       b.setAttribute('aria-selected', on);
     });
     document.getElementById('showcaseGrid').innerHTML =
-      `<p class="sc-note">${s.note}</p>` +
+      `<p class="sc-note">${esc(s.note)}</p>` +
       s.items.map(p => productCard({
         ...p,
         notes: { top: [] },
@@ -1111,8 +1111,8 @@ async function fetchSugg(term) {
     suggItems = list;
     suggEl.innerHTML = list.map((p, i) => `
       <a class="sugg-item" id="sg-${i}" role="option" aria-selected="false"
-         href="/perfume/${p.slug}">
-        <img src="${cardImage(p.image_url)}" alt="" loading="lazy" width="42" height="42">
+         href="/perfume/${encodeURIComponent(p.slug)}">
+        <img src="${esc(cardImage(p.image_url))}" alt="" loading="lazy" width="42" height="42">
         <span style="min-width:0">
           <span class="sugg-t">${esc(fullName(p))}</span>
           <span class="sugg-s">${esc(p.name_en || '')}</span>
@@ -1170,7 +1170,7 @@ qEl.addEventListener('keydown', e => {
          اضافه می‌ماند — دکمه بازگشت دو بار زدن می‌خواهد. */
       clearTimeout(timer);
       clearTimeout(window.__sgTimer);
-      location.href = '/perfume/' + suggItems[suggIdx].slug;
+      location.href = '/perfume/' + encodeURIComponent(suggItems[suggIdx].slug);
     } else {
       applySearch();
     }

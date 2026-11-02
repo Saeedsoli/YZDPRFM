@@ -609,7 +609,7 @@ const api = (p, opt = {}, tok = null) =>
       add('productCard قیمت خط‌خورده می‌سازد', /price-old/.test(appjs));
       add('نشان درصد روی کارت هست', /card-off/.test(appjs));
       add('درصد با bdi نوشته می‌شود (وارونه نشدن عدد در RTL)',
-        /<bdi>\$\{toFa\(pct\)\}٪<\/bdi>/.test(appjs));
+        /<bdi>\$\{esc\(toFa\(pct\)\)\}٪<\/bdi>/.test(appjs));
       add('استایل قیمت قدیمی و نشان تخفیف در CSS هست',
         /\.price-old/.test(css) && /\.card-off/.test(css));
       add('نشان تخفیف روی موبایل پنهان نمی‌شود',

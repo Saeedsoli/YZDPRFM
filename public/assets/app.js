@@ -409,20 +409,20 @@ function productCard(p) {
 
   return `
   <a class="product-card fade-up${out ? ' is-out' : ''}${madeToOrder ? ' is-mto' : ''}"
-     href="/perfume/${p.slug}"
-     aria-label="${fullName(p)} — ${aria}">
+     href="/perfume/${encodeURIComponent(p.slug)}"
+     aria-label="${esc(fullName(p))} — ${aria}">
     <div class="img-wrap">
-      <img src="${img}" alt="${illustrative ? 'تصویر نمادین' : 'تصویر'} ${fullName(p)}" loading="lazy" width="300" height="300">
+      <img src="${esc(img)}" alt="${illustrative ? 'تصویر نمادین' : 'تصویر'} ${esc(fullName(p))}" loading="lazy" width="300" height="300">
       ${illustrative ? '<span class="card-illustrative">تصویر نمادین</span>' : ''}
       ${genderLabel(p.gender) ? `<span class="card-badge">${genderLabel(p.gender)}</span>` : ''}
       ${stateLabel ? `<span class="card-out${madeToOrder ? ' mto' : ''}">${stateLabel}</span>` : ''}
-      ${off > 0 && inStock ? `<span class="card-off"><bdi>${toFa(pct)}٪</bdi> تخفیف</span>` : ''}
+      ${off > 0 && inStock ? `<span class="card-off"><bdi>${esc(toFa(pct))}٪</bdi> تخفیف</span>` : ''}
       <div class="card-peek">${peekText}</div>
     </div>
     <div class="body">
-      <div class="card-title">${fullName(p)} <span class="card-tag">«دست‌ساز»</span></div>
-      <div class="card-sub">${p.name_en}</div>
-      ${notes ? `<div class="card-notes">نُت‌های آغازین: ${notes}</div>` : ''}
+      <div class="card-title">${esc(fullName(p))} <span class="card-tag">«دست‌ساز»</span></div>
+      <div class="card-sub">${esc(p.name_en)}</div>
+      ${notes ? `<div class="card-notes">نُت‌های آغازین: ${esc(notes)}</div>` : ''}
       <div class="card-price-row">
         ${priceBlock}
         ${out
@@ -518,7 +518,7 @@ const YazdRecent = {
     const title = opt.title || 'اخیراً دیدید';
     box.innerHTML =
       `<div class="recent-head">
-         <h2>${title}</h2>
+         <h2>${esc(title)}</h2>
          <button type="button" class="recent-clear">پاک کردن</button>
        </div>
        <div class="product-grid">
