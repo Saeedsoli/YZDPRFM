@@ -1031,27 +1031,15 @@ const server = http.createServer(async (req, res) => {
         });
       }
 
-      /* اعمال کد تخفیف (اعتبارسنجی مجدد سمت سرور).
-
-         رزرو ظرفیت **همین‌جا** انجام می‌شود، نه هنگام پرداخت.
-         پیش‌تر شمارنده فقط پس از پرداخت بالا می‌رفت و بین ثبت سفارش
-         تا پرداخت، ده نفر می‌توانستند از کوپنی با ظرفیت ۳ استفاده
-         کنند. حالا مثل موجودی کالا، ظرفیت در لحظه ثبت رزرو می‌شود
-         و اگر پرداخت انجام نشود آزاد می‌گردد. */
+      /* پیش‌نمایش اعتبار و مبلغ کد تخفیف؛ اعتبارسنجی و رزرو نهایی
+         داخل تراکنش سفارش انجام می‌شوند، نه هنگام پرداخت. ظرفیت
+         همراه سفارش و موجودی ثبت می‌شود و در لغو آزاد می‌گردد. */
       let shippingFee = ship.fee, discount = 0, appliedCode = null;
+      let couponSnapshot = null;
       if (body.coupon_code) {
         const cv = validateCoupon(body.coupon_code, afterCampaign, shippingFee, body.mobile, v.items);
         if (!cv.ok) return sendJSON(400, { error: cv.error });
-
-        const reserved = recordCouponUse(cv.coupon.code, body.mobile, orderId);
-        if (!reserved.ok) {
-          return sendJSON(409, {
-            error: reserved.reason === 'ظرفیت کد تکمیل شده'
-              ? 'ظرفیت استفاده از این کد همین لحظه تکمیل شد.'
-              : reserved.reason || 'کد تخفیف قابل استفاده نیست.'
-          });
-        }
-
+        couponSnapshot = {code:cv.coupon.code, free_shipping:!!cv.free_shipping, discount:cv.discount || 0};
         if (cv.free_shipping) shippingFee = 0;
         else discount = cv.discount;
         appliedCode = cv.coupon.code;
@@ -1069,6 +1057,17 @@ const server = http.createServer(async (req, res) => {
       const total = Math.max(0, v.subtotal - totalDiscount + shippingFee) + giftWrapFee;
 
       const tx = db.transaction(() => {
+        // Recheck and reserve the coupon under the same write lock as the
+        // order, items and stock ledger. A process crash cannot leave a coupon
+        // reservation for an order that was never committed.
+        if (couponSnapshot) {
+          const current=validateCoupon(body.coupon_code,afterCampaign,ship.fee,body.mobile,v.items);
+          if (!current.ok || current.coupon.code!==couponSnapshot.code ||
+              !!current.free_shipping!==couponSnapshot.free_shipping || (current.discount || 0)!==couponSnapshot.discount)
+            throw Object.assign(Error('Coupon changed'),{code:'COUPON_CHANGED'});
+          const reserved=recordCouponUse(couponSnapshot.code,body.mobile,orderId);
+          if (!reserved.ok) throw Object.assign(Error('Coupon changed'),{code:'COUPON_CHANGED'});
+        }
         db.prepare(`
           INSERT INTO orders (order_id, created_at, customer_name, mobile,
             first_name, last_name, email,
@@ -1133,10 +1132,11 @@ const server = http.createServer(async (req, res) => {
       });
       try { tx.immediate(); }
       catch (e) {
-        // Coupon reservation preceded the order transaction; release it if the
-        // cart changed or any transactional insert fails.
-        releaseCouponUse(orderId);
+        // The reservation is part of this transaction and has rolled back.
+        // Never release by orderId here: it may refer to an unrelated order
+        // if a (very unlikely) identifier collision occurred.
         if (e.code === 'CART_CHANGED') return sendJSON(409, { error:'قیمت یا موجودی سبد تغییر کرده است؛ دوباره بررسی کنید.' });
+        if (e.code === 'COUPON_CHANGED') return sendJSON(409, { error:'کد تخفیف یا ظرفیت آن تغییر کرده است؛ دوباره بررسی کنید.' });
         throw e;
       }
 

@@ -323,6 +323,7 @@ if python3 scripts/test_production_admin_guard.py >/tmp/test_production_admin_gu
 if python3 scripts/test_staff_temporary_password.py >/tmp/test_staff_temporary_password.log 2>&1; then P=$((P+1)); else F=$((F+1)); echo "  X secure staff onboarding"; fi
 if python3 scripts/test_production_safety_gates.py >/tmp/test_production_safety_gates.log 2>&1; then P=$((P+1)); else F=$((F+1)); echo "  X production payment/OTP guards"; fi
 if python3 scripts/test_payment_provider_races.py >/tmp/test_payment_provider_races.log 2>&1; then P=$((P+1)); else F=$((F+1)); echo "  X payment provider/order status races"; fi
+if python3 scripts/test_coupon_order_atomicity.py >/tmp/test_coupon_order_atomicity.log 2>&1; then P=$((P+1)); else F=$((F+1)); echo "  X coupon/order/stock atomicity"; fi
 run_test test_payment_sandbox_result.js "sandbox result guard"
 if python3 scripts/test_order_stock_reservations.py >/tmp/test_order_stock_reservations.log 2>&1; then P=$((P+1)); else F=$((F+1)); echo "  X order stock reservation"; fi
 if python3 scripts/test_order_stock_cross_process.py >/tmp/test_order_stock_cross_process.log 2>&1; then P=$((P+1)); else F=$((F+1)); echo "  X cross-process stock race"; fi
