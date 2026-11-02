@@ -27,6 +27,7 @@ def candidates(seed):
         ('official_note_corrections_v*.json', 'official', 'verified_notes'),
         ('active_official_note_corrections_v*.json', 'official', 'verified_notes'),
         ('secondary_note_corrections_v*.json', 'independent', 'notes'),
+        ('active_secondary_note_additions_v*.json', 'independent', 'notes'),
         ('official_supplement_v*.json', 'official', 'notes'),
         # The earlier supplier supplement predates versioned supplements. Its
         # URLs and notes are candidates only; some source_note fields point to

@@ -21,7 +21,7 @@ OWNER-REF-0008,hugo-boss-boss-bottled-edp-2020-owner,هوگو باس,باس با
 SUP-AG-900002,giorgio-armani-acqua-di-gio-edp,جورجیو آرمانی,آکوا دی جیو ادوپرفیوم,no_pyramid_notes,,,
 SUP-AG-900014,ariana-grande-ari,آریانا گرانده,آری,candidate_match,official_candidate,supplier_verified_supplement.json,https://arianagrandefragrances.com/products/ari-by-ariana-grande
 SUP-AM-900008,amouage-outlands,آمواج,اوتلندز,candidate_match,official_candidate,supplier_verified_supplement.json,https://amouage.com/products/new-outlands
-SUP-AT-900013,atkinsons-her-majesty-the-oud,اتکینسونز,هر مجستی د عود,no_pyramid_notes,,,
+SUP-AT-900013,atkinsons-her-majesty-the-oud,اتکینسونز,هر مجستی د عود,candidate_match,independent,active_secondary_note_additions_v1.json,https://www.fragrantica.com/perfume/Atkinsons/Atkinsons-Her-Majesty-The-Oud-38960.html
 SUP-ATKINSONS-OUD-SAVE-THE-KING,atkinsons-oud-save-the-king,اتکینسونز,عود سیو د کینگ,candidate_match,official_candidate,supplier_verified_supplement.json,https://www.atkinsons1799.com/products/oud-save-the-king
 SUP-BS-900001,burberry-weekend-woman-edp,باربری,ویکند زنانه,candidate_match,official,official_supplement_v29.json,https://us.burberry.com/burberry-weekend-eau-de-parfum-100ml-p34547061
 SUP-BS-900050,boss-femme,هوگو باس,فم,no_pyramid_notes,,,
@@ -42,7 +42,7 @@ SUP-EX-900011,ex-nihilo-fleur-narcotique,اِکس نیهیلو,فلور نارک
 SUP-EX-900012,ex-nihilo-blue-talisman,اِکس نیهیلو,بلو تالیسمان,candidate_match,official_candidate,supplier_verified_supplement.json,https://us.ex-nihilo-paris.com/products/blue-talisman-eau-de-parfum
 SUP-GC-900015,gucci-rush,گوچی,راش,candidate_match,official_candidate,supplier_verified_supplement.json,https://www.gucci.com/us/en/pr/beauty/fragrances/fragrances-for-women/gucci-rush-75ml-eau-de-toilette-p-012769999990099
 SUP-GC-900016,gucci-bloom,گوچی,بلوم,no_pyramid_notes,,,
-SUP-GL-900027,guy-laroche-drakkar-noir,گی لاروش,دراکار نویر,no_pyramid_notes,,,
+SUP-GL-900027,guy-laroche-drakkar-noir,گی لاروش,دراکار نویر,candidate_match,independent,active_secondary_note_additions_v1.json,https://www.fragrantica.com/perfume/Guy-Laroche/Drakkar-Noir-2069.html
 SUP-GU-900029,guerlain-baiser-de-russie,گرلن,بیزه د روسی,candidate_match,official_candidate,supplier_verified_supplement.json,https://www.guerlain.com/us/en-us/p/les-parisiennes-baiser-de-russie---eau-de-parfum-P017774.html
 SUP-GU-900050,givenchy-xeryus,ژیوانشی,اگزریوس,candidate_match,official,official_supplement_v19.json,https://www.givenchybeauty.com/ca/en/p/xeryus-F10100073.html
 SUP-GU-900051,givenchy-mmw,ژیوانشی,ام‌ام‌دبلیو,candidate_match,official,official_supplement_v23.json,https://www.givenchybeauty.com/fr/fr/p/3-avenue-george-v-F10100184.html
@@ -61,7 +61,7 @@ SUP-LV-900004,louis-vuitton-ombre-nomade,لویی ویتون,امبر نومد,n
 SUP-LV-900005,louis-vuitton-stellar-times,لویی ویتون,استلار تایمز,no_pyramid_notes,,,
 SUP-LV-900006,louis-vuitton-california-dream,لویی ویتون,کالیفرنیا دریم,no_pyramid_notes,,,
 SUP-MB-900010,montblanc-emblem,مون بلان,امبلم,candidate_match,official_candidate,supplier_verified_supplement.json,https://www.montblanc.com/en-us/eau-de-toilette_cod23471478575779015.html
-SUP-MB-900013,montblanc-legend-edp,مون بلان,لجند ادوپرفیوم,no_pyramid_notes,,,
+SUP-MB-900013,montblanc-legend-edp,مون بلان,لجند ادوپرفیوم,candidate_match,independent,active_secondary_note_additions_v1.json,https://www.fragrantica.com/perfume/Montblanc/Legend-Eau-de-Parfum-62583.html
 SUP-ML-900001,milton-lloyd-hawaii,میلتون لوید,هاوایی,candidate_match,official,official_supplement_v25.json,https://milton-lloyd.com/products/hawaii
 SUP-NT-900026,nautica-voyage,ناتیکا,وویاج,no_pyramid_notes,,,
 SUP-PR-900001,paco-rabanne-invictus-parfum,پاکو رابان,اینویکتوس پارفوم,candidate_match,official,official_supplement_v31.json,https://www.rabanne.com/ww/en/fragrance/p/invictus-parfum--000000000065199570
@@ -151,7 +151,7 @@ YZD-PROD-0564,amouage-purpose,آمواج,پرپوس,candidate_match,official,off
 YZD-PROD-0566,amouage-search,آمواج,سرچ,candidate_match,official,official_note_corrections_v7.json,https://amouage.com/en-ch/products/100ml-search
 YZD-PROD-0575,xerjoff-naxos,زرجوف,ناکسوس ۱۸۶۱,candidate_match,official,active_official_note_corrections_v1.json,https://www.xerjoff.com/products/naxos-eau-de-parfum
 YZD-PROD-0576,xerjoff-alexandria-ii,زرجوف,الکساندریا ۲,candidate_match,official,official_note_corrections_v3.json,https://www.xerjoff.com/en-us/products/alexandria-ll-parfum
-YZD-PROD-0591,xerjoff-torino22,زرجوف,تورینو ۲۲,no_pyramid_notes,,,
+YZD-PROD-0591,xerjoff-torino22,زرجوف,تورینو ۲۲,candidate_match,independent,active_secondary_note_additions_v1.json,https://www.fragrantica.com/perfume/Xerjoff/Torino22-77059.html
 YZD-PROD-0601,casamorati-lira,کازاموراتی,لیرا,candidate_match,official,official_note_corrections_v14.json,https://www.xerjoff.com/en-us/products/lira-eau-de-parfum
 YZD-PROD-0602,casamorati-dama-bianca,کازاموراتی,داما بیانکا,candidate_match,official,official_note_corrections_v14.json,https://www.xerjoff.com/en-us/products/dama-bianca-eau-de-parfum
 YZD-PROD-0603,casamorati-bouquet-ideale,کازاموراتی,بوکه ایده آل,candidate_match,official,official_note_corrections_v14.json,https://www.xerjoff.com/products/bouquet-ideale-eau-de-parfum

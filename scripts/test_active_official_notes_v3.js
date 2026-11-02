@@ -1,7 +1,8 @@
 'use strict';
 const assert=require('assert/strict'),fs=require('fs'),os=require('os'),path=require('path'),{spawnSync}=require('child_process');
 const root=path.join(__dirname,'..'),m=require('../seed/active_official_note_corrections_v3.json');assert.equal(m.items.length,8);
-const d=fs.mkdtempSync(path.join(os.tmpdir(),'yazd-active-notes-'));const env={...process.env,DB_PATH:path.join(d,'db.sqlite'),BACKUP_DISABLED:'1'};delete env.APPROVED_MTO_AUTOSTART;
+// Isolate the older official-note milestone from the later independent batch.
+const d=fs.mkdtempSync(path.join(os.tmpdir(),'yazd-active-notes-'));const env={...process.env,DB_PATH:path.join(d,'db.sqlite'),BACKUP_DISABLED:'1',ACTIVE_SECONDARY_NOTES_AUTOSTART:'0'};delete env.APPROVED_MTO_AUTOSTART;
 function run(code){const p=spawnSync(process.execPath,['-e',code],{cwd:root,env,encoding:'utf8',timeout:120000});if(p.status!==0)throw Error(p.stdout+'\n'+p.stderr)}
 try{
  run(`const a=require('assert/strict'),{db}=require('./src/db'),m=require('./seed/active_official_note_corrections_v3.json');const l=JSON.parse(db.prepare('select value from settings where key=?').get(m.version).value);a.equal(l.updated,8);a.equal(l.skipped,0);a.equal(db.prepare("select count(*) n from products where supply_mode='MADE_TO_ORDER'").get().n,265);for(const x of m.items){const p=db.prepare('select * from products where id=?').get(x.product_id);a.equal(p.supply_mode,'MADE_TO_ORDER');a.equal(p.essence_usd_per_kg,x.expected_usd_per_kg);a.equal(p.transparency_notice,x.verified_notice);for(const k of ['top','middle','base'])a.deepEqual(JSON.parse(p['notes_'+k]),x.verified_notes[k]);a.deepEqual(JSON.parse(p.accords),x.verified_accords);a.equal(db.prepare('select official_url from official_identity_evidence where product_id=?').get(p.id).official_url,x.source_url);}

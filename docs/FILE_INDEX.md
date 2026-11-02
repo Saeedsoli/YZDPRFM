@@ -924,6 +924,10 @@ node_modules/   با npm install برمی‌گردد
 - `scripts/test_performance_claim_gate.py` — پنهان‌بودن ماندگاری و پخش تأییدنشده از خروجی عمومی همراه با حفظ داده پنل.
 - `src/unverified-seed-accords-cleanup.js` — حذف محافظت‌شده آکوردهای تولیدی و تأییدنشده از ۳۱ محصول فعال.
 - `src/reference-accord-display.js` — نمایش محافظت‌شده نت‌های تفکیک‌نشده رایحه مرجع؛ بدون ادعای مواد اسانس دست‌ساز.
+- `src/active-secondary-notes.js` — افزودن محدود نت‌های مستند مستقل با محافظ هویت و تغییرات مدیر.
+- `src/active-secondary-notes-cli.js` — اجرای صریح با پشتیبان تأییدشده روی دیتابیس متوقف‌شده.
+- `scripts/test_active_secondary_notes.py` — آزمون نصب تازه، بازگشت و حفاظت سوابق و ویرایش‌های مدیر.
+- `scripts/test_active_secondary_notes_browser.py` — آزمون مرورگر نت‌ها و چیدمان موبایل و دسکتاپ.
 - `scripts/test_reference_accord_display.js` — آزمون تطابق مصوبات نمایش با اسناد و محافظت تغییر هویت یا داده.
 - `scripts/test_reference_accord_display_browser.py` — آزمون مرورگر نمایش نت‌های مرجع، حفظ افشا و محافظ تزریق.
 - `scripts/apply_unverified_seed_accords.js` — اجرای صریح و بازسازی محدود ایندکس پس از پشتیبان‌گیری.

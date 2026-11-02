@@ -1,0 +1,138 @@
+{
+  "version": "active_secondary_notes_2026_11_v1",
+  "description": "Independent reference notes only; do not verify supplier essence, ingredients, quality, or version. Existing notices, prices and orders are unchanged.",
+  "items": [
+    {
+      "product_id": "YZD-PROD-0591",
+      "slug": "xerjoff-torino22",
+      "expected_name_en": "XERJOFF - Torino22",
+      "expected_brand": "Xerjoff",
+      "expected_concentration": "EDP",
+      "expected_usd_per_kg": "277.2",
+      "expected_notice": "این محصول بازآفرینی دست‌ساز است و محصول اورجینال برند اصلی نیست. برند نت‌های رایحه مرجع را منتشر نکرده است؛ هویت و نسخه اسانس تأمین‌کننده مستقلاً تأیید نشده است.",
+      "official_identity_url": "https://www.xerjoff.com/products/torino22-eau-de-parfum",
+      "source_url": "https://www.fragrantica.com/perfume/Xerjoff/Torino22-77059.html",
+      "provider": "Fragrantica",
+      "checked_date": "2026-11-02",
+      "notes": {
+        "top": [
+          "اکالیپتوس",
+          "زعفران",
+          "ترنج"
+        ],
+        "middle": [
+          "ماته",
+          "مریم‌گلی اسکلاریا",
+          "چوب گایاک"
+        ],
+        "base": [
+          "چوب خشک",
+          "مشک"
+        ]
+      }
+    },
+    {
+      "product_id": "SUP-AT-900013",
+      "slug": "atkinsons-her-majesty-the-oud",
+      "expected_name_en": "ATKINSONS - Her Majesty The Oud",
+      "expected_brand": "Atkinsons",
+      "expected_concentration": null,
+      "expected_usd_per_kg": "190.3",
+      "expected_notice": "این محصول بازآفرینی دست‌ساز است و محصول اورجینال برند اتکینسونز نیست.",
+      "official_identity_url": "https://www.atkinsons1799.com/en_eu/custom-sample-set",
+      "source_url": "https://www.fragrantica.com/perfume/Atkinsons/Atkinsons-Her-Majesty-The-Oud-38960.html",
+      "provider": "Fragrantica",
+      "checked_date": "2026-11-02",
+      "notes": {
+        "top": [
+          "عثمانتوس",
+          "نت‌های میوه‌ای"
+        ],
+        "middle": [
+          "رز ترکی",
+          "زعفران",
+          "زنبق"
+        ],
+        "base": [
+          "عود",
+          "آکورد چرم",
+          "وانیل"
+        ]
+      }
+    },
+    {
+      "product_id": "SUP-GL-900027",
+      "slug": "guy-laroche-drakkar-noir",
+      "expected_name_en": "GUY LAROCHE - Drakkar Noir",
+      "expected_brand": "Guy Laroche",
+      "expected_concentration": null,
+      "expected_usd_per_kg": "121",
+      "expected_notice": "این محصول بازآفرینی دست‌ساز است و محصول اورجینال برند گی لاروش نیست.",
+      "official_identity_url": "https://www.guylaroche.com/fragrances",
+      "source_url": "https://www.fragrantica.com/perfume/Guy-Laroche/Drakkar-Noir-2069.html",
+      "provider": "Fragrantica",
+      "checked_date": "2026-11-02",
+      "notes": {
+        "top": [
+          "اسطوخودوس",
+          "لیمو",
+          "ترنج",
+          "رزماری",
+          "نعناع",
+          "به‌لیمو",
+          "ریحان",
+          "درمنه"
+        ],
+        "middle": [
+          "ارس",
+          "میخک",
+          "دارچین",
+          "گشنیز",
+          "افسنطین",
+          "سنبل ختایی",
+          "یاس"
+        ],
+        "base": [
+          "خزه بلوط",
+          "سوزن کاج",
+          "نراد",
+          "آکورد چرم",
+          "وتیور",
+          "پچولی",
+          "چوب صندل",
+          "سدر",
+          "کهربا",
+          "رزین‌ها"
+        ]
+      }
+    },
+    {
+      "product_id": "SUP-MB-900013",
+      "slug": "montblanc-legend-edp",
+      "expected_name_en": "MONTBLANC - Legend EDP",
+      "expected_brand": "Montblanc",
+      "expected_concentration": null,
+      "expected_usd_per_kg": "166.1",
+      "expected_notice": "این محصول بازآفرینی دست‌ساز است و محصول اورجینال برند اصلی نیست. اطلاعات رایحه مرجع از وب‌سایت رسمی برند گرفته شده و هویت و نسخه اسانس تأمین‌کننده مستقلاً تأیید نشده است.",
+      "official_identity_url": "https://www.montblanc.com/en-id/montblanc-legend-eau-de-parfum-100-ml-MB127070.html",
+      "source_url": "https://www.fragrantica.com/perfume/Montblanc/Legend-Eau-de-Parfum-62583.html",
+      "provider": "Fragrantica",
+      "checked_date": "2026-11-02",
+      "notes": {
+        "top": [
+          "برگ بنفشه",
+          "ترنج"
+        ],
+        "middle": [
+          "نت‌های چوبی",
+          "یاس",
+          "مگنولیا"
+        ],
+        "base": [
+          "خزه بلوط",
+          "آکورد چرم"
+        ]
+      }
+    }
+  ]
+}
