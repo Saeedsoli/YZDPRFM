@@ -1,0 +1,256 @@
+{
+  "checked_date": "2026-11-02",
+  "scope": "Manual source-page check of reference note tiers only; not evidence of supplier essence identity, version, quality, formulation or ingredients. Not an importer; no database changes.",
+  "entries": [
+    {
+      "product_id": "SUP-AM-900008",
+      "slug": "amouage-outlands",
+      "reference_name": "Outlands",
+      "source_type": "official",
+      "source_url": "https://amouage.com/products/new-outlands",
+      "status": "full_tier_match",
+      "checked_existing_notes": {
+        "top": [
+          "هل",
+          "ترنج",
+          "لیمو",
+          "فلفل سیچوان",
+          "الِمی",
+          "کندر"
+        ],
+        "middle": [
+          "پچولی",
+          "رز",
+          "شکوفه پرتقال",
+          "زیره",
+          "شمعدانی",
+          "داوانا",
+          "زعفران",
+          "بادیان",
+          "گشنیز"
+        ],
+        "base": [
+          "بنزوئین",
+          "لابدانوم",
+          "عنبر",
+          "عنبر سائل",
+          "کندر",
+          "اوپوپوناکس",
+          "وانیل",
+          "توس",
+          "مشک",
+          "عود"
+        ]
+      },
+      "observation": "Official page lists all three tiers including ambergris as a reference note; infusion and concentration describe the original only."
+    },
+    {
+      "product_id": "SUP-ATKINSONS-OUD-SAVE-THE-KING",
+      "slug": "atkinsons-oud-save-the-king",
+      "reference_name": "Oud Save the King",
+      "source_type": "official",
+      "source_url": "https://www.atkinsons1799.com/products/oud-save-the-king",
+      "status": "full_tier_match",
+      "checked_existing_notes": {
+        "top": [
+          "آکورد چای ارل‌گری و ترنج"
+        ],
+        "middle": [
+          "زنبق",
+          "آکورد چرم جیر"
+        ],
+        "base": [
+          "چوب صندل",
+          "آکورد عود"
+        ]
+      },
+      "observation": "Official page lists Earl Grey Bergamot Accord; Iris and Leather Suede; Sandalwood and Oud Accord."
+    },
+    {
+      "product_id": "SUP-AG-900014",
+      "slug": "ariana-grande-ari",
+      "reference_name": "Ari",
+      "source_type": "official",
+      "source_url": "https://arianagrandefragrances.com/products/ari-by-ariana-grande",
+      "status": "full_tier_match",
+      "checked_existing_notes": {
+        "top": [
+          "گلابی",
+          "گریپ‌فروت صورتی",
+          "تمشک"
+        ],
+        "middle": [
+          "گل برف",
+          "غنچه رز",
+          "ارکیده وانیل"
+        ],
+        "base": [
+          "مارشمالو",
+          "مشک",
+          "چوب روشن"
+        ]
+      },
+      "observation": "Official page lists pear, pink grapefruit, raspberry; muguet, rose buds, vanilla orchid; marshmallow, musk, blonde woods."
+    },
+    {
+      "product_id": "SUP-EX-900011",
+      "slug": "ex-nihilo-fleur-narcotique",
+      "reference_name": "Fleur Narcotique",
+      "source_type": "official",
+      "source_url": "https://us.ex-nihilo-paris.com/products/fleur-narcotique-eau-de-parfum",
+      "status": "full_tier_match",
+      "checked_existing_notes": {
+        "top": [
+          "ترنج",
+          "لیچی",
+          "هلو"
+        ],
+        "middle": [
+          "پتالیا",
+          "شکوفه پرتقال",
+          "یاس"
+        ],
+        "base": [
+          "مشک",
+          "چوب شفاف",
+          "خزه"
+        ]
+      },
+      "observation": "EDP page tier lists match Petalia, orange blossom, jasmine and remaining displayed notes; not the extrait."
+    },
+    {
+      "product_id": "SUP-EX-900012",
+      "slug": "ex-nihilo-blue-talisman",
+      "reference_name": "Blue Talisman",
+      "source_type": "official",
+      "source_url": "https://us.ex-nihilo-paris.com/products/blue-talisman-eau-de-parfum",
+      "status": "full_tier_match",
+      "checked_existing_notes": {
+        "top": [
+          "گلابی",
+          "ترنج",
+          "زنجبیل",
+          "ماندارین"
+        ],
+        "middle": [
+          "شکوفه پرتقال",
+          "جورجی‌وود"
+        ],
+        "base": [
+          "آمبروفیکس",
+          "آکیگالاوود",
+          "مشک"
+        ]
+      },
+      "observation": "EDP page tier lists match Georgywood, Ambrofix, Akigalawood and remaining displayed notes; not the extrait."
+    },
+    {
+      "product_id": "SUP-JC-900024",
+      "slug": "juicy-couture-viva-la-juicy",
+      "reference_name": "Viva La Juicy",
+      "source_type": "official",
+      "source_url": "https://juicycouture.com/products/juicy-couture-viva-la-juicy-eau-de-parfum-spray-3-4oz",
+      "status": "full_tier_match",
+      "checked_existing_notes": {
+        "top": [
+          "توت‌های وحشی",
+          "ماندارین"
+        ],
+        "middle": [
+          "پیچ امین‌الدوله",
+          "گاردنیا",
+          "یاس"
+        ],
+        "base": [
+          "کهربا",
+          "کارامل",
+          "وانیل",
+          "چوب صندل",
+          "پرالین"
+        ]
+      },
+      "observation": "EDP official Details & Care lists all three tiers including wild berries and praline."
+    },
+    {
+      "product_id": "SUP-LL-900019",
+      "slug": "lalique-lamour",
+      "reference_name": "L’Amour",
+      "source_type": "official",
+      "source_url": "https://us.lalique.com/products/lamour-eau-de-parfum-l12202-r-1",
+      "status": "full_tier_match",
+      "checked_existing_notes": {
+        "top": [
+          "ترنج",
+          "نرولی",
+          "غنچه رز"
+        ],
+        "middle": [
+          "گاردنیا",
+          "گل مریم",
+          "یاس"
+        ],
+        "base": [
+          "مشک",
+          "چوب سدر",
+          "چوب صندل"
+        ]
+      },
+      "observation": "EDP official product fragrance section lists all three tiers; base appears in second page chunk."
+    },
+    {
+      "product_id": "SUP-LC-900018",
+      "slug": "lacoste-pour-femme",
+      "reference_name": "Pour Femme",
+      "source_type": "official",
+      "source_url": "https://www.lacoste.com/it/lacoste/donna/accessori/profumi/LC014A01.html",
+      "status": "full_tier_match",
+      "checked_existing_notes": {
+        "top": [
+          "فریزیا",
+          "فلفل سیاه"
+        ],
+        "middle": [
+          "یاس",
+          "هلیوتروپ"
+        ],
+        "base": [
+          "چوب سدر",
+          "چرم جیر"
+        ]
+      },
+      "observation": "Italian official structured tier list matches; its prose additionally mentions rose, omitted from structured heart list."
+    },
+    {
+      "product_id": "SUP-RL-900020",
+      "slug": "ralph-lauren-polo-black",
+      "reference_name": "Polo Black",
+      "source_type": "official",
+      "source_url": "https://www.ralphlaurenfragrances.com/en_US/men/polo-black/polo-black-eau-de-toilette/RLFE012.html",
+      "status": "partial_tier_match",
+      "checked_existing_notes": {
+        "top": [
+          "آکورد انبه یخی",
+          "ماندارین",
+          "لیمو"
+        ],
+        "middle": [],
+        "base": [
+          "پچولی"
+        ]
+      },
+      "observation": "Official current tiered list supports the displayed mango, mandarin, lemon and patchouli, and includes additional notes; only subset was compared."
+    }
+  ],
+  "unresolved": [
+    {
+      "product_id": "SUP-GU-900029",
+      "source_url": "https://www.guerlain.com/us/en-us/p/les-parisiennes-baiser-de-russie---eau-de-parfum-P017774.html",
+      "observation": "Requested URL redirected to official homepage; product notes not verified in this check."
+    },
+    {
+      "product_id": "SUP-JG-900025",
+      "source_url": "https://jaguar-fragrances.com/en/classic-black",
+      "observation": "Page fetch failed; product notes not verified in this check."
+    }
+  ]
+}

@@ -19,10 +19,10 @@ OWNER-REF-0006,tommy-hilfiger-tommy-now-edt-2018,تامی هیلفیگر,تام�
 OWNER-REF-0007,al-rehab-sultan-edp,الرحاب,سلطان,candidate_match,owner_selected,owner_reference_selection_v2.json,https://www.fragrantica.com/perfume/Al-Rehab/Sultan-20117.html
 OWNER-REF-0008,hugo-boss-boss-bottled-edp-2020-owner,هوگو باس,باس باتلد ادوپرفیوم,candidate_match,owner_selected,owner_reference_selection_v3.json,https://www.hugoboss.com/boss-bottled-eau-de-parfum-100ml-gift-set/hbeu58351977_999.html
 SUP-AG-900002,giorgio-armani-acqua-di-gio-edp,جورجیو آرمانی,آکوا دی جیو ادوپرفیوم,no_pyramid_notes,,,
-SUP-AG-900014,ariana-grande-ari,آریانا گرانده,آری,no_candidate_match,,,
-SUP-AM-900008,amouage-outlands,آمواج,اوتلندز,no_candidate_match,,,
+SUP-AG-900014,ariana-grande-ari,آریانا گرانده,آری,candidate_match,official_candidate,supplier_verified_supplement.json,https://arianagrandefragrances.com/products/ari-by-ariana-grande
+SUP-AM-900008,amouage-outlands,آمواج,اوتلندز,candidate_match,official_candidate,supplier_verified_supplement.json,https://amouage.com/products/new-outlands
 SUP-AT-900013,atkinsons-her-majesty-the-oud,اتکینسونز,هر مجستی د عود,no_pyramid_notes,,,
-SUP-ATKINSONS-OUD-SAVE-THE-KING,atkinsons-oud-save-the-king,اتکینسونز,عود سیو د کینگ,no_candidate_match,,,
+SUP-ATKINSONS-OUD-SAVE-THE-KING,atkinsons-oud-save-the-king,اتکینسونز,عود سیو د کینگ,candidate_match,official_candidate,supplier_verified_supplement.json,https://www.atkinsons1799.com/products/oud-save-the-king
 SUP-BS-900001,burberry-weekend-woman-edp,باربری,ویکند زنانه,candidate_match,official,official_supplement_v29.json,https://us.burberry.com/burberry-weekend-eau-de-parfum-100ml-p34547061
 SUP-BS-900050,boss-femme,هوگو باس,فم,no_pyramid_notes,,,
 SUP-CH-900001,carolina-herrera-212-vip-women,کارولینا هررا,۲۱۲ وی‌آی‌پی,no_pyramid_notes,,,
@@ -38,35 +38,35 @@ SUP-DG-900001,dolce-gabbana-dgvib3,دولچه و گابانا,دی‌جی وی�
 SUP-EP-900001,emper-epic-adventure,امپر,اپیک ادونچر,no_pyramid_notes,,,
 SUP-EP-900002,emper-chifon,امپر,چیفون,no_pyramid_notes,,,
 SUP-EV-900001,evaflor-whisky-silver,اوافلور,ویسکی سیلور,candidate_match,official,official_supplement_v21.json,https://www.evaflor.com/en/products/whisky-silver-coffret-parfum-homme-serviette-money-clip
-SUP-EX-900011,ex-nihilo-fleur-narcotique,اِکس نیهیلو,فلور نارکوتیک,no_candidate_match,,,
-SUP-EX-900012,ex-nihilo-blue-talisman,اِکس نیهیلو,بلو تالیسمان,no_candidate_match,,,
-SUP-GC-900015,gucci-rush,گوچی,راش,no_candidate_match,,,
+SUP-EX-900011,ex-nihilo-fleur-narcotique,اِکس نیهیلو,فلور نارکوتیک,candidate_match,official_candidate,supplier_verified_supplement.json,https://us.ex-nihilo-paris.com/products/fleur-narcotique-eau-de-parfum
+SUP-EX-900012,ex-nihilo-blue-talisman,اِکس نیهیلو,بلو تالیسمان,candidate_match,official_candidate,supplier_verified_supplement.json,https://us.ex-nihilo-paris.com/products/blue-talisman-eau-de-parfum
+SUP-GC-900015,gucci-rush,گوچی,راش,candidate_match,official_candidate,supplier_verified_supplement.json,https://www.gucci.com/us/en/pr/beauty/fragrances/fragrances-for-women/gucci-rush-75ml-eau-de-toilette-p-012769999990099
 SUP-GC-900016,gucci-bloom,گوچی,بلوم,no_pyramid_notes,,,
 SUP-GL-900027,guy-laroche-drakkar-noir,گی لاروش,دراکار نویر,no_pyramid_notes,,,
-SUP-GU-900029,guerlain-baiser-de-russie,گرلن,بیزه د روسی,no_candidate_match,,,
+SUP-GU-900029,guerlain-baiser-de-russie,گرلن,بیزه د روسی,candidate_match,official_candidate,supplier_verified_supplement.json,https://www.guerlain.com/us/en-us/p/les-parisiennes-baiser-de-russie---eau-de-parfum-P017774.html
 SUP-GU-900050,givenchy-xeryus,ژیوانشی,اگزریوس,candidate_match,official,official_supplement_v19.json,https://www.givenchybeauty.com/ca/en/p/xeryus-F10100073.html
 SUP-GU-900051,givenchy-mmw,ژیوانشی,ام‌ام‌دبلیو,candidate_match,official,official_supplement_v23.json,https://www.givenchybeauty.com/fr/fr/p/3-avenue-george-v-F10100184.html
-SUP-JC-900024,juicy-couture-viva-la-juicy,جویسی کوتور,ویوا لا جویسی,no_candidate_match,,,
-SUP-JG-900025,jaguar-classic-black,جگوار,کلاسیک بلک,no_candidate_match,,,
-SUP-JH-900028,juliette-has-a-gun-metal-chypre,ژولیت هز ا گان,متال شیپر,no_candidate_match,,,
+SUP-JC-900024,juicy-couture-viva-la-juicy,جویسی کوتور,ویوا لا جویسی,candidate_match,official_candidate,supplier_verified_supplement.json,https://juicycouture.com/products/juicy-couture-viva-la-juicy-eau-de-parfum-spray-3-4oz
+SUP-JG-900025,jaguar-classic-black,جگوار,کلاسیک بلک,candidate_match,official_candidate,supplier_verified_supplement.json,https://jaguar-fragrances.com/en/classic-black
+SUP-JH-900028,juliette-has-a-gun-metal-chypre,ژولیت هز ا گان,متال شیپر,candidate_match,official_candidate,supplier_verified_supplement.json,https://us.juliettehasagun.com/products/metal-chypre
 SUP-KY-900001,kayali-wedding-velvet-santal-35,کیالی,ولت سانتال ۳۵,no_pyramid_notes,,,
-SUP-LC-900017,lacoste-essential,لاکوست,اسنشیال,no_candidate_match,,,
-SUP-LC-900018,lacoste-pour-femme,لاکوست,پور فم,no_candidate_match,,,
-SUP-LC-900023,lacoste-touch-of-pink,لاکوست,تاچ آو پینک,no_candidate_match,,,
-SUP-LL-900019,lalique-lamour,لالیک,لامور,no_candidate_match,,,
+SUP-LC-900017,lacoste-essential,لاکوست,اسنشیال,candidate_match,official_candidate,supplier_verified_supplement.json,https://www.lacoste.com/se/lacoste/men/accessories/fragrance/LC011A01.html
+SUP-LC-900018,lacoste-pour-femme,لاکوست,پور فم,candidate_match,official_candidate,supplier_verified_supplement.json,https://www.lacoste.com/it/lacoste/donna/accessori/profumi/LC014A01.html
+SUP-LC-900023,lacoste-touch-of-pink,لاکوست,تاچ آو پینک,candidate_match,official_candidate,supplier_verified_supplement.json,https://www.lacoste.com/fr/lacoste/femme/accessoires/parfums/LC015A02.html
+SUP-LL-900019,lalique-lamour,لالیک,لامور,candidate_match,official_candidate,supplier_verified_supplement.json,https://us.lalique.com/products/lamour-eau-de-parfum-l12202-r-1
 SUP-LV-900001,louis-vuitton-afternoon-swim,لویی ویتون,افترنون سوئیم,no_pyramid_notes,,,
 SUP-LV-900002,louis-vuitton-imagination,لویی ویتون,ایمجینیشن,no_pyramid_notes,,,
 SUP-LV-900003,louis-vuitton-limmensite,لویی ویتون,ال ایمنسیت,no_pyramid_notes,,,
 SUP-LV-900004,louis-vuitton-ombre-nomade,لویی ویتون,امبر نومد,no_pyramid_notes,,,
 SUP-LV-900005,louis-vuitton-stellar-times,لویی ویتون,استلار تایمز,no_pyramid_notes,,,
 SUP-LV-900006,louis-vuitton-california-dream,لویی ویتون,کالیفرنیا دریم,no_pyramid_notes,,,
-SUP-MB-900010,montblanc-emblem,مون بلان,امبلم,no_candidate_match,,,
+SUP-MB-900010,montblanc-emblem,مون بلان,امبلم,candidate_match,official_candidate,supplier_verified_supplement.json,https://www.montblanc.com/en-us/eau-de-toilette_cod23471478575779015.html
 SUP-MB-900013,montblanc-legend-edp,مون بلان,لجند ادوپرفیوم,no_pyramid_notes,,,
 SUP-ML-900001,milton-lloyd-hawaii,میلتون لوید,هاوایی,candidate_match,official,official_supplement_v25.json,https://milton-lloyd.com/products/hawaii
 SUP-NT-900026,nautica-voyage,ناتیکا,وویاج,no_pyramid_notes,,,
 SUP-PR-900001,paco-rabanne-invictus-parfum,پاکو رابان,اینویکتوس پارفوم,candidate_match,official,official_supplement_v31.json,https://www.rabanne.com/ww/en/fragrance/p/invictus-parfum--000000000065199570
 SUP-RD-900001,roja-elysium-pour-homme-edp,روژا داو,الیسیوم مردانه ادوپرفیوم,candidate_match,official,official_supplement_v31.json,https://rojalondon.com/products/elysium-homme-edp
-SUP-RL-900020,ralph-lauren-polo-black,رالف لورن,پولو بلک,no_candidate_match,,,
+SUP-RL-900020,ralph-lauren-polo-black,رالف لورن,پولو بلک,candidate_match,official_candidate,supplier_verified_supplement.json,https://www.ralphlaurenfragrances.com/en_US/men/polo-black/polo-black-eau-de-toilette/RLFE012.html
 SUP-SE-900001,seris-splendor,سریس,اسپلندور,no_pyramid_notes,,,
 SUP-SF-900001,salvatore-ferragamo-signorina-edp,سالواتوره فراگامو,سیگنورینا,candidate_match,official,official_supplement_v27.json,https://www.ferragamo.com/shop/esp/es/mujer/fragancias/signorina-781424--5
 SUP-SH-900022,shiseido-zen,شیسیدو,زن,no_pyramid_notes,,,
@@ -124,7 +124,7 @@ SUP-VS-900001,versace-eros-pour-femme-edp,ورساچه,اروس پور فم,no_p
 SUP-VS-900002,versace-eros-men-edp,ورساچه,اروس مردانه ادوپرفیوم,candidate_match,official,official_supplement_v31.json,https://www.versace.com/us/en/men/accessories/fragrances-body-care/eros/eros-edp-100-ml-blue/R740110-R100MLS_RNUL.html
 SUP-VS-900021,victorias-secret-bombshell,ویکتوریا سکرت,بامب شل,no_pyramid_notes,,,
 SUP-VS-900030,victorias-secret-very-sexy,ویکتوریا سکرت,وری سکسی,no_pyramid_notes,,,
-SUP-VS-900032,victorias-secret-aqua-kiss,ویکتوریا سکرت,آکوا کیس,no_candidate_match,,,
+SUP-VS-900032,victorias-secret-aqua-kiss,ویکتوریا سکرت,آکوا کیس,candidate_match,official_candidate,supplier_verified_supplement.json,https://www.victoriassecret.com/ca/vs/beauty-catalog/5000011041?genericId=11259203&choice=4760
 SUP-XJ-900007,xerjoff-torino24,زرژوف,تورینو ۲۴,no_pyramid_notes,,,
 YZD-PROD-0031,parfums-de-marly-akaster,پارفومز د مارلی,آکاستر,candidate_match,independent,secondary_note_corrections_v1.json,https://www.fragrantica.com/perfume/Parfums-de-Marly/Akaster-33513.html
 YZD-PROD-0032,parfums-de-marly-nisean,پارفومز د مارلی,نیسین,candidate_match,independent,secondary_note_corrections_v1.json,https://www.fragrantica.com/perfume/Parfums-de-Marly/Nisean-36540.html

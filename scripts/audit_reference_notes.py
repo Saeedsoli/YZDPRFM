@@ -28,6 +28,10 @@ def candidates(seed):
         ('active_official_note_corrections_v*.json', 'official', 'verified_notes'),
         ('secondary_note_corrections_v*.json', 'independent', 'notes'),
         ('official_supplement_v*.json', 'official', 'notes'),
+        # The earlier supplier supplement predates versioned supplements. Its
+        # URLs and notes are candidates only; some source_note fields point to
+        # a different page or explicitly say an official pyramid was not found.
+        ('supplier_verified_supplement.json', 'official_candidate', 'notes'),
         ('secondary_supplement_v*.json', 'independent', 'notes'),
         ('owner_reference_selection_v*.json', 'owner_selected', 'notes'),
         ('secondary_reference_prices_v*.json', 'independent', 'notes'),
