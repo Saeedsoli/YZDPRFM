@@ -1,0 +1,19 @@
+{
+  "version": "reference_accord_display_2026_11_v4",
+  "scope": "One common official note despite conflicting descriptions; no claim of full pyramid.",
+  "items": [
+    {
+      "product_id": "SUP-SE-900001",
+      "slug": "seris-splendor",
+      "name_en": "SERIS PARFUMS - Splendor",
+      "brand_en": "Seris Parfums",
+      "concentration": null,
+      "accords": [
+        "ترنج"
+      ],
+      "source_manifest": "active_official_note_overlap_v1.json",
+      "source_url": "https://www.seris-parfums.com/product/splendor/",
+      "source_kind": "official_candidate"
+    }
+  ]
+}

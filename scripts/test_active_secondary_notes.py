@@ -3,8 +3,9 @@
 import json,os,sqlite3,subprocess,tempfile
 from pathlib import Path
 root=Path(__file__).resolve().parent.parent
-batch=os.environ.get('NOTE_TEST_BATCH','1');assert batch in ('1','2','3','4','5')
-manifest=json.loads((root/f'seed/active_secondary_note_additions_v{batch}.json').read_text());ids={x['product_id'] for x in manifest['items']}
+batch=os.environ.get('NOTE_TEST_BATCH','1');assert batch in ('1','2','3','4','5','6')
+filename='active_official_note_overlap_v1.json' if batch=='6' else f'active_secondary_note_additions_v{batch}.json'
+manifest=json.loads((root/'seed'/filename).read_text());ids={x['product_id'] for x in manifest['items']}
 with tempfile.TemporaryDirectory(prefix='secondary-active-notes-') as td:
  td=Path(td);base=td/'baseline.sqlite'
  env={**os.environ,'DB_PATH':str(base),'BACKUP_DISABLED':'1','NODE_ENV':'test','ACTIVE_SECONDARY_NOTES_AUTOSTART':'0'}
@@ -28,6 +29,7 @@ with tempfile.TemporaryDirectory(prefix='secondary-active-notes-') as td:
  with sqlite3.connect(base) as c:
   cols=[x[1] for x in c.execute('pragma table_info(products)')];before_p={r[0]:r for r in before['products']};after_p={r[0]:r for r in after['products']}
   mutable={cols.index(x) for x in ('notes_top','notes_middle','notes_base','accords','search_blob')}
+  if batch=='6':mutable.add(cols.index('transparency_notice'))
   for pid in ids:
    old,new=before_p[pid],after_p[pid];assert all(old[i]==new[i] for i in range(len(cols)) if i not in mutable),pid
    x=next(x for x in manifest['items'] if x['product_id']==pid)
@@ -35,6 +37,7 @@ with tempfile.TemporaryDirectory(prefix='secondary-active-notes-') as td:
     assert json.loads(new[cols.index('notes_'+pos)])==x['notes'][pos]
     assert c.execute('select count(*) from product_notes where product_id=? and position=?',(pid,pos)).fetchone()[0]==len(x['notes'][pos])
    assert json.loads(new[cols.index('accords')])==x.get('accords',[])
+   if batch=='6':assert new[cols.index('transparency_notice')]==x['new_notice']
    assert c.execute("select count(*) from product_notes where product_id=? and position='accord'",(pid,)).fetchone()[0]==len(x.get('accords',[]))
    assert new[cols.index('search_blob')]!=old[cols.index('search_blob')]
   for pid in set(before_p)-ids:assert before_p[pid]==after_p[pid]

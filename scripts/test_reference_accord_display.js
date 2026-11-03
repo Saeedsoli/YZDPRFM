@@ -3,14 +3,14 @@
 // These tests use manifest copies only; no real DB is opened or changed.
 const assert=require('assert'),path=require('path');
 const root=path.resolve(__dirname,'..');
-const m1=require('../seed/reference_accord_display_v1.json'),m2=require('../seed/reference_accord_display_v2.json'),m3=require('../seed/reference_accord_display_v3.json');
+const m1=require('../seed/reference_accord_display_v1.json'),m2=require('../seed/reference_accord_display_v2.json'),m3=require('../seed/reference_accord_display_v3.json'),m4=require('../seed/reference_accord_display_v4.json');
 const {referenceAccords}=require('../src/reference-accord-display');
-assert.equal(m1.items.length,89);assert.equal(m2.items.length,2);assert.equal(m3.items.length,1);
+assert.equal(m1.items.length,89);assert.equal(m2.items.length,2);assert.equal(m3.items.length,1);assert.equal(m4.items.length,1);
 const seen=new Set();
-for(const x of [...m1.items,...m2.items,...m3.items]){
+for(const x of [...m1.items,...m2.items,...m3.items,...m4.items]){
   assert(!seen.has(x.product_id));seen.add(x.product_id);
   assert.equal(new URL(x.source_url).protocol,'https:');
-  assert(/^(?:official_note_corrections_v\d+|active_official_note_corrections_v\d+|official_supplement_v\d+|supplier_verified_supplement|secondary_supplement_v\d+|secondary_note_corrections_v\d+|active_secondary_note_additions_v\d+)\.json$/.test(x.source_manifest));
+  assert(/^(?:official_note_corrections_v\d+|active_official_note_corrections_v\d+|official_supplement_v\d+|supplier_verified_supplement|secondary_supplement_v\d+|secondary_note_corrections_v\d+|active_secondary_note_additions_v\d+|active_official_note_overlap_v\d+)\.json$/.test(x.source_manifest));
   assert.equal(x.source_kind,(x.source_manifest.startsWith('secondary_')||x.source_manifest.startsWith('active_secondary_'))?'independent':'official_candidate');
   const src=require(path.join(root,'seed',x.source_manifest));
   const entries=Array.isArray(src)?src:src.items;
@@ -22,4 +22,4 @@ for(const x of [...m1.items,...m2.items,...m3.items]){
   for(const changed of [{slug:'changed'},{name_en:'changed'},{brand_en:'changed'},{concentration:'changed'},{supply_mode:'UNAVAILABLE'},{accords:'["changed"]'},{accords:'bad json'}]) assert.deepStrictEqual(referenceAccords({...row,...changed}),[]);
 }
 assert.deepStrictEqual(referenceAccords({id:'unknown',supply_mode:'MADE_TO_ORDER'}),[]);
-console.log('PASS 92 scoped reference accord records, source manifests and identity/change/availability guards');
+console.log('PASS 93 scoped reference accord records, source manifests and identity/change/availability guards');

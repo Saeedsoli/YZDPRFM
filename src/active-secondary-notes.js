@@ -1,5 +1,6 @@
 'use strict';
-// Scoped independent note additions: reference data only, not verification of
+// Scoped source-backed note additions: batches 1–5 use independent sources;
+// batch 6 uses an explicit overlap from an official page. Neither verifies
 // supplier essence or actual ingredients. Never change orders, prices or stock.
 const fs=require('fs');
 const VERSION='active_secondary_notes_2026_11_v1';
@@ -7,6 +8,7 @@ const VERSION_2='active_secondary_notes_2026_11_v2';
 const VERSION_3='active_secondary_notes_2026_11_v3';
 const VERSION_4='active_secondary_notes_2026_11_v4';
 const VERSION_5='active_secondary_notes_2026_11_v5';
+const VERSION_6='active_official_note_overlap_2026_11_v1';
 const BATCHES={
  [VERSION]:{
   'YZD-PROD-0591':'https://www.fragrantica.com/perfume/Xerjoff/Torino22-77059.html',
@@ -30,6 +32,9 @@ const BATCHES={
  },
  [VERSION_5]:{
   'SUP-TP-910002':'https://www.fragrantica.com/perfume/Memo-Paris/Retba-60076.html'
+ },
+ [VERSION_6]:{
+  'SUP-SE-900001':'https://www.seris-parfums.com/product/splendor/'
  }
 };
 // Keep normalization identical to the catalog index without importing db.js,
@@ -37,11 +42,13 @@ const BATCHES={
 function normalizeFa(s){return String(s||'').replace(/[\u064B-\u0652\u0670]/g,'').replace(/[\u0623\u0625\u0622]/g,'ا').replace(/\u0649|\u064A/g,'ی').replace(/\u0643/g,'ک').replace(/\u0629/g,'ه').replace(/[\u200c\u200f\u200e]/g,' ').replace(/[۰-۹]/g,d=>'۰۱۲۳۴۵۶۷۸۹'.indexOf(d)).replace(/[٠-٩]/g,d=>'٠١٢٣٤٥٦٧٨٩'.indexOf(d)).replace(/\s+/g,' ').trim().toLowerCase()}
 function apply(db,file,{indexExisting=false}={}){
  const m=JSON.parse(fs.readFileSync(file,'utf8'));
- const sources=BATCHES[m.version],unclassified=[VERSION_3,VERSION_5].includes(m.version);
+ const sources=BATCHES[m.version],unclassified=[VERSION_3,VERSION_5,VERSION_6].includes(m.version);
  if(!sources||!Array.isArray(m.items)||m.items.length!==Object.keys(sources).length)throw Error('Invalid independent note additions');
  const ids=new Set();
  for(const x of m.items){
-  if(!Object.hasOwn(sources,x.product_id)||ids.has(x.product_id)||x.source_url!==sources[x.product_id]||x.provider!=='Fragrantica'||!x.slug||!x.expected_name_en||!x.expected_brand||typeof x.expected_usd_per_kg!=='string'||typeof x.expected_notice!=='string'||(m.version===VERSION_5?!x.secondary_reference_name:!x.official_identity_url)||!/^\d{4}-\d{2}-\d{2}$/.test(x.checked_date))throw Error('Invalid note addition');
+  const provider=m.version===VERSION_6?'official':'Fragrantica';
+  if(!Object.hasOwn(sources,x.product_id)||ids.has(x.product_id)||x.source_url!==sources[x.product_id]||x.provider!==provider||!x.slug||!x.expected_name_en||!x.expected_brand||typeof x.expected_usd_per_kg!=='string'||typeof x.expected_notice!=='string'||(m.version===VERSION_5?!x.secondary_reference_name:!x.official_identity_url)||!/^\d{4}-\d{2}-\d{2}$/.test(x.checked_date))throw Error('Invalid note addition');
+  if(m.version===VERSION_6&&(x.official_identity_url!==x.source_url||x.new_notice!=='این محصول بازآفرینی دست‌ساز است و محصول اورجینال برند اصلی نیست.'))throw Error('Invalid official note notice');
   for(const k of ['top','middle','base'])if(!Array.isArray(x.notes?.[k])||!x.notes[k].every(n=>typeof n==='string'&&n.trim()&&n.length<=60)||(!unclassified&&!x.notes[k].length)||(unclassified&&x.notes[k].length))throw Error('Invalid note list');
   if(unclassified&&(!Array.isArray(x.accords)||!x.accords.length||!x.accords.every(n=>typeof n==='string'&&n.trim()&&n.length<=60)))throw Error('Invalid unclassified notes');
   if(!unclassified&&x.accords!==undefined&&(!Array.isArray(x.accords)||x.accords.length))throw Error('Unexpected unclassified notes');
@@ -53,7 +60,7 @@ function apply(db,file,{indexExisting=false}={}){
   const evidence=db.prepare('select official_url,status from official_identity_evidence where product_id=?');
   const price=db.prepare('select official_url,usd_per_kg,match_status from supplier_price_evidence where product_id=?');
   const secondary=m.version===VERSION_5 ? db.prepare('select reference_name,source_url,provider,status,usd_per_kg,match_status from secondary_reference_evidence where product_id=?') : null;
-  const set=db.prepare('update products set notes_top=?,notes_middle=?,notes_base=?,accords=?,search_blob=? where id=?');
+  const set=db.prepare('update products set notes_top=?,notes_middle=?,notes_base=?,accords=?,search_blob=?,transparency_notice=? where id=?');
   const idx=indexExisting ? db.prepare('select count(*) n from product_notes where product_id=?') : null;
   const ins=indexExisting ? db.prepare('insert into product_notes(product_id,note,note_key,position) values(?,?,?,?)') : null;
   const updated=[],skipped=[];
@@ -67,7 +74,7 @@ function apply(db,file,{indexExisting=false}={}){
    if(!ok){skipped.push(x.product_id);continue;}
    const accords=x.accords || [];
    const blob=indexExisting ? normalizeFa(p.search_blob+' '+[...['top','middle','base'].flatMap(k=>x.notes[k]),...accords].join(' ')) : null;
-   set.run(JSON.stringify(x.notes.top),JSON.stringify(x.notes.middle),JSON.stringify(x.notes.base),JSON.stringify(accords),blob,x.product_id);
+   set.run(JSON.stringify(x.notes.top),JSON.stringify(x.notes.middle),JSON.stringify(x.notes.base),JSON.stringify(accords),blob,m.version===VERSION_6?x.new_notice:p.transparency_notice,x.product_id);
    if(indexExisting){
     for(const pos of ['top','middle','base'])for(const n of x.notes[pos])ins.run(x.product_id,n,normalizeFa(n),pos);
     for(const n of accords)ins.run(x.product_id,n,normalizeFa(n),'accord');
@@ -78,4 +85,4 @@ function apply(db,file,{indexExisting=false}={}){
   return {updated_ids:updated,skipped_ids:skipped};
  }).immediate();
 }
-module.exports={VERSION,VERSION_2,VERSION_3,VERSION_4,VERSION_5,apply,normalizeFa};
+module.exports={VERSION,VERSION_2,VERSION_3,VERSION_4,VERSION_5,VERSION_6,apply,normalizeFa};

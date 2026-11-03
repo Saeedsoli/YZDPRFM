@@ -2,8 +2,8 @@
 // Explicit, offline, backup-first scoped update of reference-note data.
 const fs=require('fs'),path=require('path'),Database=require('better-sqlite3');
 const args=process.argv.slice(2);
-if(![5,7].includes(args.length)||args[0]!=='--db'||args[2]!=='--backup'||args[4]!=='--offline-confirmed'||(args.length===7&&(args[5]!=='--batch'||!['2','3','4','5'].includes(args[6])))){
- console.error('Usage: node src/active-secondary-notes-cli.js --db <existing> --backup <new-file> --offline-confirmed [--batch 2|3|4|5]');process.exit(2);
+if(![5,7].includes(args.length)||args[0]!=='--db'||args[2]!=='--backup'||args[4]!=='--offline-confirmed'||(args.length===7&&(args[5]!=='--batch'||!['2','3','4','5','6'].includes(args[6])))){
+ console.error('Usage: node src/active-secondary-notes-cli.js --db <existing> --backup <new-file> --offline-confirmed [--batch 2|3|4|5|6]');process.exit(2);
 }
 const batch=args.length===7?'v'+args[6]:'v1';
 const source=path.resolve(args[1]),backup=path.resolve(args[3]);
@@ -33,7 +33,8 @@ function compare(a,b){
   live=new Database(real,{fileMustExist:true});await live.backup(target);
   snapshot=new Database(target,{readonly:true,fileMustExist:true});
   if(snapshot.pragma('integrity_check',{simple:true})!=='ok')throw Error('Backup integrity failed');
-  const result=live.transaction(()=>{compare(live,snapshot);return require('./active-secondary-notes').apply(live,path.join(__dirname,`../seed/active_secondary_note_additions_${batch}.json`),{indexExisting:true});}).immediate();
+  const filename=batch==='v6'?'active_official_note_overlap_v1.json':`active_secondary_note_additions_${batch}.json`;
+  const result=live.transaction(()=>{compare(live,snapshot);return require('./active-secondary-notes').apply(live,path.join(__dirname,'../seed',filename),{indexExisting:true});}).immediate();
   console.log(JSON.stringify({backup_verified:true,result}));
  }finally{if(snapshot)snapshot.close();if(live)live.close();}
 })().catch(e=>{console.error('Note migration failed; orders were not changed: '+e.message);process.exitCode=1;});

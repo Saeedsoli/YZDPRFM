@@ -1,0 +1,29 @@
+{
+  "version": "active_official_note_overlap_2026_11_v1",
+  "description": "The single common note in the contradictory official descriptions, without invented tier; no price or order changes.",
+  "items": [
+    {
+      "product_id": "SUP-SE-900001",
+      "slug": "seris-splendor",
+      "expected_name_en": "SERIS PARFUMS - Splendor",
+      "expected_brand": "Seris Parfums",
+      "expected_concentration": null,
+      "expected_usd_per_kg": "172.7",
+      "expected_notice": "این محصول بازآفرینی دست‌ساز است و محصول اورجینال برند اصلی نیست. اطلاعات نت‌های رایحه مرجع در وب‌سایت رسمی برند متناقض است و ثبت نشده؛ هویت و نسخه اسانس تأمین‌کننده مستقلاً تأیید نشده است.",
+      "new_notice": "این محصول بازآفرینی دست‌ساز است و محصول اورجینال برند اصلی نیست.",
+      "official_identity_url": "https://www.seris-parfums.com/product/splendor/",
+      "source_url": "https://www.seris-parfums.com/product/splendor/",
+      "provider": "official",
+      "checked_date": "2026-11-03",
+      "source_note": "The official page lists conflicting top-note sets; both include bergamot (one calls it Sicilian bergamot). Only the common unclassified note is retained. Other notes and disputed tiers are intentionally omitted.",
+      "notes": {
+        "top": [],
+        "middle": [],
+        "base": []
+      },
+      "accords": [
+        "ترنج"
+      ]
+    }
+  ]
+}
