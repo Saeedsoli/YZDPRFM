@@ -1007,3 +1007,6 @@ node_modules/   با npm install برمی‌گردد
 - `scripts/test_return_store_migration.py` — آزمایش نصب مرجوعی و پشتیبان قابل بازیابی روی پایگاه‌های موقت.
 - `scripts/test_return_order_snapshots.py` — آزمون ثبت اتمیک حجم خرید هنگام سفارش، قطع ناگهانی و سازگاری فروشگاه قدیمی.
 - `scripts/test_return_account_read.py` — آزمون داده خواندنی شرایط مرجوعی در سفارش‌های صاحب حساب تأییدشده.
+- `src/routes/account-returns.js` — مسیرهای آزمایشی ثبت زمان تحویل و درخواست صاحب حساب؛ فقط با فلگ مخصوص محیط test در دسترس‌اند.
+- `scripts/test_account_returns_api.py` — آزمون API آزمایشی احراز هویت، مالکیت، ثبت همزمان تیکت و پاسخ مدیریت.
+- `scripts/test_account_returns_gate.js` — تأیید بسته‌بودن API آزمایشی مرجوعی در تولید و به‌صورت پیش‌فرض.

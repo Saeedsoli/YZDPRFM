@@ -14,6 +14,8 @@
 
 'use strict';
 
+const returnStore = require('../return-store');
+
 /**
  * @param {object} ctx زمینه درخواست (شرح در articles.js)
  * @returns {Promise<boolean>} آیا مسیر رسیدگی شد؟
@@ -128,8 +130,22 @@ async function handle(ctx) {
     const t = db.prepare('SELECT * FROM tickets WHERE ticket_id=?').get(tid);
     if (!t) { sendJSON(404, { error: 'تیکت یافت نشد' }); return true; }
 
-    db.prepare('UPDATE tickets SET reply=?, status=? WHERE ticket_id=?')
-      .run(b.reply || t.reply, b.status || 'ANSWERED', tid);
+    const returnsReady = returnStore.ready(db);
+    // Never silently desynchronise a linked request if the returns schema is
+    // missing or damaged; legacy ticket identifiers use the TKT- prefix.
+    if (tid.startsWith('RET-') && !returnsReady) {
+      sendJSON(503,{error:'سامانه مرجوعی آماده نیست؛ پاسخ ثبت نشد.'});return true;
+    }
+    const linked = returnsReady && db.prepare('SELECT status FROM account_return_requests WHERE request_id=?').get(tid);
+    if (linked && !['ANSWERED','CLOSED'].includes(b.status || 'ANSWERED')) {
+      sendJSON(400,{error:'وضعیت درخواست مرجوعی نامعتبر است.'});return true;
+    }
+    db.transaction(()=>{
+      db.prepare('UPDATE tickets SET reply=?, status=? WHERE ticket_id=?')
+        .run(b.reply || t.reply, b.status || 'ANSWERED', tid);
+      if (linked) db.prepare('UPDATE account_return_requests SET status=? WHERE request_id=?')
+        .run(b.status || 'ANSWERED',tid);
+    }).immediate();
 
     if (b.reply && t.mobile) {
       notify.ticketReplied({ ticket_id: tid, reply: b.reply }, t.mobile).catch(() => {});

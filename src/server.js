@@ -59,6 +59,7 @@ const seo = require('./seo');
    ثبت سفارش تا تأیید این الگو دست‌نخورده می‌مانند. */
 const routeArticles = require('./routes/articles');
 const routeTickets  = require('./routes/tickets');
+const routeAccountReturns = require('./routes/account-returns');
 const routeRbac     = require('./routes/rbac');
 const routeAdminCatalog = require('./routes/admin-catalog');
 const routeAdminOrders  = require('./routes/admin-orders');
@@ -1477,6 +1478,11 @@ const server = http.createServer(async (req, res) => {
 
        این مسیرها عمومی‌اند (بدون `can`)، پس محافظشان محدودیت
        نرخ چندلایه و کوکی HttpOnly است. */
+    if (await routeAccountReturns.handle({
+      method, pathname, req, sendJSON, can, parseBody, db, otp, getCustomerToken,
+      rateLimit, ip:reqIP, RL, who, logAudit, notify, cleanText
+    })) return;
+
     if (await routeAuth.handle({
       method, pathname, req, res,
       sendJSON, parseBody, appLog, db, otp, analytics,

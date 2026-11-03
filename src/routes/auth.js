@@ -353,8 +353,9 @@ async function handle(ctx) {
           payment_ref:['PAID','PROCESSING','SHIPPED','DELIVERED'].includes(o.status)?o.payment_ref:null,
           items:items.map(i => {
             const evidence=returnsReady ? db.prepare('SELECT volume_ml FROM return_item_evidence WHERE item_id=?').get(i.id) : null;
-            const request=returnsReady ? db.prepare("SELECT request_id,status FROM account_return_requests WHERE item_id=? AND mobile=? AND status!='CLOSED'").get(i.id,mobile) : null;
-            const result=returnsReady ? returnEligibility({verifiedMobile:mobile,order:o,item:{...i,volume_ml:evidence?.volume_ml},deliveredAtMs:delivered?.delivered_at_ms,nowMs,hasOpenRequest:!!request}) : {eligible:false,reason:'SERVICE_UNAVAILABLE'};
+            const request=returnsReady ? db.prepare("SELECT request_id,status FROM account_return_requests WHERE item_id=? AND mobile=? ORDER BY created_at_ms DESC,request_id DESC LIMIT 1").get(i.id,mobile) : null;
+            const open=returnsReady && !!db.prepare("SELECT 1 FROM account_return_requests WHERE item_id=? AND status!='CLOSED'").get(i.id);
+            const result=returnsReady ? returnEligibility({verifiedMobile:mobile,order:o,item:{...i,volume_ml:evidence?.volume_ml},deliveredAtMs:delivered?.delivered_at_ms,nowMs,hasOpenRequest:open}) : {eligible:false,reason:'SERVICE_UNAVAILABLE'};
             return {id:i.id,sku:i.sku,product_name:i.product_name,unit_price:i.unit_price,quantity:i.quantity,line_total:i.line_total,
               return_info:{...result,volume_ml:evidence?.volume_ml ?? null,request:request || null}};
           })
