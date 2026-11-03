@@ -45,7 +45,7 @@ with tempfile.TemporaryDirectory(prefix='returns-api-') as td:
    good=item('OWNER',30);sample=item('OWNER',5);unknown=item('OWNER',None);other=item('OTHER',30);c.commit()
   a=login_customer(port,'09120001111');b=login_customer(port,'09120002222')
   status,login,_=api(port,'POST','/api/admin/login',{'username':'owner','password':'Return-Owner-982'});assert status==200,login;admin=login['token']
-  dp='/api/admin/account-returns/delivery';rp='/api/auth/account-returns';payload={'item_id':good,'quantity':1,'description':'شرح معتبر برای مرجوعی کالا','used_under_2ml':True}
+  dp='/api/admin/account-returns/delivery';rp='/api/auth/account-returns';payload={'item_id':good,'quantity':1,'description':'شرح معتبر برای مرجوعی کالا','used_under_2ml':True,'safe_storage_confirmed':True}
   assert api(port,'POST',dp,{'order_id':'OWNER','delivered_at_ms':now})[0]==401
   assert api(port,'POST',rp,payload)[0]==401
   assert api(port,'POST',rp,{**payload,'item_id':other},customer=a)[0]==404
@@ -59,6 +59,8 @@ with tempfile.TemporaryDirectory(prefix='returns-api-') as td:
   assert api(port,'POST',rp,{**payload,'item_id':unknown},customer=a)[1]['reason']=='VOLUME_UNAVAILABLE'
   assert api(port,'POST',rp,{**payload,'quantity':3},customer=a)[1]['reason']=='INVALID_QUANTITY'
   assert api(port,'POST',rp,{**payload,'used_under_2ml':'true'},customer=a)[1]['reason']=='INVALID_INPUT'
+  assert api(port,'POST',rp,{**payload,'safe_storage_confirmed':False},customer=a)[1]['reason']=='INVALID_INPUT'
+  assert api(port,'POST','/api/tickets',{'order_id':'OWNER'})[0]==410
   def submit(_):return api(port,'POST',rp,payload,customer=a)
   with concurrent.futures.ThreadPoolExecutor(max_workers=2) as pool:results=list(pool.map(submit,range(2)))
   assert sorted(r[0] for r in results)==[201,400],results
@@ -80,8 +82,8 @@ with tempfile.TemporaryDirectory(prefix='returns-api-') as td:
   assert api(port,'PUT','/api/tickets/'+req,{'reply':'no update'},admin=admin)[0]==503
   with sqlite3.connect(db) as c:assert c.execute('pragma integrity_check').fetchone()[0]=='ok'
  finally:stop(p)
- # Feature is inaccessible by default, even in test mode.
+ # Even without staging flags, the endpoints still require authentication.
  p,port=boot({'RETURNS_API_TEST_ONLY':''})
- try:assert api(port,'POST','/api/auth/account-returns',{})[0]==404 and api(port,'POST','/api/admin/account-returns/delivery',{})[0]==404
+ try:assert api(port,'POST','/api/auth/account-returns',{})[0]==401 and api(port,'POST','/api/admin/account-returns/delivery',{})[0]==401
  finally:stop(p)
- print('PASS staged OTP owner-only return and admin evidence API, race, ticket linkage and default-off gate; mocked SMS')
+ print('PASS staged OTP owner-only return and admin evidence API, race, ticket linkage and authentication without staging flag; mocked SMS')

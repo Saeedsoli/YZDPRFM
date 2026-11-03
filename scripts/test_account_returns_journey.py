@@ -50,7 +50,7 @@ with tempfile.TemporaryDirectory(prefix='returns-journey-') as td:
   items={x['sku']:x for x in order['items']};perf=items[sku];sample=items[sample_sku]
   assert name in perf['product_name'] and name in sample['product_name']
   assert sample['return_info']['reason']=='VOLUME_INELIGIBLE' and perf['return_info']['reason']=='DELIVERY_TIME_UNAVAILABLE'
-  request={'item_id':perf['id'],'quantity':2,'description':'محصول تحویل شده و درخواست بررسی دارم','used_under_2ml':True}
+  request={'item_id':perf['id'],'quantity':2,'description':'محصول تحویل شده و درخواست بررسی دارم','used_under_2ml':True,'safe_storage_confirmed':True}
   assert api(port,'POST','/api/auth/account-returns',request,customer=customer)[1]['reason']=='DELIVERY_TIME_UNAVAILABLE'
   assert api(port,'POST','/api/auth/account-returns',request,customer=other)[0]==404
   assert api(port,'POST','/api/auth/account-returns',request,customer=customer,origin='https://attacker.example')[0]==403

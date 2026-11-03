@@ -1,8 +1,8 @@
 'use strict';
 
-// Integration-stage endpoint: intentionally unreachable outside explicit test
-// mode until customer/admin UI, legacy return transition and delivery evidence
-// workflows have been reviewed and enabled together.
+// Account-owned return submission and explicitly confirmed delivery time.
+// All routes require the relevant verified session or staff permission, and
+// remain unavailable until the backup-first return schema is installed.
 const store = require('../return-store');
 async function handle(ctx) {
   const {method,pathname,req,sendJSON,can,parseBody,db,otp,getCustomerToken,
@@ -10,9 +10,6 @@ async function handle(ctx) {
   const customerPath='/api/auth/account-returns';
   const adminPath='/api/admin/account-returns/delivery';
   if (pathname!==customerPath && pathname!==adminPath) return false;
-  if (String(process.env.NODE_ENV||'').toLowerCase()!=='test' || process.env.RETURNS_API_TEST_ONLY!=='1') {
-    sendJSON(404,{error:'مسیر یافت نشد.'});return true;
-  }
   if (method!=='POST') {sendJSON(405,{error:'روش درخواست مجاز نیست.'});return true;}
   if (pathname===adminPath) {
     if(!can('orders.status'))return true;
@@ -36,6 +33,7 @@ async function handle(ctx) {
   if(!limited.ok){sendJSON(429,{error:'درخواست‌های بیش از حد؛ بعداً تلاش کنید.'});return true;}
   const b=await parseBody(req);
   const description=typeof b.description==='string' ? cleanText(b.description,2001) : '';
+  if(b.safe_storage_confirmed!==true){sendJSON(400,{error:'شرایط نگهداری محصول باید تأیید شود.',reason:'INVALID_INPUT'});return true;}
   // store.submit rechecks eligibility under this same transaction. Ticket and
   // request either both persist or both roll back; no guessed item/owner data.
   const result=db.transaction(()=>{
@@ -47,7 +45,7 @@ async function handle(ctx) {
     const now=Date.now();
     db.prepare(`INSERT INTO tickets(ticket_id,order_id,product_name,volume_ml,used_under_2ml,reason,description,status,created_at,sla_deadline,mobile)
       VALUES(?,?,?,?,1,?,?,'NEW_PENDING',?,?,?)`).run(r.requestId,item.order_id,item.product_name,item.volume_ml,
-        `درخواست حساب کاربری؛ تعداد ${b.quantity}`,`تعداد: ${b.quantity}\n${description}`,new Date(now).toISOString(),new Date(now+86400000).toISOString(),mobile);
+        `درخواست حساب کاربری؛ تعداد ${b.quantity}؛ شرایط نگهداری تأیید شد`,`تعداد: ${b.quantity}\n${description}`,new Date(now).toISOString(),new Date(now+86400000).toISOString(),mobile);
     return r;
   }).immediate();
   if(!result.ok){

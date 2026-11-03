@@ -1,13 +1,17 @@
 'use strict';
-const assert=require('assert');
+const assert=require('assert'),Database=require('better-sqlite3');
 const route=require('../src/routes/account-returns');
 (async()=>{
- for(const [env,flag] of [['production','1'],['test',''],['development','1']]){
-  process.env.NODE_ENV=env;process.env.RETURNS_API_TEST_ONLY=flag;
-  for(const pathname of ['/api/auth/account-returns','/api/admin/account-returns/delivery']){
-   let code;const handled=await route.handle({pathname,method:'POST',sendJSON:c=>{code=c;}});
-   assert(handled);assert.strictEqual(code,404);
-  }
+ const db=new Database(':memory:');db.exec('CREATE TABLE settings(key TEXT PRIMARY KEY,value TEXT)');
+ for(const env of ['production','test','development']){
+  process.env.NODE_ENV=env;
+  let code;
+  const customer={pathname:'/api/auth/account-returns',method:'POST',req:{},db,otp:{mobileFromToken:()=>null},getCustomerToken:()=>null,sendJSON:c=>{code=c;}};
+  assert(await route.handle(customer));assert.strictEqual(code,401);
+  const admin={pathname:'/api/admin/account-returns/delivery',method:'POST',can:()=>{code=403;return false;},sendJSON:c=>{code=c;}};
+  assert(await route.handle(admin));assert.strictEqual(code,403);
+  code=0;customer.otp.mobileFromToken=()=> '09120001111';assert(await route.handle(customer));assert.strictEqual(code,503);
+  code=0;admin.can=()=>true;admin.db=db;assert(await route.handle(admin));assert.strictEqual(code,503);
  }
- console.log('PASS account returns API gate is closed in production and by default');
+ db.close();console.log('PASS return endpoints enforce customer/staff authorization and fail closed without schema in all environments');
 })().catch(e=>{console.error(e);process.exitCode=1});

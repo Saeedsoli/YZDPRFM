@@ -29,8 +29,7 @@ with tempfile.TemporaryDirectory(prefix='ticket-xss-') as td:
                 page.route('**/api/tickets',ticket)
                 page.goto(base+'/contact',wait_until='domcontentloaded');expect(page.locator('#ways')).to_contain_text(payload)
                 assert page.locator('#ways img').count()==0
-                page.locator('#oid').fill('YZD-TEST123');page.locator('#pname').fill('محصول نمونه');page.locator('#vol').fill('30');page.locator('#desc').fill('توضیح نمونه برای درخواست مرجوعی');page.locator('#used').check();page.locator('#sendBtn').click()
-                expect(page.locator('#formBox .tid')).to_have_text(payload);assert page.locator('#formBox img').count()==0
+                expect(page.get_by_role('link',name='ورود به حساب کاربری')).to_be_visible();assert page.locator('#formBox').count()==0
                 page.goto(base+'/admin',wait_until='domcontentloaded');page.locator('#usr').fill('owner');page.locator('#pw').fill('Ticket-Xss-Owner-981');page.locator('#loginView button').click();expect(page.locator('#panel')).to_be_visible()
                 page.locator('.tab[data-t="tickets"]').click();expect(page.locator('#ticketsTable')).to_contain_text(payload)
                 assert page.locator('#ticketsTable img').count()==0
@@ -38,7 +37,7 @@ with tempfile.TemporaryDirectory(prefix='ticket-xss-') as td:
                 page.wait_for_timeout(250);assert page.evaluate('window.__xss || 0')==0;assert not errors,errors
                 context.close()
             browser.close()
-        print('PASS contact info, ticket response and admin ticket rendering XSS; reply action preserved on mobile and desktop')
+        print('PASS contact info and admin ticket rendering XSS; reply action preserved on mobile and desktop')
     finally:
         p.terminate()
         try:p.wait(timeout=5)

@@ -998,7 +998,7 @@ node_modules/   با npm install برمی‌گردد
 - `scripts/test_csv_export.js` — آزمون نقل‌قول CSV و خنثی‌سازی متن‌های شبیه فرمول.
 - `scripts/test_csv_export_http.py` — آزمون دو خروجی CSV با داده آزمایشی و احراز هویت روی دیتابیس موقت.
 - `scripts/test_admin_catalog_xss_browser.py` — آزمون مرورگر ایمنی نمایش و دکمه‌های محصولات، موجودی، مقالات و انتخاب محصول در پنل.
-- `scripts/test_contact_ticket_xss_browser.py` — آزمون مرورگر ایمنی متن اطلاعات تماس، پاسخ ثبت و فهرست تیکت‌های مدیریت.
+- `scripts/test_contact_ticket_xss_browser.py` — آزمون مرورگر ایمنی متن اطلاعات تماس و فهرست تیکت‌های مدیریت.
 - `src/return-eligibility.js` — منطق مستقل اولیه احراز شرایط مرجوعی؛ هنوز به API یا سایت متصل نیست.
 - `scripts/test_return_eligibility.js` — آزمون مرز ۷۲ ساعت و شرایط مالک، قلم، حجم و درخواست باز.
 - `src/return-store.js` — پایه آزمایشی ثبت شواهد تحویل و درخواست مرجوعی؛ هنوز به راه‌اندازی یا API متصل نیست.
@@ -1007,9 +1007,9 @@ node_modules/   با npm install برمی‌گردد
 - `scripts/test_return_store_migration.py` — آزمایش نصب مرجوعی و پشتیبان قابل بازیابی روی پایگاه‌های موقت.
 - `scripts/test_return_order_snapshots.py` — آزمون ثبت اتمیک حجم خرید هنگام سفارش، قطع ناگهانی و سازگاری فروشگاه قدیمی.
 - `scripts/test_return_account_read.py` — آزمون داده خواندنی شرایط مرجوعی در سفارش‌های صاحب حساب تأییدشده.
-- `src/routes/account-returns.js` — مسیرهای آزمایشی ثبت زمان تحویل و درخواست صاحب حساب؛ فقط با فلگ مخصوص محیط test در دسترس‌اند.
-- `scripts/test_account_returns_api.py` — آزمون API آزمایشی احراز هویت، مالکیت، ثبت همزمان تیکت و پاسخ مدیریت.
-- `scripts/test_account_returns_gate.js` — تأیید بسته‌بودن API آزمایشی مرجوعی در تولید و به‌صورت پیش‌فرض.
+- `src/routes/account-returns.js` — مسیرهای ثبت زمان تحویل و درخواست صاحب حساب با احراز و کنترل دسترسی.
+- `scripts/test_account_returns_api.py` — آزمون API مرجوعی، مالکیت، ثبت همزمان تیکت و پاسخ مدیریت.
+- `scripts/test_account_returns_gate.js` — آزمون احراز هویت و بسته‌ماندن API مرجوعی هنگام فقدان ساختار دیتابیس.
 - `scripts/test_account_returns_browser.py` — آزمون مرورگر فرم آزمایشی مرجوعی حساب، تعداد، وضعیت، سمپل و نمایش پاسخ.
 - `scripts/test_admin_delivery_browser.py` — آزمون مرورگر فرم آزمایشی ثبت زمان واقعی تحویل و تبدیل زمان تهران.
 - `scripts/test_account_returns_journey.py` — سفر آزمایشی خرید، پرداخت شبیه‌سازی‌شده، تحویل، مرجوعی و پاسخ مدیریت.

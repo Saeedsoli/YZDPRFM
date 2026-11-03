@@ -120,56 +120,22 @@
 </div>
 
 <div class="panel">
-  <h2>ثبت درخواست مرجوعی</h2>
-
+  <h2>مرجوعی تا ۷۲ ساعت پس از تحویل</h2>
+  <p style="font-size:.85rem;line-height:2">برای محصول با حجم بالای ۱۰ میلی‌لیتر، در صورتی که کمتر از ۲ میلی‌لیتر مصرف شده باشد، می‌توانید درخواست مرجوعی ثبت کنید.</p>
   <ul class="rules">
-    <li><svg viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg>
-      حجم محصول <strong>بالای ۱۰ میلی‌لیتر</strong> باشد — سمپل‌ها قابل مرجوع نیستند</li>
-    <li><svg viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg>
-      کمتر از <strong>۲ میلی‌لیتر</strong> از محصول مصرف شده باشد</li>
-    <li><svg viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg>
-      محصول در معرض نور مستقیم یا گرما قرار نگرفته باشد</li>
-    <li><svg viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg>
-      سفارش <strong>ارسال یا تحویل شده</strong> باشد</li>
+    <li><svg viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg>مهلت ثبت درخواست: تا ۷۲ ساعت پس از تحویل سفارش.</li>
+    <li><svg viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg>محصول نباید در معرض نور مستقیم یا گرما قرار گرفته باشد.</li>
+    <li><svg viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg>ثبت درخواست به معنای تأیید مرجوعی نیست؛ ابتدا شرایط بررسی می‌شود.</li>
   </ul>
-
-  <div id="formBox">
-    <div class="field">
-      <label for="oid">شماره سفارش *</label>
-      <input id="oid" placeholder="YZD-XXXXXXXX" dir="ltr" style="text-align:right">
-      <div class="hint">شماره را از <a href="/track" style="color:var(--gold)">صفحه پیگیری</a> بردارید</div>
-      <div class="field-msg"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16h.01"/></svg><span>شماره سفارش را وارد کنید</span></div>
-    </div>
-
-    <div class="field">
-      <label for="pname">نام محصول *</label>
-      <input id="pname" placeholder="مثلاً: کرِید — اونتوس">
-      <div class="field-msg"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16h.01"/></svg><span>نام محصول را وارد کنید</span></div>
-    </div>
-
-    <div class="field" style="max-width:220px">
-      <label for="vol">حجم (میلی‌لیتر) *</label>
-      <input id="vol" type="number" inputmode="numeric" placeholder="۳۰" min="11">
-      <div class="field-msg"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16h.01"/></svg><span>حجم باید بیشتر از ۱۰ میلی‌لیتر باشد</span></div>
-    </div>
-
-    <div class="field">
-      <label for="desc">توضیحات *</label>
-      <textarea id="desc" rows="4" placeholder="چه مشکلی وجود دارد؟ هرچه دقیق‌تر بنویسید، سریع‌تر رسیدگی می‌شود."></textarea>
-      <div class="field-msg"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16h.01"/></svg><span>حداقل ۱۰ حرف توضیح بنویسید</span></div>
-    </div>
-
-    <div class="field">
-      <div class="check-row">
-        <input type="checkbox" id="used">
-        <label for="used">تأیید می‌کنم کمتر از ۲ میلی‌لیتر از محصول مصرف شده
-          و در معرض نور یا گرما قرار نگرفته است.</label>
-      </div>
-      <div class="field-msg" id="msgUsed"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16h.01"/></svg><span>برای ادامه باید این مورد را تأیید کنید</span></div>
-    </div>
-
-    <button class="btn btn-block" id="sendBtn" onclick="sendTicket()">ثبت تیکت مرجوعی</button>
-  </div>
+  <h2>چگونه درخواست بدهم؟</h2>
+  <ol style="font-size:.85rem;line-height:2.2;padding-right:20px">
+    <li>با همان شماره موبایل ثبت‌شده در سفارش وارد حساب کاربری شوید.</li>
+    <li>در بخش سفارش‌ها، سفارش تحویل‌شده را باز کنید.</li>
+    <li>کنار همان محصول، «درخواست مرجوعی» را انتخاب و دلیل را ثبت کنید.</li>
+    <li>وضعیت و پاسخ را در حساب کاربری دنبال کنید.</li>
+  </ol>
+  <p style="background:var(--sand);border-radius:9px;padding:12px;font-size:.8rem;line-height:2">اگر دکمه درخواست نمایش داده نمی‌شود، برای بررسی شرایط با پشتیبانی تماس بگیرید. حداکثر ظرف ۲۴ ساعت پاسخ می‌دهیم.</p>
+  <a href="/account" class="btn" style="margin-top:12px">ورود به حساب کاربری</a>
 </div>
 </main>
 
@@ -230,95 +196,6 @@ async function loadWays() {
 
   document.getElementById('ways').innerHTML = ways.join('');
 }
-
-/* ── اعتبارسنجی درجا ── */
-const RULES = {
-  oid:   v => /^YZD-[A-Z0-9-]{4,}$/i.test(v.trim()),
-  pname: v => v.trim().length >= 2,
-  vol:   v => Number(v) > 10,
-  desc:  v => v.trim().length >= 10
-};
-
-function markField(id, ok) {
-  const box = document.getElementById(id).closest('.field');
-  box.classList.toggle('invalid', !ok);
-  box.classList.toggle('valid', ok);
-  return ok;
-}
-const checkField = id => markField(id, RULES[id](document.getElementById(id).value));
-
-Object.keys(RULES).forEach(id => {
-  const el = document.getElementById(id);
-  el.addEventListener('blur', () => { if (el.value.trim() !== '') checkField(id); });
-  el.addEventListener('input', () => {
-    const box = el.closest('.field');
-    if (box.classList.contains('invalid') && RULES[id](el.value)) checkField(id);
-  });
-});
-
-document.getElementById('used').addEventListener('change', e => {
-  e.target.closest('.field').classList.toggle('invalid', !e.target.checked);
-});
-
-function validateAll() {
-  let first = null;
-  for (const id of Object.keys(RULES)) if (!checkField(id) && !first) first = id;
-
-  const used = document.getElementById('used');
-  const usedOk = used.checked;
-  used.closest('.field').classList.toggle('invalid', !usedOk);
-  if (!usedOk && !first) first = 'used';
-
-  if (first) {
-    const el = document.getElementById(first);
-    el.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    setTimeout(() => el.focus({ preventScroll: true }), 300);
-  }
-  return !first;
-}
-
-async function sendTicket() {
-  if (!validateAll()) return;
-
-  const btn = document.getElementById('sendBtn');
-  btn.disabled = true; btn.textContent = 'در حال ثبت…';
-
-  try {
-    const r = await fetch('/api/tickets', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', ...YazdAuth.headers() },
-      body: JSON.stringify({
-        order_id: document.getElementById('oid').value.trim().toUpperCase(),
-        product_name: document.getElementById('pname').value.trim(),
-        volume_ml: Number(document.getElementById('vol').value),
-        used_under_2ml: true,
-        description: document.getElementById('desc').value.trim()
-      })
-    });
-    const d = await r.json();
-
-    if (!r.ok) { toast(d.error || 'خطا در ثبت تیکت'); return; }
-
-    // نمایش نتیجه به‌جای toast زودگذر — شماره تیکت باید بماند
-    document.getElementById('formBox').innerHTML = `
-      <div class="done-box">
-        <div class="mk"><svg viewBox="0 0 52 52">
-          <circle cx="26" cy="26" r="22"/><path d="M16 27l7 7 14-14"/></svg></div>
-        <h3>درخواست شما ثبت شد</h3>
-        <div class="tid">${esc(d.ticket_id)}</div>
-        <p>این شماره را نگه دارید.<br>
-           حداکثر تا <strong>۲۴ ساعت</strong> با شما تماس می‌گیریم.</p>
-      </div>`;
-  } catch {
-    toast('ارتباط برقرار نشد — دوباره تلاش کنید');
-  } finally {
-    btn.disabled = false; btn.textContent = 'ثبت تیکت مرجوعی';
-  }
-}
-
-// اگر از صفحه سفارش آمده، شماره را پیش‌پر کن
-const pre = new URLSearchParams(location.search).get('order');
-if (pre) document.getElementById('oid').value = pre;
 
 loadWays();
 </script></body></html>

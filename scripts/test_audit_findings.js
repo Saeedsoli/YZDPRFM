@@ -186,20 +186,8 @@ const api = (p, opt = {}, tok = null) =>
     }
 
     {
-      clearLimits();
-      let normal = 0, limited = 0;
-      for (let i = 0; i < 10; i++) {
-        const res = await api('/api/tickets', {
-          method: 'POST',
-          body: JSON.stringify({
-            order_id: 'FAKE-X', volume_ml: 30, used_under_2ml: true,
-            description: 'متن آزمایشی به اندازه کافی طولانی برای عبور'
-          })
-        });
-        res.status === 429 ? limited++ : normal++;
-      }
-      add('/api/tickets پس از ۵ بار محدود می‌شود',
-        limited > 0 && normal === 5, `${normal} عادی · ${limited} محدود`);
+      const res = await api('/api/tickets', {method:'POST', body:JSON.stringify({order_id:'FAKE-X'})});
+      add('مسیر قدیمی مرجوعی بدون احراز هویت بسته است', res.status === 410, `status ${res.status}`);
     }
 
     {

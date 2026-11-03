@@ -212,13 +212,13 @@ function returnItem(i, enabled) {
       <label for="return-description-${id}">دلیل درخواست *</label>
       <textarea id="return-description-${id}" name="description" rows="3" minlength="10" maxlength="2000" required></textarea>
       ${i.quantity > 1 ? `<label for="return-quantity-${id}">تعداد *</label><input id="return-quantity-${id}" type="number" name="quantity" min="1" max="${Number(i.quantity)}" value="1" required>` : ''}
-      <label class="return-check"><input type="checkbox" name="used" required><span>تأیید می‌کنم کمتر از ۲ میلی‌لیتر مصرف شده است.</span></label>
+      <label class="return-check"><input type="checkbox" name="used" required><span>تأیید می‌کنم کمتر از ۲ میلی‌لیتر مصرف شده و محصول در معرض نور مستقیم یا گرما قرار نگرفته است.</span></label>
       <div class="return-meta">ثبت درخواست به معنی تأیید مرجوعی نیست؛ پس از بررسی پاسخ می‌دهیم.</div>
       <button type="submit" class="return-action">ثبت درخواست</button><div class="return-message" role="alert"></div>
     </form>`;
   else if(r.reason==='VOLUME_INELIGIBLE') info='<div class="return-meta">حجم‌های ۱۰ میل و کمتر مشمول مرجوعی نیستند.</div>';
   else if(r.reason==='EXPIRED') info='<div class="return-meta">مهلت ثبت درخواست پایان یافته است.</div>';
-  else if(r.reason==='DELIVERY_TIME_UNAVAILABLE'||r.reason==='VOLUME_UNAVAILABLE') info='<div class="return-meta">برای بررسی شرایط این کالا با پشتیبانی تماس بگیرید.</div>';
+  else if(['DELIVERY_TIME_UNAVAILABLE','VOLUME_UNAVAILABLE','SERVICE_UNAVAILABLE'].includes(r.reason)) info='<div class="return-meta">برای بررسی شرایط این کالا با پشتیبانی تماس بگیرید.</div>';
   return `<div class="oi return-row"><div class="return-item-line"><span>${esc(i.product_name)}</span><span>${toFa(i.quantity)} × ${money(i.unit_price)}</span></div>${state}${info}</div>`;
 }
 
@@ -247,7 +247,7 @@ async function init() {
 
   box.innerHTML = d.total ? d.orders.map((o, oi) => {
     const s = ST[o.status] || ['نامشخص','b-pending'];
-    return `<div class="order-card${oi === 0 ? ' open' : ''}${d.returns_ui_test ? ' return-enabled' : ''}">
+    return `<div class="order-card${oi === 0 ? ' open' : ''}${d.returns_ui_enabled ? ' return-enabled' : ''}">
       <div class="ord-top" onclick="this.parentNode.classList.toggle('open')">
         <div style="display:flex;align-items:center;gap:10px">
           <svg class="chev" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg>
@@ -269,7 +269,7 @@ async function init() {
         margin:12px 0;font-size:.8rem">
         کد رهگیری ${esc(o.carrier || 'پستی')}:
         <strong dir="ltr">${esc(o.tracking_code)}</strong></div>` : ''}
-      ${o.items.map(i => returnItem(i, d.returns_ui_test)).join('')}
+      ${o.items.map(i => returnItem(i, d.returns_ui_enabled)).join('')}
       ${o.discount_amount > 0 ? `<div class="oi" style="color:#1E8449">
         <span>تخفیف ${esc(o.discount_code || '')}</span><span>− ${money(o.discount_amount)}</span></div>` : ''}
       <div class="oi" style="font-weight:800;padding-top:10px">
@@ -282,7 +282,7 @@ async function init() {
         ${['PAID','PROCESSING','SHIPPED','DELIVERED'].includes(o.status)
           ? `<a href="/invoice?order=${encodeURIComponent(o.order_id)}" target="_blank"
                style="font-size:.78rem;color:var(--gold);font-weight:700">مشاهده فاکتور ←</a>` : ''}
-        ${!d.returns_ui_test && ['DELIVERED','SHIPPED'].includes(o.status)
+        ${!d.returns_ui_enabled && ['DELIVERED','SHIPPED'].includes(o.status)
           ? `<a href="/contact" style="font-size:.78rem;color:var(--gold);font-weight:700">
                ثبت درخواست مرجوعی ←</a>` : ''}
       </div>
@@ -299,7 +299,7 @@ async function init() {
       </div>
     </div>`;
 
-  if (d.returns_ui_test) {
+  if (d.returns_ui_enabled) {
     const guide=document.createElement('section');
     guide.className='return-guide';
     guide.innerHTML='<strong>مرجوعی تا ۷۲ ساعت پس از تحویل</strong><p>برای محصولات با حجم بالای ۱۰ میلی‌لیتر، اگر کمتر از ۲ میلی‌لیتر مصرف شده باشد، تا ۷۲ ساعت پس از تحویل می‌توانید از کنار همان کالا درخواست دهید. دلیل را بنویسید و وضعیت را همین‌جا پیگیری کنید. حداکثر ظرف ۲۴ ساعت پاسخ می‌دهیم.</p>';
@@ -329,7 +329,7 @@ document.getElementById('orders').addEventListener('submit', async e => {
   button.disabled=true;message.textContent='';
   try {
     const response=await fetch('/api/auth/account-returns',{method:'POST',headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({item_id:id,quantity,description,used_under_2ml:true})});
+      body:JSON.stringify({item_id:id,quantity,description,used_under_2ml:true,safe_storage_confirmed:true})});
     const result=await response.json();
     if (!response.ok) {message.textContent=result.error || 'ثبت درخواست ناموفق بود.';return;}
     await init();

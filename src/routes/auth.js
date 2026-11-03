@@ -340,7 +340,7 @@ async function handle(ctx) {
     const nowMs = Date.now();
     return sendJSON(200, {
       total: rows.length,
-      returns_ui_test: returnsReady && String(process.env.NODE_ENV||'').toLowerCase()==='test' && process.env.RETURNS_API_TEST_ONLY==='1',
+      returns_ui_enabled: true, return_service_ready: returnsReady,
       orders: rows.map(o => {
         const delivered = returnsReady
           ? db.prepare('SELECT delivered_at_ms FROM return_delivery_evidence WHERE order_id=?').get(o.order_id)

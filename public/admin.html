@@ -2772,9 +2772,9 @@ function renderOrders(o) {
             style="display:inline-block;background:#FFF;border:1px solid var(--border);
             border-radius:7px;padding:5px 10px;margin:2px;font-size:.74rem;
             text-decoration:none;color:inherit;white-space:nowrap">برچسب</a>
-          ${o.returns_ui_test && may('orders.status') && x.status==='DELIVERED' && !x.return_delivered_at_ms ? `<button type="button" data-delivery-toggle="${esc(x.order_id)}" style="background:var(--sand);border:1px solid var(--gold);border-radius:7px;padding:5px 10px;margin:2px;cursor:pointer;font:inherit;font-size:.74rem">ثبت زمان واقعی تحویل</button>` : ''}
-          ${o.returns_ui_test && x.return_delivered_at_ms ? `<div style="font-size:.72rem;color:var(--muted)">تحویل: ${esc(deliveryTimeLabel(x.return_delivered_at_ms))}</div>` : ''}</td>
-      </tr>${o.returns_ui_test && may('orders.status') && x.status==='DELIVERED' && !x.return_delivered_at_ms ? `<tr class="delivery-evidence-row" hidden><td colspan="6"><form data-delivery-form="${esc(x.order_id)}" style="padding:12px;background:var(--sand);border-radius:9px;white-space:normal">
+          ${o.returns_ui_enabled && may('orders.status') && x.status==='DELIVERED' && !x.return_delivered_at_ms ? `<button type="button" data-delivery-toggle="${esc(x.order_id)}" style="background:var(--sand);border:1px solid var(--gold);border-radius:7px;padding:5px 10px;margin:2px;cursor:pointer;font:inherit;font-size:.74rem">ثبت زمان واقعی تحویل</button>` : ''}
+          ${o.returns_ui_enabled && x.return_delivered_at_ms ? `<div style="font-size:.72rem;color:var(--muted)">تحویل: ${esc(deliveryTimeLabel(x.return_delivered_at_ms))}</div>` : ''}</td>
+      </tr>${o.returns_ui_enabled && may('orders.status') && x.status==='DELIVERED' && !x.return_delivered_at_ms ? `<tr class="delivery-evidence-row" hidden><td colspan="6"><form data-delivery-form="${esc(x.order_id)}" style="padding:12px;background:var(--sand);border-radius:9px;white-space:normal">
           <strong>ثبت زمان واقعی تحویل</strong><p style="font-size:.76rem;color:var(--muted)">پس از اطمینان از تحویل، تاریخ و ساعت واقعی را از اطلاعات ارسال ثبت کنید. زمان به وقت تهران است.</p>
           <label style="display:inline-block;margin:4px">تاریخ تحویل * <input type="date" name="date" required min="2023-01-01" style="font:inherit;direction:ltr"></label>
           <label style="display:inline-block;margin:4px">ساعت تحویل * <input type="time" name="time" required style="font:inherit;direction:ltr"></label>

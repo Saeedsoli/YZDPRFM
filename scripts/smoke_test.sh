@@ -150,7 +150,7 @@ chk "$(curl -s -o /dev/null -w '%{http_code}' http://localhost:3000/api/wishlist
 PCOUNT=$(node -e "const D=require('better-sqlite3');const db=new D('data/yazd.db',{readonly:true});console.log(db.prepare('SELECT COUNT(*) c FROM products').get().c);db.close();")
 SQLI=$(curl -s "http://localhost:3000/api/products?sort=id%3BDROP+TABLE+products--&limit=1" | node -e "let d='';process.stdin.on('data',c=>d+=c).on('end',()=>console.log(JSON.parse(d).total))")
 chk "$SQLI" "$PCOUNT" "sqli-sort"
-chk "$(curl -s -o /dev/null -w '%{http_code}' -X POST http://localhost:3000/api/tickets -H 'Content-Type: application/json' -d '{"order_id":"FAKE-999","product_name":"x","volume_ml":30,"used_under_2ml":true,"description":"long enough description"}')" "404" "fake-order-ticket"
+chk "$(curl -s -o /dev/null -w '%{http_code}' -X POST http://localhost:3000/api/tickets -H 'Content-Type: application/json' -d '{"order_id":"FAKE-999","product_name":"x","volume_ml":30,"used_under_2ml":true,"description":"long enough description"}')" "410" "legacy-ticket-endpoint-disabled"
 
 echo "== assets & fonts"
 for f in Regular Medium SemiBold Bold ExtraBold; do
@@ -325,7 +325,7 @@ run_test test_client_ip.js "trusted proxy IP resolution"
 run_test test_csv_export.js "CSV quoting and formula defense"
 run_test test_return_eligibility.js "return eligibility policy"
 run_test test_return_store.js "staged return database safety"
-run_test test_account_returns_gate.js "staged return API default-off gate"
+run_test test_account_returns_gate.js "return API authentication gate"
 if python3 scripts/test_account_returns_api.py >/tmp/test_account_returns_api.log 2>&1; then P=$((P+1)); else F=$((F+1)); echo "  X staged return API and ticket integration"; fi
 if python3 scripts/test_account_returns_journey.py >/tmp/test_account_returns_journey.log 2>&1; then P=$((P+1)); else F=$((F+1)); echo "  X full staged return journey"; fi
 if python3 scripts/test_return_store_migration.py >/tmp/test_return_store_migration.log 2>&1; then P=$((P+1)); else F=$((F+1)); echo "  X return schema backup-first migration"; fi
