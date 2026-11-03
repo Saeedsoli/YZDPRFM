@@ -3,7 +3,7 @@
 import gzip,hashlib,io,json,lzma,os,shutil,sqlite3,sys,tarfile,tempfile,zipfile
 from pathlib import Path
 sys.path.insert(0,str(Path(__file__).resolve().parent))
-from sqlite_delta_backup import create,restore,sha,HISTORICAL_BUNDLE
+from sqlite_delta_backup import create,restore,sha,HISTORICAL_BUNDLE,RECENT_BUNDLE
 with tempfile.TemporaryDirectory(prefix='yazd-delta-test-') as td:
  p=Path(td);live=p/'live.sqlite';base_raw=p/'base.sqlite';base=p/'base.sqlite.gz';expected=p/'expected.sqlite';delta=p/'backup.zip';restored=p/'restored.sqlite'
  c=sqlite3.connect(live);c.execute('pragma journal_mode=WAL');c.execute('create table customers(id integer primary key, name text, amount integer)')
@@ -37,9 +37,22 @@ with tempfile.TemporaryDirectory(prefix='yazd-delta-test-') as td:
   for leaf in ('manifest.json','pages.bin'):
    b=source.read(leaf);entry=tarfile.TarInfo('archived.zip/'+leaf);entry.size=len(b);bundle.addfile(entry,io.BytesIO(b))
  historical_output=p/'historical.sqlite';restore(xzbase,history_dir/'archived.zip',historical_output);assert sha(historical_output)==sha(expected)
+ # New compact archive coexists with the legacy archive; both remain readable.
+ with zipfile.ZipFile(delta) as source,tarfile.open(history_dir/RECENT_BUNDLE,'w:xz') as bundle:
+  for leaf in ('manifest.json','pages.bin'):
+   b=source.read(leaf);entry=tarfile.TarInfo('recent.zip/'+leaf);entry.size=len(b);bundle.addfile(entry,io.BytesIO(b))
+ recent_output=p/'recent.sqlite';restore(xzbase,history_dir/'recent.zip',recent_output);assert sha(recent_output)==sha(expected)
+ legacy_again=p/'legacy-again.sqlite';restore(xzbase,history_dir/'archived.zip',legacy_again);assert sha(legacy_again)==sha(expected)
  try:restore(xzbase,history_dir/'missing.zip',p/'missing-output.sqlite');raise AssertionError('missing archived delta accepted')
  except ValueError:pass
  assert not (p/'missing-output.sqlite').exists()
+ # A partial recent record is an error, not permission to silently fall back.
+ malformed=p/'partial-history';malformed.mkdir()
+ with zipfile.ZipFile(delta) as source,tarfile.open(malformed/RECENT_BUNDLE,'w:xz') as bundle:
+  b=source.read('manifest.json');entry=tarfile.TarInfo('partial.zip/manifest.json');entry.size=len(b);bundle.addfile(entry,io.BytesIO(b))
+ try:restore(base,malformed/'partial.zip',p/'partial-output.sqlite');raise AssertionError('partial archive accepted')
+ except ValueError:pass
+ assert not (p/'partial-output.sqlite').exists()
  bad_dir=p/'bad-history';bad_dir.mkdir()
  with zipfile.ZipFile(delta) as source,tarfile.open(bad_dir/HISTORICAL_BUNDLE,'w:xz') as bundle:
   for leaf in ('manifest.json','pages.bin'):
