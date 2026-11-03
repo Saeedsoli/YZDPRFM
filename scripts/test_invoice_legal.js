@@ -249,7 +249,7 @@ async function boot() {
 
     {
       const adm = fs.readFileSync(path.join(ROOT, 'public/admin.html'), 'utf8');
-      add('دکمه فاکتور عادی هست', /\/invoice\?order=\$\{x\.order_id\}"/.test(adm));
+      add('دکمه فاکتور عادی هست', /\/invoice\?order=\$\{encodeURIComponent\(x\.order_id\)\}"/.test(adm));
       add('دکمه فاکتور رسمی جدا هست', /formal=1/.test(adm));
       add('توضیح کاربردش داده شده', /خریدار عمده/.test(adm));
     }

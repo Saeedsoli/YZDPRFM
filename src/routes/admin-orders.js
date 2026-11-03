@@ -34,6 +34,7 @@
 
 const csv = require('../csv-export');
 const stockReservations = require('../order-stock-reservations');
+const returnStore = require('../return-store');
 
 /**
  * @param {object}   ctx
@@ -105,11 +106,15 @@ async function handle(ctx) {
     db.prepare('SELECT status, COUNT(*) c FROM orders GROUP BY status').all()
       .forEach(r => counts[r.status] = r.c);
 
+    const returnsUiTest = String(process.env.NODE_ENV||'').toLowerCase()==='test' &&
+      process.env.RETURNS_API_TEST_ONLY==='1' && returnStore.ready(db);
+    const evidence = returnsUiTest ? db.prepare('SELECT delivered_at_ms FROM return_delivery_evidence WHERE order_id=?') : null;
     return sendJSON(200, {
       total, page, totalPages: Math.ceil(total / limit),
-      status_counts: counts,
+      status_counts: counts, returns_ui_test: returnsUiTest,
       orders: rows.map(o => ({
         ...o,
+        ...(returnsUiTest ? {return_delivered_at_ms:evidence.get(o.order_id)?.delivered_at_ms ?? null} : {}),
         items: db.prepare('SELECT * FROM order_items WHERE order_id=?').all(o.order_id)
       }))
     });
