@@ -105,8 +105,9 @@ const fa = n => String(n).replace(/\d/g, d => '۰۱۲۳۴۵۶۷۸۹'[d]);
 const oid = new URLSearchParams(location.search).get('order');
 
 function headers() {
-  const a = localStorage.getItem('yazd_admin_token');
-  return a ? { 'Authorization': 'Bearer ' + a } : {};
+  // Same-origin requests carry the administrator's HttpOnly cookie.
+  localStorage.removeItem('yazd_admin_token');
+  return {};
 }
 
 async function load() {
@@ -115,11 +116,11 @@ async function load() {
       '<div style="padding:40px;text-align:center">شماره سفارش مشخص نیست.</div>';
     return;
   }
-  const r = await fetch(`/api/orders/${oid}/invoice`, { headers: headers() });
+  const r = await fetch(`/api/orders/${encodeURIComponent(oid)}/invoice`, { headers: headers() });
   if (!r.ok) {
     const e = await r.json().catch(() => ({}));
     document.getElementById('label').innerHTML =
-      `<div style="padding:40px;text-align:center">${e.error || 'خطا در دریافت اطلاعات'}</div>`;
+      `<div style="padding:40px;text-align:center">${esc(e.error || 'خطا در دریافت اطلاعات')}</div>`;
     return;
   }
   render(await r.json());

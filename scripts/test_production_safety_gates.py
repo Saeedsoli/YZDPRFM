@@ -25,8 +25,8 @@ https.request=(opt,cb)=>{const q=new EventEmitter();let body='';q.write=x=>{body
   else:raise RuntimeError('server startup timeout')
   return db,port,p,out,log
  def stop(p,out):p.terminate();p.wait(timeout=10);out.close()
- def api(port,method,path,body=None,token=None):
-  h={'Content-Type':'application/json'}
+ def api(port,method,path,body=None,token=None,extra_headers=None):
+  h={'Content-Type':'application/json',**(extra_headers or {})}
   if token:h['Authorization']='Bearer '+token
   data=None if body is None else json.dumps(body).encode();req=urllib.request.Request(f'http://127.0.0.1:{port}'+path,data=data,headers=h,method=method)
   try:
@@ -50,6 +50,10 @@ https.request=(opt,cb)=>{const q=new EventEmitter();let body='';q.write=x=>{body
    code,login,headers=api(port,'POST','/api/admin/login',{'username':'owner','password':'Isolated-Production-3827'});assert code==200;token=json.loads(login)['token']
    cookie=headers.get('Set-Cookie','');assert all(x in cookie for x in ['yazd_admin=', 'HttpOnly', 'SameSite=Lax', 'Secure']),cookie
    assert headers.get('Cache-Control')=='no-store',headers
+   code,cookie_login,cookie_headers=api(port,'POST','/api/admin/login',{'username':'owner','password':'Isolated-Production-3827'},extra_headers={'X-Admin-Cookie-Only':'1'})
+   assert code==200 and 'token' not in json.loads(cookie_login)
+   cookie_only=cookie_headers.get('Set-Cookie','');assert all(x in cookie_only for x in ['HttpOnly','SameSite=Lax','Secure']),cookie_only
+   assert api(port,'GET','/api/admin/whoami',extra_headers={'Cookie':cookie_only.split(';',1)[0]})[0]==200
    code,ready,_=api(port,'GET','/api/admin/readiness',token=token);ready=json.loads(ready);assert code==200
    levels={x['key']:x['level'] for x in ready['items']};assert levels['payment']=='error' and levels['sms']=='error' and levels['stock']=='ok',levels
   finally:stop(p,out)

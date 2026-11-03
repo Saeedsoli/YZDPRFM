@@ -325,6 +325,7 @@ run_test test_image_upload_security.js "image upload validation and exclusive wr
 if python3 scripts/test_browser_origin_http.py >/tmp/test_browser_origin_http.log 2>&1; then P=$((P+1)); else F=$((F+1)); echo "  X browser origin HTTP guard"; fi
 if python3 scripts/test_destructive_tool_guards.py >/tmp/test_destructive_tool_guards.log 2>&1; then P=$((P+1)); else F=$((F+1)); echo "  X destructive tool guards"; fi
 if python3 scripts/test_admin_account_rate_limit.py >/tmp/test_admin_account_rate_limit.log 2>&1; then P=$((P+1)); else F=$((F+1)); echo "  X admin account rate limit"; fi
+if python3 scripts/test_admin_cookie_session.py >/tmp/test_admin_cookie_session.log 2>&1; then P=$((P+1)); else F=$((F+1)); echo "  X admin cookie session"; fi
 if python3 scripts/test_production_admin_guard.py >/tmp/test_production_admin_guard.log 2>&1; then P=$((P+1)); else F=$((F+1)); echo "  X production admin guard"; fi
 if python3 scripts/test_staff_temporary_password.py >/tmp/test_staff_temporary_password.log 2>&1; then P=$((P+1)); else F=$((F+1)); echo "  X secure staff onboarding"; fi
 if python3 scripts/test_production_safety_gates.py >/tmp/test_production_safety_gates.log 2>&1; then P=$((P+1)); else F=$((F+1)); echo "  X production payment/OTP guards"; fi

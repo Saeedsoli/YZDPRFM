@@ -552,6 +552,9 @@ const server = http.createServer(async (req, res) => {
                  || pathname.startsWith('/api/payment');
   if (!isPrivate) {
     res.setHeader('Access-Control-Allow-Origin', '*');
+  } else {
+    // Sessions, orders and administration responses must not be cached.
+    res.setHeader('Cache-Control','no-store');
   }
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
@@ -792,7 +795,9 @@ const server = http.createServer(async (req, res) => {
 
       return sendJSON(200, {
         message: 'ورود موفق',
-        token,
+        // The browser panel requests cookie-only auth; API integrations that
+        // explicitly use bearer sessions retain their existing response.
+        ...(req.headers['x-admin-cookie-only']==='1' ? {} : {token}),
         user: {
           id: target.id,
           username: target.username,

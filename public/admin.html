@@ -1064,8 +1064,11 @@
 
 <script src="/assets/app.js"></script>
 <script>
-let TOKEN = localStorage.getItem('yazd_admin_token') || '';
-const H = () => ({ 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + TOKEN });
+// The administrator session is held only in the HttpOnly same-origin cookie.
+// Remove legacy browser-stored tokens; an old session without a cookie must
+// sign in again rather than keeping a reusable credential in localStorage.
+localStorage.removeItem('yazd_admin_token');
+const H = () => ({ 'Content-Type': 'application/json' });
 
 /* کارمند فعلی و مجوزهایش — پایه‌ی ساخت منو */
 let ME = null;
@@ -1081,7 +1084,6 @@ function mayAny(...list) {
 }
 
 async function checkAuth() {
-  if (!TOKEN) return false;
   try {
     const r = await fetch('/api/admin/whoami', { headers: H() });
     if (!r.ok) return false;
@@ -1099,21 +1101,21 @@ async function login() {
   if (!username || !pw) { err.textContent = 'نام کاربری و رمز را وارد کنید.'; return; }
 
   const r = await fetch('/api/admin/login', {
-    method: 'POST', headers: { 'Content-Type': 'application/json' },
+    method: 'POST', headers: { 'Content-Type': 'application/json', 'X-Admin-Cookie-Only': '1' },
     body: JSON.stringify({ username, password: pw })
   });
   const d = await r.json();
   if (!r.ok) { err.textContent = d.error; return; }
 
-  TOKEN = d.token;
-  ME = d.user;
-  localStorage.setItem('yazd_admin_token', TOKEN);
+  if (!await checkAuth()) {
+    err.textContent = 'نشست مدیریت برقرار نشد؛ تنظیمات کوکی مرورگر را بررسی کنید.';
+    return;
+  }
   showPanel();
 }
 
 async function logout() {
   await fetch('/api/admin/logout', { method: 'POST', headers: H() });
-  localStorage.removeItem('yazd_admin_token');
   location.reload();
 }
 
@@ -2010,8 +2012,8 @@ async function saveShopSettings() {
 let repDays = 7;
 
 /* دانلود گزارش همان بازه‌ای که روی صفحه دیده می‌شود.
-   توکن در سرآیند لازم است، پس نمی‌شود صرفاً لینک گذاشت —
-   فایل با fetch گرفته و از حافظه ذخیره می‌شود. */
+   درخواست هم‌مبدأ، کوکی HttpOnly مدیر را همراه دارد؛ فایل با
+   fetch دریافت و با نام مناسب ذخیره می‌شود. */
 async function downloadReport() {
   if (!may('reports.sales')) return toast('دسترسی ندارید');
   toast('در حال آماده‌سازی…');

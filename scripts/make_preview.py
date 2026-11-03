@@ -280,11 +280,10 @@ async def main():
                                             locale="fa-IR")
             page = await ctx.new_page()
 
-            # زمینه‌های مشترک را یک‌بار در localStorage بگذار
-            await page.goto(BASE + "/", wait_until="domcontentloaded")
+            # نشست مدیر با کوکی HttpOnly؛ داده‌های غیرحساس همچنان محلی‌اند.
             if tok:
-                await page.evaluate(
-                    "t => localStorage.setItem('yazd_admin_token', t)", tok)
+                await ctx.add_cookies([{'name':'yazd_admin','value':tok,'url':BASE,'httpOnly':True,'sameSite':'Lax'}])
+            await page.goto(BASE + "/", wait_until="domcontentloaded")
 
             for path, name, label, cat, need in PAGES:
                 # زمینه‌سازی هر صفحه
@@ -349,9 +348,8 @@ async def main():
             print(f"{Y}  ── پنل مدیریت{X}")
             ctx = await browser.new_context(viewport=DESKTOP, device_scale_factor=2,
                                             locale="fa-IR")
+            await ctx.add_cookies([{'name':'yazd_admin','value':tok,'url':BASE,'httpOnly':True,'sameSite':'Lax'}])
             page = await ctx.new_page()
-            await page.goto(BASE + "/", wait_until="domcontentloaded")
-            await page.evaluate("t => localStorage.setItem('yazd_admin_token', t)", tok)
             await page.goto(BASE + "/admin", wait_until="networkidle")
             await page.wait_for_timeout(3000)
 

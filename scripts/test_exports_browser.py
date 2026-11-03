@@ -27,12 +27,11 @@ async def main():
     async with async_playwright() as pw:
         b=await pw.chromium.launch()
         ctx=await b.new_context(viewport={"width":1280,"height":900}, accept_downloads=True)
+        await ctx.add_cookies([{'name':'yazd_admin','value':tok,'url':BASE,'httpOnly':True,'sameSite':'Lax'}])
         p=await ctx.new_page()
         errs=[]
         p.on("pageerror", lambda e: errs.append(str(e)[:90]))
-        await p.goto(BASE+"/admin", wait_until="domcontentloaded")
-        await p.evaluate(f"localStorage.setItem('yazd_admin_token','{tok}')")
-        await p.reload(wait_until="domcontentloaded"); await p.wait_for_timeout(3500)
+        await p.goto(BASE+"/admin", wait_until="domcontentloaded"); await p.wait_for_timeout(3500)
 
         print("\n  ۱) تب گزارش‌ها")
         try:

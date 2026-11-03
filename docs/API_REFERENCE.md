@@ -456,6 +456,8 @@ JSON با `charset=utf-8` هستند؛ فایل‌های دانلود و جری�
 ## نشست
 `POST /api/admin/login` · `POST /api/admin/logout` · `GET /api/admin/me`
 
+پنل مرورگر از کوکی HttpOnly استفاده می‌کند و هنگام ورود با هدر `X-Admin-Cookie-Only: 1`، توکن را در بدنه پاسخ دریافت نمی‌کند. کلاینت‌های API بدون این هدر همچنان می‌توانند توکن Bearer دریافت و استفاده کنند.
+
 ## سفارش
 ```
 GET /api/orders?q=&status=&page=&limit=

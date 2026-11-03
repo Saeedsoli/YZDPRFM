@@ -179,14 +179,13 @@ async def main():
     async with async_playwright() as pw:
         b = await pw.chromium.launch()
         ctx = await b.new_context()
+        await ctx.add_cookies([{'name':'yazd_admin','value':TOK,'url':BASE,'httpOnly':True,'sameSite':'Lax'}])
         for path, name, fmt in [
             (f"/invoice?order={OID}",          "invoice-normal", "A4"),
             (f"/invoice?order={OID}&formal=1", "invoice-formal", "A4"),
             (f"/label?order={OID}",            "shipping-label", None)]:
             p = await ctx.new_page()
             await p.goto(BASE + path, wait_until="domcontentloaded")
-            await p.evaluate(f"localStorage.setItem('yazd_admin_token','{TOK}')")
-            await p.reload(wait_until="domcontentloaded")
             await p.wait_for_timeout(2600)
             o = {"path": f"{OUT}/{name}.pdf", "print_background": True}
             if fmt: o["format"] = fmt
