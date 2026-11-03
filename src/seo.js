@@ -150,7 +150,7 @@ function productPage(html, p) {
        UNAVAILABLE           → OutOfStock
 
      ⚠ BackOrder ایجاب می‌کند زمان ارسال روی صفحه دیده شود؛
-     صفحه محصول «ارسال ۳ تا ۷ روز کاری» را نشان می‌دهد، پس شرط
+     صفحه محصول «تحویل ۳ تا ۷ روز کاری» را نشان می‌دهد، پس شرط
      برقرار است. */
   const mode = p.supply_mode || 'UNAVAILABLE';
   const hasPricedVariant = (p.variants || []).some(v => v.price_toman > 0);

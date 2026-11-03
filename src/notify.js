@@ -56,7 +56,7 @@ const TEMPLATES = {
 شماره سفارش: ${o.order_id}
 مبلغ: ${money(o.total_paid)} تومان
 
-سفارش ظرف ۳ تا ۷ روز کاری ارسال می‌شود.
+زمان تحویل سفارش ۳ تا ۷ روز کاری پس از تأیید پرداخت است.
 پیگیری: yazdperfume.ir/track`,
 
   processing: o =>
@@ -69,7 +69,7 @@ const TEMPLATES = {
 سفارش ${o.order_id} ارسال شد.
 
 ${o.tracking_code ? `کد رهگیری پستی: ${o.tracking_code}\n` : ''}${o.carrier ? `شیوه ارسال: ${o.carrier}\n` : ''}
-تحویل طی ۳ تا ۷ روز کاری انجام می‌شود.`,
+زمان تحویل مطابق بازه اعلام‌شده هنگام ثبت سفارش است.`,
 
   delivered: o =>
 `${SHOP}

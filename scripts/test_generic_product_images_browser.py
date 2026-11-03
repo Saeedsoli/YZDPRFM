@@ -32,7 +32,10 @@ with tempfile.TemporaryDirectory(prefix='yazd-generic-browser-') as td:
     row=page.locator(f'#sugg a[href="/perfume/{x["slug"]}"]');expect(row).to_be_visible(timeout=7000);expect(row).to_contain_text('به سفارش');expect(row).to_contain_text('تصویر نمادین است')
     page.goto(base+'/perfume/'+x['slug'],wait_until='domcontentloaded');expect(page.locator('#content')).to_be_visible();expect(page.locator('#imageDisclosure')).to_be_visible();expect(page.locator('#imageDisclosure')).to_have_text('تصویر نمادین است')
     first=page.locator('#track picture img');expect(first).to_have_attribute('alt', 'تصویر نمادین '+p['brand_fa']+' — '+p['name_fa']);assert first.evaluate('(e)=>e.complete && e.naturalWidth>0')
-    expect(page.locator('#addBtn')).to_be_enabled();expect(page.locator('#addBtn')).to_contain_text('سفارش ساخت');page.locator('#addBtn').click();page.goto(base+'/cart',wait_until='domcontentloaded');expect(page.locator('#wrap')).to_contain_text('تصویر نمادین است')
+    expect(page.locator('#addBtn')).to_be_enabled();expect(page.locator('#addBtn')).to_contain_text('سفارش ساخت')
+    expect(page.locator('#stockInfo')).to_contain_text('تحویل ۳ تا ۷ روز کاری پس از تأیید پرداخت')
+    expect(page.locator('.ship-note')).to_contain_text('۳ تا ۷ روز کاری پس از تأیید پرداخت')
+    page.locator('#addBtn').click();page.goto(base+'/cart',wait_until='domcontentloaded');expect(page.locator('#wrap')).to_contain_text('تصویر نمادین است')
     assert page.evaluate('document.documentElement.scrollWidth <= innerWidth + 1'),('overflow',width)
     page.goto(base+'/samples',wait_until='domcontentloaded');expect(page.locator('.sc').first).to_be_visible();html=page.evaluate("p=>card({...p,sample_price:1000})",p);assert 'تصویر نمادین' in html
     page.evaluate("token=>{localStorage.setItem('yazd_customer_token',token);localStorage.setItem('yazd_customer_mobile','09120001234')}",token);page.goto(base+'/wishlist',wait_until='domcontentloaded');expect(page.locator('.wish-card').first).to_be_visible();expect(page.locator('.wish-card .card-illustrative').first).to_have_text('تصویر نمادین')
