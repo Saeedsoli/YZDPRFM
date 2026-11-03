@@ -21,6 +21,7 @@ data/pre-restore-*.db
 # ── اسرار ──
 # رمز مدیر، کلید پیامک، شناسه درگاه — هرگز در مخزن
 .ssh/
+yazd_github_public_key.txt
 .env
 .env.*
 !.env.example

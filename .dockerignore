@@ -42,6 +42,7 @@ shots/
 
 # ── اسرار ──
 .ssh/
+yazd_github_public_key.txt
 .env
 .env.*
 .git/

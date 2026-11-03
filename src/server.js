@@ -14,6 +14,7 @@ const zlib = require('zlib');
 const { isPublicVariant, publicVariantSql } = require('./variant-visibility');
 const { variantAvailability } = require('./availability');
 const stockReservations = require('./order-stock-reservations');
+const browserOriginGuard = require('./browser-origin-guard');
 
 const {
   db, parseProduct, attachVariants, DB_PATH,
@@ -517,6 +518,14 @@ const server = http.createServer(async (req, res) => {
   const isHead = req.method === 'HEAD';
   const method = isHead ? 'GET' : req.method;
 
+  if (!browserOriginGuard.allowed(req,pathname,{
+    production:String(process.env.NODE_ENV||'').trim().toLowerCase()==='production',
+    siteUrl:process.env.SITE_URL||''
+  })) {
+    res.writeHead(403,{'Content-Type':'application/json; charset=utf-8','Cache-Control':'no-store','X-Content-Type-Options':'nosniff'});
+    return res.end(JSON.stringify({error:'مبدأ درخواست معتبر نیست.'}));
+  }
+
   if (isHead) {
     const realEnd = res.end.bind(res);
     const realWrite = res.write.bind(res);
@@ -526,13 +535,9 @@ const server = http.createServer(async (req, res) => {
   }
 
   /* ── CORS ──
-     کاتالوگ عمومی است و اشکالی ندارد از هر دامنه‌ای خوانده شود.
-     ولی مسیرهای مدیریتی و حساب مشتری نباید از دامنه دیگر قابل
-     صدا زدن باشند — وگرنه سایتی که مشتری بازش کرده می‌تواند با
-     توکن او درخواست بفرستد. */
-  /* مسیرهای نوشتاری هم بسته شدند: بدون این، سایت دیگری می‌توانست
-     فرم سفارش یا ثبت نظر ما را روی دامنه خودش سوار کند و از طرف
-     بازدیدکننده‌اش سفارش ثبت کند. فقط خواندن کاتالوگ باز می‌ماند. */
+     Public catalog responses may be read cross-origin; private responses do
+     not opt in. CORS alone does not stop cross-site form submissions: the
+     separate browser-origin guard above rejects unsafe cross-origin API calls. */
   const isPrivate = pathname.startsWith('/api/admin')
                  || pathname.startsWith('/api/auth')
                  || pathname.startsWith('/api/wishlist')

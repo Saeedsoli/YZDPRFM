@@ -973,6 +973,10 @@ node_modules/   با npm install برمی‌گردد
 - `scripts/test_checkout_profile.py` — آزمون حریم خصوصی و انتخاب نشانی از آخرین سفارش پرداخت‌شده.
 - `scripts/test_malformed_request_paths.py` — آزمون پایداری سرور در برابر نشانی‌های نامعتبر و درخواست هم‌زمان.
 - `scripts/test_secret_exclusion.py` — کنترل خروج کلیدهای SSH از نسخه جاری و بسته استقرار؛ جای لغو کلید افشاشده را نمی‌گیرد.
+- `src/browser-origin-guard.js` — محافظ مبدأ مرورگر برای درخواست‌های تغییردهنده API؛ جای احراز هویت را نمی‌گیرد.
+- `scripts/test_browser_origin_guard.js` — آزمون سیاست مبدأ و سازگاری کلاینت‌های بدون Origin.
+- `scripts/test_browser_origin_http.py` — آزمون HTTP مسیرهای حساس در محیط موقت و پیامک شبیه‌سازی‌شده.
+- `scripts/test_browser_origin_csrf.py` — آزمون واقعی مرورگر برای درخواست از مبدأ دیگر در همان سایت.
 - `scripts/test_checkout_profile_browser.py` — آزمون تکمیل فرم و جلوگیری از بازنویسی ورودی مشتری.
 - `scripts/test_login_redirect_safety.js` — جلوگیری از انتقال خارجی یا اجرای نشانی خطرناک پس از ورود.
 - `scripts/test_seo_html_safety.js` — محافظت داده‌های ساختاریافته و ویژگی‌های HTML در رندر سمت سرور.
