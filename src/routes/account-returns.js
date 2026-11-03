@@ -4,12 +4,14 @@
 // mode until customer/admin UI, legacy return transition and delivery evidence
 // workflows have been reviewed and enabled together.
 const store = require('../return-store');
+const historical = require('../return-historical-evidence');
 async function handle(ctx) {
   const {method,pathname,req,sendJSON,can,parseBody,db,otp,getCustomerToken,
     rateLimit,ip,RL,who,logAudit,notify,cleanText} = ctx;
   const customerPath='/api/auth/account-returns';
   const adminPath='/api/admin/account-returns/delivery';
-  if (pathname!==customerPath && pathname!==adminPath) return false;
+  const historicalPath='/api/admin/account-returns/historical-volume';
+  if (pathname!==customerPath && pathname!==adminPath && pathname!==historicalPath) return false;
   if (String(process.env.NODE_ENV||'').toLowerCase()!=='test' || process.env.RETURNS_API_TEST_ONLY!=='1') {
     sendJSON(404,{error:'مسیر یافت نشد.'});return true;
   }
@@ -28,6 +30,18 @@ async function handle(ctx) {
     if(!result.ok){sendJSON(409,{error:'ثبت زمان تحویل ممکن نیست؛ وضعیت و سوابق سفارش را بررسی کنید.'});return true;}
     logAudit('orders.status',{target:b.order_id,detail:{event:'return_delivery_evidence',delivered_at_ms:b.delivered_at_ms}});
     sendJSON(201,{message:'زمان تحویل ثبت شد.'});return true;
+  }
+  if (pathname===historicalPath) {
+    if(!can('orders.status') || !can('tickets.reply'))return true;
+    if(!historical.ready(db)){sendJSON(503,{error:'سامانه ثبت مستندات آماده نیست.'});return true;}
+    const b=await parseBody(req);
+    const note=typeof b.evidence_note==='string' ? cleanText(b.evidence_note,501) : '';
+    const result=historical.confirm(db,{itemId:b.item_id,volumeMl:b.volume_ml,confirmedBy:who.username,
+      evidenceNote:note,confirmed:b.confirmed});
+    if(!result.ok){sendJSON(result.reason==='INVALID_INPUT'?400:409,{error:'ثبت حجم ممکن نیست؛ مدرک و وضعیت قلم سفارش را بررسی کنید.'});return true;}
+    // The durable confirmation, actor and evidence note are committed in the
+    // same transaction as the snapshot, not only in a log that may be purged.
+    sendJSON(201,{message:'حجم تأیید و مستند شد.'});return true;
   }
   const mobile=otp.mobileFromToken(getCustomerToken(req));
   if(!mobile){sendJSON(401,{error:'ابتدا شماره موبایل خود را تأیید کنید.'});return true;}

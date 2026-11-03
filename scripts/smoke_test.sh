@@ -325,6 +325,7 @@ run_test test_client_ip.js "trusted proxy IP resolution"
 run_test test_csv_export.js "CSV quoting and formula defense"
 run_test test_return_eligibility.js "return eligibility policy"
 run_test test_return_store.js "staged return database safety"
+run_test test_return_historical_evidence.js "verified historical return evidence"
 run_test test_account_returns_gate.js "staged return API default-off gate"
 if python3 scripts/test_account_returns_api.py >/tmp/test_account_returns_api.log 2>&1; then P=$((P+1)); else F=$((F+1)); echo "  X staged return API and ticket integration"; fi
 if python3 scripts/test_return_store_migration.py >/tmp/test_return_store_migration.log 2>&1; then P=$((P+1)); else F=$((F+1)); echo "  X return schema backup-first migration"; fi
