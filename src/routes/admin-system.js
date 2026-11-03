@@ -39,8 +39,8 @@ const stockReservations = require('../order-stock-reservations');
 
 // Backup files contain customer and order data. Destroy the read stream when
 // the client disconnects; always clean up our private temporary directory.
-function streamBackup(res, file, cleanup, appLog) {
-  const stream = fs.createReadStream(file);
+function streamBackup(res, file, cleanup, appLog, fd) {
+  const stream = fd === undefined ? fs.createReadStream(file) : fs.createReadStream(file,{fd,autoClose:true});
   let cleaned = false;
   const finish = () => {
     if (cleaned) return;
@@ -54,6 +54,29 @@ function streamBackup(res, file, cleanup, appLog) {
   stream.on('close', finish);
   res.on('close', () => { if (!stream.destroyed) stream.destroy(); });
   stream.pipe(res);
+}
+
+// Open the exact file once and stream the same descriptor: checking a path
+// then reopening it would allow it to be replaced between check and use.
+function openAutomaticBackup(dir, name, dbPath) {
+  const directory=fs.lstatSync(dir);
+  if(!directory.isDirectory()||directory.isSymbolicLink())throw Error('Unsafe backup directory');
+  if(typeof fs.constants.O_NOFOLLOW!=='number'||typeof fs.constants.O_NONBLOCK!=='number')throw Error('Safe file opening unsupported');
+  const file=path.join(dir,name);
+  const fd=fs.openSync(file,fs.constants.O_RDONLY|fs.constants.O_NOFOLLOW|fs.constants.O_NONBLOCK);
+  try {
+    const st=fs.fstatSync(fd);
+    if(!st.isFile()||st.nlink!==1||st.size<100)throw Error('Unsafe backup file');
+    // An offline snapshot must be independent from the live DB and its WAL.
+    for(const base of [dbPath,dbPath+'-wal',dbPath+'-shm',dbPath+'-journal']) {
+      try { const live=fs.statSync(base);if(live.dev===st.dev&&live.ino===st.ino)throw Error('Live database alias'); }
+      catch(e){if(e.code!=='ENOENT')throw e;}
+    }
+    for(const suffix of ['-wal','-shm','-journal'])if(fs.lstatSync(file+suffix,{throwIfNoEntry:false}))throw Error('Backup has sidecar files');
+    const header=Buffer.alloc(16);
+    if(fs.readSync(fd,header,0,header.length,0)!==header.length||header.toString('binary')!=='SQLite format 3\u0000')throw Error('Invalid SQLite backup');
+    return {fd,size:st.size,created:st.mtime.toISOString(),file};
+  } catch(e) {fs.closeSync(fd);throw e;}
 }
 
 /**
@@ -126,10 +149,15 @@ async function handle(ctx) {
     if (!can('system.backup')) return true;
     const dir = path.join(path.dirname(DB_PATH), 'backups');
     if (!fs.existsSync(dir)) return sendJSON(200, { total: 0, backups: [] });
-    const list = fs.readdirSync(dir).filter(f => f.endsWith('.db')).map(f => {
-      const st = fs.statSync(path.join(dir, f));
-      return { name: f, size: st.size, created: st.mtime.toISOString() };
-    }).sort((a, b) => b.created.localeCompare(a.created));
+    let list;
+    try {
+      const st=fs.lstatSync(dir);
+      if(!st.isDirectory()||st.isSymbolicLink())return sendJSON(409,{error:'پوشه پشتیبان معتبر نیست.'});
+      list=fs.readdirSync(dir).filter(f=>/^yazd-\d{10}\.db$/.test(f)).flatMap(name=>{
+        try {const item=openAutomaticBackup(dir,name,DB_PATH);fs.closeSync(item.fd);return [{name,size:item.size,created:item.created}];}
+        catch {return [];}
+      }).sort((a,b)=>b.created.localeCompare(a.created));
+    } catch {return sendJSON(500,{error:'فهرست پشتیبان‌ها در دسترس نیست.'});}
     return sendJSON(200, { total: list.length, backups: list });
   }
 
@@ -143,20 +171,28 @@ async function handle(ctx) {
     }
 
     const dir = path.join(path.dirname(DB_PATH), 'backups');
-    const full = path.join(dir, raw);
-    if (!full.startsWith(dir) || !fs.existsSync(full)) {
-      return sendJSON(404, { error: 'این نسخه پشتیبان یافت نشد.' });
+    let opened;
+    try { opened=openAutomaticBackup(dir,raw,DB_PATH); }
+    catch(e) {
+      if(e.code==='ENOENT'||e.code==='ENOTDIR')return sendJSON(404,{error:'این نسخه پشتیبان یافت نشد.'});
+      appLog('WARN','backup','دانلود نسخه نامعتبر مسدود شد',{file:raw});
+      return sendJSON(409,{error:'این نسخه پشتیبان قابل دانلود ایمن نیست.'});
     }
-
-    appLog('INFO', 'backup', 'دانلود نسخه پشتیبان', { file: raw });
-    res.writeHead(200, {
-      'Content-Type': 'application/octet-stream',
-      'Content-Disposition': `attachment; filename="${raw}"`,
-      'Content-Length': fs.statSync(full).size,
-      'Cache-Control': 'no-store'
-    });
-    streamBackup(res, full, null, appLog);
-    return true;      // استریم فایل — sendJSON صدا زده نشد
+    try {
+      appLog('INFO', 'backup', 'دانلود نسخه پشتیبان', { file: raw });
+      res.writeHead(200, {
+        'Content-Type': 'application/octet-stream',
+        'Content-Disposition': `attachment; filename="${raw}"`,
+        'Content-Length': opened.size,
+        'Cache-Control': 'no-store'
+      });
+      streamBackup(res, opened.file, null, appLog, opened.fd);
+      return true;
+    } catch(e) {
+      try {fs.closeSync(opened.fd);}catch{}
+      if(res.headersSent){res.destroy();return true;}
+      return sendJSON(500,{error:'خطا در خواندن پشتیبان'});
+    }
   }
 
   if (method === 'GET' && pathname === '/api/admin/audit') {

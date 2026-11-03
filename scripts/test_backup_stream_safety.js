@@ -53,8 +53,33 @@ const pause=ms=>new Promise(r=>setTimeout(r,ms));
   fs.mkdirSync(path.join(dir,'backups'));const saved=path.join(dir,'backups','yazd-2026110100.db');
   fs.copyFileSync(path.join(dir,'restore-0.sqlite'),saved);
   const historic=await fetch(base+'/api/admin/backups/yazd-2026110100.db',{headers});assert.equal(historic.status,200);
-  assert.equal(historic.headers.get('cache-control'),'no-store');assert((await historic.arrayBuffer()).byteLength>0);
+  assert.equal(historic.headers.get('cache-control'),'no-store');const historicalBytes=Buffer.from(await historic.arrayBuffer());assert(historicalBytes.length>0);
   assert.equal((await fetch(base+'/api/admin/backups/%2e%2e%2fx',{headers})).status,400);
-  console.log('PASS backup permission, concurrent SQLite restores, disconnect cleanup, failure cleanup and no-store');
+  // A filename that looks legitimate must not expose live data, symlinks,
+  // hardlinks, corrupt files, SQLite sidecars, or named pipes.
+  const backups=path.join(dir,'backups');
+  fs.symlinkSync(dbPath,path.join(backups,'yazd-2026110101.db'));
+  fs.linkSync(dbPath,path.join(backups,'yazd-2026110102.db'));
+  fs.writeFileSync(path.join(backups,'yazd-2026110103.db'),'not sqlite');
+  fs.writeFileSync(saved+'-wal','external sidecar');
+  for(const name of ['yazd-2026110100.db','yazd-2026110101.db','yazd-2026110102.db','yazd-2026110103.db'])
+    assert.equal((await fetch(base+'/api/admin/backups/'+name,{headers})).status,409,name);
+  const fifo=path.join(backups,'yazd-2026110104.db');
+  const made=require('child_process').spawnSync('mkfifo',[fifo]);assert.equal(made.status,0);
+  assert.equal((await fetch(base+'/api/admin/backups/yazd-2026110104.db',{headers})).status,409);
+  fs.unlinkSync(saved+'-wal');
+  const listing=await (await fetch(base+'/api/admin/backups',{headers})).json();assert.deepEqual(listing.backups.map(x=>x.name),['yazd-2026110100.db']);
+  // Swap the pathname for a symlink after validation but before stream setup.
+  // The file descriptor must still return the original, validated snapshot.
+  const originalCreate=fs.createReadStream,relocated=saved+'.relocated';
+  fs.createReadStream=function(file,...args){
+   if(file===saved){fs.renameSync(saved,relocated);fs.symlinkSync(dbPath,saved);}
+   return originalCreate.call(this,file,...args);
+  };
+  try {
+   const race=await fetch(base+'/api/admin/backups/yazd-2026110100.db',{headers});assert.equal(race.status,200);
+   assert.deepEqual(Buffer.from(await race.arrayBuffer()),historicalBytes);
+  } finally {fs.createReadStream=originalCreate;fs.unlinkSync(saved);fs.renameSync(relocated,saved);}
+  console.log('PASS backup permissions, SQLite restores, cleanup, safe path/descriptor handling and no-store');
  } finally {await new Promise(r=>server.close(r));db.close();fs.rmSync(dir,{recursive:true,force:true});}
 })().catch(e=>{console.error(e);process.exitCode=1;});
