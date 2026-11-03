@@ -1015,3 +1015,6 @@ node_modules/   با npm install برمی‌گردد
 - `scripts/test_account_returns_journey.py` — سفر آزمایشی خرید، پرداخت شبیه‌سازی‌شده، تحویل، مرجوعی و پاسخ مدیریت.
 - `scripts/test_service_worker_freshness_browser.py` — آزمون واقعی به‌روزرسانی کد، آفلاین و عدم کش نشانی‌های حساس.
 - `scripts/test_analytics_trusted_proxy.js` — آزمون استفاده تحلیل بازدید از پروکسی مورد اعتماد، بدون ذخیره IP خام.
+- `src/script-element-csp.js` — محاسبه هش اسکریپت‌های قالب مورداعتماد برای سیاست CSP3؛ رویدادهای درون‌خطی هنوز مجازند.
+- `scripts/test_script_element_csp.js` — آزمون هش قالب، نرمال‌سازی و رد سیاست نامعتبر.
+- `scripts/test_script_element_csp_browser.py` — آزمون مرورگر واقعی CSP و سلامت صفحه‌های کلیدی.

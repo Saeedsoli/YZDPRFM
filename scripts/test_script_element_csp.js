@@ -1,0 +1,10 @@
+'use strict';
+const assert=require('assert/strict'),crypto=require('crypto');
+const {scriptHashes,forTemplate}=require('../src/script-element-csp');
+const hash=s=>"'sha256-"+crypto.createHash('sha256').update(s).digest('base64')+"'";
+const template='<script src="/assets/app.js"></script><script>window.x=1;\r\nwindow.y=2;</script><script>window.x=1;\r\nwindow.y=2;</script>';
+assert.deepEqual(scriptHashes(template),[hash('window.x=1;\nwindow.y=2;')]);
+const csp=forTemplate("default-src 'self'; script-src-elem 'self'; script-src-attr 'unsafe-inline'",template);
+assert(csp.includes("script-src-elem 'self' "+hash('window.x=1;\nwindow.y=2;')));
+assert(!csp.includes(hash('alert(1)')));assert.throws(()=>forTemplate("default-src 'self'",template));
+console.log('PASS template-only script hashes, CRLF normalization, deduplication and fail-closed policy');

@@ -17,6 +17,7 @@ const stockReservations = require('./order-stock-reservations');
 const returnStore = require('./return-store');
 const browserOriginGuard = require('./browser-origin-guard');
 const { resolvePublicFile } = require('./static-path');
+const scriptElementCsp = require('./script-element-csp');
 const trustedProxyPolicy = require('./client-ip').createPolicy(process.env.TRUSTED_PROXY_CIDRS || '');
 
 const {
@@ -581,10 +582,10 @@ const server = http.createServer(async (req, res) => {
      ما رد شود، مرورگر اجازه نمی‌دهد به دامنه بیرونی وصل شود یا
      اسکریپت بیگانه بار کند.
 
-     چرا 'unsafe-inline'؟ صفحات این پروژه اسکریپت و استایل درون‌خطی
-     دارند (طراحی تک‌فایلی، بدون فرآیند بیلد). حذف آن یعنی بازنویسی
-     هر ۲۳ صفحه. حتی با آن، این سیاست جلوی مهم‌ترین بردار حمله را
-     می‌گیرد: بارگذاری اسکریپت از دامنه مهاجم و نشت داده به بیرون.
+     اسکریپت‌های قالب‌های ثابت با هش همان قالب در script-src-elem
+     مجاز می‌شوند، پیش از تزریق داده پویا. script-src-attr و fallback
+     هنوز unsafe-inline دارند؛ بنابراین این دفاع کامل در برابر XSS
+     نیست و حذف event-handlerهای درون‌خطی همچنان لازم است.
 
      img-src داده‌های base64 را می‌پذیرد چون بارکد فاکتور و برخی
      آیکن‌ها این‌طور جاسازی شده‌اند.
@@ -600,6 +601,8 @@ const server = http.createServer(async (req, res) => {
   res.setHeader('Content-Security-Policy', [
     "default-src 'self'",
     "script-src 'self' 'unsafe-inline'",
+    "script-src-elem 'self'",
+    "script-src-attr 'unsafe-inline'",
     "style-src 'self' 'unsafe-inline'",
     "img-src 'self' data: blob: https://trustseal.enamad.ir",
     "font-src 'self' data:",
@@ -2200,6 +2203,9 @@ const server = http.createServer(async (req, res) => {
         // تزریق متادیتا سمت سرور برای خزنده‌ها
         if (ext === '.html') {
           let html = fs.readFileSync(full, 'utf-8');
+          // Hash the trusted template only. User-controlled SEO content must
+          // never be included in the allowlist.
+          res.setHeader('Content-Security-Policy', scriptElementCsp.forTemplate(res.getHeader('Content-Security-Policy'), html));
           try {
             if (pathname.startsWith('/perfume/')) {
               const slug = pathname.replace('/perfume/', '').replace(/\/$/, '');
@@ -2302,8 +2308,10 @@ const server = http.createServer(async (req, res) => {
 
       const notFound = path.join(PUBLIC_DIR, '404.html');
       if (fs.existsSync(notFound)) {
-        res.writeHead(404, { 'Content-Type': 'text/html; charset=utf-8' });
-        return fs.createReadStream(notFound).pipe(res);
+        const html=fs.readFileSync(notFound, 'utf8');
+        res.setHeader('Content-Security-Policy', scriptElementCsp.forTemplate(res.getHeader('Content-Security-Policy'), html));
+        res.writeHead(404, { 'Content-Type': 'text/html; charset=utf-8', 'Cache-Control':'no-store' });
+        return res.end(html);
       }
       res.writeHead(404, { 'Content-Type': 'text/plain; charset=utf-8' });
       return res.end('صفحه یافت نشد');
