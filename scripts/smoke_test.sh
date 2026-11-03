@@ -327,6 +327,7 @@ run_test test_return_eligibility.js "return eligibility policy"
 run_test test_return_store.js "staged return database safety"
 run_test test_account_returns_gate.js "staged return API default-off gate"
 if python3 scripts/test_account_returns_api.py >/tmp/test_account_returns_api.log 2>&1; then P=$((P+1)); else F=$((F+1)); echo "  X staged return API and ticket integration"; fi
+if python3 scripts/test_account_returns_journey.py >/tmp/test_account_returns_journey.log 2>&1; then P=$((P+1)); else F=$((F+1)); echo "  X full staged return journey"; fi
 if python3 scripts/test_return_store_migration.py >/tmp/test_return_store_migration.log 2>&1; then P=$((P+1)); else F=$((F+1)); echo "  X return schema backup-first migration"; fi
 if python3 scripts/test_return_order_snapshots.py >/tmp/test_return_order_snapshots.log 2>&1; then P=$((P+1)); else F=$((F+1)); echo "  X return order snapshots"; fi
 if python3 scripts/test_return_account_read.py >/tmp/test_return_account_read.log 2>&1; then P=$((P+1)); else F=$((F+1)); echo "  X return account isolation"; fi

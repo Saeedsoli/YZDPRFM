@@ -1012,3 +1012,4 @@ node_modules/   با npm install برمی‌گردد
 - `scripts/test_account_returns_gate.js` — تأیید بسته‌بودن API آزمایشی مرجوعی در تولید و به‌صورت پیش‌فرض.
 - `scripts/test_account_returns_browser.py` — آزمون مرورگر فرم آزمایشی مرجوعی حساب، تعداد، وضعیت، سمپل و نمایش پاسخ.
 - `scripts/test_admin_delivery_browser.py` — آزمون مرورگر فرم آزمایشی ثبت زمان واقعی تحویل و تبدیل زمان تهران.
+- `scripts/test_account_returns_journey.py` — سفر آزمایشی خرید، پرداخت شبیه‌سازی‌شده، تحویل، مرجوعی و پاسخ مدیریت.
