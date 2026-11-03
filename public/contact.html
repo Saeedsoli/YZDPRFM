@@ -200,13 +200,13 @@ async function loadWays() {
     ways.push(`<a class="way" href="tel:${tel}">
       <div class="ic"><svg viewBox="0 0 24 24">${ICONS.phone}</svg></div>
       <div><div class="k">تماس تلفنی</div>
-        <div class="v" dir="ltr">${toFa(d.phone)}</div></div></a>`);
+        <div class="v" dir="ltr">${esc(toFa(d.phone))}</div></div></a>`);
   }
   if (d.address) {
     ways.push(`<div class="way">
       <div class="ic"><svg viewBox="0 0 24 24">${ICONS.pin}</svg></div>
       <div><div class="k">نشانی فروشگاه</div>
-        <div class="v" style="font-size:.8rem;font-weight:600">${d.address}</div></div></div>`);
+        <div class="v" style="font-size:.8rem;font-weight:600">${esc(d.address)}</div></div></div>`);
   }
   /* تلگرام سریع‌ترین راه است — اول از تلفن می‌آید چون بیشتر
      مشتری‌ها ترجیح می‌دهند بنویسند تا زنگ بزنند. */
@@ -305,7 +305,7 @@ async function sendTicket() {
         <div class="mk"><svg viewBox="0 0 52 52">
           <circle cx="26" cy="26" r="22"/><path d="M16 27l7 7 14-14"/></svg></div>
         <h3>درخواست شما ثبت شد</h3>
-        <div class="tid">${d.ticket_id}</div>
+        <div class="tid">${esc(d.ticket_id)}</div>
         <p>این شماره را نگه دارید.<br>
            حداکثر تا <strong>۲۴ ساعت</strong> با شما تماس می‌گیریم.</p>
       </div>`;

@@ -1440,13 +1440,13 @@ async function loadAll() {
   document.getElementById('ticketsTable').innerHTML = t.tickets.length ? `
     <tr><th>شناسه</th><th>سفارش</th><th>محصول</th><th>توضیح</th><th>وضعیت</th><th>پاسخ</th></tr>
     ${t.tickets.map(x => `<tr>
-      <td dir="ltr" style="font-size:.78rem">${x.ticket_id}</td>
-      <td dir="ltr" style="font-size:.78rem">${x.order_id || '—'}</td>
+      <td dir="ltr" style="font-size:.78rem">${esc(x.ticket_id)}</td>
+      <td dir="ltr" style="font-size:.78rem">${esc(x.order_id || '—')}</td>
       <td>${esc(x.product_name || '—')}<div style="font-size:.72rem;color:var(--muted)">${toFa(x.volume_ml || 0)} میل</div></td>
       <td style="font-size:.78rem;max-width:220px">${esc((x.description || '').slice(0, 90)) || '—'}</td>
       <td><span class="badge ${x.status === 'ANSWERED' ? 'b-paid' : 'b-pending'}">
         ${x.status === 'ANSWERED' ? 'پاسخ داده شده' : 'در انتظار بررسی'}</span></td>
-      <td><button onclick="replyTicket('${x.ticket_id}')"
+      <td><button onclick="replyTicket(${esc(JSON.stringify(String(x.ticket_id ?? '')))})"
         style="background:var(--sand);border:1px solid var(--border);border-radius:7px;
         padding:5px 10px;cursor:pointer;font-size:.74rem;font-family:var(--font)">پاسخ</button></td>
     </tr>`).join('')}`
@@ -3435,7 +3435,7 @@ async function delCoupon(code) {
 async function replyTicket(id) {
   const reply = prompt('پاسخ به مشتری (پیامک ارسال می‌شود):');
   if (!reply || !reply.trim()) return;
-  const r = await fetch('/api/tickets/' + id, {
+  const r = await fetch('/api/tickets/' + encodeURIComponent(id), {
     method: 'PUT', headers: H(), body: JSON.stringify({ reply: reply.trim(), status: 'ANSWERED' })
   });
   const d = await r.json();
