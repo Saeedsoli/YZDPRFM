@@ -997,3 +997,4 @@ node_modules/   با npm install برمی‌گردد
 - `src/csv-export.js` — تولید سلول CSV و کاهش خطر فرمول در داده متنی؛ رفتار برنامه‌های صفحه‌گسترده متفاوت است.
 - `scripts/test_csv_export.js` — آزمون نقل‌قول CSV و خنثی‌سازی متن‌های شبیه فرمول.
 - `scripts/test_csv_export_http.py` — آزمون دو خروجی CSV با داده آزمایشی و احراز هویت روی دیتابیس موقت.
+- `scripts/test_admin_catalog_xss_browser.py` — آزمون مرورگر ایمنی نمایش و دکمه‌های محصولات، موجودی، مقالات و انتخاب محصول در پنل.
