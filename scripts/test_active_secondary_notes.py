@@ -3,7 +3,7 @@
 import json,os,sqlite3,subprocess,tempfile
 from pathlib import Path
 root=Path(__file__).resolve().parent.parent
-batch=os.environ.get('NOTE_TEST_BATCH','1');assert batch in ('1','2','3')
+batch=os.environ.get('NOTE_TEST_BATCH','1');assert batch in ('1','2','3','4')
 manifest=json.loads((root/f'seed/active_secondary_note_additions_v{batch}.json').read_text());ids={x['product_id'] for x in manifest['items']}
 with tempfile.TemporaryDirectory(prefix='secondary-active-notes-') as td:
  td=Path(td);base=td/'baseline.sqlite'

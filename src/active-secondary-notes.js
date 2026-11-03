@@ -5,6 +5,7 @@ const fs=require('fs');
 const VERSION='active_secondary_notes_2026_11_v1';
 const VERSION_2='active_secondary_notes_2026_11_v2';
 const VERSION_3='active_secondary_notes_2026_11_v3';
+const VERSION_4='active_secondary_notes_2026_11_v4';
 const BATCHES={
  [VERSION]:{
   'YZD-PROD-0591':'https://www.fragrantica.com/perfume/Xerjoff/Torino22-77059.html',
@@ -20,6 +21,11 @@ const BATCHES={
  [VERSION_3]:{
   'YZD-PROD-0921':'https://www.fragrantica.com/perfume/Nasomatto/Baraonda-40200.html',
   'YZD-PROD-0928':'https://www.fragrantica.com/perfume/Nasomatto/Fantomas-62775.html'
+ },
+ [VERSION_4]:{
+  'SUP-SH-900022':'https://www.fragrantica.com/perfume/Shiseido/Zen-1499.html',
+  'SUP-XJ-900007':'https://www.fragrantica.com/perfume/Xerjoff/Torino24-99380.html',
+  'YZD-PROD-0919':'https://www.fragrantica.com/perfume/Nasomatto/Black-Afgano-6472.html'
  }
 };
 // Keep normalization identical to the catalog index without importing db.js,
@@ -64,4 +70,4 @@ function apply(db,file,{indexExisting=false}={}){
   return {updated_ids:updated,skipped_ids:skipped};
  }).immediate();
 }
-module.exports={VERSION,VERSION_2,VERSION_3,apply,normalizeFa};
+module.exports={VERSION,VERSION_2,VERSION_3,VERSION_4,apply,normalizeFa};

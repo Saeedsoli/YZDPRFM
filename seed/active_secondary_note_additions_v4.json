@@ -1,0 +1,111 @@
+{
+  "version": "active_secondary_notes_2026_11_v4",
+  "description": "Carefully scoped independent reference notes; product prices and original identity evidence are unchanged.",
+  "items": [
+    {
+      "product_id": "SUP-SH-900022",
+      "slug": "shiseido-zen",
+      "expected_name_en": "SHISEIDO - Zen",
+      "expected_brand": "Shiseido",
+      "expected_concentration": null,
+      "expected_usd_per_kg": "176",
+      "expected_notice": "این محصول بازآفرینی دست‌ساز است و محصول اورجینال برند شیسیدو نیست.",
+      "official_identity_url": "https://www.shiseido.com/us/en/zen-eau-de-parfum-0768614102007.html",
+      "source_url": "https://www.fragrantica.com/perfume/Shiseido/Zen-1499.html",
+      "additional_independent_url": "https://www.lojaglamourosa.com/us/en/shiseido-shiseido-zen---edp--30ml-768614102007",
+      "source_note": "The independent listing calls the 2007 entry EDT, while the independent retailer identifies this same 0768614102007 presentation as EDP; the 2010 purple limited edition and Zen Essence are separate. The official 2007 product URL now returns not-found; original price evidence is unchanged.",
+      "provider": "Fragrantica",
+      "checked_date": "2026-11-03",
+      "notes": {
+        "top": [
+          "گریپ‌فروت",
+          "آناناس",
+          "ترنج",
+          "پرتقال",
+          "رز"
+        ],
+        "middle": [
+          "فریزیا",
+          "سیب قرمز",
+          "نیلوفر آبی",
+          "سنبل",
+          "گاردنیا",
+          "گل برف",
+          "بنفشه",
+          "زنبق"
+        ],
+        "base": [
+          "پچولی",
+          "سدر",
+          "مشک",
+          "کهربا",
+          "کندر",
+          "کاج"
+        ]
+      }
+    },
+    {
+      "product_id": "SUP-XJ-900007",
+      "slug": "xerjoff-torino24",
+      "expected_name_en": "XERJOFF - Torino24",
+      "expected_brand": "Xerjoff",
+      "expected_concentration": "EDP",
+      "expected_usd_per_kg": "330",
+      "expected_notice": "این محصول بازآفرینی دست‌ساز است و محصول اورجینال برند اصلی نیست. برند نت‌های رایحه مرجع را منتشر نکرده است؛ هویت و نسخه اسانس تأمین‌کننده مستقلاً تأیید نشده است.",
+      "official_identity_url": "https://www.xerjoff.com/en-us/products/torino24-eau-de-parfum-15ml",
+      "source_url": "https://www.fragrantica.com/perfume/Xerjoff/Torino24-99380.html",
+      "additional_independent_url": "https://www.osswaldnyc.com/products/jtc-torino-25",
+      "source_note": "Official current page deliberately keeps notes secret; Fragrantica and retailer agree on these tiers. Moss is omitted from the base because retailer narrative and tier list differ. Retailer URL ends torino-25 but its page title, image and text explicitly say Torino24.",
+      "provider": "Fragrantica",
+      "checked_date": "2026-11-03",
+      "notes": {
+        "top": [
+          "انبه",
+          "ترنج",
+          "نارنگی",
+          "آلو"
+        ],
+        "middle": [
+          "شکوفه پرتقال",
+          "نیلوفر صورتی",
+          "استیراکس"
+        ],
+        "base": [
+          "مشک سفید",
+          "پچولی"
+        ]
+      }
+    },
+    {
+      "product_id": "YZD-PROD-0919",
+      "slug": "nasomatto-black-afgano",
+      "expected_name_en": "NASOMATTO - Black Afgano",
+      "expected_brand": "Nasomatto",
+      "expected_concentration": "Extrait de Parfum",
+      "expected_usd_per_kg": "407",
+      "expected_notice": "این محصول بازآفرینی دست‌ساز است و محصول اورجینال برند اصلی نیست. نام رایحه مرجع از وب‌سایت رسمی برند بررسی شده؛ هویت و کیفیت اسانس تأمین‌کننده مستقلاً تأیید نشده است.",
+      "official_identity_url": "https://nasomatto.com/products/black-afgano",
+      "source_url": "https://www.fragrantica.com/perfume/Nasomatto/Black-Afgano-6472.html",
+      "additional_independent_url": "https://www.maxaroma.com/fragrance/niche-fragrances/nasomatto-black-afgano/pid/14214/2",
+      "source_note": "Independent retailer supports these reference notes and their tiers; other Fragrantica notes are intentionally omitted. Accord labels describe scent, not the handmade ingredients.",
+      "provider": "Fragrantica",
+      "checked_date": "2026-11-03",
+      "notes": {
+        "top": [
+          "آکورد شاهدانه",
+          "نت‌های سبز"
+        ],
+        "middle": [
+          "رزین‌ها",
+          "نت‌های چوبی",
+          "آکورد تنباکو",
+          "آکورد قهوه"
+        ],
+        "base": [
+          "آکورد عود",
+          "کندر"
+        ]
+      }
+    }
+  ]
+}

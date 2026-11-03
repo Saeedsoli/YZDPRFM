@@ -69,7 +69,7 @@ SUP-RD-900001,roja-elysium-pour-homme-edp,روژا داو,الیسیوم مرد�
 SUP-RL-900020,ralph-lauren-polo-black,رالف لورن,پولو بلک,candidate_match,official_candidate,supplier_verified_supplement.json,https://www.ralphlaurenfragrances.com/en_US/men/polo-black/polo-black-eau-de-toilette/RLFE012.html
 SUP-SE-900001,seris-splendor,سریس,اسپلندور,no_pyramid_notes,,,
 SUP-SF-900001,salvatore-ferragamo-signorina-edp,سالواتوره فراگامو,سیگنورینا,candidate_match,official,official_supplement_v27.json,https://www.ferragamo.com/shop/esp/es/mujer/fragancias/signorina-781424--5
-SUP-SH-900022,shiseido-zen,شیسیدو,زن,no_pyramid_notes,,,
+SUP-SH-900022,shiseido-zen,شیسیدو,زن,candidate_match,independent,active_secondary_note_additions_v4.json,https://www.fragrantica.com/perfume/Shiseido/Zen-1499.html
 SUP-SP-900050,sapil-nice-feelings-black,ساپیل,نایس فیلینگ بلک,candidate_match,official,official_supplement_v20.json,https://sapil.com/products/nice_feeling_black
 SUP-TB-900003,the-body-shop-black-musk-edp,بادی شاپ,بلک ماسک ادوپرفیوم,no_pyramid_notes,,,
 SUP-TP-910001,memo-paris-jamals-palace,ممو پاریس,جمالز پالاس,candidate_match,independent,secondary_supplement_v1.json,https://www.fragrantica.com/perfume/Memo-Paris/Jamal-s-Palace-60077.html
@@ -125,7 +125,7 @@ SUP-VS-900002,versace-eros-men-edp,ورساچه,اروس مردانه ادوپر
 SUP-VS-900021,victorias-secret-bombshell,ویکتوریا سکرت,بامب شل,no_pyramid_notes,,,
 SUP-VS-900030,victorias-secret-very-sexy,ویکتوریا سکرت,وری سکسی,no_pyramid_notes,,,
 SUP-VS-900032,victorias-secret-aqua-kiss,ویکتوریا سکرت,آکوا کیس,candidate_match,official_candidate,supplier_verified_supplement.json,https://www.victoriassecret.com/ca/vs/beauty-catalog/5000011041?genericId=11259203&choice=4760
-SUP-XJ-900007,xerjoff-torino24,زرژوف,تورینو ۲۴,no_pyramid_notes,,,
+SUP-XJ-900007,xerjoff-torino24,زرژوف,تورینو ۲۴,candidate_match,independent,active_secondary_note_additions_v4.json,https://www.fragrantica.com/perfume/Xerjoff/Torino24-99380.html
 YZD-PROD-0031,parfums-de-marly-akaster,پارفومز د مارلی,آکاستر,candidate_match,independent,secondary_note_corrections_v1.json,https://www.fragrantica.com/perfume/Parfums-de-Marly/Akaster-33513.html
 YZD-PROD-0032,parfums-de-marly-nisean,پارفومز د مارلی,نیسین,candidate_match,independent,secondary_note_corrections_v1.json,https://www.fragrantica.com/perfume/Parfums-de-Marly/Nisean-36540.html
 YZD-PROD-0089,jean-paul-gaultier-kokorico,ژان پل گوتیه,کوکوریکو,candidate_match,independent,secondary_note_corrections_v1.json,https://www.fragrantica.com/perfume/Jean-Paul-Gaultier/Kokorico-12711.html
@@ -179,7 +179,7 @@ YZD-PROD-0684,kilian-paris-moonlight-in-heaven,کیلیان,مون لایت ای
 YZD-PROD-0688,kilian-paris-good-girl-gone-bad,کیلیان,گود گرل گان بد,no_pyramid_notes,,,
 YZD-PROD-0756,bdk-parfums-gris-charnel-edp,بی دی کی پارفومز,گریس شارنل ادوپرفیوم,candidate_match,official,official_note_corrections_v23.json,https://us.bdkparfums.com/products/gris-charnel
 YZD-PROD-0781,marc-antoine-barrois-ganymede-edp,مارک آنتوان باروآ,گانیمد ادوپرفیوم,no_pyramid_notes,,,
-YZD-PROD-0919,nasomatto-black-afgano,ناسوماتو,بلک افغان,no_pyramid_notes,,,
+YZD-PROD-0919,nasomatto-black-afgano,ناسوماتو,بلک افغان,candidate_match,independent,active_secondary_note_additions_v4.json,https://www.fragrantica.com/perfume/Nasomatto/Black-Afgano-6472.html
 YZD-PROD-0921,nasomatto-baraonda,ناسوماتو,بارائوندا,no_pyramid_notes,,,
 YZD-PROD-0925,nasomatto-hindu-grass,ناسوماتو,هیندو گراس,no_pyramid_notes,,,
 YZD-PROD-0928,nasomatto-fantomas,ناسوماتو,فانتوماس,no_pyramid_notes,,,
