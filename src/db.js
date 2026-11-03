@@ -2679,6 +2679,9 @@ const isFreshInstallation = !DB_WAS_EXISTING && db.prepare('SELECT COUNT(*) AS c
 // require the explicit backup-first migration; no historical reservation is inferred.
 if (isFreshInstallation) stockReservations.install(db);
 if (isFreshInstallation) require('./customer-phone-verification').install(db);
+// Account-return schema is installed only on genuinely fresh stores; older
+// stores require an explicit, backup-first offline migration.
+if (isFreshInstallation) require('./return-store').install(db);
 // Historical order reporting remains valid after retired SKUs leave the catalog.
 require('./variant-history').ensureVariantHistory(db);
 // Storage only: rates do not change prices until an explicit, atomic reprice.
