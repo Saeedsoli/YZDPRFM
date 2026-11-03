@@ -41,6 +41,7 @@ shots/
 .deploytest/
 
 # ── اسرار ──
+.ssh/
 .env
 .env.*
 .git/

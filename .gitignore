@@ -20,6 +20,7 @@ data/pre-restore-*.db
 
 # ── اسرار ──
 # رمز مدیر، کلید پیامک، شناسه درگاه — هرگز در مخزن
+.ssh/
 .env
 .env.*
 !.env.example

@@ -42,6 +42,7 @@ if [ "$(realpath -m "${DB_PATH:-}")" != "$STAGE_ROOT/data/yazd.db" ]; then echo 
 # This is a preflight check, not a runtime importer guard.
 if ! python3 scripts/test_supplier_coverage.py; then echo 'Supplier reconciliation preflight failed' >&2; exit 1; fi
 if ! python3 scripts/test_audit_reference_notes.py; then echo 'Reference note audit preflight failed' >&2; exit 1; fi
+if ! python3 scripts/test_secret_exclusion.py; then echo 'Secret exclusion preflight failed' >&2; exit 1; fi
 # Do not kill unrelated servers or accidentally hit an existing service.
 if ! python3 -c 'import socket; s=socket.socket(); s.bind(("127.0.0.1",3000)); s.close()'; then echo 'Port 3000 is occupied; refusing to run' >&2; exit 2; fi
 MAINPID= BRPID= LNKPID=
