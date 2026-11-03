@@ -46,7 +46,15 @@ https.request=(opt,cb)=>{const q=new EventEmitter();let body='';q.write=x=>{body
    c=sqlite3.connect(db);assert c.execute("select status from orders where order_id='HIST-PENDING'").fetchone()[0]=='PENDING';assert c.execute('select stock from variants where sku=?',(sku,)).fetchone()[0]==stock;c.close()
    # No fake OTP success or code logging when SMS is unconfigured in production.
    code,msg,_=api(port,'POST','/api/auth/request-code',{'mobile':'09120001234'});assert code==400 and 'dev_mode' not in msg
-   c=sqlite3.connect(db);assert c.execute("select count(*) from otp_codes where mobile='09120001234'").fetchone()[0]==0;c.close();out.flush();assert '[OTP]' not in log.read_text()
+   c=sqlite3.connect(db);assert c.execute("select count(*) from otp_codes where mobile='09120001234'").fetchone()[0]==0
+   # Inject only a test code into this disposable DB to exercise the production
+   # cookie flags without pretending an SMS was sent.
+   now=int(time.time()*1000);c.execute("insert into otp_codes(mobile,code,expires_at,last_sent,attempts) values('09120001234','24680',?,?,0)",(now+120000,now));c.commit();c.close()
+   code,customer_login,customer_headers=api(port,'POST','/api/auth/verify-code',{'mobile':'09120001234','code':'24680'},extra_headers={'X-Customer-Cookie-Only':'1'})
+   assert code==200 and 'token' not in json.loads(customer_login)
+   customer_cookie=customer_headers.get('Set-Cookie','');assert all(x in customer_cookie for x in ['HttpOnly','SameSite=Lax','Secure']),customer_cookie
+   me_code,me_body,_=api(port,'GET','/api/auth/me',extra_headers={'Cookie':customer_cookie.split(';',1)[0]});assert me_code==200 and json.loads(me_body)['authenticated']
+   out.flush();assert '[OTP]' not in log.read_text()
    code,login,headers=api(port,'POST','/api/admin/login',{'username':'owner','password':'Isolated-Production-3827'});assert code==200;token=json.loads(login)['token']
    cookie=headers.get('Set-Cookie','');assert all(x in cookie for x in ['yazd_admin=', 'HttpOnly', 'SameSite=Lax', 'Secure']),cookie
    assert headers.get('Cache-Control')=='no-store',headers

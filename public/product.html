@@ -974,7 +974,7 @@ function paintWish() {
 }
 
 async function toggleWish() {
-  if (!YazdAuth.token()) {
+  if (!(await YazdAuth.check()).authenticated) {
     location.href = '/login?next=' + encodeURIComponent(location.pathname);
     return;
   }
@@ -1145,7 +1145,8 @@ async function submitReview() {
 
 /* ── اطلاع موجود شدن ── */
 async function notifyMe(sku) {
-  let mobile = YazdAuth.mobile();
+  const me=await YazdAuth.check();
+  let mobile = me.authenticated ? me.mobile : null;
   if (!mobile) {
     mobile = prompt('شماره موبایل برای اطلاع‌رسانی:');
     if (!mobile) return;

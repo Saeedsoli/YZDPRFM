@@ -30,7 +30,7 @@ with tempfile.TemporaryDirectory(prefix='yazd-wishlist-') as tmp:
         with sync_playwright() as pw:
             browser=pw.chromium.launch(headless=True,args=['--no-sandbox']);page=browser.new_page(viewport={'width':390,'height':844});errors=[]
             page.on('pageerror',lambda e:errors.append(str(e)))
-            page.goto(base+'/');page.evaluate("token=>{localStorage.setItem('yazd_customer_token',token);localStorage.setItem('yazd_customer_mobile','09120001234')}",token)
+            page.context.add_cookies([{'name':'yazd_customer','value':token,'url':base,'httpOnly':True,'sameSite':'Lax'}])
             page.goto(base+'/wishlist',wait_until='domcontentloaded')
             expect(page.locator('.wish-card')).to_have_count(4)
             for pid in ['YZD-PROD-0429','YZD-PROD-0430','YZD-PROD-0432']:

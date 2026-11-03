@@ -38,7 +38,7 @@ with tempfile.TemporaryDirectory(prefix='yazd-generic-browser-') as td:
     page.locator('#addBtn').click();page.goto(base+'/cart',wait_until='domcontentloaded');expect(page.locator('#wrap')).to_contain_text('تصویر نمادین است')
     assert page.evaluate('document.documentElement.scrollWidth <= innerWidth + 1'),('overflow',width)
     page.goto(base+'/samples',wait_until='domcontentloaded');expect(page.locator('.sc').first).to_be_visible();html=page.evaluate("p=>card({...p,sample_price:1000})",p);assert 'تصویر نمادین' in html
-    page.evaluate("token=>{localStorage.setItem('yazd_customer_token',token);localStorage.setItem('yazd_customer_mobile','09120001234')}",token);page.goto(base+'/wishlist',wait_until='domcontentloaded');expect(page.locator('.wish-card').first).to_be_visible();expect(page.locator('.wish-card .card-illustrative').first).to_have_text('تصویر نمادین')
+    page.context.add_cookies([{'name':'yazd_customer','value':token,'url':base,'httpOnly':True,'sameSite':'Lax'}]);page.goto(base+'/wishlist',wait_until='domcontentloaded');expect(page.locator('.wish-card').first).to_be_visible();expect(page.locator('.wish-card .card-illustrative').first).to_have_text('تصویر نمادین')
     assert not errors,errors;page.close()
    browser.close()
   print('PASS mobile/desktop: image disclosure, real image loading, search MTO, product, cart, sample and wishlist')

@@ -17,7 +17,7 @@ with tempfile.TemporaryDirectory(prefix='checkout-profile-browser-') as td:
   else:raise RuntimeError('server did not start')
   profile={'customer_name':'مریم احمدی','first_name':'مریم','last_name':'احمدی','email':'fixture@example.test','province':'یزد','city':'یزد','address':'<img src=x onerror="window.__profileXss=1">','postal_code':'8916100000'}
   item={'sku':'TEST-SKU','name':'رایحه آزمون','price':100000,'quantity':1,'image':'/images/products/variant-sample.jpg'}
-  init="""localStorage.setItem('yazd_customer_token','verified-fixture');localStorage.setItem('yazd_cart_v1',CART);
+  init="""localStorage.setItem('yazd_cart_v1',CART);
   const originalFetch=window.fetch.bind(window);window.fetch=(u,o)=>{
    if(String(u)==='/api/auth/checkout-profile'){
     window.__profileHeaders=o.headers;return new Promise(resolve=>{window.__releaseProfile=()=>resolve(new Response(PROFILE,{status:200,headers:{'Content-Type':'application/json'}}))});
@@ -34,7 +34,7 @@ with tempfile.TemporaryDirectory(prefix='checkout-profile-browser-') as td:
       if u.path=='/api/auth/me':return r.fulfill(status=200,content_type='application/json',body='{"authenticated":true,"mobile":"09120001111"}')
       if u.path=='/api/cart/calculate':return r.fulfill(status=200,content_type='application/json',body='{"discount":0,"campaign_discount":0,"campaign_lines":[],"shipping_fee":100000,"shipping_label":"ارسال","gift_wrap_fee":0,"total_payable":200000}')
       return r.continue_()
-     page.route('**/*',route);page.add_init_script(init);page.goto(base+'/checkout',wait_until='domcontentloaded');expect(page.locator('#fMobile')).to_have_value('09120001111')
+     page.route('**/*',route);context.add_cookies([{'name':'yazd_customer','value':'c'*48,'url':base,'httpOnly':True,'sameSite':'Lax'}]);page.add_init_script(init);page.goto(base+'/checkout',wait_until='domcontentloaded');expect(page.locator('#fMobile')).to_have_value('09120001111')
      page.wait_for_function('typeof window.__releaseProfile === "function"')
      if touched:
       page.locator('#fFirst').fill('نام دلخواه');page.locator('#fCity').fill('تهران')
@@ -47,7 +47,8 @@ with tempfile.TemporaryDirectory(prefix='checkout-profile-browser-') as td:
       expect(page.locator('#fPostal')).to_have_value('')
      else:
       expect(page.locator('#fFirst')).to_have_value('مریم');expect(page.locator('#fCity')).to_have_value('یزد');expect(page.locator('#fAddress')).to_have_value(profile['address']);expect(page.locator('#fPostal')).to_have_value('8916100000')
-     assert page.evaluate("window.__profileHeaders['X-Customer-Token']")=='verified-fixture'
+     assert page.evaluate("Object.keys(window.__profileHeaders).length") == 0
+     assert any(c['name']=='yazd_customer' and c['httpOnly'] for c in context.cookies())
      assert page.evaluate('window.__profileXss || 0')==0 and not errors,errors
      assert page.evaluate('document.documentElement.scrollWidth <= innerWidth + 1')
      context.close()

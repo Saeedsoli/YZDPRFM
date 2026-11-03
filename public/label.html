@@ -107,6 +107,7 @@ const oid = new URLSearchParams(location.search).get('order');
 function headers() {
   // Same-origin requests carry the administrator's HttpOnly cookie.
   localStorage.removeItem('yazd_admin_token');
+  localStorage.removeItem('yazd_customer_token');
   return {};
 }
 

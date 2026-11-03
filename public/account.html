@@ -148,8 +148,7 @@
 document.getElementById('hdr').innerHTML = renderHeader();
 document.getElementById('ftr').innerHTML = renderFooter();
 
-const TOKEN = localStorage.getItem('yazd_customer_token');
-const H = { 'X-Customer-Token': TOKEN || '' };
+const H = {}; // Same-origin requests carry the customer's HttpOnly cookie.
 const ST = {
   PENDING:['در انتظار پرداخت','b-pending'], VERIFYING:['در حال بررسی پرداخت','b-pending'], PAID:['پرداخت شده','b-paid'],
   PROCESSING:['در حال آماده‌سازی','b-pending'], SHIPPED:['ارسال شده','b-pending'],
@@ -181,13 +180,8 @@ function progressBar(status) {
 }
 
 async function init() {
-  if (!TOKEN) return location.href = '/login?next=/account';
-
-  const me = await fetch('/api/auth/me', { headers: H }).then(r => r.json());
-  if (!me.authenticated) {
-    localStorage.removeItem('yazd_customer_token');
-    return location.href = '/login?next=/account';
-  }
+  const me = await YazdAuth.check();
+  if (!me.authenticated) return location.href = '/login?next=/account';
 
   document.getElementById('accMobile').textContent = me.mobile;
   document.getElementById('stats').innerHTML = `
@@ -271,7 +265,6 @@ async function init() {
 
 async function logout() {
   await fetch('/api/auth/logout', { method: 'POST', headers: H });
-  localStorage.removeItem('yazd_customer_token');
   localStorage.removeItem('yazd_customer_mobile');
   location.href = '/';
 }

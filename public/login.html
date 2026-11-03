@@ -308,9 +308,9 @@ function showView(v) {
 }
 
 /** ذخیره نشست و رفتن به مقصد */
-function afterAuth(d) {
-  localStorage.setItem('yazd_customer_token', d.token);
-  localStorage.setItem('yazd_customer_mobile', d.customer.mobile);
+async function afterAuth() {
+  const session=await YazdAuth.check();
+  if(!session.authenticated)throw new Error('نشست برقرار نشد؛ تنظیمات کوکی مرورگر را بررسی کنید.');
   location.href = RETURN_TO;
 }
 
@@ -326,12 +326,12 @@ async function doLogin() {
   btn.disabled = true; btn.textContent = 'در حال ورود…';
   try {
     const r = await fetch('/api/auth/login', {
-      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      method: 'POST', headers: { 'Content-Type': 'application/json', 'X-Customer-Cookie-Only': '1' },
       body: JSON.stringify({ mobile, password })
     });
     const d = await r.json();
     if (!r.ok) throw new Error(d.error || 'ورود ناموفق');
-    afterAuth(d);
+    await afterAuth();
   } catch (e) {
     showErr(e.message);
     btn.disabled = false; btn.textContent = 'ورود';
@@ -365,10 +365,10 @@ async function doRegister() {
   if(!/^\d{5}$/.test(code))return showErr('کد تأیید ۵ رقمی را وارد کنید.');
   const btn=$('rgBtn');btn.disabled=true;btn.textContent='در حال ساخت حساب…';
   try {
-    const r=await fetch('/api/auth/register',{method:'POST',headers:{'Content-Type':'application/json'},
+    const r=await fetch('/api/auth/register',{method:'POST',headers:{'Content-Type':'application/json','X-Customer-Cookie-Only':'1'},
       body:JSON.stringify({first_name:data.first,last_name:data.last||undefined,mobile:data.mobile,password:data.password,code})});
     const d=await r.json();if(!r.ok)throw new Error(d.error||'ثبت‌نام ناموفق');
-    afterAuth(d);
+    await afterAuth();
   } catch(e) {showErr(e.message);btn.disabled=false;btn.textContent='تأیید و ساخت حساب';}
 }
 
@@ -389,9 +389,9 @@ async function doOtpVerify() {
   if(!otpLoginMobile||!/^\d{5}$/.test(code))return showErr('کد تأیید ۵ رقمی را وارد کنید.');
   const btn=$('otpVerifyBtn');btn.disabled=true;btn.textContent='در حال بررسی…';
   try {
-    const r=await fetch('/api/auth/verify-code',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({mobile:otpLoginMobile,code})});
+    const r=await fetch('/api/auth/verify-code',{method:'POST',headers:{'Content-Type':'application/json','X-Customer-Cookie-Only':'1'},body:JSON.stringify({mobile:otpLoginMobile,code})});
     const d=await r.json();if(!r.ok)throw new Error(d.error||'تأیید ناموفق بود.');
-    afterAuth({token:d.token,customer:{mobile:d.mobile}});
+    await afterAuth();
   } catch(e) {showErr(e.message);btn.disabled=false;btn.textContent='تأیید و ورود';}
 }
 
@@ -451,13 +451,13 @@ async function doReset() {
   btn.disabled = true; btn.textContent = 'در حال ثبت…';
   try {
     const r = await fetch('/api/auth/reset-password', {
-      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      method: 'POST', headers: { 'Content-Type': 'application/json', 'X-Customer-Cookie-Only': '1' },
       body: JSON.stringify({ mobile: resetMobile, code, new_password: pw })
     });
     const d = await r.json();
     if (!r.ok) throw new Error(d.error || 'خطا');
     clearInterval(resendTimer);
-    afterAuth(d);
+    await afterAuth();
   } catch (e) {
     showErr(e.message);
     btn.disabled = false; btn.textContent = 'ثبت رمز تازه';
@@ -473,10 +473,8 @@ $('otpCode').addEventListener('keydown', e => { if (e.key === 'Enter') doOtpVeri
 $('fgMobile').addEventListener('keydown', e => { if (e.key === 'Enter') doForgot(); });
 $('rsPass').addEventListener('keydown', e => { if (e.key === 'Enter') doReset(); });
 
-// اگر از قبل وارد شده، مستقیم به حساب
-if (localStorage.getItem('yazd_customer_token')) {
-  YazdAuth.check().then(m => { if (m.authenticated) location.href = RETURN_TO; });
-}
+// اگر کوکی معتبر از قبل وجود دارد، مستقیم به مقصد برو.
+YazdAuth.check().then(m => { if (m.authenticated) location.href = RETURN_TO; });
 </script>
 </body>
 </html>

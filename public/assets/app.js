@@ -585,7 +585,7 @@ const YazdTaste = {
     const body = local ? { answers: local.answers } : {};
 
     // مهمان بدون پروفایل محلی: درخواست بی‌فایده به سرور نزنیم
-    if (!local && !YazdAuth.token()) return 0;
+    if (!local && !(await YazdAuth.check()).authenticated) return 0;
 
     let d;
     try {
@@ -625,7 +625,7 @@ const YazdTaste = {
     box.querySelector('.taste-clear').onclick = async () => {
       this.clear();
       // برای کاربر واردشده، نسخه سرور هم پاک شود
-      if (YazdAuth.token()) {
+      if ((await YazdAuth.check()).authenticated) {
         try {
           await fetch('/api/taste/profile', {
             method: 'DELETE', headers: YazdAuth.headers()
@@ -642,21 +642,16 @@ const YazdTaste = {
 };
 
 /* ── وضعیت ورود مشتری ── */
+// Remove the old readable credential; a valid HttpOnly cookie survives this.
+// If only the old token exists, the customer must sign in again.
+try { localStorage.removeItem('yazd_customer_token'); localStorage.removeItem('yazd_customer_mobile'); } catch {}
 const YazdAuth = {
-  token() { return localStorage.getItem('yazd_customer_token'); },
-  mobile() { return localStorage.getItem('yazd_customer_mobile'); },
-  headers() { const t = this.token(); return t ? { 'X-Customer-Token': t } : {}; },
+  headers() { return {}; }, // Same-origin fetch carries the HttpOnly cookie.
   async check() {
-    const t = this.token();
-    if (!t) return { authenticated: false };
     try {
-      const r = await fetch('/api/auth/me', { headers: this.headers() });
-      const d = await r.json();
-      if (!d.authenticated) {
-        localStorage.removeItem('yazd_customer_token');
-        localStorage.removeItem('yazd_customer_mobile');
-      }
-      return d;
+      const r = await fetch('/api/auth/me');
+      if (!r.ok) return { authenticated: false };
+      return await r.json();
     } catch { return { authenticated: false }; }
   }
 };

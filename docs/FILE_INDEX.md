@@ -981,6 +981,7 @@ node_modules/   با npm install برمی‌گردد
 - `scripts/test_image_upload_security.js` — آزمون ساختار، محدودیت اندازه و جلوگیری از بازنویسی فایل.
 - `scripts/test_admin_cookie_session_browser.py` — آزمون نشست HttpOnly، بازخوانی پنل، فاکتور، برچسب و خروج.
 - `scripts/test_admin_cookie_session.py` — آزمون نشست کوکی و سازگاری توکن API در دیتابیس موقت.
+- `scripts/test_customer_cookie_session.py` — آزمون نشست مشتری، چهار مسیر ورود و سازگاری توکن API.
 - `scripts/test_checkout_profile_browser.py` — آزمون تکمیل فرم و جلوگیری از بازنویسی ورودی مشتری.
 - `scripts/test_login_redirect_safety.js` — جلوگیری از انتقال خارجی یا اجرای نشانی خطرناک پس از ورود.
 - `scripts/test_seo_html_safety.js` — محافظت داده‌های ساختاریافته و ویژگی‌های HTML در رندر سمت سرور.

@@ -35,7 +35,7 @@ with tempfile.TemporaryDirectory(prefix='catalog-cards-xss-') as td:
      if url.path=='/api/products' and urllib.parse.parse_qs(url.query).get('q')==['fixture']:
       return r.fulfill(status=200,content_type='application/json',body=json.dumps({'products':[product],'total':1},ensure_ascii=False))
      return r.continue_()
-    page.route('**/*',route);page.add_init_script("localStorage.setItem('yazd_customer_token','test-token')")
+    page.route('**/*',route);context.add_cookies([{'name':'yazd_customer','value':'c'*48,'url':base,'httpOnly':True,'sameSite':'Lax'}])
     page.goto(base+'/',wait_until='domcontentloaded');expect(page.locator('.product-card').first).to_be_visible()
     page.evaluate("p => { document.querySelector('#grid').innerHTML=productCard(p); }",product)
     card=page.locator('#grid .product-card');expect(card.locator('.card-title')).to_contain_text(payload)
@@ -50,7 +50,8 @@ with tempfile.TemporaryDirectory(prefix='catalog-cards-xss-') as td:
     page.evaluate("p => {document.querySelector('#grid').innerHTML=card(p)}",product)
     expect(page.locator('#grid .nm')).to_contain_text(payload);assert page.locator('#grid .nm img').count()==0
     assert page.locator('#grid .sc img').get_attribute('src')==image and page.locator('#grid .sc img').get_attribute('onerror') is None
-    page.goto(base+'/quiz',wait_until='domcontentloaded');page.evaluate("p=>{results=[p];renderResults()}",product)
+    page.goto(base+'/quiz',wait_until='domcontentloaded');page.wait_for_function("document.querySelector('#quizCard').children.length > 0")
+    page.evaluate("p=>{results=[p];renderResults()}",product)
     expect(page.locator('.quiz-result-name')).to_contain_text(payload);assert page.locator('.quiz-result-name img,.quiz-result-notes img,.quiz-result-brand img').count()==0
     assert page.locator('.quiz-result-card img').get_attribute('src')==image and page.locator('.quiz-result-card img').get_attribute('onerror') is None
     page.goto(base+'/wishlist',wait_until='domcontentloaded');expect(page.locator('.wish-card')).to_be_visible()

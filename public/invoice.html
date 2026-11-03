@@ -175,8 +175,8 @@ const oid = new URLSearchParams(location.search).get('order');
 function headers() {
   // Administrator authentication is carried by the HttpOnly cookie.
   localStorage.removeItem('yazd_admin_token');
-  const c = localStorage.getItem('yazd_customer_token');
-  return c ? { 'X-Customer-Token': c } : {};
+  localStorage.removeItem('yazd_customer_token');
+  return {};
 }
 
 async function load() {

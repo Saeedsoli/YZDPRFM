@@ -299,14 +299,10 @@ async def main():
 
                 # ورود مشتری فقط برای نماهایی که لازمش دارند
                 if need == "auth" and cust_tok:
-                    await page.evaluate(
-                        "([t, m]) => { localStorage.setItem('yazd_customer_token', t);"
-                        " localStorage.setItem('yazd_customer_mobile', m); }",
-                        [cust_tok, cust_mob])
+                    await ctx.add_cookies([{'name':'yazd_customer','value':cust_tok,'url':BASE,'httpOnly':True,'sameSite':'Lax'}])
                 elif need != "auth":
-                    await page.evaluate(
-                        "() => { localStorage.removeItem('yazd_customer_token');"
-                        " localStorage.removeItem('yazd_customer_mobile'); }")
+                    await ctx.clear_cookies(name='yazd_customer')
+                    await page.evaluate("() => localStorage.removeItem('yazd_customer_mobile')")
 
                 url = BASE + path
                 out = f"{view_name}-{name}"

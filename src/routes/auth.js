@@ -82,6 +82,9 @@ async function handle(ctx) {
     res.setHeader('Cache-Control','no-store');
     res.setHeader('Set-Cookie',`yazd_customer=${token}; HttpOnly; Path=/; Max-Age=${otp.SESSION_TTL / 1000}; SameSite=Lax${secure}`);
   }
+  // Browser UI requests a cookie-only response; token-based API clients keep
+  // the existing response for backward compatibility.
+  const apiToken=token=>req.headers['x-customer-cookie-only']==='1'?{}:{token};
 
   if (method === 'POST' && pathname === '/api/auth/register') {
     const b = await parseBody(req);
@@ -132,7 +135,7 @@ async function handle(ctx) {
     issueCustomerCookie(result.token);
     appLog('INFO','auth','حساب مشتری با تأیید شماره ثبت شد',{mobile});
     analytics.track('register',null,null,req);
-    return sendJSON(result.status,{message:`خوش آمدید ${first}!`,token:result.token,customer:result.customer});
+    return sendJSON(result.status,{message:`خوش آمدید ${first}!`,...apiToken(result.token),customer:result.customer});
   }
 
   /** ورود با شماره موبایل و رمز */
@@ -183,7 +186,7 @@ async function handle(ctx) {
     if(phoneKey)resetRateLimit(phoneKey);
     issueCustomerCookie(auth.token);
     appLog('INFO','auth','ورود موفق مشتری',{mobile});
-    return sendJSON(200,{message:'ورود موفق',token:auth.token,customer:auth.customer});
+    return sendJSON(200,{message:'ورود موفق',...apiToken(auth.token),customer:auth.customer});
   }
 
   /**
@@ -253,7 +256,7 @@ async function handle(ctx) {
     if(result.error)return sendJSON(result.status,{error:result.error});
     issueCustomerCookie(result.token);
     appLog('INFO','auth','رمز مشتری با تأیید شماره بازیابی شد',{mobile});
-    return sendJSON(200,{message:'رمز عبور شما تغییر کرد.',token:result.token,customer:result.customer});
+    return sendJSON(200,{message:'رمز عبور شما تغییر کرد.',...apiToken(result.token),customer:result.customer});
   }
 
   if (method === 'POST' && pathname === '/api/auth/request-code') {
@@ -295,7 +298,7 @@ async function handle(ctx) {
     const r = otp.verifyCode(b.mobile, b.code);
     if (!r.ok) return sendJSON(400, { error: r.error });
     issueCustomerCookie(r.token);
-    return sendJSON(200, { message: 'ورود موفق', token: r.token, mobile: r.mobile });
+    return sendJSON(200, { message: 'ورود موفق', ...apiToken(r.token), mobile: r.mobile });
   }
 
   if (method === 'GET' && pathname === '/api/auth/me') {
