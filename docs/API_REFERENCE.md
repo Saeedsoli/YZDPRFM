@@ -347,7 +347,7 @@ JSON با `charset=utf-8` هستند؛ فایل‌های دانلود و جری�
 
 در حالت `SMS_PROVIDER=console` کد در لاگ سرور چاپ می‌شود.
 
-### `POST /api/auth/verify-code` · `GET /api/auth/me` · `GET /api/auth/orders` · `POST /api/auth/logout`
+### `POST /api/auth/verify-code` · `GET /api/auth/me` · `GET /api/auth/orders` · `GET /api/auth/checkout-profile` · `POST /api/auth/logout`
 
 ---
 
@@ -743,8 +743,8 @@ Content-Disposition: attachment; filename="yazd-report-30d-2026-08-08.csv"
 ```
 پس از موفقیت، همه نشست‌های دیگر آن مشتری باطل می‌شوند.
 
-### `GET /api/auth/me` · `GET /api/auth/orders` · `POST /api/auth/logout`
-نیازمند هدر `Authorization: Bearer <token>`.
+### `GET /api/auth/me` · `GET /api/auth/orders` · `GET /api/auth/checkout-profile` · `POST /api/auth/logout`
+نشست مشتری از هدر `X-Customer-Token` یا کوکی مشتری خوانده می‌شود. `checkout-profile` فقط برای شماره تأییدشده، فیلدهای لازم از آخرین سفارش پرداخت‌شده را با `Cache-Control: no-store` برمی‌گرداند؛ سفارش لغوشده یا پرداخت‌نشده مبنای تکمیل فرم نیست.
 
 ---
 

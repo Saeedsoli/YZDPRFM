@@ -313,6 +313,17 @@ async function handle(ctx) {
     return sendJSON(200, { message: 'خروج انجام شد' });
   }
 
+  // Only the verified owner can read the fields needed to prefill checkout.
+  // Unpaid/cancelled guest orders must not become a default address.
+  if (method === 'GET' && pathname === '/api/auth/checkout-profile') {
+    const mobile=otp.mobileFromToken(getCustomerToken(req));
+    if(!mobile)return sendJSON(401,{error:'ابتدا شماره موبایل را تأیید کنید.'});
+    const row=db.prepare(`SELECT customer_name,first_name,last_name,email,province,city,address,postal_code
+      FROM orders WHERE mobile=? AND status IN ('PAID','PROCESSING','SHIPPED','DELIVERED')
+      ORDER BY created_at DESC,rowid DESC LIMIT 1`).get(mobile);
+    return sendJSON(200,{profile:row || null});
+  }
+
   // سفارش‌های من — نیازمند ورود
   if (method === 'GET' && pathname === '/api/auth/orders') {
     const mobile = otp.mobileFromToken(getCustomerToken(req));

@@ -429,6 +429,19 @@ renderSummary();
   }
 }
 
+// Do not let a slow profile response overwrite anything the customer has
+// started typing or deliberately cleared.
+const prefillIds=['fFirst','fLast','fEmail','fProvince','fCity','fAddress','fPostal'];
+for(const id of prefillIds){
+  const el=document.getElementById(id);
+  const touched=()=>{el.dataset.userTouched='1';};
+  el.addEventListener('input',touched);el.addEventListener('change',touched);
+}
+function prefillIfUntouched(id,value){
+  const el=document.getElementById(id);
+  if(value && !el.value.trim() && !el.dataset.userTouched && document.activeElement!==el)el.value=value;
+}
+
 (async () => {
   const me = await YazdAuth.check();
   if (me.authenticated) {
@@ -438,23 +451,16 @@ renderSummary();
     f.style.background = 'var(--sand)';
     f.insertAdjacentHTML('afterend',
       '<div class="hint" style="color:#1E8449">✓ با حساب کاربری شما ثبت می‌شود</div>');
-    // آخرین نشانی
+    // Last paid order only; the server exposes no admin notes or order details.
     try {
-      const d = await fetch('/api/auth/orders', { headers: YazdAuth.headers() }).then(r => r.json());
-      const last = d.orders?.[0];
+      const r=await fetch('/api/auth/checkout-profile',{headers:YazdAuth.headers()});
+      if(!r.ok)throw Error('Profile unavailable');
+      const last=(await r.json()).profile;
       if (last) {
-        /* سفارش‌های قدیمی نام را یکجا ذخیره کرده‌اند. اگر فیلدهای
-           تفکیک‌شده نبودند، از روی فاصله جدا می‌شوند. */
-        const fn = last.first_name || (last.customer_name || '').split(' ')[0] || '';
-        const ln = last.last_name
-          || (last.customer_name || '').split(' ').slice(1).join(' ') || '';
-        document.getElementById('fFirst').value = fn;
-        document.getElementById('fLast').value = ln;
-        if (last.email) document.getElementById('fEmail').value = last.email;
-        if (last.province) document.getElementById('fProvince').value = last.province;
-        document.getElementById('fCity').value = last.city || '';
-        document.getElementById('fAddress').value = last.address || '';
-        document.getElementById('fPostal').value = last.postal_code || '';
+        const parts=String(last.customer_name || '').trim().split(/\s+/);
+        prefillIfUntouched('fFirst',last.first_name || parts[0]);
+        prefillIfUntouched('fLast',last.last_name || parts.slice(1).join(' '));
+        for(const [id,key] of [['fEmail','email'],['fProvince','province'],['fCity','city'],['fAddress','address'],['fPostal','postal_code']])prefillIfUntouched(id,last[key]);
         recalc();
       }
     } catch {}
