@@ -1,0 +1,21 @@
+'use strict';
+const assert = require('assert');
+const {eligibility,WINDOW_MS} = require('../src/return-eligibility');
+const delivery=Date.UTC(2026,10,3,12,0,0);
+const base={verifiedMobile:'09120001111',order:{order_id:'A',mobile:'09120001111',status:'DELIVERED'},
+  item:{id:1,order_id:'A',volume_ml:30},deliveredAtMs:delivery,nowMs:delivery,hasOpenRequest:false};
+const check=(overrides,reason)=>assert.strictEqual(eligibility({...base,...overrides}).reason,reason);
+assert.deepStrictEqual(eligibility(base),{eligible:true,deadlineMs:delivery+WINDOW_MS});
+assert(eligibility({...base,nowMs:delivery+WINDOW_MS-1}).eligible);
+check({nowMs:delivery+WINDOW_MS},'EXPIRED');
+check({nowMs:delivery+WINDOW_MS+1},'EXPIRED');
+check({verifiedMobile:null},'OWNER_REQUIRED');
+check({verifiedMobile:'09120002222'},'OWNER_REQUIRED');
+check({order:{...base.order,status:'SHIPPED'}},'NOT_DELIVERED');
+check({item:{...base.item,order_id:'B'}},'ITEM_UNAVAILABLE');
+check({item:{...base.item,id:0}},'ITEM_UNAVAILABLE');
+for (const v of [3,5,10]) check({item:{...base.item,volume_ml:v}},'VOLUME_INELIGIBLE');
+for (const v of [null,0,'30',NaN]) check({item:{...base.item,volume_ml:v}},'VOLUME_UNAVAILABLE');
+for (const t of [null,0,delivery+1,'2026-11-03',Number.MAX_SAFE_INTEGER]) check({deliveredAtMs:t},'DELIVERY_TIME_UNAVAILABLE');
+check({hasOpenRequest:true},'REQUEST_OPEN');check({hasOpenRequest:undefined},'REQUEST_OPEN');
+console.log('PASS isolated return eligibility: verified owner, exact item, delivered-time boundaries, volume and open request');
