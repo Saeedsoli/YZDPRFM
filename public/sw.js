@@ -37,7 +37,7 @@
 
 'use strict';
 
-const CACHE_VERSION = 'yazd-v5';
+const CACHE_VERSION = 'yazd-v6';
 const SHELL_CACHE = `${CACHE_VERSION}-shell`;
 const PAGE_CACHE  = `${CACHE_VERSION}-pages`;
 const IMG_CACHE   = `${CACHE_VERSION}-img`;
@@ -75,6 +75,9 @@ const NEVER_CACHE = [
   /^\/payment/,
   /^\/login/,
   /^\/review-invite/,
+  /^\/review\//,
+  /^\/track(?:\/|\.html|$)/,
+  /^\/wishlist(?:\/|\.html|$)/,
 
   /* ── صفحه محصول ── (ممیزی مرداد ۱۴۰۵)
      ادعای «هیچ قیمت کهنه‌ای نشان داده نمی‌شود» از راه API درست
@@ -154,6 +157,21 @@ async function cacheFirst(req, cacheName) {
   return res;
 }
 
+// Mutable JS/CSS paths do not contain content hashes. Revalidate over the
+// network on every online request; cache only for an offline fallback.
+async function networkFirstAsset(req) {
+  const cache = await caches.open(SHELL_CACHE);
+  try {
+    const res = await fetch(new Request(req, { cache: 'no-cache' }));
+    if (res.ok) await cache.put(req, res.clone());
+    return res;
+  } catch (err) {
+    const hit = await cache.match(req, { ignoreVary:true });
+    if (hit) return hit;
+    throw err;
+  }
+}
+
 /** صفحه: شبکه اول، کش پشتیبان */
 async function networkFirst(req) {
   const cache = await caches.open(PAGE_CACHE);
@@ -215,8 +233,12 @@ self.addEventListener('fetch', event => {
      می‌کند — انگار سرویس‌ورکری وجود ندارد. */
   if (isNeverCache(url.pathname)) return;
 
-  // فونت و دارایی ثابت
-  if (/^\/(fonts|assets)\//.test(url.pathname)) {
+  // Paths under assets/ are not versioned; do not pin old code or CSS online.
+  if (/^\/assets\//.test(url.pathname)) {
+    event.respondWith(networkFirstAsset(req));
+    return;
+  }
+  if (/^\/fonts\//.test(url.pathname)) {
     event.respondWith(cacheFirst(req, SHELL_CACHE));
     return;
   }

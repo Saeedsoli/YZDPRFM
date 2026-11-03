@@ -120,7 +120,7 @@ function get(p) {
      سمت سرور دارد (داده ساختاریافته سئو) و کش کردنش یعنی قیمت
      کهنه در HTML، حتی اگر کاربر آن را نبیند. */
   const mustExclude = ['admin', 'account', 'invoice', 'label',
-                       'checkout', 'payment', 'login', 'perfume'];
+                       'checkout', 'payment', 'login', 'perfume', 'review', 'track', 'wishlist'];
   const missing = mustExclude.filter(p => !new RegExp(`\\/\\^\\\\\\/${p}`).test(sw));
   add('صفحات حساس مستثنا شده‌اند', missing.length === 0,
       missing.length ? `جا افتاده: ${missing.join('، ')}` : `${mustExclude.length} مسیر`);

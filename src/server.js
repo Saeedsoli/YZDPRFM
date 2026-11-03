@@ -37,7 +37,7 @@ const {
   storeStats, bustStatsCache
 } = require('./db');
 const reports = require('./reports').build(db);
-const analytics = require('./analytics').build(db, appLog);
+const analytics = require('./analytics').build(db, appLog, clientIP);
 /* پروفایل بویایی — منطق امتیازدهی کوییز، بیرون کشیده شده تا هم
    `/api/quiz` و هم «پیشنهاد برای شما» از یک نسخه استفاده کنند.
    منطق تکراری در دو جا یعنی دیر یا زود دو نتیجه متفاوت. */
@@ -2249,8 +2249,12 @@ const server = http.createServer(async (req, res) => {
             }
           } catch (e) { appLog('WARN', 'seo', e.message, { path: pathname }); }
 
+          // Sensitive page URLs may contain order IDs or one-use tokens.
+          // Avoid persisting those URLs in a browser/proxy HTTP cache too.
+          const privatePage = /^\/(?:admin|account|invoice|label|checkout|payment|login|track|wishlist)(?:\/|\.html|$)/.test(pathname)
+            || /^\/review(?:\/|-invite(?:\.html)?$)/.test(pathname);
           return sendBody(200, html, 'text/html; charset=utf-8',
-            { 'Cache-Control': 'public, max-age=300' });
+            { 'Cache-Control': privatePage ? 'no-store' : 'public, max-age=300' });
         }
 
         // ارائه خودکار WebP به مرورگرهای پشتیبان (۵۰٪ سبک‌تر)

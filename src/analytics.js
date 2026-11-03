@@ -50,7 +50,8 @@ function todaySalt() {
 
 /**
  * شناسه بازدیدکننده — هش یک‌طرفه و روزانه.
- * از روی آن نمی‌توان به IP رسید و فردا عوض می‌شود.
+ * IP مستقیماً ذخیره نمی‌شود؛ هش ناشناس‌سازی کامل را تضمین نمی‌کند.
+ * نمک در هر روز (و راه‌اندازی دوباره) تغییر می‌کند.
  */
 function visitorHash(ip, ua) {
   return crypto.createHash('sha256')
@@ -59,7 +60,7 @@ function visitorHash(ip, ua) {
     .slice(0, 16);
 }
 
-function build(db, appLog) {
+function build(db, appLog, resolveClientIP = req => req?.socket?.remoteAddress || 'unknown') {
 
   const insert = db.prepare(
     'INSERT INTO events (kind, target, meta, visitor) VALUES (?,?,?,?)'
@@ -73,8 +74,9 @@ function build(db, appLog) {
     try {
       if (!KINDS.has(kind)) return false;
 
-      const ip = req?.headers?.['x-forwarded-for']?.split(',')[0]?.trim()
-              || req?.socket?.remoteAddress || '';
+      // Use the same trusted-proxy policy as rate limits; never use a
+      // client-controlled forwarded header directly for visitor counting.
+      const ip = resolveClientIP(req);
       const ua = String(req?.headers?.['user-agent'] || '').slice(0, 120);
 
       // خزنده‌ها را نمی‌شماریم — وگرنه «پربازدیدترین» یعنی
