@@ -323,6 +323,8 @@ run_test test_delivery_time_consistency.js "consistent delivery window"
 run_test test_browser_origin_guard.js "browser same-origin mutation guard"
 run_test test_client_ip.js "trusted proxy IP resolution"
 run_test test_csv_export.js "CSV quoting and formula defense"
+run_test test_return_eligibility.js "return eligibility policy"
+run_test test_return_store.js "staged return database safety"
 if python3 scripts/test_csv_export_http.py >/tmp/test_csv_export_http.log 2>&1; then P=$((P+1)); else F=$((F+1)); echo "  X CSV export security HTTP"; fi
 if python3 scripts/test_trusted_proxy_http.py >/tmp/test_trusted_proxy_http.log 2>&1; then P=$((P+1)); else F=$((F+1)); echo "  X trusted proxy HTTP limits"; fi
 run_test test_image_upload_security.js "image upload validation and exclusive writes"
