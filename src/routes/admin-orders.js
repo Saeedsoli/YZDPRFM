@@ -31,6 +31,8 @@
  */
 
 'use strict';
+
+const csv = require('../csv-export');
 const stockReservations = require('../order-stock-reservations');
 
 /**
@@ -274,11 +276,14 @@ async function handle(ctx) {
       ORDER BY o.created_at DESC
     `).all();
     rows.forEach(r => {
-      res.write(`${r.order_id},${(r.created_at || '').split('T')[0]},"${r.customer_name}",${r.mobile},`
-        + `${r.province || ''},${r.city || ''},${r.sku || ''},"${r.product_name || ''}",`
-        + `${r.unit_price || 0},${r.quantity || 0},${r.line_total || 0},`
-        + `${r.discount_code || ''},${r.discount_amount || 0},${r.shipping_fee || 0},${r.gift_wrap_fee || 0},`
-        + `${r.total_paid},${STATUS_FA[r.status] || r.status},${r.tracking_code || ''}\n`);
+      res.write(csv.row([
+        r.order_id, (r.created_at || '').split('T')[0], r.customer_name,
+        r.mobile, r.province, r.city, r.sku, r.product_name,
+        r.unit_price ?? 0, r.quantity ?? 0, r.line_total ?? 0,
+        r.discount_code, r.discount_amount ?? 0, r.shipping_fee ?? 0,
+        r.gift_wrap_fee ?? 0, r.total_paid, STATUS_FA[r.status] || r.status,
+        r.tracking_code
+      ]));
     });
     res.end();
     return true;      // پاسخ استریمی — sendJSON صدا زده نشد

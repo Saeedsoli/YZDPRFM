@@ -34,6 +34,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const csv = require('../csv-export');
 const {publicVariantSql} = require('../variant-visibility');
 const stockReservations = require('../order-stock-reservations');
 
@@ -500,14 +501,10 @@ async function handle(ctx) {
     /* BOM لازم است وگرنه اکسل فارسی را «ØªÙˆÙ…Ø§Ù†» نشان می‌دهد.
        این را یک بار در CSV سفارش‌ها یاد گرفتیم. */
     const out = ['\uFEFF'];
-    const esc = v => {
-      const s = String(v ?? '');
-      return /[",\n]/.test(s) ? `"${s.replace(/"/g, '""')}"` : s;
-    };
     const block = (title, headers, rows) => {
       out.push(`\n${title}\n`);
       out.push(headers.join(',') + '\n');
-      rows.forEach(r => out.push(r.map(esc).join(',') + '\n'));
+      rows.forEach(r => out.push(csv.row(r)));
     };
 
     const s = rep.summary;
