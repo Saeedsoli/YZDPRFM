@@ -15,6 +15,7 @@ const { isPublicVariant, publicVariantSql } = require('./variant-visibility');
 const { variantAvailability } = require('./availability');
 const stockReservations = require('./order-stock-reservations');
 const browserOriginGuard = require('./browser-origin-guard');
+const { resolvePublicFile } = require('./static-path');
 const trustedProxyPolicy = require('./client-ip').createPolicy(process.env.TRUSTED_PROXY_CIDRS || '');
 
 const {
@@ -2172,14 +2173,13 @@ const server = http.createServer(async (req, res) => {
          محلی هر دو یکی‌اند و این شاخه بی‌اثر است. */
       let baseDir = PUBLIC_DIR;
       if (file.startsWith('images/journal/')) {
-        baseDir = path.dirname(media.MEDIA_DIR);
-        file = 'journal/' + path.basename(file);
+        baseDir = media.MEDIA_DIR;
+        file = path.basename(file);
       }
 
-      const full = path.join(baseDir, file);
-      if (!full.startsWith(baseDir)) { res.writeHead(403); return res.end('Forbidden'); }
+      const full = resolvePublicFile(baseDir, file);
 
-      if (fs.existsSync(full) && fs.statSync(full).isFile()) {
+      if (full) {
         const ext = path.extname(full).toLowerCase();
 
         // تزریق متادیتا سمت سرور برای خزنده‌ها
@@ -2243,8 +2243,9 @@ const server = http.createServer(async (req, res) => {
         if (/\.(jpg|jpeg|png)$/.test(ext)) {
           const accept = req.headers.accept || '';
           if (accept.includes('image/webp')) {
-            const webp = full.replace(/\.(jpg|jpeg|png)$/i, '.webp');
-            if (fs.existsSync(webp)) { served = webp; servedExt = '.webp'; }
+            const webpName = file.replace(/\.(jpg|jpeg|png)$/i, '.webp');
+            const webp = resolvePublicFile(baseDir, webpName);
+            if (webp) { served = webp; servedExt = '.webp'; }
           }
         }
 

@@ -991,3 +991,5 @@ node_modules/   با npm install برمی‌گردد
 - `scripts/test_product_data_xss_browser.py` — آزمون مرورگر صفحه محصول با داده مخرب و تصویر جایگزین روی دیتابیس موقت.
 - `scripts/test_cart_checkout_data_xss_browser.py` — آزمون مرورگر امنیت سبد و تسویه و عملکرد دکمه‌های سبد روی دیتابیس موقت.
 - `scripts/test_catalog_cards_xss_browser.py` — آزمون داده مخرب در کارت‌های کاتالوگ، جستجو، سمپل، کوییز و علاقه‌مندی روی دیتابیس موقت.
+- `src/static-path.js` — کنترل محدوده فایل‌های عمومی و مقصد پیوندهای نمادین؛ فرض می‌کند فایل‌ها هم‌زمان توسط کاربر محلی غیرمجاز تغییر نمی‌کنند.
+- `scripts/test_static_path_security.py` — آزمون HTTP عبور از مسیر، پیوند بیرونی و جایگزین WebP.
