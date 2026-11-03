@@ -14,6 +14,7 @@ const zlib = require('zlib');
 const { isPublicVariant, publicVariantSql } = require('./variant-visibility');
 const { variantAvailability } = require('./availability');
 const stockReservations = require('./order-stock-reservations');
+const returnStore = require('./return-store');
 const browserOriginGuard = require('./browser-origin-guard');
 const { resolvePublicFile } = require('./static-path');
 const trustedProxyPolicy = require('./client-ip').createPolicy(process.env.TRUSTED_PROXY_CIDRS || '');
@@ -426,6 +427,7 @@ function validateCart(items) {
       _family: row.family_slug,
       _brand: row.brand_fa,
       _type: row.type,
+      _volume_ml: row.volume_ml,
       _gender: row.gender
     });
   }
@@ -1147,11 +1149,18 @@ const server = http.createServer(async (req, res) => {
           INSERT INTO order_items (order_id, sku, product_name, unit_price, quantity, line_total)
           VALUES (?, ?, ?, ?, ?, ?)
         `);
-        // Revalidate under the write transaction and record the exact physical
-        // quantity deducted for every item (zero for made-to-order).
+        // Preserve the volume actually ordered, atomically with the order and
+        // stock ledger. Existing stores without the explicit returns migration
+        // keep selling normally; historic volume is never guessed or backfilled.
+        const canSnapshotReturns = returnStore.ready(db);
+        const variantVolume = canSnapshotReturns
+          ? db.prepare('SELECT volume_ml FROM variants WHERE sku=?') : null;
         for (const it of v.items) {
+          if (canSnapshotReturns && variantVolume.get(it.sku)?.volume_ml !== it._volume_ml)
+            throw Object.assign(Error('Variant changed'), {code:'CART_CHANGED'});
           const item = insItem.run(orderId, it.sku, it.product_name, it.unit_price, it.quantity, it.line_total);
           stockReservations.reserveItem(db, item.lastInsertRowid);
+          if (canSnapshotReturns) returnStore.captureNewItem(db, item.lastInsertRowid, it._volume_ml);
         }
         logStatus(orderId, 'PENDING', 'ثبت سفارش');
       });

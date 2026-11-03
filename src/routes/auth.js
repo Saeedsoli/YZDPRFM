@@ -36,6 +36,8 @@
 'use strict';
 const phoneVerification = require('../customer-phone-verification');
 const crypto = require('crypto');
+const returnStore = require('../return-store');
+const { eligibility: returnEligibility } = require('../return-eligibility');
 
 /**
  * @param {object}   ctx
@@ -334,16 +336,30 @@ async function handle(ctx) {
     const rows = db.prepare(
       'SELECT * FROM orders WHERE mobile=? ORDER BY created_at DESC').all(mobile);
     res.setHeader('Cache-Control','no-store');
+    const returnsReady = returnStore.ready(db);
+    const nowMs = Date.now();
     return sendJSON(200, {
       total: rows.length,
-      orders: rows.map(o => ({
-        order_id:o.order_id,created_at:o.created_at,status:o.status,
-        province:o.province,city:o.city,total_paid:o.total_paid,
-        discount_amount:o.discount_amount,discount_code:o.discount_code,
-        tracking_code:o.tracking_code,carrier:o.carrier,
-        payment_ref:['PAID','PROCESSING','SHIPPED','DELIVERED'].includes(o.status)?o.payment_ref:null,
-        items:db.prepare('SELECT sku,product_name,unit_price,quantity,line_total FROM order_items WHERE order_id=?').all(o.order_id)
-      }))
+      orders: rows.map(o => {
+        const delivered = returnsReady
+          ? db.prepare('SELECT delivered_at_ms FROM return_delivery_evidence WHERE order_id=?').get(o.order_id)
+          : null;
+        const items = db.prepare('SELECT id,order_id,sku,product_name,unit_price,quantity,line_total FROM order_items WHERE order_id=?').all(o.order_id);
+        return {
+          order_id:o.order_id,created_at:o.created_at,status:o.status,
+          province:o.province,city:o.city,total_paid:o.total_paid,
+          discount_amount:o.discount_amount,discount_code:o.discount_code,
+          tracking_code:o.tracking_code,carrier:o.carrier,
+          payment_ref:['PAID','PROCESSING','SHIPPED','DELIVERED'].includes(o.status)?o.payment_ref:null,
+          items:items.map(i => {
+            const evidence=returnsReady ? db.prepare('SELECT volume_ml FROM return_item_evidence WHERE item_id=?').get(i.id) : null;
+            const request=returnsReady ? db.prepare("SELECT request_id,status FROM account_return_requests WHERE item_id=? AND mobile=? AND status!='CLOSED'").get(i.id,mobile) : null;
+            const result=returnsReady ? returnEligibility({verifiedMobile:mobile,order:o,item:{...i,volume_ml:evidence?.volume_ml},deliveredAtMs:delivered?.delivered_at_ms,nowMs,hasOpenRequest:!!request}) : {eligible:false,reason:'SERVICE_UNAVAILABLE'};
+            return {id:i.id,sku:i.sku,product_name:i.product_name,unit_price:i.unit_price,quantity:i.quantity,line_total:i.line_total,
+              return_info:{...result,volume_ml:evidence?.volume_ml ?? null,request:request || null}};
+          })
+        };
+      })
     });
   }
 

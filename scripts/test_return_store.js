@@ -45,7 +45,10 @@ function worker(file){return new Promise((resolve,reject)=>{const p=spawn(proces
  assert.strictEqual(store.submit(db,args).reason,'REQUEST_OPEN');
  assert.strictEqual(db.prepare('SELECT used_under_2ml FROM account_return_requests WHERE request_id=?').get(r.requestId).used_under_2ml,1);
  assert.deepStrictEqual(db.prepare('SELECT order_id,mobile,status FROM orders WHERE order_id=?').get('A'),{order_id:'A',mobile:'09120001111',status:'DELIVERED'});
- assert.strictEqual(db.prepare('PRAGMA integrity_check').get().integrity_check,'ok');db.close();
+ assert.strictEqual(db.prepare('PRAGMA integrity_check').get().integrity_check,'ok');
+ db.prepare('DELETE FROM order_items WHERE id=?').run(1);
+ assert.strictEqual(db.prepare('SELECT COUNT(*) n FROM return_item_evidence WHERE item_id=1').get().n,0);
+ assert.strictEqual(db.prepare('SELECT COUNT(*) n FROM account_return_requests WHERE item_id=1').get().n,0);db.close();
  db=open();db.exec('CREATE TABLE return_item_evidence(x)');assert.throws(()=>store.install(db));assert(!store.ready(db));db.close();
  const dir=fs.mkdtempSync(path.join(os.tmpdir(),'returns-race-'));const file=path.join(dir,'test.sqlite');
  try{db=open(file);seed(db);db.close();const rs=await Promise.all([worker(file),worker(file)]);assert.strictEqual(rs.filter(x=>x.ok).length,1);assert.strictEqual(rs.filter(x=>x.reason==='REQUEST_OPEN').length,1);db=new Database(file);assert.strictEqual(db.prepare('SELECT COUNT(*) n FROM account_return_requests').get().n,1);assert.strictEqual(db.pragma('integrity_check',{simple:true}),'ok');db.close();}finally{fs.rmSync(dir,{recursive:true,force:true})}

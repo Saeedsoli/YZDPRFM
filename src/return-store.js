@@ -7,18 +7,18 @@ const { eligibility } = require('./return-eligibility');
 const KEY = 'account_returns_schema_v1';
 const DDL = [
  `CREATE TABLE return_delivery_evidence (
-   order_id TEXT PRIMARY KEY REFERENCES orders(order_id),
+   order_id TEXT PRIMARY KEY REFERENCES orders(order_id) ON DELETE CASCADE,
    delivered_at_ms INTEGER NOT NULL CHECK(delivered_at_ms > 0),
    recorded_at_ms INTEGER NOT NULL CHECK(recorded_at_ms > 0),
    recorded_by TEXT NOT NULL CHECK(length(recorded_by) > 0)
  )`,
  `CREATE TABLE return_item_evidence (
-   item_id INTEGER PRIMARY KEY REFERENCES order_items(id),
+   item_id INTEGER PRIMARY KEY REFERENCES order_items(id) ON DELETE CASCADE,
    volume_ml INTEGER NOT NULL CHECK(volume_ml > 0)
  )`,
  `CREATE TABLE account_return_requests (
    request_id TEXT PRIMARY KEY,
-   item_id INTEGER NOT NULL REFERENCES order_items(id),
+   item_id INTEGER NOT NULL REFERENCES order_items(id) ON DELETE CASCADE,
    mobile TEXT NOT NULL,
    quantity INTEGER NOT NULL CHECK(quantity > 0),
    description TEXT NOT NULL,
