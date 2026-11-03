@@ -1422,17 +1422,17 @@ async function loadAll() {
                 : x.type === 'FIXED' ? money(x.value) : '—';
       const lim = x.usage_limit == null ? '∞' : toFa(x.usage_limit);
       return `<tr>
-        <td dir="ltr" style="font-weight:800">${x.code}
-          ${x.description ? `<div style="font-size:.72rem;color:var(--muted);direction:rtl">${x.description}</div>` : ''}</td>
-        <td>${typeFa}</td><td>${val}</td><td>${x.min_subtotal ? money(x.min_subtotal) : '—'}</td>
+        <td dir="ltr" style="font-weight:800">${esc(x.code)}
+          ${x.description ? `<div style="font-size:.72rem;color:var(--muted);direction:rtl">${esc(x.description)}</div>` : ''}</td>
+        <td>${esc(typeFa)}</td><td>${val}</td><td>${x.min_subtotal ? money(x.min_subtotal) : '—'}</td>
         <td>${toFa(x.used_count)}/${lim}</td>
         <td><span class="badge ${x.active ? 'b-paid' : 'b-cancel'}">${x.active ? 'فعال' : 'غیرفعال'}</span></td>
         <td>
-          <button onclick="toggleCoupon('${x.code}',${x.active ? 0 : 1})"
+          <button onclick="toggleCoupon(${esc(JSON.stringify(x.code))},${x.active ? 0 : 1})"
             style="background:var(--sand);border:1px solid var(--border);border-radius:7px;
             padding:5px 10px;cursor:pointer;font-size:.74rem;font-family:var(--font)">
             ${x.active ? 'غیرفعال' : 'فعال'}</button>
-          <button class="del" onclick="delCoupon('${x.code}')">حذف</button>
+          <button class="del" onclick="delCoupon(${esc(JSON.stringify(x.code))})">حذف</button>
         </td></tr>`;
     }).join('')}`
     : '<tr><td style="text-align:center;padding:26px;color:var(--muted)">کد تخفیفی ثبت نشده</td></tr>';
@@ -1495,10 +1495,10 @@ async function loadLogs(level) {
   document.getElementById('logsBox').innerHTML = d.total ? `
     <table style="font-size:.78rem">
     ${d.logs.map(l => `<tr>
-      <td style="width:70px;color:${CL[l.level] || '#666'};font-weight:800">${l.level}</td>
-      <td style="width:88px;color:var(--muted)">${l.scope || '—'}</td>
-      <td>${l.message}${l.meta ? `<div style="color:var(--muted);font-size:.7rem;direction:ltr">${l.meta}</div>` : ''}</td>
-      <td style="width:118px;color:var(--muted);font-size:.72rem" dir="ltr">${l.logged_at}</td>
+      <td style="width:70px;color:${CL[l.level] || '#666'};font-weight:800">${esc(l.level)}</td>
+      <td style="width:88px;color:var(--muted)">${esc(l.scope || '—')}</td>
+      <td>${esc(l.message)}${l.meta ? `<div style="color:var(--muted);font-size:.7rem;direction:ltr">${esc(l.meta)}</div>` : ''}</td>
+      <td style="width:118px;color:var(--muted);font-size:.72rem" dir="ltr">${esc(l.logged_at)}</td>
     </tr>`).join('')}</table>`
     : '<div style="color:var(--muted);font-size:.84rem;padding:12px">رویدادی ثبت نشده</div>';
 }
@@ -2065,7 +2065,7 @@ async function loadReports(days, btn) {
   document.getElementById('repTop').innerHTML = d.top_products.length ? `
     <tr><th>محصول</th><th>تعداد</th><th>فروش</th></tr>
     ${d.top_products.map(p => `<tr>
-      <td>${p.brand_fa || ''} — ${p.name_fa}</td>
+      <td>${esc(p.brand_fa || '')} — ${esc(p.name_fa)}</td>
       <td>${toFa(p.units)}</td><td>${money(p.revenue)}</td></tr>`).join('')}`
     : emptyRow();
 
@@ -2075,20 +2075,20 @@ async function loadReports(days, btn) {
 
   document.getElementById('repProv').innerHTML = d.by_province.length ? `
     <tr><th>استان</th><th>سفارش</th><th>فروش</th></tr>
-    ${d.by_province.map(p => `<tr><td>${p.province}</td>
+    ${d.by_province.map(p => `<tr><td>${esc(p.province)}</td>
       <td>${toFa(p.orders)}</td><td>${money(p.revenue)}</td></tr>`).join('')}`
     : emptyRow();
 
   document.getElementById('repCust').innerHTML = d.top_customers.length ? `
     <tr><th>مشتری</th><th>سفارش</th><th>مجموع خرید</th></tr>
     ${d.top_customers.map(c => `<tr>
-      <td>${c.name}<div style="font-size:.72rem;color:var(--muted)" dir="ltr">${c.mobile}</div></td>
+      <td>${esc(c.name)}<div style="font-size:.72rem;color:var(--muted)" dir="ltr">${esc(c.mobile)}</div></td>
       <td>${toFa(c.orders)}</td><td>${money(c.spent)}</td></tr>`).join('')}`
     : emptyRow();
 
   document.getElementById('repCoup').innerHTML = d.coupons.length ? `
     <tr><th>کد</th><th>استفاده</th><th>تخفیف</th><th>فروش حاصل</th></tr>
-    ${d.coupons.map(c => `<tr><td dir="ltr" style="font-weight:700">${c.code}</td>
+    ${d.coupons.map(c => `<tr><td dir="ltr" style="font-weight:700">${esc(c.code)}</td>
       <td>${toFa(c.uses)}</td><td>${money(c.given)}</td><td>${money(c.revenue)}</td></tr>`).join('')}`
     : emptyRow();
 }
@@ -2416,7 +2416,7 @@ function barChart(rows, labelKey, valKey) {
     return '<div style="color:var(--muted);font-size:.84rem;padding:14px">داده‌ای نیست</div>';
   const max = Math.max(...rows.map(r => r[valKey])) || 1;
   return rows.map(r => `<div class="bar-row">
-    <span class="lbl">${r[labelKey] || '—'}</span>
+    <span class="lbl">${esc(r[labelKey] || '—')}</span>
     <span class="track"><span class="fill" style="width:${Math.max(3, r[valKey] / max * 100)}%"></span></span>
     <span class="val">${money(r[valKey])}</span></div>`).join('');
 }
@@ -2737,7 +2737,7 @@ function renderOrders(o) {
       const nexts = NEXT_STATUS[x.status] || [];
       return `<tr>
         <td dir="ltr" style="font-size:.78rem">${x.order_id}
-          ${x.discount_code ? `<div style="color:#1E8449;font-size:.7rem">${x.discount_code}</div>` : ''}
+          ${x.discount_code ? `<div style="color:#1E8449;font-size:.7rem">${esc(x.discount_code)}</div>` : ''}
         </td>
         <td>${esc(x.customer_name)}<div style="font-size:.74rem;color:var(--muted)" dir="ltr">${esc(x.mobile)}</div>
           <!-- یادداشت مشتری — عمداً برجسته است.
