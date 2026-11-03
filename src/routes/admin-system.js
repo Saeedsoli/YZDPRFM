@@ -109,7 +109,7 @@ async function handle(ctx) {
     method, pathname, parsed, req, res,
     can, parseBody, logAudit, appLog, rateLimit, who, db,
     DB_PATH, otp, notify, pay, getSettings, normalizeDigits,
-    reports, analytics, verifyPassword
+    reports, analytics, verifyPassword, trustedProxyPolicy
   } = ctx;
 
   /* پوشش `sendJSON` — درس گام ۱.
@@ -406,6 +406,14 @@ async function handle(ctx) {
         sellable ? `${supply.in_stock} محصول دارای موجودی و ${supply.made_to_order} محصول دارای گزینه ساخت پس از سفارش است.` : 'محصول قابل سفارش با قیمت معتبر پیدا نشد.',
       !ledgerReady ? 'پس از پشتیبان معتبر، مهاجرت محافظت‌شده رزرو انبار لازم است.' :
         sellable ? undefined : 'پنل → محصولات → بررسی قیمت و وضعیت تأمین');
+
+    // Configuration alone cannot prove the proxy overwrites/appends headers
+    // safely or that the server is reachable only through that proxy.
+    push('proxy','آدرس IP و پروکسی','warn',
+      trustedProxyPolicy?.configured
+        ? 'پروکسی مورد اعتماد تنظیم شده؛ رفتار واقعی آن هنوز باید در محیط لیارا بررسی شود.'
+        : 'پروکسی مورد اعتماد تنظیم نشده؛ محدودیت درخواست ممکن است برای همه مشتریان مشترک شود.',
+      'پیش از افتتاح، مسیر شبکه و فهرست دقیق پروکسی‌های مورد اعتماد را بررسی کنید.');
 
     // ── دیسک پایدار ──
     const onLiara = /^\/app\//.test(DB_PATH);

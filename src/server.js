@@ -15,6 +15,7 @@ const { isPublicVariant, publicVariantSql } = require('./variant-visibility');
 const { variantAvailability } = require('./availability');
 const stockReservations = require('./order-stock-reservations');
 const browserOriginGuard = require('./browser-origin-guard');
+const trustedProxyPolicy = require('./client-ip').createPolicy(process.env.TRUSTED_PROXY_CIDRS || '');
 
 const {
   db, parseProduct, attachVariants, DB_PATH,
@@ -118,12 +119,8 @@ function currentStaff(token) {
   return st;
 }
 
-/** IP واقعی پشت پروکسی Liara */
-function clientIP(req) {
-  const xf = req.headers['x-forwarded-for'];
-  if (xf) return String(xf).split(',')[0].trim();
-  return req.socket?.remoteAddress || 'unknown';
-}
+/** IP is derived from the socket unless explicitly trusted proxies are set. */
+function clientIP(req) { return trustedProxyPolicy.clientIP(req); }
 
 /** سیاست‌های محدودیت نرخ */
 const RL = {
@@ -1494,7 +1491,7 @@ const server = http.createServer(async (req, res) => {
       method, pathname, parsed, req, res,
       sendJSON, can, parseBody, logAudit, appLog, rateLimit, who, db,
       DB_PATH, otp, notify, pay, getSettings, normalizeDigits,
-      reports, analytics, verifyPassword
+      reports, analytics, verifyPassword, trustedProxyPolicy
     })) return;
 
     /* ── بازاریابی مدیریتی ── (گام ۳ تفکیک)

@@ -5,7 +5,7 @@ from pathlib import Path
 root=Path(__file__).resolve().parent.parent
 with tempfile.TemporaryDirectory(prefix='private-tracking-') as td:
  db=str(Path(td)/'db.sqlite');sock=socket.socket();sock.bind(('127.0.0.1',0));port=sock.getsockname()[1];sock.close()
- env={**os.environ,'DB_PATH':db,'BACKUP_DISABLED':'1','NODE_ENV':'test','PORT':str(port),'ADMIN_PASSWORD':'Tracking-Owner-9348'}
+ env={**os.environ,'DB_PATH':db,'BACKUP_DISABLED':'1','TRUSTED_PROXY_CIDRS':'127.0.0.1/32','NODE_ENV':'test','PORT':str(port),'ADMIN_PASSWORD':'Tracking-Owner-9348'}
  proc=subprocess.Popen(['node','src/server.js'],cwd=root,env=env,stdout=subprocess.DEVNULL,stderr=subprocess.PIPE)
  def api(method,path,data=None,ip='192.0.2.1'):
   headers={'Content-Type':'application/json','X-Forwarded-For':ip}

@@ -6,7 +6,7 @@ from playwright.sync_api import sync_playwright,expect
 root=Path(__file__).resolve().parent.parent
 with tempfile.TemporaryDirectory(prefix='admin-cookie-browser-') as td:
  db=str(Path(td)/'db.sqlite');s=socket.socket();s.bind(('127.0.0.1',0));port=s.getsockname()[1];s.close();base=f'http://127.0.0.1:{port}'
- env={**os.environ,'DB_PATH':db,'BACKUP_DISABLED':'1','NODE_ENV':'test','ADMIN_USERNAME':'owner','ADMIN_PASSWORD':'Cookie-Test-Owner-981','PORT':str(port)}
+ env={**os.environ,'DB_PATH':db,'BACKUP_DISABLED':'1','NODE_ENV':'test','ADMIN_USERNAME':'owner','ADMIN_PASSWORD':'Cookie-Test-Owner-981','TRUSTED_PROXY_CIDRS':'','PORT':str(port)}
  p=subprocess.Popen(['node','src/server.js'],cwd=root,env=env,stdout=subprocess.DEVNULL,stderr=subprocess.PIPE)
  try:
   for _ in range(240):
@@ -37,6 +37,9 @@ with tempfile.TemporaryDirectory(prefix='admin-cookie-browser-') as td:
     who=page.evaluate("async()=>{const r=await fetch('/api/admin/whoami');return {status:r.status,cache:r.headers.get('cache-control')}}");assert who=={'status':200,'cache':'no-store'}
     page.evaluate("localStorage.setItem('yazd_admin_token','stale-legacy-token')")
     page.reload(wait_until='domcontentloaded');expect(page.locator('#panel')).to_be_visible();assert page.evaluate("localStorage.getItem('yazd_admin_token')") is None
+    page.locator('.tab[data-t="settings"]').click();page.locator('button[onclick="loadReadiness(false)"]').click()
+    expect(page.locator('#readyList')).to_contain_text('آدرس IP و پروکسی');expect(page.locator('#readyList')).to_contain_text('پروکسی مورد اعتماد تنظیم نشده')
+    assert page.evaluate('document.documentElement.scrollWidth <= innerWidth + 1')
     page.locator('.tab[data-t="reports"]').click()
     with page.expect_download() as download_event:page.locator('#tab-reports button[onclick="downloadReport()"]').click()
     download=download_event.value;assert download.suggested_filename.endswith('.csv') and Path(download.path()).read_bytes().startswith(b'\xef\xbb\xbf')

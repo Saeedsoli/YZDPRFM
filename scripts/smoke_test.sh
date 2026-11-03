@@ -321,6 +321,8 @@ run_test test_backup_stream_safety.js "backup concurrency, recovery and stream c
 run_test test_automatic_backup_safety.js "automatic backup verification and atomic publish"
 run_test test_delivery_time_consistency.js "consistent delivery window"
 run_test test_browser_origin_guard.js "browser same-origin mutation guard"
+run_test test_client_ip.js "trusted proxy IP resolution"
+if python3 scripts/test_trusted_proxy_http.py >/tmp/test_trusted_proxy_http.log 2>&1; then P=$((P+1)); else F=$((F+1)); echo "  X trusted proxy HTTP limits"; fi
 run_test test_image_upload_security.js "image upload validation and exclusive writes"
 if python3 scripts/test_browser_origin_http.py >/tmp/test_browser_origin_http.log 2>&1; then P=$((P+1)); else F=$((F+1)); echo "  X browser origin HTTP guard"; fi
 if python3 scripts/test_destructive_tool_guards.py >/tmp/test_destructive_tool_guards.log 2>&1; then P=$((P+1)); else F=$((F+1)); echo "  X destructive tool guards"; fi

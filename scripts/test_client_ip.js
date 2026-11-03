@@ -1,0 +1,16 @@
+'use strict';
+const assert=require('assert/strict'),{createPolicy,normalize}=require('../src/client-ip');
+const req=(remote,xff)=>({socket:{remoteAddress:remote},headers:xff===undefined?{}:{'x-forwarded-for':xff}});
+const plain=createPolicy();assert(!plain.configured);
+assert.equal(plain.clientIP(req('::ffff:127.0.0.1','203.0.113.1')),'127.0.0.1');
+const proxy=createPolicy('127.0.0.1/32,10.0.0.0/8,2001:db8::1');assert(proxy.configured);
+assert.equal(proxy.clientIP(req('::ffff:127.0.0.1','198.51.100.2')),'198.51.100.2');
+assert.equal(proxy.clientIP(req('127.0.0.1','203.0.113.55, 198.51.100.2')),'198.51.100.2');
+assert.equal(proxy.clientIP(req('127.0.0.1','203.0.113.55, 198.51.100.2, 10.2.3.4')),'198.51.100.2');
+assert.equal(proxy.clientIP(req('192.0.2.9','198.51.100.2')),'192.0.2.9');
+assert.equal(proxy.clientIP(req('127.0.0.1','evil, 198.51.100.2')),'127.0.0.1');
+assert.equal(proxy.clientIP(req('127.0.0.1',Array(17).fill('198.51.100.2').join(','))),'127.0.0.1');
+assert.equal(proxy.clientIP(req('2001:db8::1','2001:db8:abcd::2')),'2001:db8:abcd::2');
+assert.equal(normalize('::ffff:192.0.2.1'),'192.0.2.1');
+for(const input of ['*','0.0.0.0/0','::/0','127.0.0.1/33','bad','127.0.0.1,','2001:db8::/129'])assert.throws(()=>createPolicy(input),input);
+console.log('PASS proxy IP allowlist, right-to-left chain, spoof rejection and invalid config');

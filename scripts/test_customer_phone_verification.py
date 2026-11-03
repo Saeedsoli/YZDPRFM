@@ -7,7 +7,7 @@ with tempfile.TemporaryDirectory(prefix='customer-phone-verify-') as td:
  db=str(Path(td)/'shop.sqlite');ports=[]
  for _ in range(2):
   sock=socket.socket();sock.bind(('127.0.0.1',0));ports.append(sock.getsockname()[1]);sock.close()
- env={**os.environ,'DB_PATH':db,'BACKUP_DISABLED':'1','NODE_ENV':'test','ADMIN_PASSWORD':'Customer-Verify-Owner-381','SMS_PROVIDER':'console'};servers=[]
+ env={**os.environ,'DB_PATH':db,'BACKUP_DISABLED':'1','TRUSTED_PROXY_CIDRS':'127.0.0.1/32','NODE_ENV':'test','ADMIN_PASSWORD':'Customer-Verify-Owner-381','SMS_PROVIDER':'console'};servers=[]
  def boot(port):
   p=subprocess.Popen(['node','src/server.js'],cwd=root,env={**env,'PORT':str(port)},stdout=subprocess.DEVNULL,stderr=subprocess.PIPE)
   for _ in range(200):

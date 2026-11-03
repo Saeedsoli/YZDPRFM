@@ -6,7 +6,7 @@ root=Path(__file__).resolve().parent.parent
 def port():
  s=socket.socket();s.bind(('127.0.0.1',0));p=s.getsockname()[1];s.close();return p
 with tempfile.TemporaryDirectory(prefix='stock-cross-process-') as td:
- db=str(Path(td)/'db.sqlite');ports=[port(),port()];base={**os.environ,'DB_PATH':db,'BACKUP_DISABLED':'1','NODE_ENV':'test','ADMIN_PASSWORD':'Cross-Process-Owner-935'};servers=[]
+ db=str(Path(td)/'db.sqlite');ports=[port(),port()];base={**os.environ,'DB_PATH':db,'BACKUP_DISABLED':'1','TRUSTED_PROXY_CIDRS':'127.0.0.1/32','NODE_ENV':'test','ADMIN_PASSWORD':'Cross-Process-Owner-935'};servers=[]
  def boot(p):
   proc=subprocess.Popen(['node','src/server.js'],cwd=root,env={**base,'PORT':str(p)},stdout=subprocess.DEVNULL,stderr=subprocess.PIPE)
   for _ in range(200):

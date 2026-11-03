@@ -5,7 +5,7 @@ from pathlib import Path
 root=Path(__file__).resolve().parent.parent
 with tempfile.TemporaryDirectory(prefix='admin-account-limit-') as td:
  db=str(Path(td)/'db.sqlite');sock=socket.socket();sock.bind(('127.0.0.1',0));port=sock.getsockname()[1];sock.close()
- env={**os.environ,'DB_PATH':db,'BACKUP_DISABLED':'1','PORT':str(port),'ADMIN_USERNAME':'owner','ADMIN_PASSWORD':'TestOwnerPassword-982'}
+ env={**os.environ,'DB_PATH':db,'BACKUP_DISABLED':'1','TRUSTED_PROXY_CIDRS':'127.0.0.1/32','PORT':str(port),'ADMIN_USERNAME':'owner','ADMIN_PASSWORD':'TestOwnerPassword-982'}
  subprocess.run(['node','-e',"const {db,hashPassword}=require('./src/db');const p=hashPassword('OtherTestPassword-472');db.prepare(\"insert into staff(username,display_name,role_key,pass_hash,pass_salt,must_change,active,created_by) values('secondowner','Second','owner',?,?,0,1,'test')\").run(p.hash,p.salt);db.close()"],cwd=root,env=env,check=True,stdout=subprocess.DEVNULL)
  def boot():
   proc=subprocess.Popen(['node','src/server.js'],cwd=root,env=env,stdout=subprocess.DEVNULL,stderr=subprocess.PIPE)
