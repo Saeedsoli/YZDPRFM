@@ -495,8 +495,19 @@ const MIME = {
 };
 
 const server = http.createServer(async (req, res) => {
-  const parsed = url.parse(req.url, true);
-  const pathname = decodeURIComponent(parsed.pathname);
+  // Request targets are untrusted. Decode before routing, but never let a
+  // malformed percent escape or UTF-8 sequence reject this async listener
+  // outside the request handler's error boundary and terminate Node.
+  let parsed,pathname;
+  try {
+    parsed=url.parse(req.url,true);
+    if(typeof parsed.pathname!=='string')throw Error('Invalid request target');
+    pathname=decodeURIComponent(parsed.pathname);
+    if(/[\u0000-\u001f\u007f]/.test(pathname))throw Error('Invalid request target');
+  } catch {
+    res.writeHead(400,{'Content-Type':'application/json; charset=utf-8','Cache-Control':'no-store','X-Content-Type-Options':'nosniff'});
+    return res.end(JSON.stringify({error:'نشانی درخواست معتبر نیست.'}));
+  }
 
   /* HEAD باید دقیقاً مثل GET مسیریابی شود ولی بدون بدنه.
      پیش از این HEAD به هیچ شرطی نمی‌خورد و همه‌چیز ۴۰۴ می‌گرفت —
@@ -2278,6 +2289,7 @@ const server = http.createServer(async (req, res) => {
     if (err instanceof BadRequest) {
       return sendJSON(400, { error: err.message });
     }
+    if (err instanceof URIError) return sendJSON(400,{error:'نشانی درخواست معتبر نیست.'});
     appLog('ERROR', 'server', err.message, {
       path: pathname, method, ip: clientIP(req), stack: (err.stack || '').split('\n')[1]
     });
