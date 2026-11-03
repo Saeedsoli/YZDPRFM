@@ -340,6 +340,7 @@ async function handle(ctx) {
     const nowMs = Date.now();
     return sendJSON(200, {
       total: rows.length,
+      returns_ui_test: returnsReady && String(process.env.NODE_ENV||'').toLowerCase()==='test' && process.env.RETURNS_API_TEST_ONLY==='1',
       orders: rows.map(o => {
         const delivered = returnsReady
           ? db.prepare('SELECT delivered_at_ms FROM return_delivery_evidence WHERE order_id=?').get(o.order_id)
@@ -353,7 +354,7 @@ async function handle(ctx) {
           payment_ref:['PAID','PROCESSING','SHIPPED','DELIVERED'].includes(o.status)?o.payment_ref:null,
           items:items.map(i => {
             const evidence=returnsReady ? db.prepare('SELECT volume_ml FROM return_item_evidence WHERE item_id=?').get(i.id) : null;
-            const request=returnsReady ? db.prepare("SELECT request_id,status FROM account_return_requests WHERE item_id=? AND mobile=? ORDER BY created_at_ms DESC,request_id DESC LIMIT 1").get(i.id,mobile) : null;
+            const request=returnsReady ? db.prepare("SELECT r.request_id,r.status,t.reply FROM account_return_requests r LEFT JOIN tickets t ON t.ticket_id=r.request_id AND t.mobile=r.mobile WHERE r.item_id=? AND r.mobile=? ORDER BY r.created_at_ms DESC,r.request_id DESC LIMIT 1").get(i.id,mobile) : null;
             const open=returnsReady && !!db.prepare("SELECT 1 FROM account_return_requests WHERE item_id=? AND status!='CLOSED'").get(i.id);
             const result=returnsReady ? returnEligibility({verifiedMobile:mobile,order:o,item:{...i,volume_ml:evidence?.volume_ml},deliveredAtMs:delivered?.delivered_at_ms,nowMs,hasOpenRequest:open}) : {eligible:false,reason:'SERVICE_UNAVAILABLE'};
             return {id:i.id,sku:i.sku,product_name:i.product_name,unit_price:i.unit_price,quantity:i.quantity,line_total:i.line_total,

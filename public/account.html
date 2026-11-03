@@ -87,6 +87,7 @@
   .ord-body { max-height:0; opacity:0; overflow:hidden;
       transition: max-height .55s var(--ease-out), opacity .35s ease }
   .order-card.open .ord-body { max-height:1400px; opacity:1 }
+  .order-card.return-enabled.open .ord-body { max-height:none }
   .chev { width:16px; height:16px; stroke:var(--muted); fill:none; stroke-width:2;
       transition: transform .4s var(--ease-out) }
   .order-card.open .chev { transform: rotate(180deg) }
@@ -97,6 +98,20 @@
   .oi { display:flex; justify-content:space-between; padding:7px 0;
         border-bottom:1px dashed var(--border); font-size:.84rem; gap:10px; }
   .oi:last-child { border:none; }
+  .return-row { display:block; }
+  .return-item-line { display:flex; justify-content:space-between; gap:10px; flex-wrap:wrap; }
+  .return-meta { color:var(--muted); font-size:.75rem; line-height:1.9; margin-top:4px; }
+  .return-action { background:#fffdf8; color:var(--text); border:1px solid var(--gold);
+    border-radius:8px; cursor:pointer; padding:7px 12px; margin-top:6px; font:inherit; font-size:.77rem; }
+  .return-form { border-top:1px solid var(--border-soft); margin-top:12px; padding-top:12px; }
+  .return-form[hidden] { display:none; }
+  .return-form label { display:block; font-size:.78rem; font-weight:700; margin:9px 0 4px; }
+  .return-form textarea,.return-form input[type=number] { font:inherit; width:100%; padding:9px; border:1px solid var(--border); border-radius:8px; }
+  .return-form input[type=number] { max-width:100px; }
+  .return-form .return-check { display:flex; align-items:flex-start; gap:8px; font-weight:400; line-height:1.9; }
+  .return-form .return-check input { margin-top:6px; accent-color:var(--gold); }
+  .return-message { font-size:.76rem; color:var(--danger); margin-top:8px; }
+  .return-guide { background:var(--surface); border:1px solid var(--border); border-radius:var(--r); padding:18px; margin:18px 0; font-size:.81rem; line-height:2; }
 </style>
 </head>
 <body>
@@ -179,6 +194,34 @@ function progressBar(status) {
   </div>`;
 }
 
+const RETURN_STATUS = {NEW_PENDING:'در انتظار بررسی', ANSWERED:'پاسخ داده شده', CLOSED:'بسته شده'};
+function returnDeadline(ms) {
+  if (!Number.isSafeInteger(ms)) return '';
+  return new Intl.DateTimeFormat('fa-IR', { timeZone:'Asia/Tehran', year:'numeric', month:'long', day:'numeric', hour:'2-digit', minute:'2-digit' }).format(new Date(ms));
+}
+function returnItem(i, enabled) {
+  if (!enabled) return `<div class="oi"><span>${esc(i.product_name)}</span><span style="white-space:nowrap">${toFa(i.quantity)} × ${money(i.unit_price)}</span></div>`;
+  const r=i.return_info || {}; const id=Number(i.id);
+  if (!Number.isSafeInteger(id) || id <= 0) return '';
+  const req=r.request;
+  const state=req ? `<div class="return-meta">درخواست ${esc(req.request_id)}: ${esc(RETURN_STATUS[req.status] || 'در حال بررسی')}${req.reply ? `<br>پاسخ: ${esc(req.reply)}` : ''}</div>` : '';
+  let info='';
+  if (r.eligible) info=`<div class="return-meta">مهلت درخواست تا ${esc(returnDeadline(r.deadlineMs))}</div>
+    <button type="button" class="return-action" data-return-toggle="${id}">درخواست مرجوعی</button>
+    <form class="return-form" data-return-form="${id}" hidden>
+      <label for="return-description-${id}">دلیل درخواست *</label>
+      <textarea id="return-description-${id}" name="description" rows="3" minlength="10" maxlength="2000" required></textarea>
+      ${i.quantity > 1 ? `<label for="return-quantity-${id}">تعداد *</label><input id="return-quantity-${id}" type="number" name="quantity" min="1" max="${Number(i.quantity)}" value="1" required>` : ''}
+      <label class="return-check"><input type="checkbox" name="used" required><span>تأیید می‌کنم کمتر از ۲ میلی‌لیتر مصرف شده است.</span></label>
+      <div class="return-meta">ثبت درخواست به معنی تأیید مرجوعی نیست؛ پس از بررسی پاسخ می‌دهیم.</div>
+      <button type="submit" class="return-action">ثبت درخواست</button><div class="return-message" role="alert"></div>
+    </form>`;
+  else if(r.reason==='VOLUME_INELIGIBLE') info='<div class="return-meta">حجم‌های ۱۰ میل و کمتر مشمول مرجوعی نیستند.</div>';
+  else if(r.reason==='EXPIRED') info='<div class="return-meta">مهلت ثبت درخواست پایان یافته است.</div>';
+  else if(r.reason==='DELIVERY_TIME_UNAVAILABLE'||r.reason==='VOLUME_UNAVAILABLE') info='<div class="return-meta">برای بررسی شرایط این کالا با پشتیبانی تماس بگیرید.</div>';
+  return `<div class="oi return-row"><div class="return-item-line"><span>${esc(i.product_name)}</span><span>${toFa(i.quantity)} × ${money(i.unit_price)}</span></div>${state}${info}</div>`;
+}
+
 async function init() {
   const me = await YazdAuth.check();
   if (!me.authenticated) return location.href = '/login?next=/account';
@@ -204,7 +247,7 @@ async function init() {
 
   box.innerHTML = d.total ? d.orders.map((o, oi) => {
     const s = ST[o.status] || ['نامشخص','b-pending'];
-    return `<div class="order-card${oi === 0 ? ' open' : ''}">
+    return `<div class="order-card${oi === 0 ? ' open' : ''}${d.returns_ui_test ? ' return-enabled' : ''}">
       <div class="ord-top" onclick="this.parentNode.classList.toggle('open')">
         <div style="display:flex;align-items:center;gap:10px">
           <svg class="chev" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg>
@@ -226,10 +269,7 @@ async function init() {
         margin:12px 0;font-size:.8rem">
         کد رهگیری ${esc(o.carrier || 'پستی')}:
         <strong dir="ltr">${esc(o.tracking_code)}</strong></div>` : ''}
-      ${o.items.map(i => `<div class="oi">
-        <span>${esc(i.product_name)}</span>
-        <span style="white-space:nowrap">${toFa(i.quantity)} × ${money(i.unit_price)}</span>
-      </div>`).join('')}
+      ${o.items.map(i => returnItem(i, d.returns_ui_test)).join('')}
       ${o.discount_amount > 0 ? `<div class="oi" style="color:#1E8449">
         <span>تخفیف ${esc(o.discount_code || '')}</span><span>− ${money(o.discount_amount)}</span></div>` : ''}
       <div class="oi" style="font-weight:800;padding-top:10px">
@@ -242,7 +282,7 @@ async function init() {
         ${['PAID','PROCESSING','SHIPPED','DELIVERED'].includes(o.status)
           ? `<a href="/invoice?order=${encodeURIComponent(o.order_id)}" target="_blank"
                style="font-size:.78rem;color:var(--gold);font-weight:700">مشاهده فاکتور ←</a>` : ''}
-        ${['DELIVERED','SHIPPED'].includes(o.status)
+        ${!d.returns_ui_test && ['DELIVERED','SHIPPED'].includes(o.status)
           ? `<a href="/contact" style="font-size:.78rem;color:var(--gold);font-weight:700">
                ثبت درخواست مرجوعی ←</a>` : ''}
       </div>
@@ -259,9 +299,44 @@ async function init() {
       </div>
     </div>`;
 
+  if (d.returns_ui_test) {
+    const guide=document.createElement('section');
+    guide.className='return-guide';
+    guide.innerHTML='<strong>مرجوعی تا ۷۲ ساعت پس از تحویل</strong><p>برای محصولات با حجم بالای ۱۰ میلی‌لیتر، اگر کمتر از ۲ میلی‌لیتر مصرف شده باشد، تا ۷۲ ساعت پس از تحویل می‌توانید از کنار همان کالا درخواست دهید. دلیل را بنویسید و وضعیت را همین‌جا پیگیری کنید. حداکثر ظرف ۲۴ ساعت پاسخ می‌دهیم.</p>';
+    box.appendChild(guide);
+  }
+
   document.getElementById('loading').style.display = 'none';
   document.getElementById('content').style.display = 'block';
 }
+
+document.getElementById('orders').addEventListener('click', e => {
+  const button=e.target.closest('[data-return-toggle]');
+  if (!button) return;
+  const form=button.parentElement.querySelector('[data-return-form]');
+  if (form) form.hidden=!form.hidden;
+});
+document.getElementById('orders').addEventListener('submit', async e => {
+  const form=e.target.closest('[data-return-form]');
+  if (!form) return;
+  e.preventDefault();
+  const id=Number(form.dataset.returnForm), description=form.elements.description.value.trim();
+  const quantity=form.elements.quantity ? Number(form.elements.quantity.value) : 1;
+  const message=form.querySelector('.return-message'), button=form.querySelector('[type=submit]');
+  if (!Number.isSafeInteger(id) || id<=0 || !Number.isSafeInteger(quantity) || quantity<=0 || description.length<10 || !form.elements.used.checked) {
+    message.textContent='لطفاً اطلاعات و تأیید مصرف را بررسی کنید.';return;
+  }
+  button.disabled=true;message.textContent='';
+  try {
+    const response=await fetch('/api/auth/account-returns',{method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({item_id:id,quantity,description,used_under_2ml:true})});
+    const result=await response.json();
+    if (!response.ok) {message.textContent=result.error || 'ثبت درخواست ناموفق بود.';return;}
+    await init();
+    toast('درخواست ثبت شد: '+result.request_id);
+  } catch {message.textContent='نتیجه نامشخص است؛ پیش از تلاش دوباره، وضعیت سفارش را بررسی کنید.';}
+  finally {button.disabled=false;}
+});
 
 async function logout() {
   await fetch('/api/auth/logout', { method: 'POST', headers: H });

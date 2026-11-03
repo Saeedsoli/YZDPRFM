@@ -1010,3 +1010,4 @@ node_modules/   با npm install برمی‌گردد
 - `src/routes/account-returns.js` — مسیرهای آزمایشی ثبت زمان تحویل و درخواست صاحب حساب؛ فقط با فلگ مخصوص محیط test در دسترس‌اند.
 - `scripts/test_account_returns_api.py` — آزمون API آزمایشی احراز هویت، مالکیت، ثبت همزمان تیکت و پاسخ مدیریت.
 - `scripts/test_account_returns_gate.js` — تأیید بسته‌بودن API آزمایشی مرجوعی در تولید و به‌صورت پیش‌فرض.
+- `scripts/test_account_returns_browser.py` — آزمون مرورگر فرم آزمایشی مرجوعی حساب، تعداد، وضعیت، سمپل و نمایش پاسخ.
