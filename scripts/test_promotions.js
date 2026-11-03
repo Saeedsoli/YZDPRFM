@@ -21,6 +21,7 @@
 'use strict';
 
 const { spawn } = require('child_process');
+const crypto = require('crypto');
 const path = require('path');
 const Database = require('better-sqlite3');
 
@@ -41,12 +42,18 @@ const add = (label, ok, note) => {
 };
 
 const MARK = 'TSTPROMO';
+let fixturePhone = null, fixtureToken = null;
 
 function cleanup() {
   const db = new Database(DB);
   db.prepare(`DELETE FROM coupons WHERE code LIKE '${MARK}%'`).run();
   db.prepare(`DELETE FROM campaigns WHERE title LIKE '${MARK}%'`).run();
   db.prepare(`DELETE FROM notices WHERE text LIKE '${MARK}%'`).run();
+  if (fixtureToken) db.prepare('DELETE FROM sessions WHERE token=?').run(fixtureToken);
+  if (fixturePhone) {
+    db.prepare('DELETE FROM otp_codes WHERE mobile=?').run(fixturePhone);
+    db.prepare('DELETE FROM customer_phone_verifications WHERE mobile=?').run(fixturePhone);
+  }
   db.prepare('DELETE FROM rate_limits').run();
   db.close();
 }
@@ -277,11 +284,24 @@ const api = (p, opt = {}, tok = null) =>
 
     /* ═══ کد اختصاصی مشتری ═══ */
     {
+      const fixtureDb = new Database(DB,{readonly:true});
+      const exists=fixtureDb.prepare(`SELECT
+        EXISTS(SELECT 1 FROM customers WHERE mobile=@m) OR
+        EXISTS(SELECT 1 FROM customer_phone_verifications WHERE mobile=@m) OR
+        EXISTS(SELECT 1 FROM otp_codes WHERE mobile=@m) OR
+        EXISTS(SELECT 1 FROM orders WHERE mobile=@m) OR
+        EXISTS(SELECT 1 FROM sessions WHERE subject=@m) AS occupied`);
+      for(let i=0;i<20&&!fixturePhone;i++){
+        const candidate='0919'+String(crypto.randomInt(0,10000000)).padStart(7,'0');
+        if(!exists.get({m:candidate}).occupied)fixturePhone=candidate;
+      }
+      fixtureDb.close();
+      if(!fixturePhone)throw Error('Could not allocate isolated customer fixture');
       await api('/api/admin/coupons', {
         method: 'POST',
         body: JSON.stringify({
           code: MARK + 'MINE', type: 'FIXED', value: 50000,
-          assigned_mobile: '09121110000', per_user_once: false
+          assigned_mobile: fixturePhone, per_user_once: false
         })
       }, TOK);
 
@@ -294,12 +314,26 @@ const api = (p, opt = {}, tok = null) =>
         other.body.discount === 0 && !!other.body.coupon_error,
         other.body.coupon_error);
 
-      const mine = await api('/api/cart/calculate', {
+      const forged = await api('/api/cart/calculate', {
         method: 'POST',
         body: JSON.stringify({ items: onlyA, province: 'یزد', city: 'یزد',
-                               coupon_code: MARK + 'MINE', mobile: '09121110000' })
+                               coupon_code: MARK + 'MINE', mobile: fixturePhone })
       });
-      add('کد اختصاصی برای صاحبش کار می‌کند', mine.body.discount === 50000,
+      add('شماره بدون تأیید برای کد اختصاصی کافی نیست', forged.body.discount === 0 && !!forged.body.coupon_error);
+      // This test runs against an isolated smoke fixture; use the genuine OTP
+      // flow, not an invented trusted session or the customer's real data.
+      await api('/api/auth/request-code',{method:'POST',body:JSON.stringify({mobile:fixturePhone})});
+      const otpDb = new Database(DB,{readonly:true});
+      const otpCode = otpDb.prepare('SELECT code FROM otp_codes WHERE mobile=?').get(fixturePhone)?.code;
+      otpDb.close();
+      const verified = await api('/api/auth/verify-code',{method:'POST',body:JSON.stringify({mobile:fixturePhone,code:otpCode})});
+      fixtureToken = verified.body.token || null;
+      const mine = await api('/api/cart/calculate', {
+        method: 'POST', headers: {'X-Customer-Token':fixtureToken || ''},
+        body: JSON.stringify({ items: onlyA, province: 'یزد', city: 'یزد',
+                               coupon_code: MARK + 'MINE', mobile: fixturePhone })
+      });
+      add('کد اختصاصی برای صاحب شماره تأییدشده کار می‌کند', mine.body.discount === 50000,
         String(mine.body.discount));
 
       const anon = await api('/api/cart/calculate', {

@@ -372,7 +372,7 @@ async function submitOrder() {
 
   try {
     const r = await fetch('/api/orders', {
-      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      method: 'POST', headers: { 'Content-Type': 'application/json', ...YazdAuth.headers() },
       body: JSON.stringify({
         customer_name: name,
         first_name: first, last_name: last,

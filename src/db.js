@@ -1301,7 +1301,7 @@ function scopedSubtotal(items, rule) {
  * @returns {{ok:boolean, error?:string, coupon?:object, discount?:number,
  *            free_shipping?:boolean, scoped_amount?:number}}
  */
-function validateCoupon(code, subtotal, shippingFee, mobile, items = null) {
+function validateCoupon(code, subtotal, shippingFee, mobile, items = null, verifiedMobile = null) {
   if (!code) return { ok: false, error: 'کد تخفیف وارد نشده است.' };
   const c = db.prepare('SELECT * FROM coupons WHERE UPPER(code)=UPPER(?)').get(String(code).trim());
 
@@ -1336,8 +1336,9 @@ function validateCoupon(code, subtotal, shippingFee, mobile, items = null) {
      اگر مشتری هنوز وارد نشده، رد می‌شود — وگرنه هر کسی که کد را
      حدس بزند می‌تواند استفاده کند. */
   if (c.assigned_mobile) {
-    if (!mobile) return { ok: false, error: 'برای استفاده از این کد وارد حساب خود شوید.' };
-    if (String(c.assigned_mobile).trim() !== String(mobile).trim())
+    if (!verifiedMobile || verifiedMobile !== mobile)
+      return { ok: false, error: 'برای استفاده از این کد شماره موبایل خود را تأیید کنید.' };
+    if (String(c.assigned_mobile).trim() !== verifiedMobile)
       return { ok: false, error: 'این کد برای حساب شما صادر نشده است.' };
   }
 
@@ -1350,7 +1351,8 @@ function validateCoupon(code, subtotal, shippingFee, mobile, items = null) {
 
   // فقط اولین خرید — سفارش قبلیِ پرداخت‌شده مانع است
   if (c.first_order_only) {
-    if (!mobile) return { ok: false, error: 'برای استفاده از این کد وارد حساب خود شوید.' };
+    if (!verifiedMobile || verifiedMobile !== mobile)
+      return { ok: false, error: 'برای استفاده از این کد شماره موبایل خود را تأیید کنید.' };
     const prev = db.prepare(`
       SELECT COUNT(*) n FROM orders
       WHERE mobile = ? AND status IN ('PAID','PROCESSING','SHIPPED','DELIVERED')

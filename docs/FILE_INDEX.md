@@ -955,6 +955,8 @@ node_modules/   با npm install برمی‌گردد
 - `scripts/test_payment_result_safety.js` — جلوگیری از موفقیت ساختگی و تزریق داده نشانی.
 - `scripts/test_payment_provider_races.py` — آزمون تغییر وضعیت سفارش هنگام ایجاد یا تأیید پرداخت با درگاه شبیه‌سازی‌شده.
 - `scripts/test_coupon_order_atomicity.py` — آزمون ثبت اتمی کوپن و سفارش و بازگشت در قطع ناگهانی فرایند.
+- `scripts/test_coupon_phone_ownership.py` — آزمون مالکیت شماره برای کوپن اختصاصی و خرید اول، مهمان و لغو نشست هم‌زمان.
+- `scripts/test_coupon_checkout_browser.py` — آزمون ارسال نشست و کوپن در فرم تسویه موبایل و دسکتاپ.
 - `scripts/test_order_safety_browser.py` — آزمون مرورگر پیگیری و نتیجه پرداخت در موبایل و دسکتاپ.
 - `src/customer-phone-verification.js` — ثبت تأیید شماره و اعتماد جداگانه به رمز مشتری بدون حدس برای سوابق قدیمی.
 - `src/customer-phone-verification-cli.js` — مهاجرت افزایشی با پشتیبان مستقل و حفظ سوابق.

@@ -887,8 +887,9 @@ const server = http.createServer(async (req, res) => {
       let discount = 0, couponInfo = null, couponError = null;
 
       if (body.coupon_code) {
-        const mobile = otp.mobileFromToken(getCustomerToken(req)) || body.mobile || null;
-        const cv = validateCoupon(body.coupon_code, afterCampaign, shippingFee, mobile, v.items);
+        const verifiedMobile = otp.mobileFromToken(getCustomerToken(req));
+        const mobile = verifiedMobile || body.mobile || null;
+        const cv = validateCoupon(body.coupon_code, afterCampaign, shippingFee, mobile, v.items, verifiedMobile);
         if (cv.ok) {
           if (cv.free_shipping) {
             shippingFee = 0;
@@ -952,8 +953,9 @@ const server = http.createServer(async (req, res) => {
 
       // آستانه ارسال روی جمع کالاها — توضیح در /api/cart/calculate
       const ship = calcShipping(v.subtotal);
-      const mobile = otp.mobileFromToken(getCustomerToken(req)) || body.mobile || null;
-      const cv = validateCoupon(body.code, afterCampaign, ship.fee, mobile, v.items);
+      const verifiedMobile = otp.mobileFromToken(getCustomerToken(req));
+      const mobile = verifiedMobile || body.mobile || null;
+      const cv = validateCoupon(body.code, afterCampaign, ship.fee, mobile, v.items, verifiedMobile);
       if (!cv.ok) return sendJSON(400, { error: cv.error });
       return sendJSON(200, {
         valid: true, code: cv.coupon.code,
@@ -1037,7 +1039,8 @@ const server = http.createServer(async (req, res) => {
       let shippingFee = ship.fee, discount = 0, appliedCode = null;
       let couponSnapshot = null;
       if (body.coupon_code) {
-        const cv = validateCoupon(body.coupon_code, afterCampaign, shippingFee, body.mobile, v.items);
+        const verifiedMobile = otp.mobileFromToken(getCustomerToken(req));
+        const cv = validateCoupon(body.coupon_code, afterCampaign, shippingFee, body.mobile, v.items, verifiedMobile);
         if (!cv.ok) return sendJSON(400, { error: cv.error });
         couponSnapshot = {code:cv.coupon.code, free_shipping:!!cv.free_shipping, discount:cv.discount || 0};
         if (cv.free_shipping) shippingFee = 0;
@@ -1061,7 +1064,10 @@ const server = http.createServer(async (req, res) => {
         // order, items and stock ledger. A process crash cannot leave a coupon
         // reservation for an order that was never committed.
         if (couponSnapshot) {
-          const current=validateCoupon(body.coupon_code,afterCampaign,ship.fee,body.mobile,v.items);
+          // Re-read verified ownership under the order write lock: a revoked
+          // session must not authorize a restricted coupon during a race.
+          const verifiedMobile=otp.mobileFromToken(getCustomerToken(req));
+          const current=validateCoupon(body.coupon_code,afterCampaign,ship.fee,body.mobile,v.items,verifiedMobile);
           if (!current.ok || current.coupon.code!==couponSnapshot.code ||
               !!current.free_shipping!==couponSnapshot.free_shipping || (current.discount || 0)!==couponSnapshot.discount)
             throw Object.assign(Error('Coupon changed'),{code:'COUPON_CHANGED'});
