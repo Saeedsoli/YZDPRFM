@@ -17,9 +17,8 @@
  *
  * ── سه لایه محافظ ──
  *
- *   ۱) **امضای فایل، نه پسوند.** فایلی به نام `x.jpg` که در واقع
- *      HTML باشد، اگر سرو شود می‌تواند اسکریپت اجرا کند. پس چند
- *      بایت نخست خوانده و با امضای واقعی قالب مقایسه می‌شود.
+ *   ۱) **ساختار فایل، نه پسوند.** سربرگ، بخش‌های اصلی و ابعاد
+ *      تصویر بررسی می‌شوند. این کنترل رمزگشایی کامل تصویر نیست.
  *
  *   ۲) **نام بازساخته می‌شود.** نام کاربر هرگز مستقیم روی دیسک
  *      نمی‌نشیند — نه `../` می‌ماند، نه نویسه عجیب. نام تازه از
@@ -40,6 +39,7 @@
 const fs = require('fs');
 const path = require('path');
 const crypto = require('crypto');
+const {detect:detectFormat} = require('./image-validation');
 
 const ROOT_DIR = path.resolve(__dirname, '..');
 
@@ -61,27 +61,13 @@ const MEDIA_DIR = process.env.MEDIA_DIR
 const MEDIA_URL = '/images/journal';
 
 /** سقف حجم — ۳ مگابایت. تصویر مقاله بیش از این لازم ندارد. */
-const MAX_BYTES = Number(process.env.MEDIA_MAX_BYTES || 3 * 1024 * 1024);
+const DEFAULT_MAX_BYTES=3*1024*1024;
+const configuredMax=Number(process.env.MEDIA_MAX_BYTES);
+// Invalid or excessive configuration must never silently remove the limit.
+const MAX_BYTES=Number.isSafeInteger(configuredMax)&&configuredMax>=1024&&configuredMax<=16*1024*1024 ? configuredMax : DEFAULT_MAX_BYTES;
 
-/**
- * قالب‌های مجاز و امضای بایتی‌شان.
- *
- * چرا امضا و نه `Content-Type`: سرآیند را فرستنده تعیین می‌کند و
- * می‌تواند دروغ باشد. امضا داخل خود فایل است.
- */
-const SIGNATURES = [
-  { ext: 'jpg',  mime: 'image/jpeg', test: b => b[0] === 0xFF && b[1] === 0xD8 && b[2] === 0xFF },
-  { ext: 'png',  mime: 'image/png',  test: b => b[0] === 0x89 && b[1] === 0x50 && b[2] === 0x4E && b[3] === 0x47 },
-  { ext: 'webp', mime: 'image/webp', test: b =>
-      b.slice(0, 4).toString('ascii') === 'RIFF' && b.slice(8, 12).toString('ascii') === 'WEBP' },
-  { ext: 'gif',  mime: 'image/gif',  test: b => b.slice(0, 3).toString('ascii') === 'GIF' }
-];
-
-/** قالب واقعی فایل را از محتوایش تشخیص می‌دهد */
-function detectFormat(buf) {
-  if (!buf || buf.length < 12) return null;
-  return SIGNATURES.find(s => { try { return s.test(buf); } catch { return false; } }) || null;
-}
+// Format detection performs bounded container and dimension checks, but it is
+// not a full decoder or a guarantee that an uploaded image is harmless.
 
 function ensureDir() {
   if (!fs.existsSync(MEDIA_DIR)) fs.mkdirSync(MEDIA_DIR, { recursive: true });
@@ -153,19 +139,20 @@ async function saveUpload(req, originalName) {
     return { ok: false, error: 'محتوای فایل تصویر معتبر نیست. تنها JPG، PNG، WebP و GIF پذیرفته می‌شود.' };
   }
 
-  ensureDir();
-  const name = safeName(originalName, fmt.ext);
-  const full = path.join(MEDIA_DIR, name);
-
-  /* محافظ پیمایش مسیر — با `safeName` عملاً ممکن نیست، ولی این
-     خط هزینه‌ای ندارد و اگر روزی نام‌سازی عوض شود، هنوز سر جایش
-     است. */
-  if (!full.startsWith(MEDIA_DIR)) return { ok: false, error: 'نام فایل نامعتبر است.' };
-
-  try { fs.writeFileSync(full, buf); }
-  catch (e) { return { ok: false, error: 'ذخیره فایل ناموفق بود: ' + e.message }; }
-
-  return { ok: true, name, url: `${MEDIA_URL}/${name}`, size: buf.length, format: fmt.ext };
+  try {
+    ensureDir();
+    for(let attempt=0;attempt<4;attempt++){
+      const name=safeName(originalName,fmt.ext),full=path.join(MEDIA_DIR,name);
+      if(path.resolve(path.dirname(full))!==path.resolve(MEDIA_DIR))return {ok:false,error:'نام فایل نامعتبر است.'};
+      try {
+        // Exclusive creation never overwrites an existing image or follows a
+        // pre-existing symlink, even if name generation collides.
+        fs.writeFileSync(full,buf,{flag:'wx',mode:0o600});
+        return {ok:true,name,url:`${MEDIA_URL}/${name}`,size:buf.length,format:fmt.ext};
+      } catch(e) {if(e.code!=='EEXIST')throw e;}
+    }
+    return {ok:false,error:'ذخیره فایل ناموفق بود؛ دوباره تلاش کنید.'};
+  } catch {return {ok:false,error:'ذخیره فایل ناموفق بود.'};}
 }
 
 /** فهرست تصاویر آپلودشده — تازه‌ترین اول */
@@ -260,5 +247,5 @@ module.exports = {
   saveUpload, list, remove, stockImages,
   aparatId, aparatEmbed,
   MEDIA_DIR, MEDIA_URL, MAX_BYTES,
-  _internals: { detectFormat, safeName, SIGNATURES }
+  _internals: { detectFormat, safeName }
 };

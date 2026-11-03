@@ -977,6 +977,8 @@ node_modules/   با npm install برمی‌گردد
 - `scripts/test_browser_origin_guard.js` — آزمون سیاست مبدأ و سازگاری کلاینت‌های بدون Origin.
 - `scripts/test_browser_origin_http.py` — آزمون HTTP مسیرهای حساس در محیط موقت و پیامک شبیه‌سازی‌شده.
 - `scripts/test_browser_origin_csrf.py` — آزمون واقعی مرورگر برای درخواست از مبدأ دیگر در همان سایت.
+- `src/image-validation.js` — بررسی ساختاری و محدودیت ابعاد تصاویر آپلودی؛ نه رمزگشایی کامل یا بدافزارسنجی.
+- `scripts/test_image_upload_security.js` — آزمون ساختار، محدودیت اندازه و جلوگیری از بازنویسی فایل.
 - `scripts/test_checkout_profile_browser.py` — آزمون تکمیل فرم و جلوگیری از بازنویسی ورودی مشتری.
 - `scripts/test_login_redirect_safety.js` — جلوگیری از انتقال خارجی یا اجرای نشانی خطرناک پس از ورود.
 - `scripts/test_seo_html_safety.js` — محافظت داده‌های ساختاریافته و ویژگی‌های HTML در رندر سمت سرور.

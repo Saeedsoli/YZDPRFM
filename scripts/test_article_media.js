@@ -72,10 +72,10 @@ function api(p, opt = {}, token) {
   });
 }
 
-/* تصویر PNG واقعی ۱×۱ — امضای درست دارد */
-const REAL_PNG = Buffer.from(
-  'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAC0lEQVR42mP8z8BQDwAEhQGAhKmMIQAAAABJRU5ErkJggg==',
-  'base64');
+/* Fixtures are complete actual images, not just forged magic bytes. */
+const REAL_PNG = fs.readFileSync(path.join(__dirname,'../public/icon-192.png'));
+const REAL_JPEG = fs.readFileSync(path.join(__dirname,'../public/images/products/variant-sample.jpg'));
+const REAL_WEBP = fs.readFileSync(path.join(__dirname,'../public/images/products/variant-sample.webp'));
 
 (async () => {
   console.log();
@@ -89,11 +89,12 @@ const REAL_PNG = Buffer.from(
   const { detectFormat, safeName } = media._internals;
 
   add('PNG واقعی شناخته می‌شود', detectFormat(REAL_PNG)?.ext === 'png');
-  add('JPEG واقعی شناخته می‌شود',
-      detectFormat(Buffer.from([0xFF, 0xD8, 0xFF, 0xE0, 0, 0, 0, 0, 0, 0, 0, 0]))?.ext === 'jpg');
-  add('WebP واقعی شناخته می‌شود',
-      detectFormat(Buffer.concat([
-        Buffer.from('RIFF'), Buffer.alloc(4), Buffer.from('WEBP')]))?.ext === 'webp');
+  add('JPEG واقعی شناخته می‌شود', detectFormat(REAL_JPEG)?.ext === 'jpg');
+  add('WebP واقعی شناخته می‌شود', detectFormat(REAL_WEBP)?.ext === 'webp');
+  add('سربرگ JPEG بدون تصویر رد می‌شود',
+      detectFormat(Buffer.from([0xFF, 0xD8, 0xFF, 0xE0, 0, 0, 0, 0, 0, 0, 0, 0])) === null);
+  add('سربرگ WebP بدون تصویر رد می‌شود',
+      detectFormat(Buffer.concat([Buffer.from('RIFF'),Buffer.alloc(4),Buffer.from('WEBP')])) === null);
 
   /* خطرناک‌ترین حالت: HTML با پسوند تصویر. اگر ذخیره شود و از
      public سرو گردد، اسکریپت در دامنه ما اجرا می‌شود. */
@@ -199,6 +200,17 @@ const REAL_PNG = Buffer.from(
   }, token);
   add('🔴 HTML با نام jpg ذخیره نمی‌شود', upEvil.status === 400,
       (upEvil.json.error || '').slice(0, 46));
+
+  const spoof = await api('/api/admin/media', {
+    method:'POST',raw:true,headers:{'Content-Type':'image/jpeg','X-File-Name':'spoof.jpg'},
+    body:Buffer.concat([Buffer.from([0xff,0xd8,0xff,0xe0,0,2]),evilHtml,Buffer.from([0xff,0xd9])])
+  },token);
+  add('سربرگ تصویری جعلی ذخیره نمی‌شود',spoof.status===400);
+  const polyglot = await api('/api/admin/media', {
+    method:'POST',raw:true,headers:{'Content-Type':'image/png','X-File-Name':'polyglot.png'},
+    body:Buffer.concat([REAL_PNG,evilHtml])
+  },token);
+  add('داده اضافه پس از پایان تصویر رد می‌شود',polyglot.status===400);
 
   const upOk = await api('/api/admin/media', {
     method: 'POST', raw: true,
