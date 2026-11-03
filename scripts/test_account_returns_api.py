@@ -57,16 +57,6 @@ with tempfile.TemporaryDirectory(prefix='returns-api-') as td:
   assert api(port,'POST',dp,{'order_id':'OWNER','delivered_at_ms':now},admin=admin)[0]==409
   assert api(port,'POST',rp,{**payload,'item_id':sample},customer=a)[1]['reason']=='VOLUME_INELIGIBLE'
   assert api(port,'POST',rp,{**payload,'item_id':unknown},customer=a)[1]['reason']=='VOLUME_UNAVAILABLE'
-  hp='/api/admin/account-returns/historical-volume';hist={'item_id':unknown,'volume_ml':30,'evidence_note':'تصویر فاکتور معتبر بررسی شد','confirmed':True}
-  assert api(port,'POST',hp,hist)[0]==401
-  assert api(port,'POST',hp,{**hist,'confirmed':False},admin=admin)[0]==400
-  assert api(port,'POST',hp,{**hist,'evidence_note':'x'},admin=admin)[0]==400
-  assert api(port,'POST',hp,hist,admin=admin)[0]==201
-  assert api(port,'POST',hp,{**hist,'volume_ml':50},admin=admin)[0]==409
-  with sqlite3.connect(db) as c:
-   assert c.execute('select volume_ml,confirmed_by,evidence_note from return_historical_evidence where item_id=?',(unknown,)).fetchone()==(30,'owner','تصویر فاکتور معتبر بررسی شد')
-  data=api(port,'GET','/api/auth/orders',customer=a)[1];entry=next(i for o in data['orders'] for i in o['items'] if i['id']==unknown);assert entry['return_info']['eligible']
-
   assert api(port,'POST',rp,{**payload,'quantity':3},customer=a)[1]['reason']=='INVALID_QUANTITY'
   assert api(port,'POST',rp,{**payload,'used_under_2ml':'true'},customer=a)[1]['reason']=='INVALID_INPUT'
   def submit(_):return api(port,'POST',rp,payload,customer=a)

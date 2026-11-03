@@ -34,7 +34,7 @@ function compare(a,b){
   sourceDb=new Database(realSource,{fileMustExist:true});await sourceDb.backup(target);
   backupDb=new Database(target,{readonly:true,fileMustExist:true});
   if(backupDb.pragma('integrity_check',{simple:true})!=='ok')throw Error('Backup integrity failed');
-  const migration=sourceDb.transaction(()=>{compare(sourceDb,backupDb);const base=require('./return-store').install(sourceDb);const historical=require('./return-historical-evidence').install(sourceDb);return {...base,historical};}).immediate();
+  const migration=sourceDb.transaction(()=>{compare(sourceDb,backupDb);return require('./return-store').install(sourceDb);}).immediate();
   console.log(JSON.stringify({backup_verified:true,result:migration,legacy_delivery_and_item_evidence_backfilled:false}));
  }finally{if(backupDb)backupDb.close();if(sourceDb)sourceDb.close();}
 })().catch(e=>{console.error('Migration failed; existing orders were not changed: '+e.message);process.exitCode=1;});

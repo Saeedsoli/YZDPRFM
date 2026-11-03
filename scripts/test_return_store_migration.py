@@ -22,8 +22,8 @@ with tempfile.TemporaryDirectory(prefix='returns-migration-') as t:
     with sqlite3.connect(db) as c:
         # Model an existing store predating this additive feature.
         c.execute('drop index account_return_one_open_per_item')
-        for name in ['return_historical_evidence','account_return_requests','return_item_evidence','return_delivery_evidence']:c.execute('drop table '+name)
-        c.execute("delete from settings where key in ('account_returns_schema_v1','account_returns_historical_evidence_v1')")
+        for name in ['account_return_requests','return_item_evidence','return_delivery_evidence']:c.execute('drop table '+name)
+        c.execute("delete from settings where key='account_returns_schema_v1'")
         c.execute("insert into orders(order_id,created_at,customer_name,mobile,province,city,address,postal_code,subtotal,shipping_fee,total_paid,status) values('KEEP-ORDER','2026-01-01','Sentinel','09120001111','Y','Y','A','1234567890',500,0,500,'DELIVERED')")
         c.commit(); before=snapshot(c)
     # Mandatory arguments; no backup means no writes.
@@ -38,32 +38,13 @@ with tempfile.TemporaryDirectory(prefix='returns-migration-') as t:
         after=snapshot(c)
         for k,v in before.items():
             if k=='settings':
-                assert [r for r in after[k] if r[0] not in ('account_returns_schema_v1','account_returns_historical_evidence_v1')]==v
+                assert [r for r in after[k] if r[0]!='account_returns_schema_v1']==v
             else: assert after[k]==v,k
-        for k in ('return_item_evidence','return_delivery_evidence','account_return_requests','return_historical_evidence'):assert after[k]==[]
+        for k in ('return_item_evidence','return_delivery_evidence','account_return_requests'):assert after[k]==[]
     again=run('src/return-store-cli.js','--db',db,'--backup',replay,'--offline-confirmed')
     assert again.returncode==0 and not json.loads(again.stdout)['result']['created']
     no_overwrite=run('src/return-store-cli.js','--db',db,'--backup',backup,'--offline-confirmed')
     assert no_overwrite.returncode!=0
-    # A store already carrying the original return schema gets only the new
-    # provenance table. Its previously recorded evidence remains untouched.
-    upgrade=tmp/'upgrade.sqlite';shutil.copyfile(db,upgrade);upgrade_backup=tmp/'upgrade-before.sqlite'
-    with sqlite3.connect(upgrade) as c:
-        c.execute('drop table return_historical_evidence')
-        c.execute("delete from settings where key='account_returns_historical_evidence_v1'")
-        c.execute("insert into order_items(order_id,sku,product_name,unit_price,quantity,line_total) values('KEEP-ORDER','LEGACY-SKU','historic',100,1,100)")
-        iid=c.execute('select last_insert_rowid()').fetchone()[0]
-        c.execute('insert into return_item_evidence(item_id,volume_ml) values(?,?)',(iid,30));c.commit();upgrade_before=snapshot(c)
-    up=run('src/return-store-cli.js','--db',upgrade,'--backup',upgrade_backup,'--offline-confirmed')
-    assert up.returncode==0,up.stderr
-    up_result=json.loads(up.stdout)['result'];assert not up_result['created'] and up_result['historical']['created']
-    with sqlite3.connect(upgrade_backup) as b,sqlite3.connect(upgrade) as c:
-        assert snapshot(b)==upgrade_before
-        after=snapshot(c)
-        for k,v in upgrade_before.items():
-            if k=='settings':assert [r for r in after[k] if r[0]!='account_returns_historical_evidence_v1']==v
-            else:assert after[k]==v,k
-        assert after['return_historical_evidence']==[]
     # Conflict must leave existing objects untouched and still preserve backup.
     conflict=tmp/'conflict.sqlite';shutil.copyfile(backup,conflict); conflict_backup=tmp/'conflict-backup.sqlite'
     with sqlite3.connect(conflict) as c:
