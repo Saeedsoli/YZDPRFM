@@ -3,7 +3,7 @@
 import json,os,sqlite3,subprocess,tempfile
 from pathlib import Path
 root=Path(__file__).resolve().parent.parent
-batch=os.environ.get('NOTE_TEST_BATCH','1');assert batch in ('1','2','3','4')
+batch=os.environ.get('NOTE_TEST_BATCH','1');assert batch in ('1','2','3','4','5')
 manifest=json.loads((root/f'seed/active_secondary_note_additions_v{batch}.json').read_text());ids={x['product_id'] for x in manifest['items']}
 with tempfile.TemporaryDirectory(prefix='secondary-active-notes-') as td:
  td=Path(td);base=td/'baseline.sqlite'
@@ -44,11 +44,17 @@ with tempfile.TemporaryDirectory(prefix='secondary-active-notes-') as td:
  edited=td/'edited.sqlite';edited.write_bytes(saved.read_bytes())
  with sqlite3.connect(edited) as c:
   c.execute("update products set notes_top='[\"مدیر\"]' where id=?",(manifest['items'][0]['product_id'],))
-  c.execute("update products set essence_usd_per_kg='9999' where id=?",(manifest['items'][1]['product_id'],))
- r=apply(edited,td/'before-edited.sqlite')['result'];assert len(r['updated_ids'])==len(ids)-2 and set(r['skipped_ids'])=={manifest['items'][0]['product_id'],manifest['items'][1]['product_id']}
+  if len(ids)>1:c.execute("update products set essence_usd_per_kg='9999' where id=?",(manifest['items'][1]['product_id'],))
+ expected_skips={manifest['items'][0]['product_id']}
+ if len(ids)>1:expected_skips.add(manifest['items'][1]['product_id'])
+ r=apply(edited,td/'before-edited.sqlite')['result'];assert len(r['updated_ids'])==len(ids)-len(expected_skips) and set(r['skipped_ids'])==expected_skips
  with sqlite3.connect(edited) as c:
   assert json.loads(c.execute('select notes_top from products where id=?',(manifest['items'][0]['product_id'],)).fetchone()[0])==['مدیر']
-  assert c.execute('select essence_usd_per_kg from products where id=?',(manifest['items'][1]['product_id'],)).fetchone()[0]=='9999'
+  if len(ids)>1:assert c.execute('select essence_usd_per_kg from products where id=?',(manifest['items'][1]['product_id'],)).fetchone()[0]=='9999'
+ if len(ids)==1:
+  edited_price=td/'edited-price.sqlite';edited_price.write_bytes(saved.read_bytes())
+  with sqlite3.connect(edited_price) as c:c.execute("update products set essence_usd_per_kg='9999' where id=?",(manifest['items'][0]['product_id'],))
+  r=apply(edited_price,td/'before-edited-price.sqlite')['result'];assert r['skipped_ids']==[manifest['items'][0]['product_id']] and not r['updated_ids']
  # Fresh installs automatically receive the scoped data and indexes.
  fresh=td/'fresh.sqlite';fenv={**env,'DB_PATH':str(fresh),'ACTIVE_SECONDARY_NOTES_AUTOSTART':'1'}
  r=subprocess.run(['node','-e',"require('./src/db').db.close()"],cwd=root,env=fenv,capture_output=True,text=True,timeout=120);assert r.returncode==0,r.stderr

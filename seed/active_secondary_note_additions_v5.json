@@ -1,0 +1,36 @@
+{
+  "version": "active_secondary_notes_2026_11_v5",
+  "description": "Common independent reference notes shown without tiers; no change to pricing or identity evidence.",
+  "items": [
+    {
+      "product_id": "SUP-TP-910002",
+      "slug": "memo-paris-retba",
+      "expected_name_en": "MEMO PARIS - Retba",
+      "expected_brand": "Memo Paris",
+      "expected_concentration": null,
+      "expected_usd_per_kg": "332.2",
+      "expected_notice": "این محصول بازآفرینی دست‌ساز است و محصول اورجینال برند اصلی نیست. اطلاعات رایحه مرجع از فراگرانتیکا، یک منبع مستقل، گرفته شده و هویت اسانس تأمین‌کننده مستقلاً تأیید نشده است.",
+      "secondary_reference_name": "Retba",
+      "source_url": "https://www.fragrantica.com/perfume/Memo-Paris/Retba-60076.html",
+      "additional_independent_url": "https://www.parfumo.com/Perfumes/memo-paris/retba",
+      "source_note": "The independent sources disagree about placement. Only shared note names are presented without invented tiers. The official product URL currently redirects to a collection.",
+      "provider": "Fragrantica",
+      "checked_date": "2026-11-03",
+      "notes": {
+        "top": [],
+        "middle": [],
+        "base": []
+      },
+      "accords": [
+        "فلفل صورتی",
+        "رز",
+        "زعفران",
+        "زنجبیل",
+        "دارچین",
+        "کهربا",
+        "وانیل",
+        "آکورد عود"
+      ]
+    }
+  ]
+}

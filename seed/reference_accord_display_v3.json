@@ -1,0 +1,26 @@
+{
+  "version": "reference_accord_display_2026_11_v3",
+  "scope": "Unclassified common notes; independent sources disagree about tier placement.",
+  "items": [
+    {
+      "product_id": "SUP-TP-910002",
+      "slug": "memo-paris-retba",
+      "name_en": "MEMO PARIS - Retba",
+      "brand_en": "Memo Paris",
+      "concentration": null,
+      "accords": [
+        "فلفل صورتی",
+        "رز",
+        "زعفران",
+        "زنجبیل",
+        "دارچین",
+        "کهربا",
+        "وانیل",
+        "آکورد عود"
+      ],
+      "source_manifest": "active_secondary_note_additions_v5.json",
+      "source_url": "https://www.fragrantica.com/perfume/Memo-Paris/Retba-60076.html",
+      "source_kind": "independent"
+    }
+  ]
+}
