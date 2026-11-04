@@ -1,6 +1,6 @@
 'use strict';
 
-// Staged only: no HTTP or checkout UI integration yet. Browser coordination
+// Browser checkout attempts use an HttpOnly capability. Browser coordination
 // is still required for simultaneous first visits without any shared cookie.
 const crypto=require('crypto');
 const orders=require('./order-idempotency');

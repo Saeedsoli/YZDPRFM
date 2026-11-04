@@ -16,6 +16,7 @@ const { variantAvailability } = require('./availability');
 const stockReservations = require('./order-stock-reservations');
 const returnStore = require('./return-store');
 const orderIdempotency = require('./order-idempotency');
+const checkoutAttempt = require('./checkout-attempt');
 const browserOriginGuard = require('./browser-origin-guard');
 const { resolvePublicFile } = require('./static-path');
 const scriptElementCsp = require('./script-element-csp');
@@ -993,6 +994,41 @@ const server = http.createServer(async (req, res) => {
       });
     }
 
+    // Browser checkout capability is HttpOnly; the raw token never enters
+    // response JSON, log messages, URLs or localStorage. First-time tabs
+    // still need client-side coordination before calling this endpoint.
+    if (method === 'GET' && pathname === '/api/orders/attempt/status') {
+      if(!checkoutAttempt.ready(db)) return sendJSON(503,{error:'سامانه جلوگیری از ثبت تکراری هنوز آماده نیست.'});
+      const cookie=checkoutAttempt.readCookie(req.headers.cookie);
+      if(cookie.kind==='ABSENT') return sendJSON(401,{error:'شناسه ثبت سفارش موجود نیست.'});
+      if(cookie.kind==='INVALID') return sendJSON(400,{error:'شناسه ثبت سفارش معتبر نیست.'});
+      if(!checkoutAttempt.active(db,cookie.token)) return sendJSON(409,{error:'شناسه ثبت سفارش دیگر فعال نیست.'});
+      return sendJSON(200,{ready:true});
+    }
+    if (method === 'POST' && (pathname === '/api/orders/attempt' || pathname === '/api/orders/attempt/rotate')) {
+      const rl=rateLimit(`checkout-attempt:${clientIP(req)}`, RL.order.limit, RL.order.window, RL.order.block);
+      if(!rl.ok) return sendJSON(429,{error:'تعداد درخواست‌ها بیش از حد مجاز است.'});
+      if(!checkoutAttempt.ready(db)) return sendJSON(503,{error:'سامانه جلوگیری از ثبت تکراری هنوز آماده نیست.'});
+      await parseBody(req);
+      const cookie=checkoutAttempt.readCookie(req.headers.cookie);
+      if(cookie.kind==='INVALID') return sendJSON(400,{error:'شناسه ثبت سفارش معتبر نیست.'});
+      const production=String(process.env.NODE_ENV||'').trim().toLowerCase()==='production';
+      if(pathname==='/api/orders/attempt') {
+        if(cookie.kind==='VALID') {
+          if(!checkoutAttempt.active(db,cookie.token))return sendJSON(409,{error:'شناسه ثبت سفارش دیگر فعال نیست؛ صفحه را بررسی کنید.'});
+          return sendJSON(200,{ready:true});
+        }
+        const token=checkoutAttempt.issue(db);
+        res.setHeader('Set-Cookie',checkoutAttempt.setCookie(token,{production}));
+        return sendJSON(201,{ready:true});
+      }
+      if(cookie.kind!=='VALID') return sendJSON(400,{error:'شناسه ثبت سفارش موجود نیست.'});
+      const changed=checkoutAttempt.rotate(db,cookie.token);
+      if(!changed.ok)return sendJSON(409,{error:'سفارش قبلی نیاز به بررسی دارد؛ با پشتیبانی تماس بگیرید.'});
+      res.setHeader('Set-Cookie',checkoutAttempt.setCookie(changed.token,{production}));
+      return sendJSON(200,{ready:true});
+    }
+
     // ═══════════ سفارش ═══════════
     if (method === 'POST' && pathname === '/api/orders') {
       // Never create/reserve an order when production would use a test gateway.
@@ -1006,18 +1042,39 @@ const server = http.createServer(async (req, res) => {
       }
 
       const body = await parseBody(req);
-      let idem = null;
-      const key = req.headers['idempotency-key'];
+      let idem = null, cookieToken = null;
+      const cookie=checkoutAttempt.readCookie(req.headers.cookie);
+      if(cookie.kind==='INVALID') return sendJSON(400,{error:'شناسه ثبت سفارش معتبر نیست.'});
+      if(cookie.kind==='VALID' && req.headers['idempotency-key']!==undefined)
+        return sendJSON(400,{error:'فقط یک روش شناسایی سفارش مجاز است.'});
+      if(cookie.kind==='VALID') {
+        if(!checkoutAttempt.ready(db))return sendJSON(503,{error:'سامانه جلوگیری از ثبت تکراری هنوز آماده نیست.'});
+        cookieToken=cookie.token;
+      }
+      const key = cookieToken || req.headers['idempotency-key'];
       const respondToAttempt = result => {
         if (result.kind === 'READY') return sendJSON(200, {message:'سفارش پیش‌تر ثبت شده است.', ...result.response});
         if (result.kind === 'CONFLICT') return sendJSON(409, {error:'این کلید برای اطلاعات سفارش دیگری استفاده شده است.'});
+        if (result.kind === 'REVOKED') return sendJSON(409, {error:'شناسه ثبت سفارش دیگر فعال نیست؛ صفحه را بررسی کنید.'});
         if (result.kind === 'PAID') return sendJSON(409, {error:'این سفارش قبلاً پرداخت شده است.',order_id:result.orderId,status:'PAID'});
         if (result.kind === 'FAILED') return sendJSON(409, {error:'درخواست قبلی ناموفق بوده است؛ پیش از ثبت مجدد وضعیت را بررسی کنید.',order_id:result.orderId});
         return sendJSON(409, {error:'نتیجه درخواست قبلی نامشخص یا در حال بررسی است؛ پیش از تلاش دوباره با پشتیبانی بررسی کنید.', ...(result.orderId ? {order_id:result.orderId} : {})});
       };
+      const lookupAttempt = () => {
+        const check = () => {
+          if(cookieToken) {
+            try { checkoutAttempt.assertActiveInTransaction(db,cookieToken); }
+            catch { return {kind:'REVOKED'}; }
+          }
+          return orderIdempotency.lookup(db,idem);
+        };
+        // Serialize with rotation; nested calls are savepoints within the
+        // checkout transaction and still hold the same SQLite write lock.
+        return cookieToken ? db.transaction(check).immediate() : check();
+      };
       const rejectOrReplay = (status,data) => {
         if(idem) {
-          const existing=orderIdempotency.lookup(db,idem);
+          const existing=lookupAttempt();
           if(existing.kind!=='NEW') return respondToAttempt(existing);
         }
         return sendJSON(status,data);
@@ -1028,7 +1085,7 @@ const server = http.createServer(async (req, res) => {
         catch { return sendJSON(400,{error:'کلید ثبت سفارش یا اطلاعات درخواست معتبر نیست.'}); }
         // Replay before validating current stock or coupons; those may have
         // legitimately changed because the original order already reserved them.
-        const existing=orderIdempotency.lookup(db,idem);
+        const existing=lookupAttempt();
         if(existing.kind!=='NEW') return respondToAttempt(existing);
       }
 
@@ -1112,7 +1169,7 @@ const server = http.createServer(async (req, res) => {
 
       const tx = db.transaction(() => {
         if (idem) {
-          const existing=orderIdempotency.lookup(db,idem);
+          const existing=lookupAttempt();
           if(existing.kind!=='NEW') throw Object.assign(Error('Prior order attempt'),{code:'IDEMPOTENCY_REPLAY',result:existing});
         }
         // Recheck and reserve the coupon under the same write lock as the

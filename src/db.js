@@ -2684,6 +2684,7 @@ if (isFreshInstallation) require('./customer-phone-verification').install(db);
 if (isFreshInstallation) require('./return-store').install(db);
 // Existing stores require an explicit backup-first offline migration.
 if (isFreshInstallation) require('./order-idempotency').install(db);
+if (isFreshInstallation) require('./checkout-attempt').install(db);
 // Historical order reporting remains valid after retired SKUs leave the catalog.
 require('./variant-history').ensureVariantHistory(db);
 // Storage only: rates do not change prices until an explicit, atomic reprice.
