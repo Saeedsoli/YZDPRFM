@@ -89,7 +89,7 @@
 
 <div class="toolbar">
   <a href="/admin" class="btn btn-ghost">بازگشت</a>
-  <button class="btn" onclick="window.print()">چاپ برچسب</button>
+  <button class="btn" type="button" data-print>چاپ برچسب</button>
 </div>
 
 <div class="label" id="label">
@@ -161,8 +161,8 @@ function render(d) {
       <div class="to-name">${esc(o.customer_name)}</div>
       <div class="to-addr">${esc(o.province || '')} — ${esc(o.city || '')}<br>${esc(o.address || '')}</div>
       <div class="to-meta">
-        <span><b>تلفن:</b> <span dir="ltr">${fa(o.mobile)}</span></span>
-        ${o.postal_code ? `<span><b>کد پستی:</b> <span dir="ltr">${fa(o.postal_code)}</span></span>` : ''}
+        <span><b>تلفن:</b> <span dir="ltr">${esc(fa(o.mobile))}</span></span>
+        ${o.postal_code ? `<span><b>کد پستی:</b> <span dir="ltr">${esc(fa(o.postal_code))}</span></span>` : ''}
       </div>
     </div>
 
@@ -173,16 +173,16 @@ function render(d) {
              برگشت بخورد باید معلوم باشد به دست چه کسی برسد. -->
         <b>${esc(st.shop_name)}${st.sender_person ? ` — ${esc(st.sender_person)}` : ''}</b><br>
         ${esc(st.address || '—')}
-        ${st.phone ? `<br>تماس: <span dir="ltr">${fa(st.phone)}</span>` : ''}
-        ${st.postal_code ? `<br>کد پستی: <span dir="ltr">${fa(st.postal_code)}</span>` : ''}
+        ${st.phone ? `<br>تماس: <span dir="ltr">${esc(fa(st.phone))}</span>` : ''}
+        ${st.postal_code ? `<br>کد پستی: <span dir="ltr">${esc(fa(st.postal_code))}</span>` : ''}
       </div>
     </div>
 
     <div class="box">
       <h3>محتویات مرسوله</h3>
       <div class="items">
-        <div class="row"><span>تعداد اقلام</span><b>${fa(units)} عدد</b></div>
-        <div class="row"><span>شماره سفارش</span><b dir="ltr">${o.order_id}</b></div>
+        <div class="row"><span>تعداد اقلام</span><b>${esc(fa(units))} عدد</b></div>
+        <div class="row"><span>شماره سفارش</span><b dir="ltr">${esc(o.order_id)}</b></div>
         <div class="row"><span>تاریخ</span>
           <b>${fa(new Date(o.created_at).toLocaleDateString('fa-IR'))}</b></div>
       </div>
@@ -196,11 +196,12 @@ function render(d) {
 
     <div class="barcode-wrap">
       <div class="barcode">${code128SVG(code, { height: 60, moduleWidth: 2 })}</div>
-      <div class="barcode-txt">${code}</div>
+      <div class="barcode-txt">${esc(code)}</div>
       <div class="barcode-kind">شماره سفارش — برای اسکن در انبار · Code128</div>
     </div>`;
 }
 
+document.querySelectorAll('[data-print]').forEach(button => button.addEventListener('click', () => window.print()));
 load();
 </script>
 </body>

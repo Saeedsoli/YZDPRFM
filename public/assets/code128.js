@@ -128,6 +128,9 @@ function c128Encode(text) {
  * @param {object} opt   { height, moduleWidth, quiet }
  */
 function code128SVG(text, opt = {}) {
+  // Text is embedded in an SVG attribute; barcode input is not trusted HTML.
+  const label = String(text).replace(/&/g,'&amp;').replace(/</g,'&lt;')
+    .replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
   const height = opt.height ?? 56;
   const mw = opt.moduleWidth ?? 2;      // پهنای یک واحد بر حسب پیکسل
   const quiet = opt.quiet ?? 10;        // حاشیه آرام دو طرف (لازم برای اسکن)
@@ -150,7 +153,7 @@ function code128SVG(text, opt = {}) {
   const total = x + quiet;
   return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${total} ${height}"
     width="100%" height="${height}" shape-rendering="crispEdges"
-    role="img" aria-label="بارکد ${text}">
+    role="img" aria-label="بارکد ${label}">
     <rect width="${total}" height="${height}" fill="#FFF"/>
     <g fill="#000">${rects.join('')}</g>
   </svg>`;

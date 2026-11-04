@@ -1029,3 +1029,5 @@ node_modules/   با npm install برمی‌گردد
 - `scripts/test_checkout_attempt_http.py` — آزمون HTTP کوکی HttpOnly، احراز مبدأ، رقابت و تعویض امن شناسه سفارش.
 - `scripts/test_checkout_attempt_cookie_browser.py` — آزمون مرورگر کوکی HttpOnly مشترک در دو تب و ثبت یک سفارش آزمایشی.
 - `scripts/test_checkout_two_tabs_browser.py` — آزمون دو تب از ورود نخست تا پرداخت آزمایشی و شروع صریح خرید تازه.
+- `scripts/test_barcode_html_safety.js` — آزمون خنثی‌سازی متن بارکد در ویژگی SVG و حفظ خروجی عادی.
+- `scripts/test_invoice_label_security_browser.py` — آزمون مرورگر فاکتور و برچسب با داده مخرب، CSP و دکمه چاپ.

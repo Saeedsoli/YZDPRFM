@@ -2302,7 +2302,7 @@ const server = http.createServer(async (req, res) => {
           let html = fs.readFileSync(full, 'utf-8');
           // Hash the trusted template only. User-controlled SEO content must
           // never be included in the allowlist.
-          res.setHeader('Content-Security-Policy', scriptElementCsp.forTemplate(res.getHeader('Content-Security-Policy'), html, {disallowInlineHandlers: ['account.html','login.html','checkout.html'].includes(path.basename(full))}));
+          res.setHeader('Content-Security-Policy', scriptElementCsp.forTemplate(res.getHeader('Content-Security-Policy'), html, {disallowInlineHandlers: ['account.html','login.html','checkout.html','invoice.html','label.html'].includes(path.basename(full))}));
           try {
             if (pathname.startsWith('/perfume/')) {
               const slug = pathname.replace('/perfume/', '').replace(/\/$/, '');

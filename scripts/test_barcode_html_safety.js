@@ -1,0 +1,10 @@
+'use strict';
+const assert=require('assert/strict');
+const {code128SVG,c128Encode}=require('../public/assets/code128');
+assert.deepEqual(c128Encode('123456'),[105,12,34,56,44,106]);
+const plain='YZD-TEST-123456';const before=c128Encode(plain);const out=code128SVG(plain);
+assert(out.includes('aria-label="بارکد '+plain+'"'));assert.deepEqual(c128Encode(plain),before);
+const payload='ABC" onload="window.x=1<&\'>';const html=code128SVG(payload);
+assert(html.includes('ABC&quot; onload=&quot;window.x=1&lt;&amp;&#39;&gt;'));
+assert(!html.includes('" onload="'));assert(html.includes('<svg') && html.includes('<rect'));
+console.log('PASS barcode attribute escaping; normal encoding unchanged');

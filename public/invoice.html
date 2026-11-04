@@ -116,8 +116,8 @@
 <div class="toolbar">
   <a href="/admin" class="btn btn-ghost">بازگشت</a>
   <div style="display:flex;gap:9px">
-    <button class="btn btn-ghost" onclick="window.print()">ذخیره PDF</button>
-    <button class="btn" onclick="window.print()">چاپ فاکتور</button>
+    <button class="btn btn-ghost" type="button" data-print>ذخیره PDF</button>
+    <button class="btn" type="button" data-print>چاپ فاکتور</button>
   </div>
 </div>
 
@@ -135,6 +135,8 @@ const money = n => fa(Number(n || 0).toLocaleString('en-US'));
 
 /* تبدیل عدد به حروف فارسی */
 function toWords(num) {
+  num=Number(num);
+  if (!Number.isSafeInteger(num) || num<0) return '—';
   if (!num) return 'صفر';
   const yekan = ['','یک','دو','سه','چهار','پنج','شش','هفت','هشت','نه'];
   const dahgan = ['','','بیست','سی','چهل','پنجاه','شصت','هفتاد','هشتاد','نود'];
@@ -158,6 +160,7 @@ function toWords(num) {
   const parts = [];
   let i = 0;
   while (num > 0) {
+    if (i >= scales.length) return '—';
     const chunk = num % 1000;
     if (chunk) parts.unshift(three(chunk) + scales[i]);
     num = Math.floor(num / 1000);
@@ -225,7 +228,7 @@ function render(d) {
     formal && st.national_id && `شناسه ملی: ${esc(st.national_id)}`,
     formal && st.register_no && `شماره ثبت: ${esc(st.register_no)}`,
     st.phone && `تلفن: ${esc(st.phone)}`,
-    st.address,
+    st.address && esc(st.address),
     formal && st.postal_code && `کد پستی: ${esc(st.postal_code)}`
   ].filter(Boolean).join('<br>');
 
@@ -240,10 +243,10 @@ function render(d) {
       <div class="doc-title">
         <h1>${formal ? 'فاکتور رسمی فروش کالا' : 'فاکتور فروش کالا'}</h1>
         <div class="meta">
-          ${invoice_no ? `شماره فاکتور: <span class="no">${fa(invoice_no)}</span><br>` : ''}
-          شماره سفارش: <span dir="ltr">${o.order_id}</span><br>
+          ${invoice_no ? `شماره فاکتور: <span class="no">${esc(fa(invoice_no))}</span><br>` : ''}
+          شماره سفارش: <span dir="ltr">${esc(o.order_id)}</span><br>
           تاریخ: ${fa(dt.toLocaleDateString('fa-IR'))}<br>
-          وضعیت: ${TYPE_FA[o.status] || o.status}
+          وضعیت: ${esc(TYPE_FA[o.status] || o.status)}
         </div>
       </div>
     </div>
@@ -252,9 +255,9 @@ function render(d) {
       <div class="party">
         <h3>مشخصات خریدار</h3>
         <div class="row"><b>نام:</b> ${esc(o.customer_name)}</div>
-        <div class="row"><b>تلفن:</b> <span dir="ltr">${fa(o.mobile)}</span></div>
+        <div class="row"><b>تلفن:</b> <span dir="ltr">${esc(fa(o.mobile))}</span></div>
         <div class="row"><b>نشانی:</b> ${esc(o.province || '')} ${esc(o.city || '')} ${esc(o.address || '')}</div>
-        ${o.postal_code ? `<div class="row"><b>کد پستی:</b> <span dir="ltr">${fa(o.postal_code)}</span></div>` : ''}
+        ${o.postal_code ? `<div class="row"><b>کد پستی:</b> <span dir="ltr">${esc(fa(o.postal_code))}</span></div>` : ''}
       </div>
       <div class="party">
         <h3>اطلاعات ارسال و پرداخت</h3>
@@ -277,7 +280,7 @@ function render(d) {
           <td class="idx">${fa(k + 1)}</td>
           <td>${esc(i.product_name)}
             <div style="font-size:.7rem;color:var(--muted)" dir="ltr">${esc(i.sku)}</div></td>
-          <td class="num">${fa(i.quantity)}</td>
+          <td class="num">${esc(fa(i.quantity))}</td>
           <td class="num">${money(i.unit_price)}</td>
           <td class="num">${money(i.line_total)}</td>
         </tr>`).join('')}
@@ -322,10 +325,11 @@ function render(d) {
 
     <div class="inv-barcode">
       ${code128SVG(o.order_id, { height: 52, moduleWidth: 1.6 })}
-      <div class="t">${o.order_id}</div>
+      <div class="t">${esc(o.order_id)}</div>
     </div>`;
 }
 
+document.querySelectorAll('[data-print]').forEach(button => button.addEventListener('click', () => window.print()));
 load();
 </script>
 </body>

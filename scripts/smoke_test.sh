@@ -322,6 +322,7 @@ run_test test_automatic_backup_safety.js "automatic backup verification and atom
 run_test test_delivery_time_consistency.js "consistent delivery window"
 run_test test_browser_origin_guard.js "browser same-origin mutation guard"
 run_test test_script_element_csp.js "template-only CSP script hashes"
+run_test test_barcode_html_safety.js "barcode attribute safety"
 run_test test_client_ip.js "trusted proxy IP resolution"
 run_test test_analytics_trusted_proxy.js "analytics trusted proxy resolution"
 run_test test_csv_export.js "CSV quoting and formula defense"
