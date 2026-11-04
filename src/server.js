@@ -1002,8 +1002,9 @@ const server = http.createServer(async (req, res) => {
       const cookie=checkoutAttempt.readCookie(req.headers.cookie);
       if(cookie.kind==='ABSENT') return sendJSON(401,{error:'شناسه ثبت سفارش موجود نیست.'});
       if(cookie.kind==='INVALID') return sendJSON(400,{error:'شناسه ثبت سفارش معتبر نیست.'});
-      if(!checkoutAttempt.active(db,cookie.token)) return sendJSON(409,{error:'شناسه ثبت سفارش دیگر فعال نیست.'});
-      return sendJSON(200,{ready:true});
+      const attempt=checkoutAttempt.describe(db,cookie.token);
+      if(attempt.kind==='INACTIVE') return sendJSON(409,{error:'شناسه ثبت سفارش دیگر فعال نیست.'});
+      return sendJSON(200,{ready:true,state:attempt.kind,...(attempt.orderId?{order_id:attempt.orderId}:{})});
     }
     if (method === 'POST' && (pathname === '/api/orders/attempt' || pathname === '/api/orders/attempt/rotate')) {
       const rl=rateLimit(`checkout-attempt:${clientIP(req)}`, RL.order.limit, RL.order.window, RL.order.block);

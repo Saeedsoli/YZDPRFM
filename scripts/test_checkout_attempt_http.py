@@ -39,7 +39,7 @@ pay.requestPayment=async (...args)=>{fs.appendFileSync(process.env.CALLS,'x');fs
   full=h['Set-Cookie'];assert 'HttpOnly' in full and 'SameSite=Lax' in full and 'Path=/api/orders' in full and 'Secure' not in full
   cookie=full.split(';',1)[0];secret=cookie.split('=',1)[1];assert secret not in json.dumps(data)
   code,data,h=call(pb,'POST',issue,{},cookie=cookie,ip='198.51.100.2');assert code==200 and data=={'ready':True} and 'Set-Cookie' not in h
-  assert call(pb,'GET',status,cookie=cookie)[0]==200
+  assert call(pb,'GET',status,cookie=cookie)[1]=={'ready':True,'state':'UNUSED'}
   assert call(pb,'POST',rotate,{},cookie=cookie,headers={'Origin':'https://attacker.example'})[0]==403
   assert call(pb,'POST',issue,{},cookie=cookie+'; '+cookie,ip='198.51.100.3')[0]==400
   with sqlite3.connect(db) as c:
@@ -51,11 +51,14 @@ pay.requestPayment=async (...args)=>{fs.appendFileSync(process.env.CALLS,'x');fs
   with concurrent.futures.ThreadPoolExecutor(max_workers=1) as pool:
    first=pool.submit(call,pa,'POST','/api/orders',order,cookie,'198.51.100.5');wait(start)
    code,hold,_=call(pb,'POST','/api/orders',order,cookie,ip='198.51.100.6');assert code==409 and hold.get('order_id');oid=hold['order_id']
+   assert call(pb,'GET',status,cookie=cookie)[1]=={'ready':True,'state':'UNRESOLVED','order_id':oid}
    assert call(pb,'POST',rotate,{},cookie=cookie,ip='198.51.100.7')[0]==409
    assert calls.read_text()=='x';go.touch();code,created,_=first.result(timeout=12);assert code==201 and created['order_id']==oid
   code,replay,_=call(pb,'POST','/api/orders',order,cookie,ip='198.51.100.8');assert code==200 and replay['order_id']==oid and replay['payment_url']==created['payment_url'] and calls.read_text()=='x'
+  assert call(pb,'GET',status,cookie=cookie)[1]=={'ready':True,'state':'PENDING','order_id':oid}
   assert call(pb,'POST',rotate,{},cookie=cookie,ip='198.51.100.9')[0]==409
   assert call(pb,'POST','/api/payment/verify',{'order_id':oid,'result':'success'},ip='198.51.100.10')[0]==200
+  assert call(pb,'GET',status,cookie=cookie)[1]=={'ready':True,'state':'PAID','order_id':oid}
   code,data,h=call(pb,'POST',rotate,{},cookie=cookie,ip='198.51.100.11');assert code==200 and data=={'ready':True};new=h['Set-Cookie'].split(';',1)[0];assert new!=cookie
   assert call(pb,'GET',status,cookie=cookie)[0]==409 and call(pb,'GET',status,cookie=new)[0]==200
   assert call(pb,'POST','/api/orders',order,cookie=cookie,ip='198.51.100.12')[0]==409

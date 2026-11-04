@@ -58,6 +58,19 @@ function active(db,token){
  requireReady(db);const hash=digest(token);
  return !!db.prepare('SELECT 1 FROM checkout_attempt_tokens WHERE token_hash=? AND revoked_at_ms IS NULL').get(hash);
 }
+// Only non-sensitive state is returned to the browser holding the capability.
+// Status is informational: order creation/rotation rechecks under a write lock.
+function describe(db,token){
+ requireReady(db);const hash=digest(token);
+ const tokenRow=db.prepare('SELECT revoked_at_ms FROM checkout_attempt_tokens WHERE token_hash=?').get(hash);
+ if(!tokenRow || tokenRow.revoked_at_ms!==null)return {kind:'INACTIVE'};
+ const row=db.prepare(`SELECT i.order_id,i.state,o.status,o.payment_ref FROM order_idempotency i
+   LEFT JOIN orders o ON o.order_id=i.order_id WHERE i.key_hash=?`).get(hash);
+ if(!row)return {kind:'UNUSED'};
+ if(['PAID','PROCESSING','SHIPPED','DELIVERED'].includes(row.status))return {kind:'PAID',orderId:row.order_id};
+ if(row.state==='READY' && row.status==='PENDING' && row.payment_ref)return {kind:'PENDING',orderId:row.order_id};
+ return {kind:'UNRESOLVED',orderId:row.order_id};
+}
 // Used while holding the SAME write lock as order-idempotency lookup/binding.
 // Checking only before the order transaction would leave a rotation race.
 function assertActiveInTransaction(db,token){
@@ -82,4 +95,4 @@ function rotate(db,token,nowMs=Date.now()){
   return {ok:true,token:createLocked(db,nowMs)};
  }).immediate();
 }
-module.exports={KEY,COOKIE,ready,install,digest,readCookie,setCookie,issue,active,assertActiveInTransaction,rotate};
+module.exports={KEY,COOKIE,ready,install,digest,readCookie,setCookie,issue,active,describe,assertActiveInTransaction,rotate};

@@ -34,6 +34,9 @@ with tempfile.TemporaryDirectory(prefix='checkout-async-') as td:
       let blocked=false;document.addEventListener('securitypolicyviolation',e=>{if(e.effectiveDirective==='script-src-attr')blocked=true});
       const b=document.createElement('button');b.setAttribute('onclick','window.__bad=1');document.body.appendChild(b);b.click();setTimeout(()=>resolve({blocked,executed:window.__bad||0}),200);
     })''');assert attack=={'blocked':True,'executed':0},attack
+    assert page.evaluate("safePaymentUrl('javascript:alert(1)')") is None
+    assert page.evaluate("safePaymentUrl('https://payment.zarinpal.com.attacker.example/pg/StartPay/x')") is None
+    assert page.evaluate("safePaymentUrl('https://payment.zarinpal.com/pg/StartPay/example')").startswith('https://payment.zarinpal.com/')
     page.wait_for_function('()=>window.__calcs.length>=1')
     page.evaluate("window.__calcs[0].resolve({discount:0,campaign_discount:0,campaign_lines:[],shipping_fee:100000,shipping_label:'پست',gift_wrap_fee:0,total_payable:200000})")
     expect(page.locator('#fGift')).to_be_visible();page.locator('#fGift').check();page.wait_for_function('()=>window.__calcs.length>=2');page.locator('#fGift').uncheck();page.wait_for_function('()=>window.__calcs.length>=3')
@@ -52,9 +55,9 @@ with tempfile.TemporaryDirectory(prefix='checkout-async-') as td:
     page.evaluate('submitOrder()');page.wait_for_timeout(200);assert page.evaluate('window.__orders.length')==1
     page.evaluate('window.__orders[0].resolve()');expect(page.locator('#err')).to_have_text('پرداخت آزمایشی ناموفق');expect(page.locator('#payBtn')).to_be_enabled()
     page.locator('#payBtn').click();page.wait_for_function('()=>window.__orders.length===2');page.evaluate('window.__orders[1].reject()')
-    expect(page.locator('#err')).to_contain_text('نتیجه ثبت سفارش نامشخص است');expect(page.locator('#err')).to_contain_text('پیش از تلاش دوباره');expect(page.locator('#payBtn')).to_be_enabled()
+    expect(page.locator('#attemptNotice')).to_contain_text('سفارش قبلی در حال بررسی است');expect(page.locator('#attemptNotice')).to_contain_text('ثبت تکراری');expect(page.locator('#payBtn')).to_be_enabled()
     page.locator('#payBtn').click();page.wait_for_function('()=>window.__orders.length===3');page.evaluate('window.__orders[2].conflict()')
-    expect(page.locator('#err')).to_contain_text('نتیجه ثبت سفارش نامشخص است');assert not errors,errors;context.close()
+    expect(page.locator('#attemptNotice')).to_contain_text('سفارش قبلی در حال بررسی است');assert not errors,errors;context.close()
    browser.close()
   print('PASS checkout strict CSP, out-of-order totals, rerendered submit guard and retry on mobile/desktop Chromium; mocked APIs')
  finally:

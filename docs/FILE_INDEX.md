@@ -1019,12 +1019,13 @@ node_modules/   با npm install برمی‌گردد
 - `scripts/test_script_element_csp.js` — آزمون هش قالب، نرمال‌سازی و رد سیاست نامعتبر.
 - `scripts/test_script_element_csp_browser.py` — آزمون مرورگر واقعی CSP و سلامت صفحه‌های کلیدی.
 - `scripts/test_checkout_async_safety_browser.py` — آزمون مرورگر CSP تسویه، پاسخ‌های خارج از ترتیب و جلوگیری از ثبت هم‌زمان سفارش.
-- `src/order-idempotency.js` — ذخیره محافظت‌شده کلید تکرارناپذیری؛ API از کلید اختیاری پشتیبانی می‌کند، رابط تسویه هنوز از آن استفاده نمی‌کند.
+- `src/order-idempotency.js` — ذخیره محافظت‌شده کلید تکرارناپذیری؛ API و کوکی اقدام از آن استفاده می‌کنند.
 - `scripts/test_order_idempotency.js` — آزمون ایزوله حفظ شناسه، تراکنش و رقابت برای کلید یکسان.
 - `src/order-idempotency-cli.js` — مهاجرت افزایشی آفلاین و پشتیبان‌اول جدول کلید سفارش و کوکی اقدام، بدون حدس درباره سفارش‌های قدیمی.
 - `scripts/test_order_idempotency_http.py` — آزمون HTTP اتمی کلید ثبت سفارش، هم‌زمانی، قطع پردازش و بازپخش روی پایگاه موقت.
 - `scripts/test_order_idempotency_migration.py` — آزمون پشتیبان و مهاجرت افزایشی جدول جلوگیری از تکرار سفارش.
-- `src/checkout-attempt.js` — کوکی HttpOnly و تعویض اتمیک شناسه اقدام؛ به API متصل است اما رابط تسویه هنوز آن را به‌کار نمی‌برد.
+- `src/checkout-attempt.js` — کوکی HttpOnly و تعویض اتمیک شناسه اقدام در تسویه.
 - `scripts/test_checkout_attempt.js` — آزمون ایزوله اعتبار کوکی، قابلیت ابطال و رقابت ثبت سفارش و تعویض شناسه.
 - `scripts/test_checkout_attempt_http.py` — آزمون HTTP کوکی HttpOnly، احراز مبدأ، رقابت و تعویض امن شناسه سفارش.
 - `scripts/test_checkout_attempt_cookie_browser.py` — آزمون مرورگر کوکی HttpOnly مشترک در دو تب و ثبت یک سفارش آزمایشی.
+- `scripts/test_checkout_two_tabs_browser.py` — آزمون دو تب از ورود نخست تا پرداخت آزمایشی و شروع صریح خرید تازه.

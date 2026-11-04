@@ -26,7 +26,7 @@ with tempfile.TemporaryDirectory(prefix='attempt-cookie-browser-') as td:
     cookies=[x for x in context.cookies() if x['name']=='yazd_order_attempt'];assert len(cookies)==1 and cookies[0]['httpOnly'] and cookies[0]['sameSite']=='Lax' and cookies[0]['path']=='/api/orders'
     assert 'yazd_order_attempt=' not in a.evaluate('document.cookie') and cookies[0]['value'] not in str(first)
     check=b.evaluate("async()=>{const r=await fetch('/api/orders/attempt/status');return {status:r.status,data:await r.json()}}")
-    assert check=={'status':200,'data':{'ready':True}}
+    assert check=={'status':200,'data':{'ready':True,'state':'UNUSED'}}
     body={'customer_name':'Browser','mobile':mobile,'items':[{'sku':sku,'quantity':1}]}
     js='''body=>{window.__attempt=fetch('/api/orders',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)}).then(async r=>({status:r.status,data:await r.json()}));}'''
     a.evaluate(js,body);b.evaluate(js,body)

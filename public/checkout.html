@@ -54,6 +54,14 @@
   .gift-txt i { font-size: .73rem; color: var(--muted); font-style: normal; line-height: 1.7; }
   .err { background: #FDECEA; border-right: 3px solid #C0392B; color: #922B21;
          padding: 11px 14px; border-radius: 9px; font-size: .84rem; margin-bottom: 14px; display: none; }
+  .attempt-notice { background:#fff8e8; border:1px solid #e4d4a7; border-radius:9px;
+    padding:12px 14px; margin-bottom:14px; font-size:.83rem; line-height:2; }
+  .attempt-notice[hidden] { display:none; }
+  .attempt-notice strong { display:block; color:#6d5321; }
+  .attempt-actions { display:flex; gap:8px; flex-wrap:wrap; margin-top:9px; }
+  .attempt-actions a,.attempt-actions button { display:inline-block; font:inherit; font-size:.78rem;
+    border:1px solid var(--border); border-radius:8px; padding:7px 12px; background:#fff; color:var(--text);
+    text-decoration:none; cursor:pointer; }
 </style>
 </head>
 <body>
@@ -83,6 +91,7 @@
 <div class="co-wrap">
   <div>
     <div class="err" id="err" role="alert" aria-live="assertive"></div>
+    <div class="attempt-notice" id="attemptNotice" role="alert" aria-live="polite" hidden></div>
 
     <div class="panel" id="loginHint" style="margin-bottom:18px;display:none;
          background:var(--sand);border-right:4px solid var(--gold)">
@@ -371,58 +380,136 @@ function showErr(m) {
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
+function showAttemptNotice(kind, orderId) {
+  const box=document.getElementById('attemptNotice');
+  const safeId=typeof orderId==='string' && /^[A-Za-z0-9_-]{1,80}$/.test(orderId) ? orderId : '';
+  const track=safeId ? '/track?order='+encodeURIComponent(safeId) : '/track';
+  if(kind==='PAID') {
+    box.innerHTML=`<strong>سفارش قبلی پرداخت شده است</strong><span>اگر می‌خواهید خرید تازه‌ای انجام دهید، پس از بررسی سفارش قبلی می‌توانید سفارش جدید را شروع کنید.</span><div class="attempt-actions"><button type="button" data-attempt-new>شروع سفارش جدید</button><a href="/account">مشاهده سفارش‌ها</a></div>`;
+  } else if(kind==='BROWSER') {
+    box.innerHTML=`<strong>امکان ثبت امن سفارش فراهم نیست</strong><span>مرورگر را به‌روز کنید یا برای ثبت سفارش با پشتیبانی تماس بگیرید.</span><div class="attempt-actions"><a href="/contact">تماس با پشتیبانی</a></div>`;
+  } else if(kind==='SERVICE') {
+    box.innerHTML=`<strong>سامانه ثبت امن سفارش آماده نیست</strong><span>برای ثبت سفارش با پشتیبانی تماس بگیرید.</span><div class="attempt-actions"><a href="/contact">تماس با پشتیبانی</a></div>`;
+  } else if(kind==='BUSY') {
+    box.innerHTML=`<strong>در تب دیگری سفارش در حال ثبت است</strong><span>تا مشخص شدن نتیجه، همان تب را بررسی کنید.</span><div class="attempt-actions"><a href="/contact">تماس با پشتیبانی</a></div>`;
+  } else {
+    box.innerHTML=`<strong>سفارش قبلی در حال بررسی است</strong><span>برای جلوگیری از ثبت تکراری، پیش از ثبت سفارش تازه وضعیت سفارش قبلی را پیگیری کنید یا با پشتیبانی تماس بگیرید.</span><div class="attempt-actions"><a href="${esc(track)}">پیگیری سفارش</a><a href="/contact">تماس با پشتیبانی</a></div>`;
+  }
+  box.hidden=false;window.scrollTo({top:0,behavior:'smooth'});
+}
+async function attemptStatus() {
+  const r=await fetch('/api/orders/attempt/status',{cache:'no-store'});
+  if(!r.ok) { const e=Error('Attempt status unavailable');e.code=r.status===503?'SERVICE':'COOKIE';throw e; }
+  const data=await r.json();
+  if(!data.ready || !['UNUSED','PENDING','UNRESOLVED','PAID'].includes(data.state)) throw Error('Invalid attempt status');
+  return data;
+}
+async function prepareAttempt() {
+  const r=await fetch('/api/orders/attempt',{method:'POST',headers:{'Content-Type':'application/json'},body:'{}'});
+  if(!r.ok) { const e=Error('Attempt unavailable');e.code=r.status===503?'SERVICE':'COOKIE';throw e; }
+  // Verifies that the browser really retained the HttpOnly cookie.
+  return attemptStatus();
+}
+function safePaymentUrl(raw) {
+  try {
+    const u=new URL(raw,location.origin);
+    if(u.username||u.password||u.hash) return null;
+    if(u.origin===location.origin && u.pathname==='/payment/sandbox') return u.href;
+    if(u.protocol==='https:' && ['payment.zarinpal.com','sandbox.zarinpal.com'].includes(u.hostname) &&
+       !u.port && u.pathname.startsWith('/pg/StartPay/'))return u.href;
+  } catch {}
+  return null;
+}
+async function withAttemptLock(action) {
+  if(!window.isSecureContext || !navigator.locks || typeof navigator.locks.request!=='function') {
+    showAttemptNotice('BROWSER');return;
+  }
+  return navigator.locks.request('yazd-checkout-attempt-v1',{mode:'exclusive',ifAvailable:true},async lock=>{
+    if(!lock){showAttemptNotice('BUSY');return;}
+    await action();
+  });
+}
+function restorePayButton() {
+  orderSubmitting=false;
+  const current=document.getElementById('payBtn');
+  if(current){current.disabled=false;current.textContent='پرداخت و ثبت نهایی سفارش';}
+}
+async function startNewOrderAttempt() {
+  if(orderSubmitting)return;
+  orderSubmitting=true;
+  const current=document.getElementById('payBtn');if(current)current.disabled=true;
+  const actionButton=document.querySelector('[data-attempt-new]');if(actionButton)actionButton.disabled=true;
+  try {
+    await withAttemptLock(async()=>{
+      const status=await attemptStatus();
+      if(status.state!=='PAID'){showAttemptNotice('UNRESOLVED',status.order_id);return;}
+      const r=await fetch('/api/orders/attempt/rotate',{method:'POST',headers:{'Content-Type':'application/json'},body:'{}'});
+      if(!r.ok)throw Error('Could not rotate attempt');
+      const changed=await attemptStatus();
+      if(changed.state!=='UNUSED')throw Error('Attempt rotation not confirmed');
+      document.getElementById('attemptNotice').hidden=true;
+      toast('سفارش تازه آماده است؛ اطلاعات را بررسی و پرداخت را انتخاب کنید.');
+    });
+  } catch {showAttemptNotice('UNRESOLVED');}
+  finally {restorePayButton();if(actionButton)actionButton.disabled=false;}
+}
+document.getElementById('attemptNotice').addEventListener('click',e=>{
+  if(e.target.closest('[data-attempt-new]'))startNewOrderAttempt();
+});
+
 async function submitOrder() {
   if (orderSubmitting) return;
   document.getElementById('err').style.display = 'none';
+  document.getElementById('attemptNotice').hidden=true;
   if (!validateAll()) return;
   orderSubmitting = true;
 
-  const first = document.getElementById('fFirst').value.trim();
-  const last  = document.getElementById('fLast').value.trim();
-  const name  = `${first} ${last}`.trim();
-  const email = document.getElementById('fEmail').value.trim();
-  const mobile = toEnDigits(document.getElementById('fMobile').value).trim();
-  const prov = document.getElementById('fProvince').value;
-  const city = document.getElementById('fCity').value.trim();
-  const addr = document.getElementById('fAddress').value.trim();
-
-  const btn = document.getElementById('payBtn');
-  btn.disabled = true; btn.textContent = 'در حال ثبت سفارش…';
-  let safelyRejected = false;
-
+  const first=document.getElementById('fFirst').value.trim(), last=document.getElementById('fLast').value.trim();
+  const mobile=toEnDigits(document.getElementById('fMobile').value).trim();
+  // Freeze exactly the form and cart that the customer submitted; later edits
+  // must not change a retry while the request is in flight.
+  const body={customer_name:`${first} ${last}`.trim(),first_name:first,last_name:last,
+    email:document.getElementById('fEmail').value.trim() || undefined,
+    mobile,province:document.getElementById('fProvince').value,city:document.getElementById('fCity').value.trim(),
+    address:document.getElementById('fAddress').value.trim(),
+    postal_code:toEnDigits(document.getElementById('fPostal').value).trim(),
+    customer_note:document.getElementById('fNote').value.trim() || undefined,
+    coupon_code:couponCode || undefined,gift_wrap:giftWrap,
+    items:YazdCart.get().map(i=>({sku:i.sku,quantity:i.quantity}))};
+  const btn=document.getElementById('payBtn');btn.disabled=true;btn.textContent='در حال ثبت سفارش…';
+  let navigating=false;
   try {
-    const r = await fetch('/api/orders', {
-      method: 'POST', headers: { 'Content-Type': 'application/json', ...YazdAuth.headers() },
-      body: JSON.stringify({
-        customer_name: name,
-        first_name: first, last_name: last,
-        email: email || undefined,
-        mobile, province: prov, city,
-        address: addr,
-        postal_code: toEnDigits(document.getElementById('fPostal').value).trim(),
-        customer_note: document.getElementById('fNote').value.trim() || undefined,
-        coupon_code: couponCode || undefined,
-        gift_wrap: giftWrap,
-        items: YazdCart.get().map(i => ({ sku: i.sku, quantity: i.quantity }))
-      })
+    await withAttemptLock(async()=>{
+      let status;
+      try { status=await prepareAttempt(); }
+      catch (e) { showAttemptNotice(e.code==='SERVICE'?'SERVICE':'BROWSER');return; }
+      if(status.state==='PAID'){showAttemptNotice('PAID',status.order_id);return;}
+      if(status.state==='UNRESOLVED'){showAttemptNotice('UNRESOLVED',status.order_id);return;}
+      let response,data;
+      try {
+        response=await fetch('/api/orders',{method:'POST',headers:{'Content-Type':'application/json',...YazdAuth.headers()},body:JSON.stringify(body)});
+        data=await response.json();
+      } catch {
+        const latest=await attemptStatus().catch(()=>null);
+        showAttemptNotice(latest?.state==='PAID'?'PAID':'UNRESOLVED',latest?.order_id);return;
+      }
+      if(!response.ok) {
+        if(response.status===409 || response.status>=500 || response.status===408) {
+          const latest=await attemptStatus().catch(()=>null);
+          if(latest?.state==='UNUSED' && response.status===409 && !data.order_id) {showErr(data.error||'ثبت سفارش ناموفق بود.');return;}
+          showAttemptNotice(latest?.state==='PAID'?'PAID':'UNRESOLVED',latest?.order_id || data.order_id);return;
+        }
+        showErr(data.error || 'ثبت سفارش ناموفق بود.');return;
+      }
+      const paymentUrl=typeof data.payment_url==='string' ? safePaymentUrl(data.payment_url) : null;
+      if(typeof data.order_id!=='string'||!paymentUrl) {showAttemptNotice('UNRESOLVED');return;}
+      sessionStorage.setItem('yazd_last_mobile',mobile);
+      sessionStorage.setItem('yazd_last_order',data.order_id);
+      localStorage.removeItem('yazd_coupon');
+      navigating=true;location.href=paymentUrl;
     });
-    const d = await r.json();
-    // Network failures, malformed responses, 5xx and a conflict referring to
-    // an existing order can occur after commit; never claim the order failed.
-    safelyRejected = !r.ok && r.status >= 400 && r.status < 500 && r.status !== 408 &&
-      !(r.status === 409 && d.order_id);
-    if (!r.ok) throw new Error(d.error || 'خطا در ثبت سفارش');
-    sessionStorage.setItem('yazd_last_mobile', mobile);
-    sessionStorage.setItem('yazd_last_order', d.order_id);
-    localStorage.removeItem('yazd_coupon');
-    location.href = d.payment_url;
-  } catch (e) {
-    orderSubmitting = false;
-    showErr(safelyRejected ? e.message : 'نتیجه ثبت سفارش نامشخص است. پیش از تلاش دوباره، سفارش را در حساب کاربری بررسی کنید یا با پشتیبانی تماس بگیرید.');
-    // A recalculation may have replaced the original button while waiting.
-    const current = document.getElementById('payBtn');
-    if (current) { current.disabled = false; current.textContent = 'پرداخت و ثبت نهایی سفارش'; }
-  }
+  } catch {showAttemptNotice('UNRESOLVED');}
+  finally {if(!navigating)restorePayButton();}
 }
 
 renderSummary();
