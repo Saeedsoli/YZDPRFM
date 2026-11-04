@@ -17,5 +17,5 @@ const login=fs.readFileSync(path.join(__dirname,'../public/login.html'),'utf8');
 assert(!/\son[a-z]+\s*=/i.test(login),'Login contains an inline event attribute');
 const checkout=fs.readFileSync(path.join(__dirname,'../public/checkout.html'),'utf8');
 assert(!/\son[a-z]+\s*=/i.test(checkout),'Checkout contains an inline event attribute');
-for(const file of ['invoice.html','label.html']){const html=fs.readFileSync(path.join(__dirname,'../public',file),'utf8');assert(!/\son[a-z]+\s*=/i.test(html),file+' contains an inline event attribute');}
+for(const file of ['invoice.html','label.html','track.html']){const html=fs.readFileSync(path.join(__dirname,'../public',file),'utf8');assert(!/\son[a-z]+\s*=/i.test(html),file+' contains an inline event attribute');}
 console.log('PASS template-only script hashes, strict account/login/checkout policies and fail-closed rules');

@@ -48,16 +48,14 @@
            می‌شد و باید دستی به حالت عدد سوییچ می‌کرد.
            autocomplete=tel شماره ذخیره‌شده مرورگر را پیشنهاد می‌دهد. -->
       <input id="m" type="tel" inputmode="numeric" autocomplete="tel"
-             maxlength="11" placeholder="۰۹۱۲۳۴۵۶۷۸۹" dir="ltr" style="text-align:right"
-             onkeydown="if(event.key==='Enter')track()">
+             maxlength="11" placeholder="۰۹۱۲۳۴۵۶۷۸۹" dir="ltr" style="text-align:right">
     </div>
     <div class="field">
       <label for="orderId">شماره سفارش</label>
       <input id="orderId" type="text" autocomplete="off" maxlength="80"
-             placeholder="YZD-…" dir="ltr" style="text-align:right"
-             onkeydown="if(event.key==='Enter')track()">
+             placeholder="YZD-…" dir="ltr" style="text-align:right">
     </div>
-    <button class="btn btn-block" onclick="track()">مشاهده سفارش</button>
+    <button type="button" id="trackSearch" class="btn btn-block">مشاهده سفارش</button>
   </div>
   <div id="out"></div>
 </div>
@@ -95,10 +93,10 @@ const DEAD = { CANCELLED: 'سفارش لغو شد', FAILED: 'پرداخت انج
 
 /* خط زمانی سفارش — کاربر می‌بیند کجای مسیر است، نه فقط یک برچسب */
 function timeline(status) {
-  if (DEAD[status]) {
+  if (Object.hasOwn(DEAD,status)) {
     return `<div class="timeline">
       <div class="tl-step done"><div class="t">سفارش ثبت شد</div></div>
-      <div class="tl-step cancel"><div class="t">${DEAD[status]}</div>
+      <div class="tl-step cancel"><div class="t">${esc(DEAD[status])}</div>
         <div class="d">برای پیگیری با پشتیبانی تماس بگیرید.</div></div>
     </div>`;
   }
@@ -119,15 +117,19 @@ function timeline(status) {
 }
 
 function copyCode(el, code) {
+  if (!navigator.clipboard || typeof navigator.clipboard.writeText !== 'function') {
+    toast('کپی خودکار در این مرورگر در دسترس نیست.');return;
+  }
   navigator.clipboard.writeText(code).then(() => {
     const old = el.textContent;
     el.textContent = 'کپی شد ✓';
     setTimeout(() => { el.textContent = old; }, 1800);
-  }).catch(() => {});
+  }).catch(() => { toast('کپی انجام نشد؛ کد را دستی انتخاب کنید.'); });
 }
 
 async function track() {
-  const btn = document.querySelector('.focus-panel .btn');
+  const btn = document.getElementById('trackSearch');
+  if (btn.disabled) return;
   let m = document.getElementById('m').value
     .replace(/[۰-۹]/g, d => '۰۱۲۳۴۵۶۷۸۹'.indexOf(d))
     .replace(/[٠-٩]/g, d => '٠١٢٣٤٥٦٧٨٩'.indexOf(d))
@@ -165,7 +167,7 @@ async function track() {
   }
 
   o.innerHTML = d.orders.map(x => {
-    const st = ST[x.status] || ['نامشخص', 'b-pending'];
+    const st = Object.hasOwn(ST,x.status) ? ST[x.status] : ['نامشخص', 'b-pending'];
     const paidLike = ['PAID','PROCESSING','SHIPPED','DELIVERED'].includes(x.status);
     return `<div class="order-card soft-card">
       <div style="display:flex;justify-content:space-between;align-items:center;
@@ -182,11 +184,11 @@ async function track() {
       ${x.tracking_code ? `<div class="track-box">
         <div><div style="font-size:.72rem;color:var(--muted)">کد رهگیری ${esc(x.carrier || 'پستی')}</div>
           <div class="code">${esc(x.tracking_code)}</div></div>
-        <button data-code="${esc(x.tracking_code)}" onclick="copyCode(this,this.dataset.code)">کپی کد</button>
+        <button type="button" data-track-copy data-code="${esc(x.tracking_code)}">کپی کد</button>
       </div>` : ''}
 
       ${x.items.map(i => `<div class="oi"><span>${esc(i.product_name)}</span>
-        <span style="white-space:nowrap">${toFa(i.quantity)} × ${money(i.unit_price)}</span></div>`).join('')}
+        <span style="white-space:nowrap">${esc(toFa(i.quantity))} × ${money(i.unit_price)}</span></div>`).join('')}
       <div class="oi" style="font-weight:800;padding-top:10px">
         <span>مبلغ کل</span><span>${money(x.total_paid)} تومان</span></div>
 
@@ -197,6 +199,15 @@ async function track() {
     </div>`;
   }).join('');
 }
+
+document.getElementById('trackSearch').addEventListener('click', track);
+for (const id of ['m','orderId']) document.getElementById(id).addEventListener('keydown',e=>{
+  if(e.key==='Enter'){e.preventDefault();track();}
+});
+document.getElementById('out').addEventListener('click',e=>{
+  const button=e.target.closest('[data-track-copy]');
+  if(button)copyCode(button,button.dataset.code);
+});
 
 if(saved && savedOrder && /^[A-Za-z0-9_-]{1,80}$/.test(savedOrder)) track();
 </script></body></html>
