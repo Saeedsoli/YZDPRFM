@@ -32,6 +32,7 @@ with tempfile.TemporaryDirectory(prefix='invoice-label-xss-') as td:
      assert "script-src-attr 'none'" in policy
      fallback=next(x.strip() for x in policy.split(';') if x.strip().startswith('script-src '));assert "'unsafe-inline'" not in fallback
      expect(page.locator(selector)).to_contain_text(payload)
+     expect(page.locator(selector)).to_contain_text('۱۰ / ۰۸ / ۱۴۰۵')
      assert page.locator(selector+' img, '+selector+' script, '+selector+' svg[onload]').count()==0
      barcode=page.locator(selector+' svg[role=img]');assert barcode.count()==1 and barcode.get_attribute('aria-label')=='بارکد '+payload
      assert page.evaluate('window.__attack || false') is False

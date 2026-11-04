@@ -1042,3 +1042,11 @@ node_modules/   با npm install برمی‌گردد
 - `src/order-attempt-recovery-cli.js` — انتقال صرفاً آفلاین اقدام متوقف‌شده به وضعیت نیازمند بررسی، با پشتیبان و ثبت دلیل؛ بدون ایجاد پرداخت.
 - `scripts/test_order_attempt_recovery.py` — آزمون پشتیبان، رد ورودی و بازیابی آفلاین محافظت‌شده روی دیتابیس موقت.
 - `scripts/test_order_review_inflight.py` — آزمون جلوگیری از آزادسازی خرید تازه هنگام تماس ناتمام با درگاه.
+- `public/assets/persian-date.js` و `public/assets/persian-calendar.css` — تبدیل و تقویم انتخابی شمسی؛ داده ذخیره‌شده همچنان ISO است.
+- `src/shop-time.js` — محاسبه روز مدنی فروشگاه مستقل از منطقه زمانی سرور.
+- `scripts/test_persian_date.js`، `scripts/test_shop_time.js` و `scripts/test_persian_calendar_browser.py` — آزمون تبدیل، مرز روز و تقویم مرورگر.
+- `scripts/test_persian_business_days.py` — آزمون تغییر روز در کوپن، جشنواره، اعلان، ساعت پنل و تاریخ خروجی CSV.
+- `scripts/test_persian_reports.py` — آزمون تجمیع روزانه فروش/بازدید و تاریخ شمسی گزارش CSV در مرز نیمه‌شب.
+- `scripts/test_persian_calendar_failure_browser.py` — آزمون مرورگر برای قطع فایل تقویم: جلوگیری از ثبت تاریخ حدسی و حفظ دسترسی بخش‌های دیگر.
+- `public/assets/jalaali-core.js` — نسخه ثابت `jalaali-js` ۱٫۲٫۸ با مجوز MIT درج‌شده در فایل؛ تبدیل یکسان مرورگر و سرور.
+- `scripts/test_calendar_assets.js` — آزمون ترتیب بارگذاری، حضور هسته در پوسته آفلاین و نمونه تبدیل.

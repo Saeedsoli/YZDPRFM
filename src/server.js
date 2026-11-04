@@ -823,6 +823,12 @@ const server = http.createServer(async (req, res) => {
       return sendJSON(200, { message: 'خروج انجام شد' });
     }
 
+    if (method === 'GET' && pathname === '/api/admin/clock') {
+      if (!who) return sendJSON(401,{error:'ابتدا وارد پنل شوید.'});
+      res.setHeader('Cache-Control','no-store');
+      return sendJSON(200,{now_ms:Date.now()});
+    }
+
     if (method === 'GET' && pathname === '/api/admin/me') {
       return sendJSON(200, { authenticated: isValidSession(getToken(req)) });
     }

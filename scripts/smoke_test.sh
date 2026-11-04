@@ -322,6 +322,11 @@ run_test test_automatic_backup_safety.js "automatic backup verification and atom
 run_test test_delivery_time_consistency.js "consistent delivery window"
 run_test test_browser_origin_guard.js "browser same-origin mutation guard"
 run_test test_script_element_csp.js "template-only CSP script hashes"
+run_test test_persian_date.js "Persian calendar conversions"
+run_test test_calendar_assets.js "Persian calendar asset integrity and load order"
+run_test test_shop_time.js "shop civil day boundaries"
+if python3 scripts/test_persian_business_days.py >/tmp/test_persian_business_days.log 2>&1; then P=$((P+1)); else F=$((F+1)); echo "  X shop day boundaries and Persian CSV"; fi
+if python3 scripts/test_persian_reports.py >/tmp/test_persian_reports.log 2>&1; then P=$((P+1)); else F=$((F+1)); echo "  X Persian report day aggregation"; fi
 run_test test_barcode_html_safety.js "barcode attribute safety"
 run_test test_client_ip.js "trusted proxy IP resolution"
 run_test test_analytics_trusted_proxy.js "analytics trusted proxy resolution"

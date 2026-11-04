@@ -468,7 +468,7 @@ function build(db, appLog, resolveClientIP = req => req?.socket?.remoteAddress |
   /** نمودار روزانه */
   function daily(days = 30) {
     return db.prepare(`
-      SELECT date(at) day,
+      SELECT date(at,'+03:30') day,
              COUNT(DISTINCT visitor) visitors,
              SUM(CASE WHEN kind='view'     THEN 1 ELSE 0 END) views,
              SUM(CASE WHEN kind='add_cart' THEN 1 ELSE 0 END) carts,

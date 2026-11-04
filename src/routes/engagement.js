@@ -46,6 +46,8 @@
  */
 
 'use strict';
+
+const shopTime = require('../shop-time');
 const { publicVariantSql } = require('../variant-visibility');
 const crypto = require('crypto');
 const { variantAvailability } = require('../availability');
@@ -369,7 +371,7 @@ async function handle(ctx) {
      پس چرخش عملاً پیام‌های بعدی را نامرئی می‌کند و CLS را هم
      خراب می‌کند. یک پیام، همان که مهم‌تر است. */
   if (method === 'GET' && pathname === '/api/notice') {
-    const today = new Date().toISOString().slice(0, 10);
+    const today = shopTime.dateKey();
     const n = db.prepare(`
       SELECT id, text, link, link_label, tone FROM notices
       WHERE active = 1

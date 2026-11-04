@@ -33,6 +33,7 @@
 'use strict';
 
 const csv = require('../csv-export');
+const persianDate = require('../../public/assets/persian-date');
 const stockReservations = require('../order-stock-reservations');
 const returnStore = require('../return-store');
 const reconciliation = require('../order-reconciliation');
@@ -284,7 +285,7 @@ async function handle(ctx) {
     `).all();
     rows.forEach(r => {
       res.write(csv.row([
-        r.order_id, (r.created_at || '').split('T')[0], r.customer_name,
+        r.order_id, persianDate.formatDate(r.created_at), r.customer_name,
         r.mobile, r.province, r.city, r.sku, r.product_name,
         r.unit_price ?? 0, r.quantity ?? 0, r.line_total ?? 0,
         r.discount_code, r.discount_amount ?? 0, r.shipping_fee ?? 0,

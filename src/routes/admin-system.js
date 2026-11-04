@@ -35,6 +35,7 @@
 const fs = require('fs');
 const path = require('path');
 const csv = require('../csv-export');
+const persianDate = require('../../public/assets/persian-date');
 const {publicVariantSql} = require('../variant-visibility');
 const stockReservations = require('../order-stock-reservations');
 
@@ -523,7 +524,7 @@ async function handle(ctx) {
 
     block('فروش روزانه',
       ['تاریخ', 'سفارش', 'درآمد'],
-      (rep.daily || []).map(d => [d.d, d.orders, d.revenue]));
+      (rep.daily || []).map(d => [persianDate.formatDate(d.d), d.orders, d.revenue]));
 
     /* نام میدان‌ها از پاسخ واقعی گرفته شده، نه حدس: `d` نه
        `day`، و `name_fa`/`brand_fa` نه `name`. حدس اولیه سه

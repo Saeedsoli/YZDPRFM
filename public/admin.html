@@ -16,6 +16,7 @@
      اندازه‌گیری شد: حذف آن LCP صفحه محصول را از ۴٫۳۱s به ۳٫۵۷s
      رساند بدون آنکه FCP بدتر شود. -->
 <link rel="stylesheet" href="/assets/theme.css">
+<link rel="stylesheet" href="/assets/persian-calendar.css">
 <style>
   body { background: #F2F3F5 }
 
@@ -335,7 +336,8 @@
 <div id="panel" class="hidden">
   <div class="admin-top">
     <div class="brand"><span class="dot"></span>پنل مدیریت<span> عطر یزد</span></div>
-    <div style="display:flex;gap:8px;align-items:center">
+    <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+      <span id="adminToday" dir="ltr" style="font-size:.77rem;color:#e8d49e;white-space:nowrap" aria-label="تاریخ روز"></span>
       <a href="/" target="_blank">مشاهده سایت ↗</a>
       <button onclick="logout()">خروج</button>
     </div>
@@ -726,7 +728,7 @@
           <div class="field"><label>حداقل خرید (تومان)</label><input id="cMin" type="number" placeholder="۵۰۰۰۰۰"></div>
           <div class="field" id="cMaxWrap"><label>سقف تخفیف (تومان)</label><input id="cMax" type="number" placeholder="۵۰۰۰۰۰"></div>
           <div class="field"><label>محدودیت تعداد</label><input id="cLimit" type="number" placeholder="خالی = نامحدود"></div>
-          <div class="field"><label>تاریخ انقضا</label><input id="cExp" type="date"></div>
+          <div class="field"><label>تاریخ انقضا</label><input id="cExp" type="text" data-jalali-date autocomplete="off"></div>
           <div class="field"><label>توضیح</label><input id="cDesc" placeholder="تخفیف نوروزی"></div>
         </div>
         <label style="font-size:.84rem;display:block;margin:6px 0 4px">
@@ -763,7 +765,7 @@
               </select></div>
           </div>
           <div class="scope-grid" style="margin-top:10px">
-            <div class="field"><label>تاریخ شروع</label><input id="cStart" type="date"></div>
+            <div class="field"><label>تاریخ شروع</label><input id="cStart" type="text" data-jalali-date autocomplete="off"></div>
             <div class="field"><label>سقف خرید (تومان)</label>
               <input id="cMaxSub" type="number" placeholder="خالی = بدون سقف"></div>
             <div class="field"><label>کد اختصاصی این شماره</label>
@@ -793,8 +795,8 @@
             <input id="fPct" type="number" min="1" max="90" placeholder="۲۰"></div>
           <div class="field"><label>سقف تخفیف هر کالا</label>
             <input id="fMax" type="number" placeholder="خالی = بدون سقف"></div>
-          <div class="field"><label>از تاریخ</label><input id="fStart" type="date"></div>
-          <div class="field"><label>تا تاریخ</label><input id="fEnd" type="date"></div>
+          <div class="field"><label>از تاریخ</label><input id="fStart" type="text" data-jalali-date autocomplete="off"></div>
+          <div class="field"><label>تا تاریخ</label><input id="fEnd" type="text" data-jalali-date autocomplete="off"></div>
         </div>
         <details class="scope-box" style="margin-top:12px">
           <summary>محدود کردن جشنواره (خالی = همه محصولات)</summary>
@@ -845,8 +847,8 @@
               <option value="success">سبز</option>
               <option value="alert">قرمز</option>
             </select></div>
-          <div class="field"><label>از تاریخ</label><input id="nStart" type="date"></div>
-          <div class="field"><label>تا تاریخ</label><input id="nEnd" type="date"></div>
+          <div class="field"><label>از تاریخ</label><input id="nStart" type="text" data-jalali-date autocomplete="off"></div>
+          <div class="field"><label>تا تاریخ</label><input id="nEnd" type="text" data-jalali-date autocomplete="off"></div>
         </div>
         <button class="btn" style="margin-top:12px" onclick="createNotice()">انتشار اعلان</button>
         <div class="scroll" style="margin-top:16px"><table id="noticesTable"></table></div>
@@ -1062,7 +1064,9 @@
   </div>
 </div>
 
+<script src="/assets/jalaali-core.js"></script>
 <script src="/assets/app.js"></script>
+<script src="/assets/persian-date.js"></script>
 <script>
 // The administrator session is held only in the HttpOnly same-origin cookie.
 // Remove legacy browser-stored tokens; an old session without a cookie must
@@ -1196,9 +1200,26 @@ function showTab(key) {
   }
 }
 
+let adminClockStarted=false;
+function startAdminClock(){
+  if(adminClockStarted)return;adminClockStarted=true;
+  const target=document.getElementById('adminToday');
+  const render=()=>{const value=YazdDate.formatDate(YazdDate.now());if(target.textContent!==value)target.textContent=value;};
+  const sync=async()=>{
+    const start=performance.now();
+    try{const r=await fetch('/api/admin/clock',{cache:'no-store'});if(!r.ok)return;
+      const d=await r.json();if(Number.isFinite(d.now_ms))YazdDate.setClock(d.now_ms,performance.now()-start);
+    }catch{}finally{render();}
+  };
+  render();sync();setInterval(render,30000);setInterval(sync,300000);
+  document.addEventListener('visibilitychange',()=>{if(!document.hidden)sync()});
+}
+YazdDate.mountAll(document);
+
 function showPanel() {
   document.getElementById('loginView').classList.add('hidden');
   document.getElementById('panel').classList.remove('hidden');
+  startAdminClock();
 
   // نام و نقش کارمند در سربرگ
   const brand = document.querySelector('.admin-top .brand');
@@ -1498,7 +1519,7 @@ async function loadLogs(level) {
       <td style="width:70px;color:${CL[l.level] || '#666'};font-weight:800">${esc(l.level)}</td>
       <td style="width:88px;color:var(--muted)">${esc(l.scope || '—')}</td>
       <td>${esc(l.message)}${l.meta ? `<div style="color:var(--muted);font-size:.7rem;direction:ltr">${esc(l.meta)}</div>` : ''}</td>
-      <td style="width:118px;color:var(--muted);font-size:.72rem" dir="ltr">${esc(l.logged_at)}</td>
+      <td style="width:118px;color:var(--muted);font-size:.72rem" dir="ltr">${esc(YazdDate.formatDateTime(l.logged_at))}</td>
     </tr>`).join('')}</table>`
     : '<div style="color:var(--muted);font-size:.84rem;padding:12px">رویدادی ثبت نشده</div>';
 }
@@ -1510,7 +1531,7 @@ async function downloadBackup() {
   const blob = await r.blob();
   const a = document.createElement('a');
   a.href = URL.createObjectURL(blob);
-  a.download = `yazd-backup-${new Date().toISOString().slice(0,10)}.db`;
+  a.download = `yazd-backup-${YazdDate.formatDate(YazdDate.now()).replace(/\s*\/\s*/g,'-')}.db`;
   a.click();
   toast('پشتیبان دانلود شد');
   loadBackups();
@@ -1524,10 +1545,10 @@ async function loadBackups() {
     <div style="font-size:.82rem;font-weight:700;margin-bottom:7px">
       پشتیبان‌های خودکار (${toFa(d.total)})</div>
     <table style="font-size:.78rem">
-    ${d.backups.map(b => `<tr>
-      <td dir="ltr">${b.name}</td>
+    ${d.backups.map((b,i) => `<tr>
+      <td>نسخه ${toFa(i+1)}</td>
       <td>${(b.size/1024/1024).toFixed(1)} MB</td>
-      <td style="color:var(--muted)" dir="ltr">${b.created.slice(0,16).replace('T',' ')}</td>
+      <td style="color:var(--muted)" dir="ltr">${esc(YazdDate.formatDateTime(b.created))}</td>
       <td><a href="/api/admin/backups/${encodeURIComponent(b.name)}"
              onclick="dlBackup(event,'${b.name}')"
              style="color:var(--gold);font-weight:700;font-size:.76rem">دانلود</a></td>
@@ -2206,7 +2227,7 @@ async function loadAnalytics(days, btn) {
   const dl = d.daily || [];
   document.getElementById('anDaily').innerHTML = dl.length
     ? barChartPlain(dl.map(r => ({
-        label: r.day.slice(5),
+        label: YazdDate.formatDate(r.day),
         v: r.visitors
       })), 'بازدیدکننده')
     : '<div style="color:var(--muted);font-size:.84rem;padding:14px">داده‌ای نیست</div>';
@@ -2248,7 +2269,7 @@ async function loadAnalytics(days, btn) {
 function barChartPlain(rows) {
   const max = Math.max(...rows.map(r => r.v), 1);
   return rows.map(r => `<div class="bar-row">
-    <span class="lbl">${r.label}</span>
+    <span class="lbl">${esc(r.label)}</span>
     <span class="track"><span class="fill"
       style="width:${Math.max(2, r.v / max * 100)}%"></span></span>
     <span class="val">${toFa(r.v)}</span></div>`).join('');
@@ -2299,15 +2320,7 @@ const ACTION_FA = {
 const actionFa = a => ACTION_FA[a] || a;
 
 /** تاریخ میلادی ISO → شمسی خوانا */
-function faDateTime(iso) {
-  if (!iso) return '—';
-  try {
-    const dt = new Date(iso.replace(' ', 'T') + (iso.includes('Z') ? '' : 'Z'));
-    return new Intl.DateTimeFormat('fa-IR', {
-      month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit'
-    }).format(dt);
-  } catch { return iso.slice(0, 16); }
-}
+function faDateTime(iso) { return YazdDate.formatDateTime(iso); }
 
 async function loadProfile(days, btn) {
   profDays = days || profDays;
@@ -2448,11 +2461,11 @@ function drawChart(daily) {
   const step = Math.max(1, Math.ceil(n / 8));
   const labels = daily.map((d, i) => i % step === 0 || i === n - 1
     ? `<text x="${x(i)}" y="${Hh - 8}" text-anchor="middle" font-size="9.5"
-            fill="#888" font-family="Vazirmatn">${d.d.slice(5)}</text>` : '').join('');
+            fill="#888" font-family="Vazirmatn">${esc(YazdDate.formatDate(d.d))}</text>` : '').join('');
 
   const dots = daily.map((d, i) => d.revenue > 0
     ? `<circle cx="${x(i)}" cy="${y(d.revenue)}" r="3.5" fill="#C59B27">
-         <title>${d.d} — ${money(d.revenue)} تومان — ${toFa(d.orders)} سفارش</title></circle>` : '').join('');
+         <title>${esc(YazdDate.formatDate(d.d))} — ${money(d.revenue)} تومان — ${toFa(d.orders)} سفارش</title></circle>` : '').join('');
 
   box.innerHTML = `<svg viewBox="0 0 ${W} ${Hh}" style="width:100%;height:auto"
       role="img" aria-label="نمودار روند فروش">
@@ -2497,7 +2510,7 @@ async function loadReviews(st) {
         <div style="font-size:.74rem;color:var(--muted);margin-top:7px">
           ${r.longevity ? `ماندگاری ${toFa(r.longevity)}/۵` : ''}
           ${r.sillage ? ` • پخش بو ${toFa(r.sillage)}/۵` : ''}
-          • ${r.created_at.slice(0, 16).replace('T', ' ')}
+          • ${esc(YazdDate.formatDateTime(r.created_at))}
         </div>
         <div style="margin-top:11px;display:flex;gap:7px;flex-wrap:wrap">
           ${revStatus !== 'APPROVED' ? `<button class="btn" style="padding:6px 15px;font-size:.78rem"
@@ -2665,7 +2678,7 @@ async function loadInvites() {
              ? `<span style="color:var(--gold)">${'★'.repeat(i.review_rating || 0)}</span>`
                + ` ${REV_FA[i.review_status] || esc(i.review_status)}` : '—'}</td>
            <td style="font-size:.73rem;color:var(--muted)">
-             ${(i.created_at || '').slice(0, 10)}${i.created_by ? '<br>' + esc(i.created_by) : ''}</td>
+             ${esc(YazdDate.formatDate(i.created_at))}${i.created_by ? '<br>' + esc(i.created_by) : ''}</td>
            <td style="white-space:nowrap">
              ${i.state === 'OPEN' ? `<button class="btn btn-outline"
                style="padding:4px 10px;font-size:.73rem"
@@ -2777,16 +2790,16 @@ function renderOrders(o) {
           ${o.reconciliation_ready && may('orders.status') && x.status==='DELIVERED' && x.return_delivered_at_ms ? `<button type="button" data-correction-toggle="${esc(x.order_id)}" style="background:var(--sand);border:1px solid var(--gold);border-radius:7px;padding:5px 10px;margin:2px;cursor:pointer;font:inherit;font-size:.74rem">اصلاح زمان تحویل</button>` : ''}
           ${o.reconciliation_ready && may('orders.cancel') && x.payment_review_needed ? `<button type="button" data-review-toggle="${esc(x.order_id)}" style="background:var(--sand);border:1px solid var(--gold);border-radius:7px;padding:5px 10px;margin:2px;cursor:pointer;font:inherit;font-size:.74rem">بررسی پرداخت</button>` : ''}${o.reconciliation_ready && may('orders.cancel') && x.payment_recovery_pending ? `<div style="font-size:.72rem;color:#9a6700">درخواست درگاه هنوز در حال پردازش یا نیازمند بررسی آفلاین است.</div>` : ''}</td>
       </tr>${o.returns_ui_enabled && may('orders.status') && x.status==='DELIVERED' && !x.return_delivered_at_ms ? `<tr class="delivery-evidence-row order-action-row" hidden><td colspan="6"><form data-delivery-form="${esc(x.order_id)}" style="padding:12px;background:var(--sand);border-radius:9px;white-space:normal">
-          <strong>ثبت زمان واقعی تحویل</strong><p style="font-size:.76rem;color:var(--muted)">پس از اطمینان از تحویل، تاریخ و ساعت واقعی را از اطلاعات ارسال ثبت کنید. زمان به وقت تهران است.</p>
-          <label style="display:inline-block;margin:4px">تاریخ تحویل * <input type="date" name="date" required min="2023-01-01" style="font:inherit;direction:ltr"></label>
+          <strong>ثبت زمان واقعی تحویل</strong><p style="font-size:.76rem;color:var(--muted)">پس از اطمینان از تحویل، تاریخ و ساعت واقعی را از اطلاعات ارسال ثبت کنید.</p>
+          <label style="display:inline-block;margin:4px">تاریخ تحویل * <input type="text" name="date" data-jalali-date required autocomplete="off" style="font:inherit;direction:ltr"></label>
           <label style="display:inline-block;margin:4px">ساعت تحویل * <input type="time" name="time" required style="font:inherit;direction:ltr"></label>
           <p style="font-size:.76rem">مهلت ۷۲ساعته از این زمان محاسبه می‌شود. اگر زمان واقعی مشخص نیست، ابتدا بررسی کنید و حدس نزنید.</p>
           <button type="submit" style="background:var(--obsidian);color:#fff;border:0;border-radius:7px;padding:7px 12px;cursor:pointer;font:inherit">ثبت زمان تحویل</button>
           <div class="delivery-error" role="alert" style="color:#b4232a;font-size:.76rem"></div>
         </form></td></tr>` : ''}${o.reconciliation_ready && may('orders.status') && x.status==='DELIVERED' && x.return_delivered_at_ms ? `<tr class="order-action-row" hidden><td colspan="6"><form data-correction-form="${esc(x.order_id)}" data-expected-ms="${Number(x.return_delivered_at_ms)}" style="padding:12px;background:var(--sand);border-radius:9px;white-space:normal">
           <strong>اصلاح زمان واقعی تحویل</strong><p style="font-size:.76rem;color:var(--muted)">زمان واقعی را بر اساس مدرک اصلاح کنید. درخواست‌های ثبت‌شده تغییر نمی‌کنند؛ مهلت‌های جدید بر اساس زمان اصلاح‌شده محاسبه می‌شوند.</p>
-          <label style="display:inline-block;margin:4px">تاریخ واقعی * <input type="date" name="date" required min="2023-01-01" style="font:inherit;direction:ltr"></label>
-          <label style="display:inline-block;margin:4px">ساعت به وقت تهران * <input type="time" name="time" required style="font:inherit;direction:ltr"></label>
+          <label style="display:inline-block;margin:4px">تاریخ واقعی * <input type="text" name="date" data-jalali-date required autocomplete="off" style="font:inherit;direction:ltr"></label>
+          <label style="display:inline-block;margin:4px">ساعت تحویل * <input type="time" name="time" required style="font:inherit;direction:ltr"></label>
           <label style="display:block;margin:8px 0">دلیل و مدرک اصلاح *<textarea name="evidence" required minlength="10" maxlength="500" rows="2" style="width:100%;font:inherit"></textarea></label>
           <button type="submit" style="background:var(--obsidian);color:#fff;border:0;border-radius:7px;padding:7px 12px;cursor:pointer;font:inherit">ثبت اصلاح</button><div class="action-error" role="alert" style="color:#b4232a;font-size:.76rem"></div>
         </form></td></tr>` : ''}${o.reconciliation_ready && may('orders.cancel') && x.payment_review_needed ? `<tr class="order-action-row" hidden><td colspan="6"><form data-review-form="${esc(x.order_id)}" style="padding:12px;background:var(--sand);border-radius:9px;white-space:normal">
@@ -2797,6 +2810,8 @@ function renderOrders(o) {
         </form></td></tr>` : ''}`;
     }).join('')}`
     : '<tr><td style="text-align:center;padding:26px;color:var(--muted)">سفارشی یافت نشد</td></tr>';
+
+  YazdDate.mountAll(document.getElementById('ordersTable'));
 
   const pg = document.getElementById('ordersPager');
   if (o.totalPages > 1) {
@@ -2814,14 +2829,13 @@ function renderOrders(o) {
 // Tehran has observed UTC+03:30 year-round since 2023. Reject earlier dates
 // rather than guessing an historical daylight-saving offset.
 function tehranDeliveryMs(date,time) {
-  if(!/^\d{4}-\d{2}-\d{2}$/.test(date)||date<'2023-01-01'||!/^\d{2}:\d{2}$/.test(time)) return null;
+  if(typeof date!=='string'||!/^\d{4}-\d{2}-\d{2}$/.test(date)||date<'2023-01-01'||!/^\d{2}:\d{2}$/.test(time)) return null;
   const ms=Date.parse(`${date}T${time}:00+03:30`);
   if(!Number.isSafeInteger(ms))return null;
   return new Date(ms+12600000).toISOString().slice(0,16)===`${date}T${time}` ? ms : null;
 }
 function deliveryTimeLabel(ms) {
-  if (!Number.isSafeInteger(ms)) return '';
-  return new Intl.DateTimeFormat('fa-IR',{timeZone:'Asia/Tehran',year:'numeric',month:'long',day:'numeric',hour:'2-digit',minute:'2-digit'}).format(new Date(ms))+' به وقت تهران';
+  return Number.isSafeInteger(ms) ? YazdDate.formatDateTime(ms) : '';
 }
 document.getElementById('ordersTable').addEventListener('click',e=>{
   const button=e.target.closest('[data-delivery-toggle],[data-correction-toggle],[data-review-toggle]');if(!button)return;
@@ -2842,9 +2856,9 @@ document.getElementById('ordersTable').addEventListener('submit',async e=>{
     if(evidence_note.length<20||!form.elements.confirmed.checked){error.textContent='مدرک کافی و هر دو شرط بررسی پرداخت را تأیید کنید.';return;}
     path='/api/admin/reconciliation/payment-review';body={order_id:form.dataset.reviewForm,evidence_note,no_payment_confirmed:true,link_closed_confirmed:true};
   }else{
-    const time=tehranDeliveryMs(form.elements.date.value,form.elements.time.value);
+    const time=tehranDeliveryMs(YazdDate.inputISO(form.elements.date),form.elements.time.value);
     if(time===null){error.textContent='تاریخ و ساعت واقعی تحویل را به‌درستی وارد کنید.';return;}
-    if(time>Date.now()){error.textContent='زمان تحویل نمی‌تواند در آینده باشد.';return;}
+    if(time>YazdDate.now()){error.textContent='زمان تحویل نمی‌تواند در آینده باشد.';return;}
     if(isCorrection){
       const evidence_note=form.elements.evidence.value.trim(),expected_old_ms=Number(form.dataset.expectedMs);
       if(evidence_note.length<10||!Number.isSafeInteger(expected_old_ms)){error.textContent='دلیل و مدرک اصلاح را وارد کنید.';return;}
@@ -3285,9 +3299,21 @@ async function fillScopeOptions() {
   } catch {}
 }
 
+function selectedCalendarDates(ids) {
+  if(!YazdDate.ready){toast('تقویم در دسترس نیست؛ صفحه را دوباره بارگذاری کنید.');return null;}
+  const out={};
+  for(const id of ids){
+    const el=document.getElementById(id),iso=YazdDate.inputISO(el);
+    if(el.value.trim()&&!iso){toast('تاریخ را از تقویم انتخاب کنید.');return null;}
+    out[id]=iso;
+  }
+  return out;
+}
+
 async function createCoupon() {
   const code = document.getElementById('cCode').value.trim().toUpperCase();
   if (!code) return toast('کد تخفیف را وارد کنید');
+  const dates=selectedCalendarDates(['cStart','cExp']);if(!dates)return;
   const body = {
     code,
     type: document.getElementById('cType').value,
@@ -3296,8 +3322,8 @@ async function createCoupon() {
     max_subtotal: parseInt(document.getElementById('cMaxSub').value) || null,
     max_discount: parseInt(document.getElementById('cMax').value) || null,
     usage_limit: parseInt(document.getElementById('cLimit').value) || null,
-    starts_at: document.getElementById('cStart').value || null,
-    expires_at: document.getElementById('cExp').value || null,
+    starts_at: dates.cStart,
+    expires_at: dates.cExp,
     per_user_once: document.getElementById('cOnce').checked,
     first_order_only: document.getElementById('cFirst').checked,
     description: document.getElementById('cDesc').value.trim(),
@@ -3328,12 +3354,13 @@ async function createCampaign() {
   const pct = parseInt(document.getElementById('fPct').value);
   if (!title) return toast('عنوان جشنواره را وارد کنید');
   if (!(pct > 0 && pct <= 90)) return toast('درصد باید بین ۱ تا ۹۰ باشد');
+  const dates=selectedCalendarDates(['fStart','fEnd']);if(!dates)return;
 
   const body = {
     title, percent: pct,
     max_discount: parseInt(document.getElementById('fMax').value) || null,
-    starts_at: document.getElementById('fStart').value || null,
-    ends_at: document.getElementById('fEnd').value || null,
+    starts_at: dates.fStart,
+    ends_at: dates.fEnd,
     scope_families: picked('fFam'),
     scope_brands: picked('fBrand'),
     scope_types: picked('fVType'),
@@ -3385,7 +3412,7 @@ async function loadCampaigns() {
            <td>${toFa(c.percent)}٪${c.max_discount ? `<div style="font-size:.7rem;color:var(--muted)">سقف ${money(c.max_discount)}</div>` : ''}</td>
            <td style="max-width:230px">${scopeSummary(c)}</td>
            <td style="font-size:.74rem;color:var(--muted)">
-             ${c.starts_at ? toFa(c.starts_at) : '—'} تا ${c.ends_at ? toFa(c.ends_at) : '—'}</td>
+             ${esc(c.starts_at ? YazdDate.formatDate(c.starts_at) : '—')} تا ${esc(c.ends_at ? YazdDate.formatDate(c.ends_at) : '—')}</td>
            <td><span class="badge ${c.active ? 'b-paid' : 'b-cancel'}">${c.active ? 'فعال' : 'متوقف'}</span></td>
            <td style="white-space:nowrap">
              <button onclick="toggleCampaign(${c.id}, ${c.active ? 0 : 1})"
@@ -3422,13 +3449,14 @@ async function createNotice() {
   if (!text) return toast('متن اعلان را وارد کنید');
   const link = document.getElementById('nLink').value.trim();
   if (link && !link.startsWith('/')) return toast('لینک باید داخلی باشد و با / شروع شود');
+  const dates=selectedCalendarDates(['nStart','nEnd']);if(!dates)return;
 
   const body = {
     text, link: link || null,
     link_label: document.getElementById('nLabel').value.trim() || null,
     tone: document.getElementById('nTone').value,
-    starts_at: document.getElementById('nStart').value || null,
-    ends_at: document.getElementById('nEnd').value || null
+    starts_at: dates.nStart,
+    ends_at: dates.nEnd
   };
   const r = await fetch('/api/admin/notices', { method: 'POST', headers: H(), body: JSON.stringify(body) });
   const d = await r.json();
@@ -3452,7 +3480,7 @@ async function loadNotices() {
            <td style="max-width:280px">${esc(n.text)}</td>
            <td style="font-size:.74rem" dir="ltr">${esc(n.link || '—')}</td>
            <td style="font-size:.74rem;color:var(--muted)">
-             ${n.starts_at ? toFa(n.starts_at) : '—'} تا ${n.ends_at ? toFa(n.ends_at) : '—'}</td>
+             ${esc(n.starts_at ? YazdDate.formatDate(n.starts_at) : '—')} تا ${esc(n.ends_at ? YazdDate.formatDate(n.ends_at) : '—')}</td>
            <td><span class="badge ${n.active ? 'b-paid' : 'b-cancel'}">${n.active ? 'نمایش' : 'خاموش'}</span></td>
            <td style="white-space:nowrap">
              <button onclick="toggleNotice(${n.id}, ${n.active ? 0 : 1})"
@@ -3560,7 +3588,7 @@ function renderStaffTable() {
       <td dir="ltr" style="font-size:.8rem">${esc(u.username)}</td>
       <td><span class="badge" style="background:var(--sand);color:var(--text)">${esc(u.role_name)}</span></td>
       <td style="font-size:.76rem;color:var(--muted)" dir="ltr">
-        ${u.last_login ? u.last_login.slice(0, 16).replace('T', ' ') : '—'}</td>
+        ${esc(u.last_login ? YazdDate.formatDateTime(u.last_login) : '—')}</td>
       <td><span class="badge ${u.active ? 'b-paid' : 'b-cancel'}">
         ${u.active ? 'فعال' : 'غیرفعال'}</span>
         ${u.must_change ? '<div style="font-size:.68rem;color:var(--warning);margin-top:3px">رمز اولیه</div>' : ''}</td>
@@ -3832,7 +3860,7 @@ async function loadAudit() {
     <tr><th>زمان</th><th>کارمند</th><th>عمل</th><th>مسیر</th><th>هدف</th><th></th></tr>
     ${d.entries.map(e => `<tr ${e.allowed ? '' : 'style="background:#FDF3F2"'}>
       <td style="font-size:.74rem;color:var(--muted);white-space:nowrap" dir="ltr">
-        ${e.at ? e.at.slice(0, 16).replace('T', ' ') : ''}</td>
+        ${esc(e.at ? YazdDate.formatDateTime(e.at) : '')}</td>
       <td style="font-size:.78rem">${esc(e.username || '—')}
         ${e.role_key ? `<div style="font-size:.68rem;color:var(--muted)">${esc(e.role_key)}</div>` : ''}</td>
       <td dir="ltr" style="font-size:.76rem">${esc(e.action)}</td>

@@ -3,6 +3,14 @@
 import datetime,os,re,socket,sqlite3,subprocess,tempfile,time,urllib.request
 from pathlib import Path
 from playwright.sync_api import sync_playwright,expect
+
+def select_jalali(page,field,iso):
+    jalali=page.evaluate('(iso)=>YazdDate.toPersian(iso)',iso)
+    field.click();expect(page.locator('.jalali-picker')).to_be_visible()
+    page.locator('.jalali-year').select_option(str(jalali['year']))
+    page.locator('.jalali-month').select_option(str(jalali['month']))
+    page.locator('.jalali-day[data-iso="'+iso+'"]').click()
+    assert page.evaluate('(el)=>YazdDate.inputISO(el)',field.element_handle())==iso
 root=Path(__file__).resolve().parent.parent
 with tempfile.TemporaryDirectory(prefix='recon-browser-') as td:
  db=str(Path(td)/'shop.sqlite');s=socket.socket();s.bind(('127.0.0.1',0));port=s.getsockname()[1];s.close();base=f'http://127.0.0.1:{port}'
@@ -53,7 +61,7 @@ with tempfile.TemporaryDirectory(prefix='recon-browser-') as td:
     correction=admin.locator(f'[data-correction-toggle="{deliv}"]');expect(correction).to_be_visible();correction.click();f=admin.locator(f'[data-correction-form="{deliv}"]');expect(f).to_be_visible()
     local=datetime.datetime.now(datetime.timezone(datetime.timedelta(hours=3,minutes=30)))-datetime.timedelta(minutes=45)
     date=local.strftime('%Y-%m-%d');clock=local.strftime('%H:%M');expected=int(datetime.datetime.strptime(date+' '+clock,'%Y-%m-%d %H:%M').replace(tzinfo=datetime.timezone(datetime.timedelta(hours=3,minutes=30))).timestamp()*1000)
-    f.locator('[name=date]').fill(date);f.locator('[name=time]').fill(clock);f.locator('[name=evidence]').fill('زمان تحویل از رسید شرکت پستی بررسی شد')
+    select_jalali(admin,f.locator('[name=date]'),date);f.locator('[name=time]').fill(clock);f.locator('[name=evidence]').fill('زمان تحویل از رسید شرکت پستی بررسی شد')
     with admin.expect_response(lambda r:r.url.endswith('/api/admin/reconciliation/delivery-correction') and r.request.method=='POST') as response:f.locator('[type=submit]').click()
     assert response.value.status==201,response.value.text()
     with sqlite3.connect(db) as c:

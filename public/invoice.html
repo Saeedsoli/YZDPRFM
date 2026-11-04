@@ -126,6 +126,9 @@
 </div>
 
 <script src="/assets/code128.js"></script>
+<script src="/assets/jalaali-core.js"></script>
+<script>window.YazdDate=window.YazdDate||{ready:false,formatDate:()=> '—'};</script>
+<script src="/assets/persian-date.js"></script>
 <script>
 const esc = v => v === null || v === undefined ? '' : String(v)
   .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
@@ -198,7 +201,6 @@ async function load() {
 
 function render(d) {
   const { order: o, items, settings: st, totals: t, invoice_no } = d;
-  const dt = new Date(o.created_at);
   const paid = ['PAID','PROCESSING','SHIPPED','DELIVERED'].includes(o.status);
 
   document.title = `فاکتور ${invoice_no || o.order_id} | عطر یزد`;
@@ -245,7 +247,7 @@ function render(d) {
         <div class="meta">
           ${invoice_no ? `شماره فاکتور: <span class="no">${esc(fa(invoice_no))}</span><br>` : ''}
           شماره سفارش: <span dir="ltr">${esc(o.order_id)}</span><br>
-          تاریخ: ${fa(dt.toLocaleDateString('fa-IR'))}<br>
+          تاریخ: ${esc(YazdDate.formatDate(o.created_at))}<br>
           وضعیت: ${esc(TYPE_FA[o.status] || o.status)}
         </div>
       </div>
@@ -266,7 +268,7 @@ function render(d) {
              آن را به مشتری پیامک می‌کند و تکرارش اینجا فقط
              سند را شلوغ می‌کند. مشتری در «پیگیری سفارش» می‌بیندش. -->
         ${o.payment_ref ? `<div class="row"><b>کد پیگیری بانکی:</b> <span dir="ltr">${esc(o.payment_ref)}</span></div>` : ''}
-        <div class="row"><b>تاریخ صدور:</b> ${fa(new Date().toLocaleDateString('fa-IR'))}</div>
+        <div class="row"><b>تاریخ صدور:</b> ${esc(YazdDate.formatDate(Date.now()))}</div>
       </div>
     </div>
 

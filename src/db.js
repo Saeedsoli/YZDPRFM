@@ -14,6 +14,7 @@ const path = require('path');
    پس ترتیب تعریف اهمیت دارد. */
 const crypto = require('crypto');
 const stockReservations = require('./order-stock-reservations');
+const shopTime = require('./shop-time');
 const { referenceAccords } = require('./reference-accord-display');
 
 const ROOT_DIR = path.resolve(__dirname, '..');
@@ -1308,18 +1309,13 @@ function validateCoupon(code, subtotal, shippingFee, mobile, items = null, verif
   if (!c)            return { ok: false, error: 'کد تخفیف نامعتبر است.' };
   if (!c.active)     return { ok: false, error: 'این کد تخفیف غیرفعال شده است.' };
 
-  // شروع اعتبار — کد جشنواره‌ای که هنوز وقتش نرسیده
-  if (c.starts_at) {
-    const st = new Date(c.starts_at + 'T00:00:00');
-    if (!isNaN(st) && Date.now() < st.getTime())
-      return { ok: false, error: 'این کد هنوز فعال نشده است.' };
-  }
-
-  if (c.expires_at) {
-    const exp = new Date(c.expires_at + 'T23:59:59');
-    if (!isNaN(exp) && Date.now() > exp.getTime())
-      return { ok: false, error: 'مهلت استفاده از این کد به پایان رسیده است.' };
-  }
+  // Date-only coupon boundaries follow the shop's civil day, not the
+  // server OS timezone. Invalid stored dates fail closed.
+  const today=shopTime.dateKey();
+  if(c.starts_at && !shopTime.validDateKey(c.starts_at))return {ok:false,error:'تاریخ این کد معتبر نیست.'};
+  if(c.expires_at && !shopTime.validDateKey(c.expires_at))return {ok:false,error:'تاریخ این کد معتبر نیست.'};
+  if(c.starts_at && today<c.starts_at)return {ok:false,error:'این کد هنوز فعال نشده است.'};
+  if(c.expires_at && today>c.expires_at)return {ok:false,error:'مهلت استفاده از این کد به پایان رسیده است.'};
   if (c.usage_limit != null && c.used_count >= c.usage_limit)
     return { ok: false, error: 'ظرفیت استفاده از این کد تکمیل شده است.' };
 
@@ -1423,8 +1419,8 @@ let _campCache = null, _campAt = 0, _campDay = '';
 function bustCampaignCache() { _campCache = null; }
 
 function activeCampaigns() {
-  const now = new Date().toISOString().slice(0, 10);
   const t = Date.now();
+  const now = shopTime.dateKey(t);
   // تغییر روز هم کش را باطل می‌کند، وگرنه جشنواره‌ای که دیشب
   // تمام شده تا پنج ثانیه بعدِ نیمه‌شب زنده می‌ماند
   if (_campCache && t - _campAt < CAMPAIGN_TTL_MS && _campDay === now) {

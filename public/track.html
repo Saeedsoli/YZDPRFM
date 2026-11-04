@@ -60,7 +60,9 @@
   <div id="out"></div>
 </div>
 <div id="ftr"></div>
+<script src="/assets/jalaali-core.js"></script>
 <script src="/assets/app.js"></script>
+<script src="/assets/persian-date.js"></script>
 <script>
 document.getElementById('hdr').innerHTML=renderHeader();
 document.getElementById('ftr').innerHTML=renderFooter();
@@ -176,7 +178,7 @@ async function track() {
         <span class="badge ${st[1]}">${st[0]}</span>
       </div>
       <div style="font-size:.79rem;color:var(--muted)">
-        ${new Date(x.created_at).toLocaleDateString('fa-IR')}
+        ${esc(YazdDate.formatDate(x.created_at))}
       </div>
 
       ${timeline(x.status)}

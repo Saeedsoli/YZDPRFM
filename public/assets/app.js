@@ -247,7 +247,30 @@ function renderHeader(active = '') {
   </header>`;
 }
 
+// Fail closed for date selection if either calendar script is unavailable;
+// unrelated page features remain usable and unknown dates are never guessed.
+window.YazdDate=window.YazdDate||{
+  ready:false,formatDate:()=> '—',formatDateTime:()=> '—',now:()=>Date.now(),
+  setClock:()=>false,inputISO:()=>null,setInput:()=>false,
+  mountAll:parent=>(parent||document).querySelectorAll('[data-jalali-date]').forEach(el=>{
+    el.disabled=true;el.placeholder='تقویم در دسترس نیست';
+  })
+};
+
 /* ── فوتر مشترک ── */
+const footerDateFormatter = new Intl.DateTimeFormat('en-US-u-ca-gregory-nu-latn', {timeZone:'Asia/Tehran',year:'numeric',month:'numeric',day:'numeric'});
+let footerClock=null;
+function footerNow(){return footerClock ? footerClock.ms+(performance.now()-footerClock.at) : Date.now();}
+function footerYear(ms=footerNow()) {
+  const p=Object.fromEntries(footerDateFormatter.formatToParts(new Date(ms)).filter(x=>['year','month','day'].includes(x.type)).map(x=>[x.type,Number(x.value)]));
+  if(typeof jalaali!=='undefined')return toFa(jalaali.toJalaali(p.year,p.month,p.day).jy);
+  // Non-critical footer fallback only; form date conversion still fails closed.
+  return new Intl.DateTimeFormat('fa-IR-u-ca-persian',{timeZone:'Asia/Tehran',year:'numeric'}).formatToParts(new Date(ms)).find(x=>x.type==='year')?.value || '';
+}
+function updateFooterYear() {
+  const year=footerYear();
+  document.querySelectorAll('[data-footer-year]').forEach(el=>{if(el.textContent!==year)el.textContent=year;});
+}
 function renderFooter() {
   return `
   <footer role="contentinfo">
@@ -314,7 +337,7 @@ function renderFooter() {
       </div>
     </div>
     <div class="footer-bottom">
-      © ۱۴۰۵ تمامی حقوق متعلق به فروشگاه آنلاین «عطر یزد | Yazd Perfume» است.
+      © <span data-footer-year>${footerYear()}</span> تمامی حقوق متعلق به فروشگاه آنلاین «عطر یزد | Yazd Perfume» است.
     </div>
   </footer>`;
 }
@@ -743,7 +766,13 @@ async function loadNotice() {
     const d = await fetch('/api/notice').then(r => r.json());
     const n = d.notice;
     if (!n) return;
-    if (closed[n.id] === new Date().toISOString().slice(0, 10)) return;
+    const dayKey=()=>{
+      const parts=new Intl.DateTimeFormat('en-US-u-ca-gregory-nu-latn',
+        {timeZone:'Asia/Tehran',year:'numeric',month:'2-digit',day:'2-digit'}).formatToParts(new Date(footerNow()));
+      const p=Object.fromEntries(parts.filter(x=>['year','month','day'].includes(x.type)).map(x=>[x.type,x.value]));
+      return `${p.year}-${p.month}-${p.day}`;
+    };
+    if (closed[n.id] === dayKey()) return;
 
     bar.className = 'announce notice-' + (n.tone || 'gold');
     bar.innerHTML =
@@ -752,7 +781,7 @@ async function loadNotice() {
       `<button class="n-x" type="button" aria-label="بستن اعلان">✕</button>`;
 
     bar.querySelector('.n-x').onclick = () => {
-      closed[n.id] = new Date().toISOString().slice(0, 10);
+      closed[n.id] = dayKey();
       try { localStorage.setItem('yazd_notice_closed', JSON.stringify(closed)); } catch {}
       // به جمله برند برمی‌گردد، نه اینکه نوار حذف شود —
       // حذف کامل باعث پرش چیدمان می‌شد
@@ -792,7 +821,13 @@ async function loadFooterContact() {
      نداشت، نشان هم بی‌صدا غایب می‌شد. */
   if (!box) { renderEnamad(null, null); return; }
   try {
-    const d = await fetch('/api/contact-info').then(r => r.json());
+    const started=performance.now();
+    const response=await fetch('/api/contact-info',{cache:'no-store'});
+    const serverTime=Date.parse(response.headers.get('date') || '');
+    if(Number.isFinite(serverTime) && serverTime>=Date.UTC(2000,0,1) && serverTime<=Date.UTC(2300,0,1)){
+      const ended=performance.now();footerClock={ms:serverTime+Math.max(0,Math.min(ended-started,60000))/2,at:ended};updateFooterYear();
+    }
+    const d=await response.json();
     const rows = [];
     if (d.phone) {
       /* شماره موبایل با واتس‌اپ: دو راه ارتباط از یک شماره.
@@ -1042,6 +1077,8 @@ document.addEventListener('DOMContentLoaded', async () => {
   initHeaderShadow();
   initReveal();
   initProgress();
+  updateFooterYear();setInterval(updateFooterYear,30000);
+  document.addEventListener('visibilitychange',()=>{if(!document.hidden)updateFooterYear()});
   whenIdle(loadNotice);
   whenIdle(loadFooterContact);
 

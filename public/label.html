@@ -97,6 +97,9 @@
 </div>
 
 <script src="/assets/code128.js"></script>
+<script src="/assets/jalaali-core.js"></script>
+<script>window.YazdDate=window.YazdDate||{ready:false,formatDate:()=> '—'};</script>
+<script src="/assets/persian-date.js"></script>
 <script>
 const esc = v => v === null || v === undefined ? '' : String(v)
   .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
@@ -184,7 +187,7 @@ function render(d) {
         <div class="row"><span>تعداد اقلام</span><b>${esc(fa(units))} عدد</b></div>
         <div class="row"><span>شماره سفارش</span><b dir="ltr">${esc(o.order_id)}</b></div>
         <div class="row"><span>تاریخ</span>
-          <b>${fa(new Date(o.created_at).toLocaleDateString('fa-IR'))}</b></div>
+          <b>${esc(YazdDate.formatDate(o.created_at))}</b></div>
       </div>
     </div>
 

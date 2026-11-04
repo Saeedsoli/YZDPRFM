@@ -1,0 +1,11 @@
+/* Shared admin date picker; all calendar values are displayed in Jalali. */
+[data-jalali-date]{cursor:pointer;background:#fff;direction:ltr;text-align:right}
+.jalali-picker{position:fixed;z-index:10000;direction:rtl;background:#fff;border:1px solid #e6dece;border-radius:12px;padding:12px;box-shadow:0 10px 24px #211c1022;max-height:calc(100vh - 16px);overflow:auto;font-family:var(--font, Vazirmatn,sans-serif)}
+.jalali-controls{display:flex;align-items:center;justify-content:space-between;gap:6px}
+.jalali-controls button,.jalali-controls select,.jalali-bottom button{font:inherit;border:1px solid #e5ded2;background:#fff;border-radius:7px;padding:6px;cursor:pointer;color:#242321}
+.jalali-arrow{width:34px}.jalali-month{flex:1}.jalali-year{min-width:72px}
+.jalali-days{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));text-align:center;gap:3px;margin-top:11px}
+.jalali-week{color:#8d887e;font-size:11px}.jalali-empty{min-height:34px}
+.jalali-day{font:inherit;font-size:13px;aspect-ratio:1;border:0;background:#fff;border-radius:8px;cursor:pointer;color:#292824}
+.jalali-day:hover,.jalali-day:focus-visible{background:#f5f0e4}.jalali-day.today{outline:1px solid #c5a25a}.jalali-day.selected{background:#24221f;color:#fff}
+.jalali-bottom{display:flex;justify-content:space-between;gap:8px;margin-top:10px}.jalali-bottom button{font-size:12px;padding:6px 10px}

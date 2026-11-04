@@ -31,6 +31,7 @@ with tempfile.TemporaryDirectory(prefix='track-csp-') as td:
     oid=f'TRACK-{index}';phone=f'0912000111{index}';fa=phone.translate(str.maketrans('0123456789','۰۱۲۳۴۵۶۷۸۹'))
     page.locator('#m').fill(fa);page.locator('#orderId').fill(oid);page.locator('#orderId').press('Enter')
     expect(page.locator('#out .order-card')).to_contain_text(oid);expect(page.locator('#out')).to_contain_text(payload)
+    expect(page.locator('#out')).to_contain_text('۱۱ / ۱۰ / ۱۴۰۴')
     assert page.locator('#out img, #out script, #out svg[onload]').count()==0 and page.evaluate('window.__trackXss || false') is False
     page.evaluate("() => Object.defineProperty(navigator,'clipboard',{configurable:true,value:{writeText:async value=>{window.__copied=value}}})")
     button=page.locator('[data-track-copy]');assert button.get_attribute('data-code')==payload;button.click()

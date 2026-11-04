@@ -37,7 +37,7 @@
 
 'use strict';
 
-const CACHE_VERSION = 'yazd-v6';
+const CACHE_VERSION = 'yazd-v7';
 const SHELL_CACHE = `${CACHE_VERSION}-shell`;
 const PAGE_CACHE  = `${CACHE_VERSION}-pages`;
 const IMG_CACHE   = `${CACHE_VERSION}-img`;
@@ -52,6 +52,7 @@ const SHELL = [
   '/offline',
   '/assets/theme.css',
   '/assets/app.js',
+  '/assets/jalaali-core.js',
   '/assets/fonts.css',
   '/fonts/Vazirmatn-Regular.woff2',
   '/fonts/Vazirmatn-Medium.woff2',

@@ -5,6 +5,7 @@
  * وضعیت‌های «فروش محقق‌شده»: PAID, PROCESSING, SHIPPED, DELIVERED
  */
 
+const shopTime = require('./shop-time');
 const PAID_STATES = "('PAID','PROCESSING','SHIPPED','DELIVERED')";
 
 function build(db) {
@@ -68,7 +69,7 @@ function build(db) {
   /** فروش روزانه — برای نمودار */
   function daily(days = 30) {
     const rows = db.prepare(`
-      SELECT date(created_at) d,
+      SELECT date(created_at,'+03:30') d,
              COUNT(*) orders,
              COALESCE(SUM(total_paid),0) revenue
       FROM orders
@@ -80,7 +81,7 @@ function build(db) {
     const map = Object.fromEntries(rows.map(r => [r.d, r]));
     const out = [];
     for (let i = parseInt(days) - 1; i >= 0; i--) {
-      const dt = new Date(Date.now() - i * 86400000).toISOString().slice(0, 10);
+      const dt = shopTime.dateKey(Date.now() - i * 86400000);
       out.push(map[dt] || { d: dt, orders: 0, revenue: 0 });
     }
     return out;

@@ -158,7 +158,9 @@
 
 <div id="ftr"></div>
 
+<script src="/assets/jalaali-core.js"></script>
 <script src="/assets/app.js"></script>
+<script src="/assets/persian-date.js"></script>
 <script>
 document.getElementById('hdr').innerHTML = renderHeader();
 document.getElementById('ftr').innerHTML = renderFooter();
@@ -197,7 +199,7 @@ function progressBar(status) {
 const RETURN_STATUS = {NEW_PENDING:'در انتظار بررسی', ANSWERED:'پاسخ داده شده', CLOSED:'بسته شده'};
 function returnDeadline(ms) {
   if (!Number.isSafeInteger(ms)) return '';
-  return new Intl.DateTimeFormat('fa-IR', { timeZone:'Asia/Tehran', year:'numeric', month:'long', day:'numeric', hour:'2-digit', minute:'2-digit' }).format(new Date(ms));
+  return YazdDate.formatDateTime(ms);
 }
 function returnItem(i, enabled) {
   if (!enabled) return `<div class="oi"><span>${esc(i.product_name)}</span><span style="white-space:nowrap">${toFa(i.quantity)} × ${money(i.unit_price)}</span></div>`;
@@ -254,7 +256,7 @@ async function init() {
           <div>
             <strong dir="ltr" style="font-size:.92rem">${esc(o.order_id)}</strong>
             <div style="font-size:.76rem;color:var(--muted);margin-top:3px">
-              ${new Date(o.created_at).toLocaleDateString('fa-IR')} · ${money(o.total_paid)} تومان
+              ${esc(YazdDate.formatDate(o.created_at))} · ${money(o.total_paid)} تومان
             </div>
           </div>
         </div>

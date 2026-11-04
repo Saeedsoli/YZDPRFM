@@ -43,6 +43,7 @@
 
 'use strict';
 const { publicVariantSql } = require('../variant-visibility');
+const shopTime = require('../shop-time');
 
 /**
  * @param {object}   ctx
@@ -585,9 +586,11 @@ async function handle(ctx) {
     const c = db.prepare('SELECT * FROM coupons WHERE UPPER(code)=?').get(code);
     if (!c || !c.active) return sendJSON(404, { error: 'کد فعال نیست' });
 
-    if (c.expires_at && new Date(c.expires_at) < new Date()) {
-      return sendJSON(404, { error: 'کد منقضی شده' });
-    }
+    const today=shopTime.dateKey();
+    if(c.starts_at && (!shopTime.validDateKey(c.starts_at) || today<c.starts_at))
+      return sendJSON(404,{error:'کد فعال نیست'});
+    if(c.expires_at && (!shopTime.validDateKey(c.expires_at) || today>c.expires_at))
+      return sendJSON(404,{error:'کد منقضی شده'});
     if (c.usage_limit != null && c.used_count >= c.usage_limit) {
       return sendJSON(404, { error: 'ظرفیت کد تکمیل شده' });
     }

@@ -3,6 +3,14 @@
 import datetime,os,socket,sqlite3,subprocess,tempfile,time,urllib.request
 from pathlib import Path
 from playwright.sync_api import sync_playwright,expect
+
+def select_jalali(page,field,iso):
+    jalali=page.evaluate('(iso)=>YazdDate.toPersian(iso)',iso)
+    field.click();expect(page.locator('.jalali-picker')).to_be_visible()
+    page.locator('.jalali-year').select_option(str(jalali['year']))
+    page.locator('.jalali-month').select_option(str(jalali['month']))
+    page.locator('.jalali-day[data-iso="'+iso+'"]').click()
+    assert page.evaluate('(el)=>YazdDate.inputISO(el)',field.element_handle())==iso
 root=Path(__file__).resolve().parent.parent
 with tempfile.TemporaryDirectory(prefix='return-delivery-browser-') as td:
  db=str(Path(td)/'db.sqlite');s=socket.socket();s.bind(('127.0.0.1',0));port=s.getsockname()[1];s.close();base=f'http://127.0.0.1:{port}'
@@ -28,8 +36,8 @@ with tempfile.TemporaryDirectory(prefix='return-delivery-browser-') as td:
     page.on('pageerror',lambda e:errors.append(str(e)))
     page.goto(base+'/admin',wait_until='domcontentloaded');page.locator('#usr').fill('owner');page.locator('#pw').fill('Delivery-Test-Owner-982');page.locator('#loginView button').click();expect(page.locator('#panel')).to_be_visible()
     button=page.locator(f'[data-delivery-toggle="{oid}"]');expect(button).to_be_visible();button.click()
-    form=page.locator(f'[data-delivery-form="{oid}"]');expect(form).to_be_visible();expect(form).to_contain_text('وقت تهران');expect(form).to_contain_text('حدس نزنید')
-    form.locator('[name=date]').fill(date);form.locator('[name=time]').fill(clock)
+    form=page.locator(f'[data-delivery-form="{oid}"]');expect(form).to_be_visible();assert 'تهران' not in form.inner_text();expect(form).to_contain_text('حدس نزنید')
+    select_jalali(page,form.locator('[name=date]'),date);form.locator('[name=time]').fill(clock)
     with page.expect_response(lambda r:r.url.endswith('/api/admin/account-returns/delivery') and r.request.method=='POST') as event:form.locator('[type=submit]').click()
     assert event.value.status==201,event.value.text()
     expect(page.locator(f'[data-delivery-toggle="{oid}"]')).to_have_count(0)

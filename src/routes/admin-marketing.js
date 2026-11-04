@@ -272,16 +272,19 @@ async function handle(ctx) {
     };
     if (!validDate(b.starts_at) || !validDate(b.ends_at))
       return sendJSON(400, { error: 'تاریخ نامعتبر است (قالب: YYYY-MM-DD).' });
+    if (b.starts_at && b.ends_at && b.starts_at > b.ends_at)
+      return sendJSON(400, { error: 'تاریخ شروع بعد از پایان است.' });
 
     /* فقط یک اعلان همزمان فعال باشد. دو نوار روی هم، هم زشت
        است هم فضای بالای صفحه را می‌بلعد. */
-    db.prepare('UPDATE notices SET active=0').run();
-
-    const r = db.prepare(`
-      INSERT INTO notices (text, link, link_label, tone, starts_at, ends_at, active)
-      VALUES (?,?,?,?,?,?,1)
-    `).run(text, link, cleanText(b.link_label, 40) || null, tone,
-           b.starts_at || null, b.ends_at || null);
+    const r = db.transaction(() => {
+      db.prepare('UPDATE notices SET active=0').run();
+      return db.prepare(`
+        INSERT INTO notices (text, link, link_label, tone, starts_at, ends_at, active)
+        VALUES (?,?,?,?,?,?,1)
+      `).run(text, link, cleanText(b.link_label, 40) || null, tone,
+             b.starts_at || null, b.ends_at || null);
+    }).immediate();
 
     logAudit('notice.create', { target: text.slice(0, 40) });
     return sendJSON(201, { message: 'اعلان منتشر شد.', id: r.lastInsertRowid });
