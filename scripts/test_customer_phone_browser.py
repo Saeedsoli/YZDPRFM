@@ -31,7 +31,16 @@ with tempfile.TemporaryDirectory(prefix='phone-verify-browser-') as td:
     page.route('**/*',lambda route:route.continue_() if route.request.url.startswith(base) else route.abort())
     mobile=f'0912000666{index+1}';password='Browser-Password-9826'
     # Signup asks for OTP before creating a password-bearing account; malicious next is rejected.
-    attack=urllib.parse.quote('javascript:window.__attack=9',safe='');page.goto(base+'/login?next='+attack,wait_until='domcontentloaded');page.locator('#tabReg').click()
+    attack=urllib.parse.quote('javascript:window.__attack=9',safe='');response=page.goto(base+'/login?next='+attack,wait_until='domcontentloaded')
+    policy=response.headers['content-security-policy'];assert "script-src-attr 'none'" in policy
+    fallback=next(x.strip() for x in policy.split(';') if x.strip().startswith('script-src '));assert "'unsafe-inline'" not in fallback and "'sha256-" in fallback
+    result=page.evaluate('''() => new Promise(resolve => {
+      const blocked=[];document.addEventListener('securitypolicyviolation',e=>blocked.push(e.effectiveDirective));
+      const el=document.createElement('button');el.setAttribute('onclick','window.__blockedHandler=1');document.body.appendChild(el);el.click();
+      const script=document.createElement('script');script.textContent='window.__blockedScript=1';document.head.appendChild(script);
+      setTimeout(()=>resolve({blocked,handler:window.__blockedHandler||0,script:window.__blockedScript||0}),200);
+    })''');assert 'script-src-attr' in result['blocked'] and 'script-src-elem' in result['blocked'] and result['handler']==0 and result['script']==0,result
+    page.locator('#tabReg').click()
     page.locator('#rgFirst').fill('کاربر');page.locator('#rgMobile').fill(mobile);page.locator('#rgPass').fill(password);page.locator('#rgSendBtn').click();expect(page.locator('#rgCode')).to_be_visible();expect(page.locator('#ok')).to_contain_text('آزمایشی')
     assert page.evaluate('document.documentElement.scrollWidth <= innerWidth + 1'),('signup overflow',width)
     otp=code_for(mobile);page.locator('#rgCode').fill(otp);page.locator('#rgMobile').fill('09120000000');page.locator('#rgBtn').click();expect(page.locator('#err')).to_contain_text('شماره تغییر کرده')

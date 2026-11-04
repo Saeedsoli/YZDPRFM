@@ -117,8 +117,8 @@
     <!-- ═══ ورود / ثبت‌نام ═══ -->
     <div id="viewMain">
       <div class="auth-tabs" role="tablist">
-        <button id="tabLogin" class="on" onclick="showTab('login')">ورود</button>
-        <button id="tabReg" onclick="showTab('reg')">ساخت حساب</button>
+        <button id="tabLogin" class="on" data-auth-tab="login">ورود</button>
+        <button id="tabReg" data-auth-tab="reg">ساخت حساب</button>
       </div>
 
       <!-- ورود -->
@@ -139,10 +139,10 @@
                  placeholder="حداقل ۸ نویسه">
         </div>
 
-        <button class="btn btn-block" id="lgBtn" onclick="doLogin()">ورود</button>
+        <button class="btn btn-block" id="lgBtn">ورود</button>
         <div style="margin-top:13px;display:flex;gap:16px;flex-wrap:wrap">
-          <button class="link-btn" onclick="showView('otp')">ورود با کد پیامکی</button>
-          <button class="link-btn" onclick="showView('forgot')">رمز عبور را فراموش کرده‌ام</button>
+          <button class="link-btn" data-auth-view="otp">ورود با کد پیامکی</button>
+          <button class="link-btn" data-auth-view="forgot">رمز عبور را فراموش کرده‌ام</button>
         </div>
       </div>
 
@@ -175,12 +175,12 @@
           <div class="hint">دست‌کم ۸ نویسه انتخاب کنید.</div>
         </div>
 
-        <button class="btn btn-block" id="rgSendBtn" onclick="requestSignupCode()">ارسال کد تأیید</button>
+        <button class="btn btn-block" id="rgSendBtn">ارسال کد تأیید</button>
         <div id="rgVerify" style="display:none">
           <div class="fld"><label for="rgCode">کد تأیید پیامکی</label>
             <input id="rgCode" type="text" inputmode="numeric" autocomplete="one-time-code" dir="ltr"
                    style="text-align:center;letter-spacing:.25em" maxlength="5" placeholder="کد ۵ رقمی"></div>
-          <button class="btn btn-block" id="rgBtn" onclick="doRegister()">تأیید و ساخت حساب</button>
+          <button class="btn btn-block" id="rgBtn">تأیید و ساخت حساب</button>
         </div>
       </div>
     </div>
@@ -192,8 +192,8 @@
       <div class="fld"><label for="otpMobile">شماره موبایل</label>
         <input id="otpMobile" type="tel" inputmode="numeric" dir="ltr" style="text-align:right"
                placeholder="۰۹۱۲۳۴۵۶۷۸۹" maxlength="13" autocomplete="tel"></div>
-      <button class="btn btn-block" id="otpSendBtn" onclick="doOtpRequest()">ارسال کد تأیید</button>
-      <div style="margin-top:13px"><button class="link-btn" onclick="showView('main')">بازگشت به ورود</button></div>
+      <button class="btn btn-block" id="otpSendBtn">ارسال کد تأیید</button>
+      <div style="margin-top:13px"><button class="link-btn" data-auth-view="main">بازگشت به ورود</button></div>
     </div>
     <div id="viewOtpCode" style="display:none">
       <h2>تأیید شماره موبایل</h2>
@@ -201,8 +201,8 @@
       <div class="fld"><label for="otpCode">کد تأیید پیامکی</label>
         <input id="otpCode" type="text" inputmode="numeric" autocomplete="one-time-code" dir="ltr"
                style="text-align:center;letter-spacing:.25em" maxlength="5" placeholder="کد ۵ رقمی"></div>
-      <button class="btn btn-block" id="otpVerifyBtn" onclick="doOtpVerify()">تأیید و ورود</button>
-      <div style="margin-top:13px"><button class="link-btn" onclick="showView('otp')">تغییر شماره یا ارسال دوباره</button></div>
+      <button class="btn btn-block" id="otpVerifyBtn">تأیید و ورود</button>
+      <div style="margin-top:13px"><button class="link-btn" data-auth-view="otp">تغییر شماره یا ارسال دوباره</button></div>
     </div>
 
     <!-- ═══ بازیابی رمز — گام یک ═══ -->
@@ -216,9 +216,9 @@
                style="text-align:right" placeholder="۰۹۱۲۳۴۵۶۷۸۹" maxlength="13">
       </div>
 
-      <button class="btn btn-block" id="fgBtn" onclick="doForgot()">ارسال کد بازیابی</button>
+      <button class="btn btn-block" id="fgBtn">ارسال کد بازیابی</button>
       <div style="margin-top:13px">
-        <button class="link-btn" onclick="showView('main')">بازگشت به ورود</button>
+        <button class="link-btn" data-auth-view="main">بازگشت به ورود</button>
       </div>
     </div>
 
@@ -240,10 +240,10 @@
                placeholder="حداقل ۸ نویسه">
       </div>
 
-      <button class="btn btn-block" id="rsBtn" onclick="doReset()">ثبت رمز تازه</button>
+      <button class="btn btn-block" id="rsBtn">ثبت رمز تازه</button>
       <div class="timer" id="rsTimer" aria-live="polite"></div>
       <div style="margin-top:8px">
-        <button class="link-btn" onclick="showView('forgot')">ارسال دوباره کد</button>
+        <button class="link-btn" data-auth-view="forgot">ارسال دوباره کد</button>
       </div>
     </div>
 
@@ -463,6 +463,18 @@ async function doReset() {
     btn.disabled = false; btn.textContent = 'ثبت رمز تازه';
   }
 }
+
+// Attach actions as functions rather than inline event-handler attributes.
+// The login page can therefore block injected inline handlers with CSP.
+document.querySelectorAll('[data-auth-tab]').forEach(button => {
+  button.addEventListener('click', () => showTab(button.dataset.authTab));
+});
+document.querySelectorAll('[data-auth-view]').forEach(button => {
+  button.addEventListener('click', () => showView(button.dataset.authView));
+});
+[['lgBtn',doLogin],['rgSendBtn',requestSignupCode],['rgBtn',doRegister],
+ ['otpSendBtn',doOtpRequest],['otpVerifyBtn',doOtpVerify],['fgBtn',doForgot],
+ ['rsBtn',doReset]].forEach(([id,action]) => $(id).addEventListener('click', action));
 
 // Enter در هر فیلد دکمه همان بخش را می‌زند
 $('lgPass').addEventListener('keydown', e => { if (e.key === 'Enter') doLogin(); });

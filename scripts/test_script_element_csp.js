@@ -13,4 +13,6 @@ assert.throws(()=>forTemplate("script-src-elem 'self'",template,{disallowInlineH
 const fs=require('fs'),path=require('path');
 const account=fs.readFileSync(path.join(__dirname,'../public/account.html'),'utf8');
 assert(!/\son[a-z]+\s*=/i.test(account),'Account contains an inline event attribute');
-console.log('PASS template-only script hashes, strict account policy and fail-closed rules');
+const login=fs.readFileSync(path.join(__dirname,'../public/login.html'),'utf8');
+assert(!/\son[a-z]+\s*=/i.test(login),'Login contains an inline event attribute');
+console.log('PASS template-only script hashes, strict account/login policies and fail-closed rules');
