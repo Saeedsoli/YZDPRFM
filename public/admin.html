@@ -1401,7 +1401,7 @@ async function loadAll() {
     safeGet('/api/orders', 'orders.view', { total: 0, orders: [] }),
     safeGet('/api/tickets', 'tickets.view', { tickets: [] }),
     safeGet('/api/articles', null, { total: 0, articles: [] }),
-    safeGet('/api/health', null, {}),
+    safeGet('/api/admin/health', 'system.logs', null),
     safeGet('/api/admin/coupons', 'coupons.view', { total: 0, coupons: [] })
   ]);
 
@@ -1492,24 +1492,27 @@ async function loadAll() {
       </td></tr>`).join('')}`
     : '<tr><td style="text-align:center;padding:26px;color:var(--muted)">مقاله‌ای نیست</td></tr>';
 
-  document.getElementById('health').innerHTML = `
+  if (!h) {
+    document.getElementById('health').textContent = may('system.logs') ? 'وضعیت سیستم در دسترس نیست.' : 'برای مشاهده وضعیت سیستم، مجوز لازم است.';
+  } else document.getElementById('health').innerHTML = `
     وضعیت: <strong style="color:#1E8449">فعال</strong><br>
     محصولات: <strong>${toFa(h.products)}</strong> — متغیرها: <strong>${toFa(h.variants)}</strong><br>
-    درگاه پرداخت: <strong>${h.payment_gateway}</strong>
+    درگاه پرداخت: <strong>${esc(h.payment_gateway)}</strong>
       ${h.payment_live ? '<span style="color:#1E8449">(واقعی)</span>'
                        : '<span style="color:#B9770E">(آزمایشی)</span>'}<br>
-    سرویس پیامک: <strong>${h.sms_provider === 'console' ? 'لاگ سرور (آزمایشی)' : h.sms_provider}</strong><br>
+    سرویس پیامک: <strong>${esc(h.sms_provider === 'console' ? 'لاگ سرور (آزمایشی)' : h.sms_provider)}</strong><br>
     نشست‌های فعال: <strong>${toFa(h.sessions ?? 0)}</strong><br>
     سفارش پرداخت‌نشده: <strong>${toFa(h.pending_orders ?? 0)}</strong>
       <span style="color:var(--muted);font-size:.8rem">(آزادسازی پس از ${toFa(h.pending_ttl_min ?? 30)} دقیقه)</span><br>
     خطای ۲۴ ساعت اخیر: <strong style="color:${h.errors_24h ? '#C0392B' : '#1E8449'}">${toFa(h.errors_24h ?? 0)}</strong><br>
-    دیتابیس: <span dir="ltr" style="font-size:.78rem">${h.db}</span>`;
+    دیتابیس: <span dir="ltr" style="font-size:.78rem">${esc(h.db)}</span>`;
 
   loadLogs('');
   loadBackups();
 }
 
 async function loadLogs(level) {
+  if (!may('system.logs')) return;
   const r = await fetch('/api/admin/logs?limit=60' + (level ? '&level=' + level : ''), { headers: H() });
   const d = await r.json();
   const CL = { ERROR:'#C0392B', WARN:'#B9770E', INFO:'#1E8449' };
@@ -2522,7 +2525,7 @@ async function loadReviews(st) {
           <button class="del" onclick="delReview(${r.id})">حذف</button>
         </div>
         ${r.admin_reply ? `<div style="background:var(--sand);border-radius:8px;padding:9px;
-          margin-top:9px;font-size:.8rem"><strong>پاسخ فروشگاه:</strong> ${r.admin_reply}</div>` : ''}
+          margin-top:9px;font-size:.8rem"><strong>پاسخ فروشگاه:</strong> ${escLines(r.admin_reply)}</div>` : ''}
       </div>`).join('')
     : '<div style="color:var(--muted);font-size:.86rem;padding:18px">نظری در این دسته نیست</div>';
 }
@@ -2583,6 +2586,11 @@ function ivPick(slug, label) {
     `<div style="font-size:.78rem;color:#1E8449;font-weight:700">✓ انتخاب شد</div>`;
 }
 
+function safeInviteUrl(value) {
+  const path=String(value || '');
+  return /^\/review\/[a-f0-9]{32}$/.test(path) ? location.origin+path : null;
+}
+
 async function makeInvite() {
   const raw = document.getElementById('ivProduct').value.trim();
   const product = ivPicked || raw;      // اگر از فهرست انتخاب نشد، همان متن تایپ‌شده
@@ -2606,7 +2614,8 @@ async function makeInvite() {
     return;
   }
 
-  const full = location.origin + d.url;
+  const full = safeInviteUrl(d.url);
+  if (!full) { document.getElementById('ivResult').textContent='نشانی دعوت‌نامه معتبر نیست.'; return; }
   /* متن آماده پیامک کنار لینک نمایش داده می‌شود تا مدیر چیزی
      تایپ نکند — کپی و ارسال. هرچه اصطکاک کمتر، احتمال اینکه
      واقعاً برای مشتری فرستاده شود بیشتر. */
@@ -2621,7 +2630,7 @@ async function makeInvite() {
         border-radius:7px;font-family:var(--font);font-size:.78rem;background:#FFF">
       <div style="display:flex;gap:7px;margin-top:9px;flex-wrap:wrap">
         <button class="btn" style="padding:6px 14px;font-size:.78rem"
-          onclick="ivCopy('${esc(full)}')">کپی لینک</button>
+          onclick="ivCopy(${esc(JSON.stringify(full))})">کپی لینک</button>
         <button class="btn btn-outline" style="padding:6px 14px;font-size:.78rem"
           onclick="ivCopyText()">کپی متن پیامک</button>
         <a class="btn btn-outline" style="padding:6px 14px;font-size:.78rem"
@@ -2670,6 +2679,7 @@ async function loadInvites() {
          <th>نتیجه</th><th>ساخته</th><th></th></tr>
        ${d.invites.map(i => {
          const [lbl, col] = IV_STATE[i.state] || ['—', 'var(--muted)'];
+         const full = safeInviteUrl(i.url);
          return `<tr>
            <td style="font-size:.8rem">${esc(i.brand_fa || '')} — ${esc(i.name_fa)}</td>
            <td dir="ltr" style="font-size:.76rem">${esc(i.mobile)}</td>
@@ -2680,9 +2690,9 @@ async function loadInvites() {
            <td style="font-size:.73rem;color:var(--muted)">
              ${esc(YazdDate.formatDate(i.created_at))}${i.created_by ? '<br>' + esc(i.created_by) : ''}</td>
            <td style="white-space:nowrap">
-             ${i.state === 'OPEN' ? `<button class="btn btn-outline"
+             ${i.state === 'OPEN' && full ? `<button class="btn btn-outline"
                style="padding:4px 10px;font-size:.73rem"
-               onclick="ivCopy('${location.origin}${i.url}')">کپی</button>` : ''}
+               onclick="ivCopy(${esc(JSON.stringify(full))})">کپی</button>` : ''}
              ${i.state !== 'USED' ? `<button class="del"
                onclick="delInvite(${i.id})">حذف</button>` : ''}
            </td></tr>`;
@@ -2764,7 +2774,7 @@ function renderOrders(o) {
           ${x.tracking_code ? `<div style="font-size:.7rem;color:var(--muted)" dir="ltr">${esc(x.tracking_code)}</div>` : ''}
         </td>
         <td>${money(x.total_paid)}</td>
-        <td><span class="badge ${STATUS_CLS[x.status] || 'b-pending'}">${STATUS_FA[x.status] || x.status}</span></td>
+        <td><span class="badge ${STATUS_CLS[x.status] || 'b-pending'}">${esc(STATUS_FA[x.status] || x.status)}</span></td>
         <td>${nexts.map(n =>
             `<button onclick="changeStatus(${esc(JSON.stringify(String(x.order_id ?? '')))},${esc(JSON.stringify(String(n)))})"
               style="background:var(--sand);border:1px solid var(--border);border-radius:7px;
@@ -3739,10 +3749,10 @@ function renderRoles() {
             ${toFa(rl.permissions.length)} اجازه · ${toFa(rl.staff_count)} کارمند</div>
         </div>
         ${canEdit && !rl.locked ? `<div style="display:flex;gap:6px">
-          <button onclick="openRoleForm('${esc(rl.key)}')" style="background:var(--sand);
+          <button onclick="openRoleForm(${esc(JSON.stringify(String(rl.key ?? '')))})" style="background:var(--sand);
             border:1px solid var(--border);border-radius:7px;padding:5px 11px;
             cursor:pointer;font-size:.74rem;font-family:var(--font)">ویرایش اجازه‌ها</button>
-          ${!rl.builtin ? `<button class="del" onclick="deleteRole('${esc(rl.key)}')">حذف</button>` : ''}
+          ${!rl.builtin ? `<button class="del" onclick="deleteRole(${esc(JSON.stringify(String(rl.key ?? '')))})">حذف</button>` : ''}
         </div>` : ''}
       </div>
     </div>`).join('');
@@ -3778,7 +3788,7 @@ async function openRoleForm(key) {
       <div style="border:1px solid var(--border);border-radius:10px;padding:12px;margin-bottom:9px">
         <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
           <strong style="font-size:.84rem">${esc(gr.label)}</strong>
-          <button onclick="toggleGroup('${esc(gr.key)}')" style="background:none;border:none;
+          <button onclick="toggleGroup(${esc(JSON.stringify(String(gr.key ?? '')))})" style="background:none;border:none;
             color:var(--gold);cursor:pointer;font-size:.74rem;font-family:var(--font)">
             انتخاب همه</button>
         </div>
@@ -3800,7 +3810,7 @@ async function openRoleForm(key) {
 
     <div id="rfErr" style="color:#C0392B;font-size:.8rem;margin:8px 0"></div>
     <div style="display:flex;gap:8px;flex-wrap:wrap">
-      <button class="btn" onclick="saveRole(${rl ? `'${esc(rl.key)}'` : 'null'})">
+      <button class="btn" onclick="saveRole(${rl ? esc(JSON.stringify(String(rl.key ?? ''))) : 'null'})">
         ${rl ? 'ذخیره اجازه‌ها' : 'ساخت نقش'}</button>
       <button class="btn btn-outline"
         onclick="document.getElementById('roleForm').classList.add('hidden')">انصراف</button>
@@ -3809,7 +3819,7 @@ async function openRoleForm(key) {
 }
 
 function toggleGroup(gkey) {
-  const boxes = [...document.querySelectorAll(`label[data-group="${gkey}"] .perm-box`)];
+  const boxes = [...document.querySelectorAll('label[data-group] .perm-box')].filter(b=>b.closest('label').dataset.group===gkey);
   const allOn = boxes.every(b => b.checked);
   boxes.forEach(b => { b.checked = !allOn; });
 }
@@ -3828,7 +3838,7 @@ async function saveRole(key) {
   };
   if (!key) payload.key = document.getElementById('rfKey').value.trim().toLowerCase();
 
-  const r = await fetch(key ? `/api/admin/roles/${key}` : '/api/admin/roles', {
+  const r = await fetch(key ? `/api/admin/roles/${encodeURIComponent(key)}` : '/api/admin/roles', {
     method: key ? 'PUT' : 'POST', headers: H(), body: JSON.stringify(payload)
   });
   const d = await r.json();
@@ -3842,7 +3852,7 @@ async function saveRole(key) {
 async function deleteRole(key) {
   const rl = ROLES.find(x => x.key === key);
   if (!confirm(`نقش «${rl.name}» حذف شود؟`)) return;
-  const r = await fetch(`/api/admin/roles/${key}`, { method: 'DELETE', headers: H() });
+  const r = await fetch(`/api/admin/roles/${encodeURIComponent(key)}`, { method: 'DELETE', headers: H() });
   const d = await r.json();
   toast(r.ok ? d.message : d.error);
   if (r.ok) loadStaffTab();

@@ -4,8 +4,8 @@
  *
  * چه چیزی سنجیده می‌شود:
  *   ۱) رویدادها ثبت می‌شوند و خزنده‌ها شمرده نمی‌شوند
- *   ۲) حریم خصوصی: IP و موبایل هرگز ذخیره نمی‌شوند
- *   ۳) شناسه بازدیدکننده قابل بازگشت به IP نیست
+ *   ۲) حریم خصوصی: در نمونه رویدادهای بازدید IP و موبایل خام نیست
+ *   ۳) شناسه بازدیدکننده هش روزانه است؛ ناشناس‌سازی کامل تضمین نیست
  *   ۴) قیف خرید درست محاسبه می‌شود
  *   ۵) ویترین از داده واقعی ساخته می‌شود و درست رتبه‌بندی می‌کند
  *   ۶) وقتی فروشی نیست، «پرفروش» ادعا نمی‌شود (fallback صادقانه)
@@ -36,7 +36,7 @@ const MARK = 'ANTEST';   // نشانه رویدادهای این آزمون
 
 function cleanup() {
   const db = new Database(DB);
-  db.prepare("DELETE FROM events WHERE meta LIKE ?").run(`%${MARK}%`);
+  db.prepare("DELETE FROM events WHERE meta LIKE ? OR target=?").run(`%${MARK}%`,'SKU-TEST');
   cleanupStaff(db, ['t_noan']);
   db.prepare("DELETE FROM roles WHERE key='t_noanalytics'").run();
   db.prepare('DELETE FROM rate_limits').run();
@@ -144,9 +144,11 @@ const api = (p, opt = {}, token = null) =>
   add('ستون IP وجود ندارد', !cols.some(c => /ip|addr/i.test(c)), cols.join(', '));
   add('ستون موبایل وجود ندارد', !cols.some(c => /mobile|phone|user_id/i.test(c)));
 
-  const blob = JSON.stringify(rows);
+  // A hex digest can coincidentally contain an 11-digit sequence; inspect
+  // non-hash fields for raw PII and validate the hash independently below.
+  const blob = JSON.stringify(rows.map(({visitor,...fields})=>fields));
   add('نشانی IP در داده نیست', !/127\.0\.0\.1|::1|\d+\.\d+\.\d+\.\d+/.test(blob));
-  add('شماره موبایل در داده نیست', !/09\d{9}/.test(blob));
+  add('شماره موبایل در داده نیست', !/09\d{9}/.test(blob) && rows.every(r=>!/^09\d{9}$/.test(String(r.visitor||''))));
 
   const visitors = [...new Set(rows.map(x => x.visitor))];
   add('شناسه بازدیدکننده هش است', visitors.every(v => /^[a-f0-9]{16}$/.test(v)),

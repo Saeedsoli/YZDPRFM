@@ -704,14 +704,15 @@ Content-Disposition: attachment; filename="yazd-report-30d-2026-08-08.csv"
 
 ### `GET /api/health`
 
+پایش عمومی با `Cache-Control: no-store` فقط وضعیت و تعداد عمومی محصولات را بازمی‌گرداند:
+
 ```json
-{
-  "status": "ok", "products": 2111, "variants": 14777,
-  "payment_gateway": "SANDBOX", "payment_live": false,
-  "sms_provider": "console", "sessions": 0,
-  "pending_orders": 0, "errors_24h": 0, "uptime": 3600
-}
+{ "status": "ok", "products": 2238 }
 ```
+
+### `GET /api/admin/health`
+
+جزئیات عملیاتی شامل وضعیت درگاه و پیامک، شمار نشست‌ها و سفارش‌های پرداخت‌نشده و مسیر دیتابیس فقط با مجوز `system.logs` و `Cache-Control: no-store` ارائه می‌شود؛ بدون نشست `401` و بدون مجوز `403` است. این داده‌ها را در پیوند عمومی یا اسکرین‌شات منتشر نکنید.
 
 ### `GET /sitemap.xml` · `GET /robots.txt`
 
@@ -802,7 +803,7 @@ Content-Disposition: attachment; filename="yazd-report-30d-2026-08-08.csv"
 # تحلیل و ویترین
 
 ### `POST /api/track`
-ثبت رویداد بازدید از سمت مرورگر. بی‌نام؛ شناسه نشست تصادفی است.
+ثبت رویداد سمت مرورگر با محدودیت نرخ. متادیتا به شمارنده‌های عددی مشخص محدود می‌شود و الگوهای رایج شماره تماس، ایمیل و IP در هدف ثبت نمی‌شوند؛ این فیلتر ناشناس‌سازی کامل جستجوی آزاد را تضمین نمی‌کند. شناسه بازدید هش روزانه IP و عامل کاربر با نمک درون حافظه است، نه شناسه تصادفی نشست. رویداد `purchase` از این مسیر پذیرفته نمی‌شود و فقط پس از پرداخت تأییدشده در سرور ثبت می‌شود.
 
 ### `GET /api/stats`
 

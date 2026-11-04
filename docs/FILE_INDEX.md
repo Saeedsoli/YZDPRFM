@@ -1050,3 +1050,7 @@ node_modules/   با npm install برمی‌گردد
 - `scripts/test_persian_calendar_failure_browser.py` — آزمون مرورگر برای قطع فایل تقویم: جلوگیری از ثبت تاریخ حدسی و حفظ دسترسی بخش‌های دیگر.
 - `public/assets/jalaali-core.js` — نسخه ثابت `jalaali-js` ۱٫۲٫۸ با مجوز MIT درج‌شده در فایل؛ تبدیل یکسان مرورگر و سرور.
 - `scripts/test_calendar_assets.js` — آزمون ترتیب بارگذاری، حضور هسته در پوسته آفلاین و نمونه تبدیل.
+- `scripts/test_admin_health_security.py` — آزمون محدودسازی اطلاعات سلامت عمومی و مجوزهای مشاهده وضعیت داخلی.
+- `scripts/test_admin_review_xss_browser.py` — آزمون مرورگر ایمنی پاسخ نظر، نشانی دعوت‌نامه و عملیات نقش‌ها در پنل.
+- `scripts/test_analytics_privacy.js` و `scripts/test_analytics_privacy_http.py` — آزمون کمینه‌سازی متادیتا، رد الگوهای تماس و جلوگیری از جعل رویداد خرید.
+- `scripts/test_privacy_policy.js` — کنترل هم‌خوانی متن حریم خصوصی با ذخیره هش رمز، سرویس‌ها و آمار داخلی.

@@ -9,16 +9,17 @@
  *      «محبوب‌ترین» از رویدادهای واقعی ساخته می‌شوند
  *   ۴) هیچ اسکریپت بیرونی روی صفحه بار نمی‌شود (سرعت)
  *
- * حریم خصوصی — چه چیزی ذخیره نمی‌شود:
- *   IP، شماره موبایل، نام، شناسه پایدار کاربر.
- *   `visitor` هش روزانه‌ای است از IP + عامل کاربر + نمک روز.
- *   فردا همان شخص هش دیگری می‌گیرد، پس ردیابی در طول زمان ممکن
- *   نیست. فقط برای شمردن «چند نفر جدا در امروز» به کار می‌رود.
+ * حریم خصوصی: IP خام در شناسه بازدید ذخیره نمی‌شود؛ متادیتا به
+ * شمارنده‌های مشخص محدود و الگوهای رایج تماس در هدف رد می‌شوند.
+ * جستجوی آزاد ممکن است اطلاعات شخصی دیگری داشته باشد؛ این فیلتر
+ * ناشناس‌سازی کامل را تضمین نمی‌کند. `visitor` هش روزانه‌ای از
+ * IP + عامل کاربر + نمک درون حافظه است و شناسه دائمی نیست.
  */
 
 'use strict';
 
 const crypto = require('crypto');
+const net = require('net');
 
 /** رویدادهایی که می‌پذیریم — هر چیز دیگری دور ریخته می‌شود */
 const KINDS = new Set([
@@ -30,6 +31,29 @@ const KINDS = new Set([
   'purchase',    // خرید موفق
   'quiz'         // تکمیل کوییز
 ]);
+
+// Public analytics never need arbitrary metadata. Retain only small numeric
+// counters and boolean flags; do not persist order IDs, phones or free-form
+// metadata. Search terms are dropped when common contact patterns are seen.
+function containsContact(value) {
+  const raw=String(value || '').replace(/[۰-۹]/g,c=>String('۰۱۲۳۴۵۶۷۸۹'.indexOf(c)))
+    .replace(/[٠-٩]/g,c=>String('٠١٢٣٤٥٦٧٨٩'.indexOf(c)));
+  if (/[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}/i.test(raw) || /\b(?:\d{1,3}\.){3}\d{1,3}\b/.test(raw)) return true;
+  if(raw.split(/[\s,;\[\]()]+/).some(x=>net.isIP(x)!==0))return true;
+  const compact=raw.replace(/[\s\-_.()+\u200c\u200d\u200e\u200f]/g,'');
+  return /(?:^|\D)(?:0?9\d{9}|(?:0098|98)9\d{9})(?!\d)/.test(compact);
+}
+function safeMeta(kind,meta) {
+  if(!meta || typeof meta!=='object' || Array.isArray(meta))return null;
+  const allowed={search:['results','relaxed'],add_cart:['qty'],checkout:['items','units'],purchase:['qty'],quiz:[],view:[],wishlist:[]}[kind] || [];
+  const result={};
+  for(const key of allowed){
+    const v=meta[key];
+    if(key==='relaxed' && typeof v==='boolean')result[key]=v;
+    else if(key!=='relaxed' && Number.isSafeInteger(v) && v>=0 && v<=1000000)result[key]=v;
+  }
+  return Object.keys(result).length ? JSON.stringify(result) : null;
+}
 
 /** وضعیت‌هایی که «فروش محقق‌شده» شمرده می‌شوند */
 const PAID = "('PAID','PROCESSING','SHIPPED','DELIVERED')";
@@ -83,12 +107,9 @@ function build(db, appLog, resolveClientIP = req => req?.socket?.remoteAddress |
       // «چیزی که گوگل بیشتر خزیده»
       if (/bot|crawler|spider|slurp|bingpreview|headless/i.test(ua)) return false;
 
-      insert.run(
-        kind,
-        target ? String(target).slice(0, 120) : null,
-        meta ? JSON.stringify(meta).slice(0, 400) : null,
-        visitorHash(ip, ua)
-      );
+      const targetText=target ? String(target).slice(0,120) : null;
+      if(targetText && containsContact(targetText))return false;
+      insert.run(kind, targetText, safeMeta(kind,meta), visitorHash(ip, ua));
       return true;
     } catch {
       return false;   // خطای تحلیل هرگز به کاربر نمی‌رسد
@@ -566,4 +587,4 @@ function build(db, appLog, resolveClientIP = req => req?.socket?.remoteAddress |
   };
 }
 
-module.exports = { build, KINDS };
+module.exports = { build, KINDS, containsContact, safeMeta };

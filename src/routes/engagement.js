@@ -110,6 +110,8 @@ async function handle(ctx) {
     if (!trl.ok) return sendJSON(200, { ok: false, throttled: true });
 
     const b = await parseBody(req);
+    // Purchases are recorded exclusively from a verified server-side payment.
+    if (b.kind === 'purchase') return sendJSON(200,{ok:false});
     const ok = analytics.track(
       String(b.kind || ''),
       b.target,

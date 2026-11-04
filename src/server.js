@@ -343,7 +343,7 @@ function trackPurchase(order, req) {
 
     for (const it of items) {
       analytics.track('purchase', it.pid,
-        { order: order.order_id, qty: it.q }, req);
+        { qty: it.q }, req);
     }
   } catch { /* تحلیل هرگز نباید پرداخت را بشکند */ }
 }
@@ -2200,7 +2200,14 @@ const server = http.createServer(async (req, res) => {
       return res.end(fs.readFileSync(swPath));
     }
 
+    // Public liveness exposes only the public catalog count needed by quiz.
+    // Operational paths, sessions, provider state and order counts are private.
     if (method === 'GET' && pathname === '/api/health') {
+      res.setHeader('Cache-Control','no-store');
+      return sendJSON(200,{status:'ok',products:db.prepare('SELECT COUNT(*) c FROM products').get().c});
+    }
+    if (method === 'GET' && pathname === '/api/admin/health') {
+      if(!can('system.logs'))return;
       return sendJSON(200, {
         status: 'ok',
         db: DB_PATH,
