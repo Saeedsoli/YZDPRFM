@@ -1019,3 +1019,5 @@ node_modules/   با npm install برمی‌گردد
 - `scripts/test_script_element_csp.js` — آزمون هش قالب، نرمال‌سازی و رد سیاست نامعتبر.
 - `scripts/test_script_element_csp_browser.py` — آزمون مرورگر واقعی CSP و سلامت صفحه‌های کلیدی.
 - `scripts/test_checkout_async_safety_browser.py` — آزمون مرورگر CSP تسویه، پاسخ‌های خارج از ترتیب و جلوگیری از ثبت هم‌زمان سفارش.
+- `src/order-idempotency.js` — پایه آزمایشی کلید تکرارناپذیری سفارش؛ هنوز به API یا صفحه تسویه متصل نیست.
+- `scripts/test_order_idempotency.js` — آزمون ایزوله حفظ شناسه، تراکنش و رقابت برای کلید یکسان.
