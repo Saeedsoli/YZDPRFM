@@ -1,7 +1,7 @@
 'use strict';
 
-// Browser checkout attempts use an HttpOnly capability. Browser coordination
-// is still required for simultaneous first visits without any shared cookie.
+// Browser checkout attempts use an HttpOnly capability. The checkout page
+// coordinates first-time same-origin tabs with Web Locks; other clients may not.
 const crypto=require('crypto');
 const orders=require('./order-idempotency');
 const KEY='checkout_attempt_cookie_schema_v1';
@@ -69,6 +69,7 @@ function describe(db,token){
  if(!row)return {kind:'UNUSED'};
  if(['PAID','PROCESSING','SHIPPED','DELIVERED'].includes(row.status))return {kind:'PAID',orderId:row.order_id};
  if(row.state==='READY' && row.status==='PENDING' && row.payment_ref)return {kind:'PENDING',orderId:row.order_id};
+ if(require('./order-reconciliation').validReview(db,{orderId:row.order_id,keyHash:hash,status:row.status,paymentRef:row.payment_ref}))return {kind:'REVIEWED',orderId:row.order_id};
  return {kind:'UNRESOLVED',orderId:row.order_id};
 }
 // Used while holding the SAME write lock as order-idempotency lookup/binding.
@@ -83,12 +84,13 @@ function rotate(db,token,nowMs=Date.now()){
  return db.transaction(()=>{
   const row=db.prepare('SELECT revoked_at_ms FROM checkout_attempt_tokens WHERE token_hash=?').get(hash);
   if(!row||row.revoked_at_ms!==null)return {ok:false,reason:'INACTIVE'};
-  const attempt=db.prepare(`SELECT i.state,o.status FROM order_idempotency i
+  const attempt=db.prepare(`SELECT i.order_id,i.state,o.status,o.payment_ref FROM order_idempotency i
     LEFT JOIN orders o ON o.order_id=i.order_id WHERE i.key_hash=?`).get(hash);
   // Even an apparently cancelled or failed order can have an uncertain
   // external payment. Only a paid/fulfilling order or an unused token can be
   // automatically replaced; all other cases require reconciliation.
-  if(attempt&&!['PAID','PROCESSING','SHIPPED','DELIVERED'].includes(attempt.status))
+  if(attempt&&!['PAID','PROCESSING','SHIPPED','DELIVERED'].includes(attempt.status) &&
+     !require('./order-reconciliation').validReview(db,{orderId:attempt.order_id,keyHash:hash,status:attempt.status,paymentRef:attempt.payment_ref}))
     return {ok:false,reason:'ORDER_UNRESOLVED'};
   if(db.prepare('UPDATE checkout_attempt_tokens SET revoked_at_ms=? WHERE token_hash=? AND revoked_at_ms IS NULL').run(nowMs,hash).changes!==1)
     throw Error('Checkout token changed concurrently');

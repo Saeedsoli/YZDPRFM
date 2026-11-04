@@ -35,6 +35,7 @@
 const csv = require('../csv-export');
 const stockReservations = require('../order-stock-reservations');
 const returnStore = require('../return-store');
+const reconciliation = require('../order-reconciliation');
 
 /**
  * @param {object}   ctx
@@ -108,12 +109,14 @@ async function handle(ctx) {
 
     const returnsUiEnabled = returnStore.ready(db);
     const evidence = returnsUiEnabled ? db.prepare('SELECT delivered_at_ms FROM return_delivery_evidence WHERE order_id=?') : null;
+    const reconciliationReady=reconciliation.ready(db);
     return sendJSON(200, {
       total, page, totalPages: Math.ceil(total / limit),
-      status_counts: counts, returns_ui_enabled: returnsUiEnabled,
+      status_counts: counts, returns_ui_enabled: returnsUiEnabled, reconciliation_ready:reconciliationReady,
       orders: rows.map(o => ({
         ...o,
         ...(returnsUiEnabled ? {return_delivered_at_ms:evidence.get(o.order_id)?.delivered_at_ms ?? null} : {}),
+        ...(reconciliationReady ? {payment_review_needed:['FAILED','CANCELLED','EXPIRED'].includes(o.status) && reconciliation.paymentNeedsReview(db,o.order_id), payment_recovery_pending:['FAILED','CANCELLED','EXPIRED'].includes(o.status) && reconciliation.paymentStillCreating(db,o.order_id)} : {}),
         items: db.prepare('SELECT * FROM order_items WHERE order_id=?').all(o.order_id)
       }))
     });

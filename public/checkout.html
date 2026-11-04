@@ -386,6 +386,8 @@ function showAttemptNotice(kind, orderId) {
   const track=safeId ? '/track?order='+encodeURIComponent(safeId) : '/track';
   if(kind==='PAID') {
     box.innerHTML=`<strong>سفارش قبلی پرداخت شده است</strong><span>اگر می‌خواهید خرید تازه‌ای انجام دهید، پس از بررسی سفارش قبلی می‌توانید سفارش جدید را شروع کنید.</span><div class="attempt-actions"><button type="button" data-attempt-new>شروع سفارش جدید</button><a href="/account">مشاهده سفارش‌ها</a></div>`;
+  } else if(kind==='REVIEWED') {
+    box.innerHTML=`<strong>سفارش قبلی بررسی شد</strong><span>پس از بررسی پشتیبانی، اگر می‌خواهید خرید تازه‌ای انجام دهید می‌توانید سفارش جدید را شروع کنید.</span><div class="attempt-actions"><button type="button" data-attempt-new>شروع سفارش جدید</button><a href="/account">مشاهده سفارش‌ها</a></div>`;
   } else if(kind==='BROWSER') {
     box.innerHTML=`<strong>امکان ثبت امن سفارش فراهم نیست</strong><span>مرورگر را به‌روز کنید یا برای ثبت سفارش با پشتیبانی تماس بگیرید.</span><div class="attempt-actions"><a href="/contact">تماس با پشتیبانی</a></div>`;
   } else if(kind==='SERVICE') {
@@ -401,7 +403,7 @@ async function attemptStatus() {
   const r=await fetch('/api/orders/attempt/status',{cache:'no-store'});
   if(!r.ok) { const e=Error('Attempt status unavailable');e.code=r.status===503?'SERVICE':'COOKIE';throw e; }
   const data=await r.json();
-  if(!data.ready || !['UNUSED','PENDING','UNRESOLVED','PAID'].includes(data.state)) throw Error('Invalid attempt status');
+  if(!data.ready || !['UNUSED','PENDING','UNRESOLVED','PAID','REVIEWED'].includes(data.state)) throw Error('Invalid attempt status');
   return data;
 }
 async function prepareAttempt() {
@@ -442,7 +444,7 @@ async function startNewOrderAttempt() {
   try {
     await withAttemptLock(async()=>{
       const status=await attemptStatus();
-      if(status.state!=='PAID'){showAttemptNotice('UNRESOLVED',status.order_id);return;}
+      if(!['PAID','REVIEWED'].includes(status.state)){showAttemptNotice('UNRESOLVED',status.order_id);return;}
       const r=await fetch('/api/orders/attempt/rotate',{method:'POST',headers:{'Content-Type':'application/json'},body:'{}'});
       if(!r.ok)throw Error('Could not rotate attempt');
       const changed=await attemptStatus();
@@ -483,7 +485,7 @@ async function submitOrder() {
       let status;
       try { status=await prepareAttempt(); }
       catch (e) { showAttemptNotice(e.code==='SERVICE'?'SERVICE':'BROWSER');return; }
-      if(status.state==='PAID'){showAttemptNotice('PAID',status.order_id);return;}
+      if(['PAID','REVIEWED'].includes(status.state)){showAttemptNotice(status.state,status.order_id);return;}
       if(status.state==='UNRESOLVED'){showAttemptNotice('UNRESOLVED',status.order_id);return;}
       let response,data;
       try {
@@ -491,13 +493,13 @@ async function submitOrder() {
         data=await response.json();
       } catch {
         const latest=await attemptStatus().catch(()=>null);
-        showAttemptNotice(latest?.state==='PAID'?'PAID':'UNRESOLVED',latest?.order_id);return;
+        showAttemptNotice(['PAID','REVIEWED'].includes(latest?.state)?latest.state:'UNRESOLVED',latest?.order_id);return;
       }
       if(!response.ok) {
         if(response.status===409 || response.status>=500 || response.status===408) {
           const latest=await attemptStatus().catch(()=>null);
           if(latest?.state==='UNUSED' && response.status===409 && !data.order_id) {showErr(data.error||'ثبت سفارش ناموفق بود.');return;}
-          showAttemptNotice(latest?.state==='PAID'?'PAID':'UNRESOLVED',latest?.order_id || data.order_id);return;
+          showAttemptNotice(['PAID','REVIEWED'].includes(latest?.state)?latest.state:'UNRESOLVED',latest?.order_id || data.order_id);return;
         }
         showErr(data.error || 'ثبت سفارش ناموفق بود.');return;
       }

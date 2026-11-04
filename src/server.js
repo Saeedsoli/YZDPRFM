@@ -66,6 +66,7 @@ const routeAccountReturns = require('./routes/account-returns');
 const routeRbac     = require('./routes/rbac');
 const routeAdminCatalog = require('./routes/admin-catalog');
 const routeAdminOrders  = require('./routes/admin-orders');
+const routeAdminReconciliation = require('./routes/admin-reconciliation');
 const routeAdminMarketing = require('./routes/admin-marketing');
 const routeAdminSystem  = require('./routes/admin-system');
 const routeAdminReviews = require('./routes/admin-reviews');
@@ -1624,6 +1625,10 @@ const server = http.createServer(async (req, res) => {
 
        `POST /api/orders` عمداً اینجا نیست: با درگاه پرداخت گره
        خورده و آزمون واقعی با پول ندارد. */
+    if (await routeAdminReconciliation.handle({
+      method, pathname, req, sendJSON, can, parseBody, db, who, cleanText, logAudit
+    })) return;
+
     if (await routeAdminOrders.handle({
       method, pathname, parsed, req, res,
       sendJSON, can, parseBody, logAudit, who, db,

@@ -330,6 +330,11 @@ run_test test_return_eligibility.js "return eligibility policy"
 run_test test_return_store.js "staged return database safety"
 run_test test_order_idempotency.js "staged order idempotency safety"
 run_test test_checkout_attempt.js "staged checkout attempt rotation safety"
+run_test test_order_reconciliation.js "manual payment review and delivery correction"
+if python3 scripts/test_order_attempt_recovery.py >/tmp/test_order_attempt_recovery.log 2>&1; then P=$((P+1)); else F=$((F+1)); echo "  X offline attempt recovery"; fi
+if python3 scripts/test_order_review_inflight.py >/tmp/test_order_review_inflight.log 2>&1; then P=$((P+1)); else F=$((F+1)); echo "  X in-flight payment review guard"; fi
+if python3 scripts/test_order_reconciliation_http.py >/tmp/test_order_reconciliation_http.log 2>&1; then P=$((P+1)); else F=$((F+1)); echo "  X manual reconciliation HTTP"; fi
+if python3 scripts/test_order_reconciliation_migration.py >/tmp/test_order_reconciliation_migration.log 2>&1; then P=$((P+1)); else F=$((F+1)); echo "  X reconciliation backup-first migration"; fi
 if python3 scripts/test_checkout_attempt_http.py >/tmp/test_checkout_attempt_http.log 2>&1; then P=$((P+1)); else F=$((F+1)); echo "  X checkout attempt HTTP cookie and rotation"; fi
 if python3 scripts/test_order_idempotency_http.py >/tmp/test_order_idempotency_http.log 2>&1; then P=$((P+1)); else F=$((F+1)); echo "  X keyed checkout concurrency and recovery"; fi
 if python3 scripts/test_order_idempotency_migration.py >/tmp/test_order_idempotency_migration.log 2>&1; then P=$((P+1)); else F=$((F+1)); echo "  X order idempotency backup-first migration"; fi

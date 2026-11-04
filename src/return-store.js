@@ -1,7 +1,7 @@
 'use strict';
 
-// Staging-only store for an eventual account-returns flow. It is not wired to
-// startup or HTTP; callers must verify roles, customer sessions and rate limits.
+// Return evidence storage. HTTP callers must verify staff roles, customer
+// sessions and rate limits; existing databases use an explicit migration.
 const crypto = require('crypto');
 const { eligibility } = require('./return-eligibility');
 const KEY = 'account_returns_schema_v1';

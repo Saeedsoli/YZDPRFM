@@ -1032,3 +1032,13 @@ node_modules/   با npm install برمی‌گردد
 - `scripts/test_barcode_html_safety.js` — آزمون خنثی‌سازی متن بارکد در ویژگی SVG و حفظ خروجی عادی.
 - `scripts/test_invoice_label_security_browser.py` — آزمون مرورگر فاکتور و برچسب با داده مخرب، CSP و دکمه چاپ.
 - `scripts/test_track_security_browser.py` — آزمون مرورگر پیگیری مهمان، کپی کد، CSP و مهار درخواست هم‌زمان.
+- `src/order-reconciliation.js` — ثبت مستند بررسی دستی پرداخت و اصلاح اتمیک زمان تحویل؛ بدون تغییر خودکار پرداخت یا سوابق مرجوعی.
+- `scripts/test_order_reconciliation.js` — آزمون شرایط، رقابت و rollback رسیدگی پرداخت و اصلاح زمان تحویل.
+- `src/routes/admin-reconciliation.js` — مسیرهای مجاز رسیدگی دستی پرداخت و اصلاح زمان تحویل با ثبت مستندات.
+- `scripts/test_order_reconciliation_http.py` — آزمون API مجوز، رسیدگی ثبت‌شده و اصلاح زمان تحویل روی دیتابیس موقت.
+- `scripts/test_order_reconciliation_browser.py` — آزمون مرورگر پنل و مسیر خرید تازه پس از بررسی دستی.
+- `src/order-reconciliation-cli.js` — مهاجرت آفلاین با پشتیبان و مقایسه جدول‌ها برای رسیدگی پرداخت و اصلاح تحویل.
+- `scripts/test_order_reconciliation_migration.py` — آزمون مهاجرت و بازیابی پشتیبان روی دیتابیس‌های موقت.
+- `src/order-attempt-recovery-cli.js` — انتقال صرفاً آفلاین اقدام متوقف‌شده به وضعیت نیازمند بررسی، با پشتیبان و ثبت دلیل؛ بدون ایجاد پرداخت.
+- `scripts/test_order_attempt_recovery.py` — آزمون پشتیبان، رد ورودی و بازیابی آفلاین محافظت‌شده روی دیتابیس موقت.
+- `scripts/test_order_review_inflight.py` — آزمون جلوگیری از آزادسازی خرید تازه هنگام تماس ناتمام با درگاه.

@@ -2773,14 +2773,27 @@ function renderOrders(o) {
             border-radius:7px;padding:5px 10px;margin:2px;font-size:.74rem;
             text-decoration:none;color:inherit;white-space:nowrap">برچسب</a>
           ${o.returns_ui_enabled && may('orders.status') && x.status==='DELIVERED' && !x.return_delivered_at_ms ? `<button type="button" data-delivery-toggle="${esc(x.order_id)}" style="background:var(--sand);border:1px solid var(--gold);border-radius:7px;padding:5px 10px;margin:2px;cursor:pointer;font:inherit;font-size:.74rem">ثبت زمان واقعی تحویل</button>` : ''}
-          ${o.returns_ui_enabled && x.return_delivered_at_ms ? `<div style="font-size:.72rem;color:var(--muted)">تحویل: ${esc(deliveryTimeLabel(x.return_delivered_at_ms))}</div>` : ''}</td>
-      </tr>${o.returns_ui_enabled && may('orders.status') && x.status==='DELIVERED' && !x.return_delivered_at_ms ? `<tr class="delivery-evidence-row" hidden><td colspan="6"><form data-delivery-form="${esc(x.order_id)}" style="padding:12px;background:var(--sand);border-radius:9px;white-space:normal">
+          ${o.returns_ui_enabled && x.return_delivered_at_ms ? `<div style="font-size:.72rem;color:var(--muted)">تحویل: ${esc(deliveryTimeLabel(x.return_delivered_at_ms))}</div>` : ''}
+          ${o.reconciliation_ready && may('orders.status') && x.status==='DELIVERED' && x.return_delivered_at_ms ? `<button type="button" data-correction-toggle="${esc(x.order_id)}" style="background:var(--sand);border:1px solid var(--gold);border-radius:7px;padding:5px 10px;margin:2px;cursor:pointer;font:inherit;font-size:.74rem">اصلاح زمان تحویل</button>` : ''}
+          ${o.reconciliation_ready && may('orders.cancel') && x.payment_review_needed ? `<button type="button" data-review-toggle="${esc(x.order_id)}" style="background:var(--sand);border:1px solid var(--gold);border-radius:7px;padding:5px 10px;margin:2px;cursor:pointer;font:inherit;font-size:.74rem">بررسی پرداخت</button>` : ''}${o.reconciliation_ready && may('orders.cancel') && x.payment_recovery_pending ? `<div style="font-size:.72rem;color:#9a6700">درخواست درگاه هنوز در حال پردازش یا نیازمند بررسی آفلاین است.</div>` : ''}</td>
+      </tr>${o.returns_ui_enabled && may('orders.status') && x.status==='DELIVERED' && !x.return_delivered_at_ms ? `<tr class="delivery-evidence-row order-action-row" hidden><td colspan="6"><form data-delivery-form="${esc(x.order_id)}" style="padding:12px;background:var(--sand);border-radius:9px;white-space:normal">
           <strong>ثبت زمان واقعی تحویل</strong><p style="font-size:.76rem;color:var(--muted)">پس از اطمینان از تحویل، تاریخ و ساعت واقعی را از اطلاعات ارسال ثبت کنید. زمان به وقت تهران است.</p>
           <label style="display:inline-block;margin:4px">تاریخ تحویل * <input type="date" name="date" required min="2023-01-01" style="font:inherit;direction:ltr"></label>
           <label style="display:inline-block;margin:4px">ساعت تحویل * <input type="time" name="time" required style="font:inherit;direction:ltr"></label>
           <p style="font-size:.76rem">مهلت ۷۲ساعته از این زمان محاسبه می‌شود. اگر زمان واقعی مشخص نیست، ابتدا بررسی کنید و حدس نزنید.</p>
           <button type="submit" style="background:var(--obsidian);color:#fff;border:0;border-radius:7px;padding:7px 12px;cursor:pointer;font:inherit">ثبت زمان تحویل</button>
           <div class="delivery-error" role="alert" style="color:#b4232a;font-size:.76rem"></div>
+        </form></td></tr>` : ''}${o.reconciliation_ready && may('orders.status') && x.status==='DELIVERED' && x.return_delivered_at_ms ? `<tr class="order-action-row" hidden><td colspan="6"><form data-correction-form="${esc(x.order_id)}" data-expected-ms="${Number(x.return_delivered_at_ms)}" style="padding:12px;background:var(--sand);border-radius:9px;white-space:normal">
+          <strong>اصلاح زمان واقعی تحویل</strong><p style="font-size:.76rem;color:var(--muted)">زمان واقعی را بر اساس مدرک اصلاح کنید. درخواست‌های ثبت‌شده تغییر نمی‌کنند؛ مهلت‌های جدید بر اساس زمان اصلاح‌شده محاسبه می‌شوند.</p>
+          <label style="display:inline-block;margin:4px">تاریخ واقعی * <input type="date" name="date" required min="2023-01-01" style="font:inherit;direction:ltr"></label>
+          <label style="display:inline-block;margin:4px">ساعت به وقت تهران * <input type="time" name="time" required style="font:inherit;direction:ltr"></label>
+          <label style="display:block;margin:8px 0">دلیل و مدرک اصلاح *<textarea name="evidence" required minlength="10" maxlength="500" rows="2" style="width:100%;font:inherit"></textarea></label>
+          <button type="submit" style="background:var(--obsidian);color:#fff;border:0;border-radius:7px;padding:7px 12px;cursor:pointer;font:inherit">ثبت اصلاح</button><div class="action-error" role="alert" style="color:#b4232a;font-size:.76rem"></div>
+        </form></td></tr>` : ''}${o.reconciliation_ready && may('orders.cancel') && x.payment_review_needed ? `<tr class="order-action-row" hidden><td colspan="6"><form data-review-form="${esc(x.order_id)}" style="padding:12px;background:var(--sand);border-radius:9px;white-space:normal">
+          <strong>بررسی پرداخت سفارش ناموفق یا لغوشده</strong><p style="font-size:.76rem;color:var(--muted)">فقط پس از بررسی مستقیم در درگاه و اطمینان از عدم پرداخت و غیرفعال بودن پیوند، خرید تازه را آزاد کنید. این کار پولی را بازنمی‌گرداند و وضعیت پرداخت را تغییر نمی‌دهد.</p>
+          <label style="display:block;margin:8px 0">شرح بررسی و مدرک *<textarea name="evidence" required minlength="20" maxlength="500" rows="2" style="width:100%;font:inherit"></textarea></label>
+          <label style="display:flex;align-items:flex-start;gap:7px;margin:8px 0;font-size:.78rem"><input type="checkbox" name="confirmed" required><span>تأیید می‌کنم تراکنش پرداخت نشده و پیوند قبلی در درگاه بررسی و غیرفعال شده است.</span></label>
+          <button type="submit" style="background:var(--obsidian);color:#fff;border:0;border-radius:7px;padding:7px 12px;cursor:pointer;font:inherit">ثبت بررسی و اجازه خرید تازه</button><div class="action-error" role="alert" style="color:#b4232a;font-size:.76rem"></div>
         </form></td></tr>` : ''}`;
     }).join('')}`
     : '<tr><td style="text-align:center;padding:26px;color:var(--muted)">سفارشی یافت نشد</td></tr>';
@@ -2811,22 +2824,38 @@ function deliveryTimeLabel(ms) {
   return new Intl.DateTimeFormat('fa-IR',{timeZone:'Asia/Tehran',year:'numeric',month:'long',day:'numeric',hour:'2-digit',minute:'2-digit'}).format(new Date(ms))+' به وقت تهران';
 }
 document.getElementById('ordersTable').addEventListener('click',e=>{
-  const button=e.target.closest('[data-delivery-toggle]');if(!button)return;
-  const row=button.closest('tr').nextElementSibling;
-  if(row?.classList.contains('delivery-evidence-row'))row.hidden=!row.hidden;
+  const button=e.target.closest('[data-delivery-toggle],[data-correction-toggle],[data-review-toggle]');if(!button)return;
+  const selector=button.hasAttribute('data-delivery-toggle')?'[data-delivery-form]':button.hasAttribute('data-correction-toggle')?'[data-correction-form]':'[data-review-form]';
+  let row=button.closest('tr').nextElementSibling;
+  while(row?.classList.contains('order-action-row')) {
+    if(row.querySelector(selector)){row.hidden=!row.hidden;return;}
+    row=row.nextElementSibling;
+  }
 });
 document.getElementById('ordersTable').addEventListener('submit',async e=>{
-  const form=e.target.closest('[data-delivery-form]');if(!form)return;
-  e.preventDefault();const error=form.querySelector('.delivery-error');const button=form.querySelector('[type=submit]');
-  const delivered_at_ms=tehranDeliveryMs(form.elements.date.value,form.elements.time.value);
-  if(delivered_at_ms===null){error.textContent='تاریخ و ساعت واقعی تحویل را به‌درستی وارد کنید.';return;}
-  if(delivered_at_ms>Date.now()){error.textContent='زمان تحویل نمی‌تواند در آینده باشد.';return;}
+  const form=e.target.closest('[data-delivery-form],[data-correction-form],[data-review-form]');if(!form)return;
+  e.preventDefault();const error=form.querySelector('.delivery-error,.action-error');const button=form.querySelector('[type=submit]');
+  const isReview=form.hasAttribute('data-review-form'),isCorrection=form.hasAttribute('data-correction-form');
+  let path,body;
+  if(isReview){
+    const evidence_note=form.elements.evidence.value.trim();
+    if(evidence_note.length<20||!form.elements.confirmed.checked){error.textContent='مدرک کافی و هر دو شرط بررسی پرداخت را تأیید کنید.';return;}
+    path='/api/admin/reconciliation/payment-review';body={order_id:form.dataset.reviewForm,evidence_note,no_payment_confirmed:true,link_closed_confirmed:true};
+  }else{
+    const time=tehranDeliveryMs(form.elements.date.value,form.elements.time.value);
+    if(time===null){error.textContent='تاریخ و ساعت واقعی تحویل را به‌درستی وارد کنید.';return;}
+    if(time>Date.now()){error.textContent='زمان تحویل نمی‌تواند در آینده باشد.';return;}
+    if(isCorrection){
+      const evidence_note=form.elements.evidence.value.trim(),expected_old_ms=Number(form.dataset.expectedMs);
+      if(evidence_note.length<10||!Number.isSafeInteger(expected_old_ms)){error.textContent='دلیل و مدرک اصلاح را وارد کنید.';return;}
+      path='/api/admin/reconciliation/delivery-correction';body={order_id:form.dataset.correctionForm,expected_old_ms,new_delivered_at_ms:time,evidence_note};
+    }else{path='/api/admin/account-returns/delivery';body={order_id:form.dataset.deliveryForm,delivered_at_ms:time};}
+  }
   button.disabled=true;error.textContent='';
   try{
-    const response=await fetch('/api/admin/account-returns/delivery',{method:'POST',headers:H(),body:JSON.stringify({order_id:form.dataset.deliveryForm,delivered_at_ms})});
-    const data=await response.json();
-    if(!response.ok){error.textContent=data.error||'ثبت زمان ناموفق بود.';return;}
-    toast('زمان واقعی تحویل ثبت شد.');await loadOrders();
+    const response=await fetch(path,{method:'POST',headers:H(),body:JSON.stringify(body)});const data=await response.json();
+    if(!response.ok){error.textContent=data.error||'ثبت ناموفق بود.';return;}
+    toast(data.message||'اطلاعات ثبت شد.');await loadOrders();
   }catch{error.textContent='نتیجه نامشخص است؛ پیش از تلاش دوباره وضعیت سفارش را بررسی کنید.';}
   finally{button.disabled=false;}
 });
