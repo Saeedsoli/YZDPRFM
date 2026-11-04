@@ -15,6 +15,7 @@ const { isPublicVariant, publicVariantSql } = require('./variant-visibility');
 const { variantAvailability } = require('./availability');
 const stockReservations = require('./order-stock-reservations');
 const returnStore = require('./return-store');
+const orderIdempotency = require('./order-idempotency');
 const browserOriginGuard = require('./browser-origin-guard');
 const { resolvePublicFile } = require('./static-path');
 const scriptElementCsp = require('./script-element-csp');
@@ -1005,6 +1006,31 @@ const server = http.createServer(async (req, res) => {
       }
 
       const body = await parseBody(req);
+      let idem = null;
+      const key = req.headers['idempotency-key'];
+      const respondToAttempt = result => {
+        if (result.kind === 'READY') return sendJSON(200, {message:'سفارش پیش‌تر ثبت شده است.', ...result.response});
+        if (result.kind === 'CONFLICT') return sendJSON(409, {error:'این کلید برای اطلاعات سفارش دیگری استفاده شده است.'});
+        if (result.kind === 'PAID') return sendJSON(409, {error:'این سفارش قبلاً پرداخت شده است.',order_id:result.orderId,status:'PAID'});
+        if (result.kind === 'FAILED') return sendJSON(409, {error:'درخواست قبلی ناموفق بوده است؛ پیش از ثبت مجدد وضعیت را بررسی کنید.',order_id:result.orderId});
+        return sendJSON(409, {error:'نتیجه درخواست قبلی نامشخص یا در حال بررسی است؛ پیش از تلاش دوباره با پشتیبانی بررسی کنید.', ...(result.orderId ? {order_id:result.orderId} : {})});
+      };
+      const rejectOrReplay = (status,data) => {
+        if(idem) {
+          const existing=orderIdempotency.lookup(db,idem);
+          if(existing.kind!=='NEW') return respondToAttempt(existing);
+        }
+        return sendJSON(status,data);
+      };
+      if (key !== undefined) {
+        if (!orderIdempotency.ready(db)) return sendJSON(503,{error:'سامانه جلوگیری از ثبت تکراری هنوز آماده نیست.'});
+        try { idem=orderIdempotency.fingerprint(key,body); }
+        catch { return sendJSON(400,{error:'کلید ثبت سفارش یا اطلاعات درخواست معتبر نیست.'}); }
+        // Replay before validating current stock or coupons; those may have
+        // legitimately changed because the original order already reserved them.
+        const existing=orderIdempotency.lookup(db,idem);
+        if(existing.kind!=='NEW') return respondToAttempt(existing);
+      }
 
       if (!body.customer_name || !/^09\d{9}$/.test(String(body.mobile || ''))) {
         return sendJSON(400, { error: 'نام و شماره موبایل معتبر (۰۹xxxxxxxxx) الزامی است.' });
@@ -1025,7 +1051,7 @@ const server = http.createServer(async (req, res) => {
         return sendJSON(400, { error: 'نام معتبر وارد کنید.' });
       }
       const v = validateCart(body.items);
-      if (!v.ok) return sendJSON(400, { error: v.error });
+      if (!v.ok) return rejectOrReplay(400, { error: v.error });
 
       /* جشنواره دوباره سمت سرور محاسبه می‌شود، نه از سبد مشتری
          خوانده شود. اگر جشنواره بین دیدن سبد و پرداخت تمام شده
@@ -1053,7 +1079,7 @@ const server = http.createServer(async (req, res) => {
       }
       if (!orderId) {
         appLog('ERROR', 'orders', 'ساخت شماره سفارش یکتا پس از ۳ تلاش ناموفق ماند');
-        return sendJSON(503, {
+        return rejectOrReplay(503, {
           error: 'سامانه لحظه‌ای شلوغ است. چند ثانیه بعد دوباره تلاش کنید.'
         });
       }
@@ -1066,7 +1092,7 @@ const server = http.createServer(async (req, res) => {
       if (body.coupon_code) {
         const verifiedMobile = otp.mobileFromToken(getCustomerToken(req));
         const cv = validateCoupon(body.coupon_code, afterCampaign, shippingFee, body.mobile, v.items, verifiedMobile);
-        if (!cv.ok) return sendJSON(400, { error: cv.error });
+        if (!cv.ok) return rejectOrReplay(400, { error: cv.error });
         couponSnapshot = {code:cv.coupon.code, free_shipping:!!cv.free_shipping, discount:cv.discount || 0};
         if (cv.free_shipping) shippingFee = 0;
         else discount = cv.discount;
@@ -1085,6 +1111,10 @@ const server = http.createServer(async (req, res) => {
       const total = Math.max(0, v.subtotal - totalDiscount + shippingFee) + giftWrapFee;
 
       const tx = db.transaction(() => {
+        if (idem) {
+          const existing=orderIdempotency.lookup(db,idem);
+          if(existing.kind!=='NEW') throw Object.assign(Error('Prior order attempt'),{code:'IDEMPOTENCY_REPLAY',result:existing});
+        }
         // Recheck and reserve the coupon under the same write lock as the
         // order, items and stock ledger. A process crash cannot leave a coupon
         // reservation for an order that was never committed.
@@ -1166,6 +1196,7 @@ const server = http.createServer(async (req, res) => {
           stockReservations.reserveItem(db, item.lastInsertRowid);
           if (canSnapshotReturns) returnStore.captureNewItem(db, item.lastInsertRowid, it._volume_ml);
         }
+        if (idem) orderIdempotency.bindNew(db,{...idem,orderId});
         logStatus(orderId, 'PENDING', 'ثبت سفارش');
       });
       try { tx.immediate(); }
@@ -1173,6 +1204,7 @@ const server = http.createServer(async (req, res) => {
         // The reservation is part of this transaction and has rolled back.
         // Never release by orderId here: it may refer to an unrelated order
         // if a (very unlikely) identifier collision occurred.
+        if (e.code === 'IDEMPOTENCY_REPLAY') return respondToAttempt(e.result);
         if (e.code === 'CART_CHANGED') return sendJSON(409, { error:'قیمت یا موجودی سبد تغییر کرده است؛ دوباره بررسی کنید.' });
         if (e.code === 'COUPON_CHANGED') return sendJSON(409, { error:'کد تخفیف یا ظرفیت آن تغییر کرده است؛ دوباره بررسی کنید.' });
         throw e;
@@ -1193,38 +1225,45 @@ const server = http.createServer(async (req, res) => {
             "UPDATE orders SET status='FAILED', updated_at=? " +
             "WHERE order_id=? AND status='PENDING'"
           ).run(new Date().toISOString(), orderId);
-          if (!failed.changes) return;
-
-          const released = stockReservations.release(db, orderId);
-          if (!released.ok) throw Error('Reservation requires manual review');
-          releaseCouponUse(orderId);
-          logStatus(orderId, 'FAILED', 'اتصال به درگاه ممکن نشد — رزرو انبار آزاد شد');
-        })();
-        return sendJSON(502, { error: 'اتصال به درگاه پرداخت ممکن نشد: ' + pr.error });
+          if (failed.changes) {
+            const released = stockReservations.release(db, orderId);
+            if (!released.ok) throw Error('Reservation requires manual review');
+            releaseCouponUse(orderId);
+            logStatus(orderId, 'FAILED', 'اتصال به درگاه ممکن نشد — رزرو انبار آزاد شد');
+          }
+          // A failed or timed-out provider request is not proof that no
+          // external authority was created. Do not automatically retry it.
+          if (idem) orderIdempotency.markUncertain(db,{keyHash:idem.keyHash,orderId});
+        }).immediate();
+        return sendJSON(502, { error: 'اتصال به درگاه پرداخت ممکن نشد: ' + pr.error, ...(idem ? {order_id:orderId} : {}) });
       }
 
       // The provider call was asynchronous: an administrator or maintenance
       // may have changed the order in the meantime. Never return a payment
       // link for an order that is no longer pending, and never overwrite a
       // reference already attached by another operation.
-      const bound=db.prepare("UPDATE orders SET payment_ref=? WHERE order_id=? AND status='PENDING' AND payment_ref IS NULL AND payment_gateway=?")
-        .run(pr.authority,orderId,pay.gatewayName());
-      if (!bound.changes) {
+      const response = {
+        message: 'سفارش ثبت شد. در حال انتقال به درگاه پرداخت…',
+        order_id: orderId, subtotal: v.subtotal, discount, discount_code: appliedCode,
+        shipping_fee: shippingFee, gift_wrap_fee: giftWrapFee, total_payable: total,
+        payment_url: pr.redirect_url
+      };
+      const bound=db.transaction(()=>{
+        const changed=db.prepare("UPDATE orders SET payment_ref=? WHERE order_id=? AND status='PENDING' AND payment_ref IS NULL AND payment_gateway=?")
+          .run(pr.authority,orderId,pay.gatewayName());
+        if (!changed.changes) {
+          if (idem) orderIdempotency.markUncertain(db,{keyHash:idem.keyHash,orderId});
+          return false;
+        }
+        if (idem) orderIdempotency.markReady(db,{keyHash:idem.keyHash,orderId,authority:pr.authority,response});
+        return true;
+      }).immediate();
+      if (!bound) {
         appLog('WARN','payment','وضعیت سفارش هنگام ایجاد پرداخت تغییر کرد؛ پیوند پرداخت ارائه نشد',{order_id:orderId});
         return sendJSON(409,{error:'وضعیت سفارش تغییر کرده است؛ پیوند پرداخت ارائه نشد. وضعیت سفارش را بررسی کنید.',order_id:orderId});
       }
 
-      return sendJSON(201, {
-        message: 'سفارش ثبت شد. در حال انتقال به درگاه پرداخت…',
-        order_id: orderId,
-        subtotal: v.subtotal,
-        discount,
-        discount_code: appliedCode,
-        shipping_fee: shippingFee,
-        gift_wrap_fee: giftWrapFee,
-        total_payable: total,
-        payment_url: pr.redirect_url
-      });
+      return sendJSON(201, response);
     }
 
     // ═══════════ تأیید پرداخت ═══════════
