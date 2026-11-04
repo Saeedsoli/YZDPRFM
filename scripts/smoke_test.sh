@@ -328,6 +328,7 @@ run_test test_csv_export.js "CSV quoting and formula defense"
 run_test test_return_eligibility.js "return eligibility policy"
 run_test test_return_store.js "staged return database safety"
 run_test test_order_idempotency.js "staged order idempotency safety"
+run_test test_checkout_attempt.js "staged checkout attempt rotation safety"
 if python3 scripts/test_order_idempotency_http.py >/tmp/test_order_idempotency_http.log 2>&1; then P=$((P+1)); else F=$((F+1)); echo "  X keyed checkout concurrency and recovery"; fi
 if python3 scripts/test_order_idempotency_migration.py >/tmp/test_order_idempotency_migration.log 2>&1; then P=$((P+1)); else F=$((F+1)); echo "  X order idempotency backup-first migration"; fi
 run_test test_account_returns_gate.js "return API authentication gate"

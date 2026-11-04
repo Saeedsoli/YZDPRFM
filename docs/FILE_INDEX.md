@@ -1024,3 +1024,5 @@ node_modules/   با npm install برمی‌گردد
 - `src/order-idempotency-cli.js` — مهاجرت افزایشی آفلاین و پشتیبان‌اول جدول کلید سفارش، بدون حدس درباره سفارش‌های قدیمی.
 - `scripts/test_order_idempotency_http.py` — آزمون HTTP اتمی کلید ثبت سفارش، هم‌زمانی، قطع پردازش و بازپخش روی پایگاه موقت.
 - `scripts/test_order_idempotency_migration.py` — آزمون پشتیبان و مهاجرت افزایشی جدول جلوگیری از تکرار سفارش.
+- `src/checkout-attempt.js` — پایه آزمایشی کوکی HttpOnly و تعویض اتمیک شناسه اقدام؛ هنوز به API یا رابط متصل نیست.
+- `scripts/test_checkout_attempt.js` — آزمون ایزوله اعتبار کوکی، قابلیت ابطال و رقابت ثبت سفارش و تعویض شناسه.
