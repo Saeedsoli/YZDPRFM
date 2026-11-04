@@ -157,6 +157,18 @@ function runWithEnv(env, script) {
       add('رمز فرستاده شد', req?.json?.password === 'testpass');
     }
 
+    {
+      received.length = 0;
+      const { result } = await runWithEnv({ ...baseEnv, NODE_ENV: 'production' }, 'send');
+      add('HTTP در تولید رد می‌شود و اعتبارنامه ارسال نمی‌شود', result?.ok === false && received.length === 0);
+    }
+    {
+      replyWith = { code: 503, body: '{"success":true}' };
+      const { result } = await runWithEnv(baseEnv, 'send');
+      add('پاسخ HTTP ناموفق با بدنه موفق رد می‌شود', result?.ok === false);
+      replyWith = { code: 200, body: '{"status":200,"message":"ok"}' };
+    }
+
     // ═══════════════════════════════════
     console.log('\n  ── نام فیلدها قابل تغییر است ──');
 
@@ -233,6 +245,7 @@ function runWithEnv(env, script) {
       ['1234567890123456',                   true,  'شناسه ۱۶ رقمی'],
       ['{"status":0,"message":"اعتبار کافی نیست"}', false, 'status صفر'],
       ['{"success":false,"error":"کلید نامعتبر"}',  false, 'success نادرست'],
+      ['{"success":"false"}', false, 'success متنی نادرست'],
       ['{"RetStatus":-1}',                   false, 'RetStatus منفی'],
       ['-10',                                false, 'عدد منفی خام']
     ];

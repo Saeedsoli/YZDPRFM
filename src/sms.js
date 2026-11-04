@@ -95,6 +95,9 @@ function request(urlStr, opts = {}) {
     try { u = new URL(urlStr); }
     catch { return reject(new Error('نشانی سرویس پیامک نامعتبر است.')); }
 
+    if (!['http:', 'https:'].includes(u.protocol) || (PRODUCTION && u.protocol !== 'https:')) {
+      return reject(new Error('نشانی سرویس پیامک در محیط تولید باید HTTPS باشد.'));
+    }
     const lib = u.protocol === 'http:' ? http : https;
     const body = opts.body || null;
 
@@ -202,6 +205,9 @@ function readPanelValue(raw) {
  * ولی نرفته، بدتر از خطای صریح است.
  */
 function looksSuccessful(res) {
+  if (!Number.isInteger(res.status) || res.status < 200 || res.status >= 300) {
+    return { ok: false, message: 'پاسخ HTTP سرویس پیامک موفق نبود.' };
+  }
   const j = res.json;
 
   if (j && typeof j === 'object') {
@@ -234,7 +240,7 @@ function looksSuccessful(res) {
       return { ok, message: j.message || j.error || null };
     }
     if (typeof j.success !== 'undefined') {
-      return { ok: !!j.success, message: j.message || j.error || null };
+      return { ok: j.success === true, message: j.message || j.error || null };
     }
     if (typeof j.result !== 'undefined' && typeof j.result === 'boolean') {
       return { ok: j.result, message: j.message || null };
