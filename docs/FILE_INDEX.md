@@ -1018,3 +1018,4 @@ node_modules/   با npm install برمی‌گردد
 - `src/script-element-csp.js` — محاسبه هش اسکریپت‌های قالب مورداعتماد برای سیاست CSP3؛ رویدادهای درون‌خطی هنوز مجازند.
 - `scripts/test_script_element_csp.js` — آزمون هش قالب، نرمال‌سازی و رد سیاست نامعتبر.
 - `scripts/test_script_element_csp_browser.py` — آزمون مرورگر واقعی CSP و سلامت صفحه‌های کلیدی.
+- `scripts/test_checkout_async_safety_browser.py` — آزمون مرورگر CSP تسویه، پاسخ‌های خارج از ترتیب و جلوگیری از ثبت هم‌زمان سفارش.

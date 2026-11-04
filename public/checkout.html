@@ -122,12 +122,12 @@
       <div class="two-col">
         <div class="field">
           <label>استان *</label>
-          <select id="fProvince" aria-label="استان" onchange="recalc()"></select>
+          <select id="fProvince" aria-label="استان"></select>
           <div class="field-msg" id="msg-fProvince"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16h.01"/></svg><span>استان را انتخاب کنید</span></div>
         </div>
         <div class="field">
           <label>شهر *</label>
-          <input id="fCity" aria-label="شهر" placeholder="نام شهر" oninput="recalc()">
+          <input id="fCity" aria-label="شهر" placeholder="نام شهر">
           <div class="field-msg" id="msg-fCity"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16h.01"/></svg><span>نام شهر را وارد کنید</span></div>
         </div>
       </div>
@@ -207,8 +207,11 @@ let giftWrap = false;
 
 let couponCode = localStorage.getItem('yazd_coupon') || '';
 let serverCalc = null;
+let summarySeq = 0;
+let orderSubmitting = false;
 
 async function renderSummary() {
+  const seq = ++summarySeq;
   const items = YazdCart.get();
   if (!items.length) { location.href = '/cart'; return; }
   const sub = YazdCart.subtotal();
@@ -232,6 +235,8 @@ async function renderSummary() {
       })
     });
     const d = await r.json();
+    // A slower old request must never overwrite the latest gift/address state.
+    if (seq !== summarySeq) return;
     if (r.ok) {
       serverCalc = d;
       discount = d.discount || 0;
@@ -243,6 +248,7 @@ async function renderSummary() {
       if (cErr) { couponCode = ''; localStorage.removeItem('yazd_coupon'); }
     }
   } catch {}
+  if (seq !== summarySeq) return;
 
   document.getElementById('summary').innerHTML = `
     <div style="font-weight:800;font-size:1rem;margin-bottom:10px">سفارش شما</div>
@@ -266,15 +272,15 @@ async function renderSummary() {
     ${cErr ? `<div style="color:#C0392B;font-size:.76rem;padding:6px 0">${esc(cErr)}</div>` : ''}
 
     <label class="gift-opt">
-      <input type="checkbox" id="fGift" ${giftWrap ? 'checked' : ''} onchange="toggleGift(this.checked)">
+      <input type="checkbox" id="fGift" ${giftWrap ? 'checked' : ''}>
       <span class="gift-txt">
         <b>بسته‌بندی کادویی</b>
         <i>جعبه هدیه، روبان و کارت پیام دست‌نویس — ${money(GIFT_WRAP_FEE)} تومان</i>
       </span>
     </label>
     <div class="sum-row sum-total"><span>قابل پرداخت</span><span>${money(total)} تومان</span></div>
-    <button class="btn btn-block" style="margin-top:14px" id="payBtn" onclick="submitOrder()">
-      پرداخت و ثبت نهایی سفارش
+    <button class="btn btn-block" style="margin-top:14px" id="payBtn" ${orderSubmitting ? 'disabled' : ''}>
+      ${orderSubmitting ? 'در حال ثبت سفارش…' : 'پرداخت و ثبت نهایی سفارش'}
     </button>
     <div style="font-size:.72rem;color:var(--muted);text-align:center;margin-top:9px;line-height:1.7">
       با ثبت سفارش، <a href="/terms" style="color:var(--gold)">قوانین فروشگاه</a> را می‌پذیرید.
@@ -286,6 +292,17 @@ function toggleGift(on) {
   giftWrap = !!on;
   renderSummary();
 }
+
+// The summary is re-rendered after each calculation, so delegate actions to
+// its stable container instead of relying on inline event attributes.
+document.getElementById('fProvince').addEventListener('change', recalc);
+document.getElementById('fCity').addEventListener('input', recalc);
+document.getElementById('summary').addEventListener('change', e => {
+  if (e.target.id === 'fGift') toggleGift(e.target.checked);
+});
+document.getElementById('summary').addEventListener('click', e => {
+  if (e.target.closest('#payBtn')) submitOrder();
+});
 
 /* ── اعتبارسنجی درجا ──
    خطا کنار خود فیلد نشان داده می‌شود، نه بالای صفحه. کاربر روی موبایل
@@ -355,8 +372,10 @@ function showErr(m) {
 }
 
 async function submitOrder() {
+  if (orderSubmitting) return;
   document.getElementById('err').style.display = 'none';
   if (!validateAll()) return;
+  orderSubmitting = true;
 
   const first = document.getElementById('fFirst').value.trim();
   const last  = document.getElementById('fLast').value.trim();
@@ -369,6 +388,7 @@ async function submitOrder() {
 
   const btn = document.getElementById('payBtn');
   btn.disabled = true; btn.textContent = 'در حال ثبت سفارش…';
+  let safelyRejected = false;
 
   try {
     const r = await fetch('/api/orders', {
@@ -387,14 +407,21 @@ async function submitOrder() {
       })
     });
     const d = await r.json();
+    // Network failures, malformed responses, 5xx and a conflict referring to
+    // an existing order can occur after commit; never claim the order failed.
+    safelyRejected = !r.ok && r.status >= 400 && r.status < 500 && r.status !== 408 &&
+      !(r.status === 409 && d.order_id);
     if (!r.ok) throw new Error(d.error || 'خطا در ثبت سفارش');
     sessionStorage.setItem('yazd_last_mobile', mobile);
     sessionStorage.setItem('yazd_last_order', d.order_id);
     localStorage.removeItem('yazd_coupon');
     location.href = d.payment_url;
   } catch (e) {
-    showErr(e.message);
-    btn.disabled = false; btn.textContent = 'پرداخت و ثبت نهایی سفارش';
+    orderSubmitting = false;
+    showErr(safelyRejected ? e.message : 'نتیجه ثبت سفارش نامشخص است. پیش از تلاش دوباره، سفارش را در حساب کاربری بررسی کنید یا با پشتیبانی تماس بگیرید.');
+    // A recalculation may have replaced the original button while waiting.
+    const current = document.getElementById('payBtn');
+    if (current) { current.disabled = false; current.textContent = 'پرداخت و ثبت نهایی سفارش'; }
   }
 }
 

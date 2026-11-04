@@ -31,7 +31,7 @@ with tempfile.TemporaryDirectory(prefix='script-csp-') as td:
      response=page.goto(base+path,wait_until='domcontentloaded',timeout=15000);assert response and response.status in (200,404),(path,response and response.status)
      policy=response.headers.get('content-security-policy','');elem=next((v.strip() for v in policy.split(';') if v.strip().startswith('script-src-elem ')),'')
      assert "'sha256-" in elem and "'unsafe-inline'" not in elem,(path,elem)
-     assert ("script-src-attr 'none'" if path=='/login' else "script-src-attr 'unsafe-inline'") in policy # other pages remain a risk
+     assert ("script-src-attr 'none'" if path in ('/login','/checkout') else "script-src-attr 'unsafe-inline'") in policy # other pages remain a risk
      page.wait_for_timeout(100)
      assert not violations,(path,violations)
      page.remove_listener('console',console)
