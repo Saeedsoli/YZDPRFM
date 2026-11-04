@@ -136,7 +136,7 @@
           <div style="font-size:.84rem;opacity:.68;margin-top:3px" id="accMobile" dir="ltr"></div>
         </div>
       </div>
-      <button onclick="logout()" class="logout-btn">
+      <button id="accountLogout" type="button" class="logout-btn">
         <svg viewBox="0 0 24 24"><path d="M15 4h3a2 2 0 012 2v12a2 2 0 01-2 2h-3M10 17l-5-5 5-5M5 12h11"/></svg>
         خروج از حساب
       </button>
@@ -248,7 +248,7 @@ async function init() {
   box.innerHTML = d.total ? d.orders.map((o, oi) => {
     const s = ST[o.status] || ['نامشخص','b-pending'];
     return `<div class="order-card${oi === 0 ? ' open' : ''}${d.returns_ui_enabled ? ' return-enabled' : ''}">
-      <div class="ord-top" onclick="this.parentNode.classList.toggle('open')">
+      <div class="ord-top" role="button" tabindex="0" aria-expanded="${oi === 0 ? 'true' : 'false'}">
         <div style="display:flex;align-items:center;gap:10px">
           <svg class="chev" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg>
           <div>
@@ -310,7 +310,18 @@ async function init() {
   document.getElementById('content').style.display = 'block';
 }
 
+document.getElementById('accountLogout').addEventListener('click', logout);
+function toggleOrderHeader(header) {
+  const card=header.closest('.order-card');if(!card)return;
+  const open=card.classList.toggle('open');header.setAttribute('aria-expanded',String(open));
+}
+document.getElementById('orders').addEventListener('keydown', e => {
+  const header=e.target.closest('.ord-top');
+  if(header && (e.key==='Enter' || e.key===' ')){e.preventDefault();toggleOrderHeader(header);}
+});
 document.getElementById('orders').addEventListener('click', e => {
+  const header=e.target.closest('.ord-top');
+  if(header){toggleOrderHeader(header);return;}
   const button=e.target.closest('[data-return-toggle]');
   if (!button) return;
   const form=button.parentElement.querySelector('[data-return-form]');

@@ -42,7 +42,17 @@ with tempfile.TemporaryDirectory(prefix='returns-browser-') as td:
    for n,width in enumerate((390,1440)):
     phone,product,sample=fixtures[n];context=browser.new_context(viewport={'width':width,'height':844},service_workers='block');context.add_cookies([{'name':'yazd_customer','value':tokens[n],'url':base,'httpOnly':True,'sameSite':'Lax'}])
     page=context.new_page();errors=[];page.on('pageerror',lambda e:errors.append(str(e)))
-    page.goto(base+'/account',wait_until='domcontentloaded');expect(page.locator('#content')).to_be_visible();expect(page.locator('#orders')).to_contain_text('مرجوعی تا ۷۲ ساعت')
+    response=page.goto(base+'/account',wait_until='domcontentloaded');expect(page.locator('#content')).to_be_visible();expect(page.locator('#orders')).to_contain_text('مرجوعی تا ۷۲ ساعت')
+    policy=response.headers['content-security-policy'];assert "script-src-attr 'none'" in policy
+    fallback=next(x.strip() for x in policy.split(';') if x.strip().startswith('script-src '));assert "'unsafe-inline'" not in fallback and "'sha256-" in fallback
+    header=page.locator('.order-card .ord-top').first;assert header.get_attribute('aria-expanded')=='true'
+    header.focus();page.keyboard.press('Enter');assert header.get_attribute('aria-expanded')=='false'
+    page.keyboard.press('Space');assert header.get_attribute('aria-expanded')=='true'
+    attack=page.evaluate('''() => new Promise(resolve => {
+      let blocked=false;document.addEventListener('securitypolicyviolation',e=>{if(e.effectiveDirective==='script-src-attr')blocked=true});
+      const b=document.createElement('button');b.setAttribute('onclick','window.__inline_attack=1');document.body.appendChild(b);b.click();
+      setTimeout(()=>resolve({blocked,executed:window.__inline_attack||0}),200);
+    })''');assert attack=={'blocked':True,'executed':0},attack
     assert page.locator('#orders img').count()==0;expect(page.locator('#orders')).to_contain_text(payload)
     assert page.locator(f'[data-return-toggle="{sample}"]').count()==0
     assert page.locator(f'[data-return-toggle="{product}"]').count()==1
@@ -59,7 +69,9 @@ with tempfile.TemporaryDirectory(prefix='returns-browser-') as td:
     page.reload(wait_until='domcontentloaded');expect(page.locator('#orders')).to_contain_text('پاسخ داده شده');expect(page.locator('#orders')).to_contain_text(payload)
     assert page.locator('#orders img').count()==0 and page.evaluate('window.__xss || 0')==0
     assert page.evaluate('document.documentElement.scrollWidth <= innerWidth + 1')
-    assert not errors,errors;context.close()
+    assert not errors,errors
+    page.locator('#accountLogout').click();page.wait_for_url(base+'/');assert not any(c['name']=='yazd_customer' for c in context.cookies())
+    context.close()
    browser.close()
   print('PASS staged account return UX, quantity, status, reply XSS and sample labels on mobile/desktop Chromium; mocked SMS')
  finally:
