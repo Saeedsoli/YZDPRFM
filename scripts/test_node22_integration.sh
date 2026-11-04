@@ -12,13 +12,15 @@ trap cleanup EXIT
 trap 'exit 130' INT
 trap 'exit 143' TERM
 # No Git history, SSH key, user data, local dependencies or caches in fixture.
-tar -C "$ROOT" --exclude='./.git' --exclude='./.ssh' --exclude='./.env' --exclude='./.env.*' --exclude='./node_modules' --exclude='./data' --exclude='./.cache' --exclude='./.npm' -cf - . | tar -C "$STAGE" -xf -
+tar -C "$ROOT" --exclude='./.git' --exclude='./.ssh' --exclude='./.env' --exclude='./.env.*' --exclude='./uploads' --exclude='./node_modules' --exclude='./data' --exclude='./.cache' --exclude='./.npm' -cf - . | tar -C "$STAGE" -xf -
+python3 "$ROOT/scripts/copy_supplier_fixture.py" "$ROOT" "$STAGE"
 mkdir -p "$STAGE/data"
 cd "$STAGE"
 # Do not inherit live payment, SMS, administrator or other credentials.
 env -i PATH="$PATH" HOME="$HOME" TMPDIR="${TMPDIR:-/tmp}" bash -s <<'ISOLATED'
 set -euo pipefail
 npm ci --no-audit --no-fund
+python3 scripts/test_attachment_exclusion.py
 node -e "const D=require('better-sqlite3');const d=new D(':memory:');console.log('Node '+process.version+', SQLite '+d.prepare('select sqlite_version() v').get().v);d.close()"
 node scripts/test_backup_stream_safety.js
 node scripts/test_joop_name_correction.js

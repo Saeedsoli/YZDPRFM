@@ -26,7 +26,8 @@ if [ "${YAZD_SMOKE_STAGE:-}" != "1" ]; then
   trap cleanup_stage EXIT
   trap 'exit 130' INT
   trap 'exit 143' TERM
-  if ! tar --exclude='./.git' --exclude='./.ssh' --exclude='./node_modules' --exclude='./data' --exclude='./.cache' --exclude='./.npm' -cf - . | tar -C "$STAGE" -xf -; then echo 'Could not create isolated project' >&2; exit 2; fi
+  if ! tar --exclude='./.git' --exclude='./.ssh' --exclude='./.env' --exclude='./.env.*' --exclude='./uploads' --exclude='./node_modules' --exclude='./data' --exclude='./.cache' --exclude='./.npm' -cf - . | tar -C "$STAGE" -xf -; then echo 'Could not create isolated project' >&2; exit 2; fi
+  if ! python3 scripts/copy_supplier_fixture.py "$ROOT" "$STAGE"; then echo 'Could not safely stage supplier fixture' >&2; exit 2; fi
   mkdir -p "$STAGE/data"
   ln -s "$ROOT/node_modules" "$STAGE/node_modules"
   env -i PATH="$PATH" HOME="$HOME" YAZD_SMOKE_STAGE=1 DB_PATH="$STAGE/data/yazd.db" BACKUP_DISABLED=1 NODE_ENV=test setsid bash "$STAGE/scripts/smoke_test.sh" &
@@ -43,6 +44,7 @@ if [ "$(realpath -m "${DB_PATH:-}")" != "$STAGE_ROOT/data/yazd.db" ]; then echo 
 if ! python3 scripts/test_supplier_coverage.py; then echo 'Supplier reconciliation preflight failed' >&2; exit 1; fi
 if ! python3 scripts/test_audit_reference_notes.py; then echo 'Reference note audit preflight failed' >&2; exit 1; fi
 if ! python3 scripts/test_secret_exclusion.py; then echo 'Secret exclusion preflight failed' >&2; exit 1; fi
+if ! python3 scripts/test_attachment_exclusion.py; then echo 'Attachment exclusion preflight failed' >&2; exit 1; fi
 # Do not kill unrelated servers or accidentally hit an existing service.
 if ! python3 -c 'import socket; s=socket.socket(); s.bind(("127.0.0.1",3000)); s.close()'; then echo 'Port 3000 is occupied; refusing to run' >&2; exit 2; fi
 MAINPID= BRPID= LNKPID=

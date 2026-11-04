@@ -43,6 +43,8 @@ shots/
 # ── اسرار ──
 .ssh/
 yazd_github_public_key.txt
+# Uploaded attachments are never needed by the running application.
+uploads/
 .env
 .env.*
 .git/

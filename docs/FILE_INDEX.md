@@ -1054,3 +1054,5 @@ node_modules/   با npm install برمی‌گردد
 - `scripts/test_admin_review_xss_browser.py` — آزمون مرورگر ایمنی پاسخ نظر، نشانی دعوت‌نامه و عملیات نقش‌ها در پنل.
 - `scripts/test_analytics_privacy.js` و `scripts/test_analytics_privacy_http.py` — آزمون کمینه‌سازی متادیتا، رد الگوهای تماس و جلوگیری از جعل رویداد خرید.
 - `scripts/test_privacy_policy.js` — کنترل هم‌خوانی متن حریم خصوصی با ذخیره هش رمز، سرویس‌ها و آمار داخلی.
+- `scripts/copy_supplier_fixture.py` — انتقال صرفاً فایل قیمت شناخته‌شده با کنترل هش و بدون دنبال‌کردن پیوند، به محیط آزمون ایزوله.
+- `scripts/test_attachment_exclusion.py` — آزمون کنارگذاشتن پیوست‌های محرمانه از Git، بسته استقرار و مراحل آزمون.

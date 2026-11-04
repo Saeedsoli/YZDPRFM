@@ -22,6 +22,9 @@ data/pre-restore-*.db
 # رمز مدیر، کلید پیامک، شناسه درگاه — هرگز در مخزن
 .ssh/
 yazd_github_public_key.txt
+# Uploaded attachments may contain secrets. Keep only the established price fixture tracked.
+/uploads/*
+!/uploads/لیست_قیمت_عمده.md
 .env
 .env.*
 !.env.example
