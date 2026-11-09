@@ -249,7 +249,7 @@ async function handle(ctx) {
         relaxed = true;
         rows = db.prepare(
           `SELECT * FROM products ${rxClause}
-           ORDER BY (${score}) DESC, ${orderBy} LIMIT @limit OFFSET @offset`
+           ORDER BY ${IN_STOCK}, (${score}) DESC, ${SORTS[parsed.query.sort] || SORTS.default} LIMIT @limit OFFSET @offset`
         ).all({ ...args, limit, offset: (page - 1) * limit });
       }
     }

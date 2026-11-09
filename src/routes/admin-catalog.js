@@ -39,6 +39,7 @@
 'use strict';
 const { RATE_KEY, rateString, previewExchangeRate, updateExchangeRate } = require('../essence-pricing-store');
 const { gramToKg, productPriceState, previewProductPrice, applyProductPrice } = require('../product-essence-pricing');
+const { publicVariantSql } = require('../variant-visibility');
 
 /**
  * @param {object}   ctx
@@ -65,7 +66,7 @@ async function handle(ctx) {
   const {
     method, pathname, parsed, req,
     can, parseBody, logAudit, appLog, db,
-    who, parseProduct, attachVariants, notifyStockWatchers,
+    who, parseProduct, attachVariants, notifyStockWatchers, normalizeFa,
     releaseStaleOrders, buildSearchIndex, buildNotesIndex
   , bustStatsCache} = ctx;
 
@@ -362,6 +363,31 @@ async function handle(ctx) {
     const fresh = attachVariants(parseProduct(
       db.prepare('SELECT * FROM products WHERE id=?').get(p.id), { includeDrafts: true }), { includeHidden: true });
     return sendJSON(200, { message: 'محصول به‌روزرسانی شد.', product: fresh });
+  }
+
+  if (method === 'GET' && pathname === '/api/admin/inventory') {
+    if (!can('products.view')) return true;
+    const q = String(parsed.query.q || '').trim().slice(0, 100);
+    const status = String(parsed.query.status || 'all');
+    const type = String(parsed.query.type || 'all');
+    const sort = String(parsed.query.sort || 'default');
+    const page = Math.min(100000, Math.max(1, Number.parseInt(parsed.query.page, 10) || 1));
+    const limit = 30;
+    const state = `(CASE WHEN p.supply_mode IN ('IN_STOCK','MADE_TO_ORDER') AND v.price_toman>0 AND v.stock>=0 AND ${publicVariantSql('v')} THEN CASE WHEN v.stock>0 THEN 'IN_STOCK' WHEN p.supply_mode='MADE_TO_ORDER' THEN 'MADE_TO_ORDER' ELSE 'UNAVAILABLE' END ELSE 'UNAVAILABLE' END)`;
+    const wheres = [publicVariantSql('v')];
+    const args = {};
+    if (q) {
+      wheres.push('(p.search_blob LIKE @q OR v.sku LIKE @q OR p.name_en LIKE @q OR p.brand_en LIKE @q)');
+      args.q = `%${normalizeFa(q).replace(/[\\%_]/g, '\\$&')}%`;
+      wheres[wheres.length - 1] = wheres[wheres.length - 1].replaceAll(' LIKE @q', " LIKE @q ESCAPE '\\'");
+    }
+    if (['IN_STOCK', 'MADE_TO_ORDER', 'UNAVAILABLE'].includes(status)) { wheres.push(`${state}=@status`); args.status = status; }
+    if (['EDP', 'SAMPLE', 'BODY_SPLASH'].includes(type)) { wheres.push('v.type=@type'); args.type = type; }
+    const sorts = { default: 'p.id, v.type, v.volume_ml, v.sku', name: 'p.name_fa COLLATE NOCASE, p.id, v.type, v.volume_ml, v.sku', stock_up: 'v.stock ASC, p.id, v.sku', stock_down: 'v.stock DESC, p.id, v.sku' };
+    const from = `FROM variants v JOIN products p ON p.id=v.product_id WHERE ${wheres.join(' AND ')}`;
+    const total = db.prepare(`SELECT COUNT(*) AS n ${from}`).get(args).n;
+    const items = db.prepare(`SELECT p.slug,p.name_fa,p.name_en,p.brand_fa,p.brand_en,v.sku,v.type,v.type_label,v.volume_ml,v.stock,${state} AS availability ${from} ORDER BY ${sorts[sort] || sorts.default} LIMIT @limit OFFSET @offset`).all({ ...args, limit, offset: (page-1)*limit });
+    return sendJSON(200, { total, page, limit, items });
   }
 
   // کالاهای رو به اتمام

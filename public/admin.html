@@ -602,20 +602,23 @@
 
     <div id="tab-products" class="hidden">
       <div class="card">
-        <h3>جستجوی محصول</h3>
+        <h3>محصولات و موجودی</h3>
         <div style="display:flex;gap:9px;flex-wrap:wrap">
-          <!-- جستجوی زنده: با تایپ چند حرف نتیجه می‌آید، بدون زدن دکمه.
-               دکمه هم می‌ماند برای کسی که با کیبورد کار می‌کند. -->
-          <input id="pSearch" placeholder="نام عطر، برند یا نُت… (تایپ کنید)"
-            autocomplete="off"
-            style="flex:1;min-width:200px;padding:11px 14px;border:1px solid var(--border);
-            border-radius:9px;font-family:var(--font)"
-            oninput="liveSearch()"
-            onkeydown="if(event.key==='Enter')searchProducts()">
-          <button class="btn" onclick="searchProducts()">جستجو</button>
-          <button class="btn btn-outline" onclick="showLowStock()">کالاهای رو به اتمام</button>
+          <input id="pSearch" type="search" placeholder="جست‌وجوی نام، برند یا SKU" aria-label="جست‌وجوی موجودی" autocomplete="off"
+            style="flex:1;min-width:200px;padding:11px 14px;border:1px solid var(--border);border-radius:9px;font-family:var(--font)"
+            oninput="inventorySearch()" onkeydown="if(event.key==='Enter'){event.preventDefault();inventoryPage=1;loadInventory()}">
+          <select id="inventoryStatus" aria-label="وضعیت سفارش" onchange="inventoryPage=1;loadInventory()" style="padding:10px;border:1px solid var(--border);border-radius:8px">
+            <option value="all">همه وضعیت‌ها</option><option value="MADE_TO_ORDER">ساخت پس از سفارش</option><option value="IN_STOCK">موجود در انبار</option><option value="UNAVAILABLE">غیرقابل سفارش</option>
+          </select>
+          <select id="inventoryType" aria-label="نوع محصول" onchange="inventoryPage=1;loadInventory()" style="padding:10px;border:1px solid var(--border);border-radius:8px">
+            <option value="all">همه نوع‌ها</option><option value="EDP">پرفیوم</option><option value="SAMPLE">سمپل</option><option value="BODY_SPLASH">بادی‌اسپلش</option>
+          </select>
+          <select id="inventorySort" aria-label="مرتب‌سازی" onchange="inventoryPage=1;loadInventory()" style="padding:10px;border:1px solid var(--border);border-radius:8px">
+            <option value="default">مرتب‌سازی: پیش‌فرض</option><option value="name">نام محصول</option><option value="stock_up">موجودی: کم به زیاد</option><option value="stock_down">موجودی: زیاد به کم</option>
+          </select>
         </div>
-        <div id="pResults" style="margin-top:16px"></div>
+        <div style="font-size:.75rem;color:var(--muted);margin-top:10px">موجودی انبار و امکان سفارش جدا هستند؛ صفر بودن انبار برای ساخت پس از سفارش، به‌معنی ناموجود بودن نیست.</div>
+        <div id="pResults" aria-live="polite" style="margin-top:16px"></div>
       </div>
 
       <div class="card hidden" id="pEditCard">
@@ -1174,6 +1177,7 @@ function showTab(key) {
   });
 
   // بارگذاری تنبل — فقط وقتی تب باز شد
+  if (key === 'products' && may('products.view')) loadInventory();
   if (key === 'reports' && !document.getElementById('repStats').innerHTML) loadReports();
   if (key === 'analytics' && !document.getElementById('anStats').innerHTML) loadAnalytics();
   if (key === 'profile')  loadProfile();
@@ -2887,6 +2891,34 @@ document.getElementById('ordersTable').addEventListener('submit',async e=>{
 
 /* ── مدیریت محصول و موجودی ── */
 let currentProduct = null;
+let inventoryPage = 1, inventorySequence = 0, inventoryTimer = null;
+function inventorySearch() {
+  clearTimeout(inventoryTimer);
+  inventoryPage = 1;
+  inventoryTimer = setTimeout(loadInventory, 300);
+}
+async function loadInventory() {
+  const box = document.getElementById('pResults');
+  const sequence = ++inventorySequence;
+  const params = new URLSearchParams({ q: document.getElementById('pSearch').value.trim(), status: document.getElementById('inventoryStatus').value, type: document.getElementById('inventoryType').value, sort: document.getElementById('inventorySort').value, page: String(inventoryPage) });
+  box.textContent = 'در حال بارگذاری…';
+  try {
+    const response = await fetch('/api/admin/inventory?' + params, { headers: H(), cache: 'no-store' });
+    const data = await response.json();
+    if (sequence !== inventorySequence) return;
+    if (!response.ok) { box.textContent = data.error || 'دریافت موجودی ناموفق بود.'; return; }
+    const pages = Math.max(1, Math.ceil(data.total / data.limit));
+    if (inventoryPage > pages) { inventoryPage = pages; return loadInventory(); }
+    const labels = { IN_STOCK: 'موجود در انبار', MADE_TO_ORDER: 'ساخت پس از سفارش', UNAVAILABLE: 'غیرقابل سفارش' };
+    const styles = { IN_STOCK: 'b-paid', MADE_TO_ORDER: 'b-pending', UNAVAILABLE: 'b-cancel' };
+    const rows = data.items.map(item => `<tr>
+      <td><strong>${esc(item.brand_fa || '')} — ${esc(item.name_fa || '')}</strong><div dir="ltr" style="font-size:.74rem;color:var(--muted)">${esc(item.brand_en || '')} — ${esc(item.name_en || '')}</div><div dir="ltr" style="font-size:.72rem;color:var(--muted)">${esc(item.sku)}</div></td>
+      <td>${esc(item.type_label || item.type)} · ${toFa(item.volume_ml)} میل</td><td>${toFa(item.stock)} عدد</td>
+      <td><span class="badge ${styles[item.availability] || 'b-cancel'}">${labels[item.availability] || 'غیرقابل سفارش'}</span></td>
+      <td><button class="btn btn-outline" onclick="editProduct(${esc(JSON.stringify(String(item.slug || '')))})">جزئیات</button></td></tr>`).join('');
+    box.innerHTML = `<div style="font-size:.8rem;color:var(--muted);margin-bottom:8px">${toFa(data.total)} نتیجه · صفحه ${toFa(inventoryPage)} از ${toFa(pages)}</div>${rows ? `<div class="scroll"><table><tr><th>محصول</th><th>نوع و حجم</th><th>موجودی انبار</th><th>وضعیت سفارش</th><th></th></tr>${rows}</table></div>` : '<div style="padding:12px">نتیجه‌ای پیدا نشد.</div>'}<div style="display:flex;gap:8px;margin-top:14px"><button class="btn btn-outline" ${inventoryPage <= 1 ? 'disabled' : ''} onclick="inventoryPage--;loadInventory()">صفحه قبل</button><button class="btn btn-outline" ${inventoryPage >= pages ? 'disabled' : ''} onclick="inventoryPage++;loadInventory()">صفحه بعد</button></div>`;
+  } catch { if (sequence === inventorySequence) box.textContent = 'ارتباط برقرار نشد؛ دوباره تلاش کنید.'; }
+}
 
 /** quiet=true یعنی از جستجوی زنده آمده — پیام خطای مزاحم ندهد */
 async function searchProducts(quiet) {
@@ -3026,6 +3058,7 @@ async function applyProductEssenceUI() {
     if(!r.ok) { invalidateEssencePreview();essenceMessage(d.error || 'ثبت ناموفق بود؛ دوباره پیش‌نمایش بگیرید.');return; }
     invalidateEssencePreview();
     if(currentProduct && currentProduct.id===p.product_id) await editProduct(slug);
+    loadInventory();
     toast('قیمت اسانس و واریانت‌ها ثبت شد.');
   } catch { invalidateEssencePreview();essenceMessage('نتیجه نامشخص است؛ محصول را دوباره باز کنید.'); }
   finally { essenceBusy(false); }
@@ -3174,6 +3207,7 @@ async function saveStockOnly(sku) {
     // مقدار در حافظه هم به‌روز شود تا جمع کل درست بماند
     const v = currentProduct.variants.find(x => x.sku === sku);
     if (v) v.stock = val;
+    loadInventory();
     const tot = currentProduct.variants.reduce((s, x) => s + x.stock, 0);
     const box = document.getElementById('pTotalStock');
     if (box) {
@@ -3194,7 +3228,7 @@ async function saveVariant(sku) {
   });
   const d = await r.json();
   toast(r.ok ? 'ذخیره شد' : d.error);
-  if (r.ok) editProduct(currentProduct.slug);
+  if (r.ok) { editProduct(currentProduct.slug); loadInventory(); }
 }
 
 async function bulkPrice() {
@@ -3206,7 +3240,7 @@ async function bulkPrice() {
   });
   const d = await r.json();
   toast(r.ok ? d.message : d.error);
-  if (r.ok) { document.getElementById('bulkPct').value = ''; editProduct(currentProduct.slug); }
+  if (r.ok) { document.getElementById('bulkPct').value = ''; editProduct(currentProduct.slug); loadInventory(); }
 }
 
 async function bulkStock() {
@@ -3217,7 +3251,7 @@ async function bulkStock() {
   });
   const d = await r.json();
   toast(r.ok ? d.message : d.error);
-  if (r.ok) { document.getElementById('bulkStock').value = ''; editProduct(currentProduct.slug); }
+  if (r.ok) { document.getElementById('bulkStock').value = ''; editProduct(currentProduct.slug); loadInventory(); }
 }
 
 async function saveSupplyMode() {
@@ -3227,7 +3261,7 @@ async function saveSupplyMode() {
   });
   const d = await r.json();
   toast(r.ok ? 'وضعیت تأمین ذخیره شد.' : d.error);
-  if (r.ok) editProduct(currentProduct.slug);
+  if (r.ok) { editProduct(currentProduct.slug); loadInventory(); }
 }
 
 /* ── یادداشت عطرساز ──

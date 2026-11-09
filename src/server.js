@@ -1649,7 +1649,7 @@ const server = http.createServer(async (req, res) => {
     if (await routeAdminCatalog.handle({
       method, pathname, parsed, req,
       sendJSON, can, who, parseBody, logAudit, appLog, db,
-      parseProduct, attachVariants, notifyStockWatchers,
+      parseProduct, attachVariants, notifyStockWatchers, normalizeFa,
       releaseStaleOrders, buildSearchIndex, buildNotesIndex, bustStatsCache
     })) return;
     // اطلاعات تماس عمومی — تنها فیلدهای بی‌خطر.
