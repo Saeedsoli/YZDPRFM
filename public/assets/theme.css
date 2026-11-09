@@ -3,27 +3,11 @@
    الهام: By Kilian · Penhaligon's — آرامش و فضای خالی
    ═══════════════════════════════════════════════ */
 
-/* ── فونت: فقط ۴ وزن مورد استفاده، نه ۹ تا ──
-   swap = متن بلافاصله با فونت جایگزین دیده می‌شود، بدون پرش ناگهانی */
 @font-face {
   font-family: 'Vazirmatn';
   src: url('/fonts/Vazirmatn-Regular.woff2') format('woff2');
-  font-weight: 400; font-display: optional; font-style: normal;
+  font-weight: 400; font-display: swap; font-style: normal;
 }
-/* فونت جایگزینِ هم‌ابعاد با وزیرمتن.
-
-   مسئله‌ای که حل می‌کند: با font-display:swap متن اول با فونت
-   سیستمی نمایش داده می‌شود و بعد وزیرمتن جایش را می‌گیرد. چون
-   ابعاد دو فونت فرق دارد، در آن لحظه کل متن جابه‌جا می‌شود —
-   بنچمارک نشان داد CLS از ۰٫۰۱۶ به ۰٫۱۳ می‌پرد.
-
-   اعداد از خودِ فایل وزیرمتن استخراج شدند (unitsPerEm=2048):
-     ascent 102.54% · descent 53.71% · lineGap 0
-   با این تنظیم، فونت سیستمی دقیقاً همان ارتفاع خط را می‌گیرد و
-   وقتی وزیرمتن می‌رسد هیچ‌چیز تکان نمی‌خورد.
-
-   size-adjust برای فارسی روی ۱۰۰٪ می‌ماند؛ تنظیمش برای خطوط
-   غیرلاتین نتیجه معکوس می‌دهد. */
 @font-face {
   font-family: 'Vazir Fallback';
   src: local('Tahoma'), local('Segoe UI'), local('Arial'), local('sans-serif');
@@ -32,26 +16,20 @@
   line-gap-override: 0%;
 }
 
-/* وزن ۵۰۰ (Medium) عمداً بارگذاری نمی‌شود.
-   فقط در دو جا استفاده می‌شد ولی ۲۸ کیلوبایت هزینه داشت. روی
-   ۳G هر فایل فونت پهنای باند را از تصویر اصلی می‌دزدد — بنچمارک
-   نشان داد ۱۴۱KB فونت باعث می‌شد LCP به ۶ ثانیه برسد.
-   مرورگر برای وزن ۵۰۰ از Regular استفاده می‌کند؛ تفاوت بصری
-   در متن فارسی عملاً نامحسوس است. */
 @font-face {
   font-family: 'Vazirmatn';
   src: url('/fonts/Vazirmatn-SemiBold.woff2') format('woff2');
-  font-weight: 600; font-display: optional; font-style: normal;
+  font-weight: 600; font-display: swap; font-style: normal;
 }
 @font-face {
   font-family: 'Vazirmatn';
   src: url('/fonts/Vazirmatn-Bold.woff2') format('woff2');
-  font-weight: 700; font-display: optional; font-style: normal;
+  font-weight: 700; font-display: swap; font-style: normal;
 }
 @font-face {
   font-family: 'Vazirmatn';
   src: url('/fonts/Vazirmatn-ExtraBold.woff2') format('woff2');
-  font-weight: 800; font-display: optional; font-style: normal;
+  font-weight: 800; font-display: swap; font-style: normal;
 }
 
 :root {
