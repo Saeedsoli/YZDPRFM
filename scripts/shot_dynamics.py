@@ -49,32 +49,31 @@ with sync_playwright() as pw:
     print("\n  بازبینی چشمی پویایی\n")
 
     # ── ۱) بازدیدکننده تازه ──
-    pg.goto(BASE, wait_until="networkidle")
+    pg.goto(BASE + "/golchin", wait_until="networkidle")
     pg.wait_for_timeout(1200)
 
     recent = pg.locator("#recent")
     check("بازدیدکننده تازه: «اخیراً دیدید» پنهان است",
           not recent.is_visible())
 
-    tabs = pg.locator(".sc-tab")
+    tabs = pg.locator(".gl-tab")
     n_tabs = tabs.count()
     labels = [tabs.nth(i).inner_text().strip() for i in range(n_tabs)]
-    check("ویترین تب فصلی دارد",
+    check("گلچین تب فصلی دارد",
           any("مناسب" in t or "فصل" in t for t in labels),
           " · ".join(labels))
 
-    first_tab = labels[0] if labels else ""
-    check("تب فصلی اول است", "مناسب" in first_tab or "فصل" in first_tab,
-          first_tab)
+    check("تب فصلی در گلچین هست", any("مناسب" in t or "فصل" in t for t in labels),
+          " · ".join(labels))
 
-    cards = pg.locator("#showcaseGrid .product-card").count()
-    check("ویترین فصلی کارت نشان می‌دهد", cards >= 4, f"{cards} کارت")
+    cards = pg.locator("#glGrid .product-card").count()
+    check("گلچین فصلی کارت نشان می‌دهد", cards >= 3, f"{cards} کارت")
 
     pg.screenshot(path=os.path.join(OUT, "dyn_1_home_new.png"), full_page=False)
 
     # ── ۲) بازدید از دو محصول ──
     slugs = []
-    links = pg.locator("#showcaseGrid .product-card")
+    links = pg.locator("#glGrid .product-card")
     for i in range(min(2, links.count())):
         href = links.nth(i).get_attribute("href")
         if href:

@@ -294,18 +294,18 @@
   .search-wrap { position: relative; }
   .sugg {
     position: absolute; top: calc(100% + 7px); left: 0; right: 0; z-index: 60;
-    background: #FFF; border-radius: 14px; overflow: hidden;
+    background: #242424; border-radius: 14px; overflow: hidden;
     box-shadow: 0 18px 48px rgba(0,0,0,.28);
     max-height: 62vh; overflow-y: auto; text-align: right;
     border: 1px solid rgba(197,155,39,.25);
   }
   .sugg-item {
     display: flex; align-items: center; gap: 11px; padding: 9px 13px;
-    cursor: pointer; border-bottom: 1px solid var(--border-soft);
-    text-decoration: none; color: var(--text); transition: background .12s;
+    cursor: pointer; border-bottom: 1px solid #393939;
+    text-decoration: none; color: #eee; transition: background .12s;
   }
   .sugg-item:last-child { border-bottom: none }
-  .sugg-item:hover, .sugg-item.active { background: var(--sand) }
+  .sugg-item:hover, .sugg-item.active { background: #36322c }
   .sugg-item img {
     width: 42px; height: 42px; border-radius: 8px; object-fit: cover;
     flex: none; background: var(--sand);
@@ -314,39 +314,80 @@
      در یک سطر قاطی می‌شوند — با اسکرین‌شات دیده شد. */
   .sugg-t  { display: block; font-weight: 700; font-size: .86rem; line-height: 1.45;
              overflow: hidden; text-overflow: ellipsis; white-space: nowrap }
-  .sugg-s  { display: block; font-size: .72rem; color: var(--muted);
+  .sugg-s  { display: block; font-size: .72rem; color: #aaa;
              direction: ltr; text-align: right; overflow: hidden;
              text-overflow: ellipsis; white-space: nowrap }
   .sugg-p  { margin-right: auto; font-size: .78rem; font-weight: 800;
-             color: var(--gold-dark); white-space: nowrap; padding-right: 8px }
+             color: #d1b363; white-space: nowrap; padding-right: 8px }
   .sugg-more {
     display: block; padding: 11px; text-align: center; font-size: .8rem;
     font-weight: 700; background: var(--sand); color: var(--text);
     cursor: pointer; border: none; width: 100%; font-family: var(--font);
   }
   .sugg-more:hover { background: var(--gold); color: #121212 }
-  .sugg-empty { padding: 15px 13px; font-size: .82rem; color: var(--muted); text-align: center }
+  .sugg-empty { padding: 15px 13px; font-size: .82rem; color: #ccc; text-align: center }
   /* نشان «ناموجود» — پیش از افتتاح همه کالاها صفرند */
   .sugg-out { display: block; font-size: .66rem; color: #C0392B; font-weight: 700 }
 
-  /* نوار اعتماد زیر جستجو */
-  .trust-row { display:grid; gap:14px; grid-template-columns:repeat(auto-fit,minmax(258px,1fr)) }
-  .trust-card {
-    display:block; text-decoration:none; color:var(--text);
-    background:var(--surface); border:1px solid var(--border);
-    border-radius:var(--radius); padding:20px 18px;
-    transition:transform var(--t-smooth), box-shadow var(--t-smooth),
-               border-color var(--t-smooth);
+  /* ── بنرهای معرفی ── */
+  .banners-section { display:grid; gap:14px; margin:26px auto 30px }
+  .pb { position:relative; display:grid; grid-template-columns:290px 1fr; align-items:center;
+        min-height:158px; border-radius:18px; overflow:hidden; text-decoration:none;
+        background:linear-gradient(105deg,#131313 0%,#1d1a15 62%,#241f16 100%);
+        color:#FFF; border:1px solid #2c2a25; isolation:isolate;
+        transition:transform .45s cubic-bezier(.2,.7,.2,1), box-shadow .45s var(--ease-out);
+        animation:bnIn .8s cubic-bezier(.2,.7,.2,1) both }
+  .pb:nth-child(2){animation-delay:.09s} .pb:nth-child(3){animation-delay:.18s} .pb:nth-child(4){animation-delay:.27s}
+  .pb:hover { transform:translateY(-4px); box-shadow:0 22px 44px rgba(20,16,10,.24) }
+  .pb-media { position:relative; height:100%; min-height:158px; overflow:hidden; display:block }
+  .pb-media img { width:100%; height:100%; object-fit:cover; display:block;
+                  animation:bnDrift 14s ease-in-out infinite alternate }
+  .pb:hover .pb-media img { transform:scale(1.07); transition:transform .6s }
+  .pb-media::after { content:''; position:absolute; inset:0;
+                     background:linear-gradient(to left,rgba(19,19,19,.92),rgba(19,19,19,.15) 62%,transparent) }
+  .pb-text { display:block; padding:20px 22px 20px 26px }
+  .pb-kick { display:inline-flex; align-items:center; gap:7px; font-size:.66rem; letter-spacing:1.3px;
+          color:var(--gold-light); margin-bottom:9px }
+  .pb-kick::before { content:''; width:18px; height:1px; background:var(--gold-light); display:inline-block }
+  .pb-t { display:block; font-size:1.16rem; font-weight:800; line-height:1.6; margin-bottom:8px }
+  .pb-d { display:block; color:#cdc6ba; font-size:.8rem; line-height:2; max-width:56ch; margin-bottom:12px }
+  .pb-cta { display:inline-flex; align-items:center; gap:8px; font-size:.79rem; font-weight:800;
+         color:#f2e6c8; border-bottom:1px solid rgba(197,155,39,.55); padding-bottom:3px;
+         transition:gap .3s, color .3s }
+  .pb-cta::after { content:'←' }
+  .pb:hover .pb-cta { gap:14px; color:#FFF }
+  .pb-sheen { position:absolute; inset:0; z-index:2; pointer-events:none;
+              background:linear-gradient(100deg,transparent 35%,rgba(255,236,180,.16) 48%,rgba(255,236,180,.05) 55%,transparent 66%);
+              transform:translateX(-120%); animation:bnSheen 7s ease-in-out infinite }
+  .pb:nth-child(2) .pb-sheen{animation-delay:1.1s} .pb:nth-child(3) .pb-sheen{animation-delay:2.2s} .pb:nth-child(4) .pb-sheen{animation-delay:3.3s}
+  .pb-spark { position:absolute; z-index:3; width:5px; height:5px; border-radius:50%;
+           background:#f0d68c; opacity:0; animation:bnSpark 5s ease-in-out infinite }
+  .pb-spark.s2{inset-inline-start:38%;top:26%;animation-delay:1.4s} .pb-spark.s3{inset-inline-start:58%;bottom:24%;animation-delay:2.6s}
+  .pb-orb { position:absolute; inset-inline-end:-40px; bottom:-60px; width:210px; height:210px; border-radius:50%;
+         background:radial-gradient(circle,rgba(197,155,39,.28),transparent 65%); z-index:1;
+         pointer-events:none; animation:bnPulse 6s ease-in-out infinite }
+  @keyframes bnIn { from{opacity:0;transform:translateY(18px)} to{opacity:1;transform:none} }
+  @keyframes bnDrift { from{transform:translate3d(0,0,0) scale(1.02)} to{transform:translate3d(-10px,-6px,0) scale(1.1)} }
+  @keyframes bnSheen { 0%,55%{transform:translateX(-120%)} 85%,100%{transform:translateX(120%)} }
+  @keyframes bnPulse { 0%,100%{opacity:.55;transform:scale(1)} 50%{opacity:.95;transform:scale(1.12)} }
+  @keyframes bnSpark { 0%,100%{opacity:0;transform:translateY(0)} 45%{opacity:.9;transform:translateY(-14px)} }
+  /* ── کارت گلچین ── */
+  .golchin-card { display:block; text-decoration:none; color:#FFF; border-radius:16px; padding:20px 22px;
+                  background:linear-gradient(105deg,#141414,#241f16); border:1px solid #2c2a25;
+                  transition:transform .35s var(--ease-out), box-shadow .35s var(--ease-out) }
+  .golchin-card:hover { transform:translateY(-3px); box-shadow:0 18px 34px rgba(20,16,10,.22) }
+  .golchin-text b { display:block; font-size:1.02rem; margin-bottom:6px }
+  .golchin-d { display:block; color:#c8c1b5; font-size:.79rem; line-height:1.95; margin-bottom:11px }
+  @media (max-width:760px) {
+    .bn { grid-template-columns:1fr; min-height:0 }
+    .pb-media { height:150px; min-height:150px }
+    .pb-media::after { background:linear-gradient(to top,rgba(19,19,19,.95),transparent) }
+    .pb-t { font-size:1rem } .bn-text { padding:16px 16px 18px }
   }
-  .trust-card:hover { transform:translateY(-3px); box-shadow:var(--sh-lg);
-                      border-color:rgba(197,155,39,.5) }
-  .trust-card .ic { display:grid; place-items:center; width:42px; height:42px;
-                    border-radius:12px; background:var(--sand); margin-bottom:12px }
-  .trust-card .ic svg { width:21px; height:21px; fill:none; stroke:var(--gold-dark);
-                        stroke-width:1.7; stroke-linecap:round; stroke-linejoin:round }
-  .trust-card b { display:block; font-size:.93rem; font-weight:800; margin-bottom:7px;
-                  line-height:1.7 }
-  .trust-card .t { display:block; font-size:.81rem; color:var(--muted); line-height:1.95 }
+  @media (prefers-reduced-motion:reduce) {
+    .bn, .bn-media img, .bn-sheen, .orb, .spark { animation:none !important }
+    .pb-sheen { display:none }
+  }
 
   .search-input { width: 100%; padding: 14px 20px; border-radius: 30px;
                   border: 1px solid rgba(197,155,39,.4); background: rgba(255,255,255,.08);
@@ -418,6 +459,30 @@
     .filter-bar::-webkit-scrollbar { display: none; }
     .fchip, .nchip { white-space: nowrap; }
   }
+
+  .search-row { display:flex; gap:12px; align-items:stretch; }
+  .search-row .search-wrap { flex:1; min-width:0; }
+  .search-row .search-input { border-radius:9px; }
+  .hub-filter-btn { display:flex; align-items:center; gap:8px; justify-content:center; background:transparent; border:1px solid #8a753f; color:#f0e8d5; border-radius:9px; padding:0 18px; font:inherit; font-size:.82rem; cursor:pointer; white-space:nowrap; }
+  .hub-filter-btn svg { width:17px; height:17px; fill:none; stroke:currentColor; stroke-width:1.5; }
+  .hub-count { background:var(--gold); color:#15120e; border-radius:20px; min-width:20px; padding:1px 5px; font-size:.7rem; }
+  .hub-count[hidden], .hub-filters[hidden], .hub-group[hidden], .hub-more[hidden], .hub-extra-hidden { display:none !important; }
+  .hub-filters { border-top:1px solid #373737; margin-top:20px; padding-top:6px; }
+  .hub-group { display:grid; grid-template-columns:125px 1fr; gap:15px; align-items:start; padding:17px 0; border-bottom:1px solid #303030; }
+  .hub-group strong { font-size:.82rem; }
+  .hub-group .filter-bar { margin:0; display:flex; flex-wrap:wrap; overflow:visible; }
+  .hub-more { display:block; background:none; border:0; padding:6px 0 0; color:#caaa62; font:inherit; font-size:.72rem; cursor:pointer; }
+  .hub-more:hover { text-decoration:underline; }
+  .hub-check { display:flex; align-items:center; gap:9px; font-size:.8rem; cursor:pointer; }
+  .hub-check input { accent-color:var(--gold); width:17px; height:17px; }
+  .hub-active { display:flex; flex-wrap:wrap; gap:8px; }
+  .hub-active:not(:empty) { padding-top:14px; }
+  .hub-active .fpill { background:#302b20; color:#e9d9a6; border:1px solid #52472f; border-radius:30px; padding:4px 10px; font-size:.75rem; }
+  .hub-active .fpill button { color:inherit; background:none; border:0; font:inherit; cursor:pointer; }
+  .hub-clear { color:#d4c7ac; border:0; background:none; font:inherit; font-size:.75rem; text-decoration:underline; cursor:pointer; }
+  .hub-bottom { display:flex; justify-content:space-between; align-items:center; gap:12px; padding-top:16px; color:#aaa; font-size:.74rem; }
+  .hub-close { background:var(--gold); color:#17130d; border:0; border-radius:8px; padding:9px 18px; font:inherit; cursor:pointer; }
+  @media(max-width:640px) { .search-row { gap:8px; } .hub-filter-btn { padding:0 12px; } .hub-group { grid-template-columns:1fr; gap:8px; } .hub-bottom { align-items:stretch; flex-direction:column; } }
 
   .brands-strip { max-width: 1320px; margin: 30px auto; padding: 0 20px; }
   .brands-row { display: grid; grid-template-columns: repeat(auto-fill, minmax(142px,1fr)); gap: 10px; }
@@ -517,77 +582,107 @@
 
 <section class="search-hub">
   <div class="search-box">
-    <div style="font-weight:800;font-size:1rem;margin-bottom:4px">جستجو در کاتالوگ عطر یزد</div>
-    <p style="font-size:.82rem;color:#BBB;margin-bottom:10px">
-      جستجو بر اساس نام عطر، برند یا نُت بویایی — در میان تمام محصولات
-    </p>
+    <div style="font-weight:800;font-size:1rem;margin-bottom:4px">جست‌وجو در کاتالوگ</div>
+    <p style="font-size:.82rem;color:#BBB;margin-bottom:10px">نام عطر، برند یا نُت دلخواهتان را بنویسید.</p>
     <label for="q" class="sr-only">جستجو در کاتالوگ</label>
-    <!-- combobox طبق الگوی ARIA: صفحه‌خوان می‌فهمد فهرست پیشنهاد
-         باز شده و کدام گزینه انتخاب است. -->
-    <div class="search-wrap" role="combobox" aria-haspopup="listbox"
-         aria-owns="sugg" aria-expanded="false" id="searchWrap">
-      <input class="search-input" id="q" type="search" aria-label="جستجوی عطر"
-        placeholder="مثلاً: اونتوس، توباکو وانیل، عود، رز…"
-        autocomplete="off" aria-autocomplete="list" aria-controls="sugg">
-      <div id="sugg" class="sugg" role="listbox" aria-label="پیشنهادها" hidden></div>
+    <div class="search-row">
+      <div class="search-wrap" role="combobox" aria-haspopup="listbox" aria-owns="sugg" aria-expanded="false" id="searchWrap">
+        <input class="search-input" id="q" type="search" aria-label="جستجوی عطر" placeholder="مثلاً: اونتوس، توباکو وانیل، عود، رز…" autocomplete="off" aria-autocomplete="list" aria-controls="sugg">
+        <div id="sugg" class="sugg" role="listbox" aria-label="پیشنهادها" hidden></div>
+      </div>
+      <button type="button" class="hub-filter-btn" id="hubFilterButton" aria-expanded="false" aria-controls="hubFilters"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M4 6h16M7 12h10M10 18h4"/></svg>فیلترها <span id="hubFilterCount" class="hub-count" hidden></span></button>
     </div>
-    <div class="filter-bar" id="genderBar">
-      <span class="fchip on" data-g="">همه</span>
-      <span class="fchip" data-g="MEN">مردانه</span>
-      <span class="fchip" data-g="WOMEN">زنانه</span>
-      <span class="fchip" data-g="UNISEX">یونیسکس</span>
+    <div id="hubActive" class="hub-active" aria-live="polite"></div>
+    <div id="hubFilters" class="hub-filters" hidden>
+      <div class="hub-group"><strong>موجودی</strong><label class="hub-check"><input type="checkbox" id="hubStock"><span>فقط محصولات موجود</span></label></div>
+      <div class="hub-group"><strong>جنسیت</strong><div class="filter-bar" id="genderBar">
+        <button type="button" class="fchip on" data-g="" aria-pressed="true">همه</button><button type="button" class="fchip" data-g="MEN" aria-pressed="false">مردانه</button><button type="button" class="fchip" data-g="WOMEN" aria-pressed="false">زنانه</button><button type="button" class="fchip" data-g="UNISEX" aria-pressed="false">یونیسکس</button>
+      </div></div>
+      <div class="hub-group" id="familyGroup" hidden><div><strong>خانواده بویایی</strong><button type="button" class="hub-more" id="familyMore" aria-controls="familyBar" aria-expanded="false" hidden>کشف بیشتر <span aria-hidden="true">⌄</span></button></div><div class="filter-bar" id="familyBar"></div></div>
+      <div class="hub-group" id="noteGroup" hidden><div><strong>نُت بویایی</strong><button type="button" class="hub-more" id="noteMore" aria-controls="noteBar" aria-expanded="false" hidden>کشف بیشتر <span aria-hidden="true">⌄</span></button></div><div class="filter-bar note-bar" id="noteBar"></div></div>
+      <div class="hub-bottom"><span>فیلترها قابل ترکیب‌اند و انتخاب‌های فعال نمایش داده می‌شوند.</span><button type="button" id="closeHubFilters" class="hub-close">بستن فیلترها</button></div>
     </div>
-    <div class="filter-bar" id="familyBar"></div>
-    <!-- نوار نُت بویایی — با جاوااسکریپت پر می‌شود؛ اگر داده نبود
-         پنهان می‌ماند (بدون رزرو فضا، بدون CLS) -->
-    <div class="filter-bar note-bar" id="noteBar" style="display:none"></div>
   </div>
 </section>
 
-<!-- نوار اعتماد.
-     سه چیزی که ما را از بازار جدا می‌کند و تا امروز فقط در صفحات
-     داخلی گفته شده بود. تحلیل رقابتی نشان داد سمپل قوی‌ترین برگ
-     ماست ولی در صفحه اصلی دیده نمی‌شد. -->
-<section class="container section trust-row" aria-label="چرا عطر یزد">
-  <a class="trust-card" href="/samples">
-    <span class="ic" aria-hidden="true">
-      <svg viewBox="0 0 24 24"><path d="M9 2h6M10 2v6.5L5.5 17A3 3 0 0 0 8 21.5h8a3 3 0 0 0 2.5-4.5L14 8.5V2"/></svg>
-    </span>
-    <b>سمپل ۵ میل برای رایحه‌های منتخب</b>
-    <span class="t">پیش از خرید بطری کامل، رایحه را چند روز روی
-      پوست خودتان امتحان کنید.</span>
+<section class="container banners-section" aria-label="معرفی عطر یزد">
+  <a class="pb" href="/why-us">
+    <span class="pb-media"><img src="/images/products/fam-woody-m-2.jpg" alt="" loading="lazy" decoding="async" width="290" height="158"></span>
+    <span class="pb-sheen" aria-hidden="true"></span><span class="pb-spark" aria-hidden="true"></span><span class="pb-spark s2" aria-hidden="true"></span>
+    <span class="pb-text"><span class="pb-kick">کارگاه عطرسازی</span><span class="pb-t">بیست سال آزمون و خطا، در یک بطری</span><span class="pb-d">از تدریس عطرسازی تا ساختن و آزمودن هزاران ترکیب؛ هر رایحه پیش از رسیدن به دست شما چند بار ساخته و بازبینی می‌شود.</span><span class="pb-cta">داستان کارگاه</span></span>
+    <span class="pb-orb" aria-hidden="true"></span>
   </a>
-  <a class="trust-card" href="/why-us">
-    <span class="ic" aria-hidden="true">
-      <svg viewBox="0 0 24 24"><path d="M12 2.5 4 6v6c0 5 3.4 8.4 8 9.5 4.6-1.1 8-4.5 8-9.5V6z"/><path d="m9 12 2 2 4-4"/></svg>
-    </span>
-    <b>اتانول آرایشی، هرگز متانول</b>
-    <span class="t">متانول از پوست جذب می‌شود و سمّی است.
-      در فرمول ما جایی ندارد.</span>
+  <a class="pb" href="/samples">
+    <span class="pb-media"><img src="/images/products/fam-ambery-oriental-w-6-sm.jpg" alt="" loading="lazy" decoding="async" width="290" height="158"></span>
+    <span class="pb-sheen" aria-hidden="true"></span><span class="pb-spark s3" aria-hidden="true"></span>
+    <span class="pb-text"><span class="pb-kick">اول بو کن، بعد بخر</span><span class="pb-t">سمپل ۵ میل، قبل از بطری کامل</span><span class="pb-d">رایحه را چند روز روی پوست خودتان امتحان کنید و بعد تصمیم بگیرید؛ بدون هزینه خرید کامل.</span><span class="pb-cta">دیدن سمپل‌ها</span></span>
+    <span class="pb-orb" aria-hidden="true"></span>
   </a>
-  <a class="trust-card" href="/essences">
-    <span class="ic" aria-hidden="true">
-      <svg viewBox="0 0 24 24"><path d="M12 3v4M8.5 7h7l1.5 10a3 3 0 0 1-3 3.5h-4A3 3 0 0 1 7 17z"/><path d="M9 13h6"/></svg>
-    </span>
-    <b>آشنایی با خانه‌های اسانس</b>
-    <span class="t">ژیوودان، فیرمنیش، ایبرکم و لوزی؛ هویت اسانس هر رایحه مستقلاً تأیید نشده است.</span>
+  <a class="pb" href="/essences">
+    <span class="pb-media"><img src="/images/products/fam-citrus-u-4.webp" alt="" loading="lazy" decoding="async" width="290" height="158"></span>
+    <span class="pb-sheen" aria-hidden="true"></span>
+    <span class="pb-text"><span class="pb-kick">منشأ رایحه</span><span class="pb-t">از خانه‌های نامدار صنعت عطر</span><span class="pb-d">ژیوودان، فیرمنیش و دیگر خانه‌های شناخته‌شده؛ با مرجع مستقل و شفاف برای هر رایحه.</span><span class="pb-cta">آشنایی با خانه‌ها</span></span>
+    <span class="pb-orb" aria-hidden="true"></span>
   </a>
-  <a class="trust-card" href="/why-us">
-    <span class="ic" aria-hidden="true">
-      <svg viewBox="0 0 24 24"><path d="M12 14 3.5 9.5 12 5l8.5 4.5z"/><path d="M7 11.5V16c0 1.4 2.2 2.5 5 2.5s5-1.1 5-2.5v-4.5"/><path d="M20.5 9.5V15"/></svg>
-    </span>
-    <b>۱۲ سال فروش، مدرک عطرسازی</b>
-    <span class="t">سایت ما تازه است، کار ما نه. مدرک رسمی از
-      مدرسه عطرسازی ایران.</span>
+  <a class="pb" href="/why-us">
+    <span class="pb-media"><img src="/images/products/fam-floral-w-7.webp" alt="" loading="lazy" decoding="async" width="290" height="158"></span>
+    <span class="pb-sheen" aria-hidden="true"></span><span class="pb-spark s2" aria-hidden="true"></span>
+    <span class="pb-text"><span class="pb-kick">ساخته با اطمینان</span><span class="pb-t">اتانول آرایشی، هرگز متانول</span><span class="pb-d">متانول از پوست جذب می‌شود و سمی است؛ در فرمول ما جایی ندارد.</span><span class="pb-cta">چرا عطر یزد</span></span>
+    <span class="pb-orb" aria-hidden="true"></span>
   </a>
 </section>
 
-<!-- ویترین خودکار — از داده واقعی فروش، علاقه‌مندی و بازدید ساخته می‌شود.
-     اگر داده‌ای نباشد، بخش اصلاً نمایش داده نمی‌شود. -->
-<section class="container section showcase-wrap" id="showcase" style="display:none">
-  <div class="showcase-tabs" id="showcaseTabs" role="tablist"></div>
-  <div class="product-grid" id="showcaseGrid" role="list"></div>
+<section class="container section">
+  <div class="transparency" style="margin-bottom:20px">
+    🌱 <strong>اطلاعیه شفافیت عطر یزد:</strong>
+    تمامی روایح موجود، بازآفرینی دست‌ساز با عصاره غلیظ اولیه و فرمولاسیون اختصاصی عطر یزد هستند
+    و ادعای اورجینال بودن ندارند.
+  </div>
+
+  <div class="sec-head">
+    <h2 id="catTitle">کاتالوگ عطرها</h2>
+    <div class="cat-tools">
+      <span class="count" id="catCount"></span>
+      <!-- ── فیلتر «فقط موجودها» ──
+           جای اولش داخل نوار جنسیت بود؛ آزمون مرورگر نشان داد
+           آنجا در x=-108 می‌افتد — کاملاً بیرون از دید، چون نوار
+           اسکرول افقی دارد. مهم‌ترین فیلتر سایت نامرئی بود.
+           اینجا کنار مرتب‌سازی همیشه دیده می‌شود. -->
+      <button type="button" class="stock-toggle" id="stockChip"
+              aria-pressed="false">فقط موجودها</button>
+      <label class="sr-only" for="sortSel">ترتیب نمایش</label>
+      <select class="sort-sel" id="sortSel" aria-label="ترتیب نمایش">
+        <option value="">مرتب‌سازی: پیش‌فرض</option>
+        <option value="price_asc">ارزان‌ترین</option>
+        <option value="price_desc">گران‌ترین</option>
+        <option value="name">نام (الفبا)</option>
+        <option value="brand">برند</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="search-note" id="searchNote" style="display:none"></div>
+
+  <div class="active-filters" id="activeFilters" style="display:none"></div>
+
+  <div id="grid" class="product-grid" role="list" aria-label="فهرست عطرها"></div>
+  <div id="loading" role="status" aria-label="در حال بارگذاری"><div class="spinner"></div></div>
+  <div class="pager" id="pager"></div>
 </section>
+
+<section class="container section golchin-cta" aria-label="گلچین عطرها">
+  <a class="golchin-card" href="/golchin">
+    <span class="golchin-text">
+      <span class="pb-kick">گلچین عطرها</span>
+      <b>منتخب سردبیر و پیشنهاد هر فصل، یک‌جا</b>
+      <span class="golchin-d">مجموعه‌ای کوتاه و گردآوری‌شده — تا انتخاب از میان کل کاتالوگ آسان‌تر باشد.</span>
+      <span class="pb-cta">دیدن گلچین</span>
+    </span>
+  </a>
+</section>
+
+
+
 
 <!-- پیشنهاد برای شما — بر پایه پروفایل بویایی از کوییز.
      بالاتر از «اخیراً دیدید» چون سلیقه اعلام‌شده صریح‌تر از
@@ -639,43 +734,7 @@
   </div>
 </section>
 
-<section class="container section">
-  <div class="transparency" style="margin-bottom:20px">
-    🌱 <strong>اطلاعیه شفافیت عطر یزد:</strong>
-    تمامی روایح موجود، بازآفرینی دست‌ساز با عصاره غلیظ اولیه و فرمولاسیون اختصاصی عطر یزد هستند
-    و ادعای اورجینال بودن ندارند.
-  </div>
 
-  <div class="sec-head">
-    <h2 id="catTitle">کاتالوگ عطرها</h2>
-    <div class="cat-tools">
-      <span class="count" id="catCount"></span>
-      <!-- ── فیلتر «فقط موجودها» ──
-           جای اولش داخل نوار جنسیت بود؛ آزمون مرورگر نشان داد
-           آنجا در x=-108 می‌افتد — کاملاً بیرون از دید، چون نوار
-           اسکرول افقی دارد. مهم‌ترین فیلتر سایت نامرئی بود.
-           اینجا کنار مرتب‌سازی همیشه دیده می‌شود. -->
-      <button type="button" class="stock-toggle" id="stockChip"
-              aria-pressed="false">فقط موجودها</button>
-      <label class="sr-only" for="sortSel">ترتیب نمایش</label>
-      <select class="sort-sel" id="sortSel" aria-label="ترتیب نمایش">
-        <option value="">مرتب‌سازی: پیش‌فرض</option>
-        <option value="price_asc">ارزان‌ترین</option>
-        <option value="price_desc">گران‌ترین</option>
-        <option value="name">نام (الفبا)</option>
-        <option value="brand">برند</option>
-      </select>
-    </div>
-  </div>
-
-  <div class="search-note" id="searchNote" style="display:none"></div>
-
-  <div class="active-filters" id="activeFilters" style="display:none"></div>
-
-  <div id="grid" class="product-grid" role="list" aria-label="فهرست عطرها"></div>
-  <div id="loading" role="status" aria-label="در حال بارگذاری"><div class="spinner"></div></div>
-  <div class="pager" id="pager"></div>
-</section>
 
 </main>
 <div id="ftr"></div>
@@ -689,6 +748,38 @@ document.getElementById('ftr').innerHTML = renderFooter();
 let state = { q: '', gender: '', family: '', brand: '', notes: [], sort: '', inStock: false, page: 1, limit: 24 };
 let timer = null;
 let familyNames = {};   // slug → نام فارسی، برای برچسب فیلتر فعال
+
+function setHubOpen(open) {
+  document.getElementById('hubFilters').hidden=!open;
+  document.getElementById('hubFilterButton').setAttribute('aria-expanded',String(open));
+}
+document.getElementById('hubFilterButton').addEventListener('click',()=>setHubOpen(document.getElementById('hubFilters').hidden));
+document.getElementById('closeHubFilters').addEventListener('click',()=>setHubOpen(false));
+document.getElementById('hubStock').addEventListener('change',e=>{state.inStock=e.target.checked;state.page=1;syncChips();loadProducts();});
+function setupHubMore(buttonId,bar,selector) {
+  const button=document.getElementById(buttonId), children=[...bar.querySelectorAll(selector)];
+  const setExpanded=(open)=>{
+    children.forEach((child,i)=>child.classList.toggle('hub-extra-hidden',i>=4 && !open));
+    button.setAttribute('aria-expanded',String(open));
+    button.textContent=open?'نمایش کمتر':'کشف بیشتر';
+  };
+  button.hidden=children.length<=4;
+  button.onclick=()=>setExpanded(button.getAttribute('aria-expanded')!=='true');
+  setExpanded(false);
+}
+function renderHubActive() {
+  const items=[];
+  if(state.inStock)items.push(['موجودی','فقط محصولات موجود','inStock']);
+  if(state.gender)items.push(['جنسیت',GENDER_FA[state.gender] || state.gender,'gender']);
+  if(state.family)items.push(['خانواده',familyNames[state.family] || state.family,'family']);
+  state.notes.forEach(n=>items.push(['نُت',n,'note:'+n]));
+  const count=document.getElementById('hubFilterCount');count.hidden=!items.length;count.textContent=toFa(items.length);
+  const box=document.getElementById('hubActive');
+  box.innerHTML=items.map(([kind,value,key])=>`<span class="fpill">${esc(value)} <button type="button" data-key="${esc(key)}" aria-label="حذف ${esc(kind)} ${esc(value)}">×</button></span>`).join('')+(items.length>1?'<button type="button" class="hub-clear" data-clear-hub>پاک کردن فیلترها</button>':'');
+  box.querySelectorAll('[data-key]').forEach(b=>b.addEventListener('click',()=>clearFilter(b.dataset.key)));
+  const clear=box.querySelector('[data-clear-hub]');
+  if(clear)clear.addEventListener('click',()=>{ state.inStock=false;state.gender='';state.family='';state.notes=[];state.page=1;syncChips();loadProducts(); });
+}
 
 /* ── خواندن وضعیت از نشانی صفحه ──
    لینک‌هایی مثل /?brand=کرِید از صفحه برندها و مسیر راهنمای محصول می‌آیند.
@@ -731,15 +822,15 @@ function writeURL(push) {
 
 /* چیپ‌های جنسیت و خانواده را با وضعیت هماهنگ می‌کند */
 function syncChips() {
-  document.querySelectorAll('#genderBar .fchip').forEach(c =>
-    c.classList.toggle('on', (c.dataset.g || '') === state.gender));
-  document.querySelectorAll('#familyBar .fchip').forEach(c =>
-    c.classList.toggle('on', (c.dataset.f || '') === state.family));
+  document.querySelectorAll('#genderBar .fchip').forEach(c => { const on=(c.dataset.g || '') === state.gender; c.classList.toggle('on',on); c.setAttribute('aria-pressed',String(on)); });
+  document.querySelectorAll('#familyBar .fchip').forEach(c => { const on=(c.dataset.f || '') === state.family; c.classList.toggle('on',on); c.setAttribute('aria-pressed',String(on)); });
   /* ظاهر از `aria-pressed` می‌آید نه از کلاس جدا — یک منبع
      حقیقت، پس ظاهر و وضعیت دسترس‌پذیری نمی‌توانند واگرا شوند. */
   const sc = document.getElementById('stockChip');
   if (sc) sc.setAttribute('aria-pressed', state.inStock ? 'true' : 'false');
+  document.getElementById('hubStock').checked=state.inStock;
   syncNoteChips();
+  renderHubActive();
 }
 
 /* ── نوار فیلترهای فعال ──
@@ -753,6 +844,7 @@ function renderActiveFilters() {
   if (state.brand)  items.push(['برند', state.brand, 'brand']);
   if (state.gender) items.push(['جنسیت', GENDER_FA[state.gender] || state.gender, 'gender']);
   if (state.family) items.push(['خانواده', familyNames[state.family] || state.family, 'family']);
+  if (state.inStock) items.push(['موجودی', 'فقط محصولات موجود', 'inStock']);
   // هر نُت چیپ جدا می‌گیرد تا بشود تک‌تک برداشت
   state.notes.forEach(n => items.push(['نُت', n, 'note:' + n]));
 
@@ -779,11 +871,13 @@ function clearFilter(key) {
     // فقط همان نُت برداشته می‌شود، نه کل فیلتر نُت
     const n = key.slice(5);
     state.notes = state.notes.filter(x => x !== n);
+  } else if (key === 'inStock') {
+    state.inStock = false;
   } else if (key) {
     state[key] = '';
   } else {
     state.q = state.brand = state.gender = state.family = '';
-    state.notes = [];
+    state.notes = []; state.inStock = false;
   }
   if (!key || key === 'q') { const e = document.getElementById('q'); if (e) e.value = ''; }
   state.page = 1;
@@ -804,22 +898,21 @@ async function loadNotes() {
   if (!bar) return;
   let list;
   try {
-    const r = await fetch('/api/notes?min=40&limit=18');
+    const r = await fetch('/api/notes?min=1&limit=200');
     if (!r.ok) return;
     list = (await r.json()).notes || [];
   } catch { return; }
-  if (list.length < 4) return;
+  if (!list.length) return;
 
-  bar.innerHTML =
-    `<span class="note-lbl">نُت بویایی:</span>` +
-    list.map(n =>
-      `<button type="button" class="nchip" data-n="${esc(n.note)}">
+  bar.innerHTML = list.map(n =>
+      `<button type="button" class="nchip" data-n="${esc(n.note)}" aria-pressed="false">
          ${esc(n.note)} <i>${toFa(n.count)}</i></button>`).join('');
 
   bar.querySelectorAll('.nchip').forEach(c => {
     c.onclick = () => toggleNote(c.dataset.n);
   });
-  bar.style.display = '';
+  document.getElementById('noteGroup').hidden=false;
+  setupHubMore('noteMore',bar,'.nchip');
   syncNoteChips();
 }
 
@@ -828,13 +921,12 @@ function toggleNote(n) {
   if (i >= 0) state.notes.splice(i, 1);
   else if (state.notes.length < 4) state.notes.push(n);
   state.page = 1;
-  syncNoteChips();
+  syncChips();
   loadProducts();
 }
 
 function syncNoteChips() {
-  document.querySelectorAll('#noteBar .nchip').forEach(c =>
-    c.classList.toggle('on', state.notes.includes(c.dataset.n)));
+  document.querySelectorAll('#noteBar .nchip').forEach(c => { const on=state.notes.includes(c.dataset.n); c.classList.toggle('on',on); c.setAttribute('aria-pressed',String(on)); });
 }
 
 async function loadFamilies() {
@@ -843,11 +935,11 @@ async function loadFamilies() {
   const d = await r.json();
   d.families.forEach(f => { familyNames[f.family_slug] = f.family_fa || f.family_slug; });
 
-  document.getElementById('familyBar').innerHTML =
-    `<span class="fchip" data-f="">همه خانواده‌ها</span>` +
-    d.families.filter(f => f.count > 5).map(f =>
-      `<span class="fchip" data-f="${f.family_slug}">${f.family_fa || f.family_slug} (${toFa(f.count)})</span>`
-    ).join('');
+  const familyBar = document.getElementById('familyBar');
+  familyBar.innerHTML = `<button type="button" class="fchip" data-f="" aria-pressed="false">همه خانواده‌ها</button>` +
+    d.families.map(f => `<button type="button" class="fchip" data-f="${esc(f.family_slug)}" aria-pressed="false">${esc(f.family_fa || f.family_slug)} (${toFa(f.count)})</button>`).join('');
+  document.getElementById('familyGroup').hidden = !d.families.length;
+  setupHubMore('familyMore',familyBar,'.fchip');
 
   document.querySelectorAll('#familyBar .fchip').forEach(c =>
     c.onclick = () => {
@@ -871,79 +963,6 @@ async function loadBrands() {
        <div class="bc">${esc(b.brand_fa)} (${toFa(b.count)})</div>
      </a>`).join('');
   } catch { document.querySelector('.brands-strip').style.display = 'none'; }
-}
-
-/* ── ویترین خودکار ──
-   سه دسته از داده واقعی: پرفروش‌ترین (سفارش‌های پرداخت‌شده)،
-   محبوب‌ترین (علاقه‌مندی‌ها)، پربازدیدترین (این هفته).
-   هر دسته‌ای که داده نداشته باشد اصلاً تب نمی‌گیرد؛ اگر هیچ‌کدام
-   داده نداشتند، کل بخش پنهان می‌ماند. */
-async function loadShowcase() {
-  let d;
-  try {
-    const r = await fetch('/api/showcase');
-    if (!r.ok) return;
-    d = await r.json();
-  } catch { return; }
-
-  const slots = [
-    /* ── ویترین فصلی ──
-       اول می‌آید چون تنها بخشی است که از روز نخست پر است. بقیه به
-       تاریخچه فروش و بازدید نیاز دارند؛ این فقط به تقویم. */
-    { key: 'seasonal',
-      label: d.season_fa ? `مناسب ${d.season_fa}` : 'پیشنهاد فصل',
-      note: d.season_fa
-        ? `عطرهایی که برای هوای ${d.season_fa} ساخته شده‌اند — هر هفته تازه می‌شود.`
-        : 'پیشنهادهای متناسب با فصل.',
-      items: d.seasonal },
-    { key: 'bestsellers',
-      // وقتی هنوز فروشی نبوده، ادعای «پرفروش» دروغ است
-      label: d.bestsellers_fallback ? 'منتخب سردبیر' : 'پرفروش‌ترین‌ها',
-      note:  d.bestsellers_fallback
-        ? 'گلچینی از خانواده‌های بویایی مختلف — تا نخستین فروش‌ها ثبت شود.'
-        : 'بیشترین فروش سه ماه گذشته.',
-      items: d.bestsellers },
-    { key: 'most_wanted', label: 'بیشترین علاقه‌مندی',
-      note: 'عطرهایی که مشتریان بیش از همه ذخیره کرده‌اند.',
-      items: d.most_wanted },
-    { key: 'trending', label: 'پربازدید این هفته',
-      note: 'بیشترین بازدید در هفت روز گذشته.',
-      items: d.trending }
-  ].filter(s => (s.items || []).length >= 3);
-
-  if (!slots.length) return;   // داده کافی نیست — بخش نمایش داده نمی‌شود
-
-  const wrap = document.getElementById('showcase');
-  const tabs = document.getElementById('showcaseTabs');
-
-  tabs.innerHTML = slots.map((s, i) =>
-    `<button class="sc-tab ${i === 0 ? 'on' : ''}" role="tab"
-             aria-selected="${i === 0}" data-slot="${s.key}">${esc(s.label)}</button>`
-  ).join('');
-
-  const show = (key) => {
-    const s = slots.find(x => x.key === key);
-    if (!s) return;
-    tabs.querySelectorAll('.sc-tab').forEach(b => {
-      const on = b.dataset.slot === key;
-      b.classList.toggle('on', on);
-      b.setAttribute('aria-selected', on);
-    });
-    document.getElementById('showcaseGrid').innerHTML =
-      `<p class="sc-note">${esc(s.note)}</p>` +
-      s.items.map(p => productCard({
-        ...p,
-        notes: { top: [] },
-        min_price: p.min_price
-      })).join('');
-  };
-
-  tabs.querySelectorAll('.sc-tab').forEach(b => {
-    b.onclick = () => show(b.dataset.slot);
-  });
-
-  wrap.style.display = '';
-  show(slots[0].key);
 }
 
 function pickBrand(name) {
@@ -1234,7 +1253,6 @@ readURL();
 loadFamilies();
 loadNotes();
 loadBrands();
-loadShowcase();
 loadProducts();
 
 /* «اخیراً دیدید» — کاملاً محلی، هیچ درخواستی به سرور نمی‌زند.

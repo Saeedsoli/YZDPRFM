@@ -2108,6 +2108,7 @@ const server = http.createServer(async (req, res) => {
         /* سمپل اولویت بالا دارد: مانع اصلی خرید آنلاین عطر
            «نچشیده خریدن» است و این صفحه پاسخ همان است. */
         ['/samples', '0.9', 'weekly'],
+        ['/golchin', '0.7', 'weekly'],
         ['/why-us', '0.8', 'monthly'],
         ['/journal', '0.9', 'weekly'],
         ['/essences', '0.9', 'monthly'],
@@ -2245,6 +2246,7 @@ const server = http.createServer(async (req, res) => {
         '/essences': 'essences.html',
         '/why-us': 'why-us.html',
         '/samples': 'samples.html',
+        '/golchin': 'golchin.html',
         '/check': 'check.html',
         '/terms': 'terms.html',
         '/privacy': 'privacy.html',

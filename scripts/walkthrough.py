@@ -59,9 +59,9 @@ with sync_playwright() as pw:
     pg.wait_for_timeout(700)
     shot(pg, "home_filters", "جستجو و فیلترها (جنسیت · خانواده · نُت)")
 
-    pg.evaluate("document.querySelector('#showcase').scrollIntoView({block:'start'})")
+    pg.evaluate("document.querySelector('.banners-section').scrollIntoView({block:'start'})")
     pg.wait_for_timeout(900)
-    shot(pg, "showcase", "ویترین فصلی")
+    shot(pg, "banners", "بنرهای معرفی")
 
     pg.evaluate("document.querySelector('#grid').scrollIntoView({block:'start'})")
     pg.wait_for_timeout(900)

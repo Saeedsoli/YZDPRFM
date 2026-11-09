@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<link rel="preload" href="/fonts/Vazirmatn-Regular.woff2" as="font" type="font/woff2" crossorigin>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="manifest" href="/site.webmanifest">
+<meta name="theme-color" content="#121212">
+<title>گلچین عطرها | منتخب سردبیر و پیشنهاد فصل</title>
+<meta name="description" content="گلچین عطر یزد: منتخب سردبیر و پیشنهادهای هر فصل از میان رایحه‌های قابل سفارش، در یک صفحه کوتاه و خوانا.">
+<link rel="stylesheet" href="/assets/theme.css">
+<style>
+  .gl-hero { background:linear-gradient(135deg,#141414,#262119); color:#FFF; padding:46px 20px 52px; text-align:center }
+  .gl-hero .eyebrow { color:var(--gold); font-size:.72rem; font-weight:800; letter-spacing:1.6px; display:block; margin-bottom:11px }
+  .gl-hero h1 { font-size:1.6rem; font-weight:800; line-height:1.6; margin-bottom:10px }
+  .gl-hero p { font-size:.88rem; opacity:.85; max-width:620px; margin:0 auto; line-height:2.1 }
+  .gl-body { max-width:1320px; margin:26px auto 46px; padding:0 20px }
+  .gl-tabs { display:flex; gap:8px; flex-wrap:wrap; margin-bottom:16px }
+  .gl-tab { background:var(--surface); border:1px solid var(--border); color:var(--text);
+            border-radius:30px; padding:9px 17px; font:inherit; font-size:.82rem; cursor:pointer }
+  .gl-tab.on { background:var(--obsidian); border-color:var(--obsidian); color:#FFF; font-weight:800 }
+  .gl-tab:focus-visible { outline:2px solid var(--gold); outline-offset:2px }
+  .gl-note { font-size:.8rem; color:var(--muted); line-height:2; margin:0 0 16px }
+  .gl-empty { border:1px dashed var(--border); border-radius:14px; padding:26px; text-align:center;
+              color:var(--muted); font-size:.86rem; line-height:2 }
+  @media (max-width:640px) { .gl-hero h1 { font-size:1.28rem } .gl-body { padding:0 14px } }
+</style>
+</head>
+<body>
+<div id="hdr" class="hdr-reserve"></div>
+
+<main id="main">
+  <section class="gl-hero">
+    <span class="eyebrow">YAZD PERFUME · SELECTION</span>
+    <h1>گلچین عطرها</h1>
+    <p>منتخب سردبیر و پیشنهادهای هر فصل، از میان رایحه‌های قابل سفارش. این بخش هر هفته به‌روز می‌شود.</p>
+  </section>
+
+  <div class="gl-body">
+    <div class="gl-tabs" id="glTabs" role="tablist" aria-label="دسته‌های گلچین"></div>
+    <p class="gl-note" id="glNote"></p>
+    <div class="product-grid" id="glGrid" role="list" aria-label="عطرهای گلچین"></div>
+    <div class="gl-empty" id="glEmpty" hidden>در این دسته فعلاً رایحه‌ای ثبت نشده است. <a href="/">دیدن کاتالوگ کامل</a></div>
+  </div>
+</main>
+
+<div id="ftr"></div>
+
+<script src="/assets/jalaali-core.js"></script>
+<script src="/assets/app.js"></script>
+<script>
+document.getElementById('hdr').innerHTML = renderHeader('');
+document.getElementById('ftr').innerHTML = renderFooter();
+
+const tabsEl = document.getElementById('glTabs');
+const gridEl = document.getElementById('glGrid');
+const noteEl = document.getElementById('glNote');
+const emptyEl = document.getElementById('glEmpty');
+let slots = [];
+
+function showSlot(key) {
+  const slot = slots.find(x => x.key === key);
+  if (!slot) return;
+  tabsEl.querySelectorAll('.gl-tab').forEach(b => {
+    const on = b.dataset.slot === key;
+    b.classList.toggle('on', on);
+    b.setAttribute('aria-selected', on ? 'true' : 'false');
+  });
+  noteEl.textContent = slot.note || '';
+  gridEl.innerHTML = (slot.items || []).map(p => productCard({
+    ...p, notes: { top: [] }, min_price: p.min_price
+  })).join('');
+  emptyEl.hidden = !!(slot.items || []).length;
+}
+
+async function loadSelection() {
+  let data;
+  try {
+    const response = await fetch('/api/showcase');
+    if (!response.ok) throw new Error();
+    data = await response.json();
+  } catch {
+    emptyEl.hidden = false;
+    noteEl.textContent = '';
+    return;
+  }
+  slots = [
+    {
+      key: 'bestsellers',
+      label: data.bestsellers_fallback ? 'منتخب سردبیر' : 'پرفروش‌ترین‌ها',
+      note: data.bestsellers_fallback
+        ? 'گلچینی از خانواده‌های بویایی مختلف — تا نخستین فروش‌ها ثبت شود.'
+        : 'بیشترین فروش سه ماه گذشته.',
+      items: data.bestsellers
+    },
+    {
+      key: 'seasonal',
+      label: data.season_fa ? 'مناسب ' + data.season_fa : 'پیشنهاد فصل',
+      note: data.season_fa
+        ? 'عطرهایی که برای هوای ' + data.season_fa + ' ساخته شده‌اند — هر هفته تازه می‌شود.'
+        : 'پیشنهادهای متناسب با فصل.',
+      items: data.seasonal
+    },
+    { key: 'most_wanted', label: 'بیشترین علاقه‌مندی',
+      note: 'عطرهایی که مشتریان بیش از همه ذخیره کرده‌اند.', items: data.most_wanted },
+    { key: 'trending', label: 'پربازدید این هفته',
+      note: 'بیشترین بازدید در هفت روز گذشته.', items: data.trending }
+  ].filter(slot => (slot.items || []).length >= 3);
+
+  if (!slots.length) {
+    emptyEl.hidden = false;
+    noteEl.textContent = '';
+    return;
+  }
+
+  tabsEl.innerHTML = slots.map((slot, index) => `<button type="button" class="gl-tab${index === 0 ? ' on' : ''}" role="tab"
+    aria-selected="${index === 0 ? 'true' : 'false'}" data-slot="${esc(slot.key)}">${esc(slot.label)}</button>`).join('');
+  tabsEl.querySelectorAll('.gl-tab').forEach(tab => {
+    tab.addEventListener('click', () => showSlot(tab.dataset.slot));
+  });
+  showSlot(slots[0].key);
+}
+
+loadSelection();
+</script>
+</body>
+</html>

@@ -114,37 +114,26 @@ async def main():
             len(prices) >= 12 and all("تومان" in x for x in prices[:5]),
             prices[0].strip() if prices else "")
 
-        # ویترین
-        sc = await pg.query_selector("#showcase")
-        sc_visible = await sc.is_visible() if sc else False
-        add("ویترین خودکار نمایش داده می‌شود", sc_visible)
-
-        if sc_visible:
-            tabs = await pg.query_selector_all(".sc-tab")
-            add("ویترین تب دارد", len(tabs) >= 1, f"{len(tabs)} تب")
-
-            sc_cards = await pg.query_selector_all("#showcaseGrid .product-card")
-            add("ویترین محصول دارد", len(sc_cards) >= 3, f"{len(sc_cards)} محصول")
-
-            # سوییچ تب — کل فهرست مقایسه می‌شود، نه فقط اولین کارت.
-            # (محصول اول ممکن است در هر دو تب یکی باشد و این طبیعی است.)
-            if len(tabs) >= 2:
-                titles = lambda: pg.eval_on_selector_all(
-                    "#showcaseGrid .product-card .card-title",
-                    "els => els.map(e => e.textContent.trim()).join('|')")
-                first = await titles()
-                await tabs[1].click()
-                await pg.wait_for_timeout(700)
-                second = await titles()
-                add("سوییچ تب محتوا را عوض می‌کند", first != second,
-                    f"{len(first.split('|'))} → {len(second.split('|'))} محصول")
-
-                active = await pg.eval_on_selector_all(
-                    ".sc-tab", "els => els.filter(e => e.classList.contains('on')).length")
-                add("فقط یک تب فعال است", active == 1, f"{active} تب فعال")
-
-                await tabs[0].click()
-                await pg.wait_for_timeout(400)
+        # گلچین — منتخب سردبیر و پیشنهاد فصل، صفحه مستقل
+        await pg.goto(BASE + "/golchin", wait_until="domcontentloaded")
+        await pg.wait_for_timeout(1200)
+        add("صفحه گلچین باز می‌شود", await pg.query_selector("#glTabs") is not None)
+        tabs = await pg.query_selector_all("#glTabs .gl-tab")
+        add("گلچین تب دارد", len(tabs) >= 1, f"{len(tabs)} تب")
+        sc_cards = await pg.query_selector_all("#glGrid .product-card")
+        add("گلچین محصول دارد", len(sc_cards) >= 3, f"{len(sc_cards)} محصول")
+        if len(tabs) >= 2:
+            titles = lambda: pg.eval_on_selector_all(
+                "#glGrid .product-card .card-title",
+                "els => els.map(e => e.textContent.trim()).join('|')")
+            first = await titles()
+            await tabs[1].click()
+            await pg.wait_for_timeout(600)
+            second = await titles()
+            add("سوییچ تب محتوا را عوض می‌کند", first != second,
+                f"{len(first.split('|'))} → {len(second.split('|'))} محصول")
+        await pg.goto(BASE, wait_until="domcontentloaded")
+        await pg.wait_for_timeout(900)
 
         # ── ۳) جستجو ──
         print(D("\n  جستجو در مرورگر"))

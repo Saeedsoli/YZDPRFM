@@ -79,7 +79,7 @@ run_test() {
 
 echo "== canonical page URLs"
 for p in / /cart /checkout /account /wishlist /track /contact /terms /privacy \
-         /quiz /brands /essences /journal /login /admin /check; do
+         /quiz /brands /essences /journal /login /admin /check /golchin; do
   chk "$(curl -s -o /dev/null -w '%{http_code}' http://localhost:3000$p)" "200" "$p"
 done
 

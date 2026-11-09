@@ -95,11 +95,12 @@ async def main():
             await p2.locator("#stockChip").get_attribute("aria-pressed")=="true")
         await p2.close()
 
-        print("\n  ۵.۵) ویترین صفحه اصلی")
-        sc_out = await p.locator("#showcaseGrid .card-out").count()
-        sc_all = await p.locator("#showcaseGrid .product-card").count()
-        add("ویترین هم وضعیت موجودی را نشان می‌دهد", sc_out > 0,
-            f"{sc_out} ناموجود از {sc_all} کارت ویترین")
+        print("\n  ۵.۵) گلچین (صفحه مستقل)")
+        await p.goto(BASE+"/golchin", wait_until="domcontentloaded"); await p.wait_for_timeout(1500)
+        sc_out = await p.locator("#glGrid .card-out").count()
+        sc_all = await p.locator("#glGrid .product-card").count()
+        add("گلچین هم وضعیت موجودی را نشان می‌دهد", sc_out > 0,
+            f"{sc_out} ناموجود از {sc_all} کارت گلچین")
 
         print("\n  ۶) سلامت")
         cls = await p.evaluate("window.__cls||0")
