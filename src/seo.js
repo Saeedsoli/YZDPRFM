@@ -674,7 +674,9 @@ function brandsPage(html, brands) {
 
   const cards = brands.map(b =>
     `<a class="bcard" href="/?brand=${encodeURIComponent(b.brand_fa)}">`
-    + `<div class="en">${esc(String(b.brand_en || '').toUpperCase())}</div>`
+    + (b.logo
+        ? `<img class="blogo" src="${esc(b.logo)}" alt="${esc(String(b.brand_en || b.brand_fa || ''))}" loading="lazy" decoding="async">`
+        : `<div class="en">${esc(String(b.brand_en || '').toUpperCase())}</div>`)
     + `<div class="fa">${esc(b.brand_fa)}</div>`
     + `<div class="ct">${faNum(b.count)} رایحه</div></a>`).join('');
 

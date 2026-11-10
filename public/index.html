@@ -488,8 +488,12 @@
   .brand-pill { background: var(--surface); border: 1px solid var(--border);
                 padding: 12px 10px; border-radius: 11px; text-align: center;
                 cursor: pointer; transition: all var(--t-fast); }
-  .brand-pill:hover { background: var(--obsidian); border-color: var(--gold); }
-  .brand-pill:hover .bn, .brand-pill:hover .bc { color: var(--gold); }
+  .brand-pill:hover { border-color: rgba(197,155,39,.65); box-shadow: 0 10px 22px rgba(31,24,12,.08); transform: translateY(-2px); }
+  .brand-pill:hover .bc { color: var(--gold-dark); }
+  .brand-pill { transition: transform var(--t-fast), border-color var(--t-fast), box-shadow var(--t-fast); }
+  /* لوگوهای رسمی: درون کاشی روشن، با ارتفاع ثابت و بدون کشیدگی */
+  .brand-logo { display:block; max-width:100%; max-height:34px; width:auto; height:auto;
+                margin:2px auto 8px; object-fit:contain }
   .bn { font-size: .82rem; font-weight: 800; letter-spacing: .4px; }
   .bc { font-size: .68rem; color: var(--muted); margin-top: 2px; }
 
@@ -963,12 +967,18 @@ async function loadBrands() {
   try {
   const r = await fetch('/api/brands');
   const d = await r.json();
-  document.getElementById('brands').innerHTML = d.brands.slice(0, 12).map(b =>
-    `<a class="brand-pill" href="/?brand=${encodeURIComponent(b.brand_fa)}"
-        onclick="event.preventDefault();pickBrand('${b.brand_fa.replace(/'/g,"\\'")}')">
-       <div class="bn">${(b.brand_en || '').toUpperCase()}</div>
+  document.getElementById('brands').innerHTML = d.brands.slice(0, 12).map(b => {
+    /* لوگوی اصلی وقتی موجود است؛ وگرنه نام برند با حروف‌چینی تایپوگرافیک.
+       لوگوها فایل محلی و بدون درخواست بیرونی‌اند. */
+    const mark = b.logo
+      ? `<img class="brand-logo" src="${esc(b.logo)}" alt="${esc(b.brand_en || b.brand_fa || '')}" loading="lazy" decoding="async"${b.logo_width ? ` width="${Number(b.logo_width)}" height="${Number(b.logo_height)}"` : ''}>`
+      : `<div class="bn">${esc((b.brand_en || '').toUpperCase())}</div>`;
+    return `<a class="brand-pill" href="/?brand=${encodeURIComponent(b.brand_fa)}"
+        onclick="event.preventDefault();pickBrand(${esc(JSON.stringify(b.brand_fa))})">
+       ${mark}
        <div class="bc">${esc(b.brand_fa)} (${toFa(b.count)})</div>
-     </a>`).join('');
+     </a>`;
+  }).join('');
   } catch { document.querySelector('.brands-strip').style.display = 'none'; }
 }
 

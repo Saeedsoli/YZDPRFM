@@ -416,6 +416,7 @@ run_test test_hugo_versus_name.js "Hugo Versus name guard"
 if python3 scripts/test_approved_mto_v13.py >/tmp/test_approved_mto_v13.log 2>&1; then P=$((P+1)); else F=$((F+1)); echo "  X owner default six approvals"; fi
 run_test test_default_reference_v53.js "six sourced default references"
 run_test test_font_preload.js "local regular font preload"
+run_test test_brand_logos.js "brand logos: local, licensed, safe"
 run_test test_availability_style_consistency.js "one availability style everywhere"
 run_test test_journal_lcp.js "journal server-side render + LCP guards"
 run_test test_invoice_legal.js "invoice: plain vs formal (legal info)"

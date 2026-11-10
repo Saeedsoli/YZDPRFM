@@ -24,7 +24,8 @@
  transition:transform var(--t-smooth),box-shadow var(--t-smooth),border-color var(--t-fast)}
 .bcard:hover{border-color:rgba(197,155,39,.5);transform:translateY(-4px);box-shadow:var(--sh-lg)}
 .bcard .en{font-size:.92rem;font-weight:800;letter-spacing:.5px}
-.bcard .fa{font-size:.82rem;color:var(--muted);margin-top:3px}
+.bcard .fa{font-size:.82rem;color:var(--muted);margin-top:8px}
+.bcard .blogo{display:block;max-width:100%;max-height:38px;width:auto;height:auto;margin:2px auto 0;object-fit:contain}
 .bcard .ct{font-size:.72rem;color:var(--gold);font-weight:700;margin-top:6px}
 .bcard::after{content:'';position:absolute;inset:auto 0 0 0;height:2px;background:var(--gold);
  transform:scaleX(0);transform-origin:right;transition:transform .45s var(--ease-out)}
@@ -121,11 +122,16 @@ function draw(list){
       <p style="margin-top:6px">جستجو یا حرف انتخابی را تغییر دهید.</p></div>`;
     return;
   }
-  el.innerHTML=list.map(b=>
-   `<a class="bcard" href="/?brand=${encodeURIComponent(b.brand_fa)}">
-      <div class="en">${(b.brand_en||'').toUpperCase()}</div>
+  el.innerHTML=list.map(b=>{
+    /* لوگوی اصلی در صورت وجود؛ وگرنه نام برند با حروف‌چینی */
+    const mark=b.logo
+      ? `<img class="blogo" src="${esc(b.logo)}" alt="${esc(b.brand_en||b.brand_fa||'')}" loading="lazy" decoding="async">`
+      : `<div class="en">${esc((b.brand_en||'').toUpperCase())}</div>`;
+    return `<a class="bcard" href="/?brand=${encodeURIComponent(b.brand_fa)}">
+      ${mark}
       <div class="fa">${esc(b.brand_fa)}</div>
-      <div class="ct">${toFa(b.count)} رایحه</div></a>`).join('');
+      <div class="ct">${toFa(b.count)} رایحه</div></a>`;
+  }).join('');
 }
 document.getElementById('bq').oninput=apply;
 load();

@@ -496,7 +496,10 @@ PENDING → PAID → PROCESSING → SHIPPED → DELIVERED
 PUT /api/admin/variants/:sku      { price_toman, stock }
 PUT /api/admin/products/:slug     { price_change_percent } یا { set_all_stock }
 GET /api/admin/low-stock?threshold=10
+GET /api/admin/inventory?q=&status=&type=&sort=&page=
 ```
+
+`GET /api/admin/inventory` فهرست صفحه‌بندی‌شده همه کالاهای قابل نمایش را با جست‌وجوی نام، برند و SKU، فیلتر وضعیت (`IN_STOCK`، `MADE_TO_ORDER`، `UNAVAILABLE`)، فیلتر نوع (`EDP`، `SAMPLE`، `BODY_SPLASH`) و مرتب‌سازی (`default`، `name`، `stock_up`، `stock_down`) برمی‌گرداند. دسترسی: `products.view`. واریانت‌های پنهان (عطر مو و حجم‌های بازنشسته) در نتیجه نمی‌آیند و فقط خواندنی است.
 
 اگر کالا واقعاً قابل فروش شود و موجودی انبار مثبت باشد، به منتظران اطلاع داده می‌شود؛ واریانت‌های پنهان یا محصولات غیرقابل تأمین اطلاع اشتباه نمی‌دهند.
 

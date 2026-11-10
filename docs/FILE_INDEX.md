@@ -143,6 +143,9 @@ bash scripts/smoke_test.sh     # ۹۲ آزمون خودکار
 | `test_readiness.js` | ۳۷ بررسی — آمادگی افتتاح و نشت نکردن کلید |
 | `test_backup_stream_safety.js` | پشتیبان هم‌زمان، بازیابی آزمایشی و پاک‌سازی پس از قطع یا خطا |
 | `test_font_preload.js` | بررسی پیش‌بارگذاری فونت محلی در صفحات |
+| `test_brand_logos.js` | لوگوی برندها: فایل محلی، مجوز ثبت‌شده، بدون محتوای اجرایی |
+| `brand-logos.js` | سرو لوگوی برند از `seed/brand_logos_v1.json` |
+| `brand_logos_v1.json` | فهرست لوگوها با منبع و مجوز |
 | `test_availability_style_consistency.js` | یک قانون و یک ظاهر برای موجود، به سفارش و ناموجود |
 | `test_inventory_discovery.js` | بررسی دسترسی، جست‌وجو، فیلتر، مرتب‌سازی و صفحه‌بندی موجودی |
 | `test_journal_lcp.js` | ۳۸ بررسی — رندر سمت سرور مجله و نگهبان‌های LCP |
@@ -1060,3 +1063,4 @@ node_modules/   با npm install برمی‌گردد
 - `scripts/test_privacy_policy.js` — کنترل هم‌خوانی متن حریم خصوصی با ذخیره هش رمز، سرویس‌ها و آمار داخلی.
 - `scripts/copy_supplier_fixture.py` — انتقال صرفاً فایل قیمت شناخته‌شده با کنترل هش و بدون دنبال‌کردن پیوند، به محیط آزمون ایزوله.
 - `scripts/test_attachment_exclusion.py` — آزمون کنارگذاشتن پیوست‌های محرمانه از Git، بسته استقرار و مراحل آزمون.
+| `BRAND_LOGO_ASSETS.md` | منبع، مجوز و نگهداری لوگوی خانه‌های عطر |

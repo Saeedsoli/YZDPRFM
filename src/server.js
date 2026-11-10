@@ -2366,7 +2366,7 @@ const server = http.createServer(async (req, res) => {
                 GROUP BY brand_fa, brand_en
                 ORDER BY count DESC, brand_fa
               `).all();
-              html = seo.brandsPage(html, brands);
+              html = seo.brandsPage(html, require('./brand-logos').attach(brands));
             } else if (seo.hasSimple(pathname)) {
               html = seo.simplePage(html, pathname);
             }

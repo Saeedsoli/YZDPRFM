@@ -43,6 +43,7 @@
 
 'use strict';
 const { publicVariantSql } = require('../variant-visibility');
+const brandLogos = require('../brand-logos');
 const shopTime = require('../shop-time');
 
 /**
@@ -394,7 +395,8 @@ async function handle(ctx) {
       GROUP BY brand_fa, brand_en
       ORDER BY count DESC, brand_fa
     `).all();
-    return sendJSON(200, { total: rows.length, brands: rows });
+    const brands = brandLogos.attach(rows);
+    return sendJSON(200, { total: brands.length, brands });
   }
 
   // خانواده‌های بویایی
