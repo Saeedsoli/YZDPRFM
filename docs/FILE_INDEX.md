@@ -143,6 +143,7 @@ bash scripts/smoke_test.sh     # ۹۲ آزمون خودکار
 | `test_readiness.js` | ۳۷ بررسی — آمادگی افتتاح و نشت نکردن کلید |
 | `test_backup_stream_safety.js` | پشتیبان هم‌زمان، بازیابی آزمایشی و پاک‌سازی پس از قطع یا خطا |
 | `test_font_preload.js` | بررسی پیش‌بارگذاری فونت محلی در صفحات |
+| `test_availability_style_consistency.js` | یک قانون و یک ظاهر برای موجود، به سفارش و ناموجود |
 | `test_inventory_discovery.js` | بررسی دسترسی، جست‌وجو، فیلتر، مرتب‌سازی و صفحه‌بندی موجودی |
 | `test_journal_lcp.js` | ۳۸ بررسی — رندر سمت سرور مجله و نگهبان‌های LCP |
 | `test_invoice_legal.js` | ۴۰ بررسی — تفکیک فاکتور عادی و رسمی، الزام اینماد |

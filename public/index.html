@@ -1140,7 +1140,7 @@ async function fetchSugg(term) {
           <span class="sugg-t">${esc(fullName(p))}</span>
           <span class="sugg-s">${esc(p.name_en || '')}</span>
           ${isGenericProductImage(p.image_url) ? '<span class="sugg-s">تصویر نمادین است</span>' : ''}
-          ${p.in_stock ? '' : p.supply_mode === 'MADE_TO_ORDER' && Number(p.min_price) > 0 ? '<span class="sugg-out">به سفارش</span>' : '<span class="sugg-out">ناموجود</span>'}
+          ${productSupply(p).label ? `<span class="sugg-out">${esc(productSupply(p).label)}</span>` : ''}
         </span>
         <span class="sugg-p">${money(p.min_price)}</span>
       </a>`).join('') +

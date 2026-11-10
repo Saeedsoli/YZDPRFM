@@ -370,6 +370,44 @@ function cardImage(url) {
     : url;
 }
 
+
+/* ── وضعیت عرضه: یک منبع حقیقت ──
+   هر جایی که کارت محصول ساخته می‌شود (کاتالوگ، گلچین، علاقه‌مندی،
+   پیشنهاد جستجو) باید یک برچسب، یک متن دکمه و یک ظاهر بگیرد.
+   پیش‌تر علاقه‌مندی «ناموجود» کوچک می‌نوشت و تصویر را کم‌رنگ
+   نمی‌کرد؛ همان محصول در کاتالوگ ظاهر دیگری داشت. */
+function variantSellable(p, v) {
+  return !!v && ['IN_STOCK', 'MADE_TO_ORDER'].includes(p.supply_mode) && v.price_toman > 0 &&
+    (v.stock > 0 || p.supply_mode === 'MADE_TO_ORDER');
+}
+function productSupply(p) {
+  const mode = p.supply_mode || 'UNAVAILABLE';
+  const unknown = p.availability_unknown === true;
+  const eligible = ['IN_STOCK', 'MADE_TO_ORDER'].includes(mode);
+  /* «موجود در انبار» یعنی موجودی فیزیکی، نه قابلیت ساخت.
+     فهرست علاقه‌مندی فیلد `in_stock` را ندارد و پیش‌تر از روی
+     «قابل سفارش بودن» حدس زده می‌شد؛ نتیجه این بود که محصول
+     ساخت پس از سفارش در علاقه‌مندی «موجود» و در کاتالوگ «به سفارش»
+     دیده می‌شد. */
+  const derived = (p.variants || []).some(v =>
+    eligible && v.price_toman > 0 && Number(v.stock) > 0);
+  const knownInStock = p.in_stock === true || p.in_stock === 1;
+  const inStock = eligible && (knownInStock || (p.in_stock == null && derived));
+  const madeToOrder = !unknown && !inStock && mode === 'MADE_TO_ORDER' && Number(p.min_price) > 0;
+  const out = !unknown && !inStock && !madeToOrder;
+  return {
+    unknown, inStock, madeToOrder, out,
+    state: unknown ? 'UNKNOWN' : inStock ? 'IN_STOCK' : madeToOrder ? 'MADE_TO_ORDER' : 'UNAVAILABLE',
+    label: unknown || inStock ? '' : (madeToOrder ? 'به سفارش' : 'ناموجود'),
+    cta: unknown ? 'مشاهده جزئیات' : inStock ? 'مشاهده و خرید'
+       : madeToOrder ? 'به سفارش ساخته می‌شود' : 'خبرم کن وقتی رسید',
+    foot: out ? 'خبرم کن' : 'مشاهده',
+    aria: unknown || inStock ? 'مشاهده جزئیات'
+        : madeToOrder ? 'به سفارش ساخته می‌شود' : 'فعلاً موجود نیست، اطلاع از موجود شدن',
+    classes: `product-card${out ? ' is-out' : ''}${madeToOrder ? ' is-mto' : ''}`
+  };
+}
+
 function productCard(p) {
   const notes = (p.notes?.top || []).slice(0, 3).join('، ');
   const img = cardImage(p.image_url);
@@ -416,31 +454,20 @@ function productCard(p) {
 
      این تفاوت مهم است چون بیشتر کاتالوگ عمداً بدون موجودی انبار
      است: عنوان‌ها برای سفارش و دیده‌شدن در جستجو می‌مانند. */
-  const mode = p.supply_mode || 'UNAVAILABLE';
-  const inStock = (p.in_stock === true || p.in_stock === 1) && ['IN_STOCK','MADE_TO_ORDER'].includes(mode);
-  const unknownState = p.availability_unknown === true;
-  const madeToOrder = !unknownState && !inStock && mode === 'MADE_TO_ORDER' && Number(p.min_price) > 0;
-  const out = !unknownState && !inStock && !madeToOrder;
-
-  const stateLabel = unknownState || inStock ? '' : (madeToOrder ? 'به سفارش' : 'فعلاً نداریم');
-  const peekText = unknownState ? 'مشاهده جزئیات' : inStock ? 'مشاهده و خرید'
-                 : madeToOrder ? 'به سفارش ساخته می‌شود'
-                 : 'خبرم کن وقتی رسید';
-  const aria = unknownState || inStock ? 'مشاهده جزئیات'
-             : madeToOrder ? 'به سفارش ساخته می‌شود'
-             : 'فعلاً موجود نیست، اطلاع از موجود شدن';
+  const supply = productSupply(p);
+  const { inStock, madeToOrder, out, unknown } = supply;
 
   return `
-  <a class="product-card fade-up${out ? ' is-out' : ''}${madeToOrder ? ' is-mto' : ''}"
+  <a class="${supply.classes} fade-up"
      href="/perfume/${encodeURIComponent(p.slug)}"
-     aria-label="${esc(fullName(p))} — ${aria}">
+     aria-label="${esc(fullName(p))} — ${supply.aria}">
     <div class="img-wrap">
       <img src="${esc(img)}" alt="${illustrative ? 'تصویر نمادین' : 'تصویر'} ${esc(fullName(p))}" loading="lazy" width="300" height="300">
       ${illustrative ? '<span class="card-illustrative">تصویر نمادین</span>' : ''}
       ${genderLabel(p.gender) ? `<span class="card-badge">${genderLabel(p.gender)}</span>` : ''}
-      ${stateLabel ? `<span class="card-out${madeToOrder ? ' mto' : ''}">${stateLabel}</span>` : ''}
+      ${supply.label ? `<span class="card-out${madeToOrder ? ' mto' : ''}">${supply.label}</span>` : ''}
       ${off > 0 && inStock ? `<span class="card-off"><bdi>${esc(toFa(pct))}٪</bdi> تخفیف</span>` : ''}
-      <div class="card-peek">${peekText}</div>
+      <div class="card-peek">${supply.cta}</div>
     </div>
     <div class="body">
       <div class="card-title">${esc(fullName(p))} <span class="card-tag">«دست‌ساز»</span></div>

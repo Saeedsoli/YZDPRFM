@@ -58,19 +58,15 @@ const TRASH = '<svg viewBox="0 0 24 24"><path d="M4 7h16M10 11v6M14 11v6' +
 /* کارت علاقه‌مندی — نسخه کارت معمولی به‌علاوه حذف و افزودن سریع.
    قبلاً برای برداشتن یک رایحه از این فهرست باید به صفحه محصول
    برمی‌گشتید و قلب را دوباره می‌زدید. */
-function wishVariantAvailable(p, v) {
-  return !!v && ['IN_STOCK','MADE_TO_ORDER'].includes(p.supply_mode) && v.price_toman > 0 &&
-    (v.stock > 0 || p.supply_mode === 'MADE_TO_ORDER');
-}
 function wishCard(p) {
   const notes = (p.notes?.top || []).slice(0, 3).join('، ');
-  const available = (p.variants || []).some(v => wishVariantAvailable(p,v));
+  const supply = productSupply(p);
   const cheapest = (p.variants || [])
-    .filter(v => v.type === 'SAMPLE' && v.volume_ml === 5 && wishVariantAvailable(p,v))
+    .filter(v => v.type === 'SAMPLE' && v.volume_ml === 5 && variantSellable(p, v))
     .sort((a, b) => a.price_toman - b.price_toman)[0];
 
   return `
-  <div class="product-card wish-card" data-slug="${esc(p.slug)}">
+  <div class="${supply.classes} wish-card" data-slug="${esc(p.slug)}">
     <button class="rm" title="حذف از علاقه‌مندی"
       aria-label="حذف ${esc(p.name_fa)} از علاقه‌مندی"
       data-action="remove">${TRASH}</button>
@@ -80,6 +76,7 @@ function wishCard(p) {
         <img src="${esc(cardImage(p.image_url))}" alt="${isGenericProductImage(p.image_url) ? 'تصویر نمادین' : 'تصویر'} ${esc(p.name_fa)}" loading="lazy" width="300" height="300">
         ${isGenericProductImage(p.image_url) ? '<span class="card-illustrative">تصویر نمادین</span>' : ''}
         ${genderLabel(p.gender) ? `<span class="card-badge">${genderLabel(p.gender)}</span>` : ''}
+        ${supply.label ? `<span class="card-out${supply.madeToOrder ? ' mto' : ''}">${supply.label}</span>` : ''}
       </div>
       <div class="body">
         <div class="card-title">${esc(p.brand_fa ? p.brand_fa + ' — ' : '')}${esc(p.name_fa)}
@@ -88,7 +85,9 @@ function wishCard(p) {
         ${notes ? `<div class="card-notes">نُت‌های آغازین: ${esc(notes)}</div>` : ''}
         <div class="card-price-row">
           <span class="price">${p.min_price > 0 ? `از ${money(p.min_price)} <small>تومان</small>` : 'قیمت در دسترس نیست'}</span>
-          ${available ? '' : '<span style="font-size:.72rem;color:var(--muted)">ناموجود</span>'}
+          ${supply.out
+            ? '<span class="card-go-notify">خبرم کن ←</span>'
+            : '<span class="card-go">مشاهده ←</span>'}
         </div>
       </div>
     </a>
@@ -125,12 +124,12 @@ function render() {
     return;
   }
 
-  const avail = items.filter(p => (p.variants || []).some(v => wishVariantAvailable(p,v))).length;
+  const avail = items.filter(p => productSupply(p).inStock || productSupply(p).madeToOrder).length;
   bar.innerHTML = `
     <div class="wish-bar">
       <div class="t"><b>${toFa(items.length)}</b> رایحه ذخیره شده${
         avail < items.length
-          ? ` · ${toFa(items.length - avail)} مورد فعلاً ناموجود`
+          ? ` · ${toFa(items.length - avail)} مورد ناموجود`
           : ' · همه موجودند'}</div>
       <a href="/" class="btn btn-outline" style="padding:8px 18px;font-size:.8rem">
         افزودن رایحه دیگر</a>
@@ -183,7 +182,7 @@ function quickAdd(sku, price, slug) {
   const p = items.find(x => x.slug === slug);
   if (!p) return;
   const v = (p.variants || []).find(x => x.sku === sku);
-  if (!v || v.type !== 'SAMPLE' || v.volume_ml !== 5 || !wishVariantAvailable(p,v)) return;
+  if (!v || v.type !== 'SAMPLE' || v.volume_ml !== 5 || !variantSellable(p,v)) return;
   const label = v
     ? `${p.brand_fa ? p.brand_fa + ' — ' : ''}${p.name_fa} — ${v.type_label || ''} ${v.volume_ml || ''} میل`.trim()
     : p.name_fa;
