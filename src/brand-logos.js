@@ -15,8 +15,8 @@ function load() {
     const data = JSON.parse(fs.readFileSync(REGISTRY, 'utf8'));
     for (const [brand, entry] of Object.entries(data.logos || {})) {
       const file = String(entry.file || '');
-      if (!/^[a-z0-9-]+\.svg$/.test(file)) continue;
-      if (entry.license !== 'Public domain') continue;
+      if (!/^[a-z0-9-]+\.(?:svg|png|jpg)$/.test(file)) continue;
+      if (!['Public domain', 'CC0'].includes(entry.license)) continue;
       if (!fs.existsSync(path.join(PUBLIC_ROOT, 'images', 'brands', file))) continue;
       map.set(brand, { url: URL_PREFIX + file, width: entry.width || null, height: entry.height || null });
     }

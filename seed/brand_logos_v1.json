@@ -1,37 +1,27 @@
 {
  "version": 1,
  "source": "Wikimedia Commons",
- "note": "Only files marked Public domain on Wikimedia Commons (simple text logos below the threshold of originality) are bundled. Trademarks remain the property of their owners; bundling a logo does not claim affiliation or authenticity.",
+ "note": "Only files marked as public domain on Wikimedia Commons are bundled. Trademarks remain the property of their owners; a bundled logo does not claim affiliation, sponsorship or product authenticity.",
  "logos": {
-  "Creed": {
-   "file": "creed.svg",
-   "commons_title": "File:Creed Fragrances logo.svg",
-   "source": "https://commons.wikimedia.org/wiki/File:Creed_Fragrances_logo.svg",
-   "license": "Public domain",
-   "width": 416,
-   "height": 164,
-   "bytes": 5421,
-   "sha256": "9235299ad25de6deb8999ad1bf6d37dfffebce378cd244d348cc6d8b332e6cf7"
-  },
-  "Yves Saint Laurent": {
-   "file": "yves-saint-laurent.svg",
-   "commons_title": "File:Saint Laurent logo.svg",
-   "source": "https://commons.wikimedia.org/wiki/File:Saint_Laurent_logo.svg",
+  "Billie Eilish": {
+   "file": "billie-eilish.svg",
+   "commons_title": "File:Billie Eilish 2021 logo.svg",
+   "source": "https://commons.wikimedia.org/wiki/File:Billie_Eilish_2021_logo.svg",
    "license": "Public domain",
    "width": 512,
-   "height": 50,
-   "bytes": 1769,
-   "sha256": "3bb10ae37b155d82c2e148f39ae29d4ba8e6e2666cb0073e09c37312be56c430"
+   "height": 103,
+   "bytes": 6863,
+   "sha256": "a01fd5781442cdba8bdd5ec203f530bd110f0e41837197a8038571a84ab50feb"
   },
-  "Tom Ford": {
-   "file": "tom-ford.svg",
-   "commons_title": "File:Tom Ford Logo.svg",
-   "source": "https://commons.wikimedia.org/wiki/File:Tom_Ford_Logo.svg",
+  "Burberry": {
+   "file": "burberry.svg",
+   "commons_title": "File:Burberry Logo Subline.svg",
+   "source": "https://commons.wikimedia.org/wiki/File:Burberry_Logo_Subline.svg",
    "license": "Public domain",
-   "width": 512,
-   "height": 76,
-   "bytes": 1443,
-   "sha256": "4f99d0676bf5a8617b7a03955d7269d383ead190119c2bddb5f32a17d801cee2"
+   "width": 600,
+   "height": 160,
+   "bytes": 4509,
+   "sha256": "e16afd020c8c4d324d077b8edc4a5c369e7f9e57ab775a38ff75fcabf4059ff2"
   },
   "Bvlgari": {
    "file": "bvlgari.svg",
@@ -43,65 +33,45 @@
    "bytes": 7486,
    "sha256": "0187a6d62142589db13bd70b933d9d7eac4f67ac036e478315168cc1135163a5"
   },
-  "Louis Vuitton": {
-   "file": "louis-vuitton.svg",
-   "commons_title": "File:Louis Vuitton logo.svg",
-   "source": "https://commons.wikimedia.org/wiki/File:Louis_Vuitton_logo.svg",
+  "Cacharel": {
+   "file": "cacharel.svg",
+   "commons_title": "File:Cacharel Logo.svg",
+   "source": "https://commons.wikimedia.org/wiki/File:Cacharel_Logo.svg",
    "license": "Public domain",
-   "width": 1024,
-   "height": 111,
-   "bytes": 9012,
-   "sha256": "2b4b5d33c7b3516768da8bb8272b416ad043e45453a711d7ee2f47146776c5aa"
+   "width": 500,
+   "height": 89,
+   "bytes": 4991,
+   "sha256": "48dad064b97280c61ab8e7bdc9438d17ab2d38242e3e8f6a025119c0cadca148"
+  },
+  "Calvin Klein": {
+   "file": "calvin-klein.svg",
+   "commons_title": "File:CK Calvin Klein logo.svg",
+   "source": "https://commons.wikimedia.org/wiki/File:CK_Calvin_Klein_logo.svg",
+   "license": "Public domain",
+   "width": 616,
+   "height": 768,
+   "bytes": 7687,
+   "sha256": "7aea8cd92a9356049de08067be5dea7755426d1d5f72e5f16a1f3c735b4b2fa2"
   },
   "Carolina Herrera": {
    "file": "carolina-herrera.svg",
-   "commons_title": "File:Carolina Herrera logo.svg",
-   "source": "https://commons.wikimedia.org/wiki/File:Carolina_Herrera_logo.svg",
+   "commons_title": "File:Carolina Herrera NY logo.svg",
+   "source": "https://commons.wikimedia.org/wiki/File:Carolina_Herrera_NY_logo.svg",
    "license": "Public domain",
-   "width": 814,
-   "height": 70,
-   "bytes": 9898,
-   "sha256": "52d4a42ac965f9509568a5d84cff0265a6f87b86c3da5d36795ca4d1c3810cb3"
+   "width": 277,
+   "height": 24,
+   "bytes": 15165,
+   "sha256": "b3f95575185ecf8e768057f6dc215aff719a38131e03d1ce92370c2137486d8e"
   },
-  "Versace": {
-   "file": "versace.svg",
-   "commons_title": "File:Versace old logo.svg",
-   "source": "https://commons.wikimedia.org/wiki/File:Versace_old_logo.svg",
+  "Cartier": {
+   "file": "cartier.svg",
+   "commons_title": "File:Cartier logo.svg",
+   "source": "https://commons.wikimedia.org/wiki/File:Cartier_logo.svg",
    "license": "Public domain",
-   "width": 283,
-   "height": 63,
-   "bytes": 2071,
-   "sha256": "cb7d3bd785f0672c9dcf80035e935f6f4d4d47838c1c3f9de4926c082df01814"
-  },
-  "Paco Rabanne": {
-   "file": "paco-rabanne.svg",
-   "commons_title": "File:Paco Rabanne logo.svg",
-   "source": "https://commons.wikimedia.org/wiki/File:Paco_Rabanne_logo.svg",
-   "license": "Public domain",
-   "width": 591,
-   "height": 63,
-   "bytes": 3656,
-   "sha256": "eb3be754062c5fcaa86c5ac72f32fa399545ed7a2ff123db581829ecd30b56c0"
-  },
-  "Giorgio Armani": {
-   "file": "giorgio-armani.svg",
-   "commons_title": "File:Giorgio Armani.svg",
-   "source": "https://commons.wikimedia.org/wiki/File:Giorgio_Armani.svg",
-   "license": "Public domain",
-   "width": 286,
-   "height": 32,
-   "bytes": 4091,
-   "sha256": "4afcf002f64fc8fb47bf0cbcbc4d9d9107d0aaa02556c7d8dc8b1c1da65c5eca"
-  },
-  "Christian Dior": {
-   "file": "christian-dior.svg",
-   "commons_title": "File:Dior Logo 2022.svg",
-   "source": "https://commons.wikimedia.org/wiki/File:Dior_Logo_2022.svg",
-   "license": "Public domain",
-   "width": 512,
-   "height": 143,
-   "bytes": 1423,
-   "sha256": "9e907f5d264235bc12f7ac84b39b28221c39f94d688d1a5812d5eef1085524b4"
+   "width": 1024,
+   "height": 297,
+   "bytes": 8702,
+   "sha256": "7f112af1c5e4c764800b57d702080cd2eaf07b7f8bd47065a9787559a5085bd6"
   },
   "Chanel": {
    "file": "chanel.svg",
@@ -113,6 +83,266 @@
    "bytes": 2912,
    "sha256": "5af1915fa3cdd548c2635493f1cff8539664ec34d9e35945cbab0e16b79d1cad"
   },
+  "Chloé": {
+   "file": "chloe.svg",
+   "commons_title": "File:Chloe 2024 Logo.svg",
+   "source": "https://commons.wikimedia.org/wiki/File:Chloe_2024_Logo.svg",
+   "license": "Public domain",
+   "width": 122,
+   "height": 37,
+   "bytes": 3569,
+   "sha256": "2e7be8a4a67ec5c650ec0f4ce9d2f29b0fd9c997e7053d50273c5bba260ebcd9"
+  },
+  "Chopard": {
+   "file": "chopard.svg",
+   "commons_title": "File:Logo Chopard.svg",
+   "source": "https://commons.wikimedia.org/wiki/File:Logo_Chopard.svg",
+   "license": "Public domain",
+   "width": 500,
+   "height": 216,
+   "bytes": 6586,
+   "sha256": "4437a808a259fcf906a6082c096cddea462b06635ce6d68a18d7887fa27871d9"
+  },
+  "Christian Dior": {
+   "file": "christian-dior.svg",
+   "commons_title": "File:Dior Logo 2022.svg",
+   "source": "https://commons.wikimedia.org/wiki/File:Dior_Logo_2022.svg",
+   "license": "Public domain",
+   "width": 512,
+   "height": 143,
+   "bytes": 1423,
+   "sha256": "9e907f5d264235bc12f7ac84b39b28221c39f94d688d1a5812d5eef1085524b4"
+  },
+  "Clinique": {
+   "file": "clinique.svg",
+   "commons_title": "File:Clinique logo.svg",
+   "source": "https://commons.wikimedia.org/wiki/File:Clinique_logo.svg",
+   "license": "Public domain",
+   "width": 2500,
+   "height": 702,
+   "bytes": 3009,
+   "sha256": "b270bb3eb8556c03a50d5020917bdf3d9a3335ca0cefd9738632ce1773e8758c"
+  },
+  "Davidoff": {
+   "file": "davidoff.svg",
+   "commons_title": "File:Logo Davidoff.svg",
+   "source": "https://commons.wikimedia.org/wiki/File:Logo_Davidoff.svg",
+   "license": "Public domain",
+   "width": 500,
+   "height": 226,
+   "bytes": 7272,
+   "sha256": "36fd0b79bb77e5485792b26fb2b45db75e9f9b67a1e0c05896aaefe5d147ea4e"
+  },
+  "Dolce & Gabbana": {
+   "file": "dolce-gabbana.svg",
+   "commons_title": "File:Dolce & Gabbana - logo (Italy, 1985-).svg",
+   "source": "https://commons.wikimedia.org/wiki/File:Dolce_%26_Gabbana_-_logo_(Italy,_1985-).svg",
+   "license": "Public domain",
+   "width": 450,
+   "height": 50,
+   "bytes": 13812,
+   "sha256": "5566838085fbed33c6104526afd4ba54f6bd8df2baed5c42c52451a72bbff70e"
+  },
+  "Giorgio Armani": {
+   "file": "giorgio-armani.png",
+   "commons_title": "File:Giorgio Armani logo.png",
+   "source": "https://commons.wikimedia.org/wiki/File:Giorgio_Armani_logo.png",
+   "license": "Public domain",
+   "width": 1200,
+   "height": 133,
+   "bytes": 15469,
+   "sha256": "7e8c1d5c83b5c9c48eabc2978af706514be6cbaa4d6185f67678997bdd369c78"
+  },
+  "Givenchy": {
+   "file": "givenchy.svg",
+   "commons_title": "File:Givenchy - logo (France, 2003).svg",
+   "source": "https://commons.wikimedia.org/wiki/File:Givenchy_-_logo_(France,_2003).svg",
+   "license": "Public domain",
+   "width": 260,
+   "height": 196,
+   "bytes": 2348,
+   "sha256": "32de0047de5f0dd7547ef99bb649a1fbeba1024dcfe2146baca4839964b470ce"
+  },
+  "Gucci": {
+   "file": "gucci.svg",
+   "commons_title": "File:1960s Gucci Logo.svg",
+   "source": "https://commons.wikimedia.org/wiki/File:1960s_Gucci_Logo.svg",
+   "license": "Public domain",
+   "width": 413,
+   "height": 286,
+   "bytes": 3166,
+   "sha256": "c6b56e47b29d37676ddaf1fe04eccc5ec3ae57aa21d703155c84ebd924928037"
+  },
+  "Guerlain": {
+   "file": "guerlain.svg",
+   "commons_title": "File:Guerlain - logo (-2015).svg",
+   "source": "https://commons.wikimedia.org/wiki/File:Guerlain_-_logo_(-2015).svg",
+   "license": "Public domain",
+   "width": 250,
+   "height": 80,
+   "bytes": 16211,
+   "sha256": "d358ca14254395e1a8bb16816f467ea9dfcd3321052f714a6f7b0789743cf672"
+  },
+  "Halloween": {
+   "file": "halloween.svg",
+   "commons_title": "File:Halloween 2018 logo.svg",
+   "source": "https://commons.wikimedia.org/wiki/File:Halloween_2018_logo.svg",
+   "license": "Public domain",
+   "width": 1823,
+   "height": 227,
+   "bytes": 7294,
+   "sha256": "22cd23ad592b5a74c373322b67a781438140b059472d2c4ff2a0b643ed59918a"
+  },
+  "Hugo Boss": {
+   "file": "hugo-boss.svg",
+   "commons_title": "File:Hugo Boss logo 2021.svg",
+   "source": "https://commons.wikimedia.org/wiki/File:Hugo_Boss_logo_2021.svg",
+   "license": "Public domain",
+   "width": 512,
+   "height": 63,
+   "bytes": 1622,
+   "sha256": "bf0526989ecbc06f1878ca09498f236630e634eadd4770ffa7ed72ea86414c9e"
+  },
+  "Jaguar": {
+   "file": "jaguar.svg",
+   "commons_title": "File:Jaguar 1966 logo.svg",
+   "source": "https://commons.wikimedia.org/wiki/File:Jaguar_1966_logo.svg",
+   "license": "Public domain",
+   "width": 500,
+   "height": 151,
+   "bytes": 5995,
+   "sha256": "562dc55f78b42fb39aa0ef7ed7e05a17500ee4e034e2af04b5c7ea05ba1651d6"
+  },
+  "Jean Paul Gaultier": {
+   "file": "jean-paul-gaultier.svg",
+   "commons_title": "File:Jean Paul Gaultier logo.svg",
+   "source": "https://commons.wikimedia.org/wiki/File:Jean_Paul_Gaultier_logo.svg",
+   "license": "Public domain",
+   "width": 620,
+   "height": 254,
+   "bytes": 11243,
+   "sha256": "e1064623ae8c094a0c4126463e8a8c71ca61205e786ec71bb1ab90fa1ef70c7a"
+  },
+  "Jennifer Lopez": {
+   "file": "jennifer-lopez.png",
+   "commons_title": "File:JenniferLopez.com blue logo.png",
+   "source": "https://commons.wikimedia.org/wiki/File:JenniferLopez.com_blue_logo.png",
+   "license": "CC0",
+   "width": 527,
+   "height": 61,
+   "bytes": 3081,
+   "sha256": "26c8366e5cac47929fc5f3afb85d34c593e4ab77f8c6b36ef65c349ce810d40e"
+  },
+  "Jimmy Choo": {
+   "file": "jimmy-choo.svg",
+   "commons_title": "File:Jimmy Choo logo.svg",
+   "source": "https://commons.wikimedia.org/wiki/File:Jimmy_Choo_logo.svg",
+   "license": "Public domain",
+   "width": 512,
+   "height": 512,
+   "bytes": 5874,
+   "sha256": "9fc846b948acb47af48b9d5b57ad75f44fa3f44f6e992a6adeeb32898d114a13"
+  },
+  "Joop!": {
+   "file": "joop.svg",
+   "commons_title": "File:Joop! logo.svg",
+   "source": "https://commons.wikimedia.org/wiki/File:Joop!_logo.svg",
+   "license": "Public domain",
+   "width": 1024,
+   "height": 256,
+   "bytes": 3895,
+   "sha256": "340e4b98071e0c451a1079ad5b46cee5e5d90a59a622c2ba1cfa322b2dd276ce"
+  },
+  "Juicy Couture": {
+   "file": "juicy-couture.svg",
+   "commons_title": "File:Juicy Couture logo.svg",
+   "source": "https://commons.wikimedia.org/wiki/File:Juicy_Couture_logo.svg",
+   "license": "Public domain",
+   "width": 834,
+   "height": 143,
+   "bytes": 18914,
+   "sha256": "deb29021f125cca4e11a312fb8f860c2c39d4ae357cdd016ccf13392258d1dd1"
+  },
+  "Kenzo": {
+   "file": "kenzo.svg",
+   "commons_title": "File:Kenzo logo (2013–2020).svg",
+   "source": "https://commons.wikimedia.org/wiki/File:Kenzo_logo_(2013%E2%80%932020).svg",
+   "license": "Public domain",
+   "width": 512,
+   "height": 125,
+   "bytes": 7786,
+   "sha256": "f6ec2bcdef55b5fe680d77c93aa194d10849c0b88e5fce859dd9b2729de858af"
+  },
+  "Lacoste": {
+   "file": "lacoste.svg",
+   "commons_title": "File:Lacoste wordmark 1984.svg",
+   "source": "https://commons.wikimedia.org/wiki/File:Lacoste_wordmark_1984.svg",
+   "license": "Public domain",
+   "width": 500,
+   "height": 89,
+   "bytes": 5592,
+   "sha256": "d2b5db1a74b0684b0e810a1af0bc7c0fc86f3b4abcb53cf175c24fcabf17b86b"
+  },
+  "Lancôme": {
+   "file": "lancome.svg",
+   "commons_title": "File:Lancome logo.svg",
+   "source": "https://commons.wikimedia.org/wiki/File:Lancome_logo.svg",
+   "license": "Public domain",
+   "width": 1024,
+   "height": 242,
+   "bytes": 13160,
+   "sha256": "3add1c44a13a70fb13328d40c2d31be75e61f54e1e4eff8fc69af073ac927450"
+  },
+  "Lanvin": {
+   "file": "lanvin.svg",
+   "commons_title": "File:Lanvin logo 2023.svg",
+   "source": "https://commons.wikimedia.org/wiki/File:Lanvin_logo_2023.svg",
+   "license": "Public domain",
+   "width": 500,
+   "height": 63,
+   "bytes": 1120,
+   "sha256": "0fcb192e345361249cd0f51891b6d2f6f9fdf0c3534633634c85249f91bfae19"
+  },
+  "Loewe": {
+   "file": "loewe.svg",
+   "commons_title": "File:LOEWE-Logo.svg",
+   "source": "https://commons.wikimedia.org/wiki/File:LOEWE-Logo.svg",
+   "license": "Public domain",
+   "width": 744,
+   "height": 214,
+   "bytes": 3708,
+   "sha256": "73577aa24be8b5f75932fdf37cd18a3091b5d82eed0d7afb02128a75fd593681"
+  },
+  "Louis Vuitton": {
+   "file": "louis-vuitton.svg",
+   "commons_title": "File:Louis Vuitton SVG Monogram Logo.svg",
+   "source": "https://commons.wikimedia.org/wiki/File:Louis_Vuitton_SVG_Monogram_Logo.svg",
+   "license": "Public domain",
+   "width": 512,
+   "height": 512,
+   "bytes": 896,
+   "sha256": "ccd8b3ea3f616e0fc4aaf06864a196bbd8cc21c9ba8942e744bf1fd1cb5e9394"
+  },
+  "Max Factor": {
+   "file": "max-factor.png",
+   "commons_title": "File:Max-factor-logo.png",
+   "source": "https://commons.wikimedia.org/wiki/File:Max-factor-logo.png",
+   "license": "Public domain",
+   "width": 600,
+   "height": 195,
+   "bytes": 48806,
+   "sha256": "fa9fd7aae519388aad3e0dbdffa5cb29a6aec5f196e981ce1cf186c0c0b67512"
+  },
+  "Mercedes-Benz": {
+   "file": "mercedes-benz.svg",
+   "commons_title": "File:Mercedes-Benz Logo 2010.svg",
+   "source": "https://commons.wikimedia.org/wiki/File:Mercedes-Benz_Logo_2010.svg",
+   "license": "Public domain",
+   "width": 1400,
+   "height": 354,
+   "bytes": 305443,
+   "sha256": "ae0399588c2b3c0c9946273137b17b84627461163b3f6744a7b201f101df7e55"
+  },
   "Montblanc": {
    "file": "montblanc.svg",
    "commons_title": "File:Montblanc logo.svg",
@@ -123,35 +353,165 @@
    "bytes": 6834,
    "sha256": "56818713572f132a216f7addc05f37908efef406191645f4deb3dd312db7c176"
   },
-  "Hugo Boss": {
-   "file": "hugo-boss.svg",
-   "commons_title": "File:BOSS logo.svg",
-   "source": "https://commons.wikimedia.org/wiki/File:BOSS_logo.svg",
-   "license": "Public domain",
-   "width": 1024,
-   "height": 170,
-   "bytes": 8267,
-   "sha256": "8c2285ae82bf84b0c95c22a307b1d2b79384d8edc445eca8ca40d66cab05e719"
-  },
-  "Burberry": {
-   "file": "burberry.svg",
-   "commons_title": "File:Burberry Logo.svg",
-   "source": "https://commons.wikimedia.org/wiki/File:Burberry_Logo.svg",
-   "license": "Public domain",
-   "width": 412,
-   "height": 65,
-   "bytes": 2778,
-   "sha256": "da121ad64cae3126ebf86ace9cfbb3ab30275f977a09bd6d2aff1899e812e102"
-  },
-  "Victoria's Secret": {
-   "file": "victoria-s-secret.svg",
-   "commons_title": "File:Victoria's Secret logo.svg",
-   "source": "https://commons.wikimedia.org/wiki/File:Victoria%27s_Secret_logo.svg",
+  "Moschino": {
+   "file": "moschino.svg",
+   "commons_title": "File:Moschino logo.svg",
+   "source": "https://commons.wikimedia.org/wiki/File:Moschino_logo.svg",
    "license": "Public domain",
    "width": 192,
-   "height": 28,
-   "bytes": 59795,
-   "sha256": "fac8e926d74bd69fd71668ee63a6606a5db97b79e3b86efa5b7d9f426d823c0a"
+   "height": 66,
+   "bytes": 3777,
+   "sha256": "92e4909bb3e4671e75c19dec0b3850d8123e94b88b182b934e0dc06751f91679"
+  },
+  "Paco Rabanne": {
+   "file": "paco-rabanne.svg",
+   "commons_title": "File:Paco Rabanne logo.svg",
+   "source": "https://commons.wikimedia.org/wiki/File:Paco_Rabanne_logo.svg",
+   "license": "Public domain",
+   "width": 591,
+   "height": 63,
+   "bytes": 3656,
+   "sha256": "eb3be754062c5fcaa86c5ac72f32fa399545ed7a2ff123db581829ecd30b56c0"
+  },
+  "Prada": {
+   "file": "prada.svg",
+   "commons_title": "File:Prada-Logo.svg",
+   "source": "https://commons.wikimedia.org/wiki/File:Prada-Logo.svg",
+   "license": "Public domain",
+   "width": 512,
+   "height": 79,
+   "bytes": 2850,
+   "sha256": "8700a055b7e75deb906e802acd251fcf84344c0ab42eddc1367dfab42b747850"
+  },
+  "Ralph Lauren": {
+   "file": "ralph-lauren.svg",
+   "commons_title": "File:Ralph Lauren logo.svg",
+   "source": "https://commons.wikimedia.org/wiki/File:Ralph_Lauren_logo.svg",
+   "license": "Public domain",
+   "width": 512,
+   "height": 37,
+   "bytes": 2085,
+   "sha256": "74d02c248930e9ff8153bf4db48880245505902fa4ed87e3d7fc221c8a643d91"
+  },
+  "Rochas": {
+   "file": "rochas.jpg",
+   "commons_title": "File:Rochas logo.jpg",
+   "source": "https://commons.wikimedia.org/wiki/File:Rochas_logo.jpg",
+   "license": "Public domain",
+   "width": 211,
+   "height": 78,
+   "bytes": 2892,
+   "sha256": "310963a36b7681200d939a169b358c9d0bfe17b2870d92a3f89a4972b1654037"
+  },
+  "Santa Maria Novella": {
+   "file": "santa-maria-novella.png",
+   "commons_title": "File:Logo Off. Prof. S. M. Novella.png",
+   "source": "https://commons.wikimedia.org/wiki/File:Logo_Off._Prof._S._M._Novella.png",
+   "license": "CC0",
+   "width": 501,
+   "height": 501,
+   "bytes": 40642,
+   "sha256": "0400ad8bbe759411ea09f2cbfe1a23e889ac836c5acb15356e2a77959717e76d"
+  },
+  "Shiseido": {
+   "file": "shiseido.svg",
+   "commons_title": "File:Shiseido logo.svg",
+   "source": "https://commons.wikimedia.org/wiki/File:Shiseido_logo.svg",
+   "license": "Public domain",
+   "width": 400,
+   "height": 73,
+   "bytes": 4439,
+   "sha256": "6a088ebeace4a6575aaec851c13e69e33f19c97e78d67571e2b110cc1066aa82"
+  },
+  "Tom Ford": {
+   "file": "tom-ford.svg",
+   "commons_title": "File:Tom Ford Logo.svg",
+   "source": "https://commons.wikimedia.org/wiki/File:Tom_Ford_Logo.svg",
+   "license": "Public domain",
+   "width": 512,
+   "height": 76,
+   "bytes": 1443,
+   "sha256": "4f99d0676bf5a8617b7a03955d7269d383ead190119c2bddb5f32a17d801cee2"
+  },
+  "Tommy Hilfiger": {
+   "file": "tommy-hilfiger.svg",
+   "commons_title": "File:Tommy Hilfiger Tailored logo.svg",
+   "source": "https://commons.wikimedia.org/wiki/File:Tommy_Hilfiger_Tailored_logo.svg",
+   "license": "Public domain",
+   "width": 1024,
+   "height": 120,
+   "bytes": 8153,
+   "sha256": "3167b479a16a115c9382d8202e844508ec15ab8181f584ca1e4cef8724b19e0f"
+  },
+  "Trussardi": {
+   "file": "trussardi.svg",
+   "commons_title": "File:Trussardi logo.svg",
+   "source": "https://commons.wikimedia.org/wiki/File:Trussardi_logo.svg",
+   "license": "Public domain",
+   "width": 512,
+   "height": 73,
+   "bytes": 3896,
+   "sha256": "53cd73a5c815430c1d89051674538580c48d5368e595b642d8d3d82c7e2ff727"
+  },
+  "Valentino": {
+   "file": "valentino.svg",
+   "commons_title": "File:Valentino logo.svg",
+   "source": "https://commons.wikimedia.org/wiki/File:Valentino_logo.svg",
+   "license": "Public domain",
+   "width": 26173,
+   "height": 12883,
+   "bytes": 10334,
+   "sha256": "147e3f213ed4da9c6079601a37f4933011afc21e34d99a3d6dddc20e9e50fc35"
+  },
+  "Van Cleef & Arpels": {
+   "file": "van-cleef-arpels.svg",
+   "commons_title": "File:Van Cleef Arpels logo.svg",
+   "source": "https://commons.wikimedia.org/wiki/File:Van_Cleef_Arpels_logo.svg",
+   "license": "Public domain",
+   "width": 512,
+   "height": 86,
+   "bytes": 8081,
+   "sha256": "4d0983b4253ebd79547fed5e9f8444b2339621ee930ff4d64a704a2b5679f0c9"
+  },
+  "Versace": {
+   "file": "versace.svg",
+   "commons_title": "File:Versace old logo.svg",
+   "source": "https://commons.wikimedia.org/wiki/File:Versace_old_logo.svg",
+   "license": "Public domain",
+   "width": 283,
+   "height": 63,
+   "bytes": 2071,
+   "sha256": "cb7d3bd785f0672c9dcf80035e935f6f4d4d47838c1c3f9de4926c082df01814"
+  },
+  "Victoria's Secret": {
+   "file": "victorias-secret.svg",
+   "commons_title": "File:Victoria's Secret Beauty Logo.svg",
+   "source": "https://commons.wikimedia.org/wiki/File:Victoria%27s_Secret_Beauty_Logo.svg",
+   "license": "Public domain",
+   "width": 216,
+   "height": 35,
+   "bytes": 55250,
+   "sha256": "d278012a2290b757d7d8f310498baac58df2ee929e20507691d96e476d96bff9"
+  },
+  "Viktor & Rolf": {
+   "file": "viktor-rolf.svg",
+   "commons_title": "File:Viktor & Rolf.svg",
+   "source": "https://commons.wikimedia.org/wiki/File:Viktor_%26_Rolf.svg",
+   "license": "Public domain",
+   "width": 500,
+   "height": 73,
+   "bytes": 4250,
+   "sha256": "87af3d38213c3ec0e1fef768c42f17fde6e0bb48aa820d356f6715e69c3cf277"
+  },
+  "Yves Saint Laurent": {
+   "file": "yves-saint-laurent.svg",
+   "commons_title": "File:Saint Laurent logo.svg",
+   "source": "https://commons.wikimedia.org/wiki/File:Saint_Laurent_logo.svg",
+   "license": "Public domain",
+   "width": 512,
+   "height": 50,
+   "bytes": 1769,
+   "sha256": "3bb10ae37b155d82c2e148f39ae29d4ba8e6e2666cb0073e09c37312be56c430"
   }
  }
 }

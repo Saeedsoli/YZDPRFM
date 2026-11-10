@@ -143,6 +143,7 @@ bash scripts/smoke_test.sh     # ۹۲ آزمون خودکار
 | `test_readiness.js` | ۳۷ بررسی — آمادگی افتتاح و نشت نکردن کلید |
 | `test_backup_stream_safety.js` | پشتیبان هم‌زمان، بازیابی آزمایشی و پاک‌سازی پس از قطع یا خطا |
 | `test_font_preload.js` | بررسی پیش‌بارگذاری فونت محلی در صفحات |
+| `fetch_brand_logos.py` | دریافت و اعتبارسنجی لوگوی برندها از Wikimedia Commons |
 | `test_brand_logos.js` | لوگوی برندها: فایل محلی، مجوز ثبت‌شده، بدون محتوای اجرایی |
 | `brand-logos.js` | سرو لوگوی برند از `seed/brand_logos_v1.json` |
 | `brand_logos_v1.json` | فهرست لوگوها با منبع و مجوز |
