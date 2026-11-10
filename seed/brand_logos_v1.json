@@ -130,8 +130,8 @@
    "license": "Public domain",
    "width": 500,
    "height": 226,
-   "bytes": 7272,
-   "sha256": "36fd0b79bb77e5485792b26fb2b45db75e9f9b67a1e0c05896aaefe5d147ea4e"
+   "bytes": 7252,
+   "sha256": "459b43d6c63b34ea8f494d2dd5dadf0f71768b89303e484c308c292134af1dba"
   },
   "Dolce & Gabbana": {
    "file": "dolce-gabbana.svg",
@@ -160,8 +160,8 @@
    "license": "Public domain",
    "width": 260,
    "height": 196,
-   "bytes": 2348,
-   "sha256": "32de0047de5f0dd7547ef99bb649a1fbeba1024dcfe2146baca4839964b470ce"
+   "bytes": 2323,
+   "sha256": "9937ac7feb8760c0ef71fc3b221b03ca05eebbd4e08a932d9eb51bee2c921da9"
   },
   "Gucci": {
    "file": "gucci.svg",
@@ -180,8 +180,8 @@
    "license": "Public domain",
    "width": 250,
    "height": 80,
-   "bytes": 16211,
-   "sha256": "d358ca14254395e1a8bb16816f467ea9dfcd3321052f714a6f7b0789743cf672"
+   "bytes": 16209,
+   "sha256": "996f1be78b9c6bc2b9459f402b45a5dec8f7391248e72280068d142f4ba65855"
   },
   "Halloween": {
    "file": "halloween.svg",
@@ -240,8 +240,8 @@
    "license": "Public domain",
    "width": 512,
    "height": 512,
-   "bytes": 5874,
-   "sha256": "9fc846b948acb47af48b9d5b57ad75f44fa3f44f6e992a6adeeb32898d114a13"
+   "bytes": 5866,
+   "sha256": "87613b33ea3ee7d7ef153bfdf528c78d85237eac8b29d49e9287d510c8571ad3"
   },
   "Joop!": {
    "file": "joop.svg",
@@ -320,8 +320,8 @@
    "license": "Public domain",
    "width": 512,
    "height": 512,
-   "bytes": 896,
-   "sha256": "ccd8b3ea3f616e0fc4aaf06864a196bbd8cc21c9ba8942e744bf1fd1cb5e9394"
+   "bytes": 883,
+   "sha256": "77ec451ff0c9f6211ce5189b6746e11a43e67c7997138ab9d9c3766dfadf2052"
   },
   "Max Factor": {
    "file": "max-factor.png",
@@ -430,8 +430,8 @@
    "license": "Public domain",
    "width": 512,
    "height": 76,
-   "bytes": 1443,
-   "sha256": "4f99d0676bf5a8617b7a03955d7269d383ead190119c2bddb5f32a17d801cee2"
+   "bytes": 1429,
+   "sha256": "5c093e18c89a2d5c6077670b5a36cceb02a41c1ba3b4bd244d8af6e2363572f7"
   },
   "Tommy Hilfiger": {
    "file": "tommy-hilfiger.svg",
@@ -490,8 +490,8 @@
    "license": "Public domain",
    "width": 216,
    "height": 35,
-   "bytes": 55250,
-   "sha256": "d278012a2290b757d7d8f310498baac58df2ee929e20507691d96e476d96bff9"
+   "bytes": 55087,
+   "sha256": "27c01038753e1b4c36dcc1d2752febbbe2c6cb3f32450a33866a415ec77ebac5"
   },
   "Viktor & Rolf": {
    "file": "viktor-rolf.svg",
