@@ -1,0 +1,16 @@
+{
+ "version": "studio_illustrations_2026_11_v1",
+ "surface": "product illustration on product cards and inventory lists",
+ "count": 8,
+ "assets": "public/images/products/studio-dark-1..8.{jpg,webp,-sm.jpg,-sm.webp}",
+ "source": "generated in-house for this store; no third-party photograph, no brand logo, no face",
+ "rules": [
+  "illustrations are symbolic: they make no claim about the product, its notes, its family or its authenticity",
+  "the card shows the disclosure «تصویر نمادین» for every studio illustration",
+  "allocation is cyclic over catalogue order so a page never looks like one repeated image",
+  "owner-uploaded and brand photographs always win and are never overwritten by this allocation"
+ ],
+ "allocation": { "max_per_image": 20, "observed": { "studio-dark-1": 16, "studio-dark-2": 16, "studio-dark-3": 16, "studio-dark-4": 15, "studio-dark-5": 15, "studio-dark-6": 15, "studio-dark-7": 15, "studio-dark-8": 15 } },
+ "applied": { "products": 123, "tables_touched": ["products.image_url"], "settings_key": "studio_dark_images_2026_11_v1" },
+ "legacy": "generic-neutral-1..7 remain recognised as symbolic so older rows and cached pages keep their disclosure"
+}

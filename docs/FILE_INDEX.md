@@ -147,6 +147,7 @@ bash scripts/smoke_test.sh     # ۹۲ آزمون خودکار
 | `test_brand_logos.js` | لوگوی برندها: فایل محلی، مجوز ثبت‌شده، بدون محتوای اجرایی |
 | `brand-logos.js` | سرو لوگوی برند از `seed/brand_logos_v1.json` |
 | `brand_logos_v1.json` | فهرست لوگوها با منبع و مجوز |
+| `studio_illustrations_v1.json` | تصاویر نمادین استودیویی محصول: قواعد و توزیع |
 | `test_availability_style_consistency.js` | یک قانون و یک ظاهر برای موجود، به سفارش و ناموجود |
 | `test_inventory_discovery.js` | بررسی دسترسی، جست‌وجو، فیلتر، مرتب‌سازی و صفحه‌بندی موجودی |
 | `test_journal_lcp.js` | ۳۸ بررسی — رندر سمت سرور مجله و نگهبان‌های LCP |

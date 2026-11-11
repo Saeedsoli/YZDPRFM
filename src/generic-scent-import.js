@@ -31,7 +31,7 @@ function applyGenericScents(db,file){
   const variants=db.prepare('select type,volume_ml,stock,price_toman from variants where product_id=?');
   for(const [i,x] of m.items.entries()){
    const en=EN[i],notice='این رایحه عمومی و دست‌ساز است و مرجع برند مشخصی ندارد. ترکیب و منشأ اسانس تأمین‌کننده تأیید نشده است.';
-   ins.run(x.product_id,x.slug,x.name_fa,en,`${x.name_fa} «دست‌ساز»`,en,notice,'/images/products/generic-neutral-6.jpg',`${x.name_fa} ${en}`);
+   ins.run(x.product_id,x.slug,x.name_fa,en,`${x.name_fa} «دست‌ساز»`,en,notice,'/images/products/studio-dark-6.jpg',`${x.name_fa} ${en}`);
    applyProductPrice(db,x.product_id,kgToGram(x.usd_per_kg),rate,null);
    evidence.run(x.product_id,m.supplier_file_sha256,x.supplier_brand,x.supplier_model,x.supplier_gender,x.usd_per_kg,x.quality,'owner_approved_generic_supplier_composition_unverified');
    const vs=variants.all(x.product_id).filter(v=>allowedVariant(v.type,v.volume_ml));

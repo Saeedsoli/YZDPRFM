@@ -22,7 +22,7 @@ function applyOwnerReferences(db,file){
   const variants=db.prepare('select type,volume_ml,stock,price_toman from variants where product_id=?');
   for(const x of m.items){
    const note=`این محصول بازآفرینی دست‌ساز است و محصول اورجینال برند اصلی نیست. اطلاعات رایحه مرجع از ${x.provider==='Fragrantica'?'فراگرانتیکا':'یک فروشگاه مستقل'} گرفته شده؛ انتخاب مرجع توسط مالک هویت یا ترکیب اسانس تأمین‌کننده را تأیید نمی‌کند.`+(x.product_id==='OWNER-REF-0004'?' فایل قیمت این ردیف را زنانه و منابع مستقل آن را مردانه یا مشترک معرفی کرده‌اند.':'');
-   ins.run(x.product_id,x.slug,x.name_fa,x.name_en,x.brand_fa,x.brand_en,x.gender,x.name_en,JSON.stringify(x.notes.top),JSON.stringify(x.notes.middle),JSON.stringify(x.notes.base),note,'/images/products/generic-neutral-6.jpg',`${x.brand_fa} ${x.name_fa} ${x.name_en}`);
+   ins.run(x.product_id,x.slug,x.name_fa,x.name_en,x.brand_fa,x.brand_en,x.gender,x.name_en,JSON.stringify(x.notes.top),JSON.stringify(x.notes.middle),JSON.stringify(x.notes.base),note,'/images/products/studio-dark-3.jpg',`${x.brand_fa} ${x.name_fa} ${x.name_en}`);
    applyProductPrice(db,x.product_id,kgToGram(x.usd_per_kg),rate,null);
    ev.run(x.product_id,m.supplier_file_sha256,x.supplier_brand,x.supplier_model,x.supplier_gender,x.usd_per_kg,x.quality,x.reference_name,x.source_url,x.provider,'owner_selected_independent_supplier_essence_unverified');
    const vs=variants.all(x.product_id).filter(v=>allowedVariant(v.type,v.volume_ml));

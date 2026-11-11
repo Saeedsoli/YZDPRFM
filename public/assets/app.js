@@ -362,7 +362,7 @@ function fullName(p) {
  * فایل اصلی برمی‌گردد.
  */
 function isGenericProductImage(url) {
-  return /\/generic-neutral-[1-7](?:-sm)?\.(?:jpg|webp)$/i.test(url || '');
+  return /\/(?:generic-neutral-[1-7]|studio-dark-[1-8])(?:-sm)?\.(?:jpg|webp)$/i.test(url || '');
 }
 function cardImage(url) {
   return (/\/fam-[a-z0-9-]+\.jpg$/.test(url || '') || isGenericProductImage(url))
