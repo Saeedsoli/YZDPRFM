@@ -103,6 +103,8 @@
 
 html { scroll-behavior: smooth; }
 
+html { background: #121212 }
+
 body {
   background: var(--bg);
   color: var(--text);
@@ -938,7 +940,14 @@ input:focus-visible, select:focus-visible, textarea:focus-visible {
 .buy-bar .p .n { font-size: 1.02rem; font-weight: 800 }
 .buy-bar .p .l { font-size: .68rem; color: var(--muted) }
 .buy-bar .btn { flex: 1; padding: 13px 18px }
-@media (max-width: 900px) { .buy-bar { display: flex } body { padding-bottom: 76px } }
+/* فاصله پایین صفحه فقط در صفحه‌ای که نوار خرید دارد.
+   پیش‌تر این فاصله روی همه صفحات موبایل اعمال می‌شد و بعد از فوتر
+   تیره، نواری روشن با رنگ بدنه دیده می‌شد. */
+@media (max-width: 900px) {
+  .buy-bar { display: flex }
+  body.has-buy-bar { padding-bottom: 76px }
+  body:has(.buy-bar) { padding-bottom: 76px }
+}
 
 /* ── دکمه‌های شبکه اجتماعی در فوتر ── */
 .social-row { display: flex; flex-direction: column; gap: 9px; margin-top: 4px }
