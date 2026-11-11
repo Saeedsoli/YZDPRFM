@@ -50,7 +50,7 @@
     object-fit: cover; object-position: 50% 42%;
     /* ویدیو روشن‌تر از تصویر قبلی است؛ کمی تیره می‌شود تا متن
        روی آن خوانا بماند و حس لوکس حفظ شود. */
-    filter: brightness(.72) saturate(1.06) contrast(1.04);
+    filter: brightness(.88) saturate(1.04);
     opacity: 0; transition: opacity 1.2s ease-in-out;
   }
   .hero-video.ready { opacity: 1 }
@@ -551,7 +551,7 @@
 <section class="hero" aria-label="معرفی فروشگاه">
   <div class="hero-bg" role="presentation">
     <video class="hero-video" id="heroVideo" autoplay muted loop playsinline preload="metadata"
-           poster="/images/hero-cinematic.webp" aria-hidden="true" tabindex="-1"
+           poster="/images/hero-video-poster.webp" aria-hidden="true" tabindex="-1"
            disablepictureinpicture disableremoteplayback>
       <source src="/videos/hero-craft.webm" type="video/webm">
       <source src="/videos/hero-craft.mp4" type="video/mp4">
