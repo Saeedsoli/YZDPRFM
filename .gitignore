@@ -77,3 +77,10 @@ Thumbs.db
 #   python3 scripts/make_preview.py
 # خودِ اسکریپت در مخزن است؛ خروجی‌اش نه.
 preview/
+# ── سابقه طراحی و خروجی ساخت ──
+# نمونه‌های تأییدشده و اسکرین‌شات‌های اثبات نگه داشته می‌شوند اما
+# بخشی از فروشگاه نیستند؛ بسته‌های ZIP هم خروجی ساخت‌اند.
+/design/rejected-previews/
+/deliverables/
+/source/hero-scenes-raw/
+/source/unused-scenes/
