@@ -38,11 +38,24 @@
     /* `center right` بطری را که سمت چپ قاب است به لبه می‌راند و
        نیمی‌اش بیرون می‌ماند. با `35% center` بطری کامل دیده
        می‌شود و فضای خالی سمت راست برای متن باقی می‌ماند. */
-    background-position: 35% center;
     background-size: cover;
     background-repeat: no-repeat;
+    background-position: 35% center;
     animation: heroDrift 30s ease-in-out infinite alternate;
   }
+  /* ویدیو روی تصویر پoster می‌نشیند؛ اگر مرورگر پخش نکند یا کاربر
+     حرکت کم بخواهد، همان تصویر پس‌زمینه دیده می‌شود. */
+  .hero-video {
+    position: absolute; inset: 0; width: 100%; height: 100%;
+    object-fit: cover; object-position: 50% 42%;
+    /* ویدیو روشن‌تر از تصویر قبلی است؛ کمی تیره می‌شود تا متن
+       روی آن خوانا بماند و حس لوکس حفظ شود. */
+    filter: brightness(.72) saturate(1.06) contrast(1.04);
+    opacity: 0; transition: opacity 1.2s ease-in-out;
+  }
+  .hero-video.ready { opacity: 1 }
+  .hero-video.still { display: none }
+  @media (prefers-reduced-motion: reduce) { .hero-video { display: none } }
   @keyframes heroDrift {
     from { transform: scale(1.04) translate3d(0,0,0); }
     to   { transform: scale(1.12) translate3d(-22px,-10px,0); }
@@ -56,6 +69,15 @@
     background: linear-gradient(to left,
       rgba(10,9,8,0) 0%, rgba(10,9,8,.42) 38%,
       rgba(10,9,8,.80) 62%, rgba(10,9,8,.92) 100%);
+  }
+  /* روی موبایل متن زیر تصویر می‌نشیند، نه کنارش؛ پس پرده باید
+     عمودی باشد وگرنه متن روی بخش روشن ویدیو خوانا نمی‌ماند. */
+  @media (max-width: 860px) {
+    .hero-veil {
+      background: linear-gradient(to top,
+        rgba(9,8,7,.96) 0%, rgba(9,8,7,.82) 34%,
+        rgba(9,8,7,.52) 60%, rgba(9,8,7,.30) 100%);
+    }
   }
   .hero::after {
     content: ''; position: absolute; left: 0; right: 0; bottom: 0; height: 140px;
@@ -527,7 +549,14 @@
 
 <main id="main">
 <section class="hero" aria-label="معرفی فروشگاه">
-  <div class="hero-bg" role="presentation"></div>
+  <div class="hero-bg" role="presentation">
+    <video class="hero-video" id="heroVideo" autoplay muted loop playsinline preload="metadata"
+           poster="/images/hero-cinematic.webp" aria-hidden="true" tabindex="-1"
+           disablepictureinpicture disableremoteplayback>
+      <source src="/videos/hero-craft.webm" type="video/webm">
+      <source src="/videos/hero-craft.mp4" type="video/mp4">
+    </video>
+  </div>
   <div class="hero-veil" role="presentation"></div>
   <!-- ذرات طلایی معلق — تزئینی محض، پس aria-hidden.
        ۴۵ عنصر خالی که موقعیت و زمان‌بندی‌شان در CSS تعریف شده. -->
@@ -1265,6 +1294,31 @@ document.getElementById('sortSel').onchange = e => {
 
 /* دکمه بازگشت مرورگر باید فیلتر قبلی را برگرداند */
 window.addEventListener('popstate', () => { readURL(); loadProducts(); });
+
+/* ── ویدیوی هدر ──
+   شرایطی که پخش نمی‌کنیم: کاربر «حرکت کمتر» خواسته، یا حالت کم‌مصرف
+   فعال است. در آن حالت‌ها تصویر ثابت می‌ماند تا داده و باتری هدر نرود.
+   خارج از دید هم متوقف می‌شود؛ ویدیویی که دیده نمی‌شود نباید CPU بگیرد. */
+(function () {
+  const v = document.getElementById('heroVideo');
+  if (!v) return;
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)');
+  const saveData = !!(navigator.connection && navigator.connection.saveData);
+  const stop = () => { v.pause(); v.classList.add('still'); };
+  if (reduce.matches || saveData) { stop(); return; }
+  v.classList.add('ready');
+  const play = () => { const p = v.play(); if (p && p.catch) p.catch(() => v.classList.remove('ready')); };
+  v.addEventListener('loadeddata', play, { once: true });
+  v.addEventListener('playing', () => v.classList.add('ready'));
+  v.addEventListener('error', () => { v.classList.add('still'); });
+  if ('IntersectionObserver' in window) {
+    new IntersectionObserver(entries => {
+      entries.forEach(e => { if (e.isIntersecting) play(); else v.pause(); });
+    }, { threshold: 0.15 }).observe(v.closest('.hero'));
+  }
+  document.addEventListener('visibilitychange', () => { if (document.hidden) v.pause(); else if (v.getBoundingClientRect().bottom > 0) play(); });
+  reduce.addEventListener('change', () => { if (reduce.matches) stop(); });
+})();
 
 readURL();
 loadFamilies();

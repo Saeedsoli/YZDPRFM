@@ -1,4 +1,48 @@
-# Brand SVG assets are served as-is; keep line endings stable so checksums match.
-*.svg text eol=lf
-*.png binary
-*.jpg binary
+# ══════════════════════════════════════════════════════
+#  رفتار گیت با انواع فایل
+# ══════════════════════════════════════════════════════
+
+# پیش‌فرض: گیت خودش تشخیص دهد متن است یا دودویی
+* text=auto eol=lf
+
+# ── متن — همیشه با پایان خط LF ──
+# بدون این، کلون روی ویندوز پایان خط CRLF می‌گذارد و اسکریپت‌های
+# شل با خطای «bad interpreter» می‌شکنند.
+*.js    text eol=lf
+*.mjs   text eol=lf
+*.json  text eol=lf
+*.md    text eol=lf
+*.html  text eol=lf
+*.css   text eol=lf
+*.py    text eol=lf
+*.sh    text eol=lf
+*.yml   text eol=lf
+*.csv   text eol=lf
+Dockerfile text eol=lf
+
+# ── دودویی — گیت هرگز دستکاری نکند ──
+*.png   binary
+*.jpg   binary
+*.jpeg  binary
+*.webp  binary
+*.gif   binary
+*.ico   binary
+*.woff  binary
+*.woff2 binary
+*.ttf   binary
+*.otf   binary
+*.db    binary
+*.mp4   binary
+*.zip   binary
+*.tgz   binary
+
+# ── تفاوت‌گیری بهتر ──
+*.md    diff=markdown
+
+# ── از آمار زبان مخزن کنار گذاشته شوند ──
+# وگرنه گیت‌هاب پروژه را «HTML» معرفی می‌کند در حالی که
+# منطق اصلی در جاوااسکریپت است.
+seed/*.json          linguist-generated
+source/**            linguist-vendored
+public/assets/code128.js linguist-vendored
+docs/**              linguist-documentation

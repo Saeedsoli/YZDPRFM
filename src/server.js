@@ -490,6 +490,8 @@ const MIME = {
   '.jpg': 'image/jpeg', '.jpeg': 'image/jpeg',
   '.png': 'image/png', '.svg': 'image/svg+xml',
   '.webp': 'image/webp', '.ico': 'image/x-icon',
+  /* ویدیوی هدر. بدون این سطر مرورگر نوع فایل را نمی‌شناسد و پخش نمی‌کند. */
+  '.mp4': 'video/mp4', '.webm': 'video/webm',
   '.woff2': 'font/woff2', '.woff': 'font/woff', '.ttf': 'font/ttf',
   '.csv': 'text/csv; charset=utf-8',
   '.xml': 'application/xml; charset=utf-8',
@@ -2395,6 +2397,11 @@ const server = http.createServer(async (req, res) => {
         if (/\.(woff2?|ttf)$/.test(servedExt)) {
           headers['Cache-Control'] = 'public, max-age=31536000, immutable';
           headers['Access-Control-Allow-Origin'] = '*';
+        }
+        if (/\.(mp4|webm)$/.test(servedExt)) {
+          /* ویدیو تغییر نمی‌کند؛ کش طولانی جلوی دانلود دوباره در هر
+             بازدید را می‌گیرد. فشرده‌سازی هم لازم نیست: خودش فشرده است. */
+          headers['Cache-Control'] = 'public, max-age=604800, immutable';
         }
         if (/\.(jpg|jpeg|png|svg|webp|ico)$/.test(servedExt)) {
           headers['Cache-Control'] = 'public, max-age=604800, immutable';
