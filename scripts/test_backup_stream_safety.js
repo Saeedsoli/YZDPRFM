@@ -1,5 +1,5 @@
 'use strict';
-// Exercises the real HTTP streaming route against a disposable SQLite database.
+
 const assert=require('assert/strict'),fs=require('fs'),os=require('os'),path=require('path'),http=require('http');
 const Database=require('better-sqlite3'),{handle}=require('../src/routes/admin-system');
 const dir=fs.mkdtempSync(path.join(os.tmpdir(),'yazd-backup-test-'));
@@ -21,7 +21,7 @@ const pause=ms=>new Promise(r=>setTimeout(r,ms));
   const base=`http://127.0.0.1:${server.address().port}`;
   assert.equal((await fetch(base+'/api/admin/backup')).status,401);
   const headers={Authorization:'Bearer fixture'};
-  // Same-second requests must not collide, even while snapshots are streaming.
+
   const results=await Promise.all(Array.from({length:6},()=>fetch(base+'/api/admin/backup',{headers})));
   for(let i=0;i<results.length;i++){
    const r=results[i];assert.equal(r.status,200);assert.equal(r.headers.get('cache-control'),'no-store');
@@ -30,14 +30,14 @@ const pause=ms=>new Promise(r=>setTimeout(r,ms));
    const restored=new Database(p,{readonly:true});assert.equal(restored.pragma('integrity_check',{simple:true}),'ok');
    assert.equal(restored.prepare('select customer from orders where id=1').get().customer,'private');restored.close();
   }
-  // Disconnect partway through a download; the snapshot must be removed.
+
   await new Promise((resolve,reject)=>{const request=http.get(base+'/api/admin/backup',{headers},res=>{res.once('data',()=>{res.destroy();resolve();});res.once('error',()=>{});});request.on('error',reject);});
   for(let i=0;i<50 && fs.readdirSync(dir).some(x=>x.startsWith('.manual-backup-'));i++)await pause(20);
   assert(!fs.readdirSync(dir).some(x=>x.startsWith('.manual-backup-')),'temporary backup remains');
   failVacuum=true;const failed=await fetch(base+'/api/admin/backup',{headers});assert.equal(failed.status,500);
   assert(!(await failed.text()).includes('sensitive path'));failVacuum=false;
   assert(!fs.readdirSync(dir).some(x=>x.startsWith('.manual-backup-')),'failed snapshot remains');
-  // Simulate an asynchronous disk read failure after headers have been sent.
+
   const originalRead=fs.createReadStream;
   fs.createReadStream=function(file,...args){
    if(String(file).includes('.manual-backup-')){
@@ -49,14 +49,13 @@ const pause=ms=>new Promise(r=>setTimeout(r,ms));
   finally { fs.createReadStream=originalRead; }
   for(let i=0;i<50 && fs.readdirSync(dir).some(x=>x.startsWith('.manual-backup-'));i++)await pause(20);
   assert(!fs.readdirSync(dir).some(x=>x.startsWith('.manual-backup-')),'read-error snapshot remains');
-  assert.equal((await fetch(base+'/api/admin/backup')).status,401); // server survived
+  assert.equal((await fetch(base+'/api/admin/backup')).status,401);
   fs.mkdirSync(path.join(dir,'backups'));const saved=path.join(dir,'backups','yazd-2026110100.db');
   fs.copyFileSync(path.join(dir,'restore-0.sqlite'),saved);
   const historic=await fetch(base+'/api/admin/backups/yazd-2026110100.db',{headers});assert.equal(historic.status,200);
   assert.equal(historic.headers.get('cache-control'),'no-store');const historicalBytes=Buffer.from(await historic.arrayBuffer());assert(historicalBytes.length>0);
   assert.equal((await fetch(base+'/api/admin/backups/%2e%2e%2fx',{headers})).status,400);
-  // A filename that looks legitimate must not expose live data, symlinks,
-  // hardlinks, corrupt files, SQLite sidecars, or named pipes.
+
   const backups=path.join(dir,'backups');
   fs.symlinkSync(dbPath,path.join(backups,'yazd-2026110101.db'));
   fs.linkSync(dbPath,path.join(backups,'yazd-2026110102.db'));
@@ -69,8 +68,7 @@ const pause=ms=>new Promise(r=>setTimeout(r,ms));
   assert.equal((await fetch(base+'/api/admin/backups/yazd-2026110104.db',{headers})).status,409);
   fs.unlinkSync(saved+'-wal');
   const listing=await (await fetch(base+'/api/admin/backups',{headers})).json();assert.deepEqual(listing.backups.map(x=>x.name),['yazd-2026110100.db']);
-  // Swap the pathname for a symlink after validation but before stream setup.
-  // The file descriptor must still return the original, validated snapshot.
+
   const originalCreate=fs.createReadStream,relocated=saved+'.relocated';
   fs.createReadStream=function(file,...args){
    if(file===saved){fs.renameSync(saved,relocated);fs.symlinkSync(dbPath,saved);}

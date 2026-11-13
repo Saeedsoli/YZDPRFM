@@ -1,60 +1,11 @@
-/**
- * عطر یزد | مسیرهای مجله (مقالات)
- * ---------------------------------
- * نخستین ماژول جداشده از `server.js`.
- *
- * ── الگوی تفکیک ──
- * همه مسیرها داخل یک closure در `server.js` بودند و به هفت متغیر
- * محلی وابسته‌اند: `sendJSON`، `sendBody`، `who`، `logAudit`،
- * `can`، `requireAdmin`، `parsed`.
- *
- * پس نمی‌شد فقط متن را جابه‌جا کرد. هر ماژول یک شیء `ctx` می‌گیرد
- * که همان زمینه را در بر دارد، و یک `Promise<boolean>` برمی‌گرداند:
- *
- *   true  → مسیر رسیدگی شد، سرور کار دیگری نکند
- *   false → این ماژول مسئولش نیست، ادامه بده
- *
- * ── چرا مقالات اول ──
- * کم‌خطرترین بخش است: نه پول جابه‌جا می‌کند، نه موجودی، نه
- * احراز هویت. اگر الگو ایراد داشته باشد، اینجا بی‌ضررترین جای
- * ممکن برای کشفش است.
- *
- * مسیرهای پرداخت و ثبت سفارش **عمداً** در `server.js` ماندند تا
- * وقتی این الگو با آزمون واقعی تأیید شود.
- */
-
 'use strict';
 
 const media = require('../media');
 
-/**
- * @param {object} ctx زمینه درخواست
- * @param {string} ctx.method    GET/POST/… (HEAD قبلاً به GET نگاشته شده)
- * @param {string} ctx.pathname  مسیر رمزگشایی‌شده
- * @param {object} ctx.parsed    خروجی url.parse با query
- * @param {object} ctx.req       درخواست خام (برای parseBody)
- * @param {object} ctx.res       پاسخ خام (برای CSV و استریم)
- * @param {Function} ctx.sendJSON
- * @param {Function} ctx.can      بررسی مجوز — خودش ۴۰۳ می‌فرستد
- * @param {Function} ctx.parseBody
- * @param {object} ctx.db
- * @param {Function} ctx.appLog
- * @param {Function} ctx.slugify
- * @returns {Promise<boolean>} آیا مسیر رسیدگی شد؟
- */
 async function handle(ctx) {
   const { method, pathname, parsed, req, sendJSON, can,
           parseBody, db, appLog, slugify } = ctx;
 
-  /* ═══════════ رسانه مقاله ═══════════
-     آپلود تصویر، فهرست تصاویر موجود، و حذف.
-
-     ── چرا اینجا و نه ماژول جدا ──
-     این مسیرها فقط برای ویرایشگر مقاله وجود دارند و همان مجوز
-     `content.write` را می‌خواهند. ماژول جدا برای سه مسیر، بیشتر
-     پراکندگی می‌سازد تا نظم. */
-
-  /** فهرست تصاویر — آپلودشده و موجودِ پروژه */
   if (method === 'GET' && pathname === '/api/admin/media') {
     if (!can('content.write')) return true;
     sendJSON(200, {
@@ -65,11 +16,6 @@ async function handle(ctx) {
     return true;
   }
 
-  /* آپلود تصویر.
-
-     نام فایل در سرآیند می‌آید نه در بدنه، چون بدنه خودِ تصویر
-     است. `X-File-Name` با encodeURIComponent فرستاده می‌شود تا
-     نام فارسی سرآیند را نشکند. */
   if (method === 'POST' && pathname === '/api/admin/media') {
     if (!can('content.write')) return true;
     let orig = '';
@@ -84,7 +30,6 @@ async function handle(ctx) {
     return true;
   }
 
-  /** حذف تصویر آپلودشده — فقط پوشه journal، نه تصاویر پروژه */
   if (method === 'DELETE' && pathname.startsWith('/api/admin/media/')) {
     if (!can('content.delete')) return true;
     const name = decodeURIComponent(pathname.replace('/api/admin/media/', ''));
@@ -95,36 +40,39 @@ async function handle(ctx) {
     return true;
   }
 
-  // ═══════════ فهرست مقالات ═══════════
   if (method === 'GET' && pathname === '/api/articles') {
     const cat = parsed.query.category;
     const rows = (cat && cat !== 'all')
-      /* `id` شکننده تساوی است: مقاله‌های اولیه تاریخ یکسان
-         دارند و بدون آن ترتیب بین اجراها عوض می‌شد — یعنی
-         «مقاله شاخص» صفحه مجله ثابت نبود و preload سمت سرور
-         به تصویر دیگری می‌خورد. */
+
       ? db.prepare('SELECT * FROM articles WHERE category=? ORDER BY created_at DESC, id').all(cat)
       : db.prepare('SELECT * FROM articles ORDER BY created_at DESC, id').all();
     sendJSON(200, { total: rows.length, articles: rows });
     return true;
   }
 
-  // ═══════════ یک مقاله ═══════════
   if (method === 'GET' && pathname.startsWith('/api/articles/')) {
     const key = pathname.replace('/api/articles/', '');
     const row = db.prepare('SELECT * FROM articles WHERE id=? OR slug=?').get(key, key);
-    row ? sendJSON(200, row) : sendJSON(404, { error: 'مقاله یافت نشد' });
+    if (!row) { sendJSON(404, { error: 'مقاله یافت نشد' }); return true; }
+
+    let sources = [];
+    try {
+      const parsed = JSON.parse(row.sources || '[]');
+      sources = Array.isArray(parsed)
+        ? parsed.filter(x => x && typeof x.label === 'string' &&
+            (!x.url || /^https:\/\//i.test(x.url)))
+        : [];
+    } catch { sources = []; }
+    sendJSON(200, { ...row, sources });
     return true;
   }
 
-  // ═══════════ انتشار مقاله ═══════════
   if (method === 'POST' && pathname === '/api/articles') {
     if (!can('content.write')) return true;
     const b = await parseBody(req);
     if (!b.title) { sendJSON(400, { error: 'عنوان مقاله الزامی است.' }); return true; }
     const id = `ART-${Date.now().toString(36).toUpperCase()}`;
 
-    // نشانی یکتا از روی عنوان
     let slug = slugify(b.slug || b.title);
     if (db.prepare('SELECT 1 FROM articles WHERE slug=?').get(slug)) {
       slug = `${slug}-${id.slice(-4).toLowerCase()}`;
@@ -142,15 +90,13 @@ async function handle(ctx) {
     return true;
   }
 
-  // ═══════════ ویرایش مقاله ═══════════
   if (method === 'PUT' && pathname.startsWith('/api/articles/')) {
     if (!can('content.write')) return true;
     const id = pathname.replace('/api/articles/', '');
     const b = await parseBody(req);
     const cur = db.prepare('SELECT * FROM articles WHERE id=?').get(id);
     if (!cur) { sendJSON(404, { error: 'مقاله یافت نشد' }); return true; }
-    // slug تنها در صورت درخواست صریح تغییر می‌کند تا لینک‌های
-    // ایندکس‌شده در گوگل نشکنند
+
     const slug = b.slug ? slugify(b.slug) : cur.slug;
 
     db.prepare(`
@@ -166,7 +112,6 @@ async function handle(ctx) {
     return true;
   }
 
-  // ═══════════ حذف مقاله ═══════════
   if (method === 'DELETE' && pathname.startsWith('/api/articles/')) {
     if (!can('content.delete')) return true;
     const id = pathname.replace('/api/articles/', '');
@@ -177,7 +122,7 @@ async function handle(ctx) {
     return true;
   }
 
-  return false;   // این ماژول مسئول این مسیر نیست
+  return false;
 }
 
 module.exports = { handle };

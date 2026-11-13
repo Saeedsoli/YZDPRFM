@@ -1,6 +1,5 @@
 'use strict';
-// Two owner-selected, price-preserving legacy products. Independent references
-// do not verify the supplier essence. No orders, stock, or other products edited.
+
 const fs=require('fs'),crypto=require('crypto');
 const {allowedVariant,RATE_KEY}=require('./essence-pricing-store');
 const {priceFromUsdPerKg}=require('./essence-pricing');
@@ -20,7 +19,7 @@ function applyLegacyReferenceApproval(db,file){
   const ident=db.prepare('SELECT 1 FROM official_identity_evidence WHERE product_id=?');
   const sec=db.prepare('SELECT 1 FROM secondary_reference_evidence WHERE product_id=?');
   const oldImport=db.prepare("SELECT 1 FROM settings WHERE key='supplier_exact_price_import_v1'").get();
-  // Preflight every item before touching either; preserve all owner changes.
+
   for(const x of m.items){
    const p=find.get(x.product_id);
    if(!p||p.supply_mode!=='UNAVAILABLE'||fields.some(k=>p[k]!==x.expected_fields[k])||off.get(x.product_id)||ident.get(x.product_id)||sec.get(x.product_id))throw Error('Legacy product content/evidence changed: '+x.product_id);

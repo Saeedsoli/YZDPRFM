@@ -1,35 +1,5 @@
 #!/usr/bin/env node
-/**
- * آزمون قوانین ارسال و بسته‌بندی کادویی
- *
- * ═══════════════════════════════════════════════════════════
- * سه قانون که این آزمون محافظت می‌کند
- * ═══════════════════════════════════════════════════════════
- *   ۱) نرخ ارسال **یکسان** ۱۰۰٬۰۰۰ — هیچ شهری استثنا ندارد
- *   ۲) ارسال رایگان بالای ۲٬۰۰۰٬۰۰۰ — مبنا: جمع کالاها
- *   ۳) بسته‌بندی کادویی ۷۰٬۰۰۰ — اختیاری، بیرون از آستانه
- *
- * ═══════════════════════════════════════════════════════════
- * 🔴 چرا «بیرون از آستانه» حیاتی است
- * ═══════════════════════════════════════════════════════════
- * اگر کادو در آستانه ارسال رایگان حساب شود، مشتری با افزودن
- * ۷۰ هزار تومان کادو به آستانه می‌رسد و فروشگاه **هم کرایه
- * می‌دهد هم کادو** — یعنی ۷۰ هزار گرفته و ۱۰۰ هزار داده.
- *
- * همین منطق برای کوپن هم هست: تخفیف روی کالاست، نه سرویس.
- *
- * ═══════════════════════════════════════════════════════════
- * چرا اعداد اینجا سخت‌کد شده‌اند (برخلاف بقیه آزمون‌ها)
- * ═══════════════════════════════════════════════════════════
- * در آزمون‌های دیگر گره زدن به عدد ثابت اشتباه است، چون آنجا
- * عدد **پیامد** است نه **قرارداد**. اینجا برعکس: این سه عدد
- * خودِ توافق تجاری‌اند. اگر کسی نرخ را عوض کند و آزمون سبز
- * بماند، یعنی آزمون هیچ کاری نمی‌کند.
- *
- * تغییر عمدی نرخ ⟵ این اعداد هم باید آگاهانه عوض شوند.
- *
- * اجرا:  node scripts/test_shipping_gift.js   (سرور باید بالا باشد)
- */
+
 'use strict';
 
 const path = require('path');
@@ -39,7 +9,6 @@ const fs = require('fs');
 
 const BASE = `http://127.0.0.1:${process.env.PORT || 3000}`;
 
-// ── قرارداد تجاری ──
 const FLAT_SHIPPING = 100000;
 const FREE_THRESHOLD = 2000000;
 const GIFT_FEE = 70000;
@@ -65,7 +34,6 @@ async function calc(body) {
   return { status: res.status, json: await res.json().catch(() => ({})) };
 }
 
-/** واریانت موجودی‌دار برای آزمون — بدون آن سرور سبد را رد می‌کند */
 function stockedVariant(minPrice, maxPrice) {
   return db.prepare(`
     SELECT sku, price_toman FROM variants
@@ -76,7 +44,6 @@ function stockedVariant(minPrice, maxPrice) {
 (async () => {
   console.log('\n' + b('  آزمون ارسال و بسته‌بندی کادویی') + '\n');
 
-  // ══ ۱) ثابت‌های سرور ══
   console.log(b('  قرارداد در کد'));
 
   const srv = fs.readFileSync(path.join(ROOT, 'src', 'server.js'), 'utf8');
@@ -87,13 +54,9 @@ function stockedVariant(minPrice, maxPrice) {
   add('نرخ کادو تعریف شده',
       new RegExp(`GIFT_WRAP_FEE\\s*=\\s*${GIFT_FEE}`).test(srv), fa(GIFT_FEE));
 
-  /* 🔴 نرخ ویژه یزد باید کاملاً رفته باشد.
-     ماندن حتی یک شاخه `isYazd` یعنی بعضی مشتری‌ها نرخ دیگری
-     می‌بینند و آزمون سبز، واقعیت را نمی‌گوید. */
   add('نرخ ویژه یزد حذف شده', !/isYazd/.test(srv) && !/YAZD_CITY/.test(srv),
       'هیچ شهری استثنا ندارد');
 
-  // ══ ۲) رفتار زنده ══
   console.log(b('\n  محاسبه زنده'));
 
   const cheap = stockedVariant(1, FREE_THRESHOLD - 1);
@@ -112,7 +75,6 @@ function stockedVariant(minPrice, maxPrice) {
         one.json.subtotal + one.json.shipping_fee === one.json.total_payable,
         fa(one.json.total_payable));
 
-    // ── کادو ──
     const wrapped = await calc({ items: [{ sku: cheap.sku, quantity: 1 }], gift_wrap: true });
     add('کادو مبلغ درست اضافه می‌کند',
         wrapped.json.gift_wrap_fee === GIFT_FEE, fa(wrapped.json.gift_wrap_fee));
@@ -124,13 +86,6 @@ function stockedVariant(minPrice, maxPrice) {
     add('تفاوت دو حالت دقیقاً برابر نرخ کادوست',
         wrapped.json.total_payable - one.json.total_payable === GIFT_FEE);
 
-    /* ── 🔴 آزمون کلیدی: نمونه مرزی واقعی ──
-       واریانتی لازم است که خودش زیر آستانه باشد ولی با افزودن
-       کادو از آن رد شود. چون موجودی تولید تقریباً صفر است، آزمون
-       **خودش** موجودی موقت می‌سازد و در پایان برمی‌گرداند.
-
-       بدون این کار، بررسی «نمونه‌ای نبود» سبز می‌شد — یعنی سبزِ
-       توخالی روی مهم‌ترین قانون این فایل. */
     const edge = db.prepare(`
       SELECT v.sku, v.price_toman, v.stock, p.id AS product_id, p.supply_mode
       FROM variants v JOIN products p ON p.id=v.product_id
@@ -154,14 +109,13 @@ function stockedVariant(minPrice, maxPrice) {
             `کالا ${fa(trap.json.subtotal)} + کادو = ${fa(withGift)} ` +
             `(بالای آستانه) ولی کرایه ${fa(trap.json.shipping_fee)}`);
       } finally {
-        // موجودی همیشه برگردانده می‌شود، حتی اگر بررسی بالا خطا دهد
+
         db.prepare('UPDATE variants SET stock=? WHERE sku=?').run(prevStock, edge.sku);
         db.prepare('UPDATE products SET supply_mode=? WHERE id=?').run(edge.supply_mode, edge.product_id);
       }
     }
   }
 
-  // ── بالای آستانه ──
   const big = stockedVariant(1, FREE_THRESHOLD);
   if (big) {
     const qty = Math.ceil(FREE_THRESHOLD / big.price_toman);
@@ -177,12 +131,10 @@ function stockedVariant(minPrice, maxPrice) {
     }
   }
 
-  // ══ ۳) پایداری در برابر دستکاری ══
   console.log(b('\n  امنیت'));
 
   if (cheap) {
-    /* مشتری نباید بتواند مبلغ کادو را تعیین کند. اگر عدد بفرستد،
-       سرور باید همان نرخ خودش را بگذارد — نه چیزی که کاربر گفته. */
+
     const evil = await calc({
       items: [{ sku: cheap.sku, quantity: 1 }],
       gift_wrap: true, gift_wrap_fee: 1, shipping_fee: 0
@@ -197,18 +149,14 @@ function stockedVariant(minPrice, maxPrice) {
         typeof truthy.json.gift_wrap_fee === 'number', fa(truthy.json.gift_wrap_fee));
   }
 
-  // ══ ۴) ذخیره در سفارش ══
   console.log(b('\n  ماندگاری در سفارش'));
 
   const col = db.prepare('PRAGMA table_info(orders)').all().find(c => c.name === 'gift_wrap_fee');
   add('ستون gift_wrap_fee در جدول هست', !!col, col ? `${col.type} پیش‌فرض ${col.dflt_value}` : '');
 
-  /* مبلغ ذخیره می‌شود نه فقط پرچم — تا فاکتور قدیمی با نرخ
-     امروز بازسازی نشود. */
   add('مبلغ ذخیره می‌شود نه پرچم بله/خیر',
       col && /INT/i.test(col.type), 'عدد، نه BOOLEAN');
 
-  // ══ ۵) نمایش در رابط ══
   console.log(b('\n  رابط کاربری'));
 
   const chk = fs.readFileSync(path.join(ROOT, 'public', 'checkout.html'), 'utf8');
@@ -236,7 +184,6 @@ function stockedVariant(minPrice, maxPrice) {
   add('قوانین هر سه عدد را دارد',
       /۱۰۰٬۰۰۰/.test(terms) && /۲٬۰۰۰٬۰۰۰/.test(terms) && /۷۰٬۰۰۰/.test(terms));
 
-  // ══ نتیجه ══
   const failed = checks.filter(x => !x).length;
   console.log();
   console.log(failed === 0

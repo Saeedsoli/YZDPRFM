@@ -1,6 +1,5 @@
 'use strict';
-// The owner corrected an earlier name choice. Undo only an untouched, unavailable
-// provisional import; never delete referenced variants or change old orders.
+
 const fs=require('fs'),crypto=require('crypto');
 const {priceFromUsdPerKg}=require('./essence-pricing');
 const KEY='weekend_owner_correction_2026_11_v1';
@@ -12,7 +11,7 @@ function apply(db,file){
   if(prior)return {ok:true,reason:'already_applied'};
   const imported=db.prepare('select value from settings where key=?').get(m.version);
   if(!imported){
-   // A missing import marker is not proof that a price was never attached.
+
    if(db.prepare('select 1 from supplier_price_evidence where product_id=?').get(x.product_id))return {ok:false,reason:'unmarked_evidence'};
    db.prepare('insert into settings(key,value) values(?,?)').run(KEY,JSON.stringify({reason:'not_previously_imported'}));return {ok:true,reason:'not_previously_imported'};
   }

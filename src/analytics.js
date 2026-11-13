@@ -1,40 +1,18 @@
-/**
- * عطر یزد | تحلیل داخلی و بخش‌های خودکار سایت
- * ──────────────────────────────────────────
- *
- * چرا ابزار داخلی و نه گوگل آنالیتیکس:
- *   ۱) داده مشتریان ایرانی از کشور خارج نمی‌شود
- *   ۲) بدون کوکی ردیابی، پس نیازی به بنر رضایت نیست
- *   ۳) همان داده مستقیم به سایت برمی‌گردد — «پرفروش‌ترین» و
- *      «محبوب‌ترین» از رویدادهای واقعی ساخته می‌شوند
- *   ۴) هیچ اسکریپت بیرونی روی صفحه بار نمی‌شود (سرعت)
- *
- * حریم خصوصی: IP خام در شناسه بازدید ذخیره نمی‌شود؛ متادیتا به
- * شمارنده‌های مشخص محدود و الگوهای رایج تماس در هدف رد می‌شوند.
- * جستجوی آزاد ممکن است اطلاعات شخصی دیگری داشته باشد؛ این فیلتر
- * ناشناس‌سازی کامل را تضمین نمی‌کند. `visitor` هش روزانه‌ای از
- * IP + عامل کاربر + نمک درون حافظه است و شناسه دائمی نیست.
- */
-
 'use strict';
 
 const crypto = require('crypto');
 const net = require('net');
 
-/** رویدادهایی که می‌پذیریم — هر چیز دیگری دور ریخته می‌شود */
 const KINDS = new Set([
-  'view',        // دیدن صفحه محصول
-  'search',      // جستجو
-  'add_cart',    // افزودن به سبد
-  'wishlist',    // افزودن به علاقه‌مندی
-  'checkout',    // شروع تسویه
-  'purchase',    // خرید موفق
-  'quiz'         // تکمیل کوییز
+  'view',
+  'search',
+  'add_cart',
+  'wishlist',
+  'checkout',
+  'purchase',
+  'quiz'
 ]);
 
-// Public analytics never need arbitrary metadata. Retain only small numeric
-// counters and boolean flags; do not persist order IDs, phones or free-form
-// metadata. Search terms are dropped when common contact patterns are seen.
 function containsContact(value) {
   const raw=String(value || '').replace(/[۰-۹]/g,c=>String('۰۱۲۳۴۵۶۷۸۹'.indexOf(c)))
     .replace(/[٠-٩]/g,c=>String('٠١٢٣٤٥٦٧٨٩'.indexOf(c)));
@@ -55,11 +33,8 @@ function safeMeta(kind,meta) {
   return Object.keys(result).length ? JSON.stringify(result) : null;
 }
 
-/** وضعیت‌هایی که «فروش محقق‌شده» شمرده می‌شوند */
 const PAID = "('PAID','PROCESSING','SHIPPED','DELIVERED')";
 
-/* نمک روزانه — در حافظه می‌ماند و با ری‌استارت عوض می‌شود.
-   همین هم مطلوب است: هرچه ردیابی سخت‌تر، بهتر. */
 let saltDay = '';
 let salt = '';
 
@@ -72,11 +47,6 @@ function todaySalt() {
   return salt;
 }
 
-/**
- * شناسه بازدیدکننده — هش یک‌طرفه و روزانه.
- * IP مستقیماً ذخیره نمی‌شود؛ هش ناشناس‌سازی کامل را تضمین نمی‌کند.
- * نمک در هر روز (و راه‌اندازی دوباره) تغییر می‌کند.
- */
 function visitorHash(ip, ua) {
   return crypto.createHash('sha256')
     .update(`${ip}|${ua}|${todaySalt()}`)
@@ -90,21 +60,13 @@ function build(db, appLog, resolveClientIP = req => req?.socket?.remoteAddress |
     'INSERT INTO events (kind, target, meta, visitor) VALUES (?,?,?,?)'
   );
 
-  /**
-   * ثبت رویداد. هرگز نباید جریان اصلی را بشکند —
-   * تحلیل مهم‌تر از فروش نیست.
-   */
   function track(kind, target, meta, req) {
     try {
       if (!KINDS.has(kind)) return false;
 
-      // Use the same trusted-proxy policy as rate limits; never use a
-      // client-controlled forwarded header directly for visitor counting.
       const ip = resolveClientIP(req);
       const ua = String(req?.headers?.['user-agent'] || '').slice(0, 120);
 
-      // خزنده‌ها را نمی‌شماریم — وگرنه «پربازدیدترین» یعنی
-      // «چیزی که گوگل بیشتر خزیده»
       if (/bot|crawler|spider|slurp|bingpreview|headless/i.test(ua)) return false;
 
       const targetText=target ? String(target).slice(0,120) : null;
@@ -112,20 +74,10 @@ function build(db, appLog, resolveClientIP = req => req?.socket?.remoteAddress |
       insert.run(kind, targetText, safeMeta(kind,meta), visitorHash(ip, ua));
       return true;
     } catch {
-      return false;   // خطای تحلیل هرگز به کاربر نمی‌رسد
+      return false;
     }
   }
 
-  // ══════════════════════════════════════════
-  //  بخش یک — داده برای صفحات عمومی سایت
-  // ══════════════════════════════════════════
-
-  /**
-   * پرفروش‌ترین‌ها — بر پایه سفارش‌های واقعیِ پرداخت‌شده.
-   *
-   * نکته: `order_items.sku` است نه شناسه محصول، پس از روی SKU به
-   * محصول می‌رسیم. SKU الگوی `YZD-0001-EDP-030` دارد.
-   */
   function bestsellers(days = 90, limit = 8) {
     return db.prepare(`
       SELECT p.id, p.slug, p.name_fa, p.name_en, p.brand_fa, p.gender,
@@ -151,7 +103,6 @@ function build(db, appLog, resolveClientIP = req => req?.socket?.remoteAddress |
     `).all(`-${parseInt(days)} days`, limit);
   }
 
-  /** بیشترین علاقه‌مندی — از جدول wishlist */
   function mostWanted(limit = 8) {
     return db.prepare(`
       SELECT p.id, p.slug, p.name_fa, p.name_en, p.brand_fa, p.gender,
@@ -173,7 +124,6 @@ function build(db, appLog, resolveClientIP = req => req?.socket?.remoteAddress |
     `).all(limit);
   }
 
-  /** پربازدیدترین‌های این هفته — از رویداد `view` */
   function trending(days = 7, limit = 8) {
     return db.prepare(`
       SELECT p.id, p.slug, p.name_fa, p.name_en, p.brand_fa, p.gender,
@@ -197,20 +147,8 @@ function build(db, appLog, resolveClientIP = req => req?.socket?.remoteAddress |
     `).all(`-${parseInt(days)} days`, limit);
   }
 
-  /**
-   * وقتی فروشگاه تازه است، «پرفروش‌ترین» خالی می‌ماند.
-   *
-   * صفحه اصلی نباید بخش خالی نشان دهد، ولی پر کردنش هم باید
-   * درست باشد: نسخه اول با `MIN(id)` هر خانواده پر می‌شد و چون
-   * شناسه‌ها به ترتیب برند وارد شده‌اند، هر هشت محصول از یک برند
-   * درمی‌آمدند — ویترینی که شبیه تبلیغ یک برند بود، نه گلچین.
-   *
-   * حالا از هر برند حداکثر یکی، و از خانواده‌های متفاوت.
-   */
   function fallbackPicks(limit = 8) {
-    /* از هر برند فقط یکی (تا ویترین تبلیغ یک برند نشود)، سپس
-       بین آن‌ها خانواده‌های بویایی را می‌چرخانیم تا تنوع بویایی
-       هم دیده شود. */
+
     return db.prepare(`
       WITH one_per_brand AS (
         SELECT p.*,
@@ -233,29 +171,10 @@ function build(db, appLog, resolveClientIP = req => req?.socket?.remoteAddress |
     `).all(limit);
   }
 
-  /* ═══════════════════════════════════════════
-     ویترین فصلی
-     ═══════════════════════════════════════════
-     عطر عمیقاً فصلی است — کسی وسط مرداد دنبال عنبری سنگین زمستانی
-     نیست. ستون `season` از روز اول پر بوده و هیچ‌جا استفاده نمی‌شد.
-
-     چرا این بهترین «پویایی» کم‌هزینه است:
-       • با یک بازدیدکننده هم کار می‌کند (برخلاف «پرفروش‌ترین» که
-         به تاریخچه فروش نیاز دارد)
-       • خودکار عوض می‌شود، بدون اینکه کسی چیزی به‌روز کند
-       • دروغ نیست — واقعاً بر پایه داده محصول است
-
-     برخلاف شمارنده‌های جعلی («۱۲ نفر در حال مشاهده») که برای برندی
-     با موضع شفافیت سمّ است، این بخش ادعای بی‌پایه نمی‌کند. */
-
   const SEASON_FA = {
     spring: 'بهار', summer: 'تابستان', autumn: 'پاییز', winter: 'زمستان'
   };
 
-  /**
-   * فصل جاری بر پایه تقویم ایران.
-   * مرزها با تقویم شمسی می‌خوانند: ۱ فروردین ≈ ۲۱ مارس.
-   */
   function seasonNow(date = new Date()) {
     const md = (date.getMonth() + 1) * 100 + date.getDate();
     if (md >= 321 && md <= 621)  return 'spring';
@@ -264,22 +183,12 @@ function build(db, appLog, resolveClientIP = req => req?.socket?.remoteAddress |
     return 'winter';
   }
 
-  /**
-   * شماره هفته — دانه چرخش.
-   *
-   * چرا هفتگی و نه تصادفی در هر درخواست: بازدیدکننده‌ای که صبح و
-   * عصر سر می‌زند نباید ویترین متفاوت ببیند (حس بی‌ثباتی می‌دهد و
-   * کش را می‌شکند). هفته‌ای یک بار عوض شدن، ریتم درستی است:
-   * آن‌قدر آهسته که پایدار حس شود، آن‌قدر تازه که بازگشت ارزش
-   * داشته باشد.
-   */
   function weekSeed(date = new Date()) {
     const start = Date.UTC(date.getUTCFullYear(), 0, 1);
     const days = Math.floor((date.getTime() - start) / 86400000);
     return date.getUTCFullYear() * 100 + Math.floor(days / 7);
   }
 
-  /** هش پایدار FNV-1a — همان الگویی که db.js برای تصاویر دارد */
   function stableHash(str) {
     let h = 0x811c9dc5;
     for (let i = 0; i < str.length; i++) {
@@ -289,22 +198,10 @@ function build(db, appLog, resolveClientIP = req => req?.socket?.remoteAddress |
     return h;
   }
 
-  /**
-   * انتخاب عطرهای مناسب فصل جاری.
-   *
-   * سه قاعده که از درس‌های `fallbackPicks` آمده‌اند:
-   *   ۱) از هر برند حداکثر یکی — وگرنه ویترین شبیه تبلیغ یک برند
-   *      می‌شود (این اشتباه یک بار افتاد)
-   *   ۲) موجودی واقعی اولویت دارد — نشان دادن کالای ناموجود در
-   *      ویترین، بازدیدکننده را به بن‌بست می‌برد
-   *   ۳) چرخش هفتگی پایدار — نه تصادفی، نه ثابت
-   */
   function seasonalPicks(limit = 8, date = new Date()) {
     const key = seasonNow(date);
     const fa = SEASON_FA[key];
 
-    /* `season_rank`: تطبیق مستقیم فصل ۲ امتیاز، «چهارفصل» ۱ امتیاز.
-       چهارفصل واقعاً مناسب است ولی اختصاصی نیست، پس پایین‌تر. */
     const rows = db.prepare(`
       WITH matched AS (
         SELECT p.id, p.slug, p.name_fa, p.name_en, p.brand_fa, p.gender,
@@ -344,24 +241,10 @@ function build(db, appLog, resolveClientIP = req => req?.socket?.remoteAddress |
     const sorted = rows
       .map(r => ({ ...r, _r: stableHash(`${r.id}|${seed}`) }))
       .sort((a, b) =>
-        (b.total_stock > 0) - (a.total_stock > 0) ||   // موجود اول
-        b.season_rank - a.season_rank ||               // تطبیق دقیق‌تر اول
-        a._r - b._r);                                  // چرخش هفتگی
+        (b.total_stock > 0) - (a.total_stock > 0) ||
+        b.season_rank - a.season_rank ||
+        a._r - b._r);
 
-    /* ── تنوع خانواده بویایی ──
-       اگر هر هشت پیشنهاد گلی باشند، ویترین فصلی حس «انتخاب»
-       نمی‌دهد.
-
-       نسخه اول این کار را با «حداکثر دو از هر خانواده» انجام
-       می‌داد و بعد اگر به حد نصاب نمی‌رسید از باقی‌مانده پر
-       می‌کرد. نتیجه در عمل: پنج تا از هشت پیشنهاد گلی درآمدند —
-       چون سقف زود پر می‌شد و حلقهٔ پرکننده قاعده را کاملاً
-       نادیده می‌گرفت. سقف سخت بدون جایگزین، سقف نیست.
-
-       حالا سهمیه **مرحله‌ای** است: در هر دور از هر خانواده فقط
-       یکی برداشته می‌شود. اگر پس از یک دور کامل هنوز جا مانده،
-       دور بعدی شروع می‌شود. این تضمین می‌کند تنوع تا آخرین
-       کارت حفظ شود، و وقتی خانواده‌ها کم باشند هم قفل نمی‌کند. */
     const byFamily = new Map();
     for (const r of sorted) {
       const f = r.family_slug || '—';
@@ -374,36 +257,27 @@ function build(db, appLog, resolveClientIP = req => req?.socket?.remoteAddress |
     const queues = [...byFamily.values()];
     const cursor = new Array(queues.length).fill(0);
 
-    /* هر دور، از هر خانواده یک محصول — با پرش از برندهای تکراری.
-       قاعده «از هر برند حداکثر یکی» اینجا اعمال می‌شود نه در SQL،
-       چون فقط در این مرحله دید کامل نسبت به کل انتخاب وجود دارد. */
     let guard = 0;
     while (picked.length < limit && guard++ < 200) {
       let addedThisRound = 0;
       for (let i = 0; i < queues.length && picked.length < limit; i++) {
         const q = queues[i];
         while (cursor[i] < q.length && usedBrands.has(q[cursor[i]].brand_fa)) {
-          cursor[i]++;                       // این برند قبلاً آمده
+          cursor[i]++;
         }
-        if (cursor[i] >= q.length) continue; // این خانواده ته کشید
+        if (cursor[i] >= q.length) continue;
         const r = q[cursor[i]++];
         const { _r, season_rank, total_stock, ...clean } = r;
         picked.push({ ...clean, in_stock: total_stock > 0 });
         if (r.brand_fa) usedBrands.add(r.brand_fa);
         addedThisRound++;
       }
-      if (!addedThisRound) break;            // همه صف‌ها ته کشیدند
+      if (!addedThisRound) break;
     }
 
     return { season: key, season_fa: fa, items: picked };
   }
 
-  /**
-   * ساخت آمار صفحه اصلی و ذخیره در جدول `trending`.
-   *
-   * چرا از پیش محاسبه: صفحه اصلی پربازدیدترین صفحه است و نباید
-   * هر بار سه تا GROUP BY سنگین بزند.
-   */
   function refreshTrending() {
     const put = db.prepare(`
       INSERT INTO trending (slot, payload, updated_at)
@@ -433,7 +307,6 @@ function build(db, appLog, resolveClientIP = req => req?.socket?.remoteAddress |
     };
   }
 
-  /** خواندن آمار آماده — اگر نبود، همان لحظه ساخته می‌شود */
   function getTrending(slot) {
     const row = db.prepare('SELECT payload FROM trending WHERE slot=?').get(slot);
     if (!row) {
@@ -444,11 +317,6 @@ function build(db, appLog, resolveClientIP = req => req?.socket?.remoteAddress |
     try { return JSON.parse(row.payload); } catch { return { items: [] }; }
   }
 
-  // ══════════════════════════════════════════
-  //  بخش دو — داشبورد تحلیل برای پنل مدیریت
-  // ══════════════════════════════════════════
-
-  /** خلاصه ترافیک */
   function trafficSummary(days = 30) {
     const since = `-${parseInt(days)} days`;
 
@@ -470,8 +338,6 @@ function build(db, appLog, resolveClientIP = req => req?.socket?.remoteAddress |
     const checkouts = k.checkout?.n  || 0;
     const buys      = k.purchase?.n  || 0;
 
-    /* قیف خرید — جایی که مشتری رها می‌کند.
-       این عدد مهم‌ترین چیزی است که فروشگاه باید بداند. */
     const funnel = {
       view: views,
       add_cart: carts,
@@ -486,7 +352,6 @@ function build(db, appLog, resolveClientIP = req => req?.socket?.remoteAddress |
     return { days: parseInt(days), ...totals, by_kind: byKind, funnel };
   }
 
-  /** نمودار روزانه */
   function daily(days = 30) {
     return db.prepare(`
       SELECT date(at,'+03:30') day,
@@ -500,12 +365,6 @@ function build(db, appLog, resolveClientIP = req => req?.socket?.remoteAddress |
     `).all(`-${parseInt(days)} days`);
   }
 
-  /**
-   * عبارت‌هایی که مشتری جستجو کرد ولی نتیجه‌ای نگرفت.
-   *
-   * این ارزشمندترین گزارش برای تصمیم خرید است: یعنی مشتری چیزی
-   * می‌خواسته که نداریم — یا داریم و پیدا نکرده.
-   */
   function failedSearches(days = 30, limit = 25) {
     return db.prepare(`
       SELECT target term, COUNT(*) n, COUNT(DISTINCT visitor) people
@@ -516,7 +375,6 @@ function build(db, appLog, resolveClientIP = req => req?.socket?.remoteAddress |
     `).all(`-${parseInt(days)} days`, limit);
   }
 
-  /** پرجستجوترین عبارت‌ها */
   function topSearches(days = 30, limit = 25) {
     return db.prepare(`
       SELECT target term, COUNT(*) n, COUNT(DISTINCT visitor) people,
@@ -527,10 +385,6 @@ function build(db, appLog, resolveClientIP = req => req?.socket?.remoteAddress |
     `).all(`-${parseInt(days)} days`, limit);
   }
 
-  /**
-   * محصولاتی که زیاد دیده می‌شوند ولی کم فروش می‌روند.
-   * یعنی صفحه محصول یا قیمتش مشکلی دارد.
-   */
   function highViewLowSale(days = 30, limit = 15) {
     return db.prepare(`
       SELECT p.id, p.slug, p.name_fa, p.brand_fa,
@@ -552,7 +406,6 @@ function build(db, appLog, resolveClientIP = req => req?.socket?.remoteAddress |
     `).all(`-${parseInt(days)} days`, `-${parseInt(days)} days`, limit);
   }
 
-  /** همه‌چیز یکجا برای داشبورد */
   function dashboard(days = 30) {
     return {
       traffic:  trafficSummary(days),
@@ -565,7 +418,6 @@ function build(db, appLog, resolveClientIP = req => req?.socket?.remoteAddress |
     };
   }
 
-  /** پاکسازی رویدادهای قدیمی — پیش‌فرض ۱۸۰ روز */
   function purge(days) {
     const keep = parseInt(days || process.env.ANALYTICS_KEEP_DAYS) || 180;
     const r = db.prepare(

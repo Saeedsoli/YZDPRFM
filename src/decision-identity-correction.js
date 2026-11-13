@@ -1,6 +1,5 @@
 'use strict';
-// Narrow, versioned correction for the untouched Decision seed only. Keep slug
-// and images stable; never change stock, prices, historical orders or owner edits.
+
 const fs=require('fs');
 const KEY='decision_metadata_2026_11_v1';
 const COLUMNS=['name_fa','name_en','subtitle_en_display','gender','family_fa','family_en','family_slug','temperature','taste','season','occasion','longevity','sillage','market_segment','perfumer','release_year'];

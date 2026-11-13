@@ -1,25 +1,5 @@
 #!/usr/bin/env node
-/**
- * آزمون پروفایل و کارنامه شخصی کارمند.
- *
- * خطر اصلی: نشت فعالیت بین کارکنان. اگر فیلتر `staff_id` درست
- * نباشد، هر کارمند کار بقیه را می‌بیند — یعنی انباردار می‌فهمد
- * مدیر کل چه کرده و چه سفارش‌هایی لغو شده.
- *
- * خطر دوم: ارتقای خود از راه ویرایش پروفایل. اگر مسیر
- * `me/profile` فیلد `role_key` یا `active` را بپذیرد، کارمند
- * می‌تواند خودش را مدیر کل کند.
- *
- * چه چیزی سنجیده می‌شود:
- *   ۱) هر کارمند فقط فعالیت خودش را می‌بیند
- *   ۲) ویرایش پروفایل نقش و وضعیت را عوض نمی‌کند
- *   ۳) بدون ورود ۴۰۱، با رمز اولیه ۴۰۳
- *   ۴) آمار برجسته با نقش هم‌خوان است
- *   ۵) شمارش نشست فعال، منقضی‌ها را نمی‌شمارد
- *   ۶) اعتبارسنجی ورودی (نام خالی، موبایل نامعتبر)
- *
- * اجرا: node scripts/test_profile.js
- */
+
 'use strict';
 
 const { spawn } = require('child_process');
@@ -105,7 +85,6 @@ const login = (u, p) =>
   const OWNER = ol.json.token;
   const ownerId = ol.json.user.id;
 
-  // ══ ۱) دسترسی پایه ══
   console.log(d('  دسترسی'));
 
   const anon = await api('/api/admin/me/activity');
@@ -117,7 +96,6 @@ const login = (u, p) =>
       !!ownerA.json.profile && !!ownerA.json.summary &&
       Array.isArray(ownerA.json.actions) && Array.isArray(ownerA.json.recent));
 
-  // ══ ۲) ساخت کارکنان ══
   const WH  = (await makeStaff(api, OWNER, 'pf_wh', 'warehouse')).token;
   const SUP = (await makeStaff(api, OWNER, 'pf_sup', 'support')).token;
   if (!WH || !SUP) {
@@ -125,11 +103,9 @@ const login = (u, p) =>
     return finish(true);
   }
 
-  // انباردار چند کار انجام می‌دهد تا کارنامه‌اش پر شود
   await api('/api/orders', {}, WH);
   await api('/api/admin/low-stock', {}, WH);
 
-  // ══ ۳) جداسازی فعالیت ══
   console.log(d('\n  جداسازی فعالیت بین کارکنان'));
 
   const whA = await api('/api/admin/me/activity?days=30', {}, WH);
@@ -142,8 +118,6 @@ const login = (u, p) =>
   add('شناسه پروفایل با کارمند می‌خواند', whId && whId !== ownerId,
       `id=${whId} در برابر مدیر=${ownerId}`);
 
-  /* مهم‌ترین بررسی: هیچ رکوردی از کارمند دیگر در کارنامه نباشد.
-     مستقیم با دیتابیس مقایسه می‌شود، نه با فرض. */
   const whRealCount = db.prepare(
     "SELECT COUNT(*) n FROM audit_log WHERE staff_id=? AND at >= datetime('now','-30 days')"
   ).get(whId).n;
@@ -156,12 +130,10 @@ const login = (u, p) =>
       whA.json.summary.total < ownerTotal,
       `انباردار ${whA.json.summary.total} · مدیر ${ownerTotal}`);
 
-  // هیچ نام کاربری دیگری در پاسخ نباشد
   const blob = JSON.stringify(whA.json);
   add('نام کارمند دیگر در پاسخ نیست',
       !blob.includes('owner') && !blob.includes(nidFor('pf_sup')));
 
-  // ══ ۴) آمار برجسته بر پایه نقش ══
   console.log(d('\n  آمار برجسته متناسب با نقش'));
 
   const labels = j => (j.highlights || []).map(h => h.label);
@@ -179,7 +151,6 @@ const login = (u, p) =>
   add('پشتیبان «به‌روزرسانی موجودی» ندارد',
       !labels(supA.json).some(l => l.includes('موجودی')));
 
-  // ══ ۵) ویرایش پروفایل ══
   console.log(d('\n  ویرایش مشخصات'));
 
   const okEdit = await api('/api/admin/me/profile', {
@@ -201,7 +172,6 @@ const login = (u, p) =>
   }, WH);
   add('موبایل نامعتبر رد می‌شود', badMobile.status === 400, `کد ${badMobile.status}`);
 
-  // ══ ۶) ارتقای خود از راه پروفایل ══
   console.log(d('\n  تلاش برای ارتقا از راه پروفایل'));
 
   await api('/api/admin/me/profile', {
@@ -230,7 +200,6 @@ const login = (u, p) =>
       afterFlags.active === 1 && afterFlags.must_change === 0,
       `active=${afterFlags.active} must_change=${afterFlags.must_change}`);
 
-  // ══ ۷) نشست فعال ══
   console.log(d('\n  شمارش نشست'));
 
   const liveNow = db.prepare(
@@ -241,7 +210,6 @@ const login = (u, p) =>
       whA2.json.profile.active_sessions === liveNow,
       `${whA2.json.profile.active_sessions} در برابر ${liveNow}`);
 
-  // نشست منقضی نباید شمرده شود
   db.prepare(
     "INSERT INTO sessions (token, kind, subject, expires_at) VALUES (?,?,?,?)"
   ).run('deadtoken' + Date.now(), 'ADMIN', String(whId), Date.now() - 60000);
@@ -250,7 +218,6 @@ const login = (u, p) =>
       whA3.json.profile.active_sessions === liveNow,
       `${whA3.json.profile.active_sessions}`);
 
-  // ══ ۸) رمز اولیه ══
   console.log(d('\n  حساب با رمز اولیه'));
   const fNid = nidFor('pf_new');
   const fMob = mobileFor('pf_new');

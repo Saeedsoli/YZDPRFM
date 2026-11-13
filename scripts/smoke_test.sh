@@ -100,15 +100,23 @@ chk "$(curl -s -o /dev/null -w '%{http_code}' http://localhost:3000/perfume/cree
 chk "$(curl -s -o /dev/null -w '%{http_code}' http://localhost:3000/journal/vetiver-note)" "200" "article"
 chk "$(curl -s -o /dev/null -w '%{http_code}' http://localhost:3000/nope)" "404" "404"
 chk "$(curl -s -o /dev/null -w '%{http_code}' http://localhost:3000/sitemap.xml)" "200" "sitemap"
-SMBAD=$(curl -s http://localhost:3000/sitemap.xml | grep -c '\.html' || true)
-chk "$SMBAD" "0" "sitemap has no .html urls"
-SMOK=$(curl -s http://localhost:3000/sitemap.xml | python3 -c "
+# نقشه سایت حالا فهرست سه نقشه است؛ نشانی‌های .html نباید در هیچ‌کدام باشد
+SMBAD=$(for m in sitemap.xml sitemap-pages.xml sitemap-products.xml sitemap-articles.xml; do curl -s http://localhost:3000/$m; done | grep -c '\.html' || true)
+chk "$SMBAD" "0" "sitemaps have no .html urls"
+SMOK=$(for m in sitemap.xml sitemap-pages.xml sitemap-products.xml sitemap-articles.xml; do curl -s http://localhost:3000/$m; done | python3 -c "
 import sys,xml.etree.ElementTree as ET
-try:
-    ET.fromstring(sys.stdin.read()); print('valid')
-except Exception: print('broken')")
-chk "$SMOK" "valid" "sitemap is valid XML"
+data=sys.stdin.read()
+# چند سند پشت سر هم؛ هرکدام را جدا می‌سنجیم
+chunks=[c for c in data.split('<?xml') if c.strip()]
+ok=True
+for c in chunks:
+    try: ET.fromstring('<?xml'+c)
+    except Exception: ok=False
+print('valid' if ok and chunks else 'broken')")
+chk "$SMOK" "valid" "sitemaps are valid XML"
 chk "$(curl -s -o /dev/null -w '%{http_code}' http://localhost:3000/robots.txt)" "200" "robots"
+chk "$(curl -s -o /dev/null -w '%{http_code}' http://localhost:3000/llms.txt)" "200" "llms.txt"
+chk "$(curl -s -o /dev/null -w '%{http_code}' http://localhost:3000/feed.xml)" "200" "rss feed"
 
 echo "== new endpoints"
 chk "$(curl -s -o /dev/null -w '%{http_code}' http://localhost:3000/api/contact-info)" "200" "contact-info"
@@ -159,10 +167,10 @@ for f in Regular Medium SemiBold Bold ExtraBold; do
   SZ=$(curl -s -o /dev/null -w '%{size_download}' http://localhost:3000/fonts/Vazirmatn-$f.woff2)
   if [ "$SZ" -gt 0 ] && [ "$SZ" -lt 40000 ]; then P=$((P+1)); else F=$((F+1)); echo "  X font-$f ($SZ bytes)"; fi
 done
-for f in hero-cinematic.webp hero-cinematic-sm.webp hero-cinematic.jpg; do
+for f in hero-video-poster.webp hero-video-poster-sm.webp hero-video-poster.jpg; do
   chk "$(curl -s -o /dev/null -w '%{http_code}' http://localhost:3000/images/$f)" "200" "$f"
 done
-WEBP=$(curl -s -H "Accept: image/webp,*/*" -o /dev/null -w '%{content_type}' http://localhost:3000/images/hero-cinematic.jpg)
+WEBP=$(curl -s -H "Accept: image/webp,*/*" -o /dev/null -w '%{content_type}' http://localhost:3000/images/hero-video-poster.jpg)
 chk "$WEBP" "image/webp" "auto-webp serving"
 
 # هویت لوگو — باید اینجا اجرا شود چون به سرور زنده نیاز دارد
@@ -216,6 +224,7 @@ run_test test_cold_deploy.js "cold deploy (Liara disk mount)"
 run_test test_analytics.js "analytics and showcase"
 run_test test_images.js "product images"
 run_test test_brand_names.js "persian brand names"
+run_test test_brand_name_normalization.js "canonical brand labels"
 run_test test_joop_name_correction.js "guarded Joop names"
 run_test test_popular_persian_names.js "popular Persian spelling"
 run_test test_amouage_common_names.js "Amouage Persian spelling"
@@ -303,6 +312,13 @@ except Exception: print(0)" 2>/dev/null)
     F=$((F+1))
     echo "  X server-side render (article / brands) — /tmp/ssr.log"
     grep '✗' /tmp/ssr.log | head -3 | sed 's/^/      /'
+  fi
+  if python3 scripts/test_script_element_csp_browser.py >/tmp/csp-browser.log 2>&1; then
+    P=$((P+1))
+  else
+    F=$((F+1))
+    echo "  X browser CSP (template hashes / inline event denial) — /tmp/csp-browser.log"
+    tail -8 /tmp/csp-browser.log | sed 's/^/      /'
   fi
 else
   echo "  - browser test skipped (playwright not installed)"
@@ -417,6 +433,10 @@ if python3 scripts/test_approved_mto_v13.py >/tmp/test_approved_mto_v13.log 2>&1
 run_test test_default_reference_v53.js "six sourced default references"
 run_test test_font_preload.js "local regular font preload"
 run_test test_brand_logos.js "brand logos: local, licensed, safe"
+run_test test_asset_budget.js "asset formats, budget and image negotiation"
+run_test test_essence_inventory.js "essence inventory in millilitres"
+run_test test_external_references.js "external references: https, safe rel, allowlist"
+run_test test_search_visibility.js "search + AI visibility: robots, sitemaps, llms.txt"
 run_test test_availability_style_consistency.js "one availability style everywhere"
 run_test test_journal_lcp.js "journal server-side render + LCP guards"
 run_test test_invoice_legal.js "invoice: plain vs formal (legal info)"

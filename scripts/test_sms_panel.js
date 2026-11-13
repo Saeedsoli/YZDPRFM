@@ -1,31 +1,5 @@
 #!/usr/bin/env node
-/**
- * آزمون تفسیر پاسخ سرویس پیامک (پلتفرم payamak-panel).
- *
- * چرا این آزمون وجود دارد:
- *
- *   مستندات پیامیتو یک جمله دارد که کل منطق را عوض می‌کند:
- *   «بسیاری از خطاهای کاربردی داخل بدنه پاسخ و همراه HTTP 200
- *   برمی‌گردند؛ فقط وضعیت HTTP را معیار موفقیت قرار ندهید.»
- *
- *   نسخه پیشین کد ما دقیقاً همین کار را می‌کرد — در نهایت به کد
- *   HTTP برمی‌گشت. یعنی «نام کاربری اشتباه است» را موفق می‌شمرد.
- *   در عمل: مدیر فکر می‌کرد پیامک‌ها می‌روند، مشتری هیچ کدی
- *   نمی‌گرفت، و هیچ خطایی هم در لاگ نبود. خرابی بی‌صدا.
- *
- *   این آزمون بدون فرستادن حتی یک پیامک واقعی، منطق تفسیر پاسخ
- *   را می‌سنجد — با همان پاسخ‌هایی که سرویس واقعی می‌دهد.
- *
- * پوشش:
- *   ۱) شناسه ارسال موفق تشخیص داده می‌شود
- *   ۲) هر ۲۰ کد خطا **ناموفق** شمرده می‌شود
- *   ۳) خطا با HTTP 200 هم گرفته می‌شود (تله اصلی)
- *   ۴) پیام فارسی قابل فهم برمی‌گردد، نه عدد خام
- *   ۵) پاسخ ناشناخته ناموفق فرض می‌شود، نه موفق
- *   ۶) بدنه درخواست قالب درست دارد
- *
- * اجرا: node scripts/test_sms_panel.js   (سرور لازم نیست)
- */
+
 'use strict';
 
 const { _internals, PROVIDER } = require('../src/sms');
@@ -42,7 +16,6 @@ const add = (label, ok, note) => {
   checks.push(ok);
 };
 
-/** پاسخ ساختگی سرویس — همان شکلی که واقعاً برمی‌گردد */
 const mk = (value, retStatus = 1, status = 200) => ({
   status,
   body: JSON.stringify({ Value: String(value), RetStatus: retStatus,
@@ -56,7 +29,6 @@ const mk = (value, retStatus = 1, status = 200) => ({
   console.log(h('  آزمون تفسیر پاسخ سرویس پیامک'));
   console.log(d('  ─────────────────────────────────────────────'));
 
-  // ─────────────── ۱) ارسال موفق
   console.log();
   console.log(h('  ۱) ارسال موفق'));
 
@@ -67,7 +39,6 @@ const mk = (value, retStatus = 1, status = 200) => ({
   const v = readPanelValue('987654321098765');
   add('شناسه ارسال برگردانده می‌شود', v.ok && v.recId === '987654321098765');
 
-  // ─────────────── ۲) هر کد خطا
   console.log();
   console.log(h('  ۲) کدهای خطا — همه باید ناموفق باشند'));
 
@@ -82,7 +53,6 @@ const mk = (value, retStatus = 1, status = 200) => ({
       allFail, missed.length ? `جا افتاد: ${missed.join(', ')}` : '');
   add('هر کد پیام فارسی دارد', allTranslated, 'مدیر عدد خام نمی‌بیند');
 
-  // نمونه‌های کلیدی
   const cases = [
     ['0',    'نام کاربری یا کلید'],
     ['2',    'اعتبار'],
@@ -98,7 +68,6 @@ const mk = (value, retStatus = 1, status = 200) => ({
         (res.message || '').slice(0, 52));
   });
 
-  // ─────────────── ۳) تله اصلی
   console.log();
   console.log(h('  ۳) تله — خطا با HTTP 200'));
 
@@ -113,7 +82,6 @@ const mk = (value, retStatus = 1, status = 200) => ({
   const retFail = looksSuccessful(mk('123', 0, 200));
   add('‏RetStatus=0 ناموفق است', retFail.ok === false);
 
-  // ─────────────── ۴) پاسخ‌های غیرمنتظره
   console.log();
   console.log(h('  ۴) پاسخ غیرمنتظره — محافظه‌کارانه'));
 
@@ -135,7 +103,6 @@ const mk = (value, retStatus = 1, status = 200) => ({
   const plainOk = looksSuccessful({ status: 200, body: '1234567890123', json: null });
   add('پاسخ متنیِ شناسه موفق است', plainOk.ok === true);
 
-  // ─────────────── ۵) قالب درخواست
   console.log();
   console.log(h('  ۵) قالب بدنه درخواست'));
 
@@ -148,7 +115,6 @@ const mk = (value, retStatus = 1, status = 200) => ({
   add('همه فیلدهای لازم هست',
       ['username', 'password', 'to', 'from', 'text'].every(k => body.includes(k + '=')));
 
-  // ─────────────── ۶) کاوه‌نگار نشکسته
   console.log();
   console.log(h('  ۶) سازگاری با کاوه‌نگار'));
 
@@ -157,7 +123,6 @@ const mk = (value, retStatus = 1, status = 200) => ({
   const kavBad = { status: 200, json: { return: { status: 418, message: 'خطا' } }, body: '' };
   add('پاسخ ناموفق کاوه‌نگار شناخته می‌شود', looksSuccessful(kavBad).ok === false);
 
-  // ─────────────── ۷) پیکربندی
   console.log();
   console.log(h('  ۷) پیکربندی فعلی'));
 

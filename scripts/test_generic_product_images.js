@@ -1,5 +1,5 @@
 'use strict';
-// No real DB: fixed scope, fresh install, replay and owner-image protection.
+
 const assert=require('assert/strict'),fs=require('fs'),os=require('os'),path=require('path'),crypto=require('crypto'),{spawnSync}=require('child_process');
 const root=path.join(__dirname,'..'),files=require('../src/generic-product-images'),manifest=files.loadAssignments(path.join(root,'seed/generic_image_assignments_v1.json'));
 assert.equal(manifest.items.length,83);assert.equal(new Set(manifest.items.map(x=>x.product_id)).size,83);

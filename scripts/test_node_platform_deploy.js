@@ -1,20 +1,5 @@
 #!/usr/bin/env node
-/**
- * آزمون استقرار روی «پلتفرم Node» لیارا — نه Docker.
- *
- * چرا این آزمون جدا لازم است:
- *   `liara.json` می‌گوید `"platform": "node"`. در این حالت لیارا
- *   Dockerfile را **نمی‌خواند** — package.json را می‌خواند و
- *   `npm start` را اجرا می‌کند. یعنی:
- *     • ENV های داخل Dockerfile (از جمله DB_PATH) اعمال نمی‌شوند
- *     • هیچ `COPY` انتخابی‌ای در کار نیست؛ کل پوشه آپلود می‌شود
- *       مگر آنکه `.dockerignore` جلویش را بگیرد
- *
- *   آزمون `test_cold_deploy.js` فقط سناریوی Docker را می‌سنجد.
- *   این آزمون سناریویی را می‌سنجد که واقعاً اتفاق می‌افتد.
- *
- * اجرا: node scripts/test_node_platform_deploy.js
- */
+
 'use strict';
 
 const fs = require('fs');
@@ -37,7 +22,6 @@ const add = (label, ok, note) => {
   checks.push(ok);
 };
 
-/** الگوهای .dockerignore را می‌خواند */
 function ignorePatterns() {
   const f = path.join(ROOT, '.dockerignore');
   if (!fs.existsSync(f)) return null;
@@ -52,7 +36,7 @@ function isIgnored(rel, patterns) {
     const pp = p.replace(/\/$/, '');
     if (rel === pp || first === pp) return true;
     if (rel.startsWith(pp + '/')) return true;
-    // الگوی ساده با *
+
     if (pp.includes('*')) {
       const re = new RegExp('^' + pp.replace(/\./g, '\\.').replace(/\*/g, '.*') + '$');
       return re.test(rel) || re.test(first);
@@ -61,7 +45,6 @@ function isIgnored(rel, patterns) {
   });
 }
 
-/** پوشه را با احترام به .dockerignore کپی می‌کند */
 function copyRespectingIgnore(src, dst, patterns, base = src) {
   fs.mkdirSync(dst, { recursive: true });
   for (const e of fs.readdirSync(src, { withFileTypes: true })) {
@@ -78,7 +61,6 @@ function copyRespectingIgnore(src, dst, patterns, base = src) {
 (async () => {
   console.log('\n  آزمون استقرار روی پلتفرم Node لیارا\n');
 
-  // ── ۱) پیش‌شرط‌های پیکربندی ──
   const patterns = ignorePatterns();
   add('فایل .dockerignore وجود دارد', patterns !== null,
     patterns ? patterns.length + ' الگو' : 'بدون آن دیتابیس محلی آپلود می‌شود');
@@ -93,20 +75,12 @@ function copyRespectingIgnore(src, dst, patterns, base = src) {
   add('package.json اسکریپت start دارد', !!pkg.scripts?.start, pkg.scripts?.start);
   add('نسخه Node در engines قید شده', !!pkg.engines?.node, pkg.engines?.node);
 
-  /* ── هم‌راستایی نسخه بین سه فایل ──
-     پیش از این بررسی، پروژه در وضعیت زیر بود:
-       engines: ">=20" · Dockerfile: node:20 · liara.json: هیچ
-     یعنی کد روی ۲۰ آزموده می‌شد ولی لیارا با پیش‌فرض خودش (۲۲)
-     اجرایش می‌کرد. ناسازگاری خاموشی که هیچ آزمونی نمی‌گرفت.
-
-     Node 20 از مارس ۲۰۲۶ EOL است و وصله امنیتی نمی‌گیرد. */
   const TARGET = 22;
   {
     const eng = pkg.engines?.node || '';
     add(`engines به Node ${TARGET} اشاره می‌کند`,
       eng.includes(String(TARGET)), eng);
-    /* بازه باید سقف داشته باشد؛ `>=22` تنها یعنی نسخه Current
-       (که LTS نیست) هم پذیرفته می‌شود. */
+
     add('engines سقف نسخه دارد (نسخه Current نگذرد)',
       /<\s*\d+/.test(eng), eng);
   }
@@ -117,16 +91,13 @@ function copyRespectingIgnore(src, dst, patterns, base = src) {
     JSON.stringify(liara.disks));
   add('پورت liara.json با کد یکی است', liara.port === 3000);
 
-  /* اتکا به «پیش‌فرض لیارا» شکننده است: روزی که پیش‌فرض را عوض
-     کنند، سایت بدون هیچ هشداری روی نسخه دیگری اجرا می‌شود. */
   add('liara.json نسخه Node را صریح تعیین کرده',
     !!liara.node?.version, liara.node?.version || 'تعریف نشده');
   add(`liara.json روی Node ${TARGET} است`,
     parseInt(liara.node?.version) === TARGET, liara.node?.version);
 
   {
-    /* لیارا حداکثر Node 22 ارائه می‌دهد (بررسی‌شده: مرداد ۱۴۰۵).
-       اگر روزی نسخه بالاتری بنویسیم، استقرار شکست می‌خورد. */
+
     const LIARA_MAX = 22;
     add('نسخه انتخابی در دسترس لیارا هست',
       parseInt(liara.node?.version || 0) <= LIARA_MAX,
@@ -136,13 +107,11 @@ function copyRespectingIgnore(src, dst, patterns, base = src) {
   {
     const df = fs.readFileSync(path.join(ROOT, 'Dockerfile'), 'utf8');
     const m = df.match(/^FROM\s+node:(\d+)/mi);
-    /* Dockerfile با platform=node خوانده نمی‌شود، ولی نباید عدد
-       غلط داشته باشد — سندی که دروغ بگوید بدتر از نبودنش است. */
+
     add('Dockerfile هم همان نسخه را دارد',
       m && parseInt(m[1]) === TARGET, m ? 'node:' + m[1] : 'یافت نشد');
   }
 
-  // ── ۲) بسته استقرار ──
   fs.rmSync(STAGE, { recursive: true, force: true });
   copyRespectingIgnore(ROOT, STAGE, patterns);
 
@@ -179,8 +148,6 @@ function copyRespectingIgnore(src, dst, patterns, base = src) {
   const fontCount = staged.filter(f => f.includes('fonts/')).length;
   add('فونت وزیرمتن در بسته هست', fontCount > 0, fontCount + ' فایل');
 
-  // ── ۳) اجرای واقعی از بسته ──
-  // node_modules را از پروژه اصلی قرض می‌گیریم (لیارا خودش npm install می‌زند)
   const nm = path.join(ROOT, 'node_modules');
   if (fs.existsSync(nm)) {
     try { fs.symlinkSync(nm, path.join(STAGE, 'node_modules'), 'dir'); } catch {}
@@ -195,7 +162,7 @@ function copyRespectingIgnore(src, dst, patterns, base = src) {
     env: { ...process.env, NODE_ENV: 'production', ADMIN_PASSWORD: testProductionPassword, PORT: String(PORT), BACKUP_DISABLED: '1', DB_PATH: dbPath },
     stdio: 'ignore', detached: process.platform !== 'win32'
   });
-  // npm spawns a shell and node child; terminate the whole test process group.
+
   const stopServer = () => {
     try { if (process.platform !== 'win32') process.kill(-proc.pid, 'SIGTERM'); else proc.kill('SIGTERM'); } catch {}
   };
@@ -223,9 +190,6 @@ function copyRespectingIgnore(src, dst, patterns, base = src) {
     const na = (arts.body.articles || arts.body || []).length;
     add('مقالات از seed پر شدند', na >= 5, na + ' مقاله');
 
-    /* `/api/brands` فقط برندهای دارای محصول قابل سفارش را
-       می‌دهد. روی دیتابیس تازه همه UNAVAILABLE‌اند، پس فهرست
-       عمداً خالی است. تنوع کاتالوگ را از خود دیتابیس می‌پرسیم. */
     const brands = await j('/api/brands');
     const nb = (brands.body.brands || brands.body || []).length;
     const coldDb = new (require('better-sqlite3'))(dbPath, { readonly: true });
@@ -244,14 +208,21 @@ function copyRespectingIgnore(src, dst, patterns, base = src) {
 
     const sm = await fetch(BASE + '/sitemap.xml');
     const smTxt = await sm.text();
-    add('sitemap ساخته شد', sm.status === 200 && smTxt.includes('<urlset'),
-      (smTxt.match(/<loc>/g) || []).length + ' نشانی');
+    const maps = [...smTxt.matchAll(/<loc>([^<]+)<\/loc>/g)].map(m => m[1]);
+    let smUrls = 0;
+    for (const map of maps) {
 
-    // مهم‌ترین: دیتابیس در مسیر دیسک ساخته شد نه جای دیگر
+      const local = BASE + new URL(map).pathname;
+      const r = await fetch(local);
+      if (r.ok) smUrls += ((await r.text()).match(/<loc>/g) || []).length;
+    }
+    add('sitemap و نقشه‌های زیرمجموعه ساخته شدند',
+      sm.status === 200 && smTxt.includes('<sitemapindex') && maps.length >= 3 && smUrls > 50,
+      `${maps.length} نقشه · ${smUrls} نشانی`);
+
     add('دیتابیس در مسیر DB_PATH ساخته شد', fs.existsSync(dbPath),
       fs.existsSync(dbPath) ? (fs.statSync(dbPath).size / 1048576).toFixed(1) + 'MB' : 'نساخت');
 
-    // فروشگاه تازه نباید سفارش داشته باشد
     const Database = require('better-sqlite3');
     const fresh = new Database(dbPath, { readonly: true });
     const nOrders = fresh.prepare('SELECT COUNT(*) c FROM orders').get().c;

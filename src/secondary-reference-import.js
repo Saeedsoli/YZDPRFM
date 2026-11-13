@@ -1,6 +1,5 @@
 'use strict';
-// Independent-source reference originals are never represented as official
-// evidence or verification of the supplier's actual essence or stock.
+
 const fs=require('fs');
 const {kgToGram,productPriceState,applyProductPrice}=require('./product-essence-pricing');
 const VERSION='secondary_reference_prices_2026_11_v1';

@@ -46,7 +46,7 @@
     <p>صفحه‌ای که دنبالش بودید وجود ندارد یا جابه‌جا شده.
     بگذارید از جای درست شروع کنیم.</p>
 
-    <form class="nf-search" onsubmit="go(event)">
+    <form class="nf-search" data-csp-submit="go(event)">
       <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
       <input id="q" placeholder="دنبال چه عطری بودید؟" aria-label="جستجو در کاتالوگ">
     </form>
@@ -76,4 +76,5 @@ function go(e){
   const q=document.getElementById('q').value.trim();
   location.href = q ? '/?q='+encodeURIComponent(q) : '/';
 }
-</script></body></html>
+</script><script src="/assets/csp-actions.js"></script>
+</body></html>

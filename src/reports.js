@@ -1,16 +1,8 @@
-/**
- * عطر یزد | گزارش‌های فروش و تحلیل
- * -----------------------------------
- * همه محاسبات مستقیم روی SQLite انجام می‌شود.
- * وضعیت‌های «فروش محقق‌شده»: PAID, PROCESSING, SHIPPED, DELIVERED
- */
-
 const shopTime = require('./shop-time');
 const PAID_STATES = "('PAID','PROCESSING','SHIPPED','DELIVERED')";
 
 function build(db) {
 
-  /** خلاصه کلی در بازه دلخواه */
   function summary(days = 30) {
     const since = `datetime('now','-${parseInt(days)} days')`;
 
@@ -24,7 +16,6 @@ function build(db) {
       WHERE status IN ${PAID_STATES} AND created_at >= ${since}
     `).get();
 
-    // بازه قبلی برای مقایسه رشد
     const prev = db.prepare(`
       SELECT COUNT(*) orders, COALESCE(SUM(total_paid),0) revenue
       FROM orders
@@ -66,7 +57,6 @@ function build(db) {
     };
   }
 
-  /** فروش روزانه — برای نمودار */
   function daily(days = 30) {
     const rows = db.prepare(`
       SELECT date(created_at,'+03:30') d,
@@ -77,7 +67,6 @@ function build(db) {
       GROUP BY d ORDER BY d
     `).all();
 
-    // پر کردن روزهای خالی تا نمودار پیوسته باشد
     const map = Object.fromEntries(rows.map(r => [r.d, r]));
     const out = [];
     for (let i = parseInt(days) - 1; i >= 0; i--) {
@@ -87,7 +76,6 @@ function build(db) {
     return out;
   }
 
-  /** پرفروش‌ترین محصولات */
   function topProducts(days = 30, limit = 10) {
     return db.prepare(`
       SELECT p.slug, p.name_fa, p.brand_fa, p.image_url,
@@ -104,7 +92,6 @@ function build(db) {
     `).all(parseInt(limit));
   }
 
-  /** فروش به تفکیک برند */
   function byBrand(days = 30, limit = 10) {
     return db.prepare(`
       SELECT p.brand_fa brand, SUM(i.quantity) units, SUM(i.line_total) revenue
@@ -119,7 +106,6 @@ function build(db) {
     `).all(parseInt(limit));
   }
 
-  /** فروش به تفکیک نوع محصول (سمپل/ادوپرفیوم/…) */
   function byType(days = 30) {
     return db.prepare(`
       SELECT v.type, v.type_label, SUM(i.quantity) units, SUM(i.line_total) revenue
@@ -132,7 +118,6 @@ function build(db) {
     `).all();
   }
 
-  /** پراکندگی جغرافیایی */
   function byProvince(days = 30, limit = 12) {
     return db.prepare(`
       SELECT COALESCE(province,'نامشخص') province,
@@ -143,7 +128,6 @@ function build(db) {
     `).all(parseInt(limit));
   }
 
-  /** عملکرد کدهای تخفیف */
   function couponStats(days = 90) {
     return db.prepare(`
       SELECT o.discount_code code,
@@ -158,7 +142,6 @@ function build(db) {
     `).all();
   }
 
-  /** مشتریان وفادار */
   function topCustomers(days = 365, limit = 10) {
     return db.prepare(`
       SELECT mobile,
@@ -172,7 +155,6 @@ function build(db) {
     `).all(parseInt(limit));
   }
 
-  /** ارزش موجودی انبار */
   function inventoryValue() {
     const r = db.prepare(`
       SELECT COALESCE(SUM(stock * price_toman),0) value,

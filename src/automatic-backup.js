@@ -1,6 +1,5 @@
 'use strict';
-// Consistent local snapshot, verified before atomic publication and retention.
-// This protects a local backup file; it does not create an off-site backup.
+
 const fs=require('fs'),path=require('path'),Database=require('better-sqlite3');
 const REQUIRED=['products','variants','orders','order_items','coupons','reviews','articles','settings'];
 const AUTO_NAME=/^yazd-\d{10}\.db$/;
@@ -29,7 +28,7 @@ function createAutomaticBackup({db,dbPath,dir,keep,now=new Date()}){
  fs.mkdirSync(dir,{recursive:true,mode:0o700});
  const stamp=now.toISOString().slice(0,13).replace(/[:T-]/g,'');
  const target=path.join(dir,`yazd-${stamp}.db`);
- // Never replace even a corrupt or unexpected existing file.
+
  if(fs.existsSync(target)||fs.lstatSync(target,{throwIfNoEntry:false})){
   validate(target,dbPath);return {created:false,reason:'already_exists',file:target};
  }
@@ -45,8 +44,7 @@ function createAutomaticBackup({db,dbPath,dir,keep,now=new Date()}){
    if(e.code!=='EEXIST')throw e;
    validate(target,dbPath);return {created:false,reason:'concurrent_exists',file:target};
   }
-  // Flush the directory entry before considering retention. If this fails,
-  // leave the published backup intact and never prune other files.
+
   syncPath(dir);
  }finally{fs.rmSync(work,{recursive:true,force:true});}
  if(!published)throw Error('Backup was not published');
@@ -55,18 +53,17 @@ function createAutomaticBackup({db,dbPath,dir,keep,now=new Date()}){
   try{
    const st=fs.lstatSync(f);
    if(!st.isFile()||st.isSymbolicLink()||st.nlink!==1 || ['-wal','-shm','-journal'].some(s=>fs.existsSync(f+s)))return false;
-   // Keep corrupt or unrelated files for investigation, never delete them as
-   // though they were known-good automatic snapshots.
+
    validate(f,dbPath);return true;
   }catch{return false;}
  }).sort().reverse();
  for(const name of candidates.slice(limit)){
   const f=path.join(dir,name);
-  // Re-check before unlinking; never prune the just-created backup.
+
   try{
    const st=fs.lstatSync(f);
    if(f!==target && st.isFile()&&!st.isSymbolicLink()&&st.nlink===1 && !['-wal','-shm','-journal'].some(s=>fs.existsSync(f+s)))fs.unlinkSync(f);
-  }catch{/* Failed retention is non-fatal; preserving extra backups is safer. */}
+  }catch{}
  }
  return {created:true,file:target};
 }

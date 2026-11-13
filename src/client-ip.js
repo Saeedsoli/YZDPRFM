@@ -1,6 +1,5 @@
 'use strict';
-// Never trust client-supplied forwarding headers unless the socket peer is in
-// an operator-configured, verified proxy CIDR. Walk the chain from the right.
+
 const net=require('net');
 function normalize(value){
  if(typeof value!=='string')return null;

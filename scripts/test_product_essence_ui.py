@@ -21,10 +21,10 @@ with tempfile.TemporaryDirectory(prefix='yazd-essence-ui-') as tmp:
             page=browser.new_page(viewport={'width':390,'height':844});errors=[]
             page.on('pageerror',lambda e:errors.append(str(e)))
             page.goto(base+'/admin.html',wait_until='domcontentloaded')
-            page.locator('#usr').fill('owner');page.locator('#pw').fill('test-secret-123');page.locator('button[onclick="login()"]').click()
+            page.locator('#usr').fill('owner');page.locator('#pw').fill('test-secret-123');page.locator('button[data-csp-click="login()"]').click()
             page.locator('#tabs [data-t="products"]').click()
-            page.locator('#pSearch').fill('Aventus')
-            page.locator("#pResults button[onclick=\"editProduct('creed-aventus')\"]").click()
+            page.locator('#pSearch').fill('Aventus');page.wait_for_timeout(800)
+            page.locator("#pResults button[data-csp-click*=\"creed-aventus\"]").first.click()
             expect(page.locator('#essencePriceCard')).to_be_visible()
             expect(page.locator('#essenceMessage')).to_contain_text('هنوز ثبت نشده')
             assert 'قیمت پایه ($)' not in page.locator('#pVariants').inner_text()

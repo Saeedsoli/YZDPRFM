@@ -10,7 +10,7 @@ assert.equal(p('100','300000','EDP',10),180000);
 assert.equal(p('100','300000','EDP',30),540000);
 assert.equal(p('100','300000','EDP',50),900000);
 assert.equal(p('100','300000','EDP',100),1800000);
-assert.equal(p('1','250000','EDP',10),2000); // exact 1500 -> half up
+assert.equal(p('1','250000','EDP',10),2000);
 assert.throws(()=>p('0','300000','EDP',100));
 assert.throws(()=>p('100','0','EDP',100));
 assert.throws(()=>p('100','300000','BODY_SPLASH',150));

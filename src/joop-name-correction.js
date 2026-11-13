@@ -1,5 +1,5 @@
 'use strict';
-// Narrow data correction; preserve any owner-modified names and all order data.
+
 const KEY='joop_duplicate_name_2026_11_v1';
 const ITEMS=[['SUP-TP-910040','joop-nightflight-original','جوپ نایت فلایت','نایت فلایت'],['SUP-TP-910041','joop-homme-original','جوپ هوم','هوم']];
 function apply(db){return db.transaction(()=>{

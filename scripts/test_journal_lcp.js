@@ -1,25 +1,5 @@
 #!/usr/bin/env node
-/**
- * آزمون رندر سمت سرور صفحه مجله.
- *
- * چرا این آزمون: LCP مجله از ۵٬۲۱۶ به ۲٬۸۰۸ میلی‌ثانیه رسید،
- * ولی این دستاورد **شکننده** است. کافی است کسی `coverOf` را در
- * یکی از دو جا عوض کند تا preload به فایل اشتباه بخورد و LCP
- * بدتر از حالت اول شود — دقیقاً همان اتفاقی که یک بار در صفحه
- * محصول افتاد (۶٫۳۵ → ۷٫۱۶ ثانیه).
- *
- * پوشش:
- *   • preload در HTML هست و WebP است
- *   • نشانی preload دقیقاً همان است که مرورگر می‌خواهد
- *   • مقاله شاخص از سمت سرور رندر می‌شود
- *   • `data-slug` با مقاله واقعی می‌خواند
- *   • ترتیب مقالات قطعی است (تاریخ‌های یکسان)
- *   • منطق coverOf در سرور و فرانت یکی مانده
- *   • جاوااسکریپت بلوک آماده را دوباره نمی‌سازد
- *   • فایل تصویر واقعاً وجود دارد
- *
- * اجرا: node scripts/test_journal_lcp.js
- */
+
 'use strict';
 
 const { spawn } = require('child_process');
@@ -79,7 +59,6 @@ async function boot() {
     add('API مقاله دارد', !!first, `${(api.articles || []).length} مقاله`);
     if (!first) return finish();
 
-    // ── preload ──
     console.log('\n  ── پیش‌بارگذاری تصویر شاخص ──');
 
     const pre = html.match(/<link rel="preload" as="image" href="([^"]+)"([^>]*)>/);
@@ -90,16 +69,11 @@ async function boot() {
     add('نوع فایل اعلام شده', /type="image\/webp"/.test(pre[2]));
     add('اولویت بالا دارد', /fetchpriority="high"/.test(pre[2]));
 
-    /* حیاتی‌ترین بررسی: نشانی preload باید **دقیقاً** همان باشد
-       که `<picture><source>` می‌خواهد. اگر یکی نباشند، مرورگر
-       دو فایل دانلود می‌کند و LCP بدتر از حالت بدون preload
-       می‌شود. */
     const srcset = html.match(/<source srcset="([^"]+)" type="image\/webp">/);
     add('تگ source در HTML سمت سرور هست', !!srcset);
     add('نشانی preload با source دقیقاً یکی است',
       srcset && srcset[1] === pre[1], `${pre[1]} ⟷ ${srcset && srcset[1]}`);
 
-    // فایل واقعاً روی دیسک باشد
     const diskPath = path.join(ROOT, 'public', pre[1]);
     add('فایل WebP روی دیسک هست', fs.existsSync(diskPath),
       fs.existsSync(diskPath) ? `${Math.round(fs.statSync(diskPath).size / 1024)}KB` : 'نیست');
@@ -109,7 +83,6 @@ async function boot() {
     add('نوع MIME درست است',
       (resp.headers.get('content-type') || '').includes('webp'));
 
-    // ── رندر سمت سرور ──
     console.log('\n  ── مقاله شاخص در HTML ──');
 
     add('بلوک feature خالی نیست',
@@ -126,13 +99,10 @@ async function boot() {
       slugAttr && slugAttr[1] === first.slug,
       `${slugAttr && slugAttr[1]} ⟷ ${first.slug}`);
 
-    // ── ترتیب قطعی ──
     console.log('\n  ── ترتیب قطعی مقالات ──');
 
     {
-      /* مقاله‌های اولیه `created_at` یکسان دارند. بدون شکننده
-         تساوی، ترتیب بین اجراها عوض می‌شود و سرور تصویری را
-         preload می‌کند که فرانت نمی‌خواهد. */
+
       const db = new Database(DB);
       const same = db.prepare(`
         SELECT COUNT(*) c FROM articles
@@ -155,16 +125,12 @@ async function boot() {
         s2 && s2[1] === runs[0]);
     }
 
-    // ── هم‌خوانی منطق ──
     console.log('\n  ── هم‌خوانی سرور و فرانت ──');
 
     {
       const seoSrc = fs.readFileSync(path.join(ROOT, 'src/seo.js'), 'utf8');
       const jSrc = fs.readFileSync(path.join(ROOT, 'public/journal.html'), 'utf8');
 
-      /* هر دو باید همان سه تصویر پیش‌فرض دسته را داشته باشند.
-         اگر یکی عوض شود و دیگری نه، preload به فایل اشتباه
-         می‌خورد — سکوت کامل، فقط LCP بدتر می‌شود. */
       for (const img of ['family-citrus.jpg', 'scene-signature.jpg',
         'family-ambery-oriental.jpg']) {
         add(`تصویر پیش‌فرض «${img}» در هر دو هست`,
@@ -180,7 +146,6 @@ async function boot() {
         /box\.dataset\.slug = a\.slug/.test(jSrc));
     }
 
-    // ── به تعویق افتادن کارهای غیرضروری ──
     console.log('\n  ── مسیر بحرانی ──');
 
     {
@@ -192,7 +157,6 @@ async function boot() {
       add('سقف زمانی برای دستگاه پرمشغله هست', /timeout = 2000/.test(app));
     }
 
-    // ── جداکننده دوطرفه ──
     console.log('\n  ── جداکننده در RTL ──');
 
     {
@@ -207,7 +171,6 @@ async function boot() {
         /<span class="sep"><\/span>/.test(html));
     }
 
-    // ── بدون افت در صفحات دیگر ──
     console.log('\n  ── صفحات دیگر آسیب ندیده‌اند ──');
 
     for (const [p, label] of [['/', 'خانه'], ['/perfume/creed-aventus', 'محصول'],

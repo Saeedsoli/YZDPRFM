@@ -1,8 +1,3 @@
-/* ═══════════════════════════════════════════════
-   عطر یزد | سیستم بصری
-   الهام: By Kilian · Penhaligon's — آرامش و فضای خالی
-   ═══════════════════════════════════════════════ */
-
 @font-face {
   font-family: 'Vazirmatn';
   src: url('/fonts/Vazirmatn-Regular.woff2') format('woff2');
@@ -33,7 +28,7 @@
 }
 
 :root {
-  /* ── رنگ ── */
+
   --obsidian: #121212;
   --obsidian-soft: #1C1C1C;
   --obsidian-glass: rgba(18, 18, 18, 0.86);
@@ -54,10 +49,8 @@
   --warning: #B9770E;
   --danger: #C0392B;
 
-  /* ── تایپوگرافی ── */
   --font: 'Vazirmatn', 'Vazir Fallback', system-ui, -apple-system, sans-serif;
 
-  /* مقیاس هماهنگ — نسبت ۱.۲ */
   --fs-xs: .72rem;
   --fs-sm: .82rem;
   --fs-base: .92rem;
@@ -71,13 +64,10 @@
   --lh-normal: 1.8;
   --lh-loose: 2.1;
 
-  /* ── فاصله — مقیاس ۴ ── */
   --sp-1: 4px;   --sp-2: 8px;   --sp-3: 12px;
   --sp-4: 16px;  --sp-5: 24px;  --sp-6: 32px;
   --sp-7: 48px;  --sp-8: 64px;
 
-  /* ── حرکت ──
-     منحنی نرم با بازگشت ملایم — حس گران‌قیمت */
   --ease-out: cubic-bezier(.16, 1, .3, 1);
   --ease-soft: cubic-bezier(.4, 0, .2, 1);
   --ease-spring: cubic-bezier(.34, 1.4, .64, 1);
@@ -86,13 +76,11 @@
   --t-smooth: 320ms var(--ease-out);
   --t-slow: 520ms var(--ease-out);
 
-  /* ── شکل ── */
   --r-sm: 8px;
   --r: 14px;
   --r-lg: 20px;
   --r-full: 999px;
 
-  /* ── سایه — لایه‌ای و نرم ── */
   --sh-sm: 0 1px 3px rgba(0,0,0,.05), 0 1px 2px rgba(0,0,0,.03);
   --sh: 0 4px 14px rgba(0,0,0,.06), 0 2px 6px rgba(0,0,0,.03);
   --sh-lg: 0 12px 34px rgba(0,0,0,.09), 0 4px 12px rgba(0,0,0,.04);
@@ -101,9 +89,9 @@
 
 * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
 
-html { scroll-behavior: smooth; }
+html { scroll-behavior: smooth; scroll-padding-top: 120px; }
 
-html { background: #121212 }
+html { background: #121212; overflow-x: clip }
 
 body {
   background: var(--bg);
@@ -124,10 +112,6 @@ button, input, select, textarea { font-family: var(--font); font-size: inherit; 
 
 h1, h2, h3, h4 { line-height: var(--lh-tight); letter-spacing: -.01em; }
 
-/* ═══ نوار اعلان ═══ */
-/* ── نوار اعلان (تک‌پیامی) ──
-   روی همان نوار ثابت می‌نشیند تا ارتفاع صفحه عوض نشود.
-   چهار لحن دارد که مدیر از پنل انتخاب می‌کند. */
 .announce.notice-gold    { background:#1A1508; color:#F5E6B8 }
 .announce.notice-dark    { background:#080808; color:var(--sand) }
 .announce.notice-success { background:#0C2A18; color:#BFE8CF }
@@ -151,23 +135,13 @@ h1, h2, h3, h4 { line-height: var(--lh-tight); letter-spacing: -.01em; }
   background: #080808;
   color: var(--sand);
   text-align: center;
-  /* فضای سمت چپ برای دکمه بستن */
+
   padding: 8px 38px;
   font-size: var(--fs-xs);
   letter-spacing: .2px;
   border-bottom: 1px solid rgba(197,155,39,.2);
 }
 
-/* ═══ هدر شیشه‌ای ═══ */
-/* فضای هدر پیش از ساخته‌شدنش رزرو می‌شود.
-
-   هدر با جاوااسکریپت از app.js تزریق می‌شود؛ تا آن لحظه ارتفاعش
-   صفر است و وقتی ظاهر می‌شود کل صفحه پایین می‌پرد. ردیابی رویداد
-   layout-shift نشان داد این تک‌ریشهٔ CLS در همه صفحات بود.
-
-   عدد از اندازه‌گیری واقعی می‌آید: موبایل ۹۷px · دسکتاپ ۱۰۳px.
-   پس از تزریق، محتوای هدر خودش همان ارتفاع را می‌گیرد و رزرو
-   بی‌اثر می‌شود. */
 .hdr-reserve { min-height: 103px }
 @media (max-width: 860px) { .hdr-reserve { min-height: 97px } }
 
@@ -180,7 +154,7 @@ h1, h2, h3, h4 { line-height: var(--lh-tight); letter-spacing: -.01em; }
   color: #FFF;
   transition: box-shadow var(--t-smooth), background var(--t-smooth);
 }
-/* سایه فقط پس از اسکرول — با JS کلاس اضافه می‌شود */
+
 .glass-header.scrolled {
   box-shadow: 0 8px 30px rgba(0,0,0,.32);
   background: rgba(18,18,18,.94);
@@ -193,11 +167,7 @@ h1, h2, h3, h4 { line-height: var(--lh-tight); letter-spacing: -.01em; }
 }
 
 .logo-brand { display: flex; align-items: center; gap: 11px; flex-shrink: 0; }
-/* نشان برند در هدر.
-   لوگو کشیده و عمودی است (نسبت ۰٫۳۵)، نه مربع. ارتفاع ثابت و
-   عرض خودکار، تا اگر روزی نسبت تغییر کرد چیزی کشیده نشود.
-   درخشش طلایی کم شد: نقش لوگوی جدید ظریف‌تر است و سایه پررنگ
-   لبه‌های نازکش را گِل می‌کرد. */
+
 .logo-brand img {
   height: 42px; width: auto; object-fit: contain;
   filter: drop-shadow(0 2px 8px rgba(197,155,39,.28));
@@ -213,7 +183,7 @@ h1, h2, h3, h4 { line-height: var(--lh-tight); letter-spacing: -.01em; }
   white-space: nowrap; position: relative; padding: 4px 0;
   transition: color var(--t-fast);
 }
-/* خط طلایی که از وسط باز می‌شود */
+
 .nav-links a::after {
   content: ''; position: absolute; bottom: 0; left: 50%; right: 50%;
   height: 1.5px; background: var(--gold);
@@ -256,9 +226,10 @@ h1, h2, h3, h4 { line-height: var(--lh-tight); letter-spacing: -.01em; }
   100% { transform: scale(1); }
 }
 
-/* ═══ دکمه ═══ */
 .btn {
   background: var(--gold); color: var(--obsidian);
+  display: inline-flex; align-items: center; justify-content: center;
+  max-width: 100%; box-sizing: border-box; text-align: center;
   padding: 13px 28px; border-radius: var(--r-full);
   font-weight: 800; font-size: var(--fs-base);
   border: none; cursor: pointer;
@@ -286,7 +257,6 @@ h1, h2, h3, h4 { line-height: var(--lh-tight); letter-spacing: -.01em; }
 .btn-dark:hover { background: var(--obsidian-soft); }
 .btn-block { width: 100%; }
 
-/* ═══ فرم ═══ */
 .field { margin-bottom: var(--sp-4); }
 .field label { display: block; font-size: var(--fs-sm); font-weight: 700; margin-bottom: 6px; }
 .field input, .field select, .field textarea {
@@ -301,7 +271,6 @@ h1, h2, h3, h4 { line-height: var(--lh-tight); letter-spacing: -.01em; }
 }
 .field .hint { font-size: var(--fs-xs); color: var(--muted); margin-top: 5px; }
 
-/* ═══ کارت محصول ═══ */
 .product-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
@@ -330,7 +299,7 @@ h1, h2, h3, h4 { line-height: var(--lh-tight); letter-spacing: -.01em; }
   background: rgba(18,18,18,.80); color: #fff; padding: 4px 9px;
   border-radius: var(--r-full); font-size: .65rem; font-weight: 700;
 }
-/* برچسب جنسیت گوشه تصویر */
+
 .card-badge {
   position: absolute; top: 10px; right: 10px; z-index: 3;
   background: rgba(255,255,255,.92); backdrop-filter: blur(8px);
@@ -341,7 +310,6 @@ h1, h2, h3, h4 { line-height: var(--lh-tight); letter-spacing: -.01em; }
 }
 .product-card:hover .card-badge { opacity: 1; transform: none; }
 
-/* نوار «مشاهده» که از پایین بالا می‌آید */
 .card-peek {
   position: absolute; left: 0; right: 0; bottom: 0; z-index: 3;
   background: linear-gradient(to top, rgba(18,18,18,.88), transparent);
@@ -353,12 +321,6 @@ h1, h2, h3, h4 { line-height: var(--lh-tight); letter-spacing: -.01em; }
 .product-card:hover .card-peek { transform: none; }
 @media (pointer: coarse) { .card-peek, .card-badge { display: none; } }
 
-/* ═══ کالای ناموجود ═══
-   `card-peek` و `card-badge` روی لمسی پنهان می‌شوند (چون hover
-   ندارند)، پس نشان ناموجودی **نباید** به آن‌ها تکیه کند —
-   وگرنه روی موبایل که بیشتر ترافیک است، دیده نمی‌شود.
-
-   این برچسب همیشه پیداست. */
 .card-out {
   position: absolute; top: 10px; left: 10px; z-index: 4;
   background: rgba(90,90,90,.94); backdrop-filter: blur(8px);
@@ -366,24 +328,13 @@ h1, h2, h3, h4 { line-height: var(--lh-tight); letter-spacing: -.01em; }
   padding: 4px 11px; border-radius: var(--r-full);
   letter-spacing: .2px;
 }
-/* تصویر کم‌رنگ — پیام بصری پیش از خواندن هر متنی.
-   ‏grayscale کامل نه: محصول باید هنوز جذاب بماند تا کاربر
-   «خبرم کن» بزند. */
+
 .product-card.is-out .img-wrap img {
   filter: grayscale(.7) opacity(.62);
 }
 .product-card.is-out .price { color: var(--muted); }
 .product-card.is-out:hover { transform: translateY(-2px); }
 
-/* ═══ «به سفارش ساخته می‌شود» ═══
-   حالت میانی: نه موجود، نه بن‌بست.
-
-   عمداً از «فعلاً نداریم» متمایز است — رنگ گرم طلایی به‌جای
-   خاکستری، و تصویر **کم‌رنگ نمی‌شود**. چون این محصول واقعاً
-   قابل سفارش است و نباید مثل کالای مرده دیده شود.
-
-   بیشتر کاتالوگ در همین حالت است: عنوان‌ها برای سفارش و
-   دیده‌شدن در جستجو می‌مانند، نه اینکه انبار پر باشد. */
 .card-out.mto {
   background: rgba(197,155,39,.94);
   color: #1A1A18;
@@ -392,8 +343,7 @@ h1, h2, h3, h4 { line-height: var(--lh-tight); letter-spacing: -.01em; }
 .product-card.is-mto .card-peek { background: rgba(197,155,39,.92); color: #1A1A18; }
 
 .card-go        { font-size: .74rem; color: var(--gold); font-weight: 700; }
-/* رنگ متفاوت عمدی: طلایی یعنی «بخر»، آبی خاکستری یعنی «منتظر بمان».
-   کاربر پیش از خواندن متن، تفاوت را حس می‌کند. */
+
 .card-go-notify { font-size: .74rem; color: #5A7FA8; font-weight: 700; }
 .product-card .img-wrap::after {
   content: ''; position: absolute; inset: 0;
@@ -420,15 +370,7 @@ h1, h2, h3, h4 { line-height: var(--lh-tight); letter-spacing: -.01em; }
   gap: 6px;
   margin-top: auto; padding-top: var(--sp-3); border-top: 1px solid var(--border-soft);
 }
-/* ── چرا ستونی روی موبایل ──
-   شبکه موبایل دو ستونه است و کارت حدود ۱۶۹px پهنا دارد؛ ردیف
-   قیمت عملاً ۱۳۵px می‌شود. «از ۱۹۶٬۰۰۰ تومان» کنار «مشاهده ←»
-   در این عرض جا نمی‌شود و به سه خط می‌شکند — اندازه‌گیری واقعی:
-   ارتفاع ردیف ۷۳px به‌جای ~۲۴px و متن روی هم می‌افتد.
-   با افزودن قیمت خط‌خورده جشنواره به ۹۱px رسید.
 
-   راه‌حل: زیر ۵۲۰px قیمت و پیوند زیر هم می‌نشینند. هیچ اطلاعاتی
-   حذف نمی‌شود و ارتفاع کارت‌ها هم یکسان می‌ماند. */
 @media (max-width: 520px) {
   .card-price-row {
     flex-direction: column; align-items: flex-start; gap: 4px;
@@ -438,40 +380,26 @@ h1, h2, h3, h4 { line-height: var(--lh-tight); letter-spacing: -.01em; }
 .price { font-size: var(--fs-md); font-weight: 800; }
 .price small { font-size: var(--fs-xs); font-weight: 600; color: var(--muted); }
 
-/* نشانی و تلفن فوتر — الزام اینماد */
-/* نشانی و تلفن فوتر — الزام اینماد.
-   `word-break` لازم است چون شماره تلفن ۱۱ رقمی در ستون باریک
-   موبایل از قاب بیرون می‌زد (با عکس دیده شد). */
 .foot-contact { margin-top: 12px; font-size: .76rem; line-height: 2.1;
                 opacity: .72; overflow-wrap: anywhere; }
 .foot-contact > div { margin-bottom: 2px; }
 .foot-contact a { color: inherit; text-decoration: none; }
 .foot-contact a:hover { color: var(--gold); }
-/* لینک واتس‌اپ — تنها راه پیام‌دادن وقتی تلفن ثابت نیست */
+
 .wa-link { display: inline-flex; align-items: center; gap: 5px; color: #4FBF6B !important; }
 .wa-link svg { width: 14px; height: 14px; fill: none; stroke: currentColor;
                stroke-width: 1.7; stroke-linejoin: round; }
 
-/* ── جداکننده میان‌متنی ──
-   به‌جای نوشتن «·» داخل متن. نویسه نقطه‌وسط در الگوریتم دوطرفه
-   خنثی است و بین فارسی و عدد به جای اشتباه می‌پرد — «۷ · دقیقه»
-   به‌جای «· ۷ دقیقه». به‌صورت عنصر مستقل این مشکل پیش نمی‌آید. */
 .sep { display: inline-block; width: 1.5em; text-align: center; }
-/* نقطه‌وسط در اندازه‌های کوچک با رقم فارسی «۰» اشتباه گرفته
-   می‌شود — در بزرگ‌نمایی ۳ برابر «۷ · دقیقه» شبیه «۷۰ دقیقه»
-   دیده شد. خط عمودی نازک این ابهام را ندارد. */
+
 .sep::before { content: '|'; opacity: .38; font-weight: 400; }
 
-/* ═══ قیمت جشنواره ═══
-   قیمت قبلی خط‌خورده بالای قیمت جدید می‌نشیند، نه کنارش: در RTL
-   دو عدد پهلوی هم روی موبایل ۳۶۰ پیکسلی ردیف قیمت را می‌شکند و
-   فلش «مشاهده ←» به خط بعد می‌افتد. */
 .price-old {
   display: block; font-size: var(--fs-xs); font-weight: 600;
   color: var(--muted); text-decoration-thickness: 1px;
   margin-bottom: 1px; line-height: 1.4;
 }
-/* نشان درصد تخفیف — گوشه چپ تصویر تا با برچسب جنسیت (راست) قاطی نشود */
+
 .card-off {
   position: absolute; top: 10px; left: 10px; z-index: 4;
   background: #B3261E; color: #FFF;
@@ -479,14 +407,10 @@ h1, h2, h3, h4 { line-height: var(--lh-tight); letter-spacing: -.01em; }
   padding: 4px 9px; border-radius: var(--r-full);
   box-shadow: 0 2px 8px rgba(179,38,30,.32);
 }
-/* برخلاف .card-badge روی موبایل هم می‌ماند — تخفیفی که دیده نشود
-   بی‌فایده است، و روی صفحه لمسی هاوری در کار نیست. */
 
-/* فلش که هنگام هاور جلو می‌رود */
 .card-price-row > span:last-child { transition: transform var(--t-fast); display: inline-block; }
 .product-card:hover .card-price-row > span:last-child { transform: translateX(-4px); }
 
-/* ═══ شفافیت ═══ */
 .transparency {
   background: var(--sand);
   border-right: 4px solid var(--gold);
@@ -494,7 +418,6 @@ h1, h2, h3, h4 { line-height: var(--lh-tight); letter-spacing: -.01em; }
   font-size: var(--fs-sm); line-height: var(--lh-loose);
 }
 
-/* ═══ فوتر ═══ */
 footer {
   background: var(--obsidian); color: var(--sand);
   padding: var(--sp-7) 20px var(--sp-5);
@@ -502,21 +425,62 @@ footer {
   border-top: 3px solid var(--gold);
 }
 .footer-grid {
-  max-width: 1320px; margin: 0 auto var(--sp-6);
-  display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
-  gap: var(--sp-6);
+  max-width: 1240px; margin: 0 auto 26px;
+  display: grid; grid-template-columns: 1.5fr 1fr 1fr 1fr;
+  gap: 34px; padding-bottom: 28px;
+  border-bottom: 1px solid rgba(255,255,255,.08);
 }
-.footer-grid h4 { color: var(--gold); font-size: var(--fs-base); margin-bottom: var(--sp-3); }
+.footer-grid h4 { color: var(--gold); font-size: var(--fs-sm); font-weight: 800; margin-bottom: 14px; letter-spacing: .2px; }
 .footer-grid a, .footer-grid p {
-  font-size: var(--fs-sm); color: #C4C4C4; line-height: 2.1; display: block;
+  font-size: var(--fs-sm); color: #C4C4C4; line-height: 2.05; display: block;
 }
-.footer-grid a { transition: color var(--t-fast), padding-right var(--t-fast); }
-.footer-grid a:hover { color: var(--gold); padding-right: 5px; }
+.footer-grid a { transition: color var(--t-fast); }
+.footer-grid a:hover { color: var(--gold); }
+
+.foot-brand h4 { color: var(--sand); font-size: 1.02rem; margin-bottom: 9px; }
+.foot-brand p { color: #B9B4AC; max-width: 34ch; margin-bottom: 14px; }
+.foot-brand .social-row { flex-direction: row; gap: 8px; margin-top: 0; }
+.foot-brand .social-btn {
+  width: 38px; height: 38px; padding: 0; border-radius: 11px;
+  display: grid; place-items: center;
+}
+.foot-brand .social-btn svg { width: 17px; height: 17px }
+
+.foot-facts .fact { font-size: var(--fs-sm); color: #C4C4C4; line-height: 1.95; margin-bottom: 8px }
+.foot-facts .fact b { color: #EFEAE1; font-weight: 700; white-space: nowrap }
+.foot-essence p { color: #A9A49C; font-size: .78rem; line-height: 1.95; margin-top: 6px }
+
+.footer-strip {
+  max-width: 1240px; margin: 0 auto; padding: 0 0 20px;
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 20px; flex-wrap: wrap;
+}
+.foot-contact { margin: 0; font-size: .78rem; line-height: 2; color: #A8A29A;
+                display: flex; flex-wrap: wrap; gap: 4px 18px; opacity: 1 }
+.foot-contact > div { margin: 0 }
+.foot-contact a { color: inherit; text-decoration: none }
+.foot-contact a:hover { color: var(--gold) }
+.foot-seal { display: flex; align-items: center; gap: 10px }
+
 .footer-bottom {
-  max-width: 1320px; margin: 0 auto;
+  max-width: 1240px; margin: 0 auto;
   border-top: 1px solid rgba(255,255,255,.09);
-  padding-top: var(--sp-4); text-align: center;
+  padding-top: var(--sp-4);
+  display: flex; justify-content: space-between; align-items: center;
+  gap: 12px; flex-wrap: wrap;
   font-size: var(--fs-xs); color: #8E8E8E;
+}
+.footer-bottom .foot-legal-links a { color: #8E8E8E; text-decoration: none }
+.footer-bottom .foot-legal-links a:hover { color: var(--gold) }
+
+@media (max-width: 980px) {
+  .footer-grid { grid-template-columns: 1fr 1fr; gap: 26px }
+  .foot-brand { grid-column: 1 / -1 }
+}
+@media (max-width: 560px) {
+  .footer-grid { grid-template-columns: 1fr; gap: 22px }
+  .footer-strip { flex-direction: column; align-items: flex-start }
+  .footer-bottom { justify-content: center; text-align: center }
 }
 .enamad-badge {
   display: inline-flex; align-items: center; gap: 8px;
@@ -528,30 +492,11 @@ footer {
 }
 .enamad-badge:hover { border-color: var(--gold); }
 
-/* ═══ نشان اعتماد الکترونیک ═══
-   زمینه سفید عمدی است: نشان اینماد پس‌زمینه روشن دارد و روی فوتر
-   تیره این سایت محو می‌شود.
-
-   ارتفاع جعبه ثابت است تا وقتی تصویر از سرور اینماد می‌رسد، فوتر
-   نپرد. CLS این پروژه در همه سناریوها ۰٫۰۰۰۰ اندازه‌گیری شده و
-   یک نشان بیرونی نباید خرابش کند. */
-/* ارتفاع **ثابت**، نه کمینه.
-   جانشین ۴۱ پیکسل است و نشان واقعی ۱۱۰ — با `min-height` جعبه
-   هنگام جایگزینی از ۱۱۰ به ۱۱۸ می‌رفت (خط پایه متن لینک) و
-   همان ۸ پیکسل، پرش می‌ساخت. با ارتفاع ثابت و چیدمان انعطافی،
-   هر دو حالت دقیقاً یک فضا می‌گیرند. */
 #enamadSeal {
   height: 110px; margin-top: 10px;
   display: flex; align-items: center;
 }
 
-/* گزینشگر با `.footer-grid` شروع می‌شود تا از قاعده عمومی
-   `.footer-grid a { display:block }` اختصاصی‌تر باشد.
-
-   بدون این، نشان تمام عرض ستون را می‌گرفت: کادر سفید ۳۵۰ پیکسلی
-   دور یک تصویر ۹۶ پیکسلی. آزمون‌های متنی این را نمی‌گرفتند چون
-   خودِ قاعده درست نوشته شده بود — فقط قاعده دیگری بر آن غلبه
-   می‌کرد. تصویر مرورگر گرفتش. */
 .footer-grid a.enamad-seal,
 .enamad-seal {
   display: inline-block; width: auto; line-height: 0;
@@ -563,8 +508,7 @@ footer {
 .footer-grid a.enamad-seal:hover,
 .enamad-seal:hover {
   border-color: var(--gold); transform: translateY(-2px);
-  /* قاعده عمومی فوتر روی hover یک `padding-right:5px` می‌گذارد
-     که اینجا کادر را کج می‌کند. خنثی می‌شود. */
+
   padding: 6px;
 }
 .enamad-seal:focus-visible { outline: 2px solid var(--gold); outline-offset: 3px; }
@@ -573,8 +517,8 @@ footer {
   object-fit: contain; border-radius: 4px;
 }
 
-/* ═══ کمکی ═══ */
-.container { max-width: 1320px; margin: 0 auto; padding: 0 20px; }
+.container { width: 100%; max-width: 1320px; margin: 0 auto; padding: 0 20px; }
+main { min-width: 0 }
 .section { margin: var(--sp-7) auto; }
 
 .spinner {
@@ -587,14 +531,12 @@ footer {
 }
 @keyframes spin { to { transform: rotate(360deg); } }
 
-/* ── ورود نرم عناصر ── */
 @keyframes fadeUp {
   from { opacity: 0; transform: translate3d(0, 18px, 0); }
   to   { opacity: 1; transform: none; }
 }
 .fade-up { animation: fadeUp 520ms var(--ease-out) backwards; }
 
-/* پلکانی — کارت‌ها یکی‌یکی وارد می‌شوند */
 .product-grid > *:nth-child(1) { animation-delay: 0ms }
 .product-grid > *:nth-child(2) { animation-delay: 45ms }
 .product-grid > *:nth-child(3) { animation-delay: 90ms }
@@ -604,14 +546,12 @@ footer {
 .product-grid > *:nth-child(7) { animation-delay: 270ms }
 .product-grid > *:nth-child(8) { animation-delay: 315ms }
 
-/* ── آشکارسازی هنگام اسکرول ── */
 .reveal {
   opacity: 0; transform: translateY(26px);
   transition: opacity 720ms var(--ease-out), transform 720ms var(--ease-out);
 }
 .reveal.visible { opacity: 1; transform: none; }
 
-/* ── اسکلت بارگذاری ── */
 .skeleton {
   background: linear-gradient(90deg, var(--sand) 25%, var(--sand-deep) 50%, var(--sand) 75%);
   background-size: 200% 100%;
@@ -628,7 +568,6 @@ footer {
 .sk-card .sk-body { padding: var(--sp-4); }
 .sk-line { height: 11px; margin-bottom: 9px; }
 
-/* ── نوار پیشرفت بالای صفحه ── */
 .page-progress {
   position: fixed; top: 0; right: 0; height: 2px;
   background: linear-gradient(90deg, var(--gold-light), var(--gold));
@@ -636,7 +575,6 @@ footer {
   transition: width 220ms var(--ease-soft), opacity 320ms;
 }
 
-/* ═══ اعلان شناور ═══ */
 .toast {
   position: fixed; bottom: 24px; left: 50%;
   transform: translateX(-50%) translateY(90px);
@@ -654,7 +592,6 @@ footer {
 .empty-state { text-align: center; padding: var(--sp-8) 20px; color: var(--muted); }
 .empty-state h3 { font-size: var(--fs-md); margin-bottom: var(--sp-2); color: var(--text); }
 
-/* ═══ دسترس‌پذیری ═══ */
 .sr-only {
   position: absolute; width: 1px; height: 1px;
   padding: 0; margin: -1px; overflow: hidden;
@@ -675,7 +612,6 @@ input:focus-visible, select:focus-visible, textarea:focus-visible {
 }
 .skip-link:focus { top: 0; }
 
-/* ═══ موبایل ═══ */
 @media (max-width: 640px) {
   :root { --fs-2xl: 1.5rem; --fs-3xl: 1.75rem; }
   .header-row { padding: 9px 14px; }
@@ -687,9 +623,6 @@ input:focus-visible, select:focus-visible, textarea:focus-visible {
   .toast { bottom: 16px; }
 }
 
-/* هدف لمسی حداقل ۴۴ پیکسل.
-   `.nchip` و `.sc-tab` هنگام افزودن فیلتر نُت از قلم افتاده بودند —
-   آزمون مرورگر ۳۹ دکمه کوچک‌تر از حد لمس گزارش داد. */
 @media (pointer: coarse) {
   .icon-btn { width: 44px; height: 44px; }
   .qty-ctrl button { min-width: 44px; min-height: 44px; }
@@ -698,18 +631,15 @@ input:focus-visible, select:focus-visible, textarea:focus-visible {
   .del, .link-btn { min-height: 44px; padding: 10px 8px; }
 }
 
-/* حاشیه امن آیفون */
 @supports (padding: max(0px)) {
   footer { padding-bottom: max(24px, env(safe-area-inset-bottom)); }
   .glass-header { padding-top: env(safe-area-inset-top); }
 }
 
-/* جلوگیری از زوم خودکار سافاری هنگام تایپ */
 @media (max-width: 768px) {
   input, select, textarea { font-size: 16px; }
 }
 
-/* ═══ احترام به ترجیح کاربر ═══ */
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
   *, *::before, *::after {
@@ -718,20 +648,13 @@ input:focus-visible, select:focus-visible, textarea:focus-visible {
     transition-duration: .01ms !important;
   }
   .reveal { opacity: 1; transform: none; }
-  /* ذرات هیرو با opacity:0 شروع می‌شوند و حرکتشان آن‌ها را نمایان
-     می‌کند. با متوقف کردن انیمیشن، برای کاربری که حرکت کمتر
-     خواسته کاملاً نامرئی می‌ماندند — یعنی افکت حذف می‌شد نه آرام.
-     اینجا حالت ساکنِ دیدنی تعریف می‌شود: ذرات هستند، ولی ثابت. */
+
   .hero-dust i {
     opacity: .38 !important;
     transform: none !important;
   }
 }
 
-
-/* ═══════════════════════════════════════
-   سربرگ صفحات داخلی — الگوی مشترک
-   ═══════════════════════════════════════ */
 .page-head {
   position: relative;
   background: linear-gradient(135deg, #131313 0%, #1F1E1C 55%, #262320 100%);
@@ -739,7 +662,7 @@ input:focus-visible, select:focus-visible, textarea:focus-visible {
   padding: var(--sp-7) 20px var(--sp-6);
   overflow: hidden;
 }
-/* هاله طلایی آرام گوشه */
+
 .page-head::before {
   content: ''; position: absolute; inset: 0; pointer-events: none;
   background: radial-gradient(ellipse 70% 90% at 88% 15%,
@@ -793,7 +716,6 @@ input:focus-visible, select:focus-visible, textarea:focus-visible {
   .page-head { padding: var(--sp-6) 18px var(--sp-5) }
 }
 
-/* ── کارت عمومی با ورود نرم ── */
 .soft-card {
   background: var(--surface); border: 1px solid var(--border);
   border-radius: var(--r); padding: var(--sp-5);
@@ -805,7 +727,6 @@ input:focus-visible, select:focus-visible, textarea:focus-visible {
   box-shadow: var(--sh-lg);
 }
 
-/* ── ورود پلکانی هر شبکه ── */
 .stagger > * { animation: fadeUp 520ms var(--ease-out) backwards }
 .stagger > *:nth-child(1) { animation-delay: 40ms }
 .stagger > *:nth-child(2) { animation-delay: 90ms }
@@ -816,7 +737,6 @@ input:focus-visible, select:focus-visible, textarea:focus-visible {
 .stagger > *:nth-child(7) { animation-delay: 340ms }
 .stagger > *:nth-child(8) { animation-delay: 390ms }
 
-/* ── جعبه فرم متمرکز (ورود، پیگیری) ── */
 .focus-panel {
   background: var(--surface);
   border: 1px solid var(--border);
@@ -830,16 +750,18 @@ input:focus-visible, select:focus-visible, textarea:focus-visible {
   to   { opacity: 1; transform: none }
 }
 
-/* ═══════════════════════════════════════
-   صفحات سندی — قوانین، حریم خصوصی
-   ═══════════════════════════════════════ */
 .doc { max-width: 860px; margin: 0 auto; padding: 0 20px var(--sp-7) }
 .doc-card {
   background: var(--surface); border: 1px solid var(--border);
-  border-radius: var(--r-lg); padding: var(--sp-6) var(--sp-5);
-  margin-top: -34px; position: relative; z-index: 5;
+  border-radius: var(--r-lg);
+
+  padding: calc(var(--sp-6) + 10px) var(--sp-5) var(--sp-6);
+  margin-top: -20px; position: relative; z-index: 5;
   box-shadow: var(--sh-lg);
   animation: panelIn 640ms var(--ease-out) backwards;
+}
+@media (max-width: 640px) {
+  .doc-card { padding: calc(var(--sp-5) + 12px) var(--sp-4) var(--sp-5); margin-top: -14px }
 }
 .doc-card > section { padding: var(--sp-5) 0; border-bottom: 1px dashed var(--border) }
 .doc-card > section:first-child { padding-top: 0 }
@@ -875,9 +797,6 @@ input:focus-visible, select:focus-visible, textarea:focus-visible {
 }
 .doc-links a:hover { border-color: var(--gold); color: var(--gold); transform: translateY(-2px) }
 
-/* ═══════════════════════════════════════
-   صفحه ۴۰۴
-   ═══════════════════════════════════════ */
 .nf {
   min-height: 62vh; display: grid; place-items: center; text-align: center;
   padding: var(--sp-7) 20px; position: relative; overflow: hidden;
@@ -908,9 +827,6 @@ input:focus-visible, select:focus-visible, textarea:focus-visible {
   animation: headRise 900ms var(--ease-out) 340ms backwards;
 }
 
-/* ═══════════════════════════════════════
-   مسیر راهنما (Breadcrumb)
-   ═══════════════════════════════════════ */
 .crumbs {
   max-width: 1280px; margin: 0 auto; padding: var(--sp-4) 20px 0;
   display: flex; align-items: center; gap: 7px; flex-wrap: wrap;
@@ -922,9 +838,6 @@ input:focus-visible, select:focus-visible, textarea:focus-visible {
 .crumbs .sep { opacity: .45; font-size: .7rem }
 .crumbs .cur { color: var(--text); font-weight: 700 }
 
-/* ═══════════════════════════════════════
-   نوار خرید چسبان موبایل
-   ═══════════════════════════════════════ */
 .buy-bar {
   position: fixed; inset: auto 0 0 0; z-index: 90;
   background: rgba(255,255,255,.97); backdrop-filter: blur(14px);
@@ -940,16 +853,13 @@ input:focus-visible, select:focus-visible, textarea:focus-visible {
 .buy-bar .p .n { font-size: 1.02rem; font-weight: 800 }
 .buy-bar .p .l { font-size: .68rem; color: var(--muted) }
 .buy-bar .btn { flex: 1; padding: 13px 18px }
-/* فاصله پایین صفحه فقط در صفحه‌ای که نوار خرید دارد.
-   پیش‌تر این فاصله روی همه صفحات موبایل اعمال می‌شد و بعد از فوتر
-   تیره، نواری روشن با رنگ بدنه دیده می‌شد. */
+
 @media (max-width: 900px) {
   .buy-bar { display: flex }
   body.has-buy-bar { padding-bottom: 76px }
   body:has(.buy-bar) { padding-bottom: 76px }
 }
 
-/* ── دکمه‌های شبکه اجتماعی در فوتر ── */
 .social-row { display: flex; flex-direction: column; gap: 9px; margin-top: 4px }
 .social-btn {
   display: inline-flex; align-items: center; gap: 9px;
@@ -966,9 +876,6 @@ input:focus-visible, select:focus-visible, textarea:focus-visible {
   border-color: var(--gold);
 }
 
-/* ═══════════════════════════════════════
-   ویترین خودکار — پرفروش، محبوب، پربازدید
-   ═══════════════════════════════════════ */
 .showcase-wrap { margin: 40px auto }
 
 .showcase-tabs {
@@ -1005,15 +912,6 @@ input:focus-visible, select:focus-visible, textarea:focus-visible {
   .sc-tab { white-space: nowrap; font-size: .86rem }
 }
 
-/* ═══════════════════════════════════════
-   «اخیراً دیدید»
-   ═══════════════════════════════════════
-   ظرف با display:none شروع می‌شود و فقط وقتی تاریخچه هست باز
-   می‌شود — پس برای بازدیدکننده تازه هیچ فضایی نمی‌گیرد و هیچ
-   جابه‌جایی چیدمانی نمی‌سازد (CLS صفر).
-
-   دکمه «پاک کردن» عمداً کم‌رنگ است: کنترل باید در دسترس باشد،
-   ولی رقیب بصری خود محصولات نشود. */
 .recent-head {
   display: flex; align-items: baseline; justify-content: space-between;
   gap: 12px; margin-bottom: var(--sp-4);
@@ -1031,12 +929,6 @@ input:focus-visible, select:focus-visible, textarea:focus-visible {
   outline: 2px solid var(--gold); outline-offset: 3px; border-radius: 3px;
 }
 
-/* ═══════════════════════════════════════
-   «پیشنهاد برای شما» — پروفایل بویایی
-   ═══════════════════════════════════════
-   خلاصه پروفایل به‌شکل چیپ نشان داده می‌شود تا کاربر ببیند سایت
-   بر چه اساسی پیشنهاد می‌دهد. «پیشنهاد اختصاصی» بدون توضیح مبهم
-   و کمی نگران‌کننده است؛ با توضیح، شفاف و قابل کنترل. */
 .taste-head {
   display: flex; align-items: flex-start; justify-content: space-between;
   gap: 14px; flex-wrap: wrap; margin-bottom: var(--sp-4);
@@ -1078,8 +970,6 @@ input:focus-visible, select:focus-visible, textarea:focus-visible {
   margin: -6px 0 14px;
 }
 
-/* ── پیام «نتیجه دقیق نبود» ──
-   وقتی همه کلمات با هم نتیجه‌ای ندادند و سرور نزدیک‌ترین‌ها را آورد */
 .search-note {
   display: flex; align-items: flex-start; gap: 9px;
   background: var(--sand, #FAF7F2);
@@ -1092,9 +982,6 @@ input:focus-visible, select:focus-visible, textarea:focus-visible {
   animation: fadeUp 420ms var(--ease-out);
 }
 
-/* ═══════════════════════════════════════
-   نوار فیلترهای فعال — کاتالوگ
-   ═══════════════════════════════════════ */
 .active-filters {
   display: flex; align-items: center; gap: 8px; flex-wrap: wrap;
   margin-bottom: var(--sp-4);
@@ -1123,7 +1010,6 @@ input:focus-visible, select:focus-visible, textarea:focus-visible {
 }
 .clear-all:hover { color: var(--danger) }
 
-/* ── مرتب‌سازی ── */
 .cat-tools { display: flex; align-items: center; gap: 10px; flex-wrap: wrap }
 .sort-sel {
   border: 1px solid var(--border); background: var(--surface); border-radius: 30px;
@@ -1132,9 +1018,6 @@ input:focus-visible, select:focus-visible, textarea:focus-visible {
 }
 .sort-sel:hover, .sort-sel:focus { border-color: var(--gold); outline: none }
 
-/* ═══════════════════════════════════════
-   هشدارهای سبد خرید — تغییر قیمت و موجودی
-   ═══════════════════════════════════════ */
 .cart-alert {
   display: flex; gap: 10px; align-items: flex-start;
   border-radius: 12px; padding: 13px 15px; margin-bottom: 14px;
@@ -1148,7 +1031,6 @@ input:focus-visible, select:focus-visible, textarea:focus-visible {
 .cart-alert.bad svg { stroke: var(--danger) }
 .cart-alert b { font-weight: 800 }
 
-/* نشان روی خود قلم سبد */
 .ci-flag {
   display: inline-flex; align-items: center; gap: 5px;
   font-size: .72rem; font-weight: 700; border-radius: 20px;
@@ -1162,7 +1044,6 @@ input:focus-visible, select:focus-visible, textarea:focus-visible {
 .cart-item.dead  { border-color: rgba(192,57,43,.4); opacity: .72 }
 .ci-old { text-decoration: line-through; opacity: .5; margin-left: 5px }
 
-/* اسکلت بارگذاری سبد */
 .cart-skel {
   background: var(--surface); border: 1px solid var(--border);
   border-radius: var(--r); padding: 15px; display: flex; gap: 14px;
@@ -1171,7 +1052,6 @@ input:focus-visible, select:focus-visible, textarea:focus-visible {
 .cart-skel .sq { width: 78px; height: 78px; border-radius: 10px; flex: none }
 .cart-skel .ln { height: 12px; border-radius: 6px }
 
-/* ── هدف ارسال رایگان ── */
 .ship-goal { background: var(--sand); border-radius: 11px; padding: 11px 13px; margin: 10px 0 }
 .ship-goal-t { font-size: .77rem; line-height: 1.8; color: #3A3A3A }
 .ship-goal-t b { color: var(--gold); font-weight: 800 }
@@ -1190,9 +1070,6 @@ input:focus-visible, select:focus-visible, textarea:focus-visible {
 }
 .ship-goal.done svg { width: 15px; height: 15px; stroke: #1E8449; fill: none; stroke-width: 2.4 }
 
-/* ═══════════════════════════════════════
-   اعتبارسنجی درجا — فرم تسویه
-   ═══════════════════════════════════════ */
 .field.invalid input,
 .field.invalid textarea,
 .field.invalid select {
@@ -1219,7 +1096,6 @@ input:focus-visible, select:focus-visible, textarea:focus-visible {
   80% { transform: translateX(2px) }
 }
 
-/* نوار مراحل خرید */
 .steps {
   display: flex; align-items: center; justify-content: center; gap: 0;
   max-width: 460px; margin: var(--sp-5) auto 0; padding: 0 20px;
@@ -1241,9 +1117,6 @@ input:focus-visible, select:focus-visible, textarea:focus-visible {
 .steps .line { flex: 1; height: 1.5px; background: var(--border); margin: 0 10px; min-width: 26px }
 .steps .line.done { background: var(--gold) }
 
-/* ═══════════════════════════════════════
-   خط زمانی سفارش — پیگیری و حساب کاربری
-   ═══════════════════════════════════════ */
 .timeline { position: relative; padding-right: 26px; margin: 16px 0 4px }
 .timeline::before {
   content: ''; position: absolute; right: 7px; top: 8px; bottom: 8px; width: 2px;
@@ -1278,7 +1151,6 @@ input:focus-visible, select:focus-visible, textarea:focus-visible {
 .tl-step.cancel::before { background: var(--danger); border-color: var(--danger) }
 .tl-step.cancel .t { color: var(--danger) }
 
-/* کارت رهگیری مرسوله */
 .track-box {
   background: var(--sand); border: 1px solid var(--border);
   border-radius: 11px; padding: 12px 14px; margin: 12px 0;
@@ -1293,9 +1165,6 @@ input:focus-visible, select:focus-visible, textarea:focus-visible {
 }
 .track-box button:hover { border-color: var(--gold); color: var(--gold) }
 
-/* ═══════════════════════════════════════
-   کارت علاقه‌مندی — با حذف و افزودن سریع
-   ═══════════════════════════════════════ */
 .wish-card { position: relative }
 .wish-card .rm {
   position: absolute; top: 10px; left: 10px; z-index: 6;
@@ -1312,7 +1181,6 @@ input:focus-visible, select:focus-visible, textarea:focus-visible {
   to { opacity: 0; transform: scale(.92) translateY(8px) }
 }
 
-/* نوار اقدام پایین کارت */
 .wish-act {
   display: flex; gap: 7px; padding: 0 var(--sp-4) var(--sp-4);
 }
@@ -1326,7 +1194,6 @@ input:focus-visible, select:focus-visible, textarea:focus-visible {
 .wish-act .gold { background: var(--obsidian); color: var(--gold); border-color: var(--obsidian) }
 .wish-act .gold:hover { background: var(--obsidian-soft) }
 
-/* خلاصه بالای فهرست */
 .wish-bar {
   display: flex; align-items: center; justify-content: space-between;
   gap: 12px; flex-wrap: wrap; margin-bottom: var(--sp-5);
@@ -1337,14 +1204,6 @@ input:focus-visible, select:focus-visible, textarea:focus-visible {
 .wish-bar .t { font-size: .86rem; line-height: 1.9 }
 .wish-bar .t b { color: var(--gold) }
 
-/* ═══════════════════════════════════════
-   دعوت نصب PWA
-   ═══════════════════════════════════════
-   نوار پایین صفحه، نه پاپ‌آپ وسط. کاربر می‌تواند نادیده بگیرد و
-   به خریدش برسد — همان تفاوتی که بین دعوت و مزاحمت هست.
-
-   فقط وقتی ظاهر می‌شود که مرورگر بگوید نصب ممکن است، و اگر رد
-   شود تا سی روز دیگر پرسیده نمی‌شود. */
 .pwa-install {
   position: fixed; inset-inline: 12px; bottom: 12px; z-index: 90;
   display: flex; align-items: center; gap: 12px;
@@ -1380,10 +1239,8 @@ input:focus-visible, select:focus-visible, textarea:focus-visible {
   outline: 2px solid var(--gold); outline-offset: 2px;
 }
 
-/* روی صفحه نصب‌شده (standalone) هرگز نشان داده نشود */
 @media (display-mode: standalone) { .pwa-install { display: none !important; } }
 
-/* نوار خرید صفحه محصول پایین صفحه است — تداخل نکنند */
 @media (max-width: 768px) {
   .pwa-install { bottom: 78px; }
 }

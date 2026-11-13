@@ -3,8 +3,6 @@
 const fs = require('fs');
 const path = require('path');
 
-// Check path boundaries both before and after resolving symlinks. This assumes
-// the public tree is not concurrently modified by an untrusted local user.
 function within(root, target) {
   const relative = path.relative(root, target);
   return relative === '' || (!path.isAbsolute(relative) && relative !== '..' && !relative.startsWith('..' + path.sep));

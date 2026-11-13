@@ -1,5 +1,5 @@
 'use strict';
-// Real image fixtures and hostile containers in a disposable upload directory.
+
 const assert=require('assert/strict'),fs=require('fs'),os=require('os'),path=require('path'),crypto=require('crypto'),{Readable}=require('stream'),{spawnSync}=require('child_process');
 const root=path.resolve(__dirname,'..'),tmp=fs.mkdtempSync(path.join(os.tmpdir(),'image-upload-security-'));
 process.env.MEDIA_DIR=tmp;process.env.MEDIA_MAX_BYTES='not-a-number';
@@ -12,7 +12,7 @@ function req(b,declared){const r=Readable.from([b]);r.headers=declared===undefin
 (async()=>{
  try {
   assert.equal(media.MAX_BYTES,3*1024*1024);
-  // All existing local sample assets of these types should remain accepted.
+
   for(const dir of [path.join(root,'public'),path.join(root,'public/images/products')])for(const name of fs.readdirSync(dir)){
    if(!/\.(?:jpg|png|webp|gif)$/i.test(name))continue;
    const file=path.join(dir,name);if(fs.statSync(file).isFile())assert(detectFormat(fs.readFileSync(file)),name);
@@ -35,7 +35,7 @@ function req(b,declared){const r=Readable.from([b]);r.headers=declared===undefin
   assert.equal((await media.saveUpload(req(Buffer.from('not image')),'x.jpg')).ok,false);
   assert.equal((await media.saveUpload(req(png,media.MAX_BYTES+1),'x.png')).ok,false);
   const uploaded=await media.saveUpload(req(png),'../../عکس.png');assert(uploaded.ok);assert(/^[a-z0-9-]+\.png$/.test(uploaded.name));assert.equal(fs.statSync(path.join(tmp,uploaded.name)).mode&0o777,0o600);
-  // Force collisions: a second upload must not overwrite an existing file.
+
   const origRandom=crypto.randomBytes,origNow=Date.now;
   try{
    crypto.randomBytes=n=>Buffer.alloc(n,7);Date.now=()=>1700000000000;

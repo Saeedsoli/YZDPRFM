@@ -1,23 +1,5 @@
 #!/usr/bin/env node
-/**
- * آزمون سامانه تخفیف پیشرفته — کوپن دامنه‌دار، جشنواره، نوار اعلان.
- *
- * چرا این آزمون حیاتی است: هر باگ در محاسبه تخفیف **ضرر مستقیم
- * مالی** است. کوپنی که باید فقط روی عطرهای چوبی کار کند ولی روی
- * کل سبد اعمال شود، یعنی چند برابر تخفیف ناخواسته.
- *
- * پوشش:
- *   • دامنه (خانواده، برند، نوع، جنسیت) درست محدود می‌کند
- *   • کوپن دامنه‌دار روی سبد نامرتبط رد می‌شود
- *   • جشنواره فقط روی محصول مشمول اعمال می‌شود
- *   • دو جشنواره روی یک کالا جمع نمی‌شوند (بهترین اعمال می‌شود)
- *   • ترتیب: جشنواره پیش از کوپن
- *   • مبلغ فاکتور با مبلغ پرداختی می‌خواند
- *   • کد اختصاصی مشتری و «فقط اولین خرید»
- *   • نوار اعلان و ایمنی لینک
- *
- * اجرا: node scripts/test_promotions.js
- */
+
 'use strict';
 
 const { spawn } = require('child_process');
@@ -101,7 +83,7 @@ const api = (p, opt = {}, tok = null) =>
   };
 
   try {
-    // ── دو محصول از دو خانواده متفاوت با موجودی موقت ──
+
     const db = new Database(DB);
     const A = db.prepare(`
       SELECT p.id, p.family_slug, p.brand_fa, v.sku, v.price_toman
@@ -136,7 +118,6 @@ const api = (p, opt = {}, tok = null) =>
     const onlyA = [{ sku: A.sku, quantity: 1 }];
     const sum = A.price_toman + B.price_toman;
 
-    // هیچ جشنواره فعالی نباید از اجرای قبلی مانده باشد
     {
       const camps = await api('/api/campaigns');
       add('محیط آزمون تمیز است (بدون جشنواره فعال)',
@@ -155,11 +136,6 @@ const api = (p, opt = {}, tok = null) =>
     add('ورود مدیر', !!TOK);
     if (!TOK) return finish();
 
-    /* ═══ کوپن دامنه‌دار ═══
-       این بخش پیش از ساخت جشنواره اجرا می‌شود تا تخفیف کوپن
-       دقیقاً روی قیمت کامل سنجیده شود. اگر جشنواره‌ای فعال
-       باشد، مبلغ پایه عوض می‌شود و مقایسه بی‌معنا می‌گردد —
-       یک بار همین اشتباه در خود آزمون رخ داد. */
     {
       const mk = await api('/api/admin/coupons', {
         method: 'POST',
@@ -183,7 +159,6 @@ const api = (p, opt = {}, tok = null) =>
         c.body.discount < Math.floor(sum * 0.10),
         `اگر روی کل سبد بود: ${Math.floor(sum * 0.10)}`);
 
-      // سبدی که هیچ کالای مشمول ندارد
       const bad = await api('/api/cart/calculate', {
         method: 'POST',
         body: JSON.stringify({ items: [{ sku: B.sku, quantity: 1 }],
@@ -195,7 +170,6 @@ const api = (p, opt = {}, tok = null) =>
         bad.body.coupon_error || 'بدون خطا!');
     }
 
-    /* ═══ جشنواره ═══ */
     {
       const mk = await api('/api/admin/campaigns', {
         method: 'POST',
@@ -217,7 +191,6 @@ const api = (p, opt = {}, tok = null) =>
         c.body.total_payable === sum - c.body.campaign_discount + c.body.shipping_fee,
         `${sum} − ${c.body.campaign_discount} + ${c.body.shipping_fee}`);
 
-      // جشنواره دوم روی همان کالا — نباید جمع شود
       await api('/api/admin/campaigns', {
         method: 'POST',
         body: JSON.stringify({ title: MARK + ' دوم', percent: 30, scope_families: 'woody' })
@@ -232,7 +205,6 @@ const api = (p, opt = {}, tok = null) =>
         c2.body.campaign_discount === best,
         `${c2.body.campaign_discount} (بهترین ${best}، جمع ${summed})`);
 
-      // ترتیب: کوپن روی مبلغ پس از جشنواره
       const c3 = await api('/api/cart/calculate', {
         method: 'POST',
         body: JSON.stringify({ items: onlyA, province: 'یزد', city: 'یزد',
@@ -247,7 +219,6 @@ const api = (p, opt = {}, tok = null) =>
         c3.body.campaign_discount + c3.body.discount < A.price_toman);
     }
 
-    /* ═══ سفارش واقعی — مبلغ باید با فاکتور بخواند ═══ */
     {
       const mob = '0919' + String(5000000 + Math.floor(Math.random() * 900000)).slice(-7);
       const o = await api('/api/orders', {
@@ -273,7 +244,6 @@ const api = (p, opt = {}, tok = null) =>
           row.subtotal - row.discount_amount + row.shipping_fee === row.total_paid,
           `${row.subtotal} − ${row.discount_amount} + ${row.shipping_fee} = ${row.total_paid}`);
 
-        // پاک‌سازی
         const d3 = new Database(DB);
         d3.prepare('DELETE FROM order_items WHERE order_id=?').run(o.body.order_id);
         d3.prepare('DELETE FROM order_status_log WHERE order_id=?').run(o.body.order_id);
@@ -282,7 +252,6 @@ const api = (p, opt = {}, tok = null) =>
       }
     }
 
-    /* ═══ کد اختصاصی مشتری ═══ */
     {
       const fixtureDb = new Database(DB,{readonly:true});
       const exists=fixtureDb.prepare(`SELECT
@@ -320,8 +289,7 @@ const api = (p, opt = {}, tok = null) =>
                                coupon_code: MARK + 'MINE', mobile: fixturePhone })
       });
       add('شماره بدون تأیید برای کد اختصاصی کافی نیست', forged.body.discount === 0 && !!forged.body.coupon_error);
-      // This test runs against an isolated smoke fixture; use the genuine OTP
-      // flow, not an invented trusted session or the customer's real data.
+
       await api('/api/auth/request-code',{method:'POST',body:JSON.stringify({mobile:fixturePhone})});
       const otpDb = new Database(DB,{readonly:true});
       const otpCode = otpDb.prepare('SELECT code FROM otp_codes WHERE mobile=?').get(fixturePhone)?.code;
@@ -344,7 +312,6 @@ const api = (p, opt = {}, tok = null) =>
       add('کد اختصاصی بدون شناسایی رد می‌شود', anon.body.discount === 0);
     }
 
-    /* ═══ اعتبارسنجی ورودی ═══ */
     {
       const badPct = await api('/api/admin/campaigns', {
         method: 'POST', body: JSON.stringify({ title: MARK + 'X', percent: 95 })
@@ -374,7 +341,6 @@ const api = (p, opt = {}, tok = null) =>
       add('موبایل نامعتبر رد می‌شود', badMob.status === 400);
     }
 
-    /* ═══ نوار اعلان ═══ */
     {
       const mk = await api('/api/admin/notices', {
         method: 'POST',
@@ -395,20 +361,18 @@ const api = (p, opt = {}, tok = null) =>
         'جلوگیری از هدایت بازدیدکننده به سایت دیگر');
     }
 
-    /* ═══ سازگاری با گذشته ═══ */
     {
       const old = await api('/api/cart/calculate', {
         method: 'POST',
         body: JSON.stringify({ items: both, province: 'یزد', city: 'یزد',
                                coupon_code: 'WELCOME10' })
       });
-      // WELCOME10 دامنه ندارد → باید روی کل سبد پس از جشنواره کار کند
+
       add('کوپن بدون دامنه مثل قبل کار می‌کند',
         old.body.discount > 0 || !!old.body.coupon_error,
         old.body.coupon_error || `تخفیف ${old.body.discount}`);
     }
 
-    /* ═══ دسترسی ═══ */
     {
       const noAuth = await api('/api/admin/campaigns', {
         method: 'POST', body: JSON.stringify({ title: 'x', percent: 10 })

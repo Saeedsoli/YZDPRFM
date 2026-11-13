@@ -1,5 +1,5 @@
 'use strict';
-// Independent-source note corrections; never imply manufacturer verification.
+
 const fs=require('fs');
 const VERSION='secondary_notes_2026_11_v1';
 const VERSION_2='secondary_notes_2026_11_v2';

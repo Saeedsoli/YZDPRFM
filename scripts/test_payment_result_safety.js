@@ -1,5 +1,5 @@
 'use strict';
-// Query strings alone can neither assert payment nor clear a current basket.
+
 const assert=require('assert/strict'),fs=require('fs'),path=require('path'),vm=require('vm');
 const html=fs.readFileSync(path.join(__dirname,'../public/payment-result.html'),'utf8');
 const start=html.indexOf('const query = new URLSearchParams(location.search);'),end=html.indexOf('\n</script>',start);assert(start>=0&&end>start);

@@ -1,22 +1,5 @@
 #!/usr/bin/env node
-/**
- * بنچمارک مسیر خرید — سنگین‌ترین کار سایت.
- *
- * چرا جدا از autocannon: ثبت سفارش یک درخواست تکراری نیست؛
- * هر سفارش باید موبایل و SKU متفاوت داشته باشد، در دیتابیس
- * می‌نویسد، موجودی کم می‌کند و در تراکنش قفل می‌گیرد. این
- * سنگین‌ترین نقطه سایت است و درست همان‌جایی که اگر کند باشد
- * مشتری وسط پرداخت رها می‌کند.
- *
- * سه مرحله واقعی خرید سنجیده می‌شود:
- *   ۱) محاسبه سبد   (خواندن + محاسبه تخفیف و ارسال)
- *   ۲) ثبت سفارش    (نوشتن، تراکنش، کم‌کردن موجودی)
- *   ۳) پیگیری سفارش (خواندن با ایندکس موبایل)
- *
- * اجرا:
- *   node scripts/bench_checkout.js [تعداد‌همزمان] [کل‌سفارش]
- *   node scripts/bench_checkout.js 20 400
- */
+
 'use strict';
 
 const BASE = process.env.BASE || 'http://localhost:3000';
@@ -28,7 +11,6 @@ const y = s => `\x1b[33m${s}\x1b[0m`;
 const r = s => `\x1b[31m${s}\x1b[0m`;
 const d = s => `\x1b[2m${s}\x1b[0m`;
 
-/** صدک از آرایه مرتب‌نشده */
 function pct(arr, p) {
   if (!arr.length) return 0;
   const s = [...arr].sort((a, b) => a - b);
@@ -54,7 +36,6 @@ function stats(name, lat, errors, elapsedMs) {
            max: Math.max(...lat), rps, ok: n, errors };
 }
 
-/** استخر همزمانی با سقف مشخص */
 async function pool(items, limit, worker) {
   const results = [];
   let idx = 0;
@@ -84,8 +65,6 @@ async function timed(fn) {
   console.log(`\n  بنچمارک مسیر خرید`);
   console.log(d(`  ${CONCURRENCY} کاربر همزمان · ${TOTAL} سفارش · ${BASE}\n`));
 
-  // SKUهای واقعی از کاتالوگ — سفارش‌های تکراری روی یک SKU
-  // قفل ردیف می‌سازند و نتیجه را غیرواقعی می‌کنند
   const catalog = await fetch(`${BASE}/api/products?limit=60`).then(r => r.json());
   const list = catalog.products || catalog.items || [];
   const skus = [];
@@ -102,13 +81,6 @@ async function timed(fn) {
   }
   console.log(d(`  ${skus.length} SKU با موجودی کافی\n`));
 
-  /* محدودیت نرخ: سایت سقف ۱۰ سفارش در ۱۰ دقیقه از هر IP دارد.
-     این محافظت درست است و باید بماند — ولی بنچمارک را بی‌معنا
-     می‌کند چون همه درخواست‌ها از یک IP می‌آیند. پس پیش از سنجش
-     قفل را پاک می‌کنیم تا ظرفیتِ خودِ موتور اندازه‌گیری شود،
-     نه سقفِ محافظ.
-
-     برای همین این آزمون فقط روی محیط توسعه معنا دارد. */
   try {
     const Database = require('better-sqlite3');
     const path = require('path');
@@ -125,7 +97,6 @@ async function timed(fn) {
   const jobs = Array.from({ length: TOTAL }, (_, i) => i);
   const summary = [];
 
-  // ── ۱) محاسبه سبد ──
   {
     const lat = []; let err = 0;
     const t0 = Date.now();
@@ -147,7 +118,6 @@ async function timed(fn) {
     summary.push(stats('۱) محاسبه سبد', lat, err, Date.now() - t0));
   }
 
-  // ── ۲) ثبت سفارش (نوشتن واقعی) ──
   const orderIds = [];
   {
     const lat = []; let err = 0;
@@ -155,7 +125,7 @@ async function timed(fn) {
     const byStatus = {};
     const t0 = Date.now();
     await pool(jobs, CONCURRENCY, async (i) => {
-      // موبایل یکتا برای هر سفارش تا محدودیت نرخ فعال نشود
+
       const mob = '0912' + String(1000000 + i).slice(-7);
       const res = await timed(async () => {
         const r2 = await fetch(`${BASE}/api/orders`, {
@@ -193,7 +163,6 @@ async function timed(fn) {
     }
   }
 
-  // ── ۳) پیگیری سفارش ──
   if (orderIds.length) {
     const lat = []; let err = 0;
     const t0 = Date.now();
@@ -207,7 +176,6 @@ async function timed(fn) {
     summary.push(stats('۳) پیگیری سفارش', lat, err, Date.now() - t0));
   }
 
-  // ── جمع‌بندی ──
   console.log(`\n  ${'─'.repeat(54)}`);
   const totalOrders = orderIds.length;
   const orderStat = summary.find(s => s && s.name.includes('ثبت سفارش'));
@@ -220,7 +188,6 @@ async function timed(fn) {
   }
   console.log('');
 
-  // خروجی ماشین‌خوان برای مقایسه بین اجراها
   if (process.env.BENCH_JSON) {
     require('fs').writeFileSync(process.env.BENCH_JSON,
       JSON.stringify({ concurrency: CONCURRENCY, total: TOTAL, summary }, null, 2));

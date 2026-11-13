@@ -1,7 +1,5 @@
 'use strict';
-// Date-only commercial rules use the shop's civil day, independent of the
-// server OS timezone. Stored timestamps remain UTC and 72-hour windows remain
-// exact elapsed durations. No data migration or historical timestamp rewrite.
+
 const formatter=new Intl.DateTimeFormat('en-US-u-ca-gregory-nu-latn',{timeZone:'Asia/Tehran',year:'numeric',month:'2-digit',day:'2-digit'});
 function dateKey(ms=Date.now()){
  if(!Number.isFinite(ms))throw Error('Invalid timestamp');

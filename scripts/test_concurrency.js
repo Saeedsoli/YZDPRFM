@@ -1,20 +1,5 @@
 #!/usr/bin/env node
-/**
- * آزمون همزمانی — آیا آخرین موجودی به بیش از یک نفر فروخته می‌شود؟
- *
- * چرا مهم است؟
- *   SQLite تک‌نویسنده است، ولی Node ناهمگام. اگر کاهش موجودی و ثبت
- *   سفارش در یک تراکنش نباشند، دو درخواست همزمان می‌توانند هر دو
- *   موجودی «۱» را ببینند و هر دو موفق شوند — یعنی فروش کالایی که
- *   ندارید.
- *
- * روش: یک متغیر با موجودی ۱ می‌سازیم و N سفارش هم‌زمان می‌فرستیم.
- *      دقیقاً یکی باید موفق شود و موجودی هرگز منفی نشود.
- *
- * اجرا:
- *   node scripts/test_concurrency.js          # ۸ درخواست
- *   node scripts/test_concurrency.js 20       # ۲۰ درخواست
- */
+
 'use strict';
 
 const { spawn } = require('child_process');
@@ -44,7 +29,7 @@ function cleanDb(sku, restoreStock, productId, restoreMode) {
   if (sku && restoreStock != null) {
     db.prepare('UPDATE variants SET stock=? WHERE sku=?').run(restoreStock, sku);
   }
-  // وضعیت تأمین هم برگردد وگرنه محصول برای همیشه IN_STOCK می‌ماند
+
   if (productId && restoreMode) {
     db.prepare('UPDATE products SET supply_mode=? WHERE id=?').run(restoreMode, productId);
   }
@@ -56,7 +41,7 @@ async function waitForServer(tries = 40) {
     try {
       const res = await fetch(`${BASE}/api/health`);
       if (res.ok) return true;
-    } catch { /* هنوز بالا نیامده */ }
+    } catch {  }
     await sleep(500);
   }
   return false;
@@ -65,21 +50,12 @@ async function waitForServer(tries = 40) {
 (async () => {
   console.log('\n  آزمون همزمانی موجودی\n');
 
-  // ── آماده‌سازی: یک متغیر با موجودی دقیقاً ۱ ──
   const db = new Database(DB);
   const v = db.prepare(
     'SELECT v.sku, v.stock, v.product_id FROM variants v LIMIT 1').get();
   const originalStock = v.stock;
   db.prepare('UPDATE variants SET stock=1 WHERE sku=?').run(v.sku);
 
-  /* 🔴 محصول باید IN_STOCK باشد وگرنه آزمون بی‌معنا می‌شود.
-     با supply_mode = MADE_TO_ORDER سرور عمداً سفارش بدون موجودی
-     را می‌پذیرد (کار دست‌ساز به سفارش ساخته می‌شود). آن‌وقت هر ۸
-     درخواست موفق می‌شوند و آزمون «فروش بیش از موجودی» چیزی را
-     نمی‌سنجد.
-
-     این آزمون قفل موجودی انبار را می‌سنجد، پس محصولش باید
-     «فقط از انبار» باشد. */
   const originalMode = db.prepare(
     'SELECT supply_mode FROM products WHERE id=?').get(v.product_id).supply_mode;
   db.prepare("UPDATE products SET supply_mode='IN_STOCK' WHERE id=?").run(v.product_id);
@@ -88,7 +64,6 @@ async function waitForServer(tries = 40) {
 
   console.log(d(`  SKU: ${v.sku}  ·  موجودی تنظیم شد روی ۱`));
 
-  // ── اجرای سرور روی پورت جدا ──
   const srv = spawn('node', ['src/server.js'], {
     cwd: ROOT,
     env: { ...process.env, BACKUP_DISABLED: '1', PORT: String(PORT), DB_PATH: DB },
@@ -107,7 +82,6 @@ async function waitForServer(tries = 40) {
     return finish(1);
   }
 
-  // ── N سفارش کاملاً همزمان ──
   console.log(d(`  ارسال ${N} سفارش هم‌زمان…\n`));
 
   const body = i => JSON.stringify({
@@ -135,7 +109,6 @@ async function waitForServer(tries = 40) {
   const rejected = results.filter(x => x.json.error);
   const netErr = results.filter(x => x.status === 0);
 
-  // ── موجودی نهایی ──
   const db2 = new Database(DB, { readonly: true });
   const stock = db2.prepare('SELECT stock FROM variants WHERE sku=?').get(v.sku).stock;
   const orderCount = db2.prepare(
@@ -152,7 +125,6 @@ async function waitForServer(tries = 40) {
     console.log(d(`  نمونه پیام رد: ${String(rejected[0].json.error).slice(0, 70)}`));
   }
 
-  // ── داوری ──
   const checks = [
     ['دقیقاً یک سفارش موفق', ok.length === 1],
     [`${N - 1} سفارش رد شد`, rejected.length === N - 1],

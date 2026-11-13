@@ -1,7 +1,5 @@
 'use strict';
-// Standalone pricing arithmetic; not yet wired into checkout or the admin panel.
-// Decimal inputs are parsed as rationals so exchange-rate and 1,000-toman rounding
-// do not rely on floating-point approximations.
+
 function decimal(value, label) {
   const s = String(value).trim();
   if (!/^(?:0|[1-9]\d*)(?:\.\d+)?$/.test(s)) throw new Error(`${label}: invalid non-negative decimal`);
@@ -19,7 +17,7 @@ function round1000(n,d) {
   if (result>BigInt(Number.MAX_SAFE_INTEGER)) throw new Error('price exceeds safe integer');
   return Number(result);
 }
-// Supplier prices are USD/kg; customer prices are in toman.
+
 function priceFromUsdPerKg(usdPerKg, usdRateToman, type, volumeMl) {
   const [u,ud]=positive(usdPerKg,'usdPerKg');
   const [r,rd]=positive(usdRateToman,'usdRateToman');

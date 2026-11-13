@@ -1,30 +1,7 @@
 #!/usr/bin/env node
-/**
- * آزمون رفع یافته‌های ممیزی جعبه‌سیاه (۱۵ مرداد ۱۴۰۵).
- *
- * چرا این آزمون:
- *   ممیزی جعبه‌سیاه نشان داد مسیر پیگیری سفارش با **فقط شماره
- *   موبایل** و بدون احراز هویت، نشانی کامل منزل مشتری را
- *   برمی‌گرداند — و هیچ محدودیت نرخی ندارد. ۲۵ درخواست پیاپی،
- *   هر ۲۵ تا پذیرفته شد.
- *
- *   کسی که فهرستی از شماره‌ها دارد می‌توانست نشانی منزل مشتریان
- *   را استخراج کند. این ریسک امنیت فیزیکی است، نه فقط حریم
- *   خصوصی.
- *
- *   بدون آزمون، این رفع می‌تواند در بازسازی بعدی بی‌صدا برگردد.
- *
- * پوشش:
- *   ۱) محدودیت نرخ روی IP و روی شماره — هر دو
- *   ۲) فهرست سفید میدان‌ها — یادداشت داخلی نشت نکند
- *   ۳) قالب شماره پیش از مصرف سطل بررسی شود
- *   ۴) کد ارز معتبر در داده ساختاریافته
- *   ۵) دسترس‌پذیری — h1 و inputmode
- *
- * اجرا: node scripts/test_audit_blackbox_fixes.js   (سرور بالا)
- */
+
 'use strict';
-// This legacy fixture explicitly tests the pre-approval unavailable baseline.
+
 process.env.APPROVED_MTO_AUTOSTART ??= '0';
 
 const http = require('http');
@@ -71,21 +48,12 @@ const clearRl = () =>
   console.log(h('  آزمون رفع یافته‌های ممیزی جعبه‌سیاه'));
   console.log(d('  ─────────────────────────────────────────────'));
 
-  /* ── چرا سفارش را خودمان می‌سازیم ──
-     این آزمون سفارش را از دیتابیس برمی‌داشت. پس از اجرای
-     `reset_for_launch.js` جدول `orders` خالی شد و آزمون با
-     `TypeError: Cannot read properties of undefined` می‌افتاد —
-     یعنی به آشغال داده قبلی تکیه داشت.
-
-     همان الگویی که در `lib/test_order.js` برای بقیه آزمون‌ها
-     پذیرفته شد: داده خودت را بساز، آخر کار بردار. */
   const { makePaidOrder, cleanupOrders } = require('./lib/test_order');
   const made = makePaidOrder(db);
   const sample = db.prepare(
     'SELECT mobile, order_id FROM orders WHERE order_id = ?'
   ).get(made.order_id);
 
-  // ─────────────── ۱) اعتبارسنجی ورودی
   console.log();
   console.log(h('  ۱) اعتبارسنجی شماره'));
 
@@ -99,22 +67,19 @@ const clearRl = () =>
   const evil = await api('/api/orders/track?mobile=' + encodeURIComponent("' OR 1=1--"));
   add('تزریق SQL رد می‌شود', evil.status === 400);
 
-  /* ورودی بدقالب نباید سطل را مصرف کند — وگرنه کاربری که اشتباه
-     تایپ کرده، برای تلاش درست بعدی جریمه می‌شود. */
   clearRl();
   for (let i = 0; i < 20; i++) await api('/api/orders/track?mobile=xx');
   const afterBad = await api('/api/orders/track?mobile=' + sample.mobile + '&order_id=' + encodeURIComponent(sample.order_id));
   add('ورودی بدقالب سطل را نمی‌سوزاند', afterBad.status === 200,
       'کاربر بابت اشتباه تایپی جریمه نمی‌شود');
 
-  // ─────────────── ۲) محدودیت نرخ IP
   console.log();
   console.log(h('  ۲) محدودیت نرخ — پویش از یک منبع'));
 
   clearRl();
   let ok200 = 0, got429 = 0, msg = '';
   for (let i = 0; i < 25; i++) {
-    // شماره‌های متفاوت: شبیه‌سازی پویش فهرست
+
     const res = await api(`/api/orders/track?mobile=0912111${String(1000 + i).slice(-4)}&order_id=YZD-TEST-${i}`);
     if (res.status === 200) ok200++;
     else if (res.status === 429) { got429++; msg = msg || res.json.error || ''; }
@@ -127,7 +92,6 @@ const clearRl = () =>
   add('عدد پیام با رقم فارسی است', /[۰-۹]/.test(msg),
       'تنها جای سایت که رقم لاتین نشان داده می‌شد');
 
-  // ─────────────── ۳) محدودیت نرخ شماره
   console.log();
   console.log(h('  ۳) محدودیت نرخ — کوبیدن یک شماره'));
 
@@ -144,7 +108,6 @@ const clearRl = () =>
   add('پیام سطل شماره متمایز است', /این شماره/.test(phMsg),
       'مهاجمی که IP عوض می‌کند هم متوقف می‌شود');
 
-  // ─────────────── ۴) فهرست سفید میدان‌ها
   console.log();
   console.log(h('  ۴) نشت داده — فهرست سفید'));
 
@@ -181,7 +144,6 @@ const clearRl = () =>
       .forEach(t => add(t, false, 'سفارشی برنگشت'));
   }
 
-  // ─────────────── ۵) شماره ناموجود
   console.log();
   console.log(h('  ۵) شماره ناموجود'));
 
@@ -191,7 +153,6 @@ const clearRl = () =>
       none.status === 200 && none.json.total === 0,
       'وگرنه می‌شد فهمید کدام شماره‌ها مشتری‌اند');
 
-  // ─────────────── ۶) داده ساختاریافته
   console.log();
   console.log(h('  ۶) داده ساختاریافته محصول'));
 
@@ -207,8 +168,6 @@ const clearRl = () =>
     add('🔴 کد ارز معتبر ISO است', prod.offers.priceCurrency === 'IRR',
         `${prod.offers.priceCurrency} — IRT در ISO 4217 وجود ندارد`);
 
-    /* قیمت‌ها به تومان ذخیره‌اند؛ با IRR باید ده برابر شوند وگرنه
-       گوگل قیمتی ده برابر کمتر می‌بیند. */
     const minToman = db.prepare(`
       SELECT MIN(price_toman) m FROM variants v
       JOIN products p ON p.id = v.product_id WHERE p.slug='creed-aventus'
@@ -217,12 +176,6 @@ const clearRl = () =>
         prod.offers.lowPrice === minToman * 10,
         `${prod.offers.lowPrice} = ${minToman} × ۱۰`);
 
-    /* سه‌حالته: InStock (موجودی انبار) · BackOrder (به سفارش
-       ساخته می‌شود) · OutOfStock (علامت‌خورده UNAVAILABLE).
-       پیش‌تر فقط دو حالت پذیرفته می‌شد و چون موجودی انبار تقریباً
-       صفر است، همه صفحه‌ها به گوگل «ناموجود» اعلام می‌شدند در
-       حالی که دکمه خرید فعال بود — عدم تطابق صفحه با داده
-       ساختاریافته. */
     add('وضعیت موجودی درست است',
         /InStock|OutOfStock|BackOrder/.test(prod.offers.availability),
         prod.offers.availability.replace('https://schema.org/', ''));
@@ -247,7 +200,6 @@ const clearRl = () =>
         'گوگل ارتباط را می‌فهمد بدون ادعای دروغ');
   }
 
-  // ─────────────── ۷) دسترس‌پذیری
   console.log();
   console.log(h('  ۷) دسترس‌پذیری'));
 
@@ -267,7 +219,6 @@ const clearRl = () =>
   add('ورودی پیگیری type=tel دارد', /type="tel"/.test(track));
   add('ورودی پیگیری autocomplete دارد', /autocomplete="tel"/.test(track));
 
-  // ─────────────── ۸) محافظ‌های موجود که نشکسته باشند
   console.log();
   console.log(h('  ۸) محافظ‌های پیشین'));
 

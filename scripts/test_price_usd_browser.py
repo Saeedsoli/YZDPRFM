@@ -43,7 +43,7 @@ async def main():
         add("پنل بار شد", await p.locator("#tab-products, [id^=tab-]").count() > 0)
 
         # رفتن به تب محصولات
-        tabs = await p.locator("nav button, .tab, [onclick*='products']").count()
+        tabs = await p.locator("nav button, .tab, [data-csp-click*='products']").count()
         try:
             await p.locator("text=محصولات").first.click(); await p.wait_for_timeout(1800)
         except: pass
@@ -73,7 +73,7 @@ async def main():
 
                 print("\n  ۴) ذخیره از رابط")
                 await usd.fill("18.25")
-                save = p.locator("#pVariants button[onclick^='saveVariant']").first
+                save = p.locator("#pVariants button[data-csp-click^='saveVariant']").first
                 await save.click(); await p.wait_for_timeout(2600)
                 # بازخوانی از دیتابیس — **همان SKU** که ویرایش شد.
                 #

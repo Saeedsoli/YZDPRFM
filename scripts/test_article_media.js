@@ -1,30 +1,5 @@
 #!/usr/bin/env node
-/**
- * آزمون رسانه مقالات — آپلود تصویر و جاسازی ویدیو.
- *
- * چرا این آزمون سخت‌گیر است:
- *
- *   آپلود فایل خطرناک‌ترین قابلیتی است که تا امروز به این پروژه
- *   اضافه شده. فایلی که روی دیسک بنشیند و از `public/` سرو شود،
- *   اگر HTML باشد می‌تواند اسکریپت اجرا کند — و آن اسکریپت در
- *   دامنه خودِ ما اجرا می‌شود، یعنی به کوکی نشست دسترسی دارد.
- *
- *   پس سه چیز باید ثابت شود:
- *     • فایل غیرتصویری هرگز ذخیره نمی‌شود (بر پایه محتوا، نه پسوند)
- *     • نام فایل نمی‌تواند از پوشه بیرون برود
- *     • نحو رسانه در متن، تزریق HTML را ممکن نمی‌کند
- *
- * پوشش:
- *   ۱) تشخیص قالب از امضای بایتی
- *   ۲) نام‌سازی امن — پیمایش مسیر ناممکن
- *   ۳) شناسه آپارات — پذیرش سه شکل، رد دامنه بیگانه
- *   ۴) مسیرهای API با مجوز
- *   ۵) آپلود واقعی و حذف
- *   ۶) رندر سمت مرورگر — سه الگو
- *   ۷) CSP اجازه آپارات می‌دهد ولی نه بیشتر
- *
- * اجرا: node scripts/test_article_media.js   (سرور باید بالا باشد)
- */
+
 'use strict';
 
 const http = require('http');
@@ -72,7 +47,6 @@ function api(p, opt = {}, token) {
   });
 }
 
-/* Fixtures are complete actual images, not just forged magic bytes. */
 const REAL_PNG = fs.readFileSync(path.join(__dirname,'../public/icon-192.png'));
 const REAL_JPEG = fs.readFileSync(path.join(__dirname,'../public/images/products/variant-sample.jpg'));
 const REAL_WEBP = fs.readFileSync(path.join(__dirname,'../public/images/products/variant-sample.webp'));
@@ -82,7 +56,6 @@ const REAL_WEBP = fs.readFileSync(path.join(__dirname,'../public/images/products
   console.log(h('  آزمون رسانه مقالات'));
   console.log(d('  ─────────────────────────────────────────────'));
 
-  // ─────────────── ۱) تشخیص قالب
   console.log();
   console.log(h('  ۱) تشخیص قالب از محتوا، نه پسوند'));
 
@@ -96,8 +69,6 @@ const REAL_WEBP = fs.readFileSync(path.join(__dirname,'../public/images/products
   add('سربرگ WebP بدون تصویر رد می‌شود',
       detectFormat(Buffer.concat([Buffer.from('RIFF'),Buffer.alloc(4),Buffer.from('WEBP')])) === null);
 
-  /* خطرناک‌ترین حالت: HTML با پسوند تصویر. اگر ذخیره شود و از
-     public سرو گردد، اسکریپت در دامنه ما اجرا می‌شود. */
   const evilHtml = Buffer.from('<html><script>alert(document.cookie)</script></html>');
   add('🔴 HTML با پسوند jpg رد می‌شود', detectFormat(evilHtml) === null,
       'وگرنه XSS در دامنه خودمان');
@@ -109,7 +80,6 @@ const REAL_WEBP = fs.readFileSync(path.join(__dirname,'../public/images/products
   add('فایل خالی رد می‌شود', detectFormat(Buffer.alloc(0)) === null);
   add('فایل خیلی کوتاه رد می‌شود', detectFormat(Buffer.from([0xFF, 0xD8])) === null);
 
-  // ─────────────── ۲) نام‌سازی امن
   console.log();
   console.log(h('  ۲) نام‌سازی — پیمایش مسیر ناممکن'));
 
@@ -138,7 +108,6 @@ const REAL_WEBP = fs.readFileSync(path.join(__dirname,'../public/images/products
       safeName('photo.exe', 'png').endsWith('.png'),
       'نه از نام کاربر');
 
-  // ─────────────── ۳) شناسه آپارات
   console.log();
   console.log(h('  ۳) شناسه ویدیوی آپارات'));
 
@@ -157,7 +126,6 @@ const REAL_WEBP = fs.readFileSync(path.join(__dirname,'../public/images/products
   add('نشانی جاسازی درست ساخته می‌شود',
       media.aparatEmbed('abc123').startsWith('https://www.aparat.com/video/video/embed/'));
 
-  // ─────────────── ۴) مسیرهای API
   console.log();
   console.log(h('  ۴) مسیرهای API'));
 
@@ -189,7 +157,6 @@ const REAL_WEBP = fs.readFileSync(path.join(__dirname,'../public/images/products
       !(listRes.json.stock || []).some(x => /-sm\.jpg$/.test(x.name)),
       'وگرنه فهرست دو برابر و بی‌فایده می‌شد');
 
-  // ─────────────── ۵) آپلود واقعی
   console.log();
   console.log(h('  ۵) آپلود و حذف واقعی'));
 
@@ -249,7 +216,6 @@ const REAL_WEBP = fs.readFileSync(path.join(__dirname,'../public/images/products
       'basename مسیر را می‌بُرد');
   add('فایل بیرونی سالم است', fs.existsSync(path.join(__dirname, '..', 'src', 'db.js')));
 
-  // ─────────────── ۶) رندر مرورگر
   console.log();
   console.log(h('  ۶) رندر در صفحه مقاله'));
 
@@ -267,7 +233,6 @@ const REAL_WEBP = fs.readFileSync(path.join(__dirname,'../public/images/products
   add('نسبت ثابت برای CLS', /aspect-ratio:\s*16\s*\/\s*9/.test(art));
   add('تصویر lazy بار می‌شود', /loading="lazy"/.test(art));
 
-  // ─────────────── ۷) CSP
   console.log();
   console.log(h('  ۷) سیاست امنیتی'));
 
@@ -280,7 +245,6 @@ const REAL_WEBP = fs.readFileSync(path.join(__dirname,'../public/images/products
       'iframe در بافت جدا اجرا می‌شود');
   add('‏default-src همچنان self', /default-src 'self'/.test(csp));
 
-  // ─────────────── ۸) پنل
   console.log();
   console.log(h('  ۸) پنل مدیریت'));
 

@@ -1,30 +1,5 @@
 #!/usr/bin/env node
-/**
- * آزمون لایه پیامک — با سرور جعلی، بدون ارسال واقعی.
- *
- * پس‌زمینه: سامانه از کاوه‌نگار به **پیامیتو** تغییر کرد. مستندات
- * فنی پیامیتو پشت لاگین پنل است و در دسترس نبود، پس به‌جای کد
- * حدسی، لایه‌ای ساخته شد که با متغیر محیطی قابل تنظیم است.
- *
- * این آزمون همان ادعا را می‌سنجد: **آیا واقعاً بدون تغییر کد
- * می‌شود به هر سامانه‌ای وصل شد؟**
- *
- * روش: یک سرور HTTP جعلی بالا می‌آید که نقش سامانه پیامک را بازی
- * می‌کند. درخواست‌های رسیده ثبت می‌شوند تا بررسی شود دقیقاً چه
- * چیزی و با چه قالبی فرستاده شده.
- *
- * پوشش:
- *   • حالت console هیچ درخواست شبکه‌ای نمی‌زند
- *   • قالب JSON، query و bearer هر سه کار می‌کنند
- *   • نام فیلدها با متغیر محیطی قابل تغییر است
- *   • قالب‌های مختلف پاسخ موفق/ناموفق درست تفسیر می‌شوند
- *   • خط اختصاصی (متن آزاد) و خدماتی (الگو) هر دو
- *   • شکست ارسال، کد OTP را ذخیره نمی‌کند
- *   • هیچ کلیدی در خروجی testConnection نشت نمی‌کند
- *   • send هرگز throw نمی‌کند
- *
- * اجرا: node scripts/test_sms_provider.js
- */
+
 'use strict';
 
 const http = require('http');
@@ -43,8 +18,6 @@ const add = (label, ok, note) => {
   checks.push(ok);
 };
 
-/* ── سرور جعلی سامانه پیامک ──
-   هر درخواست را ثبت می‌کند و پاسخ از پیش تعیین‌شده می‌دهد. */
 const received = [];
 let replyWith = { code: 200, body: '{"status":200,"message":"ok"}' };
 
@@ -67,15 +40,6 @@ const fake = http.createServer((req, res) => {
 const PORT = 4602;
 const FAKE_URL = `http://127.0.0.1:${PORT}/send`;
 
-/**
- * ماژول sms را در یک پروسه جدا با متغیرهای دلخواه اجرا می‌کند.
- *
- * چرا پروسه جدا: `sms.js` متغیرهای محیطی را هنگام بارگذاری
- * می‌خواند (const در سطح ماژول). تغییر `process.env` پس از
- * require هیچ اثری ندارد — این خودش تصمیم درستی است چون
- * پیکربندی نباید وسط کار عوض شود، ولی یعنی آزمون باید هر بار
- * پروسه تازه بسازد.
- */
 function runWithEnv(env, script) {
   return new Promise(resolve => {
     const child = fork(path.join(__dirname, 'lib', '_sms_probe.js'), [script], {
@@ -111,7 +75,7 @@ function runWithEnv(env, script) {
   };
 
   try {
-    // ═══════════════════════════════════
+
     console.log('  ── حالت پیش‌فرض (console) ──');
 
     {
@@ -123,13 +87,8 @@ function runWithEnv(env, script) {
         `${received.length} درخواست`);
     }
 
-    // ═══════════════════════════════════
     console.log('\n  ── ارسال با قالب JSON (پیش‌فرض) ──');
 
-    /* از ۱۴ مرداد ۱۴۰۵، `payamito` قرارداد اختصاصی خودش را دارد
-       (نشانی ثابت، فرم urlencoded). این بخش رفتار **لایه عمومی**
-       را می‌سنجد — یعنی سازگاری با هر سامانه دلخواه — پس باید
-       `generic` باشد نه `payamito`. */
     const baseEnv = {
       SMS_PROVIDER: 'generic',
       SMS_API_URL: FAKE_URL,
@@ -169,12 +128,10 @@ function runWithEnv(env, script) {
       replyWith = { code: 200, body: '{"status":200,"message":"ok"}' };
     }
 
-    // ═══════════════════════════════════
     console.log('\n  ── نام فیلدها قابل تغییر است ──');
 
     {
-      /* ادعای اصلی این معماری: اگر مستندات واقعی نام دیگری داشت،
-         بدون تغییر کد قابل تنظیم است. */
+
       received.length = 0;
       const { result } = await runWithEnv({
         ...baseEnv,
@@ -190,7 +147,6 @@ function runWithEnv(env, script) {
       add('فیلد خط تغییر نام داد', j.lineNumber === '3000123456' && !j.from);
     }
 
-    // ═══════════════════════════════════
     console.log('\n  ── قالب query (اعتبارنامه در نشانی) ──');
 
     {
@@ -208,7 +164,6 @@ function runWithEnv(env, script) {
       add('بدنه خالی است', !req?.body);
     }
 
-    // ═══════════════════════════════════
     console.log('\n  ── قالب bearer (کلید در هدر) ──');
 
     {
@@ -222,11 +177,10 @@ function runWithEnv(env, script) {
       const req = received[0];
       add('کلید در هدر Authorization است',
         req?.headers.authorization === 'Bearer SECRETKEY123456');
-      /* حیاتی: در حالت bearer نباید کلید در بدنه هم تکرار شود. */
+
       add('کلید در بدنه تکرار نشده', !req?.json?.apikey && !req?.json?.password);
     }
 
-    // ═══════════════════════════════════
     console.log('\n  ── تفسیر قالب‌های مختلف پاسخ ──');
 
     const RESPONSES = [
@@ -236,11 +190,7 @@ function runWithEnv(env, script) {
       ['{"RetStatus":1,"StrRetStatus":"Ok"}', true, 'قالب ملی‌پیامک'],
       ['{"return":{"status":200}}',          true,  'قالب کاوه‌نگار'],
       ['{"recId":123456}',                   true,  'شناسه ارسال'],
-      /* ── تغییر عمدی، ۱۴ مرداد ۱۴۰۵ ──
-         مستندات payamak-panel: «در صورت دریافت یک عدد بیش از ۱۵
-         رقم، ارسال موفق بوده». عدد کوتاه **کد خطاست** نه شناسه.
-         نمونه‌اش کد ۳۵ (لیست سیاه) که مثبت است ولی خطاست.
-         پیش‌تر «هر عدد مثبت = موفق» بود و کد ۳۵ را موفق می‌شمرد. */
+
       ['1234567',                            false, 'عدد کوتاه = کد خطا'],
       ['1234567890123456',                   true,  'شناسه ۱۶ رقمی'],
       ['{"status":0,"message":"اعتبار کافی نیست"}', false, 'status صفر'],
@@ -267,7 +217,7 @@ function runWithEnv(env, script) {
     }
 
     {
-      /* سرویس در دسترس نباشد — نباید throw کند */
+
       received.length = 0;
       const { result } = await runWithEnv({
         ...baseEnv, SMS_API_URL: 'http://127.0.0.1:1/nope'
@@ -278,7 +228,6 @@ function runWithEnv(env, script) {
 
     replyWith = { code: 200, body: '{"status":200}' };
 
-    // ═══════════════════════════════════
     console.log('\n  ── کد یکبار مصرف ──');
 
     {
@@ -292,7 +241,7 @@ function runWithEnv(env, script) {
     }
 
     {
-      /* خط خدماتی اشتراکی — فقط متغیر می‌رود نه متن کامل */
+
       received.length = 0;
       const { result } = await runWithEnv({
         ...baseEnv, SMS_OTP_PATTERN: 'yazd-login-42'
@@ -305,7 +254,7 @@ function runWithEnv(env, script) {
     }
 
     {
-      /* شکست ارسال نباید کد را ذخیره کند */
+
       received.length = 0;
       replyWith = { code: 200, body: '{"status":0,"message":"اعتبار کافی نیست"}' };
       const { result } = await runWithEnv(baseEnv, 'otp');
@@ -315,7 +264,6 @@ function runWithEnv(env, script) {
       replyWith = { code: 200, body: '{"status":200}' };
     }
 
-    // ═══════════════════════════════════
     console.log('\n  ── بررسی سلامت بدون نشت کلید ──');
 
     {
@@ -353,9 +301,7 @@ function runWithEnv(env, script) {
         SMS_PROVIDER: 'payamito', SMS_API_KEY: 'x'.repeat(20)
       }, 'health');
       add('بدون نشانی سرویس، خطا می‌دهد', result?.ok === false);
-      /* پیامیتو نشانی رسمی در کد دارد، پس `SMS_API_URL` برایش
-         الزامی نیست. آنچه کم است اعتبارنامه است و پیام باید
-         همان را بگوید. */
+
       add('خطا علت واقعی را می‌گوید',
         /اعتبارنامه|SMS_API_URL|فرستنده/.test(result?.message || ''),
         result?.message);
@@ -368,7 +314,6 @@ function runWithEnv(env, script) {
         /payamito/i.test(result?.hint || ''), result?.hint);
     }
 
-    // ═══════════════════════════════════
     console.log('\n  ── سازگاری با کد موجود ──');
 
     {

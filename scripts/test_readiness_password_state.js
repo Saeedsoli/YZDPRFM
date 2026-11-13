@@ -1,5 +1,5 @@
 'use strict';
-// Isolated database: readiness reports stored active-owner state, not seed env.
+
 const assert=require('assert/strict'),fs=require('fs'),os=require('os'),path=require('path'),net=require('net'),crypto=require('crypto'),{spawn}=require('child_process');
 const Database=require('better-sqlite3');
 const root=path.join(__dirname,'..'),dir=fs.mkdtempSync(path.join(os.tmpdir(),'readiness-password-')),dbPath=path.join(dir,'db.sqlite');
@@ -13,7 +13,7 @@ async function api(base,method,url,body,token){const r=await fetch(base+url,{met
  server=await boot(password);const login=await api(server.base,'POST','/api/admin/login',{username:'owner',password});assert.equal(login.status,200);const token=login.json.token;
  async function state(){const out=await api(server.base,'GET','/api/admin/readiness',null,token);assert.equal(out.status,200);assert(!out.text.includes(password));assert(!out.text.includes(defaultPw));return out.json.items.find(x=>x.key==='admin_password');}
  assert.equal((await state()).level,'ok');await stop(server.child);
- // Restart with the default *environment* value: stored strong owner remains strong.
+
  server=await boot(defaultPw);const again=await api(server.base,'POST','/api/admin/login',{username:'owner',password});assert.equal(again.status,200);const token2=again.json.token;
  async function check(){const r=await api(server.base,'GET','/api/admin/readiness',null,token2);assert.equal(r.status,200);assert(!r.text.includes(password));assert(!r.text.includes(defaultPw));return r.json.items.find(x=>x.key==='admin_password');}
  assert.equal((await check()).level,'ok');

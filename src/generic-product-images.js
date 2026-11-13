@@ -1,5 +1,5 @@
 'use strict';
-// Owner-approved illustrative images. Product photos and manager edits win.
+
 const fs=require('fs'),path=require('path'),crypto=require('crypto');
 const VERSION='studio_dark_images_2026_11_v2';
 const PREFIX='/images/products/';
@@ -18,12 +18,10 @@ function genericFor(productId,m){
  if(!productId||!m)return null;
  const row=m.items.find(x=>x.product_id===productId);
  if(row)return row.image_url;
- // A single approved neutral fallback is rebalanced to keep illustration use
- // below the tested limit; this is not a claim about the product or its notes.
+
  if(productId==='SUP-AG-900002')return `${PREFIX}studio-dark-4.jpg`;
  if(['SUP-CH-900005','SUP-CH-900006','SUP-CL-900001','SUP-TP-910048'].includes(productId))return `${PREFIX}studio-dark-6.jpg`;
- // New unidentified catalog entries get a stable, neutral illustration, never
- // an invented family or gender. Existing uploaded/brand images still win.
+
  const digest=crypto.createHash('sha256').update(String(productId)).digest();
  return `${PREFIX}studio-dark-${1+digest.readUInt32BE(0)%8}.jpg`;
 }

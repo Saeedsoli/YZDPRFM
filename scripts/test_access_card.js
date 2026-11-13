@@ -1,23 +1,5 @@
 #!/usr/bin/env node
-/**
- * آزمون «کارت دسترسی من» و ابزار بازسازی ایندکس.
- *
- * چه چیزی سنجیده می‌شود:
- *   ۱) کارمند فهرست دقیق مجوزهایش را می‌بیند، نه فقط یک عدد
- *   ۲) کارهایی که **نمی‌تواند** هم نشان داده می‌شوند
- *   ۳) شرح نقش برمی‌گردد
- *   ۴) نقش‌های مختلف دید متفاوت می‌گیرند
- *   ۵) هیچ داده حساسی (هش رمز) نشت نمی‌کند
- *   ۶) بازسازی ایندکس فقط با مجوز نگهداشت
- *   ۷) سیم‌کشی رابط
- *
- * چرا این آزمون لازم است:
- *   پیش‌تر پنل فقط می‌گفت «۳۴ مجوز». کارمند نمی‌دانست کدام کارها
- *   از او برمی‌آید و کدام نه — و وقتی به دیوار می‌خورد، نمی‌فهمید
- *   اشتباه کرده یا سیستم خراب است.
- *
- * اجرا: node scripts/test_access_card.js
- */
+
 'use strict';
 
 const fs = require('fs');
@@ -81,7 +63,6 @@ function api(p, opt = {}, token) {
   const OT = own.json.token;
   if (!OT) { console.log(r('  ورود مدیر ناموفق.\n')); process.exit(1); }
 
-  // ══ ۱) دید مدیر کل ══
   console.log(d('  مدیر کل'));
 
   const o = await api('/api/admin/me/activity?days=7', {}, OT);
@@ -108,7 +89,6 @@ function api(p, opt = {}, token) {
   add('راهنمای مجوز برمی‌گردد',
       flat.some(i => i.hint && i.hint.length > 5));
 
-  // ══ ۲) دید نقش محدود ══
   console.log(d('\n  انباردار'));
 
   const wh = await makeStaff(api, OT, 'access-card-wh', 'warehouse');
@@ -141,7 +121,6 @@ function api(p, opt = {}, token) {
         /قیمت/.test(wp.role_description || ''),
         (wp.role_description || '').slice(0, 40));
 
-    // ══ ۳) نشت نکردن ══
     console.log(d('\n  امنیت'));
 
     add('هش رمز نشت نمی‌کند',
@@ -155,7 +134,6 @@ function api(p, opt = {}, token) {
         `status ${rx.status}`);
   }
 
-  // ══ ۴) نقش دیگر برای مقایسه ══
   console.log(d('\n  محتوانویس'));
 
   const ed = await makeStaff(api, OT, 'access-card-ed', 'editor');
@@ -171,7 +149,6 @@ function api(p, opt = {}, token) {
         edk.includes('orders.view'));
   }
 
-  // ══ ۵) بازسازی ایندکس ══
   console.log(d('\n  بازسازی ایندکس'));
 
   const rx = await api('/api/admin/reindex', { method: 'POST', body: '{}' }, OT);
@@ -182,7 +159,6 @@ function api(p, opt = {}, token) {
   add('شمار نُت گزارش می‌شود', rx.json.note_rows > 10000,
       `${rx.json.note_rows} ردیف`);
 
-  /* بازسازی نباید داده را خراب کند — همان تعداد باید بماند */
   const after = await api('/api/notes?min=40&limit=5');
   add('پس از بازسازی، فیلتر نُت سالم است',
       (after.json.notes || []).length === 5);
@@ -197,7 +173,6 @@ function api(p, opt = {}, token) {
   const noAuth = await api('/api/admin/reindex', { method: 'POST', body: '{}' });
   add('بدون ورود ۴۰۱ می‌دهد', noAuth.status === 401);
 
-  // ══ ۶) سیم‌کشی رابط ══
   console.log(d('\n  سیم‌کشی رابط'));
 
   const adm = fs.readFileSync(path.join(ROOT, 'public/admin.html'), 'utf8');
@@ -210,7 +185,6 @@ function api(p, opt = {}, token) {
   add('محتوا پیش از درج فرار داده می‌شود',
       /esc\(i\.label\)|esc\(p\.role_description\)/.test(adm));
 
-  // پاک‌سازی
   for (const s of [wh, ed]) {
     if (s && s.id) await api(`/api/admin/staff/${s.id}`, { method: 'DELETE' }, OT);
   }

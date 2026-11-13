@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 'use strict';
-// These tests use manifest copies only; no real DB is opened or changed.
+
 const assert=require('assert'),path=require('path');
 const root=path.resolve(__dirname,'..');
 const m1=require('../seed/reference_accord_display_v1.json'),m2=require('../seed/reference_accord_display_v2.json'),m3=require('../seed/reference_accord_display_v3.json'),m4=require('../seed/reference_accord_display_v4.json');

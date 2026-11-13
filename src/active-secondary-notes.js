@@ -1,7 +1,5 @@
 'use strict';
-// Scoped source-backed note additions: batches 1–5 use independent sources;
-// batch 6 uses an explicit overlap from an official page. Neither verifies
-// supplier essence or actual ingredients. Never change orders, prices or stock.
+
 const fs=require('fs');
 const VERSION='active_secondary_notes_2026_11_v1';
 const VERSION_2='active_secondary_notes_2026_11_v2';
@@ -37,8 +35,7 @@ const BATCHES={
   'SUP-SE-900001':'https://www.seris-parfums.com/product/splendor/'
  }
 };
-// Keep normalization identical to the catalog index without importing db.js,
-// which would run unrelated initialization on an offline database.
+
 function normalizeFa(s){return String(s||'').replace(/[\u064B-\u0652\u0670]/g,'').replace(/[\u0623\u0625\u0622]/g,'ا').replace(/\u0649|\u064A/g,'ی').replace(/\u0643/g,'ک').replace(/\u0629/g,'ه').replace(/[\u200c\u200f\u200e]/g,' ').replace(/[۰-۹]/g,d=>'۰۱۲۳۴۵۶۷۸۹'.indexOf(d)).replace(/[٠-٩]/g,d=>'٠١٢٣٤٥٦٧٨٩'.indexOf(d)).replace(/\s+/g,' ').trim().toLowerCase()}
 function apply(db,file,{indexExisting=false}={}){
  const m=JSON.parse(fs.readFileSync(file,'utf8'));

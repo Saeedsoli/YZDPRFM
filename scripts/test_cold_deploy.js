@@ -1,22 +1,5 @@
 #!/usr/bin/env node
-/**
- * آزمون استقرار از صفر — شبیه‌سازی دقیق رفتار Liara.
- *
- * چرا این آزمون هست:
- *   Liara یک Disk پایدار روی `/app/data` سوار می‌کند. هر فایلی که
- *   هنگام build داخل آن پوشه کپی شده باشد، پس از mount شدن دیسک
- *   دیده نمی‌شود — دیسک خالی روی آن می‌نشیند.
- *
- *   وقتی فایل seed داخل `data/` بود، نخستین استقرار با پیام
- *   «فایل seed یافت نشد» بالا می‌آمد و فروشگاه با صفر محصول و صفر
- *   مقاله شروع می‌کرد. روی لپ‌تاپ هیچ‌وقت دیده نمی‌شد چون آنجا
- *   دیسکی سوار نمی‌شود.
- *
- * این آزمون همان وضعیت را می‌سازد: فقط چیزهایی که Dockerfile کپی
- * می‌کند، به‌علاوه یک `data/` خالی.
- *
- * اجرا: node scripts/test_cold_deploy.js
- */
+
 'use strict';
 
 const { spawn, execSync } = require('child_process');
@@ -33,7 +16,6 @@ const r = s => `\x1b[31m${s}\x1b[0m`;
 const d = s => `\x1b[2m${s}\x1b[0m`;
 const sleep = ms => new Promise(res => setTimeout(res, ms));
 
-/** پوشه‌هایی که Dockerfile به تصویر کپی می‌کند */
 function dockerCopiedDirs() {
   const df = fs.readFileSync(path.join(ROOT, 'Dockerfile'), 'utf-8');
   return df.split('\n')
@@ -67,7 +49,7 @@ function dockerCopiedDirs() {
   };
 
   try {
-    // ── فقط چیزهایی که Dockerfile کپی می‌کند ──
+
     const copied = dockerCopiedDirs();
     console.log(d(`  Dockerfile کپی می‌کند: ${copied.join('، ')}`));
 
@@ -86,12 +68,10 @@ function dockerCopiedDirs() {
     fs.symlinkSync(path.join(ROOT, 'node_modules'),
                    path.join(stage, 'node_modules'));
 
-    // ── دیسک پایدار خالی روی data/ ──
     fs.mkdirSync(path.join(stage, 'data'));
     add('دیتابیسی از قبل وجود ندارد',
         !fs.existsSync(path.join(stage, 'data', 'yazd.db')));
 
-    // ── بالا آوردن ──
     console.log(d('\n  بالا آوردن سرور روی دیسک خالی'));
     const t0 = Date.now();
     proc = spawn('node', ['src/server.js'], {
@@ -110,34 +90,21 @@ function dockerCopiedDirs() {
     add('سرور بالا آمد', up, `${secs} ثانیه`);
     if (!up) return finish();
 
-    // ── محتوا واقعاً پر شده؟ ──
     console.log(d('\n  محتوای فروشگاه پس از نخستین اجرا'));
 
     const prods = await fetch(`${BASE}/api/products?limit=1`).then(r => r.json());
-    /* آستانه به‌جای عدد دقیق: این آزمون «استقرار سرد» را می‌سنجد
-       — یعنی آیا seed روی دیتابیس خالی کار کرد؟ عدد دقیق کاتالوگ
-       ربطی به آن ندارد و با هر تعویض منبع داده می‌شکند. */
+
     add('کاتالوگ پر شده است', prods.total >= 2000, `${prods.total} محصول`);
 
     const arts = await fetch(`${BASE}/api/articles`).then(r => r.json());
     add('مقالات منتقل شده‌اند', (arts.total || 0) >= 5, `${arts.total} مقاله`);
 
-    /* عمق محتوا هم باید منتقل شود. اگر مقالات در دیتابیس زنده
-       بلند شوند ولی seed عقب بماند، نخستین استقرار نسخه کوتاه
-       را می‌سازد و سئو ضربه می‌خورد. */
     const full = await fetch(`${BASE}/api/articles/handmade-transparency`)
       .then(r => r.json()).catch(() => null);
     const words = full && full.content
       ? full.content.trim().split(/\s+/).filter(Boolean).length : 0;
     add('مقالات محتوای کامل دارند', words >= 300, `${words} واژه`);
 
-    /* ── چرا شمار برند از دیتابیس گرفته می‌شود، نه از API ──
-       `/api/brands` عمداً فقط برندهایی را برمی‌گرداند که محصول
-       قابل سفارش دارند. روی دیتابیس تازه، فقط موارد تأییدشده و قابل سفارش
-       باید در این فهرست حضور داشته باشند.
-
-       چیزی که واقعاً باید بسنجیم این است که کاتالوگ با تنوع
-       برند پر شده باشد. آن را از خود دیتابیس می‌پرسیم. */
     const cold = new (require('better-sqlite3'))(
       path.join(stage, 'data', 'yazd.db'), { readonly: true });
     const brandsInDb = cold.prepare(
@@ -171,13 +138,11 @@ function dockerCopiedDirs() {
         (brands.brands || []).length === orderable,
         `${(brands.brands || []).length} = ${orderable}`);
 
-    // The first row can legitimately be a newly sourced draft with no prices.
     const one = await fetch(`${BASE}/api/products/creed-jasmal`).then(r => r.json());
     const v = one.variants || [];
     add('متغیرها و قیمت‌ها ساخته شده‌اند', v.length > 0 && v[0].price_toman > 0,
         `${v.length} متغیر`);
 
-    // ── صفحه اصلی واقعاً محصول نشان می‌دهد؟ ──
     const home = await fetch(`${BASE}/`).then(r => r.text());
     add('صفحه اصلی بالا می‌آید', home.includes('عطر یزد'));
 
@@ -185,10 +150,6 @@ function dockerCopiedDirs() {
       .then(r => r.status);
     add('صفحه محصول باز می‌شود', pdp === 200, `کد ${pdp}`);
 
-    /* ── نگارش فارسی نام برندها ──
-       اصلاح‌های نگارشی روی دیتابیس زنده اعمال می‌شوند، ولی اگر
-       فایل seed به‌روز نشود، نخستین استقرار واقعی دوباره املای
-       غلط می‌سازد — همان جایی که کمترین فرصت اصلاح هست. */
     console.log(d('\n  نگارش فارسی برندها در seed'));
 
     const brandList = await fetch(`${BASE}/api/brands`).then(r => r.json());
@@ -202,18 +163,13 @@ function dockerCopiedDirs() {
     add('نگارش برندها درست است', wrongBrand.length === 0,
         wrongBrand[0] || `${Object.keys(expect).length} برند`);
 
-    /* نام‌هایی که برند جزء لاینفکشان است — تکرار زائد نیستند.
-       «دیور هوم» (Dior Homme)، «بلو د شنل»، «میس دیور» نام رسمی و
-       جهانی‌اند و حذف برند نابودشان می‌کند.
-       همان منطق test_brand_names.js — اگر این دو ناهماهنگ شوند،
-       یکی همیشه قرمز می‌ماند. */
     const CONNECTORS = ['د', 'دو', 'آو', 'او', 'له', 'لا', 'میس', 'مای',
                         'مستر', 'مون', 'لو', 'بلو', 'تق', 'پاشا', 'هوم',
                         'ویاژ', 'لنستان'];
     const sample = await fetch(`${BASE}/api/products?limit=60`).then(r => r.json());
     const dupName = (sample.products || []).filter(p => {
       if (!p.brand_fa || !p.name_fa || !p.name_fa.includes(p.brand_fa)) return false;
-      if (/\([^)]*\)/.test(p.name_fa)) return false;      // پرانتز توضیحی بازار
+      if (/\([^)]*\)/.test(p.name_fa)) return false;
       const rest = p.name_fa.split(p.brand_fa).join(' ').replace(/\s+/g, ' ').trim();
       if (rest.length < 3) return false;
       return !rest.split(/\s+/).some(w => CONNECTORS.includes(w));
@@ -221,7 +177,6 @@ function dockerCopiedDirs() {
     add('نام محصول برند را بی‌جهت تکرار نمی‌کند', dupName.length === 0,
         dupName.length ? `${dupName[0].brand_fa} — ${dupName[0].name_fa}` : '');
 
-    // ── حساب مدیر کل ساخته شد؟ ──
     console.log(d('\n  حساب مدیر و نقش‌ها'));
     const login = await fetch(`${BASE}/api/admin/login`, {
       method: 'POST', headers: { 'Content-Type': 'application/json' },
@@ -236,16 +191,12 @@ function dockerCopiedDirs() {
         `${login.user?.permissions?.length} مجوز`);
     add('رمز اولیه باید عوض شود', login.user?.must_change === true);
 
-    /* ── sitemap با محتوای واقعی ──
-       آستانه پیشین `> 100` بود چون آن زمان همه محصولات در
-       sitemap می‌آمدند. حالا فقط محصولات قابل سفارش معرفی
-       می‌شوند و روی دیتابیس تازهٔ استقرار، پیش‌فرض همه
-       UNAVAILABLE است — یعنی sitemap عمداً فقط صفحات ثابت را
-       دارد. این درست است، نه خرابی.
-
-       چیزی که واقعاً باید بسنجیم: sitemap ساخته می‌شود، معتبر
-       است، و صفحات کلیدی در آن هستند. */
-    const sm = await fetch(`${BASE}/sitemap.xml`).then(r => r.text());
+    const smIndex = await fetch(`${BASE}/sitemap.xml`).then(r => r.text());
+    let sm = smIndex;
+    for (const m of smIndex.matchAll(/<loc>([^<]+)<\/loc>/g)) {
+      const local = BASE + new URL(m[1]).pathname;
+      try { sm += '\n' + await fetch(local).then(r => r.text()); } catch {}
+    }
     const urls = (sm.match(/<loc>/g) || []).length;
     add('sitemap ساخته شد و معتبر است',
         urls > 0 && sm.includes('<urlset'), `${urls} نشانی`);

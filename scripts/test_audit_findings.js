@@ -1,29 +1,5 @@
 #!/usr/bin/env node
-/**
- * آزمون یافته‌های ممیزی مستقل (مرداد ۱۴۰۵).
- *
- * پس‌زمینه: پس از تفکیک `server.js`، کد با «چشم تازه» بازخوانی
- * شد — نه به‌عنوان نویسنده‌اش بلکه کسی که دنبال ایراد است.
- * سه یافته واقعی درآمد که هیچ آزمون موجودی نمی‌گرفتشان.
- *
- * ── یافته ۱ 🔴 نشت هش رمز ──
- * `getStaff()` با `{...s}` همه ستون‌ها را برمی‌گرداند شامل
- * `pass_hash` و `pass_salt`. سه مسیر مدیریتی خروجی‌اش را مستقیم
- * در پاسخ JSON می‌گذاشتند. با آزمون واقعی تأیید شد که هش scrypt
- * و salt به بیرون می‌رفتند.
- *
- * ── یافته ۲ 🟡 مسیرهای عمومی بدون محدودیت نرخ ──
- * `/api/track`، `/api/tickets` و `/api/stock-alert` هر سه به
- * دیتابیس می‌نویسند و بدون احراز هویت‌اند. اندازه‌گیری: ۴۰
- * درخواست به `/api/track` در ۳۳۷ میلی‌ثانیه، همه پذیرفته.
- *
- * ── یافته ۳ 🔴 خطای بلعیده‌شده ──
- * هنگام رفع یافته ۲ معلوم شد `ip` در هر بلوک محلی تعریف شده و
- * در بلوک‌های دیگر `ReferenceError` می‌دهد — خطایی که در
- * `catch` بلعیده می‌شد و کاربر پاسخ ۲۰۰ می‌گرفت.
- *
- * اجرا: node scripts/test_audit_findings.js
- */
+
 'use strict';
 
 const { spawn } = require('child_process');
@@ -109,15 +85,12 @@ const api = (p, opt = {}, tok = null) =>
     add('ورود مدیر', !!TOK);
     if (!TOK) return finish();
 
-    // ═════════════════════════════════════════
     console.log('\n  ── یافته ۱: نشت هش رمز ──');
 
     const SECRETS = ['pass_hash', 'pass_salt'];
 
     {
-      /* حیاتی‌ترین بررسی: هش رمز نباید در هیچ پاسخی باشد.
-         اگر لو برود، مهاجم می‌تواند آفلاین حمله فرهنگ‌لغت بزند
-         بدون اینکه محدودیت نرخ ورود مانعش شود. */
+
       const res = await api('/api/admin/me/profile', {
         method: 'PUT', body: JSON.stringify({ display_name: 'مدیر کل' })
       }, TOK);
@@ -130,7 +103,7 @@ const api = (p, opt = {}, tok = null) =>
     }
 
     {
-      /* همه مسیرهای مدیریتی که کارمند برمی‌گردانند */
+
       for (const p of ['/api/admin/whoami', '/api/admin/me',
         '/api/admin/staff', '/api/admin/me/activity']) {
         const res = await api(p, {}, TOK);
@@ -142,8 +115,7 @@ const api = (p, opt = {}, tok = null) =>
     {
       const src = fs.readFileSync(path.join(ROOT, 'src', 'db.js'), 'utf8');
       add('تابع publicStaff تعریف شده', /function publicStaff/.test(src));
-      /* فهرست سفید است نه سیاه: ستون تازه‌ای که روزی اضافه شود
-         خودبه‌خود بیرون نمی‌رود. */
+
       const fn = src.slice(src.indexOf('function publicStaff'),
                            src.indexOf('function publicCustomer'));
       add('publicStaff فهرست سفید است، نه حذف فیلد',
@@ -153,20 +125,18 @@ const api = (p, opt = {}, tok = null) =>
 
       const rbac = fs.readFileSync(path.join(ROOT, 'src/routes/rbac.js'), 'utf8');
       const srv2 = fs.readFileSync(path.join(ROOT, 'src/server.js'), 'utf8');
-      /* هیچ‌جا نباید `getStaff()` خام در پاسخ برود */
+
       add('rbac از publicStaff استفاده می‌کند',
         !/staff: getStaff\(/.test(rbac) && /publicStaff\(getStaff\(/.test(rbac));
       add('server از publicStaff استفاده می‌کند',
         !/staff: getStaff\(/.test(srv2));
     }
 
-    // ═════════════════════════════════════════
     console.log('\n  ── یافته ۲: محدودیت نرخ مسیرهای عمومی ──');
 
     {
       clearLimits();
-      /* سقف ۱۲۰ در دقیقه. یک بازدید عادی ۵ تا ۱۰ رویداد می‌سازد،
-         پس کاربر واقعی هرگز نمی‌خورد. */
+
       let ok = 0, throttled = 0;
       for (let i = 0; i < 140; i++) {
         const res = await api('/api/track', {
@@ -177,8 +147,7 @@ const api = (p, opt = {}, tok = null) =>
       add('/api/track پس از سقف محدود می‌شود', throttled > 0,
         `${ok} پذیرفته · ${throttled} محدود`);
       add('سقف دقیقاً ۱۲۰ است', ok === 120, `${ok}`);
-      /* تحلیل نباید تجربه کاربر را خراب کند: بی‌صدا رد می‌شود
-         نه با خطای ۴۲۹ که صفحه را بشکند. */
+
       const after = await api('/api/track', {
         method: 'POST', body: JSON.stringify({ kind: 'view', target: 'x' })
       });
@@ -204,21 +173,14 @@ const api = (p, opt = {}, tok = null) =>
         limited > 0 && normal === 10, `${normal} عادی · ${limited} محدود`);
     }
 
-    // ═════════════════════════════════════════
     console.log('\n  ── یافته ۳: خطای بلعیده‌شده ──');
 
     {
       const src = fs.readFileSync(path.join(ROOT, 'src', 'server.js'), 'utf8');
-      /* `reqIP` یک بار در سطح درخواست تعریف می‌شود.
-         پیش‌تر هر بلوک `const ip = clientIP(req)` خودش را داشت و
-         بلوک‌های دیگر به آن دسترسی نداشتند. */
+
       add('reqIP در سطح درخواست تعریف شده',
         /const reqIP = clientIP\(req\)/.test(src));
-      /* از گام ۸ تفکیک، `track` و `alert` در
-         `src/routes/engagement.js` زندگی می‌کنند و `reqIP` را از
-         `ctx` می‌گیرند. ضمانت عوض نشده — محل کد عوض شده.
-         این بررسی هر دو فایل را می‌خواند تا با جابه‌جایی بعدی هم
-         دروغ نگوید. */
+
       const eng = fs.readFileSync(
         path.join(ROOT, 'src', 'routes', 'engagement.js'), 'utf8');
       const all = src + '\n' + eng;
@@ -228,10 +190,6 @@ const api = (p, opt = {}, tok = null) =>
         !/const ip = clientIP\(req\)/.test(eng),
         'reqIP از ctx می‌آید');
 
-      /* نگهبان: هیچ‌جا نباید از `ip` استفاده شود جایی که تعریف
-         نشده. بررسی ساده: تعداد تعریف‌های محلی نباید صفر شود
-         (بلوک‌های قدیمی هنوز خودشان تعریف می‌کنند) ولی مسیرهای
-         تازه باید reqIP بگیرند. */
       clearLimits();
       const res = await api('/api/track', {
         method: 'POST', body: JSON.stringify({ kind: 'view', target: 'YZD-0001' })
@@ -249,13 +207,11 @@ const api = (p, opt = {}, tok = null) =>
       add('هیچ ReferenceError تازه‌ای ثبت نشده', errs === 0, `${errs} خطا`);
     }
 
-    // ═════════════════════════════════════════
     console.log('\n  ── کاربر واقعی آسیب نمی‌بیند ──');
 
     {
       clearLimits();
-      /* سناریوی یک بازدید عادی: چند رویداد تحلیل، یک بررسی سبد.
-         هیچ‌کدام نباید محدود شود. */
+
       let blocked = 0;
       for (let i = 0; i < 12; i++) {
         const res = await api('/api/track', {

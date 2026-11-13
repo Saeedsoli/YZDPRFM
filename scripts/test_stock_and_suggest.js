@@ -1,17 +1,5 @@
 #!/usr/bin/env node
-/**
- * آزمون نگهبان چهار خواسته مالک فروشگاه (مرداد ۱۴۰۵):
- *
- *   ۱) موجودی همه کالاها پیش‌فرض صفر (ناموجود) باشد
- *   ۲) پنل کارمندان کنترل موجودی با ± و تایپ دستی داشته باشد
- *   ۳) سمپل ۳ میل حذف و عطر مو پنهان؛ بادی اسپلش فقط ۱۲۰ میل باشد
- *   ۴) جستجو با چند حرف، پیشنهاد خودکار نشان دهد
- *
- * بخش رابط کاربری با مرورگر واقعی سنجیده می‌شود، نه با خواندن
- * کد — چون «کد درست است» با «در مرورگر کار می‌کند» یکی نیست.
- *
- * اجرا: node scripts/test_stock_and_suggest.js
- */
+
 'use strict';
 
 const { spawn } = require('child_process');
@@ -51,7 +39,6 @@ async function boot() {
 (async () => {
   console.log('\n  آزمون موجودی، حجم و پیشنهاد جستجو\n');
 
-  /* ── حجم: قدیمی‌ها حفظ نمی‌شوند؛ واریانت‌های فعال فقط اندازه جدید دارند ── */
   {
     const db = new Database(DB, { readonly: true });
     const legacy = db.prepare("SELECT COUNT(*) c FROM variants WHERE type='SAMPLE' AND volume_ml=3").get().c;
@@ -61,13 +48,11 @@ async function boot() {
     db.close();
   }
 
-  /* ── ۱) موجودی پیش‌فرض صفر ── */
   {
     const db = new Database(DB, { readonly: true });
     const nz = db.prepare('SELECT COUNT(*) c FROM variants WHERE stock != 0').get().c;
     const total = db.prepare('SELECT COUNT(*) c FROM variants').get().c;
-    // اگر مالک موجودی واقعی وارد کرده باشد این عدد بالا می‌رود —
-    // پس فقط هشدار می‌دهیم، نه شکست
+
     if (nz > 0) {
       console.log(d(`  · ${nz} از ${total} واریانت موجودی دارد (موجودی واقعی وارد شده)`));
       checks.push(true);
@@ -78,7 +63,6 @@ async function boot() {
     db.close();
   }
 
-  /* ── seed هم باید صفر باشد، وگرنه استقرار تازه اعداد قدیم را برمی‌گرداند ── */
   {
     const seedPath = path.join(ROOT, 'seed', 'perfumes_catalogue_seed.json');
     if (fs.existsSync(seedPath)) {
@@ -106,7 +90,7 @@ async function boot() {
   };
 
   try {
-    /* ── حجم در API عمومی ── */
+
     const p = await fetch(`${BASE}/api/products/creed-aventus`).then(x => x.json());
     const hm = (p.variants || []).filter(v => v.type === 'HAIR_MIST');
     const bs = (p.variants || []).filter(v => v.type === 'BODY_SPLASH');
@@ -115,7 +99,6 @@ async function boot() {
     add('فقط بادی‌اسپلش ۱۲۰ میل نمایش داده می‌شود', bs.every(v => v.volume_ml === 120), `${bs.length} ردیف موجود`);
     add('فقط سمپل ۵ میل نمایش داده می‌شود', samples.every(v => v.volume_ml === 5), `${samples.length} ردیف موجود`);
 
-    /* ── مرورگر واقعی ── */
     let chromium = null;
     try { ({ chromium } = require('playwright')); } catch {}
     if (!chromium) {
@@ -123,9 +106,6 @@ async function boot() {
       return finish();
     }
 
-    /* نسخه Node پلی‌رایت گاهی نسخه مرورگر دیگری می‌خواهد از آنچه
-       نسخه پایتون دانلود کرده. به‌جای دانلود دوباره ۱۱۴ مگابایت،
-       هر مرورگر موجود در کش استفاده می‌شود. */
     let exe;
     try {
       const base = path.join(process.env.HOME || '/home/user', '.cache', 'ms-playwright');
@@ -146,7 +126,6 @@ async function boot() {
       args: ['--no-sandbox', '--disable-dev-shm-usage', '--disable-gpu']
     });
 
-    /* ── ۴) پیشنهاد جستجو ── */
     {
       const ctx = await browser.newContext({ viewport: { width: 390, height: 844 } });
       const pg = await ctx.newPage();
@@ -155,18 +134,15 @@ async function boot() {
 
       await pg.goto(`${BASE}/`, { waitUntil: 'networkidle', timeout: 60000 });
 
-      // یک حرف نباید فهرست را باز کند
       await pg.fill('#q', 'ع');
       await pg.waitForTimeout(900);
       add('با یک حرف پیشنهاد باز نمی‌شود', await pg.isHidden('#sugg'));
 
-      // دو حرف باید باز کند
       await pg.fill('#q', 'عود');
       await pg.waitForTimeout(1500);
       const n = await pg.locator('.sugg-item').count();
       add('با چند حرف پیشنهاد خودکار می‌آید', n > 0, `${n} پیشنهاد`);
 
-      // ناوبری با کیبورد
       await pg.focus('#q');
       await pg.keyboard.press('ArrowDown');
       await pg.waitForTimeout(300);
@@ -177,7 +153,6 @@ async function boot() {
       await pg.waitForTimeout(250);
       add('Escape فهرست را می‌بندد', await pg.isHidden('#sugg'));
 
-      // کلیک روی پیشنهاد به صفحه محصول می‌رود
       await pg.fill('#q', 'اونتوس');
       await pg.waitForTimeout(1500);
       if (await pg.locator('.sugg-item').count()) {
@@ -193,7 +168,6 @@ async function boot() {
       await ctx.close();
     }
 
-    /* ── ۲) کنترل موجودی در پنل ── */
     {
       const ctx = await browser.newContext({ viewport: { width: 1366, height: 900 } });
       const pg = await ctx.newPage();
@@ -209,7 +183,6 @@ async function boot() {
       await pg.click('text=محصولات و موجودی');
       await pg.waitForTimeout(800);
 
-      // جستجوی زنده — بدون زدن دکمه
       await pg.fill('#pSearch', 'اونتوس');
       await pg.waitForTimeout(1600);
       const rows = await pg.locator('#pResults tr').count();
@@ -226,34 +199,29 @@ async function boot() {
         const sku = (await inp.getAttribute('id')).replace('st_', '');
         const before = parseInt(await inp.inputValue());
 
-        // دکمه +
         await pg.locator('.stock-ctrl button:has-text("+")').first().click();
         await pg.waitForTimeout(1100);
         const afterPlus = parseInt(await inp.inputValue());
         add('دکمه + موجودی را زیاد می‌کند', afterPlus === before + 1,
           `${before} → ${afterPlus}`);
 
-        // دکمه −
         await pg.locator('.stock-ctrl button').first().click();
         await pg.waitForTimeout(1100);
         const afterMinus = parseInt(await inp.inputValue());
         add('دکمه − موجودی را کم می‌کند', afterMinus === before,
           `${afterPlus} → ${afterMinus}`);
 
-        // تایپ دستی
         await inp.fill('37');
         await inp.dispatchEvent('change');
         await pg.waitForTimeout(1200);
         add('تایپ دستی عدد کار می‌کند', (await inp.inputValue()) === '37');
 
-        // واقعاً در دیتابیس ذخیره شده؟
         const db = new Database(DB, { readonly: true });
         const saved = db.prepare('SELECT stock FROM variants WHERE sku=?').get(sku);
         db.close();
         add('تغییر در دیتابیس ذخیره شد', saved && saved.stock === 37,
           saved ? 'stock=' + saved.stock : 'یافت نشد');
 
-        // منفی نشدن
         await inp.fill('0');
         await inp.dispatchEvent('change');
         await pg.waitForTimeout(900);
@@ -261,7 +229,6 @@ async function boot() {
         await pg.waitForTimeout(900);
         add('موجودی زیر صفر نمی‌رود', (await inp.inputValue()) === '0');
 
-        // برگرداندن به مقدار اول
         const dbw = new Database(DB);
         dbw.prepare('UPDATE variants SET stock=? WHERE sku=?').run(before, sku);
         dbw.close();

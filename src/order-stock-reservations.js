@@ -1,6 +1,5 @@
 'use strict';
-// Each NEW order item records exactly how many physical units were deducted.
-// Old orders are never inferred from the current product mode or stock.
+
 const {variantAvailability}=require('./availability');
 const {isPublicVariant}=require('./variant-visibility');
 const KEY='order_stock_reservations_schema_v1';
@@ -23,14 +22,23 @@ function install(db){return db.transaction(()=>{
  db.exec(DDL);db.prepare('INSERT INTO settings(key,value) VALUES(?,?)').run(KEY,'1');return {created:true};
 })();}
 function requireTransaction(db){if(!db.inTransaction)throw Error('Stock reservation requires a transaction');}
-function reserveItem(db,itemId){
+function reserveItem(db,itemId,options){
  requireTransaction(db);if(!ready(db))throw Error('Reservation schema unavailable');
  const r=db.prepare(`SELECT i.id,i.sku,i.quantity,i.unit_price,v.stock,v.price_toman,v.type,v.volume_ml,p.supply_mode
  FROM order_items i JOIN variants v ON v.sku=i.sku JOIN products p ON p.id=v.product_id WHERE i.id=?`).get(itemId);
  if(!r||!Number.isInteger(r.quantity)||r.quantity<1||r.unit_price!==r.price_toman||!isPublicVariant(r.type,r.volume_ml))throw Object.assign(Error('Cart changed'),{code:'CART_CHANGED'});
- const a=variantAvailability(r.supply_mode,r.stock,r.price_toman);
- if(a.state==='UNAVAILABLE'||r.quantity>a.max_quantity)throw Object.assign(Error('Cart changed'),{code:'CART_CHANGED'});
- const reserved=a.state==='IN_STOCK'?r.quantity:0;
+
+ const explicit=options&&Number.isInteger(options.numericQty)?options.numericQty:null;
+ let reserved;
+ if(explicit!==null){
+  if(explicit<0||explicit>r.quantity||explicit>(Number(r.stock)||0))throw Object.assign(Error('Cart changed'),{code:'CART_CHANGED'});
+  if(r.price_toman<=0)throw Object.assign(Error('Cart changed'),{code:'CART_CHANGED'});
+  reserved=explicit;
+ }else{
+  const a=variantAvailability(r.supply_mode,r.stock,r.price_toman);
+  if(a.state==='UNAVAILABLE'||r.quantity>a.max_quantity)throw Object.assign(Error('Cart changed'),{code:'CART_CHANGED'});
+  reserved=a.state==='IN_STOCK'?r.quantity:0;
+ }
  if(reserved&&db.prepare('UPDATE variants SET stock=stock-? WHERE sku=? AND stock>=?').run(reserved,r.sku,reserved).changes!==1)throw Object.assign(Error('Cart changed'),{code:'CART_CHANGED'});
  db.prepare('INSERT INTO order_stock_reservations(item_id,reserved_qty,released) VALUES(?,?,0)').run(itemId,reserved);
  return reserved;

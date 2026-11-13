@@ -20,15 +20,15 @@ with tempfile.TemporaryDirectory(prefix='yazd-maker-ui-') as tmp:
         with sync_playwright() as pw:
             browser=pw.chromium.launch(headless=True,args=['--no-sandbox']);page=browser.new_page(viewport={'width':390,'height':844});errors=[]
             page.on('pageerror',lambda e:errors.append(str(e)))
-            page.goto(base+'/admin.html',wait_until='domcontentloaded');page.locator('#usr').fill('owner');page.locator('#pw').fill('test-secret-123');page.locator('button[onclick="login()"]').click()
-            page.locator('#tabs [data-t="products"]').click();page.locator('#pSearch').fill('Aventus');page.locator("#pResults button[onclick=\"editProduct('creed-aventus')\"]").click()
+            page.goto(base+'/admin.html',wait_until='domcontentloaded');page.locator('#usr').fill('owner');page.locator('#pw').fill('test-secret-123');page.locator('button[data-csp-click="login()"]').click()
+            page.locator('#tabs [data-t="products"]').click();page.locator('#pSearch').fill('Aventus');page.wait_for_timeout(800);page.locator("#pResults button[data-csp-click*=\"creed-aventus\"]").first.click()
             expect(page.locator('#makerNote')).to_have_value('پیش‌نویس ساختگی برای تست');expect(page.locator('#makerApprovalStatus')).to_contain_text('پیش‌نویس')
             page.locator('#makerNote').fill('یادداشت تجربی تأییدشده برای تست');dialogs=[]
             def reject(d):dialogs.append(d.message);d.dismiss()
-            page.once('dialog',reject);page.locator('button[onclick="saveMakerNote()"]').click()
+            page.once('dialog',reject);page.locator('button[data-csp-click="saveMakerNote()"]').click()
             assert dialogs and 'تجربه واقعی' in dialogs[0]
             assert con.execute("select maker_note_approved from products where id='YZD-PROD-0429'").fetchone()[0]==0
-            page.once('dialog',lambda d:d.accept());page.locator('button[onclick="saveMakerNote()"]').click()
+            page.once('dialog',lambda d:d.accept());page.locator('button[data-csp-click="saveMakerNote()"]').click()
             expect(page.locator('#makerApprovalStatus')).to_contain_text('تأیید و منتشر')
             assert con.execute("select maker_note_approved from products where id='YZD-PROD-0429'").fetchone()[0]==1
             assert not errors,errors;browser.close()

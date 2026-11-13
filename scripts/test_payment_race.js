@@ -1,17 +1,5 @@
 #!/usr/bin/env node
-/**
- * آزمون همزمانی پرداخت — آیا یک سفارش دو بار تأیید می‌شود؟
- *
- * چرا مهم است؟
- *   درگاه بانکی گاهی callback را دو بار می‌فرستد (تلاش مجدد شبکه).
- *   اگر تأیید پرداخت idempotent نباشد، ممکن است موجودی دو بار کم
- *   شود، دو پیامک برود، یا سفارش دو بار در گزارش فروش بیاید.
- *
- * روش: یک سفارش می‌سازیم و N بار هم‌زمان verify می‌زنیم.
- *      تنها اولی باید موفق باشد؛ بقیه «قبلاً پرداخت شده».
- *
- * اجرا: node scripts/test_payment_race.js [تعداد]
- */
+
 'use strict';
 
 const { spawn } = require('child_process');
@@ -62,7 +50,7 @@ async function waitForServer(tries = 40) {
   let lease = null;
   const finish = code => {
     try { srv.kill('SIGKILL'); } catch {}
-    try { if (lease) lease.restore(); } catch {}   // موجودی به حالت اول
+    try { if (lease) lease.restore(); } catch {}
     cleanup();
     process.exit(code);
   };
@@ -72,11 +60,8 @@ async function waitForServer(tries = 40) {
     return finish(1);
   }
 
-  /* موجودی موقت — موجودی تولید عمداً صفر است (کالا تا تأیید انبار
-     نباید فروخته شود)، پس آزمون موجودی خودش را می‌سازد. */
   lease = withStock(DB, 4, 200);
 
-  // ── ساخت یک سفارش ──
   const cat = await (await fetch(`${BASE}/api/products?limit=1&full=1`)).json();
   const variant = cat.products[0].variants.find(x => lease.skus.includes(x.sku))
                 || cat.products[0].variants.find(x => x.stock > 2)
@@ -107,7 +92,6 @@ async function waitForServer(tries = 40) {
   console.log(d(`  موجودی پیش از پرداخت: ${stockBefore}`));
   console.log(d(`  ارسال ${N} تأیید پرداخت هم‌زمان…\n`));
 
-  // ── N تأیید هم‌زمان برای همان سفارش ──
   const results = await Promise.all(
     Array.from({ length: N }, () =>
       fetch(`${BASE}/api/payment/verify`, {
@@ -116,7 +100,7 @@ async function waitForServer(tries = 40) {
         body: JSON.stringify({
           order_id: created.order_id,
           authority: 'race-test',
-          result: 'success'      // درگاه آزمایشی بدون این، لغو را شبیه‌سازی می‌کند
+          result: 'success'
         })
       })
         .then(async res => ({ status: res.status, json: await res.json() }))
@@ -124,17 +108,12 @@ async function waitForServer(tries = 40) {
     )
   );
 
-  /* «قبلاً پرداخت شده» با کد ۲۰۰ برمی‌گردد و رفتار درستی است —
-     درگاه که callback را دوباره می‌فرستد نباید خطا ببیند.
-     پس معیار واقعی تعداد پاسخ ۲۰۰ نیست، بلکه این است که فقط یک
-     تأیید *واقعی* اتفاق افتاده باشد. */
   const firstTime = results.filter(x =>
     x.status === 200 && !x.json.error && !/قبلاً/.test(x.json.message || ''));
   const alreadyDone = results.filter(x =>
     x.status === 200 && /قبلاً/.test(x.json.message || ''));
   const refused = results.filter(x => x.json.error);
 
-  // ── وضعیت پس از آزمون ──
   const db = new Database(DB, { readonly: true });
   const order = db.prepare('SELECT * FROM orders WHERE order_id=?').get(created.order_id);
   const stockAfter = db.prepare('SELECT stock FROM variants WHERE sku=?')
@@ -154,9 +133,6 @@ async function waitForServer(tries = 40) {
     console.log(d(`  نمونه پیام رد  : ${String(refused[0].json.error).slice(0, 66)}`));
   }
 
-  /* دو مسیر ممکن‌اند و هر دو باید idempotent باشند:
-       PAID      → پرداخت تأیید شد، موجودی نباید برگردد
-       CANCELLED → پرداخت رد شد، موجودی باید دقیقاً یک بار برگردد */
   const paidPath = order.status === 'PAID';
   const delta = stockBefore - stockAfter;
 

@@ -1,5 +1,5 @@
 'use strict';
-// The demonstration UI must not claim success on errors or clear the cart.
+
 const assert=require('assert/strict'),fs=require('fs'),vm=require('vm'),path=require('path');
 const html=fs.readFileSync(path.join(__dirname,'../public/payment-sandbox.html'),'utf8');
 const a=html.indexOf('async function finish(result) {'),b=html.indexOf('\n\nrenderGate();',a);assert(a>=0&&b>a);

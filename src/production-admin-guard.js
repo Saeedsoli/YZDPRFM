@@ -1,6 +1,5 @@
 'use strict';
-// Production may never create or operate an active owner using the public
-// historical default password. Read existing credentials; never overwrite them.
+
 const crypto=require('crypto');
 const DEFAULT_PASSWORD='yazd1404';
 function strongInitialSecret(value){

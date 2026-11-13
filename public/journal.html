@@ -262,7 +262,7 @@ async function load() {
     document.getElementById('loading').innerHTML =
       `<div class="empty-state"><h3>ارتباط برقرار نشد</h3>
        <p>اتصال اینترنت خود را بررسی کنید.</p>
-       <button class="btn" style="margin-top:14px" onclick="location.reload()">تلاش دوباره</button></div>`;
+       <button class="btn" style="margin-top:14px" data-csp-click="location.reload()">تلاش دوباره</button></div>`;
   }
 }
 
@@ -293,7 +293,7 @@ function draw() {
         ${query ? 'عبارت دیگری را امتحان کنید یا همه مطالب را ببینید.'
                 : 'به‌زودی مطالب این بخش اضافه می‌شود.'}</p>
       ${query ? `<button class="btn btn-outline" style="margin-top:16px"
-        onclick="clearSearch()">پاک کردن جستجو</button>` : ''}
+        data-csp-click="clearSearch()">پاک کردن جستجو</button>` : ''}
     </div>`;
     return;
   }
@@ -306,7 +306,7 @@ function draw() {
            روی ۳G شش ثانیه طول می‌کشید. نسخه ‎-sm حدود ۱۶KB است. -->
       <div class="cover"><img src="${coverOf(a).replace(/(\.[a-z]+)$/i, '-sm$1')}"
            alt="" loading="lazy" decoding="async"
-           onerror="this.onerror=null;this.src='${coverOf(a)}'"></div>
+           data-csp-error="this.onerror=null;this.src='${coverOf(a)}'"></div>
       <div class="body">
         <div class="j-meta">
           <span>${esc(a.category_label || 'مقاله')}</span>
@@ -328,5 +328,6 @@ function clearSearch() {
 
 load();
 </script>
+<script src="/assets/csp-actions.js"></script>
 </body>
 </html>

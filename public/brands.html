@@ -91,7 +91,7 @@ async function load(){
   } catch {
     document.getElementById('bg').innerHTML =
       `<div class="empty-state" style="grid-column:1/-1"><h3>ارتباط برقرار نشد</h3>
-       <button class="btn" style="margin-top:14px" onclick="location.reload()">تلاش دوباره</button></div>`;
+       <button class="btn" style="margin-top:14px" data-csp-click="location.reload()">تلاش دوباره</button></div>`;
   }
 }
 function drawAlpha(){
@@ -135,4 +135,5 @@ function draw(list){
 }
 document.getElementById('bq').oninput=apply;
 load();
-</script></body></html>
+</script><script src="/assets/csp-actions.js"></script>
+</body></html>

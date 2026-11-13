@@ -1,6 +1,5 @@
 'use strict';
-// Guarded corrections to the named reference originals of already-approved items.
-// Never edits sale prices, availability, stock, customer data or existing orders.
+
 const fs=require('fs');
 const VERSION='active_official_notes_2026_11_v1';
 const VERSIONS={[VERSION]:8,active_official_notes_2026_11_v2:8,active_official_notes_2026_11_v3:8};

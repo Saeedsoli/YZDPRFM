@@ -1,6 +1,5 @@
 'use strict';
-// Explicit operation on an offline copy or an already-backed-up existing DB.
-// Does not run startup migrations, rebuild indices, or create a backup.
+
 const Database=require('better-sqlite3'),path=require('path'),fs=require('fs');
 const file=process.argv[2];
 if(!file||!fs.existsSync(file))throw Error('Existing database path required');

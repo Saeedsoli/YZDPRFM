@@ -1,7 +1,7 @@
 'use strict';
-// This legacy fixture explicitly tests the pre-approval unavailable baseline.
+
 process.env.APPROVED_MTO_AUTOSTART ??= '0';
-// Isolated source matching, new-product insertion, pricing and mutation guards.
+
 const assert=require('assert/strict'),fs=require('fs'),os=require('os'),path=require('path'),crypto=require('crypto'),{spawnSync}=require('child_process');
 const root=path.join(__dirname,'..'),m=require('../seed/official_reference_prices_v13.json'),e=require('../seed/official_identity_evidence_v12.json'),notes=require('../seed/official_note_corrections_v15.json');const raw=fs.readFileSync(path.join(root,'uploads/لیست_قیمت_عمده.md'));
 assert.equal(crypto.createHash('sha256').update(raw).digest('hex'),m.supplier_file_sha256);assert.equal(m.items.length,5);assert.equal(e.items.length,5);assert.equal(notes.items.length,1);

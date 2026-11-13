@@ -1,5 +1,5 @@
 'use strict';
-// Exact seed spellings only; preserve edits. Search keeps older spellings too.
+
 const KEY='amouage_common_names_2026_11_v1';
 const ITEMS=[['YZD-PROD-0543','amouage-memoir-man','مموار مردانه','ممویر مردانه'],['YZD-PROD-0553','amouage-honour-woman','هانر زنانه','آنر زنانه']];
 function apply(db){return db.transaction(()=>{

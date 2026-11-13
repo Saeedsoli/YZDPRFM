@@ -1,0 +1,16 @@
+'use strict';
+const assert = require('node:assert/strict');
+const Database = require('better-sqlite3');
+const normalizer = require('../src/brand-name-normalization');
+const db = new Database(':memory:');
+db.exec(`CREATE TABLE products (id TEXT PRIMARY KEY, brand_fa TEXT, brand_en TEXT, search_blob TEXT);
+INSERT INTO products VALUES ('x1','زرجوف','Xerjoff','زرجوف Xerjoff'),('x2','زرژوف','Xerjoff','زرژوف Xerjoff'),('s1','ساپیل','Sapil','ساپیل Sapil'),('s2','سپیل','Sapil','سپیل Sapil'),('o1','آمواج','Amouage','آمواج Amouage'),('g1',NULL,NULL,'نمونه');`);
+assert.equal(normalizer.apply(db), 2);
+assert.equal(normalizer.apply(db), 0);
+assert.equal(db.prepare("SELECT COUNT(DISTINCT brand_fa) n FROM products WHERE lower(brand_en)='xerjoff'").get().n, 1);
+assert.equal(db.prepare("SELECT COUNT(DISTINCT brand_fa) n FROM products WHERE lower(brand_en)='sapil'").get().n, 1);
+assert.deepEqual(normalizer.canonicalLabel('Xerjoff','x'), 'زرجوف');
+assert.deepEqual(normalizer.canonicalLabel('Sapil','x'), 'ساپیل');
+assert.deepEqual(normalizer.canonicalLabel('Amouage','آمواج'), 'آمواج');
+console.log('PASS: Xerjoff and Sapil Persian labels canonicalize idempotently; other labels untouched');
+db.close();

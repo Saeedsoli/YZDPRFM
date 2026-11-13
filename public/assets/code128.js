@@ -1,14 +1,3 @@
-/* ═══════════════════════════════════════════════
-   Code128 — بارکد واقعی و قابل اسکن
-   بدون کتابخانه بیرونی، چون از ایران CDN کند/فیلتر است.
-
-   نسخه قبلی خطوط تصادفی از روی یک seed می‌کشید که ظاهر
-   بارکد داشت ولی هیچ اسکنری نمی‌توانست بخواندش — برای
-   برچسب پستی یعنی بی‌فایده.
-   ═══════════════════════════════════════════════ */
-
-/* ۱۰۷ الگوی Code128؛ هر رشته پهنای متوالی نوار پر و خالی است.
-   مثلاً '212222' یعنی: ۲ پر، ۱ خالی، ۲ پر، ۲ خالی، ۲ پر، ۲ خالی. */
 const C128_PATTERNS = [
   '212222','222122','222221','121223','121322','131222','122213','122312','132212','221213',
   '221312','231212','112232','122132','122231','113222','123122','123221','223211','221132',
@@ -23,39 +12,29 @@ const C128_PATTERNS = [
   '114131','311141','411131','211412','211214','211232','2331112'
 ];
 
-const C128_START_B = 104;   // شروع در حالت B (حروف و ارقام)
-const C128_START_C = 105;   // شروع در حالت C (جفت‌رقم، فشرده‌تر)
+const C128_START_B = 104;
+const C128_START_C = 105;
 const C128_CODE_B  = 100;
 const C128_CODE_C  = 99;
 const C128_STOP    = 106;
 
-/**
- * رشته را به آرایه کدهای Code128 تبدیل می‌کند.
- * اگر ورودی همه‌رقمی و زوج باشد از حالت C استفاده می‌شود
- * که هر دو رقم را در یک نماد جا می‌دهد — بارکد کوتاه‌تر و
- * روی برچسب ۱۰ سانتی خواناتر.
- */
 function c128Encode(text) {
   const s = String(text);
   const codes = [];
 
-  /* شمار ارقام پیاپی از موقعیت i */
   const digitsFrom = i => {
     let n = 0;
     while (i + n < s.length && s[i + n] >= '0' && s[i + n] <= '9') n++;
     return n;
   };
 
-  /* قاعده استاندارد: سوئیچ به حالت C وقتی بیش از سه رقم پیاپی پیش رو باشد.
-     حالت C هر دو رقم را در یک نماد جا می‌دهد، پس بارکد کوتاه‌تر و
-     روی برچسب ۱۰ سانتی خواناتر می‌شود. */
   const worthC = i => digitsFrom(i) > 3;
 
   let mode = worthC(0) ? 'C' : 'B';
   codes.push(mode === 'C' ? C128_START_C : C128_START_B);
 
   let i = 0;
-  let buffer = '';   // رقم تک‌مانده هنگام خروج از حالت C
+  let buffer = '';
 
   while (i < s.length) {
     const ch = s[i];
@@ -68,7 +47,7 @@ function c128Encode(text) {
         i++;
         continue;
       }
-      // نویسه غیررقمی — به B برگرد
+
       codes.push(C128_CODE_B);
       mode = 'B';
       if (buffer.length === 1) {
@@ -78,27 +57,20 @@ function c128Encode(text) {
       continue;
     }
 
-    // حالت B
     if (worthC(i)) { codes.push(C128_CODE_C); mode = 'C'; continue; }
     const v = ch.charCodeAt(0);
     codes.push((v >= 32 && v <= 126 ? v : 45) - 32);
     i++;
   }
 
-  // رقم تک‌مانده در پایان
   if (buffer.length === 1) {
     codes.push(C128_CODE_B);
     codes.push(buffer.charCodeAt(0) - 32);
   }
 
-  /* بهینه‌سازی پایانی — همان قاعده کتابخانه مرجع python-barcode:
-     اگر نماد بلافاصله پس از START خودش یک دستور تعویض حالت است،
-     هر دو را در یک START ادغام کن. یک نماد کمتر یعنی بارکد باریک‌تر. */
   if (codes[1] === C128_CODE_C) codes.splice(0, 2, C128_START_C);
   else if (codes[1] === C128_CODE_B) codes.splice(0, 2, C128_START_B);
 
-  /* رشته کاملاً رقمی و کوتاه (۲ یا ۳ رقم) از قاعده «بیش از سه رقم»
-     رد نمی‌شود، ولی حالت C باز هم کوتاه‌ترش می‌کند. */
   if (/^\d{2,3}$/.test(s)) {
     const c = [C128_START_C];
     if (s.length === 2) {
@@ -112,7 +84,6 @@ function c128Encode(text) {
     return c;
   }
 
-  // رقم کنترلی: مجموع وزن‌دار به پیمانه ۱۰۳
   let sum = codes[0];
   for (let k = 1; k < codes.length; k++) sum += codes[k] * k;
   codes.push(sum % 103);
@@ -121,19 +92,13 @@ function c128Encode(text) {
   return codes;
 }
 
-/**
- * بارکد را به صورت SVG برمی‌گرداند.
- * SVG انتخاب شد چون هنگام چاپ برخلاف تصویر بیت‌مپ تار نمی‌شود.
- * @param {string} text  محتوای بارکد
- * @param {object} opt   { height, moduleWidth, quiet }
- */
 function code128SVG(text, opt = {}) {
-  // Text is embedded in an SVG attribute; barcode input is not trusted HTML.
+
   const label = String(text).replace(/&/g,'&amp;').replace(/</g,'&lt;')
     .replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
   const height = opt.height ?? 56;
-  const mw = opt.moduleWidth ?? 2;      // پهنای یک واحد بر حسب پیکسل
-  const quiet = opt.quiet ?? 10;        // حاشیه آرام دو طرف (لازم برای اسکن)
+  const mw = opt.moduleWidth ?? 2;
+  const quiet = opt.quiet ?? 10;
 
   const codes = c128Encode(text);
   let x = quiet;
@@ -141,7 +106,7 @@ function code128SVG(text, opt = {}) {
 
   for (const code of codes) {
     const pattern = C128_PATTERNS[code];
-    let dark = true;                    // هر الگو با نوار پر شروع می‌شود
+    let dark = true;
     for (const chWidth of pattern) {
       const w = parseInt(chWidth, 10) * mw;
       if (dark) rects.push(`<rect x="${x}" y="0" width="${w}" height="${height}"/>`);

@@ -1,5 +1,5 @@
 'use strict';
-// Customer login must not navigate to another origin or execute javascript:.
+
 const a=require('assert/strict'),fs=require('fs'),vm=require('vm'),path=require('path');
 const html=fs.readFileSync(path.join(__dirname,'../public/login.html'),'utf8');
 const x=html.indexOf('function safeReturnTo(raw) {'),y=html.indexOf('\nconst RETURN_TO',x);a(x>=0&&y>x);

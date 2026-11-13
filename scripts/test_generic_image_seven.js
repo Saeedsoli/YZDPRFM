@@ -1,5 +1,5 @@
 'use strict';
-// Illustrations 1..8 must all be recognised as symbolic (studio-dark series).
+
 const a=require('assert/strict'),fs=require('fs'),path=require('path'),vm=require('vm');
 const root=path.join(__dirname,'..'),source=fs.readFileSync(path.join(root,'public/assets/app.js'),'utf8');
 const match=source.match(/function isGenericProductImage\(url\) \{[\s\S]*?\n\}/);a(match);

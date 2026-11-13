@@ -1,21 +1,5 @@
 #!/usr/bin/env node
-/**
- * آزمون کیفیت جستجو.
- *
- * جستجو تنها راه رسیدن مشتری به محصول در کاتالوگ ۲,۱۰۶ تایی است.
- * اگر «عطر مردانه» صفر نتیجه بدهد، مشتری فکر می‌کند فروشگاه خالی است.
- *
- * چه چیزی سنجیده می‌شود:
- *   ۱) واژه‌های طبیعی فارسی نتیجه می‌دهند («عطر»، «مردانه»، «زنانه»)
- *   ۲) جستجوی برند و نام محصول دقیق کار می‌کند
- *   ۳) یکسان‌سازی نویسه‌های عربی/فارسی («كريد» = «کرید»)
- *   ۴) جستجوی چندکلمه‌ای بن‌بست نمی‌سازد (حالت تقریبی)
- *   ۵) حالت تقریبی صادقانه علامت‌گذاری می‌شود
- *   ۶) واژه بی‌معنی واقعاً صفر می‌دهد (تقریبی نباید همه‌چیز را برگرداند)
- *   ۷) تزریق SQL بی‌اثر است
- *
- * اجرا: node scripts/test_search.js
- */
+
 'use strict';
 
 const { spawn } = require('child_process');
@@ -66,7 +50,6 @@ const search = (q, extra = '') =>
     process.exit(failed === 0 ? 0 : 1);
   };
 
-  // ══ ۱) واژه‌های طبیعی فارسی ══
   console.log(d('  واژه‌هایی که مشتری واقعاً تایپ می‌کند'));
 
   for (const [q, min] of [['عطر', 2000], ['ادکلن', 2000], ['مردانه', 300],
@@ -76,7 +59,6 @@ const search = (q, extra = '') =>
         `${res.total} نتیجه (حداقل ${min})`);
   }
 
-  // ══ ۲) برند و نام ══
   console.log(d('\n  برند و نام محصول'));
 
   const aventus = await search('اونتوس');
@@ -90,18 +72,16 @@ const search = (q, extra = '') =>
   const creedFa = await search('کرید');
   add('برند فارسی پیدا می‌شود', creedFa.total >= 20, `${creedFa.total} نتیجه`);
 
-  // ══ ۳) یکسان‌سازی نویسه ══
   console.log(d('\n  یکسان‌سازی نویسه‌های عربی و فارسی'));
 
-  const arabicK = await search('كريد');       // ك و ي عربی
+  const arabicK = await search('كريد');
   add('«كريد» عربی = «کرید» فارسی', arabicK.total === creedFa.total,
       `${arabicK.total} در برابر ${creedFa.total}`);
 
-  const withHarakat = await search('کرِید');   // با کسره
+  const withHarakat = await search('کرِید');
   add('حرکت‌گذاری نادیده گرفته می‌شود', withHarakat.total === creedFa.total,
       `${withHarakat.total} در برابر ${creedFa.total}`);
 
-  // ══ ۴) جستجوی چندکلمه‌ای ══
   console.log(d('\n  جستجوی چندکلمه‌ای — نباید بن‌بست بسازد'));
 
   const combo = await search('عطر مردانه تابستانی');
@@ -112,10 +92,8 @@ const search = (q, extra = '') =>
       `${impossible.total} نتیجه`);
   add('و به عنوان «تقریبی» علامت می‌خورد', impossible.relaxed === true);
 
-  // ══ ۵) نتیجه دقیق نباید تقریبی علامت بخورد ══
   add('نتیجه دقیق، تقریبی علامت نمی‌خورد', aventus.relaxed !== true);
 
-  // ══ ۶) واژه بی‌معنی ══
   console.log(d('\n  واژه بی‌معنی باید واقعاً صفر بدهد'));
 
   const junk = await search('qqzzxxyy');
@@ -125,7 +103,6 @@ const search = (q, extra = '') =>
   add('چند واژه بی‌معنی هم صفر می‌دهد', junkMulti.total === 0,
       `${junkMulti.total} نتیجه`);
 
-  // ══ ۷) ترکیب با فیلتر ══
   console.log(d('\n  جستجو همراه فیلتر'));
 
   const filtered = await search('عطر', '&gender=WOMEN');
@@ -133,13 +110,8 @@ const search = (q, extra = '') =>
       filtered.products.every(p => p.gender === 'WOMEN'),
       `${filtered.total} نتیجه زنانه`);
 
-  // ══ ۸) امنیت ══
   console.log(d('\n  تزریق SQL'));
 
-  /* شمار پیش از تزریق گرفته می‌شود، نه عدد ثابت.
-     آنچه باید سنجیده شود «جدول سالم مانده؟» است، نه «چند رکورد
-     داریم» — گره زدن به عدد ثابت یعنی هر تغییر کاتالوگ آزمون
-     امنیتی را قرمز می‌کند و توجه از خطر واقعی پرت می‌شود. */
   const before = await fetch(`${BASE}/api/products?limit=1`).then(r => r.json());
   const sqli = await search("'; DROP TABLE products--");
   const after = await fetch(`${BASE}/api/products?limit=1`).then(r => r.json());

@@ -1,24 +1,5 @@
 #!/usr/bin/env node
-/**
- * آزمون PWA — سطح سرور و پیکربندی.
- *
- * چه چیزی سنجیده می‌شود:
- *   ۱) manifest معتبر و کامل
- *   ۲) آیکن maskable ناحیه امن را رعایت کند
- *   ۳) sw.js با هدرهای درست سرو شود (مهم‌ترین: no-store)
- *   ۴) صفحه آفلاین بدون شبکه کامل باشد
- *   ۵) **هیچ مسیر API در فهرست کش نباشد**
- *   ۶) صفحات حساس مستثنا باشند
- *   ۷) سیم‌کشی رابط
- *
- * چرا بند ۵ حیاتی است:
- *   این فروشگاه با پول واقعی کار می‌کند. سرویس‌ورکری که پاسخ API
- *   را کش کند، به مشتری قیمت دیروز یا کالای تمام‌شده نشان می‌دهد.
- *   مشتری سفارش می‌دهد، سرور رد می‌کند، اعتماد می‌رود.
- *   PWA بد از نداشتن PWA بدتر است.
- *
- * اجرا: node scripts/test_pwa.js
- */
+
 'use strict';
 
 const fs = require('fs');
@@ -51,7 +32,6 @@ function get(p) {
 (async () => {
   console.log('\n  آزمون PWA\n');
 
-  // ══ ۱) manifest ══
   console.log(d('  Manifest'));
 
   const mfPath = path.join(PUB, 'site.webmanifest');
@@ -71,7 +51,6 @@ function get(p) {
   add('میان‌بر تعریف شده', Array.isArray(mf.shortcuts) && mf.shortcuts.length >= 2,
       `${(mf.shortcuts || []).length} میان‌بر`);
 
-  // ══ ۲) آیکن‌ها ══
   console.log(d('\n  آیکن‌ها'));
 
   const icons = mf.icons || [];
@@ -85,8 +64,6 @@ function get(p) {
       `${maskable.length} maskable`);
   add('آیکن any جدا تعریف شده', anyOnly.length >= 2, `${anyOnly.length} any`);
 
-  /* «any maskable» روی یک فایل، اشتباه رایج است: اندروید آن را
-     می‌بُرد و اگر طرح تا لبه برود، بخش زیادی حذف می‌شود. */
   const combined = icons.filter(i => (i.purpose || '').includes('any') &&
                                       (i.purpose || '').includes('maskable'));
   add('هیچ آیکنی هم‌زمان any و maskable نیست', combined.length === 0,
@@ -99,7 +76,6 @@ function get(p) {
   add('همه فایل‌های آیکن روی دیسک هستند',
       icons.every(i => fs.existsSync(path.join(PUB, i.src.replace(/^\//, '')))));
 
-  // ══ ۳) سرویس‌ورکر — فایل ══
   console.log(d('\n  سرویس‌ورکر'));
 
   const swPath = path.join(PUB, 'sw.js');
@@ -112,13 +88,9 @@ function get(p) {
   add('فقط GET را رهگیری می‌کند', /method\s*!==\s*'GET'/.test(sw));
   add('فقط دامنه خودی', /origin\s*!==\s*self\.location\.origin/.test(sw));
 
-  /* ── مهم‌ترین بررسی کل این آزمون ── */
   add('🔴 مسیر /api/ هرگز کش نمی‌شود', /\^\\\/api\\\//.test(sw) || /\/\^\\\/api/.test(sw),
       'الگوی NEVER_CACHE');
 
-  /* `perfume` در ممیزی اضافه شد: صفحه محصول قیمت را در HTML
-     سمت سرور دارد (داده ساختاریافته سئو) و کش کردنش یعنی قیمت
-     کهنه در HTML، حتی اگر کاربر آن را نبیند. */
   const mustExclude = ['admin', 'account', 'invoice', 'label',
                        'checkout', 'payment', 'login', 'perfume', 'review', 'track', 'wishlist'];
   const missing = mustExclude.filter(p => !new RegExp(`\\/\\^\\\\\\/${p}`).test(sw));
@@ -130,7 +102,6 @@ function get(p) {
       !/addAll\(/.test(sw), 'به‌جای addAll از put تکی');
   add('صفحه آفلاین در پوسته کش می‌شود', /'\/offline'/.test(sw));
 
-  // ══ ۴) سرو شدن ══
   console.log(d('\n  سرو شدن'));
 
   const health = await get('/api/health');
@@ -142,8 +113,6 @@ function get(p) {
     add('نوع محتوا جاوااسکریپت است',
         /javascript/.test(swRes.headers['content-type'] || ''));
 
-    /* اگر sw.js کش شود، کاربر تا مدت‌ها نسخه قدیمی سایت را
-       می‌بیند و هیچ راهی برای رفعش نداری. */
     add('🔴 sw.js هرگز کش نمی‌شود',
         /no-store/.test(swRes.headers['cache-control'] || ''),
         swRes.headers['cache-control']);
@@ -157,9 +126,9 @@ function get(p) {
     add('صفحه آفلاین سرو می‌شود', offRes.status === 200);
     add('صفحه آفلاین از ایندکس گوگل بیرون است',
         /noindex/.test(offRes.body));
-    add('صفحه آفلاین به شبکه وابسته نیست',
-        !/<script[^>]+src=/.test(offRes.body),
-        'بدون اسکریپت بیرونی');
+    add('اسکریپت آفلاین در shell cache است',
+        /\/assets\/csp-actions\.js/.test(offRes.body) && /\/assets\/csp-actions\.js/.test(swRes.body),
+        'رویداد بدون inline handler و قابل دسترسی آفلاین');
     add('صفحه آفلاین راه بازگشت می‌دهد',
         /location\.reload|href="\/"/.test(offRes.body));
 
@@ -173,20 +142,14 @@ function get(p) {
     add('آیکن‌های maskable سرو می‌شوند', true);
   }
 
-  // ══ ۵) ناحیه امن آیکن ══
   console.log(d('\n  ناحیه امن maskable'));
 
-  /* اندروید آیکن maskable را به دایره‌ای به شعاع ۴۰٪ می‌برد.
-     محتوای بیرون آن حذف می‌شود. نسخه اول این پروژه ۴۸٪ محتوا را
-     بیرون داشت — یعنی قاب طلایی روی بیشتر گوشی‌ها می‌رفت. */
   let pil = true;
   try { require('child_process').execSync('python3 -c "import PIL"', { stdio: 'ignore' }); }
   catch { pil = false; }
 
   if (pil) {
-    /* اسکریپت در فایل موقت نوشته می‌شود نه با -c.
-       نسخه اول کد پایتون را درون رشته جاوااسکریپت به python3 -c
-       می‌داد و کاراکترهای فرار (\n) در مسیر دو زبان خراب می‌شدند. */
+
     const tmp = path.join(require('os').tmpdir(), 'yazd_safe_zone.py');
     fs.writeFileSync(tmp, [
       'import sys, numpy as np',
@@ -213,8 +176,6 @@ function get(p) {
       add('آیکن maskable ۱۹۲ در ناحیه امن است', out[0] < 2, `${out[0]}% بیرون`);
       add('آیکن maskable ۵۱۲ در ناحیه امن است', out[1] < 2, `${out[1]}% بیرون`);
 
-      /* برای مقایسه: آیکن any عمداً تا لبه می‌رود و مشکلی نیست،
-         چون purpose آن maskable نیست. */
       const anyOut = require('child_process').execSync(
         `python3 ${tmp} ${path.join(PUB, 'icon-512.png')}`,
         { encoding: 'utf8' }).trim();
@@ -226,7 +187,6 @@ function get(p) {
     console.log(d('      PIL نصب نیست — بررسی ناحیه امن رد شد'));
   }
 
-  // ══ ۶) سیم‌کشی رابط ══
   console.log(d('\n  سیم‌کشی رابط'));
 
   const app = fs.readFileSync(path.join(PUB, 'assets/app.js'), 'utf8');

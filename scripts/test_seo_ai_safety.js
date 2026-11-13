@@ -1,29 +1,7 @@
 #!/usr/bin/env node
-/**
- * آزمون ایمنی سئو در برابر سیاست «محتوای انبوه» گوگل
- * ═══════════════════════════════════════════════════
- *
- * چه چیزی را می‌سنجد
- * ──────────────────
- * گوگل «AI بودن» را تشخیص نمی‌دهد و جریمه نمی‌کند. چیزی که
- * می‌سنجد و جریمه می‌کند، الگوهای «صفحهٔ قالبی انبوه» است. این
- * آزمون همان الگوها را روی سایتِ در حال اجرا می‌گیرد:
- *
- *   ۱) توضیح و عنوان متا واقعاً بین صفحه‌ها فرق می‌کند؟
- *   ۲) داده ساختاریافته با آنچه روی صفحه است می‌خواند؟
- *   ۳) صفحه‌های بی‌ارزش از ایندکس بیرون‌اند؟
- *   ۴) اظهار شفافیت دست‌ساز برای خزنده دیده می‌شود؟
- *
- * سرور خودش را بالا می‌آورد و در پایان می‌کشد — مثل بقیه
- * آزمون‌های این پوشه. اگر به سرور بیرونی تکیه می‌کرد، داخل
- * `smoke_test.sh` که سرورش را جای دیگری مدیریت می‌کند
- * ECONNREFUSED می‌گرفت (یک بار همین اتفاق افتاد).
- *
- * اجرا:  node scripts/test_seo_ai_safety.js
- */
 
 'use strict';
-// This legacy fixture explicitly tests the pre-approval unavailable baseline.
+
 process.env.APPROVED_MTO_AUTOSTART ??= '0';
 
 const { spawn } = require('child_process');
@@ -34,14 +12,11 @@ const { publicVariantSql } = require('../src/variant-visibility');
 const ROOT = path.dirname(__dirname);
 const DB_PATH = process.env.DB_PATH || path.join(ROOT, 'data', 'yazd.db');
 
-/* درگاه اختصاصی تا با سرور در حال اجرای توسعه تداخل نکند. */
 const PORT = 4917;
 const BASE = `http://127.0.0.1:${PORT}`;
 
 const db = new Database(DB_PATH, { readonly: true });
-/* اتصال نوشتنی جدا — آزمون باید وضعیت تأمین را موقتاً عوض کند.
-   خواندن و نوشتن جدا نگه داشته می‌شود تا اشتباهاً چیزی جز همین
-   تغییر کنترل‌شده نوشته نشود. */
+
 const dbw = new Database(DB_PATH);
 const sleep = ms => new Promise(res => setTimeout(res, ms));
 
@@ -52,7 +27,7 @@ async function boot() {
     stdio: 'ignore'
   });
   for (let i = 0; i < 150; i++) {
-    try { if ((await fetch(`${BASE}/api/health`)).ok) return proc; } catch { /* هنوز بالا نیامده */ }
+    try { if ((await fetch(`${BASE}/api/health`)).ok) return proc; } catch {  }
     await sleep(400);
   }
   return proc;
@@ -78,7 +53,7 @@ function ldJson(html) {
   const out = [];
   const re = /<script type="application\/ld\+json">([\s\S]*?)<\/script>/g;
   let m;
-  while ((m = re.exec(html))) { try { out.push(JSON.parse(m[1])); } catch { /* ignore */ } }
+  while ((m = re.exec(html))) { try { out.push(JSON.parse(m[1])); } catch {  } }
   return out;
 }
 
@@ -98,22 +73,10 @@ const titleOf = html => {
 
   const server = await boot();
 
-  /* نمونه ثابت — نه تصادفی. آزمونی که هر بار روی داده متفاوتی
-     اجرا شود، شکست‌های متناوب می‌دهد و کسی جدی‌اش نمی‌گیرد. */
   const slugs = db.prepare(
     'SELECT slug FROM products ORDER BY id LIMIT 40'
   ).all().map(x => x.slug);
 
-  /* ── چرا آزمون خودش محصول را قابل‌سفارش می‌کند ──
-     پیش‌فرض کاتالوگ UNAVAILABLE است (تصمیم مالک: تا تأیید
-     نشده، ادعای ساخت نمی‌کنیم). ولی چیزی که اینجا می‌سنجیم
-     رفتار صفحهٔ **قابل سفارش** است: کارت غنی، BackOrder،
-     حضور در sitemap.
-
-     اگر به وضعیت دیتابیس تکیه می‌کردیم، آزمون یا همیشه رد
-     می‌شد یا با تغییر یک سوئیچ در پنل بی‌صدا بی‌معنا می‌شد.
-     پس حالت لازم را خودمان می‌سازیم و در پایان دقیقاً به حالت
-     قبل برمی‌گردانیم. */
   const prevModes = db.prepare(
     `SELECT slug, supply_mode FROM products WHERE slug IN (${slugs.map(() => '?').join(',')})`
   ).all(...slugs);
@@ -128,7 +91,6 @@ const titleOf = html => {
   const pages = [];
   for (const s of slugs) pages.push(await get('/perfume/' + s));
 
-  /* ═══ ۱) تمایز متادیتا ═══ */
   console.log();
   console.log(b('  ۱) تمایز متادیتا بین صفحه‌ها'));
 
@@ -142,20 +104,15 @@ const titleOf = html => {
   add('عنوان‌ها یکتا هستند', new Set(titles).size === titles.length,
       `${new Set(titles).size} یکتا از ${titles.length}`);
 
-  /* اسکلت جمله هم نباید یکسان باشد. «۳۰ نویسه نخست» نماینده
-     خوبی از ساختار جمله است: اگر همه با «خرید » شروع شوند،
-     مجموعه‌شان کوچک می‌ماند. */
   const heads = new Set(descs.map(x => x.slice(0, 12)));
   add('اسکلت جمله متنوع است', heads.size > descs.length * 0.5,
       `${heads.size} شروع متفاوت از ${descs.length}`);
 
-  /* جمله ثابتِ ته توضیح — امضای قالب. */
   const boiler = 'سمپل ۳ میلی‌لیتری موجود است.';
   const withBoiler = descs.filter(x => x.includes(boiler)).length;
   add('جمله قالبی تکرارشونده حذف شده', withBoiler === 0,
       withBoiler ? `${withBoiler} صفحه هنوز دارد` : 'هیچ توضیحی جمله ثابت ندارد');
 
-  /* ═══ ۲) تطابق داده ساختاریافته با صفحه ═══ */
   console.log();
   console.log(b('  ۲) تطابق داده ساختاریافته با واقعیت صفحه'));
 
@@ -180,9 +137,6 @@ const titleOf = html => {
   add('availability با وضعیت واقعی تأمین می‌خواند',
       availOk === prodSchemas, badAvail.slice(0, 2).join(' · ') || `${availOk}/${prodSchemas}`);
 
-  /* دکمه خرید فعال + OutOfStock = عدم تطابق. چون کاتالوگ ما
-     «به سفارش» است، هیچ صفحه‌ای نباید OutOfStock بدهد مگر
-     صریحاً UNAVAILABLE علامت خورده باشد. */
   const unavail = db.prepare(
     "SELECT COUNT(*) c FROM products WHERE supply_mode='UNAVAILABLE'").get().c;
   const oos = pages.filter(p => {
@@ -193,7 +147,6 @@ const titleOf = html => {
       oos === 0 || unavail > 0,
       `${oos} صفحه OutOfStock · ${unavail} محصول واقعاً UNAVAILABLE`);
 
-  /* ═══ ۳) مهار ایندکس ═══ */
   console.log();
   console.log(b('  ۳) مهار ایندکس'));
 
@@ -205,17 +158,12 @@ const titleOf = html => {
   add('sitemap در robots معرفی شده', /Sitemap: https?:\/\/\S+\/sitemap\.xml/.test(robots.text));
 
   const sm = await get('/sitemap.xml');
+
+  const productMap = await get('/sitemap-products.xml');
+  const pagesMap = await get('/sitemap-pages.xml');
+  sm.text = [sm.text, productMap.text, pagesMap.text].join('\n');
   const urls = (sm.text.match(/<loc>/g) || []).length;
 
-  /* ── چرا آستانه ثابت نیست ──
-     نسخه پیشین `urls > 100` را شرط می‌گذاشت، چون آن زمان هر
-     ۲٬۱۱۱ محصول در sitemap بودند. حالا فقط محصولات قابل سفارش
-     معرفی می‌شوند و این عدد کاملاً به تصمیم مالک وابسته است —
-     امروز ممکن است ۴۰ باشد، فردا ۷۰۰.
-
-     آزمون باید **قرارداد** را بسنجد نه یک عدد لحظه‌ای: تعداد
-     نشانی‌های محصول باید دقیقاً برابر تعداد محصولات قابل سفارش
-     باشد. این رابطه همیشه درست می‌ماند. */
   const orderable = db.prepare(`SELECT COUNT(*) c FROM products p
     WHERE p.supply_mode IN ('IN_STOCK','MADE_TO_ORDER') AND EXISTS (
       SELECT 1 FROM variants v WHERE v.product_id=p.id AND ${publicVariantSql('v')}
@@ -226,18 +174,13 @@ const titleOf = html => {
   add('فقط محصولات قابل سفارش در sitemap‌اند',
       productUrls === orderable, `${productUrls} نشانی = ${orderable} محصول قابل سفارش`);
 
-  /* صفحه‌های فنی نباید در sitemap باشند — همان صفحه‌هایی که
-     robots هم بسته است. تناقض بین این دو، سیگنال بی‌دقتی است. */
   const leak = ['/cart', '/checkout', '/account', '/wishlist', '/login', '/invoice', '/label']
     .filter(p => sm.text.includes(`<loc>${process.env.SITE_URL || 'https://yazdperfume.ir'}${p}</loc>`));
   add('صفحه شخصی در sitemap نشت نکرده', leak.length === 0, leak.join(', ') || 'پاک');
 
-  /* ═══ ۳٫۵) یادداشت عطرساز — تجربه دست‌اول ═══ */
   console.log();
   console.log(b('  ۳٫۵) یادداشت عطرساز'));
 
-  // Generated draft text must not be presented as first-hand experience.
-  // A genuinely reviewed note can be short; never fabricate one to meet a length quota.
   const withNote = db.prepare(
     "SELECT COUNT(*) c FROM products WHERE maker_note_approved=1 AND maker_note IS NOT NULL AND maker_note != ''").get().c;
   const invalidApproved = db.prepare(
@@ -258,8 +201,7 @@ const titleOf = html => {
     const pg = await get('/perfume/' + draftRow.slug);
     add('پیش‌نویس در HTML عمومی نشت نمی‌کند', !pg.text.includes(draftRow.maker_note.slice(0, 40)), draftRow.slug);
   }
-  // Published-note rendering is tested over HTTP when an approved note exists.
-  // The dedicated test_maker_note_review.py exercises publication on an isolated DB even when none exist here.
+
   const noteRow = db.prepare(
     "SELECT slug, maker_note FROM products WHERE maker_note_approved=1 AND maker_note IS NOT NULL AND maker_note != '' ORDER BY id LIMIT 1").get();
   if (noteRow) {
@@ -268,7 +210,6 @@ const titleOf = html => {
     add('جعبه یادداشت تأییدشده پنهان نمانده', !/id="makerBox" hidden/.test(pg.text), noteRow.slug);
   }
 
-  /* ═══ ۳٫۶) مهار ایندکس محصولات غیرقابل تأمین ═══ */
   console.log();
   console.log(b('  ۳٫۶) محصولات غیرقابل تأمین'));
 
@@ -278,8 +219,7 @@ const titleOf = html => {
     const pg = await get('/perfume/' + unav.slug);
     add('صفحه غیرقابل تأمین noindex دارد',
         /name="robots" content="noindex/.test(pg.text), unav.slug);
-    /* follow عمدی است: خزنده باید از این صفحه به محصولات
-       قابل سفارش هم‌خانواده برود. */
+
     add('ولی follow باقی مانده',
         /content="noindex,\s*follow"/.test(pg.text),
         'مسیر عبور خزنده بسته نمی‌شود');
@@ -290,7 +230,6 @@ const titleOf = html => {
     add('محصول غیرقابل تأمین برای آزمون هست', false, 'هیچ محصول UNAVAILABLE نبود');
   }
 
-  /* Pick an actually sellable product, not an active row with no priced variants. */
   const sellable = db.prepare(`SELECT p.slug FROM products p WHERE p.slug IN (${slugs.map(() => '?').join(',')})
     AND p.supply_mode IN ('IN_STOCK','MADE_TO_ORDER') AND EXISTS (
       SELECT 1 FROM variants v WHERE v.product_id=p.id AND ${publicVariantSql('v')}
@@ -301,7 +240,6 @@ const titleOf = html => {
   add('صفحه قابل سفارش در sitemap هست',
       !!sellable && sm.text.includes(`/perfume/${sellable.slug}<`), sellable?.slug || 'مورد قابل سفارش یافت نشد');
 
-  /* ═══ ۴) شفافیت برای خزنده ═══ */
   console.log();
   console.log(b('  ۴) شفافیت — آنچه خزنده بدون اجرای JS می‌بیند'));
 
@@ -319,15 +257,12 @@ const titleOf = html => {
   add('نام لاتین اصلی در alternateName آمده',
       !!(prod0 && prod0.alternateName), 'ارتباط بدون ادعای دروغ');
 
-  /* صفحه «چرا ما» جایی است که E-E-A-T می‌نشیند: تخصص، مدرک،
-     سابقه. اگر خالی باشد، هیچ سیگنال اعتمادی نداریم. */
   const why = await get('/why-us');
   add('صفحه چرا ما در دسترس است', why.status === 200);
   add('سابقه و مدرک واقعی در صفحه ذکر شده',
       why.text.includes('مدرسه عطرسازی') && why.text.includes('متانول'),
       'سیگنال تخصص برای ارزیاب کیفیت');
 
-  /* ═══ خلاصه ═══ */
   const failed = checks.filter(x => !x).length;
   console.log();
   console.log(failed === 0

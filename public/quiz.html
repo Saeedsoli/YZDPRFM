@@ -192,7 +192,7 @@
     </div>
     <div class="quiz-card" id="quizCard"></div>
     <div class="quiz-nav">
-      <button class="back-q" id="backBtn" hidden onclick="goBack()">
+      <button class="back-q" id="backBtn" hidden data-csp-click="goBack()">
         <svg viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg>
         سؤال قبلی
       </button>
@@ -255,8 +255,8 @@ const questions = [
     title: 'عطر برای چه کسی است؟',
     subtitle: 'جنسیت، شخصیت پایه رایحه را تعیین می‌کند',
     options: [
-      { value: 'MEN',    icon: 'man',   label: 'مردانه',      desc: 'روایح چوبی، چرمی و آروماتیک' },
-      { value: 'WOMEN',  icon: 'woman', label: 'زنانه',       desc: 'روایح گلی، میوه‌ای و پودری' },
+      { value: 'MEN',    icon: 'man',   label: 'مردانه',      desc: 'رایحه‌های چوبی، چرمی و آروماتیک' },
+      { value: 'WOMEN',  icon: 'woman', label: 'زنانه',       desc: 'رایحه‌های گلی، میوه‌ای و پودری' },
       { value: 'UNISEX', icon: 'both',  label: 'یونیسکس',     desc: 'مرز میان دنیای زنانه و مردانه' },
       { value: 'ANY',    icon: 'any',   label: 'فرقی نمی‌کند', desc: 'همه را بر اساس بو بررسی کن' }
     ]
@@ -364,7 +364,7 @@ function renderQuestion() {
 
   const optionsHTML = q.options.map(opt => `
     <button type="button" class="quiz-option${prev === opt.value ? ' selected' : ''}"
-            data-value="${opt.value}" onclick="selectOption('${q.id}', '${opt.value}', this)">
+            data-value="${opt.value}" data-csp-click="selectOption('${q.id}', '${opt.value}', this)">
       <span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true">${IC[opt.icon] || IC.any}</svg></span>
       <span class="tx">
         <span class="lb">${opt.label}</span>
@@ -437,8 +437,8 @@ function renderResults() {
         <p>با پاسخ‌های بازتر — مثلاً «فرقی نمی‌کند» — دوباره امتحان کنید،<br>
            یا مستقیم سراغ کاتالوگ بروید.</p>
       </div>
-      <button class="btn-primary" onclick="resetQuiz()">شروع دوباره کوییز</button>
-      <button class="btn-secondary" onclick="location.href='/'">مشاهده کاتالوگ کامل</button>`;
+      <button class="btn-primary" data-csp-click="resetQuiz()">شروع دوباره کوییز</button>
+      <button class="btn-secondary" data-csp-click="location.href='/'">مشاهده کاتالوگ کامل</button>`;
     return;
   }
 
@@ -491,8 +491,8 @@ function renderResults() {
       ${chosen.length ? `<br><span style="color:rgba(197,155,39,.8)">${chosen.join(' · ')}</span>` : ''}</p>
     </div>
     ${resultsHTML}
-    <button class="btn-primary" onclick="resetQuiz()">شروع دوباره کوییز</button>
-    <button class="btn-secondary" onclick="location.href='/'">مشاهده کاتالوگ کامل</button>`;
+    <button class="btn-primary" data-csp-click="resetQuiz()">شروع دوباره کوییز</button>
+    <button class="btn-secondary" data-csp-click="location.href='/'">مشاهده کاتالوگ کامل</button>`;
 }
 
 function faNum(n) { return String(n).replace(/\d/g, d => '۰۱۲۳۴۵۶۷۸۹'[d]); }
@@ -513,7 +513,7 @@ async function init() {
     document.getElementById('quizCard').innerHTML = `
       <div class="res-top"><h2>ارتباط برقرار نشد</h2>
       <p>اتصال اینترنت خود را بررسی کنید و دوباره تلاش کنید.</p></div>
-      <button class="btn-primary" onclick="location.reload()">تلاش دوباره</button>`;
+      <button class="btn-primary" data-csp-click="location.reload()">تلاش دوباره</button>`;
     return;
   }
   renderProgress();
@@ -522,5 +522,6 @@ async function init() {
 
 init();
 </script>
+<script src="/assets/csp-actions.js"></script>
 </body>
 </html>

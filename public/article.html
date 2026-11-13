@@ -180,6 +180,16 @@
   .more-card .b { padding: 14px }
   .more-card .t { font-size: .92rem; font-weight: 800; line-height: 1.65 }
   .more-card .c { font-size: .72rem; color: var(--gold); font-weight: 700; margin-top: 6px }
+  /* ── منابع مقاله ── */
+  .article-sources { max-width: 780px; margin: 10px auto 0; padding: 18px 20px 0;
+    border-top: 1px dashed var(--border) }
+  .article-sources h2 { font-size: .95rem; font-weight: 800; margin-bottom: 12px }
+  .article-sources ul { list-style: none; padding: 0; margin: 0; display: grid; gap: 8px }
+  .article-sources li { font-size: .8rem; line-height: 1.95; color: var(--muted);
+    background: var(--sand); border-right: 3px solid var(--gold); border-radius: 9px; padding: 9px 12px }
+  .article-sources a { color: var(--gold-dark); font-weight: 700; text-decoration: underline;
+    text-underline-offset: 3px }
+  .article-sources a:hover { color: var(--text) }
 </style>
 </head>
 <body>
@@ -206,14 +216,19 @@
     <div class="art-body">
       <div class="excerpt" id="excerpt"></div>
       <div class="content" id="body"></div>
+      <!-- منابع: فقط وقتی مقاله منبع اعلام کرده باشد پر می‌شود -->
+      <section class="article-sources" id="sources" hidden>
+        <h2>منابع</h2>
+        <ul id="sourcesList"></ul>
+      </section>
     </div>
     <div class="art-share">
       <span class="lbl">این مطلب مفید بود؟ به دیگران هم برسانید</span>
-      <button class="sh" onclick="shareTo('tg')">
+      <button class="sh" data-csp-click="shareTo('tg')">
         <svg viewBox="0 0 24 24"><path d="M21 4L3 11l5 2 2 6 3-4 5 4z"/></svg> تلگرام</button>
-      <button class="sh" onclick="shareTo('wa')">
+      <button class="sh" data-csp-click="shareTo('wa')">
         <svg viewBox="0 0 24 24"><path d="M20 12a8 8 0 01-11.6 7.1L4 20l1-4.2A8 8 0 1120 12z"/></svg> واتساپ</button>
-      <button class="sh" id="copyBtn" onclick="copyLink()">
+      <button class="sh" id="copyBtn" data-csp-click="copyLink()">
         <svg viewBox="0 0 24 24"><path d="M10 13a5 5 0 007 0l2-2a5 5 0 00-7-7l-1 1"/><path d="M14 11a5 5 0 00-7 0l-2 2a5 5 0 007 7l1-1"/></svg>
         کپی لینک</button>
     </div>
@@ -326,7 +341,7 @@ function renderMedia(line) {
     return `<figure>`
       + `<img src="${primary}" alt="${esc(caption || 'تصویر مقاله')}"`
       + ` loading="lazy" decoding="async"`
-      + ` onerror="if(!this.dataset.alt){this.dataset.alt=1;this.src='${fallback}'}`
+      + ` data-csp-error="if(!this.dataset.alt){this.dataset.alt=1;this.src='${fallback}'}`
       + `else{this.closest('figure').remove()}">`
       + `${cap}</figure>`;
   }
@@ -405,6 +420,22 @@ async function load() {
     document.getElementById('title').textContent = a.title;
     document.getElementById('excerpt').textContent = a.excerpt || '';
     document.getElementById('body').innerHTML = renderArticle(a.content || '');
+    /* منابع از خود مقاله می‌آید؛ اگر نباشد بلوک پنهان می‌ماند تا صفحه
+       جای خالی نشان ندهد. هر نشانی فقط https پذیرفته می‌شود. */
+    (() => {
+      const box = document.getElementById('sources');
+      const list = document.getElementById('sourcesList');
+      const items = Array.isArray(a.sources) ? a.sources.filter(s => s && s.label) : [];
+      if (!items.length) { box.hidden = true; return; }
+      list.innerHTML = items.map(s => {
+        const label = esc(s.label);
+        const url = typeof s.url === 'string' && /^https:\/\//i.test(s.url) ? s.url : null;
+        return url
+          ? `<li><a href="${esc(url)}" target="_blank" rel="noopener noreferrer nofollow">${label}</a>${s.note ? ' — ' + esc(s.note) : ''}</li>`
+          : `<li>${label}${s.note ? ' — ' + esc(s.note) : ''}</li>`;
+      }).join('');
+      box.hidden = false;
+    })();
 
     document.getElementById('loading').style.display = 'none';
     document.getElementById('content').style.display = 'block';
@@ -451,5 +482,6 @@ function copyLink() {
 
 load();
 </script>
+<script src="/assets/csp-actions.js"></script>
 </body>
 </html>

@@ -1,6 +1,5 @@
 'use strict';
-// Applies a frozen, name-matched price manifest only to untouched, unavailable
-// supplement products. This does not establish supplier-essence identity or stock.
+
 const fs=require('fs');
 const {kgToGram,productPriceState,applyProductPrice}=require('./product-essence-pricing');
 const VERSION='lv_reference_prices_v1';

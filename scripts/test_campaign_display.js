@@ -1,25 +1,5 @@
 #!/usr/bin/env node
-/**
- * آزمون «نمایش جشنواره» — از دیتابیس تا چیزی که مشتری می‌بیند.
- *
- * چرا جدا از test_promotions: آن آزمون ثابت می‌کند **محاسبه**
- * درست است. این آزمون ثابت می‌کند مشتری آن را **می‌بیند** و همه
- * صفحه‌ها یک عدد می‌گویند. تخفیفی که فقط در سبد ظاهر شود خرید
- * نمی‌سازد، و بدتر: اگر سبد و تسویه دو عدد بدهند، اعتماد می‌رود.
- *
- * پوشش:
- *   • /api/products درصد جشنواره را برمی‌گرداند
- *   • /api/products/:slug روی هر واریانت final_price می‌گذارد
- *   • /api/showcase (صفحه اصلی) هم درصد دارد و کهنه نمی‌ماند
- *   • جشنواره نوع‌محور روی کارت فهرست نمی‌آید ولی در صفحه محصول می‌آید
- *   • سقف max_discount درصد نمایشی را واقعی می‌کند (نه درصد خام)
- *   • /api/coupons/validate و /api/cart/calculate یک عدد می‌دهند
- *   • ثبت سفارش سهم جشنواره را جدا ذخیره می‌کند
- *   • فاکتور دو سطر تفکیک‌شده دارد و جمعش با مبلغ پرداختی می‌خواند
- *   • جشنواره منقضی هیچ‌جا دیده نمی‌شود
- *
- * اجرا: node scripts/test_campaign_display.js
- */
+
 'use strict';
 
 const { spawn } = require('child_process');
@@ -47,9 +27,7 @@ const MARK = 'TSTDISP';
 function cleanup() {
   const db = new Database(DB);
   db.prepare(`DELETE FROM campaigns WHERE title LIKE '${MARK}%'`).run();
-  /* مصرف کوپن پیش از خود کوپن پاک می‌شود — وگرنه اجرای بعدی با
-     «شما قبلاً از این کد استفاده کرده‌اید» شکست می‌خورد و
-     ناسازگاری آزمون به‌حساب باگ محصول گذاشته می‌شود. */
+
   db.prepare(`DELETE FROM coupon_usage WHERE code LIKE '${MARK}%'`).run();
   db.prepare(`DELETE FROM coupons   WHERE code  LIKE '${MARK}%'`).run();
   db.prepare(`DELETE FROM order_items WHERE order_id IN
@@ -105,8 +83,7 @@ const api = (p, opt = {}, tok = null) =>
 
   try {
     const db = new Database(DB);
-    /* محصولی از خانواده چوبی که هم سمپل دارد هم EDP —
-       برای سنجش جشنواره نوع‌محور لازم است. */
+
     const P = db.prepare(`
       SELECT p.id, p.slug, p.family_slug, p.brand_fa, p.gender, p.supply_mode
       FROM products p
@@ -114,7 +91,7 @@ const api = (p, opt = {}, tok = null) =>
         AND EXISTS (SELECT 1 FROM variants v WHERE v.product_id=p.id AND v.type='SAMPLE')
         AND EXISTS (SELECT 1 FROM variants v WHERE v.product_id=p.id AND v.type='EDP')
       LIMIT 1`).get();
-    /* محصول شاهد از خانواده دیگر — نباید تخفیف بگیرد */
+
     const Q = db.prepare(`
       SELECT p.id, p.slug, p.family_slug FROM products p
       WHERE p.family_slug = 'floral' LIMIT 1`).get();
@@ -151,7 +128,6 @@ const api = (p, opt = {}, tok = null) =>
     add('ورود مدیر', !!TOK);
     if (!TOK) return finish();
 
-    // ─────────────────────────────────────────────
     console.log('\n  ── پیش از جشنواره: هیچ تخفیفی نباید دیده شود ──');
 
     {
@@ -168,7 +144,6 @@ const api = (p, opt = {}, tok = null) =>
         (pd.body.variants || []).every(v => v.final_price === v.price_toman));
     }
 
-    // ─────────────────────────────────────────────
     console.log('\n  ── جشنواره خانواده‌محور ۲۵٪ ──');
 
     const mk = await api('/api/admin/campaigns', {
@@ -208,9 +183,7 @@ const api = (p, opt = {}, tok = null) =>
     }
 
     {
-      /* عدد کارت فهرست باید دقیقاً همان عددی باشد که صفحه محصول
-         می‌گوید — وگرنه مشتری روی کارت یک قیمت می‌بیند و با کلیک
-         قیمت دیگری. */
+
       const list = await api(`/api/products?family=woody&limit=60`);
       const card = (list.body.products || []).find(x => x.slug === P.slug);
       const pd = await api(`/api/products/${P.slug}`);
@@ -221,7 +194,6 @@ const api = (p, opt = {}, tok = null) =>
         `کارت ${cardPrice} · صفحه ${pd.body.min_price_final}`);
     }
 
-    // ─────────────────────────────────────────────
     console.log('\n  ── سازگاری سبد و تسویه ──');
 
     const cartItems = [{ sku: vEdp.sku, quantity: 2 }];
@@ -240,8 +212,7 @@ const api = (p, opt = {}, tok = null) =>
     }
 
     {
-      /* کوپن ۱۰٪ می‌سازیم و بررسی می‌کنیم هر دو مسیر یک رقم بدهند.
-         این همان باگی است که سبد و تسویه را دو صدایی کرده بود. */
+
       await api('/api/admin/coupons', {
         method: 'POST',
         body: JSON.stringify({
@@ -265,7 +236,6 @@ const api = (p, opt = {}, tok = null) =>
       add('کوپن: جشنواره در پاسخ validate هم می‌آید',
         coupCalc.body.campaign_discount === full.body.campaign_discount);
 
-      /* ۱۰٪ باید روی مبلغ پس از جشنواره باشد، نه قیمت کامل */
       const lineTotal = vEdp.price_toman * 2;
       const afterCamp = lineTotal - Math.floor(lineTotal * 25 / 100);
       add('کوپن روی مبلغ پس از جشنواره حساب می‌شود',
@@ -277,11 +247,10 @@ const api = (p, opt = {}, tok = null) =>
           - full.body.discount + full.body.shipping_fee);
     }
 
-    // ─────────────────────────────────────────────
     console.log('\n  ── جشنواره نوع‌محور (فقط سمپل) ──');
 
     {
-      // جشنواره خانواده را غیرفعال می‌کنیم تا تداخل نکند
+
       const camps = await api('/api/admin/campaigns', {}, TOK);
       const famC = (camps.body.campaigns || []).find(c => c.title === `${MARK} چوبی‌ها`);
       await api(`/api/admin/campaigns/${famC.id}`, {
@@ -298,10 +267,7 @@ const api = (p, opt = {}, tok = null) =>
 
       const list = await api(`/api/products?family=woody&limit=3`);
       const p0 = (list.body.products || [])[0];
-      /* روی کارت فهرست عمداً نشان داده نمی‌شود: کارت یک قیمت
-         «از …» دارد و اگر تخفیف فقط شامل یک واریانت باشد، نشان
-         دادن درصد روی کل کارت وعده‌ای است که همه واریانت‌ها به آن
-         عمل نمی‌کنند. */
+
       add('جشنواره نوع‌محور روی کارت فهرست نمی‌آید',
         p0 && p0.campaign_percent === 0, `${p0 && p0.campaign_percent}٪`);
 
@@ -314,7 +280,6 @@ const api = (p, opt = {}, tok = null) =>
         edp && edp.campaign_percent === 0, `${edp && edp.campaign_percent}٪`);
     }
 
-    // ─────────────────────────────────────────────
     console.log('\n  ── سقف تخفیف، درصد نمایشی را واقعی می‌کند ──');
 
     {
@@ -327,8 +292,6 @@ const api = (p, opt = {}, tok = null) =>
         }
       }
 
-      /* ۵۰٪ با سقف ناچیز: درصد خام ۵۰ است ولی مبلغ واقعی خیلی
-         کمتر. نمایش «۵۰٪ تخفیف» اینجا دروغ است. */
       const cap = 20000;
       await api('/api/admin/campaigns', {
         method: 'POST',
@@ -340,10 +303,7 @@ const api = (p, opt = {}, tok = null) =>
 
       const pd = await api(`/api/products/${P.slug}`);
       const v = (pd.body.variants || []).find(x => x.sku === vEdp.sku);
-      /* گرد کردن به پایین — همان قاعده‌ای که src/db.js دارد.
-         آزمون قبلاً round می‌کرد و پس از رفع باگ سقف (مرداد
-         ۱۴۰۵) با کد ناهماهنگ شد. floor تضمین می‌کند تخفیف واقعی
-         هرگز از سقف جشنواره رد نشود. */
+
       const effective = Math.floor(cap / vEdp.price_toman * 100);
       add('درصد نمایشی واریانت، درصد مؤثر است نه درصد خام',
         v && v.campaign_percent === effective && v.campaign_percent < 50,
@@ -353,7 +313,6 @@ const api = (p, opt = {}, tok = null) =>
         `${v && (v.price_toman - v.final_price)} ≤ ${cap}`);
     }
 
-    // ─────────────────────────────────────────────
     console.log('\n  ── ثبت سفارش: تفکیک در دیتابیس و فاکتور ──');
 
     {
@@ -418,7 +377,6 @@ const api = (p, opt = {}, tok = null) =>
       }
     }
 
-    // ─────────────────────────────────────────────
     console.log('\n  ── جشنواره منقضی نباید دیده شود ──');
 
     {
@@ -459,7 +417,6 @@ const api = (p, opt = {}, tok = null) =>
         calc.body.campaign_discount === 0, `${calc.body.campaign_discount}`);
     }
 
-    // ─────────────────────────────────────────────
     console.log('\n  ── ویترین صفحه اصلی ──');
 
     {
@@ -471,10 +428,7 @@ const api = (p, opt = {}, tok = null) =>
           }, TOK);
         }
       }
-      /* جشنواره فراگیر (بدون دامنه) — همه محصولات ویترین باید
-         درصد بگیرند. مهم است چون ویترین از جدول کش‌شده می‌آید و
-         اگر درصد آنجا ذخیره شده بود، جشنواره تازه تا یک ساعت
-         نامرئی می‌ماند. */
+
       await api('/api/admin/campaigns', {
         method: 'POST',
         body: JSON.stringify({ title: `${MARK} همگانی`, percent: 15, active: 1 })
@@ -489,15 +443,10 @@ const api = (p, opt = {}, tok = null) =>
         `${all.filter(x => x.campaign_percent === 15).length}/${all.length}`);
     }
 
-    // ─────────────────────────────────────────────
     console.log('\n  ── تخفیف نباید پرداختی را بالا ببرد ──');
 
     {
-      /* باگ واقعی کشف‌شده با اندازه‌گیری: آستانه ارسال رایگان روی
-         مبلغ پس از جشنواره سنجیده می‌شد. سبد ۲,۶۵۲,۵۰۰ تومانی
-         ارسال رایگان داشت؛ با جشنواره ۱۰٪ به ۲,۳۸۷,۲۵۰ می‌رسید،
-         زیر آستانه می‌افتاد و ۳۵۰,۰۰۰ کرایه می‌خورد — پرداختی
-         نهایی ۸۴,۷۵۰ تومان **بیشتر** از حالت بدون تخفیف. */
+
       const camps0 = await api('/api/admin/campaigns', {}, TOK);
       for (const c of camps0.body.campaigns || []) {
         if (c.title.startsWith(MARK)) {
@@ -508,10 +457,7 @@ const api = (p, opt = {}, tok = null) =>
       }
 
       const db3 = new Database(DB);
-      /* واریانتی کمی بالای آستانه که با ۱۰٪ تخفیف زیرش می‌رود.
-         بازه از خودِ آستانه ساخته می‌شود تا با تغییر نرخ ارسال
-         آزمون نشکند: بالای آستانه، ولی نه آن‌قدر که ۱۰٪ تخفیف
-         هم زیرش نبردش (آستانه ÷ ۰٫۹). */
+
       const FREE_SHIP = 2000000;
       const edge = db3.prepare(`
         SELECT v.sku, v.price_toman, p.id AS product_id, p.supply_mode
@@ -558,8 +504,6 @@ const api = (p, opt = {}, tok = null) =>
             === withCamp.body.campaign_discount,
           `${noCamp.body.total_payable - withCamp.body.total_payable}`);
 
-        /* همین رفتار باید هنگام ثبت سفارش هم برقرار باشد، نه فقط
-           در پیش‌نمایش سبد. */
         const ord2 = await api('/api/orders', {
           method: 'POST',
           body: JSON.stringify({
@@ -595,7 +539,6 @@ const api = (p, opt = {}, tok = null) =>
       }
     }
 
-    // ─────────────────────────────────────────────
     console.log('\n  ── دارایی‌های رابط کاربری ──');
 
     {
@@ -619,10 +562,7 @@ const api = (p, opt = {}, tok = null) =>
       add('سبد سطر جشنواره دارد', /camp-row/.test(cart) && /campOff/.test(cart));
       add('سبد از منبع واحد calculate می‌خواند', /calcTotals/.test(cart));
       add('تسویه سطر جشنواره دارد', /campaign_discount/.test(chk));
-      /* مهم این است که مبنا **جمع کالاها** باشد، نه عدد آستانه.
-         گره زدن آزمون به عدد یعنی هر تغییر نرخ ارسال آن را
-         می‌شکند، در حالی که چیزی که واقعاً باید تضمین شود
-         «تخفیف پرداختی را بالا نبرد» است. */
+
       add('آستانه ارسال رایگان در سبد روی جمع کالاها سنجیده می‌شود',
         /const freeShip = subtotal >= FREE_SHIP_THRESHOLD/.test(cart));
     }

@@ -11,13 +11,13 @@
 <link rel="manifest" href="/site.webmanifest">
 <meta name="theme-color" content="#121212">
 <title>عطر یزد | Yazd Perfume — مرجع تخصصی عطر دست‌ساز</title>
-<meta name="description" content="عطر یزد — بازآفرینی دست‌ساز رایحه‌های ماندگار؛ اطلاعات رایحه و سمپل ۵ میل برای محصولات قابل سفارش.">
+<meta name="description" content="عطر یزد — بازآفرینی دست‌ساز رایحه‌های ماندگار؛ شناسنامه رایحه و سمپل ۵ میل برای رایحه‌های قابل سفارش.">
 <link rel="stylesheet" href="/assets/theme.css">
 <!-- تصویر هیرو داخل CSS تعریف شده؛ بدون preload مرورگر تا پس از
      تجزیه کامل استایل کشفش نمی‌کند و اولین نمایش دیر می‌شود. -->
-<link rel="preload" as="image" href="/images/hero-cinematic.webp"
+<link rel="preload" as="image" href="/images/hero-video-poster.webp"
       type="image/webp" media="(min-width: 861px)" fetchpriority="high">
-<link rel="preload" as="image" href="/images/hero-cinematic-sm.webp"
+<link rel="preload" as="image" href="/images/hero-video-poster-sm.webp"
       type="image/webp" media="(max-width: 860px)" fetchpriority="high">
 <style>
   /* ═══ هیرو سینمایی ═══ */
@@ -28,13 +28,15 @@
   .hero-bg {
     position: absolute; inset: 0;
     /* پس‌افت برای مرورگرهای قدیمی؛ خط بعد اگر image-set پشتیبانی شود جایش را می‌گیرد */
-    background: url('/images/hero-cinematic.jpg') center right/cover no-repeat;
+    /* پس‌زمینه همان فریم اول ویدیو است؛ اگر ویدیو پخش نشود یا کاربر
+       حرکت کم بخواهد، تصویری که می‌بیند با ویدیو یکی است. */
+    background: url('/images/hero-video-poster.jpg') center right/cover no-repeat;
     background-image: image-set(
-      url('/images/hero-cinematic.webp') type('image/webp'),
-      url('/images/hero-cinematic.jpg')  type('image/jpeg'));
+      url('/images/hero-video-poster.webp') type('image/webp'),
+      url('/images/hero-video-poster.jpg')  type('image/jpeg'));
     background-image: -webkit-image-set(
-      url('/images/hero-cinematic.webp') type('image/webp'),
-      url('/images/hero-cinematic.jpg')  type('image/jpeg'));
+      url('/images/hero-video-poster.webp') type('image/webp'),
+      url('/images/hero-video-poster.jpg')  type('image/jpeg'));
     /* `center right` بطری را که سمت چپ قاب است به لبه می‌راند و
        نیمی‌اش بیرون می‌ماند. با `35% center` بطری کامل دیده
        می‌شود و فضای خالی سمت راست برای متن باقی می‌ماند. */
@@ -270,13 +272,13 @@
          می‌دارد و متن زیرش می‌نشیند. */
       background-position: 28% top;
       /* روی موبایل تصویر ۱۸۵۵ پیکسلی اسراف است — نسخه ۹۰۰ پیکسلی کافی است */
-      background-image: url('/images/hero-cinematic-sm.jpg');
+      background-image: url('/images/hero-video-poster-sm.jpg');
       background-image: image-set(
-        url('/images/hero-cinematic-sm.webp') type('image/webp'),
-        url('/images/hero-cinematic-sm.jpg')  type('image/jpeg'));
+        url('/images/hero-video-poster-sm.webp') type('image/webp'),
+        url('/images/hero-video-poster-sm.jpg')  type('image/jpeg'));
       background-image: -webkit-image-set(
-        url('/images/hero-cinematic-sm.webp') type('image/webp'),
-        url('/images/hero-cinematic-sm.jpg')  type('image/jpeg'));
+        url('/images/hero-video-poster-sm.webp') type('image/webp'),
+        url('/images/hero-video-poster-sm.jpg')  type('image/jpeg'));
     }
     /* پرده عمودی: بالا شفاف تا بطری دیده شود، پایین تیره تا متن
        خوانا بماند. */
@@ -305,7 +307,7 @@
     .hero-dust i:nth-child(n+26) { display: none; }
   }
 
-  .search-hub { max-width: 1320px; margin: -46px auto 34px; padding: 0 20px;
+  .search-hub { max-width: 1320px; margin: -30px auto 34px; padding: 0 20px;
                 position: relative; z-index: 30; }
   .search-box { background: linear-gradient(135deg,#141414,#1F1F1F); color: #FFF;
                 padding: 22px; border-radius: 16px;
@@ -575,7 +577,7 @@
       <h1>رایحه‌ای که <em>می‌ماند</em><br>حتی وقتی رفته‌اید</h1>
 
       <p>
-        بازآفرینی دست‌ساز روایح ماندگار جهان، با اسانس خانه‌های
+        بازآفرینی دست‌ساز رایحه‌های ماندگار جهان، با اسانس خانه‌های
         ژیوودان، فیرمنیش و ایبرکم.
       </p>
 
@@ -592,7 +594,7 @@
       <div class="hero-stats" id="heroStats">
         <div class="hero-stat">
           <div class="n" data-stat="perfumers">—</div>
-          <div class="l">عطرساز</div>
+          <div class="l">عطرساز مرجع</div>
         </div>
         <div class="hero-stat">
           <div class="n" data-stat="brands">—</div>
@@ -642,8 +644,8 @@
     <img class="pb-bg" src="/images/products/fam-woody-m-2.jpg" alt="" loading="lazy" decoding="async" width="300" height="188">
     <span class="pb-sheen" aria-hidden="true"></span><span class="pb-spark" aria-hidden="true"></span>
     <span class="pb-kick">کارگاه عطرسازی</span>
-    <span class="pb-t">بیست سال آزمون و خطا</span>
-    <span class="pb-d">از تدریس عطرسازی تا آزمودن هر ترکیب، پیش از رسیدن به شما.</span>
+    <span class="pb-t">پانزده سال تخصص عطرسازی</span>
+    <span class="pb-d">از دوره و تدریس عطرسازی تا آزمودن هر ترکیب، پیش از رسیدن به شما.</span>
     <span class="pb-cta">داستان کارگاه</span>
   </a>
   <a class="pb" href="/samples">
@@ -675,7 +677,7 @@
 <section class="container section">
   <div class="transparency" style="margin-bottom:20px">
     🌱 <strong>اطلاعیه شفافیت عطر یزد:</strong>
-    تمامی روایح موجود، بازآفرینی دست‌ساز با عصاره غلیظ اولیه و فرمولاسیون اختصاصی عطر یزد هستند
+    تمامی رایحه‌های موجود، بازآفرینی دست‌ساز با عصاره غلیظ اولیه و فرمولاسیون اختصاصی عطر یزد هستند
     و ادعای اورجینال بودن ندارند.
   </div>
 
@@ -755,7 +757,7 @@
       </div>
       <p style="font-size:.9rem;opacity:.82;line-height:2.1">
         <span style="color:var(--gold);font-weight:700">ژیوودان · فیرمنیش · ایبرکم · لوزی</span><br>
-        خانه‌های شناخته‌شده در صنعت عطرسازی؛ هویت و کیفیت اسانس هر رایحه به‌طور مستقل تأیید نشده است.
+        خانه‌های شناخته‌شده در صنعت عطرسازی؛ هویت و کیفیت اسانس هر رایحه مستقلاً تأیید نشده است.
       </p>
     </div>
     <a href="/essences" class="btn" style="white-space:nowrap">آشنایی با خانه‌ها ←</a>
@@ -765,7 +767,7 @@
 <section class="journal-cta reveal">
   <div class="journal-inner">
     <div>
-      <h2 style="font-size:1.2rem;font-weight:800">مجله آموزشی و دانشنامه روایح</h2>
+      <h2 style="font-size:1.2rem;font-weight:800">مجله آموزشی و دانشنامه رایحه‌ها</h2>
       <p style="font-size:.86rem;color:var(--muted);margin-top:4px">
         شناخت نُت‌ها، آشنایی با ادوپرفیوم، و راهنمای انتخاب رایحه
       </p>
@@ -1003,7 +1005,7 @@ async function loadBrands() {
       ? `<img class="brand-logo" src="${esc(b.logo)}" alt="${esc(b.brand_en || b.brand_fa || '')}" loading="lazy" decoding="async"${b.logo_width ? ` width="${Number(b.logo_width)}" height="${Number(b.logo_height)}"` : ''}>`
       : `<div class="bn">${esc((b.brand_en || '').toUpperCase())}</div>`;
     return `<a class="brand-pill" href="/?brand=${encodeURIComponent(b.brand_fa)}"
-        onclick="event.preventDefault();pickBrand(${esc(JSON.stringify(b.brand_fa))})">
+        data-csp-click="event.preventDefault();pickBrand(${esc(JSON.stringify(b.brand_fa))})">
        ${mark}
        <div class="bc">${esc(b.brand_fa)} (${toFa(b.count)})</div>
      </a>`;
@@ -1046,7 +1048,7 @@ async function loadProducts() {
       `<div class="empty-state" style="grid-column:1/-1">
          <h3>ارتباط برقرار نشد</h3>
          <p>اتصال اینترنت خود را بررسی کنید.</p>
-         <button class="btn" style="margin-top:14px" onclick="loadProducts()">تلاش دوباره</button>
+         <button class="btn" style="margin-top:14px" data-csp-click="loadProducts()">تلاش دوباره</button>
        </div>`;
     return;
   }
@@ -1066,7 +1068,7 @@ async function loadProducts() {
          <h3>رایحه‌ای یافت نشد</h3>
          <p style="margin-top:6px">شاید فیلترها بیش از حد محدودند.</p>
          <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:18px">
-           <button class="btn" onclick="clearFilter()">پاک کردن فیلترها</button>
+           <button class="btn" data-csp-click="clearFilter()">پاک کردن فیلترها</button>
            <a href="/quiz" class="btn btn-outline">کوییز پیدا کردن رایحه</a>
          </div></div>`;
     document.getElementById('pager').innerHTML = '';
@@ -1091,13 +1093,13 @@ async function loadProducts() {
 
 function renderPager(cur, total) {
   if (total <= 1) { document.getElementById('pager').innerHTML = ''; return; }
-  let html = `<button ${cur === 1 ? 'disabled' : ''} onclick="go(${cur - 1})">قبلی</button>`;
+  let html = `<button ${cur === 1 ? 'disabled' : ''} data-csp-click="go(${cur - 1})">قبلی</button>`;
   const pages = new Set([1, total, cur, cur - 1, cur + 1, cur - 2, cur + 2]);
   [...pages].filter(n => n >= 1 && n <= total).sort((a, b) => a - b).forEach((n, i, arr) => {
     if (i && n - arr[i - 1] > 1) html += `<button disabled>…</button>`;
-    html += `<button class="${n === cur ? 'on' : ''}" onclick="go(${n})">${toFa(n)}</button>`;
+    html += `<button class="${n === cur ? 'on' : ''}" data-csp-click="go(${n})">${toFa(n)}</button>`;
   });
-  html += `<button ${cur === total ? 'disabled' : ''} onclick="go(${cur + 1})">بعدی</button>`;
+  html += `<button ${cur === total ? 'disabled' : ''} data-csp-click="go(${cur + 1})">بعدی</button>`;
   document.getElementById('pager').innerHTML = html;
 }
 
@@ -1184,7 +1186,7 @@ async function fetchSugg(term) {
         <span class="sugg-p">${money(p.min_price)}</span>
       </a>`).join('') +
       (d.total > list.length
-        ? `<button class="sugg-more" type="button" onclick="applySearch()">
+        ? `<button class="sugg-more" type="button" data-csp-click="applySearch()">
              دیدن هر ${toFa(d.total)} نتیجه</button>`
         : '');
 
@@ -1338,5 +1340,6 @@ YazdRecent.render('#recent', { limit: 4 });
   () => YazdTaste.render('#tasteBox')
 );
 </script>
+<script src="/assets/csp-actions.js"></script>
 </body>
 </html>

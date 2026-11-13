@@ -22,6 +22,18 @@
   .panel:nth-of-type(2){animation-delay:80ms} .panel:nth-of-type(3){animation-delay:160ms}
   .panel h2 { font-size: 1rem; font-weight: 800; margin-bottom: 14px }
 
+  /* دکمه ورود به حساب: ردیف مستقل زیر مراحل، نه چسبیده به یادداشت.
+     دکمه inline بود و در عرض ۳۹۰ پیکسل از کارت بیرون می‌زد. */
+  .cta-row { display:flex; align-items:center; gap:14px; flex-wrap:wrap; margin-top:18px }
+  .cta-btn { display:inline-flex; align-items:center; justify-content:center; max-width:100% }
+  .cta-hint { font-size:.78rem; color:var(--muted); line-height:1.9 }
+  .cta-note { background:var(--sand); border-radius:9px; padding:12px; font-size:.8rem; line-height:2; margin-top:14px }
+  @media (max-width: 560px) {
+    .cta-row { gap:10px }
+    .cta-btn { width:100% }
+    .cta-hint { width:100%; text-align:center }
+  }
+
   /* کارت‌های راه ارتباطی */
   .ways { display: grid; grid-template-columns: repeat(auto-fit,minmax(210px,1fr)); gap: 12px }
   .way {
@@ -122,7 +134,7 @@
 
 <div class="panel">
   <h2>مرجوعی تا ۷۲ ساعت پس از تحویل</h2>
-  <p style="font-size:.85rem;line-height:2">برای محصول با حجم بالای ۱۰ میلی‌لیتر، در صورتی که کمتر از ۲ میلی‌لیتر مصرف شده باشد، می‌توانید درخواست مرجوعی ثبت کنید.</p>
+  <p style="font-size:.85rem;line-height:2">مرجوعی تا ۷۲ ساعت پس از تحویل، برای محصول با حجم بالای ۱۰ میلی‌لیتر و مصرف کمتر از ۲ میلی‌لیتر؛ سمپل‌ها قابل مرجوع نیستند.</p>
   <ul class="rules">
     <li><svg viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg>مهلت ثبت درخواست: تا ۷۲ ساعت پس از تحویل سفارش.</li>
     <li><svg viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg>محصول نباید در معرض نور مستقیم یا گرما قرار گرفته باشد.</li>
@@ -135,8 +147,11 @@
     <li>کنار همان محصول، «درخواست مرجوعی» را انتخاب و دلیل را ثبت کنید.</li>
     <li>وضعیت و پاسخ را در حساب کاربری دنبال کنید.</li>
   </ol>
-  <p style="background:var(--sand);border-radius:9px;padding:12px;font-size:.8rem;line-height:2">اگر دکمه درخواست نمایش داده نمی‌شود، برای بررسی شرایط با پشتیبانی تماس بگیرید. حداکثر ظرف ۲۴ ساعت پاسخ می‌دهیم.</p>
-  <a href="/account" class="btn" style="margin-top:12px">ورود به حساب کاربری</a>
+  <div class="cta-row">
+    <a href="/account" class="btn cta-btn">ورود به حساب کاربری</a>
+    <span class="cta-hint">با همان شماره‌ای که سفارش داده‌اید وارد شوید.</span>
+  </div>
+  <p class="cta-note">اگر دکمه درخواست نمایش داده نمی‌شود، برای بررسی شرایط با پشتیبانی تماس بگیرید. حداکثر ظرف ۲۴ ساعت پاسخ می‌دهیم.</p>
 </div>
 </main>
 

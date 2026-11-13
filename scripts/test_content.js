@@ -1,22 +1,5 @@
 #!/usr/bin/env node
-/**
- * آزمون محتوای مجله و کوییز پیشنهاد رایحه.
- *
- * چرا لازم است:
- *   مجله و کوییز دو ابزار اصلی جذب مشتری‌اند. مجله باید در گوگل
- *   رتبه بگیرد و کوییز باید کسی را که نمی‌داند چه می‌خواهد به
- *   محصول برساند. هیچ‌کدام تا حالا آزمون خودکار نداشتند.
- *
- * چه چیزی سنجیده می‌شود:
- *   ۱) مقالات عمق کافی دارند (سئو)
- *   ۲) هر مقاله چکیده و زمان مطالعه دارد
- *   ۳) ساختار پرسش‌محور حفظ شده (برای عنوان‌بندی خودکار)
- *   ۴) کوییز از هر ترکیب پاسخی نتیجه می‌دهد
- *   ۵) پیشنهادها واقعاً با پاسخ‌ها هم‌خوان‌اند
- *   ۶) کوییز با پاسخ‌های متناقض هم خالی برنمی‌گردد
- *
- * اجرا: node scripts/test_content.js
- */
+
 'use strict';
 
 const { spawn } = require('child_process');
@@ -71,7 +54,6 @@ const post = (p, body) =>
     process.exit(failed === 0 ? 0 : 1);
   };
 
-  // ══ ۱) عمق مقالات ══
   console.log(d('  عمق محتوای مجله'));
 
   const arts = db.prepare('SELECT slug, title, content, excerpt, read_time FROM articles').all();
@@ -90,9 +72,6 @@ const post = (p, body) =>
   const noTime = arts.filter(a => !a.read_time);
   add('همه مقالات زمان مطالعه دارند', noTime.length === 0);
 
-  /* ساختار پرسش‌محور: `renderArticle()` خط کوتاهِ پرسشی را عنوان
-     می‌کند. اگر مقاله‌ای هیچ پرسشی نداشته باشد، در صفحه یک توده
-     متن می‌شود. */
   const flat = arts.filter(a => {
     const blocks = String(a.content).split(/\n\s*\n/);
     return !blocks.some(b => {
@@ -104,7 +83,6 @@ const post = (p, body) =>
   add('همه مقالات ساختار عنوان‌پذیر دارند', flat.length === 0,
       flat.length ? flat[0].slug : '');
 
-  // ══ ۲) سئو مقاله ══
   console.log(d('\n  داده ساختاریافته مقاله'));
 
   const html = await fetch(`${BASE}/journal/${arts[0].slug}`).then(r => r.text());
@@ -117,7 +95,6 @@ const post = (p, body) =>
   add('articleBody در JSON-LD هست', !!ld && !!ld.articleBody);
   add('زبان fa-IR اعلام شده', ld?.inLanguage === 'fa-IR');
 
-  // ══ ۳) کوییز: ترکیب‌های مختلف ══
   console.log(d('\n  کوییز — ترکیب‌های واقعی'));
 
   const combos = [
@@ -141,7 +118,6 @@ const post = (p, body) =>
         `${list.length} پیشنهاد`);
   }
 
-  // ══ ۴) هم‌خوانی نتیجه با پاسخ ══
   console.log(d('\n  هم‌خوانی پیشنهاد با سلیقه'));
 
   const menRes = await post('/api/quiz', {
@@ -164,12 +140,10 @@ const post = (p, body) =>
       womenList.length > 0 && womenOk === womenList.length,
       `${womenOk} از ${womenList.length}`);
 
-  // نتیجه دو سلیقه متفاوت نباید یکسان باشد
   const menIds = menList.map(p => p.id).join(',');
   const womenIds = womenList.map(p => p.id).join(',');
   add('سلیقه‌های متفاوت نتیجه متفاوت می‌دهند', menIds !== womenIds);
 
-  // ══ ۵) کیفیت داده پیشنهاد ══
   console.log(d('\n  کیفیت داده پیشنهادها'));
 
   add('هر پیشنهاد slug و نام دارد',
@@ -180,7 +154,6 @@ const post = (p, body) =>
   add('هر پیشنهاد تصویر دارد',
       menList.every(p => p.image_url && p.image_url.startsWith('/images/')));
 
-  // صفحه محصول پیشنهادشده باید واقعاً باز شود
   const firstSlug = menList[0]?.slug;
   if (firstSlug) {
     const code = await fetch(`${BASE}/perfume/${firstSlug}`).then(r => r.status);

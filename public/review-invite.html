@@ -126,7 +126,7 @@ async function load() {
   } catch {
     root.innerHTML = stateBox(IC.warn, 'ارتباط برقرار نشد',
       'اتصال اینترنت را بررسی کنید و دوباره تلاش کنید.',
-      '<button class="btn" style="margin-top:16px" onclick="location.reload()">تلاش دوباره</button>');
+      '<button class="btn" style="margin-top:16px" data-csp-click="location.reload()">تلاش دوباره</button>');
     return;
   }
 
@@ -172,7 +172,7 @@ function render(d) {
         <div style="font-size:.83rem;font-weight:700;margin-bottom:7px">امتیاز کلی شما *</div>
         <div class="ri-stars" id="stars" role="group" aria-label="انتخاب امتیاز از ۱ تا ۵">
           ${[1,2,3,4,5].map(n => `<button type="button" class="ri-star" data-n="${n}"
-             onclick="pick(${n})" aria-label="${toFa(n)} ستاره">★</button>`).join('')}
+             data-csp-click="pick(${n})" aria-label="${toFa(n)} ستاره">★</button>`).join('')}
         </div>
         <div class="ri-star-lbl" id="starLbl"></div>
         <div id="errRating"></div>
@@ -211,7 +211,7 @@ function render(d) {
       </div>
 
       <button class="btn btn-block" style="margin-top:20px" id="sendBtn"
-        onclick="submit()">ثبت نظر</button>
+        data-csp-click="submit()">ثبت نظر</button>
 
       <div class="ri-note">
         نظر شما پس از بررسی منتشر می‌شود. ما نظر منفی را حذف نمی‌کنیم —
@@ -302,5 +302,6 @@ async function submit() {
 
 load();
 </script>
+<script src="/assets/csp-actions.js"></script>
 </body>
 </html>

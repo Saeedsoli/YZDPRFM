@@ -1,5 +1,5 @@
 'use strict';
-// Explicit operation only, with mandatory pre-migration SQLite backup.
+
 const fs=require('fs'),path=require('path');
 const args=process.argv.slice(2);
 if (args.length!==3 || args[0]!=='--apply' || args[1]!=='--backup') {

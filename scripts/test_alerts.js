@@ -1,27 +1,5 @@
 #!/usr/bin/env node
-/**
- * آزمون اطلاع‌رسانی داخلی — خبر به کارکنان، نه مشتری.
- *
- * چرا این ماژول ساخته شد:
- *   تا امروز هر اطلاع‌رسانی سایت به **مشتری** می‌رفت. اگر ساعت
- *   ۱۱ شب سفارشی ثبت می‌شد، تا وقتی کسی پنل را باز نمی‌کرد
- *   هیچ‌کس خبر نداشت.
- *
- * چرا این آزمون سخت‌گیر است:
- *   این ماژول در **مسیر داغ** صدا زده می‌شود — درست بعد از تأیید
- *   پرداخت. اگر خطا بدهد یا کند باشد، سفارش مشتری آسیب می‌بیند.
- *   پس باید ثابت شود که هرگز throw نمی‌کند و هرگز منتظر نمی‌ماند.
- *
- * پوشش:
- *   ۱) گیرندگان بر پایه **مجوز** انتخاب می‌شوند نه نقش
- *   ۲) ساعت آرام رعایت می‌شود، مگر رویداد فوری
- *   ۳) ضد سیل کار می‌کند
- *   ۴) هرگز throw نمی‌کند — حتی با داده خراب
- *   ۵) خاموش‌کردن واقعاً خاموش می‌کند
- *   ۶) به نقاط واقعی وصل شده
- *
- * اجرا: node scripts/test_alerts.js   (سرور لازم نیست)
- */
+
 'use strict';
 
 const fs   = require('fs');
@@ -38,7 +16,6 @@ const add = (label, ok, note) => {
   checks.push(ok);
 };
 
-/** ماژول را با محیط دلخواه تازه بارگذاری می‌کند */
 function fresh(env = {}) {
   const keep = {};
   Object.keys(env).forEach(k => { keep[k] = process.env[k]; process.env[k] = env[k]; });
@@ -64,7 +41,6 @@ function fresh(env = {}) {
 
   const { db } = require('../src/db');
 
-  // ─────────────── ۱) ساختار
   console.log();
   console.log(h('  ۱) ساختار رویدادها'));
 
@@ -87,12 +63,11 @@ function fresh(env = {}) {
       urgent.length === 1 && urgent[0] === 'securityAlert',
       urgent.join(', ') || 'هیچ');
 
-  // ─────────────── ۲) انتخاب گیرنده بر پایه مجوز
   console.log();
   console.log(h('  ۲) گیرندگان — بر پایه مجوز نه نقش'));
 
-  const MOB_A = '09121230001';   // انباردار — سفارش می‌بیند
-  const MOB_B = '09121230002';   // محتوانویس — سفارش نمی‌بیند
+  const MOB_A = '09121230001';
+  const MOB_B = '09121230002';
 
   db.prepare("DELETE FROM staff WHERE username LIKE 'alerttest%'").run();
   const mk = (u, role, mobile) => db.prepare(`
@@ -108,19 +83,16 @@ function fresh(env = {}) {
   add('محتوانویس خبر سفارش نمی‌گیرد', !orderTo.includes(MOB_B),
       'مرز مجوز رعایت شد');
 
-  // کارمند غیرفعال نباید خبر بگیرد
   db.prepare("UPDATE staff SET active=0 WHERE username='alerttest_wh'").run();
   add('کارمند غیرفعال خبر نمی‌گیرد',
       !alerts.recipients('orders.view').includes(MOB_A));
   db.prepare("UPDATE staff SET active=1 WHERE username='alerttest_wh'").run();
 
-  // بدون موبایل
   db.prepare("UPDATE staff SET mobile=NULL WHERE username='alerttest_wh'").run();
   add('کارمند بدون موبایل رد می‌شود',
       !alerts.recipients('orders.view').includes(MOB_A));
   db.prepare("UPDATE staff SET mobile=? WHERE username='alerttest_wh'").run(MOB_A);
 
-  // شماره اضافی از متغیر محیطی
   {
     const { mod, restore } = fresh({ ALERTS_EXTRA_MOBILES: '09129998877,بد' });
     const to = mod.recipients('orders.view');
@@ -129,17 +101,14 @@ function fresh(env = {}) {
     restore();
   }
 
-  // ─────────────── ۳) ساعت آرام
   console.log();
   console.log(h('  ۳) ساعت آرام'));
 
-  /* مالک همه مجوزها را دارد؛ با دادن موبایل به او، رویداد
-     امنیتی گیرنده پیدا می‌کند و آزمون فوری بودن معنادار می‌شود. */
   const ownerMob = db.prepare("SELECT mobile FROM staff WHERE username='owner'").get();
   db.prepare("UPDATE staff SET mobile=? WHERE username='owner'").run('09121230009');
 
   {
-    // بازه‌ای که همیشه آرام است (۰ تا ۲۴)
+
     const { mod, restore } = fresh({ ALERTS_QUIET_FROM: '0', ALERTS_QUIET_TO: '24' });
     add('در ساعت آرام تشخیص داده می‌شود', mod._internals.inQuietHours() === true);
 
@@ -147,10 +116,6 @@ function fresh(env = {}) {
     add('رویداد غیرفوری در ساعت آرام نمی‌رود',
         res.sent === 0 && res.skipped === 'ساعت آرام', res.skipped);
 
-    /* رویداد فوری باید **واقعاً بفرستد**، نه اینکه صرفاً به
-       دلیل دیگری رد شود. نسخه اول فقط `skipped !== 'ساعت آرام'`
-       را می‌سنجید و با «گیرنده‌ای ندارد» سبز می‌شد — سبزِ توخالی.
-       پس گیرنده‌ای با مجوز لازم موقتاً اضافه می‌شود. */
     const urg = await mod.fire('securityAlert', { count: 3, ip: '1.2.3.4' });
     add('رویداد فوری ساعت آرام را نادیده می‌گیرد',
         urg.skipped !== 'ساعت آرام' && urg.sent > 0,
@@ -159,7 +124,7 @@ function fresh(env = {}) {
   }
 
   {
-    // بازه‌ای که هرگز آرام نیست
+
     const { mod, restore } = fresh({ ALERTS_QUIET_FROM: '3', ALERTS_QUIET_TO: '3' });
     add('بیرون ساعت آرام، عبور می‌کند',
         mod._internals.inQuietHours() === false);
@@ -171,13 +136,12 @@ function fresh(env = {}) {
       alerts._internals.tehranHour() >= 0 && alerts._internals.tehranHour() <= 23,
       `ساعت ${alerts._internals.tehranHour()} تهران`);
 
-  // ─────────────── ۴) ضد سیل
   console.log();
   console.log(h('  ۴) ضد سیل'));
 
   {
     const { mod, restore } = fresh({
-      ALERTS_QUIET_FROM: '3', ALERTS_QUIET_TO: '3',   // هرگز آرام نباشد
+      ALERTS_QUIET_FROM: '3', ALERTS_QUIET_TO: '3',
       ALERTS_HOURLY_CAP: '3'
     });
     let capped = false, passed = 0;
@@ -193,7 +157,6 @@ function fresh(env = {}) {
     restore();
   }
 
-  // ─────────────── ۵) خاموش کردن
   console.log();
   console.log(h('  ۵) خاموش کردن'));
 
@@ -206,7 +169,6 @@ function fresh(env = {}) {
     restore();
   }
 
-  // ─────────────── ۶) مقاومت در برابر خطا
   console.log();
   console.log(h('  ۶) مقاومت — مسیر داغ نباید بشکند'));
 
@@ -229,7 +191,6 @@ function fresh(env = {}) {
     catch { threw = true; }
     add('‏fireAsync همگام throw نمی‌کند', !threw, 'برای مسیر داغ');
 
-    // زمان‌سنجی: نباید مسیر اصلی را کند کند
     const t0 = Date.now();
     mod.fireAsync('newOrder', { order_id: 'Y', total_paid: 1 });
     const dt = Date.now() - t0;
@@ -238,7 +199,6 @@ function fresh(env = {}) {
     restore();
   }
 
-  // ─────────────── ۷) متن پیام
   console.log();
   console.log(h('  ۷) متن پیام'));
 
@@ -254,7 +214,6 @@ function fresh(env = {}) {
   orderText.split('\n').forEach(l => console.log(d('      │ ' + l)));
   console.log(d('      └─'));
 
-  // ─────────────── ۸) اتصال به نقاط واقعی
   console.log();
   console.log(h('  ۸) اتصال به کد'));
 
@@ -275,7 +234,6 @@ function fresh(env = {}) {
       !/await\s+alerts\.fire\(/.test(srv),
       'وگرنه سفارش منتظر پیامک می‌ماند');
 
-  // ─────────────── ۹) وضعیت
   console.log();
   console.log(h('  ۹) گزارش وضعیت'));
 
@@ -285,7 +243,6 @@ function fresh(env = {}) {
   add('شمار گیرندگان درست است', st.reachable >= 1, `${st.reachable} گیرنده`);
   add('ساعت آرام گزارش می‌شود', !!st.quiet_hours, st.quiet_hours);
 
-  // پاک‌سازی — وضعیت دقیقاً به حالت پیش از آزمون برمی‌گردد
   db.prepare("DELETE FROM staff WHERE username LIKE 'alerttest%'").run();
   db.prepare("UPDATE staff SET mobile=? WHERE username='owner'")
     .run(ownerMob ? ownerMob.mobile : null);

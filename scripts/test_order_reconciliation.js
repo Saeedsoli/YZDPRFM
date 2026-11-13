@@ -31,7 +31,7 @@ function run(file){return new Promise((resolve,reject)=>{const p=spawn(process.e
  const req={orderId:'P',evidenceNote:'gateway confirms not paid and link closed',reviewedBy:'owner',noPaymentConfirmed:true,linkClosedConfirmed:true,nowMs:now};
  assert.equal(recon.reviewPayment(db,req).reason,'NOT_ELIGIBLE');
  db.prepare("update orders set status='FAILED' where order_id='P'").run();
- // A provider call still in flight cannot be cleared, even if the local order was cancelled.
+
  assert.equal(recon.reviewPayment(db,req).reason,'NOT_ELIGIBLE');assert(!recon.paymentNeedsReview(db,'P'));
  assert.throws(()=>recon.recoverInterrupted(db,{orderId:'P',evidenceNote:'offline gateway review complete',reviewedBy:'owner',offlineConfirmed:true,nowMs:now}));
  assert.equal(db.transaction(()=>recon.recoverInterrupted(db,{orderId:'P',evidenceNote:'offline gateway review complete',reviewedBy:'owner',offlineConfirmed:false,nowMs:now})).immediate().reason,'INVALID_INPUT');

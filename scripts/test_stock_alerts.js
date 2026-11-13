@@ -1,17 +1,5 @@
 #!/usr/bin/env node
-/**
- * آزمون «اطلاع بده وقتی موجود شد».
- *
- * مسیرهایی که موجودی می‌تواند از صفر بالا برود:
- *   ۱) ادمین در پنل موجودی را ویرایش کند
- *   ۲) سفارشی که آخرین موجودی را برده بود لغو شود
- *   ۳) پرداخت ناموفق شود و موجودی برگردد
- *   ۴) سفارش پرداخت‌نشده منقضی شود
- *
- * انتظار: در هر چهار حالت، منتظران پیامک بگیرند.
- *
- * اجرا: node scripts/test_stock_alerts.js
- */
+
 'use strict';
 
 const { spawn } = require('child_process');
@@ -69,7 +57,6 @@ async function boot() {
   return { proc, getLog: () => log };
 }
 
-/** ثبت درخواست اطلاع و صفر کردن موجودی */
 function armAlert() {
   const db = new Database(DB);
   db.prepare('DELETE FROM stock_alerts WHERE sku=? AND mobile=?').run(SKU, WATCHER);
@@ -123,7 +110,6 @@ function setStock(n) {
 
   const checks = [];
 
-  // ══ مسیر ۱: ویرایش دستی ادمین ══
   console.log(d('  مسیر ۱ — ادمین موجودی را در پنل زیاد می‌کند'));
   armAlert();
   const before1 = srv.getLog().length;
@@ -137,7 +123,6 @@ function setStock(n) {
   console.log(`    پیامک ارسال شد: ${sent1 ? 'بله' : 'خیر'}  ·  notified=${alertState()}`);
   checks.push(['ویرایش ادمین → اطلاع‌رسانی', sent1 && alertState() === 1]);
 
-  // ══ مسیر ۲: لغو سفارش توسط ادمین ══
   console.log(d('\n  مسیر ۲ — سفارشی که آخرین موجودی را برده بود لغو می‌شود'));
   setStock(1);
   const o2 = await (await fetch(`${BASE}/api/orders`, {
@@ -150,7 +135,7 @@ function setStock(n) {
       items: [{ sku: SKU, quantity: 1 }]
     })
   })).json();
-  armAlert();                    // حالا موجودی صفر است و کسی منتظر
+  armAlert();
   setStock(0);
   const before2 = srv.getLog().length;
 
@@ -164,7 +149,6 @@ function setStock(n) {
   console.log(`    پیامک ارسال شد: ${sent2 ? 'بله' : 'خیر'}  ·  notified=${alertState()}`);
   checks.push(['لغو سفارش → اطلاع‌رسانی', sent2 && alertState() === 1]);
 
-  // ══ مسیر ۳: پرداخت ناموفق ══
   console.log(d('\n  مسیر ۳ — پرداخت ناموفق و بازگشت موجودی'));
   setStock(1);
   const o3 = await (await fetch(`${BASE}/api/orders`, {
@@ -184,14 +168,13 @@ function setStock(n) {
   await fetch(`${BASE}/api/payment/verify`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ order_id: o3.order_id, authority: 'x' })   // بدون success = لغو
+    body: JSON.stringify({ order_id: o3.order_id, authority: 'x' })
   });
   await sleep(500);
   const sent3 = /موجود شد/.test(srv.getLog().slice(before3));
   console.log(`    پیامک ارسال شد: ${sent3 ? 'بله' : 'خیر'}  ·  notified=${alertState()}`);
   checks.push(['پرداخت ناموفق → اطلاع‌رسانی', sent3 && alertState() === 1]);
 
-  // ══ تکراری نبودن ══
   console.log(d('\n  بررسی: پیامک تکراری فرستاده نمی‌شود'));
   const before4 = srv.getLog().length;
   setStock(0);

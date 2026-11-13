@@ -1,47 +1,18 @@
-/**
- * عطر یزد | مسیرهای نقش‌ها، کارکنان و دسترسی (RBAC)
- * --------------------------------------------------
- * سومین ماژول جداشده از `server.js` — بزرگ‌ترین تا اینجا (۴۳۰ خط).
- *
- * شامل: هویت کارمند فعلی، فهرست مجوزها، مدیریت نقش‌ها،
- * مدیریت کارکنان و تغییر رمز.
- *
- * ── چرا این بخش زودتر از پرداخت جدا شد ──
- * با اینکه حساس است (کنترل دسترسی)، پوشش آزمون بسیار خوبی دارد:
- * `test_rbac.js`، `test_rbac_escalation.js` و `test_accounts.js`
- * روی همین مسیرها کار می‌کنند. یعنی اگر چیزی بشکند، فوراً
- * معلوم می‌شود — برخلاف مسیر پرداخت که آزمون واقعی ندارد.
- *
- * الگوی `ctx` — توضیح کامل در `src/routes/articles.js`.
- */
-
 'use strict';
 const {strongInitialSecret} = require('../production-admin-guard');
 const crypto = require('crypto');
 
-/** کمکی: پاسخ می‌فرستد و `true` برمی‌گرداند (یعنی رسیدگی شد) */
 function send(fn, ...args) { fn(...args); return true; }
 
-/**
- * @param {object} ctx زمینه درخواست
- * @returns {Promise<boolean>} آیا مسیر رسیدگی شد؟
- */
 async function handle(ctx) {
   const {
     method, pathname, req, res, sendJSON, can, logAudit, who,
     parseBody, db, appLog, perms, cleanText, normalizeDigits,
     getStaff, getStaffByUsername, listStaff, listRoles, getRole,
     hashPassword, verifyPassword,
-    /* ── چهار وابستگی که تشخیص خودکار جا انداخت ──
-       اسکریپت استخراج وابستگی‌ها بر پایه regex بود و `otp.x()`،
-       `notify.x()`، `faNum()` و `getToken()` را ندید. نتیجه:
-       «خطای داخلی سرور» روی ساخت کارمند که فقط با آزمون واقعی
-       کشف شد، نه با بررسی نحوی.
 
-       درس: تشخیص خودکار وابستگی برای تفکیک ماژول کافی نیست —
-       باید هر مسیر واقعاً صدا زده شود. */
     otp, notify, faNum, getToken,
-    /* پاک‌کننده فیلدهای رمز پیش از ارسال به بیرون */
+
     publicStaff
   } = ctx;
 
@@ -54,13 +25,11 @@ async function handle(ctx) {
     });
   }
 
-  /** فهرست همه مجوزهای ممکن، گروه‌بندی‌شده — برای صفحه ویرایش نقش */
   if (method === 'GET' && pathname === '/api/admin/permissions') {
     if (!can('roles.manage')) return true;
     return send(sendJSON, 200, { groups: perms.groupedPermissions() });
   }
 
-  // ── نقش‌ها ──
   if (method === 'GET' && pathname === '/api/admin/roles') {
     if (!can('staff.view')) return true;
     return send(sendJSON, 200, { roles: listRoles() });
@@ -84,8 +53,6 @@ async function handle(ctx) {
     const list = perms.sanitizePermissions(b.permissions);
     if (!list.length) return send(sendJSON, 400, { error: 'دست‌کم یک مجوز انتخاب کنید.' });
 
-    /* هیچ نقشی جز مدیر کل نباید بتواند نقش بسازد یا کارمند اضافه
-       کند — وگرنه می‌تواند خودش را ارتقا دهد. */
     const escalation = list.filter(k => k === 'roles.manage' || k === 'staff.manage');
     if (escalation.length && who.role_key !== 'owner') {
       return send(sendJSON, 403, {
@@ -112,13 +79,6 @@ async function handle(ctx) {
       return send(sendJSON, 403, { error: 'مجوزهای مدیر کل قابل تغییر نیست.' });
     }
 
-    /* ── ویرایش نقشِ خود ممنوع ──
-       وگرنه کسی که «مدیریت نقش‌ها» دارد، نقش خودش را باز می‌کند و
-       هر مجوزی می‌خواهد برمی‌دارد. بند «ارتقا» پایین‌تر فقط جلوی
-       افزودن roles.manage/staff.manage را می‌گیرد؛ یعنی این کارمند
-       می‌توانست به جایش «خروجی مشتریان» یا «تغییر قیمت» بردارد.
-       مدیر کل از این محدودیت مستثناست (نقشش قفل است و اصلاً به
-       اینجا نمی‌رسد). */
     if (key === who.role_key && who.role_key !== 'owner') {
       logAudit('roles.manage', {
         target: key, allowed: false,
@@ -180,7 +140,6 @@ async function handle(ctx) {
     return send(sendJSON, 200, { message: 'نقش حذف شد.' });
   }
 
-  // ── کارکنان ──
   if (method === 'GET' && pathname === '/api/admin/staff') {
     if (!can('staff.view')) return true;
     return send(sendJSON, 200, { staff: listStaff() });
@@ -190,9 +149,6 @@ async function handle(ctx) {
     if (!can('staff.manage')) return true;
     const b = await parseBody(req);
 
-    /* ── نام کاربری = کد ملی ──
-       یکتاست، جعل نمی‌شود، و کارمند همیشه به یادش دارد.
-       نام مستعار دلخواه این سه ویژگی را ندارد. */
     const nid = normalizeDigits(b.national_id);
     if (!/^\d{10}$/.test(nid)) {
       return send(sendJSON, 400, { error: 'کد ملی باید دقیقاً ۱۰ رقم باشد.' });
@@ -210,18 +166,15 @@ async function handle(ctx) {
     const role = getRole(String(b.role_key || '').trim());
     if (!role) return send(sendJSON, 400, { error: 'نقش انتخابی معتبر نیست.' });
 
-    // فقط مدیر کل می‌تواند مدیر کل بسازد
     if (role.key === 'owner' && who.role_key !== 'owner') {
       return send(sendJSON, 403, { error: 'تنها مدیر کل می‌تواند مدیر کل تعریف کند.' });
     }
 
-    // Mobile identifies the recipient for an optional notice, not a password.
     const mobile = otp.normalizeMobile(b.mobile);
     if (!otp.isValidMobile(mobile)) {
       return send(sendJSON, 400, { error: 'شماره موبایل معتبر نیست.' });
     }
-    // 144 random bits, independent of public personal data. Force a change on
-    // first login and reveal once only to the authorized staff manager.
+
     const tempPassword = crypto.randomBytes(18).toString('base64url');
 
     const { hash, salt } = hashPassword(tempPassword);
@@ -239,8 +192,6 @@ async function handle(ctx) {
       target: nid, detail: { action: 'create', role: role.key }
     });
 
-    // Notification contains no credentials; a provider acceptance is not a
-    // guarantee of delivery. No secret goes to SMS or console fallback.
     let smsSent = false;
     try { smsSent = !!(await notify.sendStaffNotice(mobile)); } catch { smsSent = false; }
     res.setHeader('Cache-Control', 'no-store');
@@ -267,12 +218,6 @@ async function handle(ctx) {
     const isSelf = target.id === who.id;
     const iAmOwner = who.role_key === 'owner';
 
-    /* ── محافظت از حساب مدیر کل ──
-       «مدیریت کارکنان» یعنی اداره کردن هم‌رده‌ها، نه دست بردن در
-       حساب کسی که بالادست توست. بدون این بند، هر کارمندی که
-       staff.manage دارد می‌تواند رمز مدیر کل را بازنشانی کند و
-       با آن وارد شود — یعنی مجوز «افزودن کارمند» عملاً برابر
-       با تصاحب کل فروشگاه است. */
     if (target.role_key === 'owner' && !iAmOwner) {
       logAudit('staff.manage', {
         target: target.username, allowed: false,
@@ -285,9 +230,6 @@ async function handle(ctx) {
       });
     }
 
-    /* ── ارتقای خود ممنوع ──
-       حتی مدیر کل هم نقش خودش را از این مسیر عوض نمی‌کند؛ برای
-       این کار باید مدیر کل دیگری این کار را انجام دهد. */
     if (b.role_key != null && b.role_key !== target.role_key && isSelf) {
       logAudit('staff.manage', {
         target: target.username, allowed: false,
@@ -300,9 +242,6 @@ async function handle(ctx) {
       });
     }
 
-    /* رمز خود از این مسیر بازنشانی نمی‌شود — راهش «تغییر رمز»
-       است که رمز فعلی را می‌پرسد. وگرنه کسی که پشت میزِ باز
-       نشسته، بدون دانستن رمز فعلی آن را عوض می‌کند. */
     if (b.password && isSelf) {
       return send(sendJSON, 400, {
         error: 'برای رمز خودتان از «تغییر رمز عبور» استفاده کنید.'
@@ -329,7 +268,7 @@ async function handle(ctx) {
       if (role.key === 'owner' && who.role_key !== 'owner') {
         return send(sendJSON, 403, { error: 'تنها مدیر کل می‌تواند نقش مدیر کل بدهد.' });
       }
-      // آخرین مدیر کل نباید نقشش عوض شود
+
       if (target.role_key === 'owner') {
         const owners = db.prepare(
           "SELECT COUNT(*) n FROM staff WHERE role_key='owner' AND active=1"
@@ -359,7 +298,6 @@ async function handle(ctx) {
       fields.push('active=?'); args.push(act);
     }
 
-    // بازنشانی رمز توسط مدیر
     if (b.password) {
       if (String(process.env.NODE_ENV||'').trim().toLowerCase()==='production' &&
           (target.role_key==='owner' || b.role_key==='owner') && !strongInitialSecret(String(b.password))) {
@@ -371,7 +309,7 @@ async function handle(ctx) {
       const { hash, salt } = hashPassword(b.password);
       fields.push('pass_hash=?', 'pass_salt=?', 'must_change=?');
       args.push(hash, salt, 1);
-      // نشست‌های باز آن کارمند باطل می‌شوند
+
       db.prepare("DELETE FROM sessions WHERE kind='ADMIN' AND subject=?")
         .run(String(id));
     }
@@ -400,7 +338,7 @@ async function handle(ctx) {
     if (target.id === who.id) {
       return send(sendJSON, 400, { error: 'نمی‌توانید حساب خودتان را حذف کنید.' });
     }
-    // حساب مدیر کل را فقط مدیر کل حذف می‌کند (همان قاعده ویرایش)
+
     if (target.role_key === 'owner' && who.role_key !== 'owner') {
       logAudit('staff.manage', {
         target: target.username, allowed: false,
@@ -430,7 +368,6 @@ async function handle(ctx) {
     return send(sendJSON, 200, { message: `حساب «${target.display_name}» حذف شد.` });
   }
 
-  /** تغییر رمز توسط خود کارمند */
   if (method === 'POST' && pathname === '/api/admin/change-password') {
     if (!who) return send(sendJSON, 401, { error: 'وارد نشده‌اید.' });
     const b = await parseBody(req);
@@ -456,7 +393,6 @@ async function handle(ctx) {
     db.prepare('UPDATE staff SET pass_hash=?, pass_salt=?, must_change=0 WHERE id=?')
       .run(hash, salt, who.id);
 
-    // نشست‌های دیگر باطل شوند، جز همین یکی
     const tok = getToken(req);
     db.prepare("DELETE FROM sessions WHERE kind='ADMIN' AND subject=? AND token!=?")
       .run(String(who.id), tok);

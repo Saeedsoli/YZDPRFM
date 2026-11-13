@@ -1,6 +1,5 @@
 'use strict';
-// Phone proof is recorded only after successful OTP, never inferred from a
-// legacy password or session. An old password stays untrusted until reset.
+
 const KEY='customer_phone_verification_schema_v1';
 const DDL=`CREATE TABLE customer_phone_verifications (
   mobile TEXT PRIMARY KEY,

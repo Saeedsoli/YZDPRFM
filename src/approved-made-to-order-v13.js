@@ -1,6 +1,5 @@
 'use strict';
-// Owner-approved fixed scope. Never changes prices, stock, customer/order data.
-// A one-time marker prevents reopening products the owner later disables.
+
 const fs=require('fs');
 const {allowedVariant,RATE_KEY}=require('./essence-pricing-store');
 const {priceFromUsdPerKg}=require('./essence-pricing');

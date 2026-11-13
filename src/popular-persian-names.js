@@ -1,5 +1,5 @@
 'use strict';
-// Correct only exact, preselected seed spellings; never override manager edits.
+
 const fs=require('fs'),path=require('path');
 const KEY='popular_persian_names_2026_11_v1';
 function apply(db){

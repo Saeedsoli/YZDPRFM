@@ -1,28 +1,5 @@
 #!/usr/bin/env node
-/**
- * آزمون ماژول کاتالوگ عمومی — گام ۷ تفکیک `server.js`.
- *
- * چرا این آزمون از شش آزمون پیشین سخت‌گیرتر است:
- *
- *   ماژول‌های پیشین مدیریتی بودند؛ اگر می‌شکستند، یک کارمند
- *   خطا می‌دید. این ماژول **پرترافیک‌ترین بخش سایت** است —
- *   `/api/products` تقریباً در هر بازدید صدا زده می‌شود، و
- *   `/api/showcase` روی صفحه اصلی.
- *
- *   پس اینجا فقط «۲۰۰ برمی‌گرداند» کافی نیست. باید ثابت شود
- *   منطق هم درست جابه‌جا شده: مرتب‌سازی واقعاً مرتب می‌کند،
- *   فیلتر نُت با AND کار می‌کند نه OR، جستجوی بی‌نتیجه به
- *   حالت شل می‌افتد، و درصد جشنواره روی کارت‌ها می‌نشیند.
- *
- * پوشش:
- *   ۱) هر سیزده مسیر پاسخ درست می‌دهند
- *   ۲) پارامترها واقعاً اثر دارند (فیلتر، مرتب‌سازی، صفحه‌بندی)
- *   ۳) محافظ‌های امنیتی سالم مانده‌اند (فهرست سفید مرتب‌سازی)
- *   ۴) قراردادهای پاسخ نشکسته (نام کلیدها، شکل داده)
- *   ۵) سرور پس از همه اینها زنده است (تله ERR_HTTP_HEADERS_SENT)
- *
- * اجرا: node scripts/test_catalog.js   (سرور باید بالا باشد)
- */
+
 'use strict';
 
 const http = require('http');
@@ -42,13 +19,6 @@ const add = (label, ok, note) => {
   checks.push(ok);
 };
 
-/* مسیر همیشه اینجا امن می‌شود، نه در محل فراخوانی.
-   نسخه اول این کار را نمی‌کرد و اولین نامک فارسی، آزمون را با
-   ERR_UNESCAPED_CHARACTERS می‌انداخت — خطای آزمون، نه سرور.
-
-   فقط نویسه‌های خام غیر-ASCII کدگذاری می‌شوند. `encodeURIComponent`
-   روی کل مسیر، بخش‌هایی را که فراخوان از قبل کد کرده دوباره کد
-   می‌کرد (`%D9` → `%25D9`) و آزمون بی‌دلیل قرمز می‌شد. */
 const enc = p => p.replace(/[^\x00-\x7F]/g, encodeURIComponent);
 
 function api(p, opt = {}, token) {
@@ -83,7 +53,6 @@ const post = (p, obj, token) =>
   console.log(h('  آزمون کاتالوگ عمومی — گام ۷ تفکیک'));
   console.log(d('  ─────────────────────────────────────────────'));
 
-  // نمونه واقعی از دیتابیس — آزمون نباید شناسه را حدس بزند
   const sample = db.prepare(
     'SELECT id, slug, brand_fa, family_slug, gender FROM products LIMIT 1'
   ).get();
@@ -94,7 +63,6 @@ const post = (p, obj, token) =>
     'SELECT note_key, COUNT(*) c FROM product_notes GROUP BY note_key ORDER BY c DESC LIMIT 1 OFFSET 1'
   ).get();
 
-  // ───────────────────────── ۱) فهرست محصولات
   console.log();
   console.log(h('  ۱) فهرست محصولات'));
 
@@ -106,10 +74,7 @@ const post = (p, obj, token) =>
       Object.keys(list.json).join(','));
   add('limit رعایت می‌شود', list.json.products?.length === 5,
       `${list.json.products?.length} قلم`);
-  /* شمار محصول از دیتابیس خوانده می‌شود، نه عدد ثابت.
-     آنچه باید سنجیده شود «API همان تعدادی را می‌دهد که در جدول
-     هست؟» است — نه «چند محصول داریم». عدد ثابت، آزمون را به
-     محتوای کاتالوگ گره می‌زند و هر به‌روزرسانی آن را می‌شکند. */
+
   const CATALOG_TOTAL = db.prepare('SELECT COUNT(*) c FROM products').get().c;
   add('کل محصولات با دیتابیس می‌خواند',
       list.json.total === CATALOG_TOTAL,
@@ -127,7 +92,6 @@ const post = (p, obj, token) =>
       Array.isArray(full.json.products?.[0]?.variants),
       `${full.json.products?.[0]?.variants?.length} واریانت`);
 
-  // ───────────────────────── ۲) صفحه‌بندی
   console.log();
   console.log(h('  ۲) صفحه‌بندی'));
 
@@ -147,7 +111,6 @@ const post = (p, obj, token) =>
   add('پارامتر منفی نمی‌شکند',
       bad.status === 200 && bad.json.page === 1 && bad.json.limit >= 1);
 
-  // ───────────────────────── ۳) فیلترها
   console.log();
   console.log(h('  ۳) فیلترها'));
 
@@ -168,7 +131,6 @@ const post = (p, obj, token) =>
   add('فیلتر جنسیت بزرگ/کوچک را نادیده می‌گیرد',
       byGender.json.total === wCount, `women → ${byGender.json.total} = ${wCount}`);
 
-  // فیلتر نُت — مهم‌ترین: باید AND باشد نه OR
   const n1 = await api(`/api/products?note=${encodeURIComponent(topNote.note_key)}`);
   const n2 = await api(`/api/products?note=${encodeURIComponent(secondNote.note_key)}`);
   const nBoth = await api(
@@ -193,7 +155,6 @@ const post = (p, obj, token) =>
   add('بیش از ۴ نُت مقید می‌شود', manyNotes.status === 200,
       'وگرنه هفت EXISTS تودرتو');
 
-  // فیلترهای ترکیبی
   const combo = await api(
     `/api/products?family=${sample.family_slug}&gender=${sample.gender}&limit=5`
   );
@@ -203,14 +164,12 @@ const post = (p, obj, token) =>
         p.family_slug === sample.family_slug && p.gender === sample.gender),
       `${combo.json.total} محصول`);
 
-  // ───────────────────────── ۴) جستجو
   console.log();
   console.log(h('  ۴) جستجو'));
 
   const s1 = await api('/api/products?q=' + encodeURIComponent('کرید'));
   add('جستجوی فارسی نتیجه می‌دهد', s1.json.total > 0, `${s1.json.total} نتیجه`);
 
-  // یکسان‌سازی: ی/ي و ک/ك عربی باید همان نتیجه بدهند
   const s2 = await api('/api/products?q=' + encodeURIComponent('كريد'));
   add('حرف عربی ك/ي یکسان‌سازی می‌شود',
       s2.json.total === s1.json.total, `${s2.json.total} = ${s1.json.total}`);
@@ -220,7 +179,6 @@ const post = (p, obj, token) =>
       nothing.status === 200 && nothing.json.total === 0,
       'نه ۴۰۴ — فروشگاه خالی هم فروشگاه است');
 
-  // حالت شل — چند کلمه که با هم هیچ محصولی ندارند
   const relaxed = await api('/api/products?q=' + encodeURIComponent('کرید شنل دیور'));
   add('جستجوی چندکلمه‌ای بن‌بست به حالت شل می‌افتد',
       relaxed.json.total > 0 && relaxed.json.relaxed === true,
@@ -236,30 +194,12 @@ const post = (p, obj, token) =>
       inject.status === 200 && inject.json.total < CATALOG_TOTAL,
       `${inject.json.total} نتیجه — پارامتری بسته شده`);
 
-  // ───────────────────────── ۵) مرتب‌سازی (فهرست سفید)
   console.log();
   console.log(h('  ۵) مرتب‌سازی — فهرست سفید'));
 
-  /* ⚠️ قرارداد واقعی مرتب‌سازی — مرداد ۱۴۰۵
-     ─────────────────────────────────────
-     سرور به **همه** مرتب‌سازی‌ها یک پیشوند اضافه می‌کند:
-       `EXISTS(... stock > 0) DESC, <مرتب‌سازی کاربر>`
-     یعنی محصولات موجود همیشه اول می‌آیند، بعد ترتیب خواسته‌شده
-     اعمال می‌شود. منطقش این است: کسی که «ارزان‌ترین» را می‌خواهد،
-     ارزان‌ترینِ **قابل خرید** را می‌خواهد، نه چیزی که نمی‌تواند
-     بخرد. (src/routes/catalog.js — ثابت IN_STOCK)
-
-     این آزمون قبلاً ترتیب سراسری را می‌سنجید و پس از آن تغییر
-     قرمز شد — ولی کد درست بود، نه آزمون. اکنون درست‌تر می‌سنجد:
-     ترتیب را **درون هر گروه موجودی** بررسی می‌کند.
-
-     با یک محصول موجود از ۲۱۰۶ (وضعیت فعلی)، گروه «موجود» یک
-     عضو دارد و گروه «ناموجود» بقیه را. اگر انبار پر شود، همین
-     آزمون بدون تغییر باز هم درست کار می‌کند. */
   const asc  = await api('/api/products?sort=price_asc&limit=10');
   const desc = await api('/api/products?sort=price_desc&limit=10');
 
-  /** قیمت‌ها را به دو گروه موجود/ناموجود می‌شکند */
   const byStock = res => {
     const g = { inStock: [], outStock: [] };
     for (const p of res.json.products) {
@@ -287,9 +227,6 @@ const post = (p, obj, token) =>
       isDesc(d2.inStock) && isDesc(d2.outStock),
       `موجود: ${d2.inStock.join(' ≥ ') || '—'} · ناموجود: ${d2.outStock.slice(0, 3).join(' ≥ ')}`);
 
-  /* ارزان‌ترین و گران‌ترین باید فرق کنند — ولی درون گروه ناموجود
-     سنجیده می‌شود، چون گروه موجود فعلاً یک عضو دارد و طبیعتاً در
-     هر دو مرتب‌سازی همان یکی است. */
   add('ارزان‌ترین و گران‌ترین ناموجود یکی نیستند',
       a.outStock.length > 0 && d2.outStock.length > 0 &&
       a.outStock[0] !== d2.outStock[0],
@@ -306,7 +243,6 @@ const post = (p, obj, token) =>
   add('sort ناشناخته به پیش‌فرض می‌افتد',
       (await api('/api/products?sort=hack')).status === 200);
 
-  // ───────────────────────── ۶) یک محصول
   console.log();
   console.log(h('  ۶) صفحه محصول'));
 
@@ -321,7 +257,6 @@ const post = (p, obj, token) =>
   add('محصول ناموجود ۴۰۴ می‌دهد', missing.status === 404 &&
       /یافت نشد/.test(missing.json.error || ''));
 
-  // ───────────────────────── ۷) ویترین صفحه اصلی
   console.log();
   console.log(h('  ۷) ویترین صفحه اصلی'));
 
@@ -342,7 +277,6 @@ const post = (p, obj, token) =>
       show.json.seasonal.every(x => 'campaign_percent' in x),
       'نه از جدول trending که ساعتی تازه می‌شود');
 
-  // ───────────────────────── ۸) فهرست‌های کاوش
   console.log();
   console.log(h('  ۸) برند، خانواده، نُت، اسانس'));
 
@@ -371,10 +305,7 @@ const post = (p, obj, token) =>
       notesMin.json.notes.length < notes.json.notes.length &&
       notesMin.json.notes.every(n => n.count >= 200),
       `min=200 → ${notesMin.json.notes.length} نُت`);
-  /* `min` عمداً به ۲۰۰ مقید است. اولین نسخه این آزمون `min=500`
-     می‌فرستاد و انتظار داشت همه نُت‌ها ≥۵۰۰ باشند — انتظار غلط
-     بود، نه کد. سومین بار در این پروژه که آزمون قرمز شد و مقصر
-     آزمون بود نه سرور. */
+
   const notesHuge = await api('/api/notes?min=99999');
   add('min بیش از حد به ۲۰۰ مقید می‌شود',
       notesHuge.json.notes.length === notesMin.json.notes.length,
@@ -393,14 +324,9 @@ const post = (p, obj, token) =>
   add('ژیوودان در فهرست هست',
       JSON.stringify(ess.json.houses).includes('ژیوودان'));
 
-  // ───────────────────────── ۹) کوییز و پروفایل بویایی
   console.log();
   console.log(h('  ۹) کوییز و پروفایل بویایی'));
 
-  /* کلیدها باید از `VALID` در `src/taste.js` باشند. هر کلید یا
-     مقدار خارج از فهرست سفید بی‌صدا دور ریخته می‌شود — پس آزمونی
-     که `{mood:'warm'}` بفرستد، پروفایل خالی می‌گیرد و بی‌دلیل
-     قرمز می‌شود. */
   const REAL = { gender: 'MEN', temperature: 'گرم', family: 'چوبی',
                  season: 'پاییز و زمستان' };
 
@@ -456,7 +382,6 @@ const post = (p, obj, token) =>
   add('خواندن و حذف رکورد مشتری نمی‌سازند',
       before === after, `${before} = ${after} — یافته ۴ ممیزی مرداد`);
 
-  // ───────────────────────── ۱۰) جشنواره و کد تخفیف
   console.log();
   console.log(h('  ۱۰) جشنواره و کد تخفیف عمومی'));
 
@@ -483,7 +408,6 @@ const post = (p, obj, token) =>
       !('id' in good.json) && !('created_at' in good.json),
       'فهرست سفید فیلدها');
 
-  // ───────────────────────── ۱۱) محافظ‌ها و همسایه‌ها
   console.log();
   console.log(h('  ۱۱) محافظ‌ها و مسیرهای همسایه'));
 
@@ -500,7 +424,6 @@ const post = (p, obj, token) =>
   add('صفحه اصلی رندر می‌شود',
       (await api('/')).status === 200);
 
-  // محدودیت نرخ taste — بی‌صدا نه با خطا
   console.log(d('    (‎۳۵ درخواست پیاپی به taste/suggest…)'));
   let throttled = false, sawError = false;
   for (let i = 0; i < 35; i++) {
@@ -514,7 +437,6 @@ const post = (p, obj, token) =>
 
   db.prepare("DELETE FROM rate_limits WHERE bucket LIKE 'taste%'").run();
 
-  // ───────────────────────── ۱۲) سلامت ساختاری
   console.log();
   console.log(h('  ۱۲) سلامت ساختاری تفکیک'));
 
@@ -556,7 +478,6 @@ const post = (p, obj, token) =>
   add('server.js زیر ۲۵۰۰ خط رسید', srvLines < 2500, `${srvLines} خط`);
   console.log(d(`      ماژول catalog: ${modLines} خط`));
 
-  // ───────────────────────── ۱۳) سرور زنده است؟
   console.log();
   console.log(h('  ۱۳) سرور پس از همه اینها'));
   const alive = await api('/api/products?limit=1');

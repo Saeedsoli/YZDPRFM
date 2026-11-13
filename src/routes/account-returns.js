@@ -1,8 +1,5 @@
 'use strict';
 
-// Account-owned return submission and explicitly confirmed delivery time.
-// All routes require the relevant verified session or staff permission, and
-// remain unavailable until the backup-first return schema is installed.
 const store = require('../return-store');
 async function handle(ctx) {
   const {method,pathname,req,sendJSON,can,parseBody,db,otp,getCustomerToken,
@@ -34,8 +31,7 @@ async function handle(ctx) {
   const b=await parseBody(req);
   const description=typeof b.description==='string' ? cleanText(b.description,2001) : '';
   if(b.safe_storage_confirmed!==true){sendJSON(400,{error:'شرایط نگهداری محصول باید تأیید شود.',reason:'INVALID_INPUT'});return true;}
-  // store.submit rechecks eligibility under this same transaction. Ticket and
-  // request either both persist or both roll back; no guessed item/owner data.
+
   const result=db.transaction(()=>{
     const r=store.submit(db,{verifiedMobile:mobile,itemId:b.item_id,quantity:b.quantity,
       description,usedUnder2ml:b.used_under_2ml});

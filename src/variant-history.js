@@ -1,5 +1,5 @@
 'use strict';
-// Historical SKUs are never offered for sale; this view is only for order/report joins.
+
 function ensureVariantHistory(db) {
   db.exec(`CREATE TABLE IF NOT EXISTS variant_archive (
     sku TEXT PRIMARY KEY, product_id TEXT NOT NULL, type TEXT NOT NULL, type_label TEXT,
@@ -12,7 +12,7 @@ function ensureVariantHistory(db) {
     SELECT a.sku, a.product_id, a.type, a.type_label, a.volume_ml FROM variant_archive a
       WHERE NOT EXISTS (SELECT 1 FROM variants v WHERE v.sku=a.sku);`);
 }
-// This explicit one-time maintenance operation requires a backup at the caller.
+
 function retireSampleThree(db) {
   return db.transaction(()=>{
     const conflict=db.prepare(`SELECT v.sku FROM variants v JOIN variant_archive a ON a.sku=v.sku

@@ -1,26 +1,5 @@
 #!/usr/bin/env node
-/**
- * آزمون نمایش وضعیت موجودی — یافته اصلی ممیزی جعبه‌سیاه.
- *
- * چرا این آزمون:
- *
- *   فقط ۱ محصول از ۲۱۰۶ قابل خرید است (۰٫۰۵٪). کارت محصول این
- *   را نمی‌گفت: «مشاهده و خرید» می‌نوشت و قیمت نشان می‌داد.
- *   کاربر کلیک می‌کرد، به صفحه محصول می‌رفت، و آنجا دکمه
- *   خاکستری می‌دید. با این نسبت، چند بار تکرار می‌شد تا برود.
- *
- *   داده `in_stock` از قبل در پاسخ API بود — فقط استفاده نمی‌شد.
- *
- * پوشش:
- *   ۱) مرتب‌سازی — موجودها همیشه اول، در همه حالت‌ها
- *   ۲) فیلتر `in_stock=1` دقیق کار می‌کند
- *   ۳) کارت نشان ناموجودی دارد
- *   ۴) فیلتر با بقیه فیلترها ترکیب می‌شود
- *   ۵) صفحه‌بندی نمی‌شکند
- *   ۶) دسترس‌پذیری چیپ دوحالته
- *
- * اجرا: node scripts/test_stock_visibility.js   (سرور بالا)
- */
+
 'use strict';
 
 const http = require('http');
@@ -67,7 +46,6 @@ function api(p) {
 
   console.log(d(`      واقعیت: ${realInStock} موجود از ${total} محصول`));
 
-  // ─────────────── ۱) مرتب‌سازی
   console.log();
   console.log(h('  ۱) موجودها اول'));
 
@@ -77,9 +55,6 @@ function api(p) {
       first.json.products?.[0]?.in_stock === true,
       'کاربر باید اول چیزی ببیند که بشود خرید');
 
-  /* موجودها باید در **همه** مرتب‌سازی‌ها اول بیایند، نه فقط
-     پیش‌فرض. کسی که «ارزان‌ترین» می‌خواهد، ارزان‌ترینِ قابل
-     خرید را می‌خواهد. */
   for (const sort of ['price_asc', 'price_desc', 'name', 'brand']) {
     const res = await api(`/api/products?limit=3&sort=${sort}`);
     add(`مرتب‌سازی «${sort}» هم موجود را اول می‌آورد`,
@@ -93,7 +68,6 @@ function api(p) {
       !searched.json.products.some(p => p.in_stock),
       `${searched.json.total} نتیجه`);
 
-  // ─────────────── ۲) فیلتر
   console.log();
   console.log(h('  ۲) فیلتر «فقط موجودها»'));
 
@@ -116,7 +90,6 @@ function api(p) {
   add('‎in_stock=0 هم فیلتر نمی‌کند',
       (await api('/api/products?limit=1&in_stock=0')).json.total === total);
 
-  // ─────────────── ۳) ترکیب فیلترها
   console.log();
   console.log(h('  ۳) ترکیب با فیلترهای دیگر'));
 
@@ -139,12 +112,9 @@ function api(p) {
       comboQ.json.products.every(p => p.in_stock === true),
       `${comboQ.json.total} نتیجه`);
 
-  // ─────────────── ۴) صفحه‌بندی
   console.log();
   console.log(h('  ۴) صفحه‌بندی نمی‌شکند'));
 
-  /* با JOIN، محصولی که چند واریانت موجود دارد چند بار می‌آمد و
-     صفحه‌بندی به هم می‌ریخت. EXISTS این را حل می‌کند. */
   const p1 = await api('/api/products?limit=10&page=1');
   const p2 = await api('/api/products?limit=10&page=2');
   const ids1 = new Set(p1.json.products.map(x => x.id));
@@ -162,7 +132,6 @@ function api(p) {
       p1.json.totalPages === Math.ceil(total / 10),
       String(p1.json.totalPages));
 
-  // ─────────────── ۵) کارت محصول
   console.log();
   console.log(h('  ۵) کارت محصول'));
 
@@ -187,7 +156,6 @@ function api(p) {
       !/\.product-card:hover \.card-out/.test(css),
       'روی موبایل hover نیست و برچسب باید دیده شود');
 
-  // ─────────────── ۶) رابط فیلتر
   console.log();
   console.log(h('  ۶) رابط فیلتر در صفحه اصلی'));
 
@@ -215,7 +183,6 @@ function api(p) {
       !/sc\.classList\.toggle\('on'/.test(idx),
       'یک منبع حقیقت — ظاهر و دسترس‌پذیری واگرا نمی‌شوند');
 
-  // ─────────────── ۷) صفحه محصول
   console.log();
   console.log(h('  ۷) صفحه محصول ناموجود'));
 

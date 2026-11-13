@@ -1,27 +1,5 @@
 #!/usr/bin/env node
-/**
- * دو تغییر خواسته‌شده مالک فروشگاه:
- *
- *   ۱) موجودی همه واریانت‌ها صفر شود (ناموجود).
- *      اعداد فعلی ساختگی بودند (۱۰۰، ۸۰، ۵۰۰، ۱۵۰) و اگر با
- *      همان‌ها افتتاح شود، مشتری کالایی می‌خرد که در انبار نیست.
- *      صفر یعنی «ناموجود» و امن‌ترین حالت پیش از افتتاح است.
- *
- *   ۲) حجم عطر مو و بادی اسپلش هر دو ۱۵۰ میل شود.
- *      عطر مو ۵۰ml بود و بادی اسپلش ۱۰۰ml.
- *
- * نکته درباره SKU: کد SKU حجم را در خودش دارد
- * (مثل YZD-0001-HM-050). با تغییر حجم، SKU هم باید عوض شود
- * وگرنه کد با محتوا نمی‌خواند. ولی SKU در سفارش‌های ثبت‌شده
- * ارجاع دارد، پس اگر سفارشی با SKU قدیمی باشد آن ردیف دست
- * نمی‌خورد و هشدار داده می‌شود.
- *
- * قیمت دست نمی‌خورد — تعیینش با مالک فروشگاه است.
- *
- * اجرا:
- *   node scripts/apply_stock_and_volume.js --dry-run
- *   node scripts/apply_stock_and_volume.js --yes
- */
+
 'use strict';
 
 const path = require('path');
@@ -40,9 +18,8 @@ const d = s => `\x1b[2m${s}\x1b[0m`;
 const args = process.argv.slice(2);
 const DRY = !args.includes('--yes');
 
-/** حجم تازه هر نوع */
 const NEW_VOLUME = { HAIR_MIST: 150, BODY_SPLASH: 150 };
-/** کد کوتاه نوع در SKU */
+
 const TYPE_CODE = { HAIR_MIST: 'HM', BODY_SPLASH: 'BS' };
 
 console.log(`\n  ${DRY ? y('حالت گزارش (بدون تغییر)') : r('حالت اجرا')}`);
@@ -50,7 +27,6 @@ console.log(d(`  دیتابیس: ${DB_PATH}\n`));
 
 const db = new Database(DB_PATH);
 
-/* ── وضعیت فعلی ── */
 const before = db.prepare(`
   SELECT type, type_label, volume_ml, COUNT(*) n,
          MIN(stock) mn, MAX(stock) mx
@@ -62,7 +38,6 @@ for (const x of before) {
     `${String(x.n).padStart(6)} ردیف   موجودی ${x.mn}..${x.mx}`);
 }
 
-/* ── واریانت‌هایی که حجمشان عوض می‌شود ── */
 const toResize = db.prepare(`
   SELECT sku, product_id, type, volume_ml FROM variants
   WHERE type IN ('HAIR_MIST','BODY_SPLASH')`).all()
@@ -80,7 +55,6 @@ if (toResize.length) {
   }
 }
 
-/* ── SKUهایی که در سفارش‌ها استفاده شده‌اند ── */
 const usedSkus = new Set(
   db.prepare('SELECT DISTINCT sku FROM order_items').all().map(x => x.sku));
 const blocked = toResize.filter(v => usedSkus.has(v.sku));
@@ -89,7 +63,6 @@ if (blocked.length) {
   console.log(y('  حجمشان عوض می‌شود ولی SKU دست‌نخورده می‌ماند تا فاکتورها نشکنند.'));
 }
 
-/* ── موجودی ── */
 const nonZero = db.prepare('SELECT COUNT(*) c FROM variants WHERE stock != 0').get().c;
 console.log(`\n  ── موجودی ──`);
 console.log(`  ${nonZero} واریانت موجودی غیرصفر دارد → همه صفر می‌شوند`);
@@ -101,7 +74,6 @@ if (DRY) {
   process.exit(0);
 }
 
-/* ── پشتیبان ── */
 const stamp = new Date().toISOString().replace(/[:.]/g, '-').slice(0, 19);
 const backupDir = path.join(path.dirname(DB_PATH), 'backups');
 fs.mkdirSync(backupDir, { recursive: true });
@@ -110,7 +82,6 @@ db.exec('PRAGMA wal_checkpoint(TRUNCATE)');
 fs.copyFileSync(DB_PATH, backup);
 console.log(`\n  ${g('پشتیبان:')} ${path.relative(ROOT, backup)}`);
 
-/* ── اعمال ── */
 let renamed = 0, resized = 0;
 db.transaction(() => {
   for (const v of toResize) {
@@ -118,11 +89,10 @@ db.transaction(() => {
     const newSku = v.sku.replace(
       new RegExp(`-${TYPE_CODE[v.type]}-\\d+$`), `-${TYPE_CODE[v.type]}-${nv}`);
 
-    // اگر SKU در سفارشی استفاده شده، فقط حجم را عوض کن
     if (usedSkus.has(v.sku) || newSku === v.sku) {
       db.prepare('UPDATE variants SET volume_ml=? WHERE sku=?').run(nv, v.sku);
     } else {
-      // مطمئن شو SKU تازه آزاد است
+
       const clash = db.prepare('SELECT 1 FROM variants WHERE sku=?').get(newSku);
       if (clash) {
         db.prepare('UPDATE variants SET volume_ml=? WHERE sku=?').run(nv, v.sku);
@@ -135,11 +105,9 @@ db.transaction(() => {
     resized++;
   }
 
-  // موجودی همه صفر
   db.prepare('UPDATE variants SET stock = 0').run();
 })();
 
-/* ── seed هم باید هماهنگ شود، وگرنه استقرار تازه اعداد قدیم را برمی‌گرداند ── */
 let seedFixed = 0;
 if (fs.existsSync(SEED)) {
   const raw = JSON.parse(fs.readFileSync(SEED, 'utf8'));
@@ -159,7 +127,6 @@ if (fs.existsSync(SEED)) {
   console.log(`  ${g('seed هماهنگ شد:')} ${seedFixed} واریانت`);
 }
 
-/* ── راستی‌آزمایی ── */
 console.log('\n  ── پس از تغییر ──');
 const after = db.prepare(`
   SELECT type, volume_ml, COUNT(*) n, MIN(stock) mn, MAX(stock) mx

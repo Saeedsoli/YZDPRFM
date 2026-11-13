@@ -321,13 +321,13 @@
     <p style="font-size:.8rem;color:var(--muted);margin-bottom:20px">نام کاربری و رمز عبور خود را وارد کنید</p>
     <div class="field">
       <input id="usr" placeholder="نام کاربری" dir="ltr" style="text-align:right"
-             autocomplete="username" onkeydown="if(event.key==='Enter')login()">
+             autocomplete="username" data-csp-keydown="if(event.key==='Enter')login()">
     </div>
     <div class="field">
       <input type="password" id="pw" placeholder="رمز عبور" autocomplete="current-password"
-             onkeydown="if(event.key==='Enter')login()">
+             data-csp-keydown="if(event.key==='Enter')login()">
     </div>
-    <button class="btn btn-block" onclick="login()">ورود</button>
+    <button class="btn btn-block" data-csp-click="login()">ورود</button>
     <div id="loginErr" style="color:#C0392B;font-size:.8rem;margin-top:10px"></div>
     <a href="/" style="display:block;margin-top:16px;font-size:.8rem;color:var(--muted)">بازگشت به فروشگاه</a>
   </div>
@@ -340,7 +340,7 @@
     <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
       <span id="adminToday" dir="ltr" style="font-size:.77rem;color:#e8d49e;white-space:nowrap" aria-label="تاریخ روز"></span>
       <a href="/" target="_blank">مشاهده سایت ↗</a>
-      <button onclick="logout()">خروج</button>
+      <button data-csp-click="logout()">خروج</button>
     </div>
   </div>
 
@@ -358,7 +358,7 @@
       <div class="card">
         <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap">
           <h3 style="margin:0">کارکنان</h3>
-          <button class="btn" id="btnNewStaff" onclick="openStaffForm()">افزودن کارمند</button>
+          <button class="btn" id="btnNewStaff" data-csp-click="openStaffForm()">افزودن کارمند</button>
         </div>
         <div id="staffForm" class="hidden" style="margin-top:16px;padding:16px;
              background:var(--sand);border-radius:12px"></div>
@@ -368,7 +368,7 @@
       <div class="card">
         <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap">
           <h3 style="margin:0">نقش‌ها و سطح دسترسی</h3>
-          <button class="btn btn-outline" id="btnNewRole" onclick="openRoleForm()">تعریف نقش تازه</button>
+          <button class="btn btn-outline" id="btnNewRole" data-csp-click="openRoleForm()">تعریف نقش تازه</button>
         </div>
         <p style="font-size:.8rem;color:var(--muted);line-height:1.9;margin-top:6px">
           هر نقش مجموعه‌ای از اجازه‌هاست. تغییر نقش بلافاصله روی همه کارکنان آن نقش اثر می‌گذارد.
@@ -384,7 +384,7 @@
         <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap">
           <h3 style="margin:0">سابقه کارهای کارکنان</h3>
           <label style="font-size:.8rem;display:flex;align-items:center;gap:6px;cursor:pointer">
-            <input type="checkbox" id="auditDenied" onchange="loadAudit()" style="accent-color:var(--gold)">
+            <input type="checkbox" id="auditDenied" data-csp-change="loadAudit()" style="accent-color:var(--gold)">
             فقط تلاش‌های رد شده
           </label>
         </div>
@@ -397,12 +397,12 @@
         <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap">
           <h3 style="margin:0">گزارش فروش</h3>
           <div style="display:flex;gap:6px">
-            <button class="rng-btn on" data-d="7"  onclick="loadReports(7,this)">۷ روز</button>
-            <button class="rng-btn"    data-d="30" onclick="loadReports(30,this)">۳۰ روز</button>
-            <button class="rng-btn"    data-d="90" onclick="loadReports(90,this)">۹۰ روز</button>
+            <button class="rng-btn on" data-d="7"  data-csp-click="loadReports(7,this)">۷ روز</button>
+            <button class="rng-btn"    data-d="30" data-csp-click="loadReports(30,this)">۳۰ روز</button>
+            <button class="rng-btn"    data-d="90" data-csp-click="loadReports(90,this)">۹۰ روز</button>
             <!-- حسابدار برای بستن دفتر ماهانه باید عددها را در
                  اکسل داشته باشد، نه فقط روی صفحه. -->
-            <button class="rng-btn" onclick="downloadReport()"
+            <button class="rng-btn" data-csp-click="downloadReport()"
                     title="دانلود گزارش همین بازه به صورت CSV">دانلود CSV</button>
           </div>
         </div>
@@ -444,9 +444,9 @@
         <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap">
           <h3 style="margin:0">کارنامه من</h3>
           <div style="display:flex;gap:6px">
-            <button class="rng-btn on" data-d="7"  onclick="loadProfile(7,this)">۷ روز</button>
-            <button class="rng-btn"    data-d="30" onclick="loadProfile(30,this)">۳۰ روز</button>
-            <button class="rng-btn"    data-d="90" onclick="loadProfile(90,this)">۹۰ روز</button>
+            <button class="rng-btn on" data-d="7"  data-csp-click="loadProfile(7,this)">۷ روز</button>
+            <button class="rng-btn"    data-d="30" data-csp-click="loadProfile(30,this)">۳۰ روز</button>
+            <button class="rng-btn"    data-d="90" data-csp-click="loadProfile(90,this)">۹۰ روز</button>
           </div>
         </div>
         <p style="font-size:.8rem;color:var(--muted);line-height:1.9;margin-top:10px">
@@ -478,8 +478,8 @@
             <input id="pfMobile" dir="ltr" placeholder="۰۹۱۲۳۴۵۶۷۸۹"></div>
         </div>
         <div style="display:flex;gap:9px;flex-wrap:wrap;margin-top:6px">
-          <button class="btn" onclick="saveProfile()">ذخیره مشخصات</button>
-          <button class="btn btn-outline" onclick="openPasswordChange(false)">
+          <button class="btn" data-csp-click="saveProfile()">ذخیره مشخصات</button>
+          <button class="btn btn-outline" data-csp-click="openPasswordChange(false)">
             تغییر رمز عبور</button>
         </div>
       </div>
@@ -490,9 +490,9 @@
         <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap">
           <h3 style="margin:0">تحلیل بازدید و رفتار مشتری</h3>
           <div style="display:flex;gap:6px">
-            <button class="rng-btn on" data-d="7"  onclick="loadAnalytics(7,this)">۷ روز</button>
-            <button class="rng-btn"    data-d="30" onclick="loadAnalytics(30,this)">۳۰ روز</button>
-            <button class="rng-btn"    data-d="90" onclick="loadAnalytics(90,this)">۹۰ روز</button>
+            <button class="rng-btn on" data-d="7"  data-csp-click="loadAnalytics(7,this)">۷ روز</button>
+            <button class="rng-btn"    data-d="30" data-csp-click="loadAnalytics(30,this)">۳۰ روز</button>
+            <button class="rng-btn"    data-d="90" data-csp-click="loadAnalytics(90,this)">۹۰ روز</button>
           </div>
         </div>
         <p style="font-size:.8rem;color:var(--muted);line-height:1.9;margin-top:10px">
@@ -552,7 +552,7 @@
           ساعت تازه می‌شوند. اگر می‌خواهید همین حالا به‌روز شود:
         </p>
         <button class="btn btn-outline" style="margin-top:12px"
-                onclick="refreshShowcase()">به‌روزرسانی ویترین</button>
+                data-csp-click="refreshShowcase()">به‌روزرسانی ویترین</button>
       </div>
     </div>
 
@@ -579,7 +579,7 @@
           <div class="field">
             <label for="ivProduct">محصول (نام یا شناسه)</label>
             <input id="ivProduct" placeholder="مثلاً creed-aventus یا YZD-0001"
-              autocomplete="off" oninput="ivSearch()">
+              autocomplete="off" data-csp-input="ivSearch()">
             <div id="ivResults" style="margin-top:6px"></div>
           </div>
           <div class="field">
@@ -591,7 +591,7 @@
           <label for="ivNote">یادداشت داخلی (اختیاری)</label>
           <input id="ivNote" maxlength="200" placeholder="مثلاً: مشتری قدیمی، خرید فروردین">
         </div>
-        <button class="btn" style="margin-top:10px" onclick="makeInvite()">ساخت دعوت‌نامه</button>
+        <button class="btn" style="margin-top:10px" data-csp-click="makeInvite()">ساخت دعوت‌نامه</button>
 
         <div id="ivResult" style="margin-top:14px"></div>
 
@@ -606,14 +606,14 @@
         <div style="display:flex;gap:9px;flex-wrap:wrap">
           <input id="pSearch" type="search" placeholder="جست‌وجوی نام، برند یا SKU" aria-label="جست‌وجوی موجودی" autocomplete="off"
             style="flex:1;min-width:200px;padding:11px 14px;border:1px solid var(--border);border-radius:9px;font-family:var(--font)"
-            oninput="inventorySearch()" onkeydown="if(event.key==='Enter'){event.preventDefault();inventoryPage=1;loadInventory()}">
-          <select id="inventoryStatus" aria-label="وضعیت سفارش" onchange="inventoryPage=1;loadInventory()" style="padding:10px;border:1px solid var(--border);border-radius:8px">
+            data-csp-input="inventorySearch()" data-csp-keydown="if(event.key==='Enter'){event.preventDefault();resetInventoryPage()}">
+          <select id="inventoryStatus" aria-label="وضعیت سفارش" data-csp-change="resetInventoryPage()" style="padding:10px;border:1px solid var(--border);border-radius:8px">
             <option value="all">همه وضعیت‌ها</option><option value="MADE_TO_ORDER">ساخت پس از سفارش</option><option value="IN_STOCK">موجود در انبار</option><option value="UNAVAILABLE">غیرقابل سفارش</option>
           </select>
-          <select id="inventoryType" aria-label="نوع محصول" onchange="inventoryPage=1;loadInventory()" style="padding:10px;border:1px solid var(--border);border-radius:8px">
+          <select id="inventoryType" aria-label="نوع محصول" data-csp-change="resetInventoryPage()" style="padding:10px;border:1px solid var(--border);border-radius:8px">
             <option value="all">همه نوع‌ها</option><option value="EDP">پرفیوم</option><option value="SAMPLE">سمپل</option><option value="BODY_SPLASH">بادی‌اسپلش</option>
           </select>
-          <select id="inventorySort" aria-label="مرتب‌سازی" onchange="inventoryPage=1;loadInventory()" style="padding:10px;border:1px solid var(--border);border-radius:8px">
+          <select id="inventorySort" aria-label="مرتب‌سازی" data-csp-change="resetInventoryPage()" style="padding:10px;border:1px solid var(--border);border-radius:8px">
             <option value="default">مرتب‌سازی: پیش‌فرض</option><option value="name">نام محصول</option><option value="stock_up">موجودی: کم به زیاد</option><option value="stock_down">موجودی: زیاد به کم</option>
           </select>
         </div>
@@ -626,13 +626,13 @@
         <div id="essencePriceCard" class="card hidden" style="margin:12px 0 16px">
           <div style="display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap"><strong>قیمت اسانس خام</strong><span id="essenceRate" style="font-size:.77rem;color:var(--muted)"></span></div>
           <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin:14px 0">
-            <div class="field" style="margin:0"><label for="essenceUsd">قیمت دلاری هر گرم اسانس</label><input id="essenceUsd" type="text" inputmode="decimal" dir="ltr" autocomplete="off" oninput="invalidateEssencePreview()"><div style="font-size:.72rem;color:var(--muted);margin-top:4px">برای قیمت هر کیلو، ابتدا بر ۱٬۰۰۰ تقسیم کنید.</div></div>
+            <div class="field" style="margin:0"><label for="essenceUsd">قیمت دلاری هر گرم اسانس</label><input id="essenceUsd" type="text" inputmode="decimal" dir="ltr" autocomplete="off" data-csp-input="invalidateEssencePreview()"><div style="font-size:.72rem;color:var(--muted);margin-top:4px">برای قیمت هر کیلو، ابتدا بر ۱٬۰۰۰ تقسیم کنید.</div></div>
             <div class="field" style="margin:0"><label for="essenceToman">قیمت تومانی هر گرم اسانس</label><input id="essenceToman" type="text" readonly aria-readonly="true"><div style="font-size:.72rem;color:var(--muted);margin-top:4px">بر اساس نرخ دلار محاسبه می‌شود و مستقیم ویرایش نمی‌شود.</div></div>
           </div>
-          <button id="essencePreviewBtn" class="btn btn-outline" onclick="previewProductEssenceUI()">پیش‌نمایش قیمت‌های محصول</button>
+          <button id="essencePreviewBtn" class="btn btn-outline" data-csp-click="previewProductEssenceUI()">پیش‌نمایش قیمت‌های محصول</button>
           <div id="essenceMessage" role="status" aria-live="polite" style="font-size:.8rem;color:var(--muted);margin-top:8px"></div>
           <div id="essencePreview" class="hidden" style="background:var(--sand);border:1px solid var(--border);border-radius:10px;padding:15px;margin-top:14px"></div>
-          <button id="essenceApplyBtn" class="btn hidden" style="margin-top:14px" onclick="applyProductEssenceUI()">تأیید و ذخیره قیمت اسانس</button>
+          <button id="essenceApplyBtn" class="btn hidden" style="margin-top:14px" data-csp-click="applyProductEssenceUI()">تأیید و ذخیره قیمت اسانس</button>
         </div>
         <div style="background:var(--sand);border-radius:10px;padding:14px;margin-bottom:16px">
           <div style="font-size:.86rem;font-weight:700;margin-bottom:10px">تغییر گروهی</div>
@@ -642,18 +642,47 @@
               <input id="bulkPct" type="number" placeholder="مثلاً ۱۰ یا ۱۰-"
                 style="width:100%;padding:9px;border:1px solid var(--border);border-radius:8px">
             </div>
-            <button class="btn" onclick="bulkPrice()">اعمال</button>
+            <button class="btn" data-csp-click="bulkPrice()">اعمال</button>
             <div style="flex:1;min-width:150px">
               <label style="font-size:.78rem;display:block;margin-bottom:4px">موجودی همه</label>
               <input id="bulkStock" type="number" placeholder="مثلاً ۱۰۰"
                 style="width:100%;padding:9px;border:1px solid var(--border);border-radius:8px">
             </div>
-            <button class="btn" onclick="bulkStock()">اعمال</button>
+            <button class="btn" data-csp-click="bulkStock()">اعمال</button>
           </div>
         </div>
 
         <!-- وضعیت تأمین — تعیین می‌کند وقتی موجودی صفر است
              مشتری چه پیامی ببیند و آیا می‌تواند سفارش دهد -->
+        <div class="card" id="essenceStockCard" style="margin-top:12px">
+          <div style="display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;align-items:center">
+            <div>
+              <div style="font-weight:800;font-size:.86rem">موجودی اسانس</div>
+              <div style="font-size:.74rem;color:var(--muted);line-height:1.9">به میلی‌لیتر ثبت می‌شود؛ هر سفارش به‌طور خودکار از آن کم می‌کند.</div>
+            </div>
+            <span id="essenceState" style="font-size:.75rem;color:var(--muted)"></span>
+          </div>
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:10px;margin:12px 0">
+            <div class="field" style="margin:0">
+              <label for="essenceMl">موجودی (میلی‌لیتر)</label>
+              <input id="essenceMl" type="text" inputmode="decimal" dir="ltr" autocomplete="off" placeholder="مثلاً ۱۰۰">
+            </div>
+            <div class="field" style="margin:0">
+              <label for="essencePercent">درصد مصرف این محصول (اختیاری)</label>
+              <input id="essencePercent" type="text" inputmode="decimal" dir="ltr" autocomplete="off" placeholder="خالی = درصد پیش‌فرض نوع">
+            </div>
+          </div>
+          <div style="display:flex;gap:16px;flex-wrap:wrap;align-items:center;margin:0 0 10px">
+            <label class="stock-source"><input type="checkbox" id="useCountStock" checked><span>کسر از موجودی عددی</span></label>
+            <label class="stock-source"><input type="checkbox" id="useEssenceStock" checked><span>کسر از موجودی حجمی (اسانس)</span></label>
+          </div>
+          <div style="font-size:.72rem;color:var(--muted);line-height:1.9;margin-bottom:8px">
+            اولویت با موجودی عددی است: تا وقتی بطری آماده هست از تعداد کم می‌شود و بقیه از اسانس.
+          </div>
+          <div id="essenceUnits" style="font-size:.75rem;color:var(--muted);line-height:1.9;margin-bottom:10px"></div>
+          <button class="btn" type="button" data-csp-click="saveEssenceStock()">ذخیره موجودی اسانس</button>
+        </div>
+
         <div class="card" style="margin-top:12px">
           <div style="font-weight:800;font-size:.86rem;margin-bottom:4px">وضعیت تأمین</div>
           <div style="font-size:.74rem;color:var(--muted);line-height:1.9;margin-bottom:10px">
@@ -666,7 +695,7 @@
               <option value="IN_STOCK">فقط از انبار — بدون موجودی قابل سفارش نیست</option>
               <option value="UNAVAILABLE">فعلاً نمی‌توانیم تهیه کنیم — فقط «خبرم کن»</option>
             </select>
-            <button class="btn" onclick="saveSupplyMode()">ذخیره</button>
+            <button class="btn" data-csp-click="saveSupplyMode()">ذخیره</button>
           </div>
         </div>
 
@@ -689,7 +718,7 @@
           <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-top:8px">
             <input id="makerNoteBy" placeholder="امضا — مثلاً: عطرساز عطر یزد"
               style="flex:1;min-width:200px;padding:9px;border:1px solid var(--border);border-radius:8px">
-            <button class="btn" onclick="saveMakerNote()">ذخیره یادداشت</button>
+            <button class="btn" data-csp-click="saveMakerNote()">ذخیره یادداشت</button>
             <span id="makerLen" style="font-size:.72rem;color:var(--muted)"></span>
           </div>
         </div>
@@ -705,9 +734,9 @@
           <input id="oSearch" placeholder="شماره سفارش، نام، موبایل، کد رهگیری…"
             style="flex:1;min-width:210px;padding:10px 13px;border:1px solid var(--border);
             border-radius:9px;font-family:var(--font)"
-            onkeydown="if(event.key==='Enter')loadOrders()">
-          <button class="btn" onclick="loadOrders()">جستجو</button>
-          <button class="btn btn-outline" onclick="clearOrderSearch()">پاک کردن</button>
+            data-csp-keydown="if(event.key==='Enter')loadOrders()">
+          <button class="btn" data-csp-click="loadOrders()">جستجو</button>
+          <button class="btn btn-outline" data-csp-click="clearOrderSearch()">پاک کردن</button>
         </div>
         <div id="statusFilter" style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px"></div>
         <div class="scroll"><table id="ordersTable"></table></div>
@@ -721,7 +750,7 @@
         <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px">
           <div class="field"><label>کد</label><input id="cCode" placeholder="NOWRUZ25" style="text-transform:uppercase"></div>
           <div class="field"><label>نوع</label>
-            <select id="cType" onchange="onCouponType()">
+            <select id="cType" data-csp-change="onCouponType()">
               <option value="PERCENT">درصدی</option>
               <option value="FIXED">مبلغ ثابت</option>
               <option value="FREE_SHIPPING">ارسال رایگان</option>
@@ -778,7 +807,7 @@
           </div>
         </details>
 
-        <button class="btn" onclick="createCoupon()">ایجاد کد تخفیف</button>
+        <button class="btn" data-csp-click="createCoupon()">ایجاد کد تخفیف</button>
       </div>
       <div class="card">
         <h3>کدهای موجود</h3>
@@ -824,7 +853,7 @@
               </select></div>
           </div>
         </details>
-        <button class="btn" style="margin-top:12px" onclick="createCampaign()">راه‌اندازی جشنواره</button>
+        <button class="btn" style="margin-top:12px" data-csp-click="createCampaign()">راه‌اندازی جشنواره</button>
         <div class="scroll" style="margin-top:16px"><table id="campaignsTable"></table></div>
       </div>
 
@@ -854,7 +883,7 @@
           <div class="field"><label>از تاریخ</label><input id="nStart" type="text" data-jalali-date autocomplete="off"></div>
           <div class="field"><label>تا تاریخ</label><input id="nEnd" type="text" data-jalali-date autocomplete="off"></div>
         </div>
-        <button class="btn" style="margin-top:12px" onclick="createNotice()">انتشار اعلان</button>
+        <button class="btn" style="margin-top:12px" data-csp-click="createNotice()">انتشار اعلان</button>
         <div class="scroll" style="margin-top:16px"><table id="noticesTable"></table></div>
       </div>
     </div>
@@ -873,7 +902,7 @@
         <div class="field"><label>دسته‌بندی</label>
           <select id="aCat">
             <option value="guide">راهنمای خرید تخصصی</option>
-            <option value="notes">دانشنامه روایح و نُت‌ها</option>
+            <option value="notes">دانشنامه رایحه‌ها و نُت‌ها</option>
             <option value="video">ویدیوهای آموزشی</option>
           </select>
         </div>
@@ -902,25 +931,25 @@
           </div>
           <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center">
             <button type="button" class="btn btn-outline" style="padding:7px 13px;font-size:.78rem"
-              onclick="document.getElementById('aFile').click()">آپلود تصویر</button>
+              data-csp-click="document.getElementById('aFile').click()">آپلود تصویر</button>
             <input type="file" id="aFile" accept="image/jpeg,image/png,image/webp,image/gif"
-                   style="display:none" onchange="uploadArticleImage(this)">
+                   style="display:none" data-csp-change="uploadArticleImage(this)">
 
             <button type="button" class="btn btn-outline" style="padding:7px 13px;font-size:.78rem"
-              onclick="insertPickedImage()">تصویر موجود</button>
+              data-csp-click="insertPickedImage()">تصویر موجود</button>
             <select id="aPick" style="max-width:190px;font-size:.78rem"></select>
 
             <button type="button" class="btn btn-outline" style="padding:7px 13px;font-size:.78rem"
-              onclick="insertAparat()">ویدیوی آپارات</button>
+              data-csp-click="insertAparat()">ویدیوی آپارات</button>
 
             <button type="button" class="btn btn-outline" style="padding:7px 13px;font-size:.78rem"
-              onclick="insertQuote()">نقل‌قول</button>
+              data-csp-click="insertQuote()">نقل‌قول</button>
           </div>
           <div id="aUpMsg" style="font-size:.74rem;color:var(--muted);margin-top:8px"></div>
         </div>
 
-        <button class="btn" onclick="publish()" id="artSaveBtn">انتشار مقاله</button>
-        <button class="btn btn-outline" onclick="cancelEditArticle()" id="artCancelBtn"
+        <button class="btn" data-csp-click="publish()" id="artSaveBtn">انتشار مقاله</button>
+        <button class="btn btn-outline" data-csp-click="cancelEditArticle()" id="artCancelBtn"
           style="margin-right:8px;display:none">انصراف</button>
       </div>
       <div class="card">
@@ -940,12 +969,12 @@
         </div>
         <div id="exchangeRateEditor" style="display:flex;gap:12px;align-items:flex-end;flex-wrap:wrap;margin:20px 0">
           <div class="field" style="flex:1;min-width:190px;margin:0"><label for="exchangeRateInput">نرخ جدید هر دلار (تومان)</label>
-            <input id="exchangeRateInput" type="text" inputmode="numeric" autocomplete="off" oninput="invalidateExchangePreview()"></div>
-          <button id="exchangePreviewBtn" class="btn btn-outline" onclick="previewExchangeRateUI()">پیش‌نمایش تغییر قیمت‌ها</button>
+            <input id="exchangeRateInput" type="text" inputmode="numeric" autocomplete="off" data-csp-input="invalidateExchangePreview()"></div>
+          <button id="exchangePreviewBtn" class="btn btn-outline" data-csp-click="previewExchangeRateUI()">پیش‌نمایش تغییر قیمت‌ها</button>
         </div>
         <div id="exchangeRateMessage" role="status" aria-live="polite" style="font-size:.8rem;color:var(--muted)"></div>
         <div id="exchangeRatePreview" class="hidden" style="background:var(--sand);border:1px solid var(--border);border-radius:10px;padding:15px;margin-top:14px"></div>
-        <button id="exchangeApplyBtn" class="btn hidden" style="margin-top:14px" onclick="applyExchangeRateUI()">تأیید و اعمال نرخ جدید</button>
+        <button id="exchangeApplyBtn" class="btn hidden" style="margin-top:14px" data-csp-click="applyExchangeRateUI()">تأیید و اعمال نرخ جدید</button>
       </div>
       <!-- ═══ بررسی آمادگی افتتاح ═══ -->
       <div class="card" id="readyCard">
@@ -953,9 +982,9 @@
           <h3 style="margin:0">بررسی آمادگی افتتاح</h3>
           <div style="display:flex;gap:7px;flex-wrap:wrap">
             <button class="btn btn-outline" style="padding:7px 14px;font-size:.78rem"
-              onclick="loadReadiness(false)">بررسی سریع</button>
+              data-csp-click="loadReadiness(false)">بررسی سریع</button>
             <button class="btn" style="padding:7px 14px;font-size:.78rem"
-              onclick="loadReadiness(true)">بررسی کامل (تماس با سرویس‌ها)</button>
+              data-csp-click="loadReadiness(true)">بررسی کامل (تماس با سرویس‌ها)</button>
           </div>
         </div>
         <p style="font-size:.8rem;color:var(--muted);line-height:1.95;margin-top:10px">
@@ -975,7 +1004,7 @@
                 <input id="smsTo" placeholder="۰۹۱۲۳۴۵۶۷۸۹" inputmode="numeric">
               </div>
               <button class="btn btn-outline" style="padding:9px 16px;font-size:.8rem"
-                onclick="sendTestSms()">ارسال</button>
+                data-csp-click="sendTestSms()">ارسال</button>
             </div>
             <div style="font-size:.73rem;color:var(--muted);margin-top:6px">
               یک پیامک از اعتبار حساب شما مصرف می‌شود. حداکثر ۵ بار در ساعت.
@@ -1016,7 +1045,7 @@
           <textarea id="sAddr" rows="2"></textarea></div>
         <div class="field"><label for="sNote">یادداشت پای فاکتور</label>
           <textarea id="sNote" rows="2"></textarea></div>
-        <button class="btn" onclick="saveShopSettings()">ذخیره تنظیمات</button>
+        <button class="btn" data-csp-click="saveShopSettings()">ذخیره تنظیمات</button>
       </div>
     </div>
 
@@ -1025,8 +1054,8 @@
         <h3>خروجی و گزارش</h3>
         <p style="font-size:.84rem;color:var(--muted);margin-bottom:14px">
           دریافت فایل CSV تمام سفارش‌ها برای حسابداری.</p>
-        <button class="btn" onclick="exportCsv()">دانلود CSV سفارش‌ها</button>
-        <button class="btn btn-outline" style="margin-right:8px" onclick="downloadBackup()">
+        <button class="btn" data-csp-click="exportCsv()">دانلود CSV سفارش‌ها</button>
+        <button class="btn btn-outline" style="margin-right:8px" data-csp-click="downloadBackup()">
           دانلود پشتیبان دیتابیس
         </button>
         <div id="backupList" style="margin-top:14px"></div>
@@ -1034,7 +1063,7 @@
       <div class="card">
         <h3>وضعیت سیستم</h3>
         <div id="health" style="font-size:.86rem;line-height:2"></div>
-        <button class="btn btn-outline" style="margin-top:12px" onclick="runMaintenance()">
+        <button class="btn btn-outline" style="margin-top:12px" data-csp-click="runMaintenance()">
           آزادسازی سفارش‌های پرداخت‌نشده
         </button>
         <!-- بازسازی ایندکس.
@@ -1043,7 +1072,7 @@
              می‌ماند و بی‌صدا نتیجه غلط می‌دهد. تا امروز تنها راه
              بازسازی، راه‌اندازی دوباره سرور بود. -->
         <button class="btn btn-outline" style="margin-top:12px;margin-right:8px"
-                onclick="runReindex()">
+                data-csp-click="runReindex()">
           بازسازی ایندکس جستجو و نُت
         </button>
         <p style="font-size:.76rem;color:var(--muted);line-height:1.9;margin-top:10px">
@@ -1056,11 +1085,11 @@
         <h3>لاگ سیستم</h3>
         <div style="display:flex;gap:7px;margin-bottom:12px;flex-wrap:wrap">
           <button class="btn btn-outline" style="padding:7px 14px;font-size:.8rem"
-            onclick="loadLogs('')">همه</button>
+            data-csp-click="loadLogs('')">همه</button>
           <button class="btn btn-outline" style="padding:7px 14px;font-size:.8rem"
-            onclick="loadLogs('ERROR')">خطاها</button>
+            data-csp-click="loadLogs('ERROR')">خطاها</button>
           <button class="btn btn-outline" style="padding:7px 14px;font-size:.8rem"
-            onclick="loadLogs('WARN')">هشدارها</button>
+            data-csp-click="loadLogs('WARN')">هشدارها</button>
         </div>
         <div id="logsBox" style="max-height:340px;overflow-y:auto"></div>
       </div>
@@ -1290,7 +1319,7 @@ async function loadNotifications() {
     <div class="nb-items">
       ${d.items.map(it => `
         <button class="nb-chip ${it.urgent ? 'on' : ''}"
-                onclick="jumpToTab('${it.tab}')">
+                data-csp-click="jumpToTab('${it.tab}')">
           <b>${toFa(it.count)}</b> ${esc(it.label)}
         </button>`).join('')}
     </div>`;
@@ -1334,11 +1363,11 @@ function openPasswordChange(forced) {
         <div class="field"><label>تکرار رمز تازه</label>
           <input type="password" id="pwNew2" autocomplete="new-password"></div>
         <div id="pwErr" style="color:#C0392B;font-size:.8rem;margin-bottom:10px"></div>
-        <button class="btn btn-block" onclick="submitPasswordChange()">تغییر رمز</button>
+        <button class="btn btn-block" data-csp-click="submitPasswordChange()">تغییر رمز</button>
         ${forced ? `<button class="btn btn-outline btn-block" style="margin-top:8px"
-          onclick="logout()">خروج از حساب</button>`
+          data-csp-click="logout()">خروج از حساب</button>`
                  : `<button class="btn btn-outline btn-block" style="margin-top:8px"
-          onclick="document.getElementById('pwModal').remove()">انصراف</button>`}
+          data-csp-click="document.getElementById('pwModal').remove()">انصراف</button>`}
       </div>
     </div>`;
   document.body.insertAdjacentHTML('beforeend', html);
@@ -1454,11 +1483,11 @@ async function loadAll() {
         <td>${toFa(x.used_count)}/${lim}</td>
         <td><span class="badge ${x.active ? 'b-paid' : 'b-cancel'}">${x.active ? 'فعال' : 'غیرفعال'}</span></td>
         <td>
-          <button onclick="toggleCoupon(${esc(JSON.stringify(x.code))},${x.active ? 0 : 1})"
+          <button data-csp-click="toggleCoupon(${esc(JSON.stringify(x.code))},${x.active ? 0 : 1})"
             style="background:var(--sand);border:1px solid var(--border);border-radius:7px;
             padding:5px 10px;cursor:pointer;font-size:.74rem;font-family:var(--font)">
             ${x.active ? 'غیرفعال' : 'فعال'}</button>
-          <button class="del" onclick="delCoupon(${esc(JSON.stringify(x.code))})">حذف</button>
+          <button class="del" data-csp-click="delCoupon(${esc(JSON.stringify(x.code))})">حذف</button>
         </td></tr>`;
     }).join('')}`
     : '<tr><td style="text-align:center;padding:26px;color:var(--muted)">کد تخفیفی ثبت نشده</td></tr>';
@@ -1472,7 +1501,7 @@ async function loadAll() {
       <td style="font-size:.78rem;max-width:220px">${esc((x.description || '').slice(0, 90)) || '—'}</td>
       <td><span class="badge ${x.status === 'ANSWERED' ? 'b-paid' : 'b-pending'}">
         ${x.status === 'ANSWERED' ? 'پاسخ داده شده' : 'در انتظار بررسی'}</span></td>
-      <td><button onclick="replyTicket(${esc(JSON.stringify(String(x.ticket_id ?? '')))})"
+      <td><button data-csp-click="replyTicket(${esc(JSON.stringify(String(x.ticket_id ?? '')))})"
         style="background:var(--sand);border:1px solid var(--border);border-radius:7px;
         padding:5px 10px;cursor:pointer;font-size:.74rem;font-family:var(--font)">پاسخ</button></td>
     </tr>`).join('')}`
@@ -1489,11 +1518,11 @@ async function loadAll() {
           style="display:inline-block;background:var(--sand);border:1px solid var(--border);
           border-radius:7px;padding:5px 11px;font-size:.74rem;text-decoration:none;
           color:inherit;margin-left:4px">مشاهده</a>
-        <button onclick="editArticle(${esc(JSON.stringify(String(x.id ?? '')))})"
+        <button data-csp-click="editArticle(${esc(JSON.stringify(String(x.id ?? '')))})"
           style="background:var(--obsidian);color:#FFF;border:none;border-radius:7px;
           padding:5px 12px;cursor:pointer;font-size:.74rem;font-family:var(--font);
           margin-left:4px">ویرایش</button>
-        <button class="del" onclick="delArticle(${esc(JSON.stringify(String(x.id ?? '')))})">حذف</button>
+        <button class="del" data-csp-click="delArticle(${esc(JSON.stringify(String(x.id ?? '')))})">حذف</button>
       </td></tr>`).join('')}`
     : '<tr><td style="text-align:center;padding:26px;color:var(--muted)">مقاله‌ای نیست</td></tr>';
 
@@ -1558,7 +1587,7 @@ async function loadBackups() {
       <td>${(b.size/1024/1024).toFixed(1)} MB</td>
       <td style="color:var(--muted)" dir="ltr">${esc(YazdDate.formatDateTime(b.created))}</td>
       <td><a href="/api/admin/backups/${encodeURIComponent(b.name)}"
-             onclick="dlBackup(event,'${b.name}')"
+             data-csp-click="dlBackup(event,'${b.name}')"
              style="color:var(--gold);font-weight:700;font-size:.76rem">دانلود</a></td>
     </tr>`).join('')}</table>
     <div style="font-size:.74rem;color:var(--muted);line-height:1.9;margin-top:10px">
@@ -2500,7 +2529,7 @@ async function loadReviews(st) {
   document.getElementById('revTabs').innerHTML =
     [['PENDING', 'در انتظار'], ['APPROVED', 'منتشرشده'], ['REJECTED', 'ردشده']]
     .map(([k, l]) => `<button class="rng-btn ${revStatus === k ? 'on' : ''}"
-        onclick="loadReviews('${k}')">${l} (${toFa(c[k] || 0)})</button>`).join('');
+        data-csp-click="loadReviews('${k}')">${l} (${toFa(c[k] || 0)})</button>`).join('');
 
   document.getElementById('reviewsList').innerHTML = d.reviews.length
     ? d.reviews.map(r => `<div class="rev-card">
@@ -2522,12 +2551,12 @@ async function loadReviews(st) {
         </div>
         <div style="margin-top:11px;display:flex;gap:7px;flex-wrap:wrap">
           ${revStatus !== 'APPROVED' ? `<button class="btn" style="padding:6px 15px;font-size:.78rem"
-            onclick="setReview(${r.id},'APPROVED')">انتشار</button>` : ''}
+            data-csp-click="setReview(${r.id},'APPROVED')">انتشار</button>` : ''}
           ${revStatus !== 'REJECTED' ? `<button class="btn btn-outline" style="padding:6px 15px;font-size:.78rem"
-            onclick="setReview(${r.id},'REJECTED')">رد</button>` : ''}
+            data-csp-click="setReview(${r.id},'REJECTED')">رد</button>` : ''}
           <button class="btn btn-outline" style="padding:6px 15px;font-size:.78rem"
-            onclick="replyReview(${r.id})">پاسخ فروشگاه</button>
-          <button class="del" onclick="delReview(${r.id})">حذف</button>
+            data-csp-click="replyReview(${r.id})">پاسخ فروشگاه</button>
+          <button class="del" data-csp-click="delReview(${r.id})">حذف</button>
         </div>
         ${r.admin_reply ? `<div style="background:var(--sand);border-radius:8px;padding:9px;
           margin-top:9px;font-size:.8rem"><strong>پاسخ فروشگاه:</strong> ${escLines(r.admin_reply)}</div>` : ''}
@@ -2578,7 +2607,7 @@ function ivSearch() {
       ? (d.products || []).map(p => `<button type="button" class="btn btn-outline"
           style="display:block;width:100%;text-align:right;padding:8px 11px;
                  font-size:.8rem;margin-bottom:5px"
-          onclick="ivPick(${esc(JSON.stringify(String(p.slug ?? '')))}, ${esc(JSON.stringify(String((p.brand_fa ? p.brand_fa + ' — ' : '') + p.name_fa)))})">
+          data-csp-click="ivPick(${esc(JSON.stringify(String(p.slug ?? '')))}, ${esc(JSON.stringify(String((p.brand_fa ? p.brand_fa + ' — ' : '') + p.name_fa)))})">
           ${esc(p.brand_fa ? p.brand_fa + ' — ' + p.name_fa : p.name_fa)}</button>`).join('')
       : '<div style="font-size:.78rem;color:var(--muted)">محصولی یافت نشد</div>';
   }, 350);
@@ -2635,9 +2664,9 @@ async function makeInvite() {
         border-radius:7px;font-family:var(--font);font-size:.78rem;background:#FFF">
       <div style="display:flex;gap:7px;margin-top:9px;flex-wrap:wrap">
         <button class="btn" style="padding:6px 14px;font-size:.78rem"
-          onclick="ivCopy(${esc(JSON.stringify(full))})">کپی لینک</button>
+          data-csp-click="ivCopy(${esc(JSON.stringify(full))})">کپی لینک</button>
         <button class="btn btn-outline" style="padding:6px 14px;font-size:.78rem"
-          onclick="ivCopyText()">کپی متن پیامک</button>
+          data-csp-click="ivCopyText()">کپی متن پیامک</button>
         <a class="btn btn-outline" style="padding:6px 14px;font-size:.78rem"
           href="${esc(full)}" target="_blank" rel="noopener">پیش‌نمایش صفحه</a>
       </div>
@@ -2697,9 +2726,9 @@ async function loadInvites() {
            <td style="white-space:nowrap">
              ${i.state === 'OPEN' && full ? `<button class="btn btn-outline"
                style="padding:4px 10px;font-size:.73rem"
-               onclick="ivCopy(${esc(JSON.stringify(full))})">کپی</button>` : ''}
+               data-csp-click="ivCopy(${esc(JSON.stringify(full))})">کپی</button>` : ''}
              ${i.state !== 'USED' ? `<button class="del"
-               onclick="delInvite(${i.id})">حذف</button>` : ''}
+               data-csp-click="delInvite(${i.id})">حذف</button>` : ''}
            </td></tr>`;
        }).join('')}</table>`
     : '<div style="color:var(--muted);font-size:.84rem;padding:14px">هنوز دعوت‌نامه‌ای ساخته نشده</div>';
@@ -2752,7 +2781,7 @@ function renderOrders(o) {
   const chips = [['', 'همه', o.total]].concat(
     Object.keys(STATUS_FA).filter(k => counts[k]).map(k => [k, STATUS_FA[k], counts[k]]));
   document.getElementById('statusFilter').innerHTML = chips.map(([k, label, n]) =>
-    `<button onclick="filterStatus('${k}')" style="padding:6px 13px;border-radius:18px;
+    `<button data-csp-click="filterStatus('${k}')" style="padding:6px 13px;border-radius:18px;
       border:1px solid ${orderState.status === k ? 'var(--obsidian)' : 'var(--border)'};
       background:${orderState.status === k ? 'var(--obsidian)' : '#FFF'};
       color:${orderState.status === k ? 'var(--gold)' : 'var(--text)'};
@@ -2781,7 +2810,7 @@ function renderOrders(o) {
         <td>${money(x.total_paid)}</td>
         <td><span class="badge ${STATUS_CLS[x.status] || 'b-pending'}">${esc(STATUS_FA[x.status] || x.status)}</span></td>
         <td>${nexts.map(n =>
-            `<button onclick="changeStatus(${esc(JSON.stringify(String(x.order_id ?? '')))},${esc(JSON.stringify(String(n)))})"
+            `<button data-csp-click="changeStatus(${esc(JSON.stringify(String(x.order_id ?? '')))},${esc(JSON.stringify(String(n)))})"
               style="background:var(--sand);border:1px solid var(--border);border-radius:7px;
               padding:5px 10px;margin:2px;cursor:pointer;font-size:.74rem;font-family:var(--font);
               white-space:nowrap">${STATUS_FA[n]}</button>`).join('')}
@@ -2832,7 +2861,7 @@ function renderOrders(o) {
   if (o.totalPages > 1) {
     let h = '';
     for (let i = 1; i <= o.totalPages; i++) {
-      h += `<button onclick="goOrderPage(${i})" style="min-width:34px;height:34px;
+      h += `<button data-csp-click="goOrderPage(${i})" style="min-width:34px;height:34px;
         border-radius:8px;border:1px solid var(--border);cursor:pointer;font-family:var(--font);
         background:${i === o.page ? 'var(--gold)' : '#FFF'};font-weight:700;
         font-size:.8rem">${toFa(i)}</button>`;
@@ -2892,6 +2921,8 @@ document.getElementById('ordersTable').addEventListener('submit',async e=>{
 /* ── مدیریت محصول و موجودی ── */
 let currentProduct = null;
 let inventoryPage = 1, inventorySequence = 0, inventoryTimer = null;
+function resetInventoryPage() { inventoryPage = 1; loadInventory(); }
+function adjustInventoryPage(delta) { inventoryPage = Math.max(1, inventoryPage + Number(delta || 0)); loadInventory(); }
 function inventorySearch() {
   clearTimeout(inventoryTimer);
   inventoryPage = 1;
@@ -2915,8 +2946,8 @@ async function loadInventory() {
       <td><strong>${esc(item.brand_fa || '')} — ${esc(item.name_fa || '')}</strong><div dir="ltr" style="font-size:.74rem;color:var(--muted)">${esc(item.brand_en || '')} — ${esc(item.name_en || '')}</div><div dir="ltr" style="font-size:.72rem;color:var(--muted)">${esc(item.sku)}</div></td>
       <td>${esc(item.type_label || item.type)} · ${toFa(item.volume_ml)} میل</td><td>${toFa(item.stock)} عدد</td>
       <td><span class="badge ${styles[item.availability] || 'b-cancel'}">${labels[item.availability] || 'غیرقابل سفارش'}</span></td>
-      <td><button class="btn btn-outline" onclick="editProduct(${esc(JSON.stringify(String(item.slug || '')))})">جزئیات</button></td></tr>`).join('');
-    box.innerHTML = `<div style="font-size:.8rem;color:var(--muted);margin-bottom:8px">${toFa(data.total)} نتیجه · صفحه ${toFa(inventoryPage)} از ${toFa(pages)}</div>${rows ? `<div class="scroll"><table><tr><th>محصول</th><th>نوع و حجم</th><th>موجودی انبار</th><th>وضعیت سفارش</th><th></th></tr>${rows}</table></div>` : '<div style="padding:12px">نتیجه‌ای پیدا نشد.</div>'}<div style="display:flex;gap:8px;margin-top:14px"><button class="btn btn-outline" ${inventoryPage <= 1 ? 'disabled' : ''} onclick="inventoryPage--;loadInventory()">صفحه قبل</button><button class="btn btn-outline" ${inventoryPage >= pages ? 'disabled' : ''} onclick="inventoryPage++;loadInventory()">صفحه بعد</button></div>`;
+      <td><button class="btn btn-outline" data-csp-click="editProduct(${esc(JSON.stringify(String(item.slug || '')))})">جزئیات</button></td></tr>`).join('');
+    box.innerHTML = `<div style="font-size:.8rem;color:var(--muted);margin-bottom:8px">${toFa(data.total)} نتیجه · صفحه ${toFa(inventoryPage)} از ${toFa(pages)}</div>${rows ? `<div class="scroll"><table><tr><th>محصول</th><th>نوع و حجم</th><th>موجودی انبار</th><th>وضعیت سفارش</th><th></th></tr>${rows}</table></div>` : '<div style="padding:12px">نتیجه‌ای پیدا نشد.</div>'}<div style="display:flex;gap:8px;margin-top:14px"><button class="btn btn-outline" ${inventoryPage <= 1 ? 'disabled' : ''} data-csp-click="adjustInventoryPage(-1)">صفحه قبل</button><button class="btn btn-outline" ${inventoryPage >= pages ? 'disabled' : ''} data-csp-click="adjustInventoryPage(1)">صفحه بعد</button></div>`;
   } catch { if (sequence === inventorySequence) box.textContent = 'ارتباط برقرار نشد؛ دوباره تلاش کنید.'; }
 }
 
@@ -2943,7 +2974,7 @@ async function searchProducts(quiet) {
         <td style="font-size:.8rem">${esc(p.family_fa || '—')}</td>
         <td>${money(p.min_price)}</td>
         <td><span class="badge ${st > 20 ? 'b-paid' : st > 0 ? 'b-pending' : 'b-cancel'}">${toFa(st)}</span></td>
-        <td><button onclick="editProduct(${esc(JSON.stringify(String(p.slug ?? '')))})"
+        <td><button data-csp-click="editProduct(${esc(JSON.stringify(String(p.slug ?? '')))})"
           style="background:var(--obsidian);color:#FFF;border:none;border-radius:7px;
           padding:6px 13px;cursor:pointer;font-size:.76rem;font-family:var(--font)">ویرایش</button></td>
       </tr>`;
@@ -2969,7 +3000,7 @@ async function showLowStock() {
          <td dir="ltr" style="font-size:.74rem">${esc(i.sku)}</td>
          <td>${money(i.price_toman)}</td>
          <td><span class="badge ${i.stock > 0 ? 'b-pending' : 'b-cancel'}">${toFa(i.stock)}</span></td>
-         <td><button onclick="editProduct(${esc(JSON.stringify(String(i.slug ?? '')))})"
+         <td><button data-csp-click="editProduct(${esc(JSON.stringify(String(i.slug ?? '')))})"
            style="background:var(--sand);border:1px solid var(--border);border-radius:7px;
            padding:5px 11px;cursor:pointer;font-size:.74rem;font-family:var(--font)">ویرایش</button></td>
        </tr>`).join('')}</table></div>`;
@@ -3076,6 +3107,7 @@ async function editProduct(slug) {
     `${p.brand_fa || ''} — ${p.name_fa}`;
   renderVariants();
   loadProductEssenceUI(p.id);
+  loadEssenceStock(p.slug);
   // وضعیت تأمین فعلی را در فهرست کشویی نشان بده
   const sm = document.getElementById('supplyMode');
   if (sm) sm.value = p.supply_mode || 'UNAVAILABLE';
@@ -3142,17 +3174,17 @@ function renderVariants() {
         font-family:var(--font);direction:ltr;text-align:left"></td>
       <td>
         <div class="stock-ctrl">
-          <button type="button" onclick="stepStock(${esc(JSON.stringify(String(v.sku ?? '')))},-1)"
+          <button type="button" data-csp-click="stepStock(${esc(JSON.stringify(String(v.sku ?? '')))},-1)"
             aria-label="کاهش موجودی">−</button>
           <input id="st_${esc(v.sku)}" type="number" min="0" value="${esc(v.stock)}"
-            inputmode="numeric" onchange="commitStock(${esc(JSON.stringify(String(v.sku ?? '')))})"
+            inputmode="numeric" data-csp-change="commitStock(${esc(JSON.stringify(String(v.sku ?? '')))})"
             aria-label="موجودی ${esc(v.type_label || v.type)} ${esc(v.volume_ml)} میل">
-          <button type="button" onclick="stepStock(${esc(JSON.stringify(String(v.sku ?? '')))},1)"
+          <button type="button" data-csp-click="stepStock(${esc(JSON.stringify(String(v.sku ?? '')))},1)"
             aria-label="افزایش موجودی">+</button>
         </div>
         <div id="sm_${esc(v.sku)}" class="stock-msg"></div>
       </td>
-      <td><button onclick="saveVariant(${esc(JSON.stringify(String(v.sku ?? '')))})"
+      <td><button data-csp-click="saveVariant(${esc(JSON.stringify(String(v.sku ?? '')))})"
         style="background:var(--gold);color:#121212;border:none;border-radius:7px;
         padding:6px 14px;cursor:pointer;font-weight:700;font-size:.76rem;
         font-family:var(--font)">ذخیره قیمت</button></td>
@@ -3252,6 +3284,51 @@ async function bulkStock() {
   const d = await r.json();
   toast(r.ok ? d.message : d.error);
   if (r.ok) { document.getElementById('bulkStock').value = ''; editProduct(currentProduct.slug); loadInventory(); }
+}
+
+/* ── موجودی اسانس (میلی‌لیتر) ──
+   سرور درصد پیش‌فرض هر نوع را نگه می‌دارد؛ اینجا فقط عدد موجودی و
+   درصد اختیاری همین محصول ثبت می‌شود. */
+async function loadEssenceStock(slug) {
+  const stateEl = document.getElementById('essenceState');
+  const unitsEl = document.getElementById('essenceUnits');
+  try {
+    const r = await fetch('/api/admin/essence-stock?product=' + encodeURIComponent(slug), { headers: H(), cache: 'no-store' });
+    const d = await r.json();
+    if (!r.ok) { stateEl.textContent = d.error || ''; return; }
+    const es = d.essence || {};
+    document.getElementById('essenceMl').value = es.tracked ? String(es.ml_on_hand) : '';
+    document.getElementById('essencePercent').value = es.percent_override == null ? '' : String(es.percent_override);
+    document.getElementById('useCountStock').checked = es.tracked ? es.use_count !== false : true;
+    document.getElementById('useEssenceStock').checked = es.tracked ? es.use_essence !== false : true;
+    stateEl.textContent = es.tracked ? 'کنترل‌شده' : 'بدون کنترل موجودی اسانس';
+    const lines = (d.variants || []).map(v => {
+      const per = v.ml_per_unit == null ? '—' : toFa(Math.round(v.ml_per_unit * 10) / 10);
+      const cap = v.capacity || { count: v.stock || 0, essence: v.max_units || 0, total: (v.stock || 0) + (v.max_units || 0) };
+      return `${esc(v.type_label || v.type)} ${toFa(v.volume_ml)} میل: ` +
+        `انبار ${toFa(cap.count)} عدد · اسانس ${per} میل برای هر عدد (${toFa(cap.essence)} عدد) · ` +
+        `قابل سفارش ${toFa(cap.total)} عدد`;
+    });
+    unitsEl.innerHTML = lines.join('<br>');
+  } catch { stateEl.textContent = 'خواندن موجودی اسانس ناموفق بود.'; }
+}
+
+async function saveEssenceStock() {
+  if (!currentProduct || !may('products.stock')) return toast('اجازه تغییر موجودی را ندارید.');
+  const ml = document.getElementById('essenceMl').value.trim();
+  const pct = document.getElementById('essencePercent').value.trim();
+  if (!/^\d+(\.\d{1,2})?$/.test(ml)) return toast('موجودی اسانس را به میلی‌لیتر وارد کنید.');
+  const r = await fetch('/api/admin/essence-stock', {
+    method: 'PUT', headers: H(),
+    body: JSON.stringify({
+      product: currentProduct.slug, ml_on_hand: ml, percent_override: pct === '' ? null : pct,
+      use_count: document.getElementById('useCountStock').checked,
+      use_essence: document.getElementById('useEssenceStock').checked
+    })
+  });
+  const d = await r.json();
+  toast(r.ok ? 'موجودی اسانس ثبت شد.' : d.error);
+  if (r.ok) { loadEssenceStock(currentProduct.slug); editProduct(currentProduct.slug); }
 }
 
 async function saveSupplyMode() {
@@ -3460,11 +3537,11 @@ async function loadCampaigns() {
              ${esc(c.starts_at ? YazdDate.formatDate(c.starts_at) : '—')} تا ${esc(c.ends_at ? YazdDate.formatDate(c.ends_at) : '—')}</td>
            <td><span class="badge ${c.active ? 'b-paid' : 'b-cancel'}">${c.active ? 'فعال' : 'متوقف'}</span></td>
            <td style="white-space:nowrap">
-             <button onclick="toggleCampaign(${c.id}, ${c.active ? 0 : 1})"
+             <button data-csp-click="toggleCampaign(${c.id}, ${c.active ? 0 : 1})"
                style="background:var(--sand);border:1px solid var(--border);border-radius:7px;
                padding:5px 10px;cursor:pointer;font-size:.73rem;font-family:var(--font)">
                ${c.active ? 'توقف' : 'فعال'}</button>
-             <button onclick="deleteCampaign(${c.id})"
+             <button data-csp-click="deleteCampaign(${c.id})"
                style="background:none;border:none;color:#C0392B;cursor:pointer;
                font-size:.73rem;font-family:var(--font)">حذف</button>
            </td></tr>`).join('')}`;
@@ -3528,11 +3605,11 @@ async function loadNotices() {
              ${esc(n.starts_at ? YazdDate.formatDate(n.starts_at) : '—')} تا ${esc(n.ends_at ? YazdDate.formatDate(n.ends_at) : '—')}</td>
            <td><span class="badge ${n.active ? 'b-paid' : 'b-cancel'}">${n.active ? 'نمایش' : 'خاموش'}</span></td>
            <td style="white-space:nowrap">
-             <button onclick="toggleNotice(${n.id}, ${n.active ? 0 : 1})"
+             <button data-csp-click="toggleNotice(${n.id}, ${n.active ? 0 : 1})"
                style="background:var(--sand);border:1px solid var(--border);border-radius:7px;
                padding:5px 10px;cursor:pointer;font-size:.73rem;font-family:var(--font)">
                ${n.active ? 'خاموش' : 'نمایش'}</button>
-             <button onclick="deleteNotice(${n.id})"
+             <button data-csp-click="deleteNotice(${n.id})"
                style="background:none;border:none;color:#C0392B;cursor:pointer;
                font-size:.73rem;font-family:var(--font)">حذف</button>
            </td></tr>`).join('')}`;
@@ -3638,10 +3715,10 @@ function renderStaffTable() {
         ${u.active ? 'فعال' : 'غیرفعال'}</span>
         ${u.must_change ? '<div style="font-size:.68rem;color:var(--warning);margin-top:3px">رمز اولیه</div>' : ''}</td>
       ${canEdit ? `<td style="white-space:nowrap">
-        <button onclick="openStaffForm(${u.id})" style="background:var(--sand);
+        <button data-csp-click="openStaffForm(${u.id})" style="background:var(--sand);
           border:1px solid var(--border);border-radius:7px;padding:5px 10px;
           cursor:pointer;font-size:.74rem;font-family:var(--font)">ویرایش</button>
-        ${u.id !== ME.id ? `<button class="del" onclick="deleteStaff(${u.id})">حذف</button>` : ''}
+        ${u.id !== ME.id ? `<button class="del" data-csp-click="deleteStaff(${u.id})">حذف</button>` : ''}
       </td>` : ''}
     </tr>`).join('')}`
     : '<tr><td style="text-align:center;padding:24px;color:var(--muted)">کارمندی ثبت نشده</td></tr>';
@@ -3673,7 +3750,7 @@ function openStaffForm(id) {
           placeholder="۰۹۱۲۳۴۵۶۷۸۹">
         ${u ? '' : '<div class="hint">شماره برای اطلاع‌رسانی اختیاری پیامکی استفاده می‌شود</div>'}</div>
       <div class="field"><label>نقش و دسترسی *</label>
-        <select id="sfRole" onchange="showRolePerms()">${ROLES.map(rl =>
+        <select id="sfRole" data-csp-change="showRolePerms()">${ROLES.map(rl =>
           `<option value="${esc(rl.key)}" ${u && u.role_key === rl.key ? 'selected' : ''}>
             ${esc(rl.name)}</option>`).join('')}</select>
         <div class="hint" id="sfPermHint"></div></div>
@@ -3693,9 +3770,9 @@ function openStaffForm(id) {
     </div>`}
     <div id="sfErr" style="color:#C0392B;font-size:.8rem;margin:8px 0"></div>
     <div style="display:flex;gap:8px;flex-wrap:wrap">
-      <button class="btn" onclick="saveStaff(${u ? u.id : 'null'})">
+      <button class="btn" data-csp-click="saveStaff(${u ? u.id : 'null'})">
         ${u ? 'ذخیره تغییرات' : 'ساخت حساب'}</button>
-      <button class="btn btn-outline" onclick="document.getElementById('staffForm').classList.add('hidden')">
+      <button class="btn btn-outline" data-csp-click="document.getElementById('staffForm').classList.add('hidden')">
         انصراف</button>
     </div>`;
   box.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
@@ -3784,10 +3861,10 @@ function renderRoles() {
             ${toFa(rl.permissions.length)} اجازه · ${toFa(rl.staff_count)} کارمند</div>
         </div>
         ${canEdit && !rl.locked ? `<div style="display:flex;gap:6px">
-          <button onclick="openRoleForm(${esc(JSON.stringify(String(rl.key ?? '')))})" style="background:var(--sand);
+          <button data-csp-click="openRoleForm(${esc(JSON.stringify(String(rl.key ?? '')))})" style="background:var(--sand);
             border:1px solid var(--border);border-radius:7px;padding:5px 11px;
             cursor:pointer;font-size:.74rem;font-family:var(--font)">ویرایش اجازه‌ها</button>
-          ${!rl.builtin ? `<button class="del" onclick="deleteRole(${esc(JSON.stringify(String(rl.key ?? '')))})">حذف</button>` : ''}
+          ${!rl.builtin ? `<button class="del" data-csp-click="deleteRole(${esc(JSON.stringify(String(rl.key ?? '')))})">حذف</button>` : ''}
         </div>` : ''}
       </div>
     </div>`).join('');
@@ -3823,7 +3900,7 @@ async function openRoleForm(key) {
       <div style="border:1px solid var(--border);border-radius:10px;padding:12px;margin-bottom:9px">
         <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
           <strong style="font-size:.84rem">${esc(gr.label)}</strong>
-          <button onclick="toggleGroup(${esc(JSON.stringify(String(gr.key ?? '')))})" style="background:none;border:none;
+          <button data-csp-click="toggleGroup(${esc(JSON.stringify(String(gr.key ?? '')))})" style="background:none;border:none;
             color:var(--gold);cursor:pointer;font-size:.74rem;font-family:var(--font)">
             انتخاب همه</button>
         </div>
@@ -3845,10 +3922,10 @@ async function openRoleForm(key) {
 
     <div id="rfErr" style="color:#C0392B;font-size:.8rem;margin:8px 0"></div>
     <div style="display:flex;gap:8px;flex-wrap:wrap">
-      <button class="btn" onclick="saveRole(${rl ? esc(JSON.stringify(String(rl.key ?? ''))) : 'null'})">
+      <button class="btn" data-csp-click="saveRole(${rl ? esc(JSON.stringify(String(rl.key ?? ''))) : 'null'})">
         ${rl ? 'ذخیره اجازه‌ها' : 'ساخت نقش'}</button>
       <button class="btn btn-outline"
-        onclick="document.getElementById('roleForm').classList.add('hidden')">انصراف</button>
+        data-csp-click="document.getElementById('roleForm').classList.add('hidden')">انصراف</button>
     </div>`;
   box.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
 }
@@ -3921,5 +3998,6 @@ onCouponType();
 
 checkAuth().then(ok => { if (ok) showPanel(); });
 </script>
+<script src="/assets/csp-actions.js"></script>
 </body>
 </html>

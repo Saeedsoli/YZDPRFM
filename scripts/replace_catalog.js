@@ -1,38 +1,5 @@
 #!/usr/bin/env node
-/**
- * تعویض کامل کاتالوگ — جایگزینی محصولات و واریانت‌ها از seed تازه
- *
- * ═══════════════════════════════════════════════════════════
- * چرا این ابزار لازم شد
- * ═══════════════════════════════════════════════════════════
- * `seedIfEmpty()` در src/db.js فقط وقتی کار می‌کند که جدول
- * محصولات خالی باشد — عمدی و درست، چون نباید هر بار راه‌اندازی
- * سرور داده را بازنویسی کند.
- *
- * ولی گاهی کاتالوگ باید روی فروشگاهی که از قبل کار می‌کند
- * بازنویسی شود — مثلاً وقتی منبع داده به‌روز می‌شود. آن‌وقت باید
- * محصولات عوض شوند ولی **داده تراکنشی دست‌نخورده بماند**:
- * سفارش‌ها، مشتریان، کارکنان، کوپن‌ها، مقالات، تیکت‌ها.
- *
- * ═══════════════════════════════════════════════════════════
- * 🔴 خطرِ اصلی: ارجاع‌های شکسته
- * ═══════════════════════════════════════════════════════════
- * جدول‌هایی که به محصول یا SKU ارجاع می‌دهند:
- *   order_items.sku      → سفارش‌های ثبت‌شده
- *   wishlist.product_id  → علاقه‌مندی مشتریان
- *   stock_alerts.sku     → درخواست «خبرم کن»
- *   reviews.product_id   → نظرات
- *   product_notes        → ایندکس نُت بویایی
- *   trending / events    → آمار بازدید
- *
- * با تعویض کاتالوگ، شناسه‌ها عوض می‌شوند و این ارجاع‌ها یتیم
- * می‌مانند. سیاست هر کدام جداگانه تصمیم گرفته شده — پایین‌تر
- * توضیح داده شده.
- *
- * اجرا:
- *   node scripts/replace_catalog.js --dry-run    # فقط گزارش
- *   node scripts/replace_catalog.js --yes        # اجرای واقعی
- */
+
 'use strict';
 
 const fs = require('fs');
@@ -65,7 +32,6 @@ function main() {
   const products = JSON.parse(fs.readFileSync(seedFile, 'utf-8'));
   const variantCount = products.reduce((s, p) => s + (p.variants || []).length, 0);
 
-  // ── وضعیت فعلی ──
   const before = {
     products: db.prepare('SELECT COUNT(*) c FROM products').get().c,
     variants: db.prepare('SELECT COUNT(*) c FROM variants').get().c,
@@ -89,12 +55,6 @@ function main() {
   console.log(`    محصول: ${num(products.length)} · واریانت: ${num(variantCount)}`);
   console.log(`    برند یکتا: ${new Set(products.map(p => p.inspired_brand_en)).size}`);
 
-  /* ── موجودی: تنها چیزی که واقعاً باید نجات یابد ──
-     مالک فقط ۲ واریانت موجودی‌دار دارد. اگر همان دو هم پاک شوند،
-     فروشگاه صفر کالای قابل خرید می‌شود و آزمون خرید می‌شکند.
-     با SKU تطبیق داده می‌شود؛ SKU از شناسه محصول ساخته می‌شود که
-     عوض می‌شود، پس احتمال بازیابی کم است — ولی تلاش می‌کنیم و
-     صادقانه گزارش می‌دهیم. */
   const oldStock = db.prepare(
     'SELECT sku, stock FROM variants WHERE stock > 0').all();
 
@@ -117,11 +77,10 @@ function main() {
     return;
   }
 
-  // ═══ اجرای واقعی ═══
   console.log('\n' + b('  اجرا'));
 
   const tx = db.transaction(() => {
-    // ۱) پاک‌سازی وابسته‌ها
+
     const delW = db.prepare('DELETE FROM wishlist').run().changes;
     const delA = db.prepare('DELETE FROM stock_alerts').run().changes;
     const delR = db.prepare('DELETE FROM reviews').run().changes;
@@ -130,16 +89,13 @@ function main() {
     console.log(`    پاک شد — علاقه‌مندی ${delW} · خبرم‌کن ${delA}`
               + ` · نظر ${delR} · ترند ${delT} · نُت ${num(delN)}`);
 
-    // ۲) کاتالوگ کهنه
     const delV = db.prepare('DELETE FROM variants').run().changes;
     const delP = db.prepare('DELETE FROM products').run().changes;
     console.log(`    کاتالوگ کهنه — ${num(delP)} محصول · ${num(delV)} واریانت`);
 
-    // ۳) درج تازه — از همان تابع db.js تا منطق یکی باشد
     const seeded = insertProducts(products);
     console.log(`    کاتالوگ تازه — ${num(seeded.p)} محصول · ${num(seeded.v)} واریانت`);
 
-    // ۴) بازگرداندن موجودی
     let restored = 0;
     for (const s of oldStock) {
       const hit = db.prepare('UPDATE variants SET stock=? WHERE sku=?')
@@ -155,7 +111,6 @@ function main() {
 
   tx();
 
-  // ۵) ایندکس‌ها — بیرون از تراکنش چون خودشان تراکنش دارند
   console.log('\n' + b('  بازسازی ایندکس'));
   buildNotesIndex();
   const nc = db.prepare('SELECT COUNT(*) c FROM product_notes').get().c;
@@ -168,7 +123,6 @@ function main() {
     console.log(`    ایندکس جستجو — ${num(sc)} محصول`);
   }
 
-  // ── تأیید نهایی ──
   const after = {
     products: db.prepare('SELECT COUNT(*) c FROM products').get().c,
     variants: db.prepare('SELECT COUNT(*) c FROM variants').get().c,

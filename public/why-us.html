@@ -25,7 +25,7 @@
   .wrap { max-width: 900px; margin: 0 auto; padding: 0 20px }
 
   /* کارت شناور روی هیرو */
-  .lead { margin-top:-30px; position:relative; z-index:5; margin-bottom:44px }
+  .lead { margin-top:-16px; position:relative; z-index:5; margin-bottom:44px }
   .lead-card { background: var(--surface); border:1px solid var(--border);
                border-right:5px solid var(--gold); border-radius: var(--radius);
                padding: 26px 24px; box-shadow: var(--sh-lg) }
@@ -92,6 +92,16 @@
   .try .price { font-size:1.34rem; font-weight:800; color:var(--gold-dark); display:block;
                 margin-bottom:16px }
 
+  .src-list { list-style: none; padding: 0; margin: 0; display: grid; gap: 10px }
+  .src-list li {
+    font-size: .85rem; line-height: 2; color: #3A3A3A;
+    background: var(--sand); border-right: 3px solid var(--gold);
+    border-radius: 10px; padding: 10px 14px;
+  }
+  .src-list a { color: var(--gold-dark); font-weight: 700; text-decoration: underline;
+                text-underline-offset: 3px }
+  .src-list a:hover { color: var(--text) }
+  .src-note { font-size: .78rem; color: var(--muted); line-height: 2; margin-top: 12px }
   .src { font-size:.76rem; color:var(--muted); line-height:2; margin-top:14px }
   .src a { color:var(--gold-dark) }
   @media (max-width:640px){
@@ -146,11 +156,18 @@
          همین وسوسه‌اش می‌کند.</p>
       <p>متانول <strong>از راه پوست جذب می‌شود</strong> و در بدن به فرمالدهید و
          اسید فرمیک تبدیل می‌گردد — همان موادی که به عصب بینایی، کلیه و کبد
-         آسیب می‌زنند. سازمان غذا و داروی آمریکا و کمیسیون اروپا استفاده از آن
-         را در محصولات آرایشی <strong>ممنوع</strong> کرده‌اند.</p>
-      <p>این یک نگرانی نظری نیست. در سال ۲۰۲۶ در فیلیپین، آزمایش برندهای
-         محلی عطر نشان داد بعضی محصولات <strong>۲۶ تا ۶۵ درصد متانول</strong>
-         داشته‌اند — یعنی متانول به‌جای اتانول حلال اصلی بوده است.</p>
+         آسیب می‌زنند
+         (<a href="https://www.cdc.gov/niosh/npg/npgd0397.html" target="_blank"
+             rel="noopener noreferrer nofollow">راهنمای جیبی NIOSH</a>).
+         استفاده از متانول در محصولات آرایشی <strong>ممنوع</strong> است
+         (<a href="https://www.ecfr.gov/current/title-21/chapter-I/subchapter-C/part-700/subpart-B/section-700.11"
+             target="_blank" rel="noopener noreferrer nofollow">۲۱ CFR ۷۰۰.۱۱</a>،
+         <a href="https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:32009R1223"
+             target="_blank" rel="noopener noreferrer nofollow">مقررات آرایشی اتحادیه اروپا ۱۲۲۳/۲۰۰۹</a>).</p>
+      <p>خطرش نظری نیست؛ همان دو مرجع بالا و همین ممنوعیت قانونی برای آن
+         نوشته شده‌اند. متانول ارزان‌تر از اتانول است، و در محصولی که
+         حلالش اعلام نمی‌شود همین تفاوت قیمت می‌تواند تعیین‌کننده باشد.
+         راه مطمئن هم ساده است: بپرسید حلال چیست و پاسخ کتبی بخواهید.</p>
       <p><strong>حلال ما اتانول با گرید آرایشی است. بدون استثنا، بدون
          «فقط این یک بار».</strong></p>
     </div>
@@ -264,7 +281,7 @@
     <p class="sub">منطقی‌ترین راه برای سنجیدن ادعاهای بالا.</p>
 
     <div class="try">
-      <h3>سمپل ۵ میلی‌لیتری، پیش از خرید بطری</h3>
+      <h3>سمپل ۵ میل، پیش از خرید بطری</h3>
       <span class="price" id="sampleFrom">قیمت پس از انتخاب رایحه</span>
       <p>خرید عطر بدون بوییدن، ریسک است. برای رایحه‌هایی که سمپل قابل سفارش دارند،
          می‌توانید رایحه را چند روز روی پوست
@@ -297,13 +314,26 @@
   <section class="blk">
     <h2><span class="n">۷</span> منابع</h2>
     <p class="sub">ادعاهای ایمنی بالا از منابع زیر است، نه از خودمان.</p>
-    <p class="src">
-      • ممنوعیت متانول در آرایشی — سازمان غذا و داروی آمریکا (FDA) و کمیسیون اروپا<br>
-      • سمّیت متانول و جذب پوستی — مؤسسه ملی ایمنی و بهداشت شغلی آمریکا (NIOSH)<br>
-      • سهم ۷۰ تا ۹۰ درصدی الکل از حجم عطر — منابع فنی عطرسازی<br>
-      • رسوایی متانول در عطرهای محلی فیلیپین — گزارش‌های رسانه‌ای ۲۰۲۶<br>
-      • استاندارد اتانول آرایشی — راهنماهای فنی صنعت عطرسازی
-    </p>
+    <ul class="src-list">
+      <li>ممنوعیت متانول در محصولات آرایشی، آمریکا —
+        <a href="https://www.ecfr.gov/current/title-21/chapter-I/subchapter-C/part-700/subpart-B/section-700.11"
+           target="_blank" rel="noopener noreferrer nofollow">۲۱ CFR ۷۰۰.۱۱ (ای‌سی‌اف‌آر)</a></li>
+      <li>ممنوعیت متانول در محصولات آرایشی، اتحادیه اروپا —
+        <a href="https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:32009R1223"
+           target="_blank" rel="noopener noreferrer nofollow">مقررات ۱۲۲۳/۲۰۰۹</a></li>
+      <li>سمّیت متانول و جذب پوستی —
+        <a href="https://www.cdc.gov/niosh/npg/npgd0397.html"
+           target="_blank" rel="noopener noreferrer nofollow">راهنمای جیبی NIOSH، مدخل متانول</a></li>
+      <li>سهم الکل از حجم عطر —
+        <a href="https://www.iso.org/standard/76981.html"
+           target="_blank" rel="noopener noreferrer nofollow">استاندارد ISO ۲۹۹۹۱ (تعریف محصولات عطر)</a></li>
+      <li>طبقه‌بندی و برچسب‌گذاری مواد آرایشی —
+        <a href="https://www.fda.gov/cosmetics/cosmetics-laws-regulations/fda-authority-over-cosmetics-how-cosmetics-are-not-fda-approved-are-fda-regulated"
+           target="_blank" rel="noopener noreferrer nofollow">اختیارات FDA در محصولات آرایشی</a></li>
+    </ul>
+    <p class="src-note">این فهرست در حال تکمیل است. هر ادعای دیگری که در صفحه‌های
+      فروشگاه منبع دارد، بهتر است به همین شکل لینک شود؛ ادعای بدون منبع را
+      می‌شود حذف کرد یا با احتیاط نوشت.</p>
   </section>
 
 </div>

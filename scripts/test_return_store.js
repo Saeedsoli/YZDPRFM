@@ -1,5 +1,5 @@
 'use strict';
-// Disposable databases only; does not open the user's shop DB.
+
 const assert=require('assert');
 const Database=require('better-sqlite3');
 const fs=require('fs'), os=require('os'), path=require('path');

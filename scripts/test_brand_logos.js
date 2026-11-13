@@ -55,6 +55,6 @@ assert(home.includes('brand-logo'), 'homepage brand tiles use the logo');
 assert(home.includes("api/brands"), 'homepage brand tiles read the real brand list');
 const brands = fs.readFileSync(path.join(root, 'public', 'brands.html'), 'utf8');
 assert(brands.includes('class="blogo"'), 'brands page uses the logo');
-assert(files.every(f => /\.(?:svg|png|jpg)$/.test(f)), 'only image assets are bundled');
+assert(files.every(f => /\.(?:svg|png|jpe?g|webp|avif)$/.test(f)), 'only supported image assets are bundled');
 
 console.log(`PASS: ${Object.keys(registry.logos).length} public-domain brand logos served locally, ${Math.round(totalBytes / 1024)}KB total`);

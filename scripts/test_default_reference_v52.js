@@ -1,5 +1,5 @@
 'use strict';
-// Disposable DB only: source row, exact baseline, provenance and guarded notes.
+
 const a=require('assert/strict'),fs=require('fs'),os=require('os'),path=require('path'),crypto=require('crypto'),{spawnSync}=require('child_process');
 const root=path.join(__dirname,'..'),m=require('../seed/official_reference_prices_v52.json');
 const raw=fs.readFileSync(path.join(root,'uploads/لیست_قیمت_عمده.md'));a.equal(crypto.createHash('sha256').update(raw).digest('hex'),m.supplier_file_sha256);a.equal(m.items.length,4);

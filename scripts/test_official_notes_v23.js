@@ -1,7 +1,7 @@
 'use strict';
-// This legacy fixture explicitly tests the pre-approval unavailable baseline.
+
 process.env.APPROVED_MTO_AUTOSTART ??= '0';
-// Test references and guarded corrections on isolated data; no supplier price is assigned.
+
 const assert=require('assert/strict'),fs=require('fs'),os=require('os'),path=require('path'),{spawnSync}=require('child_process');
 const root=path.join(__dirname,'..'),m=require('../seed/official_note_corrections_v23.json'),e=require('../seed/official_identity_evidence_v27.json');assert.equal(m.items.length,6);assert.equal(e.items.length,6);for(const x of m.items)assert(e.items.some(y=>y.product_id===x.product_id&&y.official_url===x.source_url));
 const dir=fs.mkdtempSync(path.join(os.tmpdir(),'yazd-notes-v23-')),env={...process.env,DB_PATH:path.join(dir,'db.sqlite'),BACKUP_DISABLED:'1'};

@@ -1,29 +1,12 @@
-/**
- * عطر یزد | ورود مشتری با رمز یکبار مصرف
- * ----------------------------------------
- * ارسال واقعی در `sms.js` است — این فایل فقط چرخه عمر کد را
- * مدیریت می‌کند: ساخت، ذخیره، مهلت، شمارش تلاش نادرست.
- *
- * پیش‌تر کد کاوه‌نگار مستقیم اینجا نوشته شده بود و در `notify.js`
- * تکرار می‌شد. با تغییر سامانه به پیامیتو، آن ساختار به لایه
- * مشترک منتقل شد.
- *
- * تنظیم ارائه‌دهنده: متغیرهای `SMS_*` — جزئیات در `src/sms.js`
- */
-
 const crypto = require('crypto');
 const store = require('./db');
 const sms = require('./sms');
 const phoneVerification = require('./customer-phone-verification');
 
-const OTP_TTL      = 2 * 60 * 1000;   // اعتبار کد: ۲ دقیقه
-const RESEND_GAP   = 60 * 1000;       // فاصله ارسال مجدد: ۶۰ ثانیه
-const MAX_ATTEMPTS = 5;               // حداکثر تلاش نادرست
-const SESSION_TTL  = 30 * 24 * 3600 * 1000; // نشست مشتری: ۳۰ روز
-
-/* کدهای در انتظار در دیتابیس نگهداری می‌شوند، نه در حافظه.
-   دلیل: ری‌استارت سرور (deploy یا کرش) نباید کد کاربری را که همین
-   الان پیامک گرفته باطل کند. */
+const OTP_TTL      = 2 * 60 * 1000;
+const RESEND_GAP   = 60 * 1000;
+const MAX_ATTEMPTS = 5;
+const SESSION_TTL  = 30 * 24 * 3600 * 1000;
 
 function normalizeMobile(input) {
   let m = String(input || '')
@@ -37,13 +20,11 @@ function normalizeMobile(input) {
 
 function isValidMobile(m) { return /^09\d{9}$/.test(m); }
 
-// Configuration-only check; it does not send an SMS or prove delivery.
 async function deliveryAvailable() {
   if (String(process.env.NODE_ENV||'').trim().toLowerCase() !== 'production') return true;
   try { const r=await sms.testConnection();return !!(r && r.ok && r.live); } catch { return false; }
 }
 
-/** درخواست ارسال کد */
 async function requestCode(rawMobile) {
   if (!phoneVerification.ready(store.db)) return {ok:false,error:'سامانه تأیید شماره هنوز آماده نیست.'};
   const mobile = normalizeMobile(rawMobile);
@@ -51,9 +32,6 @@ async function requestCode(rawMobile) {
     return { ok: false, error: 'شماره موبایل معتبر نیست.' };
   }
 
-  // Reserve this number before awaiting the provider. A random non-OTP token
-  // prevents concurrent processes from sending multiple codes or publishing an
-  // older provider response after a newer request. No schema change required.
   const pending = 'pending:' + crypto.randomBytes(24).toString('hex');
   const reserved = store.db.transaction(() => {
     const now = Date.now(), prev = store.otpGet(mobile);
@@ -73,8 +51,7 @@ async function requestCode(rawMobile) {
     const current=store.otpGet(mobile);
     if (!current || current.code !== pending) return false;
     if (!r || !r.ok) {
-      // Restore an unexpired prior code on definite local failure; never
-      // restore over a newer reservation or resurrect an expired code.
+
       const prev=reserved.prev;
       if (prev && /^\d{5}$/.test(prev.code) && prev.expires > Date.now()) store.otpSave(mobile,prev);
       else store.otpDelete(mobile);
@@ -90,12 +67,11 @@ async function requestCode(rawMobile) {
 
   return {
     ok: true, mobile, ttl: OTP_TTL / 1000,
-    // فقط در حالت لاگ — به فرانت می‌گوید کد در خروجی سرور است
+
     ...(r.logged ? { dev_hint: 'کد در لاگ سرور چاپ شد' } : {})
   };
 }
 
-/** Consume a code only within an immediate SQLite transaction. */
 function consumeCode(rawMobile, inputCode) {
   return store.db.transaction(()=>{
     if (!phoneVerification.ready(store.db)) return {ok:false,error:'سامانه تأیید شماره هنوز آماده نیست.'};
@@ -104,8 +80,7 @@ function consumeCode(rawMobile, inputCode) {
     const rec=store.otpGet(mobile);
     if(!rec)return {ok:false,error:'ابتدا درخواست کد بدهید.'};
     if(Date.now()>rec.expires){store.otpDelete(mobile);return {ok:false,error:'کد منقضی شده است. دوباره درخواست دهید.'};}
-    // A provider call in flight is not a usable code and must not consume
-    // attempts or delete the reservation.
+
     if(/^pending:[a-f0-9]{48}$/.test(rec.code))return {ok:false,error:'ارسال کد هنوز در حال انجام است. کمی صبر کنید.'};
     if(rec.attempts>=MAX_ATTEMPTS){store.otpDelete(mobile);return {ok:false,error:'تعداد تلاش بیش از حد. دوباره درخواست دهید.'};}
     const clean=String(inputCode||'').replace(/[۰-۹]/g,d=>'۰۱۲۳۴۵۶۷۸۹'.indexOf(d)).replace(/[٠-٩]/g,d=>'٠١٢٣٤٥٦٧٨٩'.indexOf(d)).replace(/\s/g,'').trim();
@@ -116,7 +91,6 @@ function consumeCode(rawMobile, inputCode) {
   }).immediate();
 }
 
-/** Verify ownership and issue a session that cannot be confused with legacy sessions. */
 function verifyCode(rawMobile, inputCode) {
   return store.db.transaction(()=>{
     const check=consumeCode(rawMobile,inputCode);if(!check.ok)return check;
@@ -128,7 +102,6 @@ function verifyCode(rawMobile, inputCode) {
   }).immediate();
 }
 
-/** بازگرداندن شماره موبایل از توکن */
 function mobileFromToken(token) {
   if (!phoneVerification.ready(store.db)) return null;
   const s = store.readSession(token, 'CUSTOMER_VERIFIED');
@@ -138,8 +111,6 @@ function mobileFromToken(token) {
 }
 
 function destroySession(token) { store.destroySession(token); }
-
-// پاکسازی کدهای منقضی در db.js انجام می‌شود (هر ۵ دقیقه)
 
 module.exports = {
   requestCode, deliveryAvailable, consumeCode, verifyCode, mobileFromToken, destroySession,

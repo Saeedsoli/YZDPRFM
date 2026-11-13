@@ -1,5 +1,5 @@
 'use strict';
-// Explicit, offline, backup-first scoped update of reference-note data.
+
 const fs=require('fs'),path=require('path'),Database=require('better-sqlite3');
 const args=process.argv.slice(2);
 if(![5,7].includes(args.length)||args[0]!=='--db'||args[2]!=='--backup'||args[4]!=='--offline-confirmed'||(args.length===7&&(args[5]!=='--batch'||!['2','3','4','5','6'].includes(args[6])))){

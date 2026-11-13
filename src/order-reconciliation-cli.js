@@ -1,6 +1,5 @@
 'use strict';
-// Explicit, backup-first additive migration of an OFFLINE existing database.
-// Historical manual reviews and delivery corrections are never inferred. The server must be stopped before running this tool.
+
 const fs=require('fs'),path=require('path'),Database=require('better-sqlite3');
 const args=process.argv.slice(2);
 if(args.length!==5||args[0]!=='--db'||args[2]!=='--backup'||args[4]!=='--offline-confirmed'){

@@ -1,19 +1,5 @@
 #!/usr/bin/env node
-/**
- * آزمون حساب مشتری و کارمند.
- *
- * پوشش هشت خواسته:
- *   ۱) فرم سفارش: نام و نام خانوادگی جدا، کد پستی الزامی، ایمیل
- *   ۲) ثبت‌نام مشتری: نام، موبایل، رمز ۸ نویسه‌ای
- *   ۳) نام کاربری مشتری = شماره موبایل
- *   ۴) بازیابی رمز با پیامک
- *   ۵) نام کاربری کارمند = کد ملی
- *   ۶) فرم کارمند: نام، خانوادگی، نقش، کد ملی، موبایل
- *   ۷) رمز موقت تصادفی و مستقل از شماره موبایل
- *   ۸) پیامک اطلاع‌رسانی به کارمند
- *
- * اجرا: node scripts/test_accounts.js
- */
+
 'use strict';
 
 const { spawn } = require('child_process');
@@ -101,7 +87,6 @@ const api = (p, opt = {}, token = null) =>
     process.exit(failed === 0 ? 0 : 1);
   };
 
-  // ══ ۲+۳) ثبت‌نام مشتری ══
   console.log(d('  ثبت‌نام مشتری'));
 
   await api('/api/auth/request-code', {method:'POST',body:JSON.stringify({mobile:TEST_MOBILE})});
@@ -148,10 +133,6 @@ const api = (p, opt = {}, token = null) =>
   });
   add('موبایل تکراری رد می‌شود', dup.status === 409, `کد ${dup.status}`);
 
-  /* نام خانوادگی اختیاری است — نباید سد راه ثبت‌نام شود.
-     محدودیت نرخ ثبت‌نام (۵ بار در نیم ساعت) پیش از این بررسی
-     پر می‌شود، پس پاکش می‌کنیم — هدف اینجا سنجش قاعده است نه
-     محدودیت نرخ که جدا آزمون دارد. */
   db.prepare('DELETE FROM rate_limits').run();
   await api('/api/auth/request-code', {method:'POST',body:JSON.stringify({mobile:'09190009988'})});
   const noLastCode=db.prepare('SELECT code FROM otp_codes WHERE mobile=?').get('09190009988')?.code;
@@ -166,7 +147,6 @@ const api = (p, opt = {}, token = null) =>
   db.prepare('DELETE FROM customer_phone_verifications WHERE mobile=?').run('09190009988');
   db.prepare("DELETE FROM sessions WHERE kind='CUSTOMER_VERIFIED' AND subject=?").run('09190009988');
 
-  // ══ ورود با رمز ══
   console.log(d('\n  ورود مشتری'));
 
   const login = await api('/api/auth/login', {
@@ -185,12 +165,10 @@ const api = (p, opt = {}, token = null) =>
     method: 'POST',
     body: JSON.stringify({ mobile: '09199998877', password: 'Whatever123' })
   });
-  /* پیام «حساب نیست» و «رمز غلط» باید یکسان باشد، وگرنه مهاجم
-     می‌فهمد چه شماره‌هایی ثبت شده‌اند. */
+
   add('پیام خطا شماره‌های ثبت‌شده را لو نمی‌دهد',
       unknown.json.error === wrongPw.json.error, unknown.json.error);
 
-  // ══ ۴) بازیابی رمز ══
   console.log(d('\n  بازیابی رمز با پیامک'));
 
   logBuf = '';
@@ -240,7 +218,6 @@ const api = (p, opt = {}, token = null) =>
     add('رمز قدیمی دیگر کار نمی‌کند', oldLogin.status === 401);
   }
 
-  // ══ ۵ تا ۸) کارمند ══
   console.log(d('\n  ساخت کارمند'));
 
   const ol = await api('/api/admin/login', {
@@ -270,7 +247,6 @@ const api = (p, opt = {}, token = null) =>
   add('نام کامل از دو فیلد ساخته می‌شود',
       mk.json.staff?.display_name === 'مهدی رضایی', mk.json.staff?.display_name);
 
-  /* ۷) رمز تصادفی یک‌بار به مدیر داده می‌شود، نه در لاگ یا پیامک. */
   const expectedPw = mk.json.temp_password;
   add('رمز موقت تصادفی و مستقل از شماره است',
       typeof expectedPw === 'string' && expectedPw.length >= 20 && expectedPw !== staffMobile.replace(/^0+/, ''));
@@ -288,7 +264,6 @@ const api = (p, opt = {}, token = null) =>
   add('رمز موقت در لاگ چاپ نمی‌شود', !!expectedPw && !logBuf.includes(expectedPw));
   add('اطلاعات ورود به پیامک لاگ‌شده نمی‌رود', !/حساب کارمندی/.test(logBuf));
 
-  // اعتبارسنجی ورودی
   console.log(d('\n  اعتبارسنجی فرم کارمند'));
 
   const shortNid = await api('/api/admin/staff', {
@@ -327,8 +302,6 @@ const api = (p, opt = {}, token = null) =>
   }, OWNER);
   add('موبایل کارمند الزامی است', noMobile.status === 400);
 
-  /* ارقام فارسی باید پذیرفته شوند — کاربر ایرانی با کیبورد
-     فارسی تایپ می‌کند. */
   const faDigits = await api('/api/admin/staff', {
     method: 'POST',
     body: JSON.stringify({
@@ -342,7 +315,6 @@ const api = (p, opt = {}, token = null) =>
     db.prepare('DELETE FROM staff WHERE id=?').run(faDigits.json.staff.id);
   }
 
-  // ══ ۱) فیلدهای سفارش ══
   console.log(d('\n  فیلدهای سفارش'));
 
   const sku = stockLease.skus[0];

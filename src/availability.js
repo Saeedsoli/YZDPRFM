@@ -1,5 +1,5 @@
 'use strict';
-// Inventory state shared by validation and cart sync. Unknown modes fail closed.
+
 function variantAvailability(mode, stock, price) {
   const n=Number(stock), amount=Number(price);
   if (!['IN_STOCK','MADE_TO_ORDER'].includes(mode) || !Number.isInteger(n) || n < 0 || !Number.isInteger(amount) || amount <= 0)

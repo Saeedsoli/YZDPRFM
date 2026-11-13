@@ -1,22 +1,5 @@
 #!/usr/bin/env node
-/**
- * آزمون همزمانی شماره سفارش.
- *
- * پیشینه: بنچمارک تیر ۱۴۰۵ نشان داد شماره سفارش فقط از
- * `Date.now()` ساخته می‌شد. دقت آن میلی‌ثانیه است، پس دو خریدار
- * همزمان شماره یکسان می‌گرفتند و دومی با خطای دیتابیس رد می‌شد:
- *
- *     UNIQUE constraint failed: orders.order_id
- *
- * مشتری فقط «خطای داخلی سرور» می‌دید. نرخ شکست اندازه‌گیری‌شده:
- *   ۲ خریدار همزمان → ۲۲٪ · ۵ خریدار → ۳۵٪
- *
- * این آزمون همان شرایط را بازمی‌سازد و مطمئن می‌شود دیگر تکرار
- * نشود. اگر روزی کسی تولید شماره را «ساده‌سازی» کند، اینجا
- * قرمز می‌شود.
- *
- * اجرا: node scripts/test_order_id_race.js
- */
+
 'use strict';
 
 const { spawn } = require('child_process');
@@ -67,8 +50,7 @@ async function boot() {
       BACKUP_DISABLED: '1',
       PORT: String(PORT),
       DB_PATH: DB,
-      // سقف نرخ برداشته می‌شود تا خودِ منطق شماره سنجیده شود،
-      // نه محافظِ ضد ربات. محافظ در test_rate_limit جدا آزموده می‌شود.
+
       RL_ORDER_LIMIT: '100000'
     },
     stdio: 'ignore'
@@ -80,7 +62,6 @@ async function boot() {
   return proc;
 }
 
-/** یک سفارش می‌فرستد و نتیجه خام را برمی‌گرداند */
 async function placeOrder(i, sku) {
   const res = await fetch(`${BASE}/api/orders`, {
     method: 'POST',
@@ -105,7 +86,6 @@ async function placeOrder(i, sku) {
   const removed = cleanup();
   if (removed) console.log(d(`  ${removed} سفارش آزمونی قبلی پاک شد\n`));
 
-  // ۲۵ واریانت با موجودی ۹۹۹ — کافی برای ۱۳۸ سفارش این آزمون
   const stockLease = withStock(DB, 25, 999);
 
   const srv = await boot();
@@ -124,8 +104,7 @@ async function placeOrder(i, sku) {
   };
 
   try {
-    /* موجودی موقت. از تیر ۱۴۰۵ موجودی تولید صفر است، پس آزمون
-       باید موجودی خودش را بسازد و در پایان برگرداند. */
+
     const skus = stockLease.skus;
     if (!skus.length) { add('SKU برای آزمون', false); return finish(); }
 
@@ -140,7 +119,6 @@ async function placeOrder(i, sku) {
         /^YZD-[A-Z0-9-]{4,}$/i.test(first.orderId));
     }
 
-    // ── دو خریدار دقیقاً همزمان (سناریوی اصلی باگ) ──
     {
       const [a, b] = await Promise.all([
         placeOrder(101, skus[1 % skus.length]),
@@ -153,7 +131,6 @@ async function placeOrder(i, sku) {
         `${a.orderId} ≠ ${b.orderId}`);
     }
 
-    // ── موج سنگین: ۶۰ سفارش کاملاً موازی ──
     {
       const N = 60;
       const jobs = Array.from({ length: N }, (_, i) =>
@@ -172,7 +149,6 @@ async function placeOrder(i, sku) {
       add('هیچ خطای ۵۰۰ رخ نداد', err500.length === 0,
         err500.length ? JSON.stringify(err500[0].body).slice(0, 60) : 'پاک');
 
-      // هر شماره باید واقعاً در دیتابیس باشد
       const db = new Database(DB, { readonly: true });
       const found = ids.filter(id =>
         db.prepare('SELECT 1 FROM orders WHERE order_id=?').get(id));
@@ -181,7 +157,6 @@ async function placeOrder(i, sku) {
         `${found.length}/${ids.length}`);
     }
 
-    // ── سه موج پشت سر هم (فشار پیوسته) ──
     {
       const allIds = [];
       let fails = 0;
@@ -198,7 +173,6 @@ async function placeOrder(i, sku) {
         `${new Set(allIds).size}/${allIds.length}`);
     }
 
-    // ── موجودی درست کم شده باشد ──
     {
       const db = new Database(DB, { readonly: true });
       const n = db.prepare(

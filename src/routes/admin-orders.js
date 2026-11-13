@@ -1,69 +1,12 @@
-/**
- * عطر یزد | مسیرهای سفارش — بخش مدیریتی
- * ----------------------------------------
- * گام ۲ از تفکیک کامل `server.js`.
- *
- * ── محتوا ──
- *   GET  /api/orders                 فهرست سفارش‌ها (جستجو، فیلتر، صفحه‌بندی)
- *   PUT  /api/orders/:id/status      پیشبرد یا لغو وضعیت
- *   GET  /api/orders/:id/history     تاریخچه تغییر وضعیت
- *   GET  /api/orders/:id/invoice     فاکتور — مشتری یا کارمند
- *   GET  /api/admin/export/csv       خروجی CSV همه سفارش‌ها
- *
- * ── چرا این بلوک حساس‌تر از گام ۱ ــ
- * سه چیز که در کاتالوگ نبود:
- *   • **پول** — لغو سفارش موجودی را برمی‌گرداند و کوپن را آزاد می‌کند
- *   • **داده شخصی** — فاکتور و CSV نام، موبایل و نشانی مشتری دارند
- *   • **دو مسیر دسترسی** — فاکتور هم برای مشتریِ صاحب سفارش باز است
- *     هم برای کارمندِ دارای مجوز
- *
- * پس آزمون این ماژول روی همین سه محور تمرکز دارد.
- *
- * ── چرا `POST /api/orders` اینجا نیست ──
- * ثبت سفارش با درگاه پرداخت گره خورده و **هرگز با پول واقعی
- * آزموده نشده**. تا آن آزمون انجام نشود، دست نمی‌خورد.
- * (تصمیم ثبت‌شده در `SERVER_MODULARIZATION.md`)
- *
- * ── قرارداد `ctx` ──
- * ماژول زمینه می‌گیرد و `Promise<boolean>` برمی‌گرداند:
- *   true  → رسیدگی شد
- *   false → مسئولش نیستم
- */
-
 'use strict';
 
 const csv = require('../csv-export');
 const persianDate = require('../../public/assets/persian-date');
 const stockReservations = require('../order-stock-reservations');
+const essenceInventory = require('../essence-inventory');
 const returnStore = require('../return-store');
 const reconciliation = require('../order-reconciliation');
 
-/**
- * @param {object}   ctx
- * @param {string}   ctx.method
- * @param {string}   ctx.pathname
- * @param {object}   ctx.parsed
- * @param {object}   ctx.req
- * @param {object}   ctx.res                 برای استریم CSV
- * @param {Function} ctx.can                 خودش ۴۰۳ می‌فرستد
- * @param {Function} ctx.parseBody
- * @param {Function} ctx.logAudit
- * @param {object}   ctx.who                 کارمند واردشده (یا null)
- * @param {object}   ctx.db
- * @param {object}   ctx.otp
- * @param {object}   ctx.notify
- * @param {Function} ctx.getToken            توکن کارمند
- * @param {Function} ctx.getCustomerToken    توکن مشتری
- * @param {Function} ctx.isValidSession
- * @param {Function} ctx.logStatus
- * @param {Function} ctx.releaseCouponUse
- * @param {Function} ctx.notifyStockWatchers
- * @param {Function} ctx.getSettings
- * @param {Function} ctx.nextInvoiceNo
- * @param {object}   ctx.STATUS_FA
- * @param {object}   ctx.ORDER_FLOW
- * @returns {Promise<boolean>}
- */
 async function handle(ctx) {
   const {
     method, pathname, parsed, req, res,
@@ -73,14 +16,6 @@ async function handle(ctx) {
     getSettings, nextInvoiceNo, STATUS_FA, ORDER_FLOW
   } = ctx;
 
-  /* ── چرا sendJSON پوششی ──
-     الگوی `return sendJSON(...)` در `server.js` یعنی «پاسخ بده و
-     خارج شو»، ولی `undefined` برمی‌گرداند — که falsy است. در
-     ماژول یعنی «رسیدگی نشد»، پس سرور ادامه می‌دهد و ۴۰۴ روی همان
-     پاسخ می‌نویسد → ERR_HTTP_HEADERS_SENT → **مرگ فرآیند**.
-
-     این باگ در گام ۱ کشف شد و کل سایت را پایین می‌آورد. اینجا از
-     ابتدا رعایت شده. */
   const sendJSON = (code, data) => { ctx.sendJSON(code, data); return true; };
 
   if (method === 'GET' && pathname === '/api/orders') {
@@ -128,9 +63,6 @@ async function handle(ctx) {
     const b = await parseBody(req);
     const next = String(b.status || '').toUpperCase();
 
-    /* پیشبرد عادی و لغو دو کار متفاوت‌اند.
-       پشتیبان باید سفارش را جلو ببرد ولی لغو نکند — لغو موجودی
-       را برمی‌گرداند، کد تخفیف را آزاد می‌کند و اثر مالی دارد. */
     const isDestructive = ['CANCELLED','RETURNED','FAILED'].includes(next);
     if (isDestructive) {
       if (!can('orders.cancel')) return true;
@@ -149,8 +81,6 @@ async function handle(ctx) {
       });
     }
 
-    // Status and actual reserved-stock release are a single transaction.
-    // Old orders without evidence are held for manual reconciliation.
     const change = db.transaction(() => {
       const current=db.prepare('SELECT status FROM orders WHERE order_id=?').get(oid);
       if(!current || current.status!==order.status) return {conflict:true};
@@ -160,6 +90,8 @@ async function handle(ctx) {
         if(!plan.ok)return {needsReview:true};
         const release=stockReservations.release(db,oid);
         if(!release.ok)throw Error('Reservation changed during transition');
+
+        if(essenceInventory.ready(db))essenceInventory.releaseOrder(db,oid);
         restored=release.skus;
       }
       const changed=db.prepare(`UPDATE orders SET status=?,tracking_code=COALESCE(?,tracking_code),
@@ -181,7 +113,6 @@ async function handle(ctx) {
     const updated = db.prepare('SELECT * FROM orders WHERE order_id=?').get(oid);
     notify.statusChanged(updated, next).catch(() => {});
 
-    // کالایی که برگشته ممکن است کسی منتظرش باشد
     const alerted = notifyStockWatchers(restored,
       next === 'RETURNED' ? 'مرجوعی' : next === 'FAILED' ? 'پرداخت ناموفق' : 'لغو سفارش');
 
@@ -220,11 +151,6 @@ async function handle(ctx) {
     const order = db.prepare('SELECT * FROM orders WHERE order_id=?').get(oid);
     if (!order) return sendJSON(404, { error: 'سفارش یافت نشد' });
 
-    /* دو راه دسترسی:
-         ۱) مشتری صاحب همان سفارش
-         ۲) کارمندی که مجوز orders.invoice دارد
-       پیش‌تر «هر کارمند واردشده» کافی بود — یعنی محتوانویس هم
-       می‌توانست فاکتور و نشانی مشتریان را ببیند. */
     const isOwnerCustomer = mobile && order.mobile === mobile;
     if (!isOwnerCustomer) {
       if (!who) return sendJSON(403, { error: 'دسترسی مجاز نیست' });
@@ -234,7 +160,6 @@ async function handle(ctx) {
     const items = db.prepare('SELECT * FROM order_items WHERE order_id=?').all(oid);
     const settings = getSettings();
 
-    // شماره فاکتور فقط یک‌بار صادر و ذخیره می‌شود
     let invNo = db.prepare("SELECT value FROM settings WHERE key=?")
       .get(`invoice_no:${oid}`)?.value;
     if (!invNo && ['PAID','PROCESSING','SHIPPED','DELIVERED'].includes(order.status)) {
@@ -243,26 +168,18 @@ async function handle(ctx) {
         .run(`invoice_no:${oid}`, invNo);
     }
 
-    /* هیچ مبلغ اضافه‌ای در فاکتور محاسبه نمی‌شود.
-       قیمت اعلام‌شده در سایت = مبلغ پرداختی مشتری.
-       فاکتور فقط سه سطر دارد: جمع کالاها − تخفیف + ارسال = قابل پرداخت. */
     return sendJSON(200, {
       invoice_no: invNo || null,
       order, items, settings,
       totals: {
         subtotal: order.subtotal,
         discount: order.discount_amount || 0,
-        /* تفکیک تخفیف: سهم جشنواره جدا از سهم کد.
-           سفارش‌های پیش از افزودن این ستون NULL دارند؛ آنجا
-           `campaign` صفر می‌شود و `coupon` کل تخفیف را می‌گیرد
-           — یعنی فاکتور قدیمی دقیقاً مثل قبل چاپ می‌شود. */
+
         campaign: order.campaign_discount || 0,
         campaign_note: order.campaign_note || null,
         coupon: Math.max(0, (order.discount_amount || 0) - (order.campaign_discount || 0)),
         shipping: order.shipping_fee,
-        /* بسته‌بندی کادویی — سطر جدا در فاکتور.
-           سفارش‌های پیش از افزودن این ستون صفر می‌گیرند، پس
-           فاکتور قدیمی دقیقاً مثل قبل چاپ می‌شود. */
+
         gift_wrap: order.gift_wrap_fee || 0,
         grand_total: order.total_paid
       }
@@ -294,10 +211,10 @@ async function handle(ctx) {
       ]));
     });
     res.end();
-    return true;      // پاسخ استریمی — sendJSON صدا زده نشد
+    return true;
   }
 
-  return false;   // هیچ‌کدام از مسیرهای این ماژول نبود
+  return false;
 }
 
 module.exports = { handle };

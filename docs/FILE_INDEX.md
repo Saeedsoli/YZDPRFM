@@ -82,6 +82,7 @@ bash scripts/smoke_test.sh     # ۹۲ آزمون خودکار
 **دارایی‌ها:**
 
 - `public/assets/app.js` — منطق مشترک، سبد، تحلیل، فوتر
+- `public/assets/csp-actions.js` — dispatch امن رویدادهای UI با data-attribute، بدون inline handler
 - `public/assets/theme.css` — سیستم بصری کامل
 - `public/assets/code128.js` — بارکد واقعی
 - `public/fonts/*.woff2` — وزیرمتن، ۵ وزن زیرمجموعه‌شده
@@ -129,6 +130,8 @@ bash scripts/smoke_test.sh     # ۹۲ آزمون خودکار
 | `test_enamad_browser.py` | ۲۲ نشان در مرورگر واقعی — DOM، CLS، حالت قطعی |
 | `test_pwa.js` | ۵۳ پیکربندی PWA — manifest، آیکن، هدر سرویس‌ورکر |
 | `test_brand_names.js` | ۱۱ نگارش فارسی برندها |
+| `test_brand_name_normalization.js` | ادغام املای فارسی Xerjoff و Sapil، idempotent و بدون تغییر برندهای دیگر |
+| `test_script_element_csp_browser.py` | CSP در ۲۶ مسیر، تزریق اسکریپت و handler، دسکتاپ/موبایل |
 | `test_notifications.js` | ۱۶ اعلان‌های پنل |
 | `test_profile.js` | ۲۱ پروفایل و کارنامه کارمند |
 | `test_content.js` | ۱۹ محتوای مجله و کوییز |
@@ -144,7 +147,17 @@ bash scripts/smoke_test.sh     # ۹۲ آزمون خودکار
 | `test_backup_stream_safety.js` | پشتیبان هم‌زمان، بازیابی آزمایشی و پاک‌سازی پس از قطع یا خطا |
 | `test_font_preload.js` | بررسی پیش‌بارگذاری فونت محلی در صفحات |
 | `fetch_brand_logos.py` | دریافت و اعتبارسنجی لوگوی برندها از Wikimedia Commons |
+| `essence-inventory.js` | موجودی اسانس بر پایه میلی‌لیتر و کسر خودکار |
+| `test_search_visibility.js` | آمادگی جست‌وجو و AI: robots، نقشه‌ها، llms.txt، فید، schema |
+| `submit_indexnow.js` | اعلام سریع نشانی‌ها به Bing/Yandex/Naver |
+| `test_external_references.js` | لینک منابع بیرونی: https، rel امن، فهرست سفید میزبان |
+| `test_essence_inventory.js` | آزمون موجودی اسانس: مصرف، سقف، رزرو، آزادسازی |
+| `optimize_assets.py` | بهینه‌سازی تصویر و SVG بر پایه سیاست `seed/asset_pipeline_v1.json` |
+| `test_asset_budget.js` | بررسی قالب، حجم، ابعاد و مذاکره تصویر در سرور |
+| `asset_pipeline_v1.json` | سیاست قالب‌ها و سقف‌های دارایی تصویری |
 | `test_brand_logos.js` | لوگوی برندها: فایل محلی، مجوز ثبت‌شده، بدون محتوای اجرایی |
+| `brand-list.js` | پرس‌وجوی یگانهٔ فهرست برندها برای `/api/brands` و صفحهٔ `/brands` |
+| `brand-name-normalization.js` | یکسان‌سازی املای فارسی برندهای لاتین در بوت |
 | `brand-logos.js` | سرو لوگوی برند از `seed/brand_logos_v1.json` |
 | `brand_logos_v1.json` | فهرست لوگوها با منبع و مجوز |
 | `studio_illustrations_v1.json` | تصاویر نمادین استودیویی محصول: قواعد و توزیع |
@@ -1024,7 +1037,7 @@ node_modules/   با npm install برمی‌گردد
 - `scripts/test_account_returns_journey.py` — سفر آزمایشی خرید، پرداخت شبیه‌سازی‌شده، تحویل، مرجوعی و پاسخ مدیریت.
 - `scripts/test_service_worker_freshness_browser.py` — آزمون واقعی به‌روزرسانی کد، آفلاین و عدم کش نشانی‌های حساس.
 - `scripts/test_analytics_trusted_proxy.js` — آزمون استفاده تحلیل بازدید از پروکسی مورد اعتماد، بدون ذخیره IP خام.
-- `src/script-element-csp.js` — محاسبه هش اسکریپت‌های قالب مورداعتماد برای سیاست CSP3؛ رویدادهای درون‌خطی هنوز مجازند.
+- `src/script-element-csp.js` — محاسبه هش اسکریپت‌های SSR برای CSP3؛ همهٔ ۲۸ صفحه بدون inline event handler هستند.
 - `scripts/test_script_element_csp.js` — آزمون هش قالب، نرمال‌سازی و رد سیاست نامعتبر.
 - `scripts/test_script_element_csp_browser.py` — آزمون مرورگر واقعی CSP و سلامت صفحه‌های کلیدی.
 - `scripts/test_checkout_async_safety_browser.py` — آزمون مرورگر CSP تسویه، پاسخ‌های خارج از ترتیب و جلوگیری از ثبت هم‌زمان سفارش.
@@ -1065,5 +1078,7 @@ node_modules/   با npm install برمی‌گردد
 - `scripts/test_privacy_policy.js` — کنترل هم‌خوانی متن حریم خصوصی با ذخیره هش رمز، سرویس‌ها و آمار داخلی.
 - `scripts/copy_supplier_fixture.py` — انتقال صرفاً فایل قیمت شناخته‌شده با کنترل هش و بدون دنبال‌کردن پیوند، به محیط آزمون ایزوله.
 - `scripts/test_attachment_exclusion.py` — آزمون کنارگذاشتن پیوست‌های محرمانه از Git، بسته استقرار و مراحل آزمون.
+| `CONTENT_REVIEW.md` | بازبینی محتوای متنی: تضادها، اصلاح‌ها و موارد باز |
+| `SEO_REGISTRATION.md` | ثبت در گوگل/Bing/AI و کارهای باقی‌مانده |
 | `WORKSPACE.md` | نقشه پوشه‌ها و قاعده نگهداری ورک‌اسپیس |
 | `BRAND_LOGO_ASSETS.md` | منبع، مجوز و نگهداری لوگوی خانه‌های عطر |

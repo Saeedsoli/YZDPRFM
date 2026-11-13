@@ -1,19 +1,5 @@
 #!/usr/bin/env node
-/**
- * آزمون نگهبان صفحات «چرا ما؟» و «سمپل».
- *
- * پیشینه: تحلیل رقابتی (مرداد ۱۴۰۵) نشان داد دو شکاف داریم —
- * توجیه قیمت، و برجسته نبودن سمپل که قوی‌ترین اهرم تبدیل ماست.
- * این دو صفحه پاسخ آن‌اند.
- *
- * چرا آزمون لازم است: هر دو صفحه به داده زنده وابسته‌اند
- * (قیمت سمپل، فهرست خانواده‌ها، شمار محصولات). اگر روزی نام
- * فیلدی در API عوض شود، صفحه بی‌صدا خراب می‌شود — همان‌طور که
- * یک بار شد: فیلتر خانواده با نام فیلد اشتباه ساخته شده بود و
- * بی‌اثر بود.
- *
- * اجرا: node scripts/test_new_pages.js
- */
+
 'use strict';
 
 const { spawn } = require('child_process');
@@ -49,7 +35,6 @@ async function boot() {
   return proc;
 }
 
-/** مرورگر موجود در کش را پیدا می‌کند (نسخه Node و پایتون گاهی فرق دارند) */
 function findChromium() {
   const base = path.join(process.env.HOME || '/home/user', '.cache', 'ms-playwright');
   if (!fs.existsSync(base)) return null;
@@ -79,13 +64,12 @@ function findChromium() {
   };
 
   try {
-    // ── دسترس‌پذیری ──
+
     for (const [p, name] of [['/why-us', 'چرا ما؟'], ['/samples', 'سمپل']]) {
       const res = await fetch(BASE + p);
       add(`${name} با ۲۰۰ باز می‌شود`, res.status === 200, String(res.status));
     }
 
-    // ── محتوای کلیدی «چرا ما؟» ──
     {
       const html = await fetch(BASE + '/why-us').then(x => x.text());
       add('متانول توضیح داده شده', html.includes('متانول'));
@@ -97,12 +81,11 @@ function findChromium() {
       add('بخش «آنچه ادعا نمی‌کنیم» هست', html.includes('ادعا نمی‌کنیم'));
       add('جدول مقایسه ضعف هم دارد', html.includes('class="no"'),
         'صداقت: ردیف قرمز');
-      // عدد فارسی نباید در RTL برعکس شود
+
       add('اعداد با bdi ایزوله شده‌اند', html.includes('<bdi>'),
         '۱۵+ نباید +۱۵ دیده شود');
     }
 
-    // ── صفحه سمپل ──
     {
       const html = await fetch(BASE + '/samples').then(x => x.text());
       add('راهنمای امتحان سمپل هست', html.includes('چطور سمپل را درست امتحان'));
@@ -114,7 +97,6 @@ function findChromium() {
         'از کاتالوگ خوانده می‌شود');
     }
 
-    // ── داده‌ای که صفحه سمپل به آن تکیه دارد ──
     {
       const fam = await fetch(`${BASE}/api/families`).then(x => x.json());
       const list = fam.families || [];
@@ -123,7 +105,6 @@ function findChromium() {
         list.length > 0 && 'family_slug' in list[0],
         list[0] ? Object.keys(list[0]).join(', ') : '');
 
-      // فیلتر واقعاً کار کند
       if (list.length) {
         const all = await fetch(`${BASE}/api/products?limit=1`).then(x => x.json());
         const one = await fetch(
@@ -140,7 +121,6 @@ function findChromium() {
         `${a.total} → ${w.total}`);
     }
 
-    // ── لینک‌ها ──
     {
       const home = await fetch(BASE + '/').then(x => x.text());
       add('صفحه اصلی به سمپل لینک دارد', home.includes('/samples'));
@@ -150,13 +130,11 @@ function findChromium() {
       add('منوی سراسری هر دو را دارد',
         appjs.includes('/samples') && appjs.includes('/why-us'));
 
-      // لینک شکسته‌ای که قبلاً بود نباید برگردد
       add('لینک قدیمیِ «‎?q=سمپل» حذف شده',
         !home.includes('q=%D8%B3%D9%85%D9%BE%D9%84'),
         'صفر نتیجه می‌داد');
     }
 
-    // ── کوپن عمومی ──
     {
       const ok = await fetch(`${BASE}/api/coupons/public?code=SAMPLE20`);
       add('مسیر کوپن عمومی پاسخ می‌دهد', ok.status === 200, String(ok.status));
@@ -170,7 +148,6 @@ function findChromium() {
       const bad = await fetch(`${BASE}/api/coupons/public?code=DOESNOTEXIST`);
       add('کد ناموجود ۴۰۴ می‌دهد', bad.status === 404, String(bad.status));
 
-      // تاریخ انقضای معتبر — ۳۱ خرداد وجود ندارد
       const Database = require('better-sqlite3');
       const dbc = new Database(DB, { readonly: true });
       const rows = dbc.prepare(
@@ -184,14 +161,14 @@ function findChromium() {
         invalid.map(x => x.code + '=' + x.expires_at).join('، ') || 'همه درست');
     }
 
-    // ── sitemap ──
     {
-      const sm = await fetch(BASE + '/sitemap.xml').then(x => x.text());
+
+      const smIndex = await fetch(BASE + '/sitemap.xml').then(x => x.text());
+      const sm = smIndex + '\n' + await fetch(BASE + '/sitemap-pages.xml').then(x => x.text());
       add('sitemap شامل /samples است', sm.includes('/samples'));
       add('sitemap شامل /why-us است', sm.includes('/why-us'));
     }
 
-    // ── مرورگر واقعی ──
     let chromium = null;
     try { ({ chromium } = require('playwright')); } catch {}
     if (!chromium) {
@@ -209,7 +186,6 @@ function findChromium() {
     const jsErr = [];
     pg.on('pageerror', e => jsErr.push(String(e)));
 
-    // سمپل — رندر و فیلتر
     await pg.goto(`${BASE}/samples`, { waitUntil: 'networkidle', timeout: 60000 });
     await pg.waitForTimeout(2200);
 
@@ -233,7 +209,6 @@ function findChromium() {
     add('فیلتر جنسیت در مرورگر کار می‌کند',
       (await pg.locator('.sc').count()) > 0);
 
-    // سرریز افقی روی هر دو صفحه
     for (const [p, name] of [['/samples', 'سمپل'], ['/why-us', 'چرا ما؟']]) {
       await pg.goto(BASE + p, { waitUntil: 'networkidle', timeout: 60000 });
       await pg.waitForTimeout(1300);

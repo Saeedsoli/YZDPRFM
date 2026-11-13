@@ -1,6 +1,5 @@
 'use strict';
-// Explicit owner approval for five market-name scents. This is NOT brand evidence.
-// One transaction, fixed manifest digest, no edits to preexisting records.
+
 const fs=require('fs'),crypto=require('crypto');
 const {kgToGram,productPriceState,applyProductPrice}=require('./product-essence-pricing');
 const {allowedVariant,RATE_KEY}=require('./essence-pricing-store');

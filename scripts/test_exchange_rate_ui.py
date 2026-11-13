@@ -5,12 +5,14 @@ from pathlib import Path
 from playwright.sync_api import sync_playwright, expect
 root=Path(__file__).resolve().parent.parent
 with tempfile.TemporaryDirectory(prefix='yazd-rate-ui-') as tmp:
-    dbfile=str(Path(tmp)/'db.sqlite');s=socket.socket();s.bind(('127.0.0.1',0));port=s.getsockname()[1];s.close()
-    env={**os.environ,'DB_PATH':dbfile,'BACKUP_DISABLED':'1','PORT':str(port),'ADMIN_USERNAME':'owner','ADMIN_PASSWORD':'test-rate-secret-123','REFERENCE_PRICE_V2_AUTOMIGRATE':'0'}
-    init="const {db}=require('./src/db');require('./src/import-supplier-prices').importSupplierPrices(db,require('./seed/supplier_exact_prices_staged.json'));"
+    dbfile=str(Path(tmp)/'db.sqlite');countfile=str(Path(tmp)/'supplier-count.txt');s=socket.socket();s.bind(('127.0.0.1',0));port=s.getsockname()[1];s.close()
+    env={**os.environ,'DB_PATH':dbfile,'BACKUP_DISABLED':'1','PORT':str(port),'ADMIN_USERNAME':'owner','ADMIN_PASSWORD':'test-rate-secret-123','REFERENCE_PRICE_V2_AUTOMIGRATE':'0','EXCHANGE_TEST_COUNT_PATH':countfile}
+    init="const fs=require('fs');const {db}=require('./src/db');const data=require('./seed/supplier_exact_prices_staged.json');const eligible=data.prices.filter(x=>{const p=db.prepare('select essence_usd_per_kg from products where id=?').get(x.product_id);return p&&p.essence_usd_per_kg==null&&!db.prepare(\"select 1 from variants where product_id=? and ((type='SAMPLE' and volume_ml=5) or (type='BODY_SPLASH' and volume_ml=120))\").get(x.product_id)});require('./src/import-supplier-prices').importSupplierPrices(db,{...data,prices:eligible});fs.writeFileSync(process.env.EXCHANGE_TEST_COUNT_PATH,String(eligible.length));"
     subprocess.run(['node','-e',init],cwd=root,env=env,check=True,stdout=subprocess.DEVNULL,timeout=120)
-    expected_products=(len(json.loads((root/'seed/supplier_exact_prices_staged.json').read_text(encoding='utf8'))['prices'])+len(json.loads((root/'seed/lv_reference_prices_v1.json').read_text(encoding='utf8'))['items'])+len(json.loads((root/'seed/official_reference_prices_v1.json').read_text(encoding='utf8'))['items'])+len(json.loads((root/'seed/official_reference_prices_v3.json').read_text(encoding='utf8'))['items'])+len(json.loads((root/'seed/official_reference_prices_v4.json').read_text(encoding='utf8'))['items'])+len(json.loads((root/'seed/official_reference_prices_v5.json').read_text(encoding='utf8'))['items']))
-    expected_fa=str(expected_products*6).translate(str.maketrans('0123456789','۰۱۲۳۴۵۶۷۸۹'))
+    with sqlite3.connect(dbfile) as con:
+        expected_products=con.execute('SELECT COUNT(*) FROM products WHERE essence_usd_per_kg IS NOT NULL').fetchone()[0]
+    expected_fa=str(expected_products).translate(str.maketrans('0123456789','۰۱۲۳۴۵۶۷۸۹'))
+    expected_variants_fa=str(expected_products*6).translate(str.maketrans('0123456789','۰۱۲۳۴۵۶۷۸۹'))
     server=subprocess.Popen(['node','src/server.js'],cwd=root,env=env,stdout=subprocess.DEVNULL,stderr=subprocess.PIPE)
     try:
         base=f'http://127.0.0.1:{port}'
@@ -24,7 +26,7 @@ with tempfile.TemporaryDirectory(prefix='yazd-rate-ui-') as tmp:
             page=browser.new_page(viewport={'width':390,'height':844})
             errors=[];page.on('pageerror',lambda e:errors.append(str(e)))
             page.goto(base+'/admin.html',wait_until='domcontentloaded')
-            page.locator('#usr').fill('owner');page.locator('#pw').fill('test-rate-secret-123');page.locator('button[onclick="login()"]').click()
+            page.locator('#usr').fill('owner');page.locator('#pw').fill('test-rate-secret-123');page.locator('button[data-csp-click="login()"]').click()
             page.locator('#tabs [data-t="settings"]').click()
             expect(page.locator('#exchangeRateCard')).to_be_visible()
             expect(page.locator('#exchangeRateCurrent')).to_contain_text('۳۰۰٬۰۰۰')
@@ -40,7 +42,7 @@ with tempfile.TemporaryDirectory(prefix='yazd-rate-ui-') as tmp:
             page.once('dialog',lambda dialog:dialog.accept())
             page.locator('#exchangeApplyBtn').click()
             expect(page.locator('#exchangeRateCurrent')).to_contain_text('۲۵۰٬۰۰۰')
-            expect(page.locator('#exchangeRateMessage')).to_contain_text(expected_fa)
+            expect(page.locator('#exchangeRateMessage')).to_contain_text(expected_variants_fa)
             expect(page.locator('#exchangeApplyBtn')).to_be_hidden()
             con=sqlite3.connect(dbfile)
             assert con.execute("select value from settings where key='essence_usd_rate_toman'").fetchone()[0]=='250000'

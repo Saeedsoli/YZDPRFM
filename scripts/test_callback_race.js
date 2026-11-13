@@ -1,20 +1,5 @@
 #!/usr/bin/env node
-/**
- * آزمون همزمانی مسیر بازگشت از درگاه (`/payment/callback`).
- *
- * چرا جدا از test_payment_race؟
- *   `/api/payment/verify` را کد خودمان صدا می‌زند، ولی
- *   `/payment/callback` را **زرین‌پال** صدا می‌زند و مرورگر کاربر هم
- *   می‌تواند رفرش شود. یعنی در عمل بیشتر در معرض فراخوانی تکراری است.
- *
- * دو سناریو سنجیده می‌شود:
- *   ۱) Status=NOK  (کاربر در صفحه بانک انصراف داد)
- *      → موجودی باید دقیقاً یک بار برگردد، نه N بار
- *   ۲) Status=OK   (پرداخت موفق)
- *      → تنها یک بار PAID، موجودی دست‌نخورده
- *
- * اجرا: node scripts/test_callback_race.js [تعداد]
- */
+
 'use strict';
 
 const { spawn } = require('child_process');
@@ -110,16 +95,13 @@ function orderState(oid) {
     return finish(1);
   }
 
-  /* موجودی موقت — موجودی تولید صفر است تا کالای تأییدنشده فروخته نشود */
   lease = withStock(DB, 4, 200);
 
-  // Select the actual physical-stock fixture, not an unrelated MTO variant.
   const sku = lease.skus[0];
   if (!sku || stockOf(sku) !== 200) throw new Error('Physical stock fixture missing');
 
   const checks = [];
 
-  // ══ سناریو ۱: انصراف کاربر (Status=NOK) ══
   console.log(d('  سناریو ۱ — کاربر در صفحه بانک انصراف داد'));
   const o1 = await makeOrder('cbrace-nok', sku);
   const stock1Before = stockOf(sku);
@@ -141,7 +123,6 @@ function orderState(oid) {
   checks.push(['انصراف: وضعیت CANCELLED', st1.status === 'CANCELLED']);
   checks.push(['انصراف: لاگ تکراری ندارد', cancelLogs <= 1]);
 
-  // ══ سناریو ۲: پرداخت موفق (Status=OK) ══
   console.log(d('\n  سناریو ۲ — پرداخت موفق'));
   const o2 = await makeOrder('cbrace-ok', sku);
   const stock2Before = stockOf(sku);
@@ -160,9 +141,6 @@ function orderState(oid) {
   const cancel2 = (st2.logs.find(l => l.status === 'CANCELLED') || {}).n || 0;
   console.log(`    رکورد PAID: ${paidLogs}  ·  CANCELLED: ${cancel2}`);
 
-  /* درگاه آزمایشی بدون Merchant واقعی «لغو» برمی‌گرداند، پس هر دو
-     نتیجه پذیرفتنی است — چیزی که می‌سنجیم این است که هر کدام
-     دقیقاً یک بار رخ دهد، نه N بار. */
   const okPath = st2.status === 'PAID';
   checks.push([
     okPath ? 'موفق: موجودی دست‌نخورده ماند' : 'ناموفق: موجودی یک بار آزاد شد',

@@ -497,7 +497,12 @@ PUT /api/admin/variants/:sku      { price_toman, stock }
 PUT /api/admin/products/:slug     { price_change_percent } یا { set_all_stock }
 GET /api/admin/low-stock?threshold=10
 GET /api/admin/inventory?q=&status=&type=&sort=&page=
+GET /api/admin/essence-stock?product=<slug>
+PUT /api/admin/essence-stock   { product, ml_on_hand, percent_override }
+PUT /api/admin/essence-percent { type, percent }
 ```
+
+موجودی اسانس به **میلی‌لیتر** ثبت می‌شود. مصرف هر قلم = حجم × درصد همان نوع (پیش‌فرض: پرفیوم و سمپل ۳۵٪، بادی‌اسپلش ۱۱٪) × تعداد. درصد اختصاصی هر محصول بر پیش‌فرض نوع اولویت دارد. با ثبت سفارش، همان مقدار در همان تراکنش کسر می‌شود و با لغو یا انقضای سفارش برمی‌گردد. محصولی که ردیف موجودی اسانس ندارد، مثل قبل فقط با موجودی تعداد کنترل می‌شود.
 
 `GET /api/admin/inventory` فهرست صفحه‌بندی‌شده همه کالاهای قابل نمایش را با جست‌وجوی نام، برند و SKU، فیلتر وضعیت (`IN_STOCK`، `MADE_TO_ORDER`، `UNAVAILABLE`)، فیلتر نوع (`EDP`، `SAMPLE`، `BODY_SPLASH`) و مرتب‌سازی (`default`، `name`، `stock_up`، `stock_down`) برمی‌گرداند. دسترسی: `products.view`. واریانت‌های پنهان (عطر مو و حجم‌های بازنشسته) در نتیجه نمی‌آیند و فقط خواندنی است.
 

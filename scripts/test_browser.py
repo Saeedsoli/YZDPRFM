@@ -76,14 +76,20 @@ async def main():
             EXTERNAL = ("enamad.ir", "aparat.com")
 
             def _skip(r):
-                if r.failure and "ERR_ABORTED" in r.failure \
-                   and re.search(r"\.(woff2?|ttf)$", r.url):
+                if any(dom in r.url for dom in EXTERNAL):
                     return True
-                return any(dom in r.url for dom in EXTERNAL)
+                # ERR_ABORTED یعنی خودِ صفحه درخواست را لغو کرده (مثلاً
+                # هنگام رفتن به صفحهٔ بعد یا وقتی درخواست تکراری بی‌نیاز
+                # شده). این شکستِ منبع نیست؛ منبعِ واقعاً شکست‌خورده
+                # کدِ خطای دیگری می‌گیرد.
+                return r.failure is not None and "ERR_ABORTED" in r.failure
 
-            pg.on("requestfailed", lambda r, l=path:
-                  failed.append(f"{l}: {r.url.split('/')[-1]} ({r.failure})")
-                  if not _skip(r) else None)
+            def _on_failed(r, l=path):
+                if _skip(r):
+                    return
+                failed.append(f"{l}: {r.url.split('/')[-1]} ({r.failure})")
+
+            pg.on("requestfailed", _on_failed)
             try:
                 await pg.goto(BASE + path, wait_until="networkidle", timeout=30000)
                 await pg.wait_for_timeout(900)

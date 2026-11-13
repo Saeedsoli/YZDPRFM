@@ -1,7 +1,5 @@
 'use strict';
 
-// Return evidence storage. HTTP callers must verify staff roles, customer
-// sessions and rate limits; existing databases use an explicit migration.
 const crypto = require('crypto');
 const { eligibility } = require('./return-eligibility');
 const KEY = 'account_returns_schema_v1';
@@ -53,15 +51,13 @@ function install(db) {
   }).immediate();
 }
 function requireReady(db) { if(!ready(db))throw Error('Return schema is not ready'); }
-// Must be called under the same transaction as new order-item creation.
-// No silent inference or mass backfill for pre-existing order items.
+
 function captureNewItem(db,itemId,volumeMl) {
   requireReady(db);
   if(!db.inTransaction || !Number.isSafeInteger(itemId) || itemId<=0 || !Number.isSafeInteger(volumeMl) || volumeMl<=0)throw Error('Invalid item snapshot');
   db.prepare('INSERT INTO return_item_evidence(item_id,volume_ml) VALUES(?,?)').run(itemId,volumeMl);
 }
-// A privileged caller must verify the actual delivery time externally. Existing
-// evidence is immutable here; corrections require a separate audited workflow.
+
 function recordDelivery(db,{orderId,deliveredAtMs,recordedBy,nowMs=Date.now()}) {
   requireReady(db);
   if(!Number.isSafeInteger(nowMs)||!Number.isSafeInteger(deliveredAtMs)||deliveredAtMs<=0||deliveredAtMs>nowMs||typeof recordedBy!=='string'||!recordedBy.trim())throw Error('Invalid delivery evidence');
@@ -75,8 +71,7 @@ function recordDelivery(db,{orderId,deliveredAtMs,recordedBy,nowMs=Date.now()}) 
     return {ok:true};
   }).immediate();
 }
-// Caller supplies the identity ONLY after verified customer-session lookup.
-// All eligibility and duplicate checks occur under the same SQLite write lock.
+
 function submit(db,{verifiedMobile,itemId,quantity,description,usedUnder2ml,nowMs=Date.now()}) {
   requireReady(db);
   if(!Number.isSafeInteger(itemId)||itemId<=0 || !Number.isSafeInteger(quantity)||quantity<=0 ||

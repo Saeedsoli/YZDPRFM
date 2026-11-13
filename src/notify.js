@@ -1,19 +1,3 @@
-/**
- * عطر یزد | پیامک اطلاع‌رسانی سفارش
- * ------------------------------------
- * جدا از otp.js — این ماژول پیام‌های متنی آزاد می‌فرستد
- * (تأیید سفارش، ارسال مرسوله، پاسخ تیکت)
- *
- * ── ارسال واقعی در `sms.js` است، نه اینجا ──
- * پیش‌تر کد کاوه‌نگار مستقیم در این فایل و در `otp.js` تکرار شده
- * بود. با تغییر سامانه به پیامیتو معلوم شد آن ساختار اشتباه است:
- * عوض کردن ارائه‌دهنده یعنی دست زدن به دو فایل و دو بار احتمال
- * خطا. حالا هر دو از یک لایه مشترک استفاده می‌کنند.
- *
- * پیامک‌ها هرگز جریان اصلی را متوقف نمی‌کنند؛
- * خطا فقط لاگ می‌شود تا ثبت سفارش با شکست مواجه نشود.
- */
-
 const sms = require('./sms');
 
 const SHOP = 'عطر یزد';
@@ -25,10 +9,6 @@ function money(n) {
   return faNum(Number(n || 0).toLocaleString('en-US'));
 }
 
-/**
- * ارسال امن — هرگز throw نمی‌کند.
- * @returns {Promise<boolean>} برای سازگاری با فراخوانی‌های موجود
- */
 async function send(mobile, text, tag = 'SMS') {
   const r = await sms.send(mobile, text, tag);
   if (!r.ok && r.message) {
@@ -37,16 +17,12 @@ async function send(mobile, text, tag = 'SMS') {
   return !!r.ok;
 }
 
-// Staff onboarding never sends credentials by SMS or logs a credential.
-// A console/no-credentials fallback is not an actual provider submission.
 async function sendStaffNotice(mobile) {
   if (!sms.isConfigured()) return false;
   const text = 'عطر یزد — حساب کارمندی شما ساخته شد. رمز موقت را از مدیر دریافت کنید و در نخستین ورود آن را تغییر دهید.';
   try { const r = await sms.send(mobile, text, 'حساب کارمند'); return !!(r && r.ok && !r.logged); }
   catch { return false; }
 }
-
-/* ═══════════ قالب‌های پیام ═══════════ */
 
 const TEMPLATES = {
   orderPaid: o =>
@@ -97,12 +73,9 @@ ${o.tracking_code ? `کد رهگیری پستی: ${o.tracking_code}\n` : ''}${o.
 ${t.reply ? t.reply.slice(0, 200) : ''}`
 };
 
-/* ═══════════ توابع کاربردی ═══════════ */
-
 async function orderPaid(order)      { return send(order.mobile, TEMPLATES.orderPaid(order), 'سفارش'); }
 async function ticketReceived(t, m)  { return send(m, TEMPLATES.ticketReceived(t), 'تیکت'); }
 
-/** اطلاع‌رسانی تغییر وضعیت سفارش */
 async function statusChanged(order, newStatus) {
   const map = {
     PROCESSING: TEMPLATES.processing,
@@ -121,7 +94,7 @@ async function ticketReplied(ticket, mobile) {
 
 module.exports = {
   send, sendStaffNotice, orderPaid, statusChanged, ticketReceived, ticketReplied,
-  // بررسی سلامت به لایه مشترک واگذار شد
+
   testConnection: sms.testConnection,
   get PROVIDER() { return sms.PROVIDER; },
   faNum, money

@@ -1,5 +1,5 @@
 'use strict';
-// Isolated integration coverage: preserve historical sales while retiring sample SKUs.
+
 const fs=require('fs'),os=require('os'),path=require('path'),{spawnSync}=require('child_process');
 const root=path.join(__dirname,'..'),tmp=fs.mkdtempSync(path.join(os.tmpdir(),'yazd-sample3-'));
 const env={...process.env,DB_PATH:path.join(tmp,'db.sqlite'),BACKUP_DISABLED:'1'};

@@ -30,6 +30,11 @@
   .cart-item:nth-child(2){animation-delay:60ms} .cart-item:nth-child(3){animation-delay:120ms}
   .cart-item img { width: 78px; height: 78px; object-fit: cover; border-radius: 10px; flex-shrink: 0; }
   .ci-name { font-weight: 800; font-size: .92rem; line-height: 1.5; }
+  /* پیوند محصول در سبد: تصویر و نام، بدون تغییر چیدمان */
+  .ci-link { text-decoration: none; color: inherit; display: inline-block }
+  .ci-link:hover .ci-name, .ci-link:focus-visible .ci-name { color: var(--gold-dark); text-decoration: underline }
+  .ci-link:focus-visible { outline: 2px solid var(--gold); outline-offset: 3px; border-radius: 6px }
+  .ci-link img { display: block; border-radius: 10px }
   .ci-price { font-size: .84rem; color: var(--muted); margin-top: 3px; }
   .qty-ctrl { display: flex; align-items: center; border: 1px solid var(--border);
               border-radius: 9px; overflow: hidden; }
@@ -147,6 +152,11 @@ async function syncCart() {
        همه باید از همان بخوانند، نه از نسخه‌ای که مرورگر ساخته. */
     if (live.name && live.name !== it.name) it.name = live.name;
 
+    /* سبدهای قدیمی فیلد `slug` ندارند. سرور آن را برمی‌گرداند، پس
+       همان‌جا تکمیل می‌شود تا تصویر و نام قدیمی هم قابل کلیک باشد. */
+    if (!it.slug && live.slug) it.slug = live.slug;
+    if ((!it.image || it.image === '') && live.image_url) it.image = live.image_url;
+
     // قیمت تغییر کرده — قیمت سرور مبناست
     if (live.price !== it.price) {
       it._oldPrice = it.price;
@@ -186,7 +196,17 @@ const ALERT_IC = {
 
 function render() {
   const items = YazdCart.get();
-  const wrap = document.getElementById('wrap');
+
+/* پیوند به صفحه محصول برای سطرهای سبد.
+   اگر سبد قدیمی اسلاگ نداشته باشد، همان محتوا بدون تگ a برمی‌گردد. */
+function productUrl(slug) {
+  return '/perfume/' + encodeURIComponent(slug);
+}
+function link(item, inner) {
+  return item.slug ? `<a class="ci-link" href="${productUrl(item.slug)}">${inner}</a>` : inner;
+}
+
+const wrap = document.getElementById('wrap');
   const meta = window._cartMeta || {};
 
   // تا وقتی وضعیت واقعی نیامده، اسکلت نشان بده — نه قیمتی که شاید کهنه باشد
@@ -211,7 +231,7 @@ function render() {
     wrap.innerHTML = `<div class="empty-state soft-card" style="grid-column:1/-1;padding:52px 24px">
       <h3 style="font-size:1.12rem">سبد خرید شما خالی است</h3>
       <p style="margin-top:8px;font-size:.88rem;color:var(--muted);line-height:2">
-        نمی‌دانید از کجا شروع کنید؟ سمپل ۵ میلی‌لیتری را امتحان کنید<br>
+        نمی‌دانید از کجا شروع کنید؟ سمپل ۵ میل را امتحان کنید<br>
         و پیش از خرید شیشه اصلی، رایحه را روی پوست خودتان امتحان کنید.</p>
       <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:20px">
         <a href="/" class="btn">مشاهده کاتالوگ عطرها</a>
@@ -247,9 +267,12 @@ function render() {
         const low = live && live.stock > 0 && live.stock <= 3;
         return `
         <div class="cart-item${m.out ? ' dead' : m.oldPrice ? ' stale' : ''}">
-          <img src="${esc(i.image)}" alt="${isGenericProductImage(i.image) ? 'تصویر نمادین ' : ''}${esc(i.name)}" width="78" height="78">
+          ${/* تصویر و نام به صفحه محصول پیوند دارند. اسلاگ از سبدهای
+               تازه ذخیره می‌شود؛ برای سبدهای قدیمی بینام، فقط تصویر
+               و نام بدون لینک می‌مانند و چیدمان نمی‌شکند. */''}
+          ${link(i, `<img src="${esc(i.image)}" alt="${isGenericProductImage(i.image) ? 'تصویر نمادین ' : ''}${esc(i.name)}" width="78" height="78" loading="lazy" decoding="async">`)}
           <div style="flex:1">
-            <div class="ci-name">${esc(i.name)}</div>
+            <div class="ci-name">${link(i, esc(i.name))}</div>
             ${isGenericProductImage(i.image) ? '<span class="ci-flag">تصویر نمادین است</span>' : ''}
             <div class="ci-price">
               ${m.oldPrice ? `<span class="ci-old">${money(m.oldPrice)}</span>` : ''}
@@ -301,12 +324,12 @@ function render() {
         ${appliedCoupon ? `
           <div class="coupon-applied">
             <span>✓ ${esc(appliedCoupon.code)} — ${esc(appliedCoupon.description || '')}</span>
-            <button onclick="removeCoupon()">حذف</button>
+            <button data-csp-click="removeCoupon()">حذف</button>
           </div>` : `
           <div class="coupon-row">
             <input id="couponInput" aria-label="کد تخفیف" placeholder="کد تخفیف" value="${esc(couponDraft)}"
-                   onkeydown="if(event.key==='Enter')applyCoupon()">
-            <button onclick="applyCoupon()">اعمال</button>
+                   data-csp-keydown="if(event.key==='Enter')applyCoupon()">
+            <button data-csp-click="applyCoupon()">اعمال</button>
           </div>
           ${couponError ? `<div class="coupon-err">${esc(couponError)}</div>` : ''}
           <div class="coupon-hint">اگر کد تخفیف دارید اینجا وارد کنید.</div>`}
@@ -453,5 +476,6 @@ async function revalidateCoupon() {
   render();
 })();
 </script>
+<script src="/assets/csp-actions.js"></script>
 </body>
 </html>

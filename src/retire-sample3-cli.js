@@ -1,5 +1,5 @@
 'use strict';
-// Explicit maintenance tool. Requires an existing SQLite database and a new backup path.
+
 const fs=require('fs'),path=require('path');
 const args=process.argv.slice(2);
 if (args.length!==3 || args[0]!=='--apply' || args[1]!=='--backup') {

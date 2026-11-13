@@ -1,5 +1,5 @@
 'use strict';
-// Disposable DB: exact source rows, distinct provenance, prices, variants and notes.
+
 const a=require('assert/strict'),fs=require('fs'),os=require('os'),path=require('path'),crypto=require('crypto'),{spawnSync}=require('child_process');
 const root=path.join(__dirname,'..'),official=require('../seed/official_reference_prices_v53.json'),secondary=require('../seed/secondary_reference_prices_v25.json');
 const raw=fs.readFileSync(path.join(root,'uploads/لیست_قیمت_عمده.md')),sha=crypto.createHash('sha256').update(raw).digest('hex');a.equal(official.supplier_file_sha256,sha);a.equal(secondary.supplier_file_sha256,sha);a.equal(official.items.length,5);a.equal(secondary.items.length,1);

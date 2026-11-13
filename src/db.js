@@ -1,61 +1,31 @@
-/**
- * عطر یزد | Yazd Perfume — لایه دیتابیس واقعی (SQLite)
- * ---------------------------------------------------
- * قابل انتقال مستقیم به Liara بدون تغییر.
- * مسیر دیتابیس از متغیر محیطی DB_PATH خوانده می‌شود تا روی Liara
- * بتوان آن را به یک Disk پایدار وصل کرد.
- */
-
 const Database = require('better-sqlite3');
 const fs = require('fs');
 const path = require('path');
-/* بالای فایل تعریف می‌شود چون `createReviewInvite` از آن استفاده
-   می‌کند و آن تابع بالاتر از بخش نشست‌هاست. `const` هویست نمی‌شود،
-   پس ترتیب تعریف اهمیت دارد. */
+
 const crypto = require('crypto');
 const stockReservations = require('./order-stock-reservations');
+const essenceInventory = require('./essence-inventory');
 const shopTime = require('./shop-time');
 const { referenceAccords } = require('./reference-accord-display');
 
 const ROOT_DIR = path.resolve(__dirname, '..');
 
-// روی Liara: DB_PATH=/app/data/yazd.db  (Disk پایدار)
-// محلی: data/yazd.db
 const DB_PATH = process.env.DB_PATH || path.join(ROOT_DIR, 'data', 'yazd.db');
-// A pre-existing nonempty SQLite file must never be treated as a new store.
+
 const DB_WAS_EXISTING = fs.existsSync(DB_PATH) && fs.statSync(DB_PATH).size > 0;
-// Validate production owner before opening the writable database or running migrations.
+
 require('./production-admin-guard').assertProductionAdmin({Database,dbPath:DB_PATH,existing:DB_WAS_EXISTING});
 
-/**
- * پوشه داده‌های اولیه — عمداً بیرون از `data/`.
- *
- * روی Liara یک Disk پایدار روی `/app/data` سوار می‌شود. هر چیزی که
- * هنگام build داخل آن پوشه کپی شده باشد، پس از mount شدن دیسک
- * **دیده نمی‌شود** — دیسکِ خالی روی آن می‌نشیند.
- *
- * وقتی فایل seed داخل `data/` بود، نخستین استقرار با «فایل seed
- * یافت نشد» بالا می‌آمد و فروشگاه با صفر محصول و صفر مقاله شروع
- * می‌کرد. پس داده اولیه در `seed/` می‌ماند که هرگز mount نمی‌شود،
- * و `data/` فقط جای چیزهایی است که باید بین استقرارها بمانند.
- */
 const SEED_DIR = process.env.SEED_DIR || path.join(ROOT_DIR, 'seed');
 
-// اطمینان از وجود پوشه
 fs.mkdirSync(path.dirname(DB_PATH), { recursive: true });
 
 const db = new Database(DB_PATH);
 
-// Configure the timeout before WAL setup: another process may be opening or
-// initializing the same SQLite database. Restore the normal timeout once the
-// serialized startup transaction commits.
 db.pragma('busy_timeout = 30000');
 db.pragma('journal_mode = WAL');
 db.pragma('foreign_keys = ON');
 
-// ═══════════════════════════════════════════
-// SCHEMA
-// ═══════════════════════════════════════════
 function initSchema() {
   db.exec(`
     CREATE TABLE IF NOT EXISTS products (
@@ -162,6 +132,7 @@ function initSchema() {
       cover_image     TEXT,
       excerpt         TEXT,
       content         TEXT,
+      sources         TEXT,
       created_at      TEXT
     );
 
@@ -397,7 +368,6 @@ function initSchema() {
     );
   `);
 
-  // ستون‌های جدید سفارش (افزودن امن روی دیتابیس موجود)
   const cols = db.prepare('PRAGMA table_info(orders)').all().map(c => c.name);
   const addCol = (name, ddl) => {
     if (!cols.includes(name)) db.exec(`ALTER TABLE orders ADD COLUMN ${name} ${ddl}`);
@@ -409,40 +379,12 @@ function initSchema() {
   addCol('admin_note',      'TEXT');
   addCol('updated_at',      'TEXT');
 
-  /* ── ستون‌های تازه سفارش ──
-     نام و نام خانوادگی جدا ذخیره می‌شوند تا بتوان مؤدبانه خطاب
-     کرد («سلام آقای محمدی») و روی برچسب پستی مرتب چاپ شود.
-     `customer_name` برای سازگاری با سفارش‌های قدیمی می‌ماند. */
   addCol('first_name', 'TEXT');
   addCol('last_name',  'TEXT');
   addCol('email',      'TEXT');
 
-  /* ── بسته‌بندی کادویی ──
-     سرویس اختیاری تسویه. مبلغ **در خود سفارش** ذخیره می‌شود، نه
-     فقط یک پرچم بله/خیر.
-
-     چرا مبلغ و نه فقط پرچم: اگر روزی نرخ کادو عوض شود، فاکتور
-     سفارش‌های قدیمی باید همان مبلغی را نشان دهد که مشتری واقعاً
-     پرداخته. ذخیره پرچم تنها یعنی فاکتور دیروز با نرخ امروز
-     بازسازی می‌شود — همان اشتباهی که قیمت کالا هرگز نمی‌کند
-     (order_items قیمت لحظه خرید را نگه می‌دارد).
-
-     پیش‌فرض صفر است نه NULL: سفارش‌های پیشین کادو نداشتند و
-     «صفر» اینجا واقعیت است، نه «نامشخص». */
   addCol('gift_wrap_fee', 'INTEGER NOT NULL DEFAULT 0');
 
-  /* ── پروفایل بویایی مشتری ──
-     پاسخ‌های کوییز به‌صورت JSON ذخیره می‌شوند تا صفحه اصلی بتواند
-     «پیشنهاد برای شما» بسازد. پیش از این، کوییز یک اسباب‌بازی
-     یک‌بارمصرف بود: کاربر شش سؤال جواب می‌داد و دفعه بعد سایت
-     هیچ‌چیز از او به یاد نداشت.
-
-     چرا JSON و نه ستون جدا برای هر معیار: معیارها ممکن است عوض
-     شوند (سؤال تازه اضافه شود) و هر بار مهاجرت جدول برای داده‌ای
-     که فقط خوانده و بازنویسی می‌شود، هزینه بی‌دلیل است.
-
-     `taste_updated_at` برای نمایش «بر اساس کوییز فلان تاریخ» و
-     تشخیص پروفایل کهنه است. */
   const custCols = db.prepare('PRAGMA table_info(customers)').all().map(c => c.name);
   const addCustCol = (name, ddl) => {
     if (!custCols.includes(name)) db.exec(`ALTER TABLE customers ADD COLUMN ${name} ${ddl}`);
@@ -450,9 +392,6 @@ function initSchema() {
   addCustCol('taste_profile',    'TEXT');
   addCustCol('taste_updated_at', 'TEXT');
 
-  /* ── ستون‌های تازه کارکنان ──
-     کد ملی نام کاربری کارمند است: یکتا، به‌یادماندنی، و برخلاف
-     نام مستعار قابل جعل نیست. */
   const scols = db.prepare('PRAGMA table_info(staff)').all().map(c => c.name);
   const addStaffCol = (name, ddl) => {
     if (!scols.includes(name)) db.exec(`ALTER TABLE staff ADD COLUMN ${name} ${ddl}`);
@@ -461,28 +400,12 @@ function initSchema() {
   addStaffCol('first_name',  'TEXT');
   addStaffCol('last_name',   'TEXT');
 
-  // ستون یکپارچه جستجو — به‌جای LIKE روی ۸ ستون
   const pcols = db.prepare('PRAGMA table_info(products)').all().map(c => c.name);
   if (!pcols.includes('search_blob')) {
     db.exec('ALTER TABLE products ADD COLUMN search_blob TEXT');
     db.exec('CREATE INDEX IF NOT EXISTS idx_products_search ON products(search_blob)');
   }
 
-  /* ── شناسنامه عطر: عطار و سال عرضه ──
-     دیتاست مرجع برای هر عطر نام عطرساز و سال عرضه دارد.
-
-     چرا ارزش نمایش دارند:
-       این دو، ادعای «کار تخصصی» را از حرف به مدرک تبدیل می‌کنند.
-       مشتری که می‌بیند «عطار: François Demachy · عرضه: ۲۰۱۵»
-       می‌فهمد فروشنده می‌داند از چه حرف می‌زند. برای فروشگاهی که
-       بازآفرینی دست‌ساز می‌فروشد و نمی‌خواهد ادعای اورجینال کند،
-       همین دقت فنی مهم‌ترین سرمایه اعتماد است.
-
-     چرا release_year عدد صحیح است:
-       سال عرضه در منبع با کاما آمده («1,959») ولی ذاتاً عدد است.
-       ذخیره به‌صورت INTEGER اجازه مرتب‌سازی و بازه‌گیری می‌دهد —
-       مثلاً «کلاسیک‌های پیش از ۱۹۸۰». اگر متن بماند، «1959» و
-       «959» در مرتب‌سازی جابه‌جا می‌شوند. */
   if (!pcols.includes('perfumer')) {
     db.exec('ALTER TABLE products ADD COLUMN perfumer TEXT');
   }
@@ -490,78 +413,23 @@ function initSchema() {
     db.exec('ALTER TABLE products ADD COLUMN release_year INTEGER');
   }
 
-  /* ── یادداشت عطرساز ──
-     تنها محتوایی در کل سایت که نه رقیب می‌تواند کپی کند نه از
-     دیتاست می‌آید: حرف کسی که واقعاً این رایحه را ساخته.
-
-     چرا اهمیت دارد: در معیارهای کیفیت گوگل حرف اول Experience
-     است — تجربه دست‌اول. صفحه محصولی که فقط نُت و قیمت دارد،
-     از هزار صفحه مشابه قابل تشخیص نیست. یک پاراگراف از زبان
-     عطرساز، همان صفحه را یکتا می‌کند.
-
-     دو ستون جدا، نه یکی:
-       maker_note      متن — تجربه ساخت یا استفاده
-       maker_note_by   امضا — «عطرساز عطر یزد» یا نام شخص
-
-     امضا جداست چون بعضی یادداشت‌ها تجربه شخصی مدیر است نه
-     عطرساز، و نسبت دادن غلط بدتر از نداشتن امضاست. */
   if (!pcols.includes('maker_note')) {
     db.exec('ALTER TABLE products ADD COLUMN maker_note TEXT');
   }
   if (!pcols.includes('maker_note_by')) {
     db.exec('ALTER TABLE products ADD COLUMN maker_note_by TEXT');
   }
-  // Existing notes may have been generated as drafts; never publish them as
-  // first-hand experience until a human explicitly reviews and approves them.
+
   if (!pcols.includes('maker_note_approved')) {
     db.exec('ALTER TABLE products ADD COLUMN maker_note_approved INTEGER NOT NULL DEFAULT 0');
   }
 
-  /* ── وضعیت تأمین: سه‌حالته، نه دوحالته ──
-     پیش‌تر فقط «موجود / ناموجود» داشتیم و این واقعیت کار دست‌ساز
-     را بد نشان می‌داد: عطری که همین حالا در قفسه نیست ولی
-     می‌توانیم بسازیم، با عطری که اصلاً نمی‌توانیم تهیه کنیم یکسان
-     دیده می‌شد — هر دو «ناموجود» و بن‌بست.
-
-       IN_STOCK      از انبار، ارسال فوری
-       MADE_TO_ORDER به سفارش ساخته می‌شود (چند روز کار)
-       UNAVAILABLE   فعلاً نمی‌توانیم — فقط «خبرم کن»
-
-     ── چرا پیش‌فرض UNAVAILABLE است (تصمیم مالک، شهریور ۱۴۰۵) ──
-     نسخه نخست پیش‌فرض را MADE_TO_ORDER گذاشت با این استدلال که
-     کاتالوگ از عطرهای شناسنامه‌دار پر شده است. در عمل غلط بود:
-     یعنی سایت ادعا می‌کرد هر ۲٬۱۱۱ عنوان ساختنی است، در حالی که
-     مالک می‌گوید حدود ۷۰۰ تا واقعاً ساختنی‌اند.
-
-     پیش‌فرض باید **محتاطانه** باشد نه خوش‌بینانه. ادعای نداشته
-     کردن، هم به مشتری بدقولی است هم به گوگل سیگنال «هزاران صفحه
-     بی‌پشتوانه» می‌دهد. حالا هر عنوان تا وقتی مالک صریحاً
-     تأییدش نکرده، «فعلاً نمی‌توانیم» است.
-
-     جهت خطا هم اهمیت دارد: اگر عطری ساختنی باشد و UNAVAILABLE
-     بماند، فقط یک فروش از دست می‌رود. اگر ساختنی نباشد و
-     MADE_TO_ORDER بماند، مشتری پول می‌دهد و ما نمی‌توانیم
-     تحویل دهیم — که خیلی گران‌تر است.
-
-     🔴 این ستون **جای stock را نمی‌گیرد**. موجودی عددی همچنان
-     مرجع «ارسال فوری» است؛ این ستون فقط می‌گوید وقتی موجودی صفر
-     شد، مشتری چه پیامی ببیند. */
   if (!pcols.includes('supply_mode')) {
     db.exec(
       "ALTER TABLE products ADD COLUMN supply_mode TEXT NOT NULL DEFAULT 'UNAVAILABLE'");
     db.exec('CREATE INDEX IF NOT EXISTS idx_products_supply ON products(supply_mode)');
   }
 
-  /* ── مهاجرت یک‌باره: هر آنچه هرگز دستی تأیید نشده → UNAVAILABLE ──
-     دیتابیس‌هایی که پیش از تغییر پیش‌فرض ساخته شده‌اند، ۲٬۱۱۱
-     عنوان MADE_TO_ORDER دارند. تغییر DEFAULT روی ستون موجود
-     اثری ندارد — فقط ردیف‌های تازه را می‌گیرد.
-
-     چرا با کلید تنظیمات محافظت می‌شود: بدون آن، هر بار سرور
-     بالا می‌آید محصولاتی را که مالک دستی روی MADE_TO_ORDER
-     گذاشته دوباره صفر می‌کند. یعنی کار مالک را پاک می‌کند —
-     دقیقاً همان رفتاری که یک بار در make_favicon.py دیدیم و
-     مانیفست PWA را بازنویسی می‌کرد. */
   {
     const KEY = 'supply_mode_default_migrated';
     const done = db.prepare('SELECT value FROM settings WHERE key=?').get(KEY);
@@ -574,23 +442,6 @@ function initSchema() {
     }
   }
 
-  /* ── قیمت دلاری پایه ──
-     فروشگاه فرمولی برای قیمت‌گذاری دارد که به نرخ دلار وابسته
-     است. هدف نهایی: با تغییر نرخ ارز، قیمت تومانی همه محصولات
-     خودکار به‌روز شود.
-
-     این ستون **گام اول** است — فقط نگهداری عدد. فرمول و محاسبه
-     خودکار بعداً روی همین می‌نشیند.
-
-     ── چرا REAL و نه INTEGER ──
-     قیمت تومان عدد صحیح است چون ریال اعشار ندارد. ولی قیمت
-     دلاری اسانس معمولاً اعشاری است (۱۲.۵ دلار برای ۱۰ گرم).
-     گرد کردنش در این مرحله یعنی خطای انباشته در فرمول نهایی.
-
-     ── چرا NULL مجاز است ──
-     امروز هیچ محصولی قیمت دلاری ندارد. اگر پیش‌فرض صفر بگذاریم،
-     بعداً نمی‌شود فهمید «صفر یعنی رایگان» یا «هنوز وارد نشده».
-     NULL صریح می‌گوید «نامشخص». */
   const vcols = db.prepare('PRAGMA table_info(variants)').all().map(c => c.name);
   if (!vcols.includes('price_usd')) {
     db.exec('ALTER TABLE variants ADD COLUMN price_usd REAL');
@@ -600,36 +451,20 @@ function initSchema() {
   if (!tcols.includes('reply')) db.exec('ALTER TABLE tickets ADD COLUMN reply TEXT');
   if (!tcols.includes('mobile')) db.exec('ALTER TABLE tickets ADD COLUMN mobile TEXT');
 
-  /* ── کوپن پیشرفته ──
-     نسخه اول فقط درصد/مبلغ/ارسال داشت و روی کل سبد اعمال می‌شد.
-     خواسته مالک (مرداد ۱۴۰۵): تخفیف روی دسته خاص، محصول خاص،
-     برند، نوع محصول، بازه تاریخ، و کد اختصاصی مشتری.
-
-     با ALTER اضافه می‌شوند نه بازسازی جدول، چون دیتابیس زنده
-     است و کوپن‌های موجود نباید از دست بروند. */
   const ccols = db.prepare('PRAGMA table_info(coupons)').all().map(c => c.name);
   const addCoupon = (name, ddl) => {
     if (!ccols.includes(name)) db.exec(`ALTER TABLE coupons ADD COLUMN ${name} ${ddl}`);
   };
-  addCoupon('starts_at',      'TEXT');     // پیش از این تاریخ کار نمی‌کند
-  addCoupon('scope_families', 'TEXT');     // family_slug جدا با کاما
-  addCoupon('scope_brands',   'TEXT');     // brand_fa جدا با کاما
-  addCoupon('scope_types',    'TEXT');     // EDP,SAMPLE,HAIR_MIST,BODY_SPLASH
-  addCoupon('scope_products', 'TEXT');     // product_id جدا با کاما
-  addCoupon('scope_gender',   'TEXT');     // MEN | WOMEN | UNISEX
-  addCoupon('max_subtotal',   'INTEGER');  // سقف خرید (برای تخفیف خرد)
+  addCoupon('starts_at',      'TEXT');
+  addCoupon('scope_families', 'TEXT');
+  addCoupon('scope_brands',   'TEXT');
+  addCoupon('scope_types',    'TEXT');
+  addCoupon('scope_products', 'TEXT');
+  addCoupon('scope_gender',   'TEXT');
+  addCoupon('max_subtotal',   'INTEGER');
   addCoupon('first_order_only', 'INTEGER NOT NULL DEFAULT 0');
-  addCoupon('assigned_mobile',  'TEXT');   // کد اختصاصی یک مشتری
+  addCoupon('assigned_mobile',  'TEXT');
 
-  /* ── تفکیک تخفیف روی سفارش ──
-     `discount_amount` مجموع جشنواره و کوپن است تا جمع فاکتور با
-     مبلغ پرداختی بخواند. ولی فاکتور با یک عدد سرجمع، تخفیف
-     جشنواره را زیر نام کد تخفیف چاپ می‌کرد — یعنی سندی که رقم
-     درست ولی شرح غلط داشت. این ستون سهم جشنواره را جدا نگه
-     می‌دارد تا فاکتور دو سطر صادق داشته باشد.
-
-     سفارش‌های قدیمی NULL می‌گیرند و فاکتورشان مثل قبل رفتار
-     می‌کند — بازنویسی تاریخ در دفتر مالی درست نیست. */
   const ocols = db.prepare('PRAGMA table_info(orders)').all().map(c => c.name);
   if (!ocols.includes('campaign_discount')) {
     db.exec('ALTER TABLE orders ADD COLUMN campaign_discount INTEGER');
@@ -638,25 +473,10 @@ function initSchema() {
     db.exec('ALTER TABLE orders ADD COLUMN campaign_note TEXT');
   }
 
-  /* ── یادداشت مشتری هنگام تسویه ──
-     خواسته مالک (مرداد ۱۴۰۵): «قسمت افزودن توضیحات برای مشتری
-     هنگام تسویه‌حساب ممکن باشد. برای مثال برای درخواست فاکتور
-     رسمی و غیره. به جای افزودن دکمه‌های اضافی این راه بهتریه.»
-
-     منطق درستی هم دارد: هر خواسته‌ای که به دکمه تبدیل شود، فرم
-     تسویه را شلوغ‌تر می‌کند و نرخ رها کردن سبد را بالا می‌برد.
-     یک فیلد متن آزاد همه حالت‌ها را می‌پوشاند — از «فاکتور رسمی
-     می‌خواهم» تا «لطفاً کادوپیچ کنید» یا «زنگ نزنید، فقط پیام».
-
-     جدا از `admin_note` است: آن یادداشت داخلی کارکنان است و
-     مشتری نمی‌بیندش. این یکی حرفِ خود مشتری است. */
   if (!ocols.includes('customer_note')) {
     db.exec('ALTER TABLE orders ADD COLUMN customer_note TEXT');
   }
 
-  /* ── جشنواره: تخفیف خودکار بدون کد ──
-     مشتری کاری نمی‌کند؛ قیمت خط‌خورده روی کارت محصول دیده
-     می‌شود. دامنه‌اش مثل کوپن است تا منطق یکی بماند. */
   db.exec(`
     CREATE TABLE IF NOT EXISTS campaigns (
       id             INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -720,22 +540,13 @@ function initSchema() {
     CREATE INDEX IF NOT EXISTS idx_invite_mobile ON review_invites(mobile);
   `);
 
-  /* منشأ نظر — تفکیک «خرید آنلاین» از «مشتری حضوری».
-
-     چرا ستون جدا و نه استفاده از همان `verified`: هر دو گروه
-     مشتری واقعی‌اند و نشان تأیید می‌گیرند، ولی سند پشتشان فرق
-     دارد. اگر روزی کسی بپرسد «این نظر از کجا آمده؟» باید بتوانیم
-     دقیق جواب بدهیم، نه اینکه همه را یک کاسه کرده باشیم. */
   const rcols = db.prepare('PRAGMA table_info(reviews)').all().map(c => c.name);
   if (!rcols.includes('source')) {
-    // ONLINE = خرید آنلاین · INVITED = دعوت مشتری حضوری
+
     db.exec("ALTER TABLE reviews ADD COLUMN source TEXT NOT NULL DEFAULT 'ONLINE'");
   }
 }
 
-// ═══════════════════════════════════════════
-// پاکسازی نام انگلیسی از «(Inspired by ...)»
-// ═══════════════════════════════════════════
 function cleanNameEn(nameEn, brandEn, subtitleEn) {
   if (subtitleEn && !/inspired/i.test(subtitleEn)) return subtitleEn;
   let n = String(nameEn || '').replace(/\s*\(Inspired by[^)]*\)\s*/gi, '').trim();
@@ -745,11 +556,6 @@ function cleanNameEn(nameEn, brandEn, subtitleEn) {
   return n;
 }
 
-/**
- * پاکسازی نام فارسی:
- *  - حذف پیشوند «عطر دست‌ساز»
- *  - حذف تکرار نام برند در ابتدای عنوان (نام برند جداگانه نمایش داده می‌شود)
- */
 function cleanNameFa(nameFa, brandFa) {
   let n = String(nameFa || '').replace(/^عطر دست‌ساز\s*/, '').trim();
   if (brandFa) {
@@ -761,7 +567,6 @@ function cleanNameFa(nameFa, brandFa) {
   return n;
 }
 
-// تخصیص تصویر بر اساس خانواده بویایی
 const FAMILY_IMAGES = {
   'floral':            '/images/products/family-floral.jpg',
   'ambery-oriental':   '/images/products/family-ambery-oriental.jpg',
@@ -774,7 +579,6 @@ const FAMILY_IMAGES = {
 };
 const DEFAULT_IMAGE = '/images/products/family-woody.jpg';
 
-// تصویر اختصاصی برای خانه‌های عطر شاخص
 const BRAND_IMAGES = {
   "Penhaligon's": '/images/products/brand-penhaligons.jpg',
   'Amouage':      '/images/products/brand-amouage.jpg',
@@ -786,36 +590,6 @@ function imageForFamily(slug) {
   return FAMILY_IMAGES[slug] || DEFAULT_IMAGE;
 }
 
-/* ═══════════════════════════════════════════
-   تصاویر واریانت‌دار — «خانواده بویایی × جنسیت»
-   ═══════════════════════════════════════════
-   با تعداد کم تصویر، صدها عطر هم‌خانواده یک عکس مشترک می‌گیرند و
-   کاتالوگ شبیه چند کارت تکراری می‌شود.
-
-   حالا هر ترکیب چند واریانت دارد و محصولات با هش شناسه بینشان
-   پخش می‌شوند. هش یعنی تخصیص **پایدار** است: هر محصول همیشه همان
-   تصویر را می‌گیرد، پس کش مرورگر و ایندکس گوگل نمی‌شکند.
-
-   شمار واریانت‌ها اینجا ثبت می‌شود و باید با فایل‌های موجود در
-   public/images/products/ بخواند. اگر فایلی هنوز ساخته نشده،
-   VARIANT_COUNTS به‌روز نمی‌شود تا تصویر شکسته سرو نشود. */
-/* ── چرا این جدول از روی دیسک ساخته می‌شود، نه دستی ──
-   نسخه پیشین فهرست ثابتی بود که باید با هر تصویر تازه دستی
-   به‌روز می‌شد. این دقیقاً همان الگوی خطاست که چند بار در این
-   پروژه دیدیم: دو منبع حقیقت که با هم واگرا می‌شوند.
-
-   خطرش دوطرفه بود:
-     • تصویر ساخته می‌شد ولی در جدول ثبت نمی‌شد → فایل بی‌استفاده
-     • عدد بالاتر از تعداد واقعی می‌ماند → تصویر ۴۰۴
-
-   حالا پوشه یک بار در زمان راه‌اندازی خوانده می‌شود و شمارش از
-   خود فایل‌ها می‌آید. افزودن تصویر تازه یعنی فقط گذاشتن فایل با
-   نام درست: fam-{خانواده}-{m|w|u}-{شماره}.jpg
-
-   شمارش «تا نخستین شکاف» است نه «تعداد کل»: اگر فایل‌های ۱ و ۲
-   و ۴ باشند، عدد ۲ می‌شود. چون تخصیص با باقی‌مانده هش انجام
-   می‌شود، وجود شکاف یعنی بعضی محصولات به فایل ناموجود اشاره
-   کنند. */
 const VARIANT_COUNTS = (() => {
   const dir = path.join(__dirname, '..', 'public', 'images', 'products');
   const out = {};
@@ -839,7 +613,6 @@ const VARIANT_COUNTS = (() => {
   return out;
 })();
 
-/** هش پایدار و ارزان — همان الگوی FNV-1a */
 function stableHash(str) {
   let h = 0x811c9dc5;
   for (let i = 0; i < str.length; i++) {
@@ -851,36 +624,6 @@ function stableHash(str) {
 
 const GENDER_TAG = { MEN: 'm', WOMEN: 'w', UNISEX: 'u' };
 
-/**
- * تصویر واریانت‌دار «خانواده × جنسیت».
- *
- * ── بازگشت به جنسیت دیگرِ همان خانواده ──
- * توزیع خانواده×جنسیت در کاتالوگ یکنواخت نیست. چند ترکیب پرجمعیت
- * تصویر اختصاصی ندارند:
- *
- *     ambery-oriental|WOMEN   ۲۰۱ محصول   (پیش‌تر تصویر نداشت)
- *     citrus|MEN               ۴۶ محصول
- *     chypre|WOMEN             ۴۱ محصول
- *     leather|MEN              ۳۹ محصول
- *
- * روی هم ۳۹۰ محصول — ۱۸٫۵٪ کاتالوگ — به تصویر تکیِ بی‌جنسیت
- * `family-*.jpg` می‌افتادند. نتیجه: ۱۷۴ محصول با یک عکس یکسان،
- * دقیقاً همان مشکلی که تصاویر واریانت‌دار برای حلش ساخته شده بود.
- *
- * دو راه بود:
- *   ۱) تولید ~۵۰ تصویر تازه برای ترکیب‌های نو
- *   ۲) اجازه دادن به اشتراک تصاویر **درون همان خانواده بویایی**
- *
- * راه دوم انتخاب شد. دلیلش زیبایی‌شناسی نیست، دقت است: تصاویر بر
- * پایه **نُت‌های خانواده** ساخته شده‌اند (چوبی با تراشه سدر و سنگ،
- * گلی با گل و ابریشم) و بطری‌ها بی‌نام و خنثی‌اند. یک بطری شیشه‌ای
- * روی بستر چوب سدر، برای عطر چوبی زنانه هم درست است. تفکیک
- * جنسیت در این تصاویر ترجیح است، نه ضرورت.
- *
- * ترتیب بازگشت: جنسیت خودش ← یونیسکس ← هر جنسیت دیگرِ همان
- * خانواده. هش روی `productId` می‌ماند پس تخصیص **پایدار** است و
- * کش مرورگر و ایندکس گوگل نمی‌شکند.
- */
 const GENDER_FALLBACK = {
   MEN:    ['MEN', 'UNISEX', 'WOMEN'],
   WOMEN:  ['WOMEN', 'UNISEX', 'MEN'],
@@ -893,29 +636,13 @@ function variantImageFor(productId, familySlug, gender) {
   for (const g of (GENDER_FALLBACK[gender] || GENDER_FALLBACK.UNISEX)) {
     const count = VARIANT_COUNTS[`${familySlug}|${g}`];
     if (!count) continue;
-    /* هش با جنسیتِ مقصد ترکیب می‌شود تا دو محصول هم‌خانواده که به
-       یک مجموعه تصویر می‌رسند، الگوی پخش متفاوتی بگیرند. بدون
-       این، محصولات زنانه و مردانهٔ یک خانواده روی همان اندیس‌ها
-       می‌افتادند و تنوع ظاهری کم می‌شد. */
+
     const idx = stableHash(String(productId) + '|' + g) % count;
     return `/images/products/fam-${familySlug}-${GENDER_TAG[g]}-${idx + 1}.jpg`;
   }
   return null;
 }
 
-/**
- * تصویر محصول.
- *
- * ترتیب اولویت:
- *   ۱) واریانت اختصاصی «خانواده × جنسیت» — متنوع‌ترین
- *   ۲) تصویر برند شاخص
- *   ۳) تصویر خانواده بویایی
- *
- * @param {string} brandEn     نام لاتین برند
- * @param {string} familySlug  شناسه خانواده بویایی
- * @param {string} [productId] برای تخصیص پایدار واریانت
- * @param {string} [gender]    MEN | WOMEN | UNISEX
- */
 const genericImageModule = require('./generic-product-images');
 const genericImageManifest = genericImageModule.loadAssignments(path.join(SEED_DIR, 'generic_image_assignments_v1.json'));
 function imageForProduct(brandEn, familySlug, productId, gender) {
@@ -926,23 +653,6 @@ function imageForProduct(brandEn, familySlug, productId, gender) {
       || DEFAULT_IMAGE;
 }
 
-// ═══════════════════════════════════════════
-// SEED — انتقال از JSON به SQLite (فقط بار اول)
-// ═══════════════════════════════════════════
-/**
- * درج فهرست محصولات در دیتابیس.
- *
- * چرا از `seedIfEmpty` جداست:
- *   گاهی همین منطق باید روی جدولی که خالی نیست دوباره اجرا شود —
- *   مثلاً وقتی کاتالوگ از منبع به‌روزشده بازنویسی می‌شود.
- *   `scripts/replace_catalog.js` این تابع را صدا می‌زند.
- *
- *   جایگزینش کپی کردن ~۸۰ خط منطق درج در اسکریپت بود — یعنی دو
- *   نسخه که با هم واگرا می‌شوند. هر ستون تازه‌ای که بعداً اضافه
- *   شود باید در دو جا ویرایش شود و یکی حتماً جا می‌ماند.
- *
- * @returns {{p:number, v:number}} شمار محصول و واریانت درج‌شده
- */
 function insertProducts(products) {
 
   const insP = db.prepare(`
@@ -1007,12 +717,10 @@ function insertProducts(products) {
                                    p.id, p.gender)
       });
 
-      // SKU یکتا: شناسه عددی محصول تصادم برندهای هم‌ریشه را حذف می‌کند
-      // (مثال: Carolina / Caron / Cartier همگی به CAR نگاشت می‌شدند)
       const pnum = String(p.id).replace(/\D/g, '') || '0';
       for (const v of (p.variants || [])) {
         const parts = String(v.sku || '').split('-');
-        const tail = parts.slice(-2).join('-');            // مثلا EDP-050
+        const tail = parts.slice(-2).join('-');
         const uniqueSku = `YZD-${pnum}-${tail}`;
         insV.run({
           sku: uniqueSku,
@@ -1022,12 +730,7 @@ function insertProducts(products) {
           volume_ml: v.volume_ml || null,
           price_toman: v.price_toman || 0,
           stock: v.stock == null ? 0 : v.stock,
-          /* قیمت دلاری هر گرم اسانس — از منبع داده می‌آید.
-             این **بهای اسانس اورجینال** است، نه قیمت فروش. قیمت
-             فروش (price_toman) با ضرایب دست‌ساز محاسبه می‌شود.
-             این عدد فقط برای فرمول خودکار آینده نگه داشته می‌شود
-             و هرگز به مشتری نشان داده نمی‌شود — attachVariants()
-             آن را از پاسخ عمومی حذف می‌کند. */
+
           price_usd: typeof v.price_usd === 'number' ? v.price_usd : null
         });
       }
@@ -1041,9 +744,6 @@ function insertProducts(products) {
   return { p: pc, v: vc };
 }
 
-// ═══════════════════════════════════════════
-// SEED — انتقال از JSON به SQLite (فقط بار اول)
-// ═══════════════════════════════════════════
 function seedIfEmpty() {
   const count = db.prepare('SELECT COUNT(*) AS c FROM products').get().c;
   if (count > 0) {
@@ -1062,7 +762,6 @@ function seedIfEmpty() {
   const { p: pc, v: vc } = insertProducts(products);
   console.log(`[DB] ✅ انتقال کامل شد — ${pc} محصول، ${vc} متغیر.`);
 
-  // انتقال مقالات
   const artFile = path.join(SEED_DIR, 'articles_db.json');
   if (fs.existsSync(artFile)) {
     const arts = JSON.parse(fs.readFileSync(artFile, 'utf-8'));
@@ -1082,9 +781,6 @@ function seedIfEmpty() {
   }
 }
 
-// ═══════════════════════════════════════════
-// توابع کمکی — تبدیل ردیف به شیء API
-// ═══════════════════════════════════════════
 function parseProduct(row, options = {}) {
   if (!row) return null;
   return {
@@ -1098,14 +794,12 @@ function parseProduct(row, options = {}) {
     brand_en: row.brand_en,
     gender: row.gender,
     concentration: row.concentration,
-    // The single-molecule wording describes the original, not proof of the
-    // supplier's handmade formulation. Preserve the underlying admin value.
+
     family_fa: !options.includeDrafts && row.id === 'YZD-PROD-1245' && row.family_fa === 'چوبی مخملی تک‌مولکولی' ? 'چوبی' : row.family_fa,
     family_en: row.family_en,
     family_slug: row.family_slug,
     temperature: row.temperature,
-    // Unreviewed seed descriptions sometimes assert purity or ingredients in
-    // the handmade formula. Keep drafts in the admin; do not publish them.
+
     taste: options.includeDrafts ? (row.taste || null) : null,
     notes: {
       top: JSON.parse(row.notes_top || '[]'),
@@ -1116,27 +810,18 @@ function parseProduct(row, options = {}) {
     reference_accords: referenceAccords(row),
     season: row.season,
     occasion: row.occasion,
-    // Seeded performance descriptions are not measurements of our handmade
-    // product. Keep drafts visible in the admin, but never publish unverified
-    // claims via catalog, suggestions or server-rendered SEO. Customer review
-    // scores are a separate data source and are not affected by this gate.
+
     longevity: options.includeDrafts ? (row.longevity || null) : null,
     sillage: options.includeDrafts ? (row.sillage || null) : null,
     country: row.country,
     market_segment: row.market_segment,
-    /* شناسنامه فنی — عطار و سال عرضه.
-       این دو از منبع ۲٬۱۱۱ عطر اصیل می‌آیند و در صفحه محصول
-       نمایش داده می‌شوند. اطلاعات عمومی و افتخارآمیزند: هیچ
-       رازی نیستند و به تخصص فروشگاه اعتبار می‌دهند. */
+
     perfumer: cleanPerfumer(row.perfumer, row.brand_en, row.brand_fa),
     release_year: row.release_year,
-    /* وضعیت تأمین — تعیین می‌کند وقتی موجودی صفر است چه پیامی
-       نشان داده شود: «به سفارش ساخته می‌شود» یا «فعلاً نداریم».
-       پیش‌فرض محتاطانه است: تا مالک تأیید نکرده، ادعای ساخت
-       نمی‌کنیم. */
+
     supply_mode: row.supply_mode || 'UNAVAILABLE',
     transparency_notice: row.transparency_notice,
-    /* یادداشت عطرساز — تجربه دست‌اول، تنها محتوای غیرقابل کپی. */
+
     maker_note: (options.includeDrafts || row.maker_note_approved === 1) ? (row.maker_note || null) : null,
     maker_note_by: (options.includeDrafts || row.maker_note_approved === 1) ? (row.maker_note_by || null) : null,
     maker_note_approved: options.includeDrafts ? row.maker_note_approved === 1 : undefined,
@@ -1144,32 +829,6 @@ function parseProduct(row, options = {}) {
   };
 }
 
-/**
- * نام عطرساز را فقط وقتی برمی‌گرداند که واقعاً نام یک شخص باشد.
- *
- * ── چرا لازم شد (ممیزی سئو، شهریور ۱۴۰۵) ──
- * در ۳۸۲ محصول از ۲٬۱۱۱، مقدار ستون `perfumer` دقیقاً برابر نام
- * برند بود: «Roja Dove» برای عطرهای روژا داو، «Lattafa» برای
- * لطافه، «Armaf» برای آرماف.
- *
- * برای چند مورد اتفاقاً درست است (روژا داو واقعاً عطرساز
- * عطرهای خودش است)، ولی در بیشتر موارد صرفاً نامِ برند در
- * ستون عطرساز کپی شده — یعنی داده‌ای که «شناسنامه رایحه اصلی»
- * صدایش می‌کنیم، راستی‌آزمایی‌نشده است.
- *
- * خطرش دوگانه است و از آنچه به نظر می‌رسد بزرگ‌تر: اگر بازدیدکننده‌ای
- * یک مورد را راستی‌آزمایی کند و غلط ببیند، اعتمادش به **کل
- * سایت** می‌شکند — نه فقط آن یک صفحه. برای فروشگاهی که کل
- * هویتش بر شفافیت بنا شده، این گران‌ترین نوع خطاست.
- *
- * تصمیم مالک: حذف شود. سطر «عطرساز» در جعبه شناسنامه برای این
- * موارد اصلاً نمایش داده نمی‌شود — نه «نامشخص»، نه جای خالی.
- *
- * ── چرا در لایه خواندن و نه با UPDATE روی دیتابیس ──
- * داده خام دست‌نخورده می‌ماند. اگر روزی منبع بهتری آمد یا مالک
- * خواست موردی را تأیید کند، اصل داده هنوز هست. پاک کردنِ
- * برگشت‌ناپذیر برای چیزی که فقط «مشکوک» است، زیاده‌روی است.
- */
 function cleanPerfumer(perfumer, brandEn, brandFa) {
   const p = String(perfumer || '').trim();
   if (!p) return null;
@@ -1182,7 +841,7 @@ function cleanPerfumer(perfumer, brandEn, brandFa) {
 
 function attachVariants(product, options = {}) {
   if (!product) return null;
-  // Retired variants remain for history/admin, but never appear in public catalog.
+
   const visibility = options.includeHidden ? '' : `AND ${require('./variant-visibility').publicVariantSql('v')}`;
   product.variants = db.prepare(
     `SELECT sku, type, type_label, volume_ml, price_toman, stock
@@ -1191,10 +850,26 @@ function attachVariants(product, options = {}) {
   ).all(product.id);
   const prices = product.variants.map(v => v.price_toman).filter(Boolean);
   product.min_price = prices.length ? Math.min(...prices) : 0;
+
+  try {
+    const essence = essenceInventory.snapshot(db, product.id);
+    if (essence.tracked) {
+      product.essence = {
+        ml_on_hand: essence.ml_on_hand,
+        percent_override: essence.percent_override,
+        use_count: essence.use_count,
+        use_essence: essence.use_essence,
+        max_units: product.variants.reduce((acc, v) => {
+          const cap = essenceInventory.sellableCapacity(db, product.id, v.type, v.volume_ml);
+          if (cap) acc[v.sku] = cap.total;
+          return acc;
+        }, {})
+      };
+    }
+  } catch {  }
   return product;
 }
 
-/** کوپن‌های نمونه — فقط اگر جدول خالی باشد */
 function seedCoupons() {
   const c = db.prepare('SELECT COUNT(*) AS c FROM coupons').get().c;
   if (c > 0) return;
@@ -1213,9 +888,7 @@ function seedCoupons() {
       expires_at: `${year}-12-31`, description: 'خوش‌آمدگویی — ۱۰٪ تخفیف اولین خرید' },
     { code: 'SAMPLE20', type: 'PERCENT', value: 20, min_subtotal: 300000,
       max_discount: 300000, usage_limit: 200, per_user_once: 1,
-      /* ۳۱ خرداد نداریم — ژوئن ۳۰ روز دارد. جاوااسکریپت تاریخ
-         نامعتبر را بی‌صدا به ۱ ژوئیه تفسیر می‌کرد، پس کوپن یک
-         روز بیشتر از آنچه فکر می‌کردیم زنده می‌ماند. */
+
       expires_at: `${year}-06-30`, description: 'تخفیف ویژه سمپل‌ها' },
     { code: 'FREESHIP', type: 'FREE_SHIPPING', value: 0, min_subtotal: 1500000,
       max_discount: null, usage_limit: null, per_user_once: 0,
@@ -1228,29 +901,14 @@ function seedCoupons() {
   console.log(`[DB] ✅ ${rows.length} کد تخفیف نمونه ایجاد شد.`);
 }
 
-/* ═══════════════════════════════════════════
-   دامنه تخفیف — کوپن و جشنواره از یک منطق استفاده می‌کنند
-   ═══════════════════════════════════════════ */
-
-/** «a,b,c» → ['a','b','c'] · خالی و فاصله اضافه حذف می‌شود */
 function parseScope(csv) {
-  if (!csv) return null;                       // null یعنی «بدون محدودیت»
+  if (!csv) return null;
   const list = String(csv).split(',')
     .map(x => x.trim())
     .filter(Boolean);
   return list.length ? list : null;
 }
 
-/**
- * آیا این قلم سبد در دامنه تخفیف هست؟
- *
- * منطق: هر دامنه‌ای که تعریف نشده باشد (null) یعنی «مهم نیست».
- * دامنه‌های تعریف‌شده باید **همه** برقرار باشند (AND).
- * مثال: خانواده=چوبی و نوع=EDP یعنی فقط ادوپرفیوم‌های چوبی.
- *
- * سازگاری با گذشته: کوپنی که هیچ دامنه‌ای ندارد، روی همه اقلام
- * صدق می‌کند — یعنی دقیقاً مثل رفتار قبلی.
- */
 function itemInScope(item, rule) {
   const fam    = parseScope(rule.scope_families);
   const brand  = parseScope(rule.scope_brands);
@@ -1266,22 +924,14 @@ function itemInScope(item, rule) {
   return true;
 }
 
-/** آیا این کوپن/جشنواره اصلاً دامنه محدود دارد؟ */
 function hasScope(rule) {
   return !!(rule.scope_families || rule.scope_brands || rule.scope_types
          || rule.scope_products || rule.scope_gender);
 }
 
-/**
- * جمع مبلغ اقلامی که در دامنه‌اند.
- * اگر دامنه‌ای تعریف نشده، کل سبد برمی‌گردد.
- */
 function scopedSubtotal(items, rule) {
   if (!Array.isArray(items) || !items.length) return null;
-  /* مبلغ مؤثر هر قلم = قیمت منهای تخفیف جشنواره‌ای که روی همان
-     قلم نشسته. اگر این کسر نشود، کوپن روی قیمت کامل حساب می‌شود
-     و مجموع دو تخفیف از آنچه باید بیشتر می‌گردد.
-     `_campaign_off` را campaignDiscount() روی اقلام می‌گذارد. */
+
   const eff = (i) => Math.max(0, i.line_total - (i._campaign_off || 0));
   if (!hasScope(rule)) return items.reduce((s, i) => s + eff(i), 0);
   return items
@@ -1289,19 +939,6 @@ function scopedSubtotal(items, rule) {
     .reduce((s, i) => s + eff(i), 0);
 }
 
-/**
- * اعتبارسنجی کوپن
- *
- * @param {string} code
- * @param {number} subtotal   جمع کل سبد (برای شرط حداقل/حداکثر خرید)
- * @param {number} shippingFee
- * @param {string|null} mobile
- * @param {Array|null} items  اقلام سبد — برای دامنه‌سنجی. اگر
- *        فرستاده نشود، کوپن‌های دامنه‌دار رد می‌شوند تا تخفیفی
- *        که نباید داده نشود.
- * @returns {{ok:boolean, error?:string, coupon?:object, discount?:number,
- *            free_shipping?:boolean, scoped_amount?:number}}
- */
 function validateCoupon(code, subtotal, shippingFee, mobile, items = null, verifiedMobile = null) {
   if (!code) return { ok: false, error: 'کد تخفیف وارد نشده است.' };
   const c = db.prepare('SELECT * FROM coupons WHERE UPPER(code)=UPPER(?)').get(String(code).trim());
@@ -1309,8 +946,6 @@ function validateCoupon(code, subtotal, shippingFee, mobile, items = null, verif
   if (!c)            return { ok: false, error: 'کد تخفیف نامعتبر است.' };
   if (!c.active)     return { ok: false, error: 'این کد تخفیف غیرفعال شده است.' };
 
-  // Date-only coupon boundaries follow the shop's civil day, not the
-  // server OS timezone. Invalid stored dates fail closed.
   const today=shopTime.dateKey();
   if(c.starts_at && !shopTime.validDateKey(c.starts_at))return {ok:false,error:'تاریخ این کد معتبر نیست.'};
   if(c.expires_at && !shopTime.validDateKey(c.expires_at))return {ok:false,error:'تاریخ این کد معتبر نیست.'};
@@ -1323,14 +958,10 @@ function validateCoupon(code, subtotal, shippingFee, mobile, items = null, verif
     return { ok: false,
       error: `این کد برای خرید بالای ${c.min_subtotal.toLocaleString('en-US')} تومان است.` };
 
-  // سقف خرید — برای کدهایی که فقط روی سبد کوچک معنا دارند
   if (c.max_subtotal && subtotal > c.max_subtotal)
     return { ok: false,
       error: `این کد فقط برای خرید تا ${c.max_subtotal.toLocaleString('en-US')} تومان است.` };
 
-  /* کد اختصاصی یک مشتری.
-     اگر مشتری هنوز وارد نشده، رد می‌شود — وگرنه هر کسی که کد را
-     حدس بزند می‌تواند استفاده کند. */
   if (c.assigned_mobile) {
     if (!verifiedMobile || verifiedMobile !== mobile)
       return { ok: false, error: 'برای استفاده از این کد شماره موبایل خود را تأیید کنید.' };
@@ -1345,7 +976,6 @@ function validateCoupon(code, subtotal, shippingFee, mobile, items = null, verif
     if (used > 0) return { ok: false, error: 'شما قبلاً از این کد استفاده کرده‌اید.' };
   }
 
-  // فقط اولین خرید — سفارش قبلیِ پرداخت‌شده مانع است
   if (c.first_order_only) {
     if (!verifiedMobile || verifiedMobile !== mobile)
       return { ok: false, error: 'برای استفاده از این کد شماره موبایل خود را تأیید کنید.' };
@@ -1356,9 +986,6 @@ function validateCoupon(code, subtotal, shippingFee, mobile, items = null, verif
     if (prev > 0) return { ok: false, error: 'این کد فقط برای اولین خرید است.' };
   }
 
-  /* ── دامنه ──
-     اگر کوپن دامنه دارد ولی اقلام سبد در دسترس نیست، رد می‌شود.
-     دادن تخفیفِ دامنه‌دار روی کل سبد، ضرر مستقیم مالی است. */
   const scoped = hasScope(c);
   let base = subtotal;
 
@@ -1380,7 +1007,7 @@ function validateCoupon(code, subtotal, shippingFee, mobile, items = null, verif
     discount = Math.floor(base * c.value / 100);
     if (c.max_discount) discount = Math.min(discount, c.max_discount);
   } else if (c.type === 'FIXED') {
-    // مبلغ ثابت هم نباید از مبلغ اقلام مشمول بیشتر شود
+
     discount = Math.min(c.value, base);
   } else if (c.type === 'FREE_SHIPPING') {
     freeShipping = true;
@@ -1393,26 +1020,6 @@ function validateCoupon(code, subtotal, shippingFee, mobile, items = null, verif
   };
 }
 
-/* ═══════════════════════════════════════════
-   جشنواره — تخفیف خودکار بدون کد
-   ═══════════════════════════════════════════ */
-
-/** جشنواره‌های فعال و در بازه تاریخ */
-/* ── کش کوتاه‌مدت جشنواره‌ها ──
-   `/api/products` پربازدیدترین مسیر سایت است و حالا برای نمایش
-   قیمت خط‌خورده به فهرست جشنواره‌ها نیاز دارد. جدول کوچک است ولی
-   زیر بار همزمان، همان کوئری هزاران بار در ثانیه تکرار می‌شود.
-
-   ۵ ثانیه کش انتخاب شد نه بیشتر: مدیر که جشنواره را روشن می‌کند
-   باید تقریباً بی‌درنگ اثرش را ببیند، وگرنه گمان می‌کند کار
-   نمی‌کند و دوباره می‌سازد. `bustCampaignCache()` هنگام هر تغییر
-   صدا زده می‌شود، پس پنل مدیریت اصلاً تأخیر نمی‌بیند؛ کش فقط
-   برای بازدیدکننده است.
-
-   محاسبه سبد و ثبت سفارش هم از همین می‌خوانند — پنج ثانیه اختلاف
-   بین «جشنواره تمام شد» و «سبد فهمید» بی‌خطر است چون سرور موقع
-   ثبت سفارش دوباره حساب می‌کند و بدترین حالت، تخفیفِ پنج ثانیه
-   دیرتر به نفع مشتری است. */
 const CAMPAIGN_TTL_MS = 5000;
 let _campCache = null, _campAt = 0, _campDay = '';
 
@@ -1421,8 +1028,7 @@ function bustCampaignCache() { _campCache = null; }
 function activeCampaigns() {
   const t = Date.now();
   const now = shopTime.dateKey(t);
-  // تغییر روز هم کش را باطل می‌کند، وگرنه جشنواره‌ای که دیشب
-  // تمام شده تا پنج ثانیه بعدِ نیمه‌شب زنده می‌ماند
+
   if (_campCache && t - _campAt < CAMPAIGN_TTL_MS && _campDay === now) {
     return _campCache;
   }
@@ -1438,15 +1044,6 @@ function activeCampaigns() {
   return _campCache;
 }
 
-/**
- * تخفیف جشنواره روی یک قلم.
- *
- * اگر چند جشنواره شامل یک کالا شوند، **بهترین** یکی اعمال
- * می‌شود نه جمعشان — وگرنه دو جشنواره ۳۰٪ می‌شود ۶۰٪ و ضرر
- * ناخواسته می‌دهد.
- *
- * @returns {{percent:number, title:string, amount:number}|null}
- */
 function campaignForItem(item, campaigns) {
   let best = null;
   for (const c of campaigns) {
@@ -1460,10 +1057,6 @@ function campaignForItem(item, campaigns) {
   return best;
 }
 
-/**
- * تخفیف جشنواره روی کل سبد.
- * @returns {{total:number, lines:Array}}
- */
 function campaignDiscount(items) {
   const camps = activeCampaigns();
   if (!camps.length || !items || !items.length) return { total: 0, lines: [] };
@@ -1472,9 +1065,7 @@ function campaignDiscount(items) {
   let total = 0;
   for (const it of items) {
     const hit = campaignForItem(it, camps);
-    /* مقدار تخفیف روی خودِ قلم ثبت می‌شود تا محاسبه بعدیِ کوپن
-       بداند این کالا قبلاً تخفیف خورده. بدون این، کوپن روی قیمت
-       کامل حساب می‌شد — با آزمون کشف شد. */
+
     it._campaign_off = hit ? hit.amount : 0;
     if (hit && hit.amount > 0) {
       total += hit.amount;
@@ -1484,22 +1075,17 @@ function campaignDiscount(items) {
   return { total, lines };
 }
 
-/**
- * درصد جشنواره برای یک محصول — برای نمایش قیمت خط‌خورده روی کارت.
- * سبک است چون فقط روی فیلدهای خود محصول کار می‌کند.
- */
 function campaignPercentFor(product, camps) {
   const fake = {
     _family: product.family_slug,
     _brand: product.brand_fa,
-    _type: null,                      // کارت محصول نوع مشخصی ندارد
+    _type: null,
     _product_id: product.id,
     _gender: product.gender
   };
   let best = 0;
   for (const c of camps) {
-    // جشنواره‌ای که فقط روی یک نوع واریانت است، روی کارت نشان
-    // داده نمی‌شود چون ممکن است همه واریانت‌ها را نگیرد
+
     if (c.scope_types) continue;
     if (!itemInScope(fake, c)) continue;
     if (c.percent > best) best = c.percent;
@@ -1507,17 +1093,6 @@ function campaignPercentFor(product, camps) {
   return best;
 }
 
-/**
- * درصد جشنواره برای یک واریانت مشخص.
- *
- * فرق با `campaignPercentFor`: آنجا نوع واریانت معلوم نیست (کارت
- * فهرست یک قیمت «از …» نشان می‌دهد)، پس جشنواره‌های نوع‌محور نادیده
- * گرفته می‌شوند. اینجا در صفحه محصول، نوع دقیقاً معلوم است — پس
- * جشنواره «۲۰٪ روی همه سمپل‌ها» هم درست اعمال می‌شود.
- *
- * چرا مهم است: بدون این، مشتری روی صفحه محصول قیمت کامل می‌دید و
- * تخفیف فقط در سبد ظاهر می‌شد. تخفیفی که دیده نشود، خرید نمی‌سازد.
- */
 function variantCampaignPercent(product, variant, camps) {
   const fake = {
     _family: product.family_slug,
@@ -1529,28 +1104,10 @@ function variantCampaignPercent(product, variant, camps) {
   let best = 0;
   for (const c of camps) {
     if (!itemInScope(fake, c)) continue;
-    /* سقف تخفیف جشنواره روی درصدِ نمایشی اثر می‌گذارد: اگر
-       max_discount کمتر از درصد خام باشد، نمایش ۳۰٪ دروغ است.
-       درصد مؤثر همان چیزی است که در سبد اعمال می‌شود. */
+
     let amount = Math.floor(variant.price_toman * c.percent / 100);
     if (c.max_discount) amount = Math.min(amount, c.max_discount);
-    /* 🔴 گرد کردن باید **به پایین** باشد، نه نزدیک‌ترین.
-       ─────────────────────────────────────────────────
-       درصد نمایشی بعداً در attachCampaign دوباره روی قیمت اعمال
-       می‌شود تا final_price ساخته شود. اگر اینجا به بالا گرد شود،
-       تخفیف واقعی از سقف جشنواره رد می‌شود:
 
-           قیمت ۵۷۰٬۰۰۰ · سقف ۲۰٬۰۰۰
-           درصد خام: 20000/570000 = ۳٫۵۱٪
-           با round → ۴٪ → تخفیف ۲۲٬۸۰۰  ← ۲٬۸۰۰ بیشتر از سقف!
-           با floor → ۳٪ → تخفیف ۱۷٬۱۰۰  ← داخل سقف ✓
-
-       سقفی که رعایت نشود یعنی ضرر مالی در هر فروش جشنواره‌ای —
-       فروشگاه بیش از چیزی که اعلام کرده تخفیف می‌دهد.
-
-       نتیجه: درصد نمایشی ممکن است کمی کمتر از حداکثر ممکن باشد،
-       ولی هرگز بیشتر از چیزی که واقعاً می‌دهیم نیست. کم‌فروشی در
-       تبلیغ بهتر از بیش‌وعده است. */
     const eff = variant.price_toman > 0
       ? Math.floor(amount / variant.price_toman * 100) : 0;
     if (eff > best) best = eff;
@@ -1558,10 +1115,6 @@ function variantCampaignPercent(product, variant, camps) {
   return best;
 }
 
-/**
- * افزودن اطلاعات جشنواره به محصول و همه واریانت‌هایش.
- * روی محصولی که `attachVariants` خورده صدا زده می‌شود.
- */
 function attachCampaign(product, camps) {
   if (!product) return product;
   const list = camps || activeCampaigns();
@@ -1580,33 +1133,18 @@ function attachCampaign(product, camps) {
         cheapestOld = v.price_toman;
       }
     }
-    /* `min_price` همچنان قیمت پیش از تخفیف است تا مرتب‌سازی و
-       فیلترها عوض نشوند؛ قیمت نهایی جدا می‌آید. */
+
     product.min_price_final = cheapestNew || product.min_price;
     product.min_price_before = cheapestOld || product.min_price;
   }
   return product;
 }
 
-/**
- * ثبت مصرف کد تخفیف — با رعایت سقف.
- *
- * چرا شرط لازم است؟
- *   validateCoupon هنگام **ثبت سفارش** سقف را می‌سنجد، ولی شمارنده
- *   هنگام **پرداخت** بالا می‌رود. بین این دو فاصله هست: ده نفر
- *   می‌توانند هم‌زمان سفارش بدهند و همه از بررسی رد شوند چون
- *   شمارنده هنوز صفر است.
- *
- *   شرط `used_count < usage_limit` داخل خود UPDATE، اتمی است و
- *   تضمین می‌کند شمارنده هرگز از سقف بالاتر نرود.
- *
- * @returns {{ok: boolean, reason?: string}}
- */
 function recordCouponUse(code, mobile, orderId) {
   const upper = String(code).toUpperCase();
 
   return db.transaction(() => {
-    // اگر پیش‌تر برای همین سفارش ثبت شده، دوباره نشمار
+
     const dup = db.prepare(
       'SELECT 1 FROM coupon_usage WHERE UPPER(code)=? AND order_id=?'
     ).get(upper, orderId);
@@ -1615,7 +1153,6 @@ function recordCouponUse(code, mobile, orderId) {
     const c = db.prepare('SELECT * FROM coupons WHERE UPPER(code)=?').get(upper);
     if (!c) return { ok: false, reason: 'کد یافت نشد' };
 
-    // «یک‌بار برای هر کاربر» — بررسی دوباره در لحظه ثبت
     if (c.per_user_once && mobile) {
       const used = db.prepare(
         'SELECT 1 FROM coupon_usage WHERE UPPER(code)=? AND mobile=?'
@@ -1623,7 +1160,6 @@ function recordCouponUse(code, mobile, orderId) {
       if (used) return { ok: false, reason: 'این کاربر قبلاً استفاده کرده' };
     }
 
-    // افزایش اتمی با رعایت سقف
     const res = c.usage_limit == null
       ? db.prepare('UPDATE coupons SET used_count = used_count + 1 WHERE UPPER(code)=?')
           .run(upper)
@@ -1640,13 +1176,6 @@ function recordCouponUse(code, mobile, orderId) {
   })();
 }
 
-/**
- * آزادسازی رزرو کد تخفیف.
- *
- * ظرفیت هنگام ثبت سفارش رزرو می‌شود. اگر سفارش پرداخت نشود (لغو،
- * انقضا، پرداخت ناموفق) باید ظرفیت برگردد، وگرنه کوپن با سفارش‌های
- * رهاشده هدر می‌رود.
- */
 function releaseCouponUse(orderId) {
   if (!orderId) return false;
   return db.transaction(() => {
@@ -1663,7 +1192,6 @@ function releaseCouponUse(orderId) {
   })();
 }
 
-/** تنظیمات فروشگاه — برای فاکتور و برچسب پستی */
 const SHOP_DEFAULTS = {
   shop_name:      'عطر یزد',
   shop_name_en:   'Yazd Perfume',
@@ -1674,53 +1202,16 @@ const SHOP_DEFAULTS = {
   phone:          '',
   address:        '',
   postal_code:    '',
-  /* نام تحویل‌گیرنده روی برچسب پستی.
-     پست نام شخص می‌خواهد نه نام فروشگاه؛ اگر مرسوله برگشت بخورد
-     باید معلوم باشد به دست چه کسی برسد. */
+
   sender_person:  '',
-  /* آیا شماره تماس واتس‌اپ دارد؟ فروشگاهی که تلفن ثابت ندارد،
-     موبایلش تنها راه ارتباط است و مشتری باید بداند می‌تواند
-     پیام بدهد — نه فقط زنگ بزند. */
+
   phone_whatsapp: '1',
   invoice_note:   'این فاکتور جهت اطلاع مشتری صادر شده است.',
-  /* ── نماد اعتماد الکترونیک ──
-     کد رسمی اینماد **دو بخش** دارد و هر دو در نشانی تصویر و لینک
-     تکرار می‌شوند:
 
-       https://trustseal.enamad.ir/logo.aspx?id=580961&Code=ZWbX…
-
-     `enamad_id`   شناسه عددی پرونده  (id)
-     `enamad_code` کد امنیتی ۳۲ نویسه (Code)
-
-     چرا جدا و نه یک رشته: فوتر باید هر دو را جداگانه در نشانی
-     بگذارد. نگه داشتن کل URL در یک فیلد یعنی مدیر می‌تواند هر
-     نشانی دلخواهی وارد کند — و آن نشانی مستقیم داخل `src` تصویر
-     می‌نشیند. با دو فیلد جدا و اعتبارسنجی الگو، تنها چیزی که از
-     پنل می‌آید یک عدد و یک رشته hex است. */
   enamad_id:      '',
   enamad_code:    ''
 };
 
-/**
- * تنظیمات واقعی فروشگاه را در دیتابیس تازه می‌نشاند.
- *
- * ── چرا لازم شد (شهریور ۱۴۰۵) ──
- * شماره تماس، نشانی، کد پستی و کد اینماد فقط در جدول
- * `settings` زندگی می‌کردند. `data/yazd.db` در `.gitignore`
- * است — درست هم هست، چون داده زنده مشتری دارد — پس این
- * مقادیر هیچ پشتیبانی نداشتند.
- *
- * وقتی ورک‌اسپیس به سقف حجم خورد و دیتابیس حذف شد، همه‌شان
- * رفتند و پنج آزمون قرمز شد: فاکتور بی‌نشانی، برچسب پستی
- * بی‌فرستنده، فوتر بی‌اینماد.
- *
- * درس: هر داده‌ای که «فقط مالک دارد» و بازتولیدشدنی نیست،
- * باید جایی خارج از دیتابیس هم باشد.
- *
- * ⚠ فقط مقادیر **خالی** پر می‌شوند. اگر مدیر از پنل چیزی را
- * تغییر داده باشد، دست نمی‌خورد — وگرنه هر بار راه‌اندازی،
- * کار او را پاک می‌کردیم.
- */
 function seedShopSettings() {
   const file = path.join(__dirname, '..', 'seed', 'shop_settings.json');
   if (!fs.existsSync(file)) return;
@@ -1737,8 +1228,8 @@ function seedShopSettings() {
   let n = 0;
   db.transaction(() => {
     for (const [k, v] of Object.entries(data)) {
-      if (k.startsWith('_')) continue;          // کلیدهای توضیحی
-      if (!(k in SHOP_DEFAULTS)) continue;      // فهرست سفید
+      if (k.startsWith('_')) continue;
+      if (!(k in SHOP_DEFAULTS)) continue;
       const val = String(v ?? '').trim();
       if (!val) continue;
       n += ins.run(k, val).changes;
@@ -1753,24 +1244,11 @@ function getSettings() {
   return { ...SHOP_DEFAULTS, ...saved };
 }
 
-/* ── اعتبارسنجی مقادیری که به HTML راه پیدا می‌کنند ──
-   بیشتر تنظیمات فقط متن نمایشی‌اند و پیش از رندر با `esc()` پاک
-   می‌شوند. ولی دو فیلد اینماد سرنوشت متفاوتی دارند: مستقیم داخل
-   نشانی `src` تصویر و `href` لینک می‌نشینند.
-
-   مقداری مثل `580961" onerror="…` از فیلتر متن رد می‌شود ولی
-   نشانی را می‌شکند. پس اینجا فهرست سفید الگو داریم — هر چیزی که
-   دقیقاً با الگو نخواند، **کنار گذاشته می‌شود** نه اینکه پاک شود.
-   نیم‌بند ذخیره کردن یعنی نشان خراب روی سایت. */
 const SETTING_PATTERNS = {
-  enamad_id:   /^\d{1,10}$/,          // شناسه پرونده — فقط رقم
-  enamad_code: /^[A-Za-z0-9]{8,64}$/  // کد امنیتی — فقط حرف و رقم
+  enamad_id:   /^\d{1,10}$/,
+  enamad_code: /^[A-Za-z0-9]{8,64}$/
 };
 
-/**
- * آیا این مقدار برای این کلید پذیرفتنی است؟
- * رشته خالی همیشه پذیرفته می‌شود — یعنی «پاک کن».
- */
 function isValidSetting(key, value) {
   const re = SETTING_PATTERNS[key];
   if (!re) return true;
@@ -1792,14 +1270,12 @@ function saveSettings(obj) {
     });
   })();
   const out = getSettings();
-  /* مدیر باید بداند کدام فیلد ذخیره نشد. سکوت یعنی او فکر کند
-     نشان ثبت شده و روزها بعد بفهمد نشده. */
+
   if (rejected.length) Object.defineProperty(out, '_rejected',
     { value: rejected, enumerable: false });
   return out;
 }
 
-/** شماره ترتیبی فاکتور — یکتا و پیوسته */
 function nextInvoiceNo() {
   const cur = db.prepare("SELECT value FROM settings WHERE key='invoice_seq'").get();
   const n = (cur ? parseInt(cur.value) : 0) + 1;
@@ -1813,23 +1289,14 @@ function logStatus(orderId, status, note) {
     .run(orderId, status, note || null);
 }
 
-/**
- * ساخت ستون جستجو — همه فیلدهای قابل‌جستجو در یک رشته
- * جستجو به‌جای LIKE روی ۸ ستون، روی یک ستون ایندکس‌شده انجام می‌شود
- */
-/**
- * یکسان‌سازی متن فارسی برای جستجو
- * کاربر «کرید» می‌نویسد ولی دیتابیس «کرِید» دارد — اعراب حذف می‌شود.
- * همچنین ی/ک عربی، نیم‌فاصله و ارقام فارسی یکدست می‌شوند.
- */
 function normalizeFa(s) {
   return String(s || '')
-    .replace(/[\u064B-\u0652\u0670]/g, '')        // فتحه، کسره، ضمه، تشدید، سکون
-    .replace(/[\u0623\u0625\u0622]/g, 'ا')        // أ إ آ
-    .replace(/\u0649|\u064A/g, 'ی')               // ى ي عربی
-    .replace(/\u0643/g, 'ک')                      // ك عربی
-    .replace(/\u0629/g, 'ه')                      // ة
-    .replace(/[\u200c\u200f\u200e]/g, ' ')        // نیم‌فاصله
+    .replace(/[\u064B-\u0652\u0670]/g, '')
+    .replace(/[\u0623\u0625\u0622]/g, 'ا')
+    .replace(/\u0649|\u064A/g, 'ی')
+    .replace(/\u0643/g, 'ک')
+    .replace(/\u0629/g, 'ه')
+    .replace(/[\u200c\u200f\u200e]/g, ' ')
     .replace(/[۰-۹]/g, d => '۰۱۲۳۴۵۶۷۸۹'.indexOf(d))
     .replace(/[٠-٩]/g, d => '٠١٢٣٤٥٦٧٨٩'.indexOf(d))
     .replace(/\s+/g, ' ')
@@ -1837,31 +1304,14 @@ function normalizeFa(s) {
     .toLowerCase();
 }
 
-/**
- * واژه‌های کمکی که در داده خام نیستند ولی مشتری با آن‌ها جستجو می‌کند.
- *
- * جنسیت در دیتابیس `MEN`/`WOMEN`/`UNISEX` است، پس جستجوی «مردانه»
- * هیچ نتیجه‌ای نمی‌داد. همچنین کلمه «عطر» — طبیعی‌ترین کلمه در یک
- * عطرفروشی — در هیچ ستونی نبود و صفر نتیجه می‌گرفت.
- */
 const GENDER_WORDS = {
   MEN:    'مردانه اقایانه مردونه men homme pour homme',
   WOMEN:  'زنانه بانوان خانم زنونه women femme pour femme',
   UNISEX: 'اسپرت مشترک یونیسکس دونفره zwei unisex'
 };
 
-/** واژه‌هایی که به هر محصول اضافه می‌شوند تا جستجوی عمومی خالی نماند */
 const UNIVERSAL_WORDS = 'عطر ادکلن اسانس رایحه بو خوشبو parfum perfume fragrance';
 
-/**
- * املای قدیمی برندها — مترادف جستجو.
- *
- * وقتی نگارش فارسی یک برند اصلاح می‌شود، مشتری‌ای که املای قبلی را
- * می‌شناسد نباید دست خالی برگردد. این نام‌ها به ایندکس اضافه
- * می‌شوند ولی هیچ‌جا نمایش داده نمی‌شوند.
- *
- * کلید = نام لاتین برند (پایدار)، مقدار = املای قدیمی.
- */
 const BRAND_ALIASES = {
   'Amouage':              'آمواژ',
   'Jean Paul Gaultier':   'ژان پل گالتیه',
@@ -1908,10 +1358,7 @@ function buildSearchIndex(force = false, ids = null) {
         r.family_fa, r.family_en, r.season, r.occasion, r.concentration,
         r.temperature, r.taste, r.longevity, r.sillage,
         r.country, r.market_segment,
-        /* عطار و سال عرضه — از منبع ۲٬۱۱۱ عطر اصیل.
-           جستجوی «دماشی» یا «۱۹۹۹» باید نتیجه بدهد؛ کاربر حرفه‌ای
-           عطر را با نام سازنده‌اش می‌شناسد. سال هم به رشته تبدیل
-           می‌شود چون blob متنی است. */
+
         r.perfumer || '',
         r.release_year ? String(r.release_year) : '',
         GENDER_WORDS[r.gender] || '',
@@ -1932,26 +1379,6 @@ function buildSearchIndex(force = false, ids = null) {
   return rows.length;
 }
 
-/* ═══════════════════════════════════════════
-   ایندکس نُت‌های بویایی
-   ═══════════════════════════════════════════
-   مسئله: نُت‌ها در ستون‌های JSON (`notes_top` و…) ذخیره شده‌اند و
-   فقط از راه `search_blob` قابل جستجوی متنی‌اند. یعنی «عود» هم
-   محصولی را می‌آورد که نُت عود دارد، هم محصولی که واژه عود در
-   توضیحش آمده — و فیلتر دقیق «فقط عطرهایی با نُت عود» ممکن نیست.
-
-   ۱۸۱ نُت متمایز و ۸۱ آکورد در دیتابیس هست که هیچ‌جا قابل کاوش
-   نیست. مشتری عطر با نُت جستجو می‌کند («چیزی با وانیل می‌خواهم»)،
-   پس این بزرگ‌ترین داده استفاده‌نشده پروژه بود.
-
-   چرا جدول جدا و نه LIKE روی JSON:
-     • `LIKE '%عود%'` روی JSON، «عود هندی» را هم می‌گیرد — که
-       گاهی درست است و گاهی نه، ولی هرگز قابل پیش‌بینی نیست
-     • با جدول نرمال، شمارش دقیق («۱۲۷ عطر با نُت عود») ممکن است
-     • ایندکس روی ستون note سریع‌تر از پویش هزاران رشته JSON است
-
-   `position` نگه داشته می‌شود چون نُت آغازین با نُت پایه فرق
-   دارد: کسی که «وانیل» می‌خواهد، معمولاً وانیلِ پایه را می‌خواهد. */
 function initNotesIndex() {
   db.exec(`
     CREATE TABLE IF NOT EXISTS product_notes (
@@ -1966,12 +1393,6 @@ function initNotesIndex() {
   `);
 }
 
-/**
- * ساخت ایندکس نُت‌ها از ستون‌های JSON.
- *
- * فقط وقتی جدول خالی است یا `force` داده شود اجرا می‌شود — مثل
- * `buildSearchIndex`. روی کاتالوگ فعلی حدود ۲۲ هزار ردیف می‌سازد.
- */
 function buildNotesIndex(force = false) {
   initNotesIndex();
 
@@ -2012,7 +1433,6 @@ function buildNotesIndex(force = false) {
   return n;
 }
 
-// Rebuild the derived note index for an explicit scope, preserving all others.
 function refreshProductNotes(ids) {
   if (!Array.isArray(ids) || ids.some(x => typeof x !== 'string')) throw Error('Invalid note index scope');
   if (!ids.length) return 0;
@@ -2031,12 +1451,6 @@ function refreshProductNotes(ids) {
   })();
 }
 
-/**
- * فهرست نُت‌ها با شمار محصول.
- *
- * `minCount` جلوی شلوغی را می‌گیرد: نُتی که فقط یک عطر دارد،
- * در فهرست فیلتر بیشتر مزاحم است تا مفید.
- */
 function listNotes({ position = null, minCount = 8, limit = 200 } = {}) {
   const where = position ? 'WHERE position = @position' : '';
   return db.prepare(`
@@ -2049,7 +1463,6 @@ function listNotes({ position = null, minCount = 8, limit = 200 } = {}) {
   `).all({ position, minCount, limit });
 }
 
-/** میانگین امتیاز یک محصول (فقط نظرات تأییدشده) */
 function reviewSummary(productId) {
   const r = db.prepare(`
     SELECT COUNT(*) count, AVG(rating) avg,
@@ -2072,23 +1485,8 @@ function reviewSummary(productId) {
   };
 }
 
-/* ═══════════════════════════════════════════
-   دعوت‌نامه نظر — مشتریان فروش حضوری
-   ═══════════════════════════════════════════ */
-
-/** مدت اعتبار دعوت‌نامه: ۳۰ روز */
 const INVITE_TTL_DAYS = 30;
 
-/**
- * ساخت دعوت‌نامه یکتا.
- *
- * چرا `randomBytes` و نه شمارنده یا تاریخ: لینک دعوت عملاً یک
- * کلید دسترسی است. اگر قابل حدس باشد، هر کسی می‌تواند به‌جای
- * مشتری نظر بنویسد و نشان «تأییدشده» بگیرد — یعنی همان چیزی که
- * قرار بود اعتبار بسازد، تبدیل به ابزار جعل می‌شود.
- *
- * ۱۶ بایت = ۳۲ نویسه hex. حدس زدنش عملاً ناممکن است.
- */
 function createReviewInvite(productId, mobile, note, createdBy) {
   const token = crypto.randomBytes(16).toString('hex');
   const expires = new Date(Date.now() + INVITE_TTL_DAYS * 86400e3).toISOString();
@@ -2101,10 +1499,6 @@ function createReviewInvite(productId, mobile, note, createdBy) {
   return { id: r.lastInsertRowid, token, expires_at: expires };
 }
 
-/**
- * خواندن دعوت‌نامه معتبر.
- * @returns {{ok:true, invite:object} | {ok:false, error:string}}
- */
 function readReviewInvite(token) {
   if (!token || typeof token !== 'string' || !/^[a-f0-9]{32}$/.test(token)) {
     return { ok: false, error: 'لینک دعوت معتبر نیست.' };
@@ -2112,9 +1506,6 @@ function readReviewInvite(token) {
   const inv = db.prepare('SELECT * FROM review_invites WHERE token=?').get(token);
   if (!inv) return { ok: false, error: 'این لینک دعوت یافت نشد.' };
 
-  /* ترتیب پیام‌ها مهم است: «قبلاً استفاده شده» اطمینان‌بخش‌تر از
-     «منقضی شده» است. مشتری که نظرش را ثبت کرده و دوباره روی لینک
-     می‌زند، نباید فکر کند کارش انجام نشده. */
   if (inv.used_at) {
     return { ok: false, error: 'نظر شما با این دعوت‌نامه قبلاً ثبت شده است. سپاسگزاریم.', used: true };
   }
@@ -2124,13 +1515,6 @@ function readReviewInvite(token) {
   return { ok: true, invite: inv };
 }
 
-/**
- * مصرف دعوت‌نامه — اتمی.
- *
- * شرط `used_at IS NULL` داخل خود UPDATE است، نه یک بررسی جدا.
- * بدون آن، دو درخواست همزمان با یک لینک هر دو رد می‌شدند از
- * بررسی و دو نظر ثبت می‌کردند. همان درسی که در کوپن گرفتیم.
- */
 function consumeReviewInvite(token, reviewId) {
   const r = db.prepare(`
     UPDATE review_invites SET used_at = CURRENT_TIMESTAMP, review_id = ?
@@ -2139,7 +1523,6 @@ function consumeReviewInvite(token, reviewId) {
   return r.changes > 0;
 }
 
-/** آیا این شماره محصول را خریده؟ (برای نشان «خرید تأییدشده») */
 function hasPurchased(mobile, productId) {
   return !!db.prepare(`
     SELECT 1 FROM order_items i
@@ -2150,29 +1533,14 @@ function hasPurchased(mobile, productId) {
   `).get(mobile, productId);
 }
 
-/* ═══════════════════════════════════════════
-   نشست پایدار — در ری‌استارت از بین نمی‌رود
-   ═══════════════════════════════════════════ */
-
-/* ═══════════════════════════════════════════
-   کارکنان، نقش‌ها و مجوزها
-   ═══════════════════════════════════════════ */
 const perms = require('./permissions');
 
-/**
- * هش رمز با scrypt.
- *
- * چرا scrypt و نه SHA؟ SHA برای رمز ساخته نشده — آنقدر سریع است
- * که حمله فرهنگ‌لغت روی GPU میلیون‌ها حدس در ثانیه می‌زند. scrypt
- * عمداً کند و حافظه‌بر است. در Node داخلی است و وابستگی نمی‌خواهد.
- */
 function hashPassword(plain, salt) {
   const s = salt || crypto.randomBytes(16).toString('hex');
   const h = crypto.scryptSync(String(plain), s, 64).toString('hex');
   return { hash: h, salt: s };
 }
 
-/** مقایسه زمان‌ثابت رمز */
 function verifyPassword(plain, hash, salt) {
   if (!hash || !salt) return false;
   const cand = crypto.scryptSync(String(plain), salt, 64);
@@ -2181,7 +1549,6 @@ function verifyPassword(plain, hash, salt) {
   return crypto.timingSafeEqual(cand, real);
 }
 
-/** نقش‌های پیش‌فرض را در اولین اجرا می‌سازد */
 function seedRoles() {
   const has = db.prepare('SELECT COUNT(*) n FROM roles').get().n;
 
@@ -2198,15 +1565,6 @@ function seedRoles() {
     return;
   }
 
-  /* ── مهاجرت مجوزهای تازه ──
-     نقش‌ها فقط یک بار ساخته می‌شوند، پس وقتی نسخه بعدی مجوز
-     تازه‌ای اضافه می‌کند (مثلاً `reports.traffic`)، مدیر کلِ
-     فروشگاهِ در حال کار آن را دریافت نمی‌کرد و بخش تازه برای
-     خودش هم ۴۰۳ می‌داد.
-
-     مدیر کل طبق تعریف همه مجوزها را دارد، پس نقش `owner` همیشه
-     با فهرست کامل هم‌تراز می‌شود. بقیه نقش‌ها دست نمی‌خورند —
-     ممکن است مدیر عمداً محدودشان کرده باشد. */
   const owner = db.prepare("SELECT permissions FROM roles WHERE key='owner'").get();
   if (!owner) return;
 
@@ -2222,13 +1580,6 @@ function seedRoles() {
   }
 }
 
-/**
- * حساب مدیر کل را از روی متغیرهای محیطی می‌سازد.
- *
- * سازگاری با گذشته: تا وقتی هیچ کارمندی تعریف نشده، رمز موجود
- * `ADMIN_PASSWORD` همچنان کار می‌کند و صاحب فروشگاه قفل بیرون
- * نمی‌ماند.
- */
 function seedOwner() {
   const n = db.prepare("SELECT COUNT(*) n FROM staff WHERE role_key='owner'").get().n;
   if (n) return;
@@ -2247,7 +1598,6 @@ function seedOwner() {
   appLog('INFO', 'staff', 'حساب مدیر کل ساخته شد', { username });
 }
 
-/** نقش با مجوزهای تجزیه‌شده */
 function getRole(key) {
   const r = db.prepare('SELECT * FROM roles WHERE key=?').get(key);
   if (!r) return null;
@@ -2267,7 +1617,6 @@ function listRoles() {
   });
 }
 
-/** کارمند با نقش و مجوزهایش */
 function getStaff(id) {
   const s = db.prepare('SELECT * FROM staff WHERE id=?').get(id);
   if (!s) return null;
@@ -2281,11 +1630,6 @@ function getStaff(id) {
   };
 }
 
-/* ═══════════════════════════════════════════
-   حساب مشتری
-   ═══════════════════════════════════════════ */
-
-/** مشتری با شماره موبایل (همان نام کاربری) */
 function getCustomer(mobile) {
   return db.prepare('SELECT * FROM customers WHERE mobile=?')
     .get(String(mobile || '').trim()) || null;
@@ -2295,10 +1639,6 @@ function getCustomerById(id) {
   return db.prepare('SELECT * FROM customers WHERE id=?').get(id) || null;
 }
 
-/**
- * ساخت حساب مشتری.
- * نام خانوادگی و ایمیل اختیاری‌اند — سد راه ثبت‌نام نشوند.
- */
 function createCustomer({ mobile, first_name, last_name, email, password }) {
   const { hash, salt } = hashPassword(password);
   const info = db.prepare(`
@@ -2309,17 +1649,12 @@ function createCustomer({ mobile, first_name, last_name, email, password }) {
   return getCustomerById(info.lastInsertRowid);
 }
 
-/** به‌روزرسانی رمز — برای بازیابی یا تغییر دستی */
 function setCustomerPassword(id, password) {
   const { hash, salt } = hashPassword(password);
   db.prepare('UPDATE customers SET pass_hash=?, pass_salt=? WHERE id=?')
     .run(hash, salt, id);
 }
 
-/**
- * ذخیره نشانی پیش‌فرض پس از هر سفارش موفق.
- * دفعه بعد فرم تسویه خودکار پر می‌شود.
- */
 function saveCustomerAddress(mobile, a) {
   const c = getCustomer(mobile);
   if (!c) return;
@@ -2330,29 +1665,6 @@ function saveCustomerAddress(mobile, a) {
          a.postal_code || null, c.id);
 }
 
-/** نمای امن برای ارسال به مرورگر — بدون هش رمز */
-/**
- * نسخه امن کارمند برای پاسخ API.
- *
- * ── چرا لازم شد (ممیزی مرداد ۱۴۰۵) ──
- * `getStaff()` با `{...s}` همه ستون‌ها را برمی‌گرداند، شامل
- * `pass_hash` و `pass_salt`. سه مسیر مدیریتی خروجی‌اش را مستقیم
- * در پاسخ JSON می‌گذاشتند:
- *
- *   PUT /api/admin/me/profile
- *   POST /api/admin/staff
- *   PUT /api/admin/staff/:id
- *
- * آزمون واقعی نشان داد هش scrypt و salt در پاسخ برمی‌گشتند.
- *
- * چرا `getStaff` خودش پاک نشد: مسیر ورود (`/api/admin/login`) و
- * تغییر رمز به همان فیلدها نیاز دارند. حذفشان از منبع، احراز
- * هویت را می‌شکست. پس لایه‌ای جدا برای «آنچه به بیرون می‌رود»
- * ساخته شد — همان الگوی `publicCustomer`.
- *
- * فهرست سفید است نه سیاه: ستون تازه‌ای که روزی به جدول اضافه
- * شود، خودبه‌خود بیرون نمی‌رود.
- */
 function publicStaff(s) {
   if (!s) return null;
   return {
@@ -2408,7 +1720,6 @@ function listStaff() {
   });
 }
 
-/** ثبت در سابقه — «همه‌چیز، حتی مشاهده» */
 function audit(entry) {
   try {
     db.prepare(`
@@ -2428,10 +1739,9 @@ function audit(entry) {
       ip:       entry.ip ?? null,
       allowed:  entry.allowed === false ? 0 : 1
     });
-  } catch { /* سابقه هرگز نباید جریان اصلی را بشکند */ }
+  } catch {  }
 }
 
-/** پاکسازی سابقه قدیمی — پیش‌فرض ۹۰ روز */
 function purgeAudit(days) {
   const keep = parseInt(days || process.env.AUDIT_KEEP_DAYS) || 90;
   const cutoff = new Date(Date.now() - keep * 86400e3).toISOString();
@@ -2461,17 +1771,6 @@ function destroySession(token) {
   if (token) db.prepare('DELETE FROM sessions WHERE token=?').run(token);
 }
 
-/* ═══════════════════════════════════════════
-   محدودیت نرخ درخواست
-   ═══════════════════════════════════════════ */
-/**
- * @param key       شناسه یکتا، مثلا "login:1.2.3.4"
- * @param limit     حداکثر تعداد در پنجره
- * @param windowMs  طول پنجره
- * @param blockMs   مدت مسدودی پس از عبور از حد
- */
-// The read/check/increment must be serialized across server processes. Without
-// a write lock two requests can both see the last available slot and pass.
 const rateLimitTransaction = db.transaction((key, limit, windowMs, blockMs) => {
   const now = Date.now();
   const row = db.prepare('SELECT * FROM rate_limits WHERE bucket=?').get(key);
@@ -2506,24 +1805,17 @@ function resetRateLimit(key) {
   db.prepare('DELETE FROM rate_limits WHERE bucket=?').run(key);
 }
 
-/* ═══════════════════════════════════════════
-   لاگ ماندگار
-   ═══════════════════════════════════════════ */
 function appLog(level, scope, message, meta) {
   try {
     db.prepare('INSERT INTO app_logs (level, scope, message, meta) VALUES (?,?,?,?)')
       .run(level, scope || null, String(message).slice(0, 1000),
            meta ? JSON.stringify(meta).slice(0, 2000) : null);
-  } catch { /* لاگ هرگز نباید جریان اصلی را بشکند */ }
+  } catch {  }
   if (level === 'ERROR') console.error(`[${scope || '-'}] ${message}`);
 }
 
-/* ═══════════════════════════════════════════
-   نگهداشت دوره‌ای
-   ═══════════════════════════════════════════ */
 const PENDING_TTL_MIN = parseInt(process.env.PENDING_ORDER_TTL_MIN) || 30;
 
-/** آزادسازی موجودی سفارش‌های پرداخت‌نشده */
 function releaseStaleOrders() {
   const cutoff = new Date(Date.now() - PENDING_TTL_MIN * 60 * 1000).toISOString();
   const stale = db.prepare("SELECT order_id FROM orders WHERE status='PENDING' AND created_at < ?").all(cutoff);
@@ -2534,13 +1826,12 @@ function releaseStaleOrders() {
   const current=db.prepare('SELECT status,payment_gateway FROM orders WHERE order_id=?');
   db.transaction(()=>{
     for(const o of stale){
-      // Another worker may already have settled this order after the scan.
+
       const row=current.get(o.order_id);
       if(row?.status!=='PENDING')continue;
-      // An external gateway may still accept a late payment. Expiry cannot
-      // infer that it failed; hold the order and reservation for reconciliation.
+
       if(['ZARINPAL','ZARINPAL_SANDBOX'].includes(String(row.payment_gateway||'').toUpperCase())){review_count++;continue;}
-      // Old or inconsistent orders cannot be inferred from current stock.
+
       if(!stockReservations.inspect(db,o.order_id).ok){review_count++;continue;}
       if(!upd.run(new Date().toISOString(),o.order_id).changes)continue;
       const released=stockReservations.release(db,o.order_id);
@@ -2563,13 +1854,10 @@ function purgeExpired() {
   db.prepare(`DELETE FROM app_logs WHERE logged_at < datetime('now','-30 days')`).run();
 }
 
-/* ═══════════════════════════════════════════
-   پشتیبان‌گیری خودکار
-   ═══════════════════════════════════════════ */
 const BACKUP_DIR   = path.join(path.dirname(DB_PATH), 'backups');
 const {createAutomaticBackup,positiveInt}=require('./automatic-backup');
 const BACKUP_KEEP  = positiveInt(process.env.BACKUP_KEEP,7);
-// Node's timer overflows above 2^31-1 milliseconds; cap the accepted interval.
+
 const BACKUP_HOURS = positiveInt(process.env.BACKUP_INTERVAL_HOURS,24,596);
 
 function runBackup() {
@@ -2585,9 +1873,6 @@ function runBackup() {
   }
 }
 
-/* قلاب اطلاع‌رسانی موجودی.
-   server.js آن را ثبت می‌کند؛ این ماژول نمی‌تواند مستقیم notify را
-   require کند چون وابستگی حلقوی می‌شود (notify → db). */
 let onStockFreed = null;
 function setStockFreedHandler(fn) { onStockFreed = fn; }
 
@@ -2607,28 +1892,15 @@ function startMaintenance() {
     catch (e) { appLog('ERROR', 'maintenance', e.message); }
   }, 5 * 60 * 1000).unref();
 
-  // پشتیبان اولیه پس از ۳۰ ثانیه، سپس دوره‌ای
-  // کدهای منقضی هر ۵ دقیقه پاک می‌شوند تا جدول کوچک بماند
   setInterval(() => { try { otpPurgeExpired(); } catch {} },
               5 * 60 * 1000).unref();
 
-  /* پشتیبان‌گیری خودکار.
-     در تولید حیاتی است، ولی هنگام آزمون هر بار که سروری بالا
-     می‌آید یک نسخه تازه می‌سازد — با ده‌ها اجرای آزمون در روز،
-     پوشه پشتیبان ده‌ها مگابایت می‌شود و جای فایل‌های واقعی را
-     می‌گیرد. با BACKUP_DISABLED=1 خاموش می‌شود. */
   if (process.env.BACKUP_DISABLED !== '1') {
     setTimeout(runBackup, 30 * 1000).unref();
     setInterval(runBackup, BACKUP_HOURS * 3600 * 1000).unref();
   }
 }
 
-/* ═══════════════════════════════════════════
-   کدهای یکبار مصرف — پایدار در دیتابیس
-   ═══════════════════════════════════════════
-   نگهداری در حافظه ساده بود، ولی هر ری‌استارت (deploy، کرش، مقیاس‌دهی
-   Liara) کد کاربری را که همین الان پیامک گرفته بود باطل می‌کرد.
-   کاربر پیام را می‌دید و «ابتدا درخواست کد بدهید» می‌گرفت. */
 function otpGet(mobile) {
   const r = db.prepare('SELECT * FROM otp_codes WHERE mobile=?').get(mobile);
   if (!r) return null;
@@ -2662,35 +1934,27 @@ function otpPurgeExpired() {
   return r.changes;
 }
 
-// Keep schema checks, seed guards and their writes under one SQLite write
-// lock. Deferred read-then-write migrations could otherwise race other startup
-// processes and fail with SQLITE_BUSY or observe partial initialization.
-// Nested migration transactions become SQLite savepoints; an exception rolls
-// the entire initialization back. Maintenance starts only after commit.
 db.transaction(() => {
 initSchema();
-// Only a genuinely empty installation may receive the owner's default approval.
+
 const isFreshInstallation = !DB_WAS_EXISTING && db.prepare('SELECT COUNT(*) AS c FROM products').get().c === 0;
-// Only a genuinely fresh store gets the ledger automatically. Existing stores
-// require the explicit backup-first migration; no historical reservation is inferred.
+
 if (isFreshInstallation) stockReservations.install(db);
 if (isFreshInstallation) require('./customer-phone-verification').install(db);
-// Account-return schema is installed only on genuinely fresh stores; older
-// stores require an explicit, backup-first offline migration.
+
 if (isFreshInstallation) require('./return-store').install(db);
-// Existing stores require an explicit backup-first offline migration.
+
 if (isFreshInstallation) require('./order-idempotency').install(db);
 if (isFreshInstallation) require('./checkout-attempt').install(db);
 if (isFreshInstallation) require('./order-reconciliation').install(db);
-// Historical order reporting remains valid after retired SKUs leave the catalog.
+
 require('./variant-history').ensureVariantHistory(db);
-// Storage only: rates do not change prices until an explicit, atomic reprice.
+
 require('./essence-pricing-store').migratePricing(db);
 seedRoles();
 seedOwner();
 seedIfEmpty();
-// Insert supplemental originals only when absent; preserve owner edits. The
-// independent-source supplement has explicit customer-facing provenance.
+
 function seedVerifiedSupplement(filename) {
   const file = path.join(SEED_DIR, filename);
   if (!fs.existsSync(file)) return;
@@ -2751,42 +2015,39 @@ const supplementInserted = (seedVerifiedSupplement('supplier_verified_supplement
   (seedVerifiedSupplement('official_supplement_v34.json') || 0) +
   (seedVerifiedSupplement('official_supplement_v35.json') || 0) +
   (seedVerifiedSupplement('secondary_supplement_v24.json') || 0);
-// Correct only the untouched duplicated Joop brand names, preserving owner edits.
+
 require('./joop-name-correction').apply(db);
 require('./popular-persian-names').apply(db);
 require('./amouage-common-names').apply(db);
 require('./hugo-versus-name').apply(db);
-// Only approved generic replacements; preserve all manager-selected images.
+
+essenceInventory.install(db);
+
 genericImageModule.applyGenericImages(db, genericImageManifest, path.join(ROOT_DIR, 'public', 'images', 'products'));
 genericImageModule.applyGenericRebalance(db);
-// Repair the known year/name mismatch only for unchanged unavailable seed data.
+
 require('./decision-identity-correction').applyDecisionIdentityCorrection(db, path.join(SEED_DIR, 'decision_identity_correction_v1.json'));
-// This records reference-original evidence only; it never verifies supplier essence.
+
 for (const file of ['official_identity_evidence_v1.json','official_identity_evidence_v2.json','official_identity_evidence_v3.json','official_identity_evidence_v4.json','official_identity_evidence_v5.json','official_identity_evidence_v6.json','official_identity_evidence_v7.json','official_identity_evidence_v8.json','official_identity_evidence_v9.json','official_identity_evidence_v10.json','official_identity_evidence_v11.json','official_identity_evidence_v12.json','official_identity_evidence_v13.json','official_identity_evidence_v14.json','official_identity_evidence_v15.json','official_identity_evidence_v16.json','official_identity_evidence_v17.json','official_identity_evidence_v18.json','official_identity_evidence_v19.json','official_identity_evidence_v20.json','official_identity_evidence_v21.json','official_identity_evidence_v22.json','official_identity_evidence_v23.json','official_identity_evidence_v24.json','official_identity_evidence_v25.json','official_identity_evidence_v26.json','official_identity_evidence_v27.json','official_identity_evidence_v28.json','official_identity_evidence_v29.json','official_identity_evidence_v30.json','official_identity_evidence_v31.json','official_identity_evidence_v32.json','official_identity_evidence_v33.json','official_identity_evidence_v34.json','official_identity_evidence_v35.json','official_identity_evidence_v36.json','official_identity_evidence_v37.json','official_identity_evidence_v38.json','official_identity_evidence_v39.json','official_identity_evidence_v40.json','official_identity_evidence_v41.json','official_identity_evidence_v42.json','official_identity_evidence_v43.json','official_identity_evidence_v44.json','official_identity_evidence_v45.json','official_identity_evidence_v46.json','official_identity_evidence_v47.json','official_identity_evidence_v48.json','official_identity_evidence_v49.json','official_identity_evidence_v50.json','official_identity_evidence_v51.json','official_identity_evidence_v52.json','official_identity_evidence_v53.json'])
   require('./official-identities').seedOfficialIdentities(db, path.join(SEED_DIR, file));
-// Exact-name price associations remain explicitly unverified and unavailable;
-// only untouched supplement rows receive prices and zero-stock variants.
+
 require('./lv-reference-prices').applyLvReferencePrices(db, path.join(SEED_DIR, 'lv_reference_prices_v1.json'));
-// A separate, guarded batch covers four further official-name matches; it only
-// updates unchanged unavailable products and records the provisional source.
+
 require('./reference-price-import').applyReferencePrices(db, path.join(SEED_DIR, 'official_reference_prices_v1.json'));
-// Restore sourced provisional references for untouched unavailable rows only.
-// Operators can defer this batch by setting REFERENCE_PRICE_V2_AUTOMIGRATE=0.
+
 if (process.env.REFERENCE_PRICE_V2_AUTOMIGRATE !== '0')
   require('./reference-price-import').applyReferencePrices(db, path.join(SEED_DIR, 'official_reference_prices_v2.json'));
-// Additional official-name matches, guarded against all owner-edited prices.
+
 for (const file of ['official_reference_prices_v3.json','official_reference_prices_v4.json','official_reference_prices_v5.json','official_reference_prices_v6.json','official_reference_prices_v7.json','official_reference_prices_v8.json','official_reference_prices_v9.json','official_reference_prices_v10.json','official_reference_prices_v11.json','official_reference_prices_v12.json','official_reference_prices_v13.json','official_reference_prices_v14.json','official_reference_prices_v15.json','official_reference_prices_v16.json','official_reference_prices_v17.json','official_reference_prices_v18.json','official_reference_prices_v19.json','official_reference_prices_v20.json','official_reference_prices_v21.json','official_reference_prices_v22.json','official_reference_prices_v23.json','official_reference_prices_v24.json','official_reference_prices_v25.json','official_reference_prices_v26.json','official_reference_prices_v27.json','official_reference_prices_v28.json','official_reference_prices_v29.json','official_reference_prices_v30.json','official_reference_prices_v31.json','official_reference_prices_v32.json','official_reference_prices_v33.json','official_reference_prices_v34.json','official_reference_prices_v35.json','official_reference_prices_v36.json','official_reference_prices_v37.json','official_reference_prices_v38.json','official_reference_prices_v39.json','official_reference_prices_v40.json','official_reference_prices_v41.json','official_reference_prices_v42.json','official_reference_prices_v43.json','official_reference_prices_v44.json','official_reference_prices_v45.json','official_reference_prices_v48.json','official_reference_prices_v49.json','official_reference_prices_v50.json','official_reference_prices_v51.json','official_reference_prices_v52.json','official_reference_prices_v53.json','official_reference_prices_v54.json','official_reference_prices_v55.json','official_reference_prices_v56.json','official_reference_prices_v57.json'])
   require('./reference-price-import').applyReferencePrices(db, path.join(SEED_DIR, file));
-// Owner corrected the previously provisional Weekend Man mapping. Gate the new
-// mapping on a guarded, lossless retraction; never overwrite an edited product.
+
 const weekendCorrection = require('./weekend-owner-correction').apply(db, path.join(SEED_DIR, 'retracted_weekend_man_reference_v1.json'));
 if (weekendCorrection.ok) require('./reference-price-import').applyReferencePrices(db, path.join(SEED_DIR, 'official_reference_prices_v47.json'));
 else console.warn('[DB] Weekend correction requires manual review; new price deferred');
-// Independent sources never enter the official evidence table.
+
 for (const file of ['secondary_reference_prices_v1.json','secondary_reference_prices_v2.json','secondary_reference_prices_v3.json','secondary_reference_prices_v4.json','secondary_reference_prices_v5.json','secondary_reference_prices_v6.json','secondary_reference_prices_v7.json','secondary_reference_prices_v8.json','secondary_reference_prices_v9.json','secondary_reference_prices_v10.json','secondary_reference_prices_v11.json','secondary_reference_prices_v12.json','secondary_reference_prices_v13.json','secondary_reference_prices_v14.json','secondary_reference_prices_v15.json','secondary_reference_prices_v16.json','secondary_reference_prices_v17.json','secondary_reference_prices_v18.json','secondary_reference_prices_v19.json','secondary_reference_prices_v20.json','secondary_reference_prices_v21.json','secondary_reference_prices_v22.json','secondary_reference_prices_v23.json','secondary_reference_prices_v24.json','secondary_reference_prices_v25.json','secondary_reference_prices_v26.json','secondary_reference_prices_v27.json'])
   require('./secondary-reference-import').applySecondaryReferences(db, path.join(SEED_DIR, file));
-// Correct earlier supplier-derived gender fields only for unchanged, unavailable
-// supplement rows. Never switch availability or overwrite a different value.
+
 function correctSupplementGenderFromOfficial() {
   const key = 'supplement_gender_official_v1';
   db.transaction(() => {
@@ -2811,11 +2072,9 @@ const officialNotesResults = officialNoteManifests.map(file =>
 const secondaryNotesResults = ['secondary_note_corrections_v1.json','secondary_note_corrections_v2.json','secondary_note_corrections_v3.json','secondary_note_corrections_v4.json','secondary_note_corrections_v5.json','secondary_note_corrections_v6.json'].map(file =>
   require('./secondary-notes').applySecondaryNotes(db, path.join(SEED_DIR, file)));
 seedCoupons();
-/* تنظیمات واقعی فروشگاه — پس از ساخت جدول‌ها، پیش از سرو شدن
-   هر صفحه. فاکتور و برچسب پستی بدون این‌ها ناقص چاپ می‌شوند. */
+
 seedShopSettings();
-// Existing installations are never silently migrated: use the guarded approval
-// operation after backup. A clean installation can safely apply the fixed scope.
+
 let legacyReferenceResult = null;
 if (isFreshInstallation && process.env.APPROVED_MTO_AUTOSTART !== '0') {
   if (process.env.LEGACY_REFERENCES_AUTOSTART !== '0') legacyReferenceResult = require('./legacy-reference-approval').applyLegacyReferenceApproval(db, path.join(SEED_DIR, 'secondary_reference_prices_v28.json'));
@@ -2903,39 +2162,23 @@ if (isFreshInstallation && process.env.APPROVED_MTO_AUTOSTART !== '0') {
     if (v17.skipped.length) console.warn('[DB] EDT fallback approvals skipped:', v17.skipped.length);
   }
 }
-// Active-product correction is guarded by original evidence, owner-approved mode,
-// unchanged price and exact prior content; it never touches order data.
+
 const activeNotesResults = ['active_official_note_corrections_v1.json','active_official_note_corrections_v2.json','active_official_note_corrections_v3.json'].map(file =>
   require('./active-official-notes').applyActiveOfficialNotes(db, path.join(SEED_DIR, file)));
 const unverifiedAccordResult = isFreshInstallation && process.env.APPROVED_MTO_AUTOSTART !== '0' && process.env.UNVERIFIED_ACCORD_CLEANUP_AUTOSTART !== '0'
   ? require('./unverified-seed-accords-cleanup').applyUnverifiedSeedAccordsCleanup(db, path.join(SEED_DIR,'unverified_seed_accords_cleanup_v1.json')) : null;
-// Fresh stores only; existing stores require the explicit backup-first tool.
+
 const activeSecondaryNotes = isFreshInstallation && process.env.APPROVED_MTO_AUTOSTART !== '0' && process.env.ACTIVE_SECONDARY_NOTES_AUTOSTART !== '0'
   ? ['active_secondary_note_additions_v1.json','active_secondary_note_additions_v2.json','active_secondary_note_additions_v3.json','active_secondary_note_additions_v4.json','active_secondary_note_additions_v5.json','active_official_note_overlap_v1.json'].map(file=>require('./active-secondary-notes').apply(db,path.join(SEED_DIR,file))) : [];
+require('./brand-name-normalization').apply(db);
 buildSearchIndex();
-// Rebuild note lookup after sourced notes change or new supplement products arrive.
+
 buildNotesIndex(activeSecondaryNotes.some(r=>r.updated_ids?.length > 0) || unverifiedAccordResult?.updated > 0 || legacyReferenceResult?.activated > 0 || activeNotesResults.some(r => r.updated > 0) || supplementInserted > 0 || secondaryNotesResults.some(r => r.updated > 0) || officialNotesResults.some(r => r.updated > 0));
 }).immediate();
 db.pragma('busy_timeout = 5000');
 
 startMaintenance();
 
-/* ══════════════════════════════════════════════════════════
-   آمار زنده فروشگاه — منبع واحد حقیقت
-   ══════════════════════════════════════════════════════════
-   🔴 چرا این تابع لازم شد:
-   اعداد کاتالوگ در ده جای مختلف **سخت‌کد** شده بودند: عنوان
-   صفحه اصلی، توضیح متا، صفحه سمپل، جدول مقایسه، کوییز. با هر
-   تغییر کاتالوگ باید ده جا دستی عوض می‌شد و همیشه یکی جا
-   می‌ماند — دقیقاً همان ۹ موردی که مالک در پیش‌نما دید.
-
-   حالا هر عددی که به کاتالوگ وابسته است **فقط از اینجا**
-   می‌آید. اضافه شدن یک محصول یعنی همه صفحات خودکار به‌روز
-   می‌شوند.
-
-   کش ۶۰ ثانیه‌ای: این پرسمان‌ها روی صفحه اصلی اجرا می‌شوند و
-   بدون کش هر بازدید چند GROUP BY می‌زند. یک دقیقه تأخیر در
-   نمایش آمار هیچ ضرری ندارد. */
 let _statsCache = null, _statsAt = 0;
 const STATS_TTL = 60_000;
 
@@ -2945,9 +2188,6 @@ function storeStats(force = false) {
 
   const one = sql => { try { return db.prepare(sql).get().c; } catch { return 0; } };
 
-  /* «قابل خرید» یعنی چیزی که مشتری همین حالا می‌تواند سفارش دهد:
-     یا موجودی انبار دارد، یا به سفارش ساخته می‌شود. عطر
-     UNAVAILABLE در این شمار نمی‌آید چون بن‌بست است. */
   const stats = {
     products:     one('SELECT COUNT(*) c FROM products'),
     brands:       one('SELECT COUNT(DISTINCT brand_en) c FROM products'),
@@ -2959,7 +2199,6 @@ function storeStats(force = false) {
     orderable:    one(`SELECT COUNT(*) c FROM products p
                        WHERE p.supply_mode != 'UNAVAILABLE'`),
 
-    // ── عمق تخصصی: اعدادی که انتظار خرید نمی‌سازند ──
     perfumers:    one(`SELECT COUNT(DISTINCT perfumer) c FROM products
                        WHERE perfumer IS NOT NULL AND perfumer != ''`),
     notes:        one('SELECT COUNT(DISTINCT note_key) c FROM product_notes'),
@@ -2984,7 +2223,6 @@ function storeStats(force = false) {
   return stats;
 }
 
-/** پس از تغییر کاتالوگ یا موجودی صدا زده شود */
 function bustStatsCache() { _statsCache = null; }
 
 module.exports = {
@@ -2992,7 +2230,7 @@ module.exports = {
   storeStats, bustStatsCache,
   imageForFamily, imageForProduct, variantImageFor,
   validateCoupon, recordCouponUse, releaseCouponUse, logStatus,
-  // دامنه تخفیف و جشنواره
+
   activeCampaigns, campaignDiscount, campaignPercentFor, itemInScope, parseScope,
   variantCampaignPercent, attachCampaign, bustCampaignCache,
   createSession, readSession, destroySession,

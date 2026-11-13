@@ -1,24 +1,5 @@
 #!/usr/bin/env node
-/**
- * آزمون نگهبان — «هیچ مبلغ اضافه‌ای وجود ندارد»
- *
- * خواسته صریح مالک فروشگاه (تیر ۱۴۰۵):
- *   «لازم نیست جایی اسم از مالیات و غیره بیاید. پرداختی مشتری همان
- *    مبالغی است که در سایت اعلام شده و نیازی به محاسبه مبلغ اضافه‌ای
- *    در فاکتور یا جای دیگر نیست.»
- *
- * این آزمون سه چیز را تضمین می‌کند:
- *   ۱) هیچ واژه مالیاتی در کد اجرایی و صفحات نمانده باشد
- *   ۲) پاسخ /api/orders/:id/invoice هیچ کلید مبلغی بیرون از
- *      فهرست سفید نداشته باشد (هر عدد ناشناخته یعنی هزینه پنهان)
- *   ۳) رابطه ریاضی برقرار باشد: جمع − تخفیف + ارسال = پرداختی
- *      یعنی هیچ عدد ناشناسی وسط راه اضافه نشده
- *
- * سرور را خودش روی پورت جدا بالا می‌آورد (مثل test_accounts.js)
- * تا به سرور کهنه‌ی احتمالی روی ۳۰۰۰ پاسخ ندهد.
- *
- * اجرا: node scripts/test_no_extra_charges.js
- */
+
 'use strict';
 
 const { spawn } = require('child_process');
@@ -42,7 +23,6 @@ const add = (label, ok, note) => {
   checks.push(ok);
 };
 
-/* ═══ ۱) پویش متن فایل‌ها — ایستا، سرور لازم ندارد ═══ */
 const FORBIDDEN = [
   'مالیات', 'ارزش افزوده', 'ارزش‌افزوده', 'عوارض',
   'vat_percent', 'vat_included', 'net_goods'
@@ -72,7 +52,6 @@ function staticScan() {
     hits.slice(0, 4).join(' | '));
 }
 
-/* ═══ راه‌اندازی سرور اختصاصی ═══ */
 async function boot() {
   const proc = spawn('node', ['src/server.js'], {
     cwd: ROOT,
@@ -125,15 +104,9 @@ const api = (p, opt = {}, token = null) =>
     add('ورود مدیر برای دیدن فاکتور', !!TOK, 'وضعیت ' + login.status);
     if (!TOK) return finish();
 
-    /* سفارش آزمونی خودمان — با کادو، تا معادله جمع کامل سنجیده شود.
-       تکیه بر داده موجود یعنی آزمون روی دیتابیس تازهٔ افتتاح
-       قرمز می‌شود، در حالی که کد سالم است. */
-    /* 🔴 `db` بالا عمداً readonly است تا آزمون به‌طور تصادفی داده
-       را عوض نکند — محافظ خوبی که باید بماند. برای ساخت سفارش
-       آزمونی اتصال نوشتنی **جدا** باز می‌شود و بلافاصله بسته. */
     const { makePaidOrder, cleanupOrders } = require('./lib/test_order');
     const dbw = new Database(DB);
-    cleanupOrders(dbw);                       // بازمانده اجرای قبلی
+    cleanupOrders(dbw);
     const paid = makePaidOrder(dbw, { giftWrap: 70000 });
     dbw.close();
 
@@ -145,28 +118,16 @@ const api = (p, opt = {}, token = null) =>
 
     const t = inv.json.totals || {};
 
-    /* فهرست سفید به‌جای شمردن کلیدها.
-       نسخه اول «دقیقاً چهار کلید» را می‌سنجید و با افزودن تفکیک
-       جشنواره قرمز شد — در حالی که تفکیک، شفافیت را **بیشتر**
-       می‌کند نه کمتر. روحِ این آزمون «هیچ عدد پنهان» است، پس
-       معیار درست این است: هر کلید مبلغی باید شناخته‌شده باشد و
-       رابطه ریاضی برقرار بماند. */
     const ALLOWED = new Set([
-      'subtotal',        // جمع کالاها
-      'discount',        // کل تخفیف (جشنواره + کد)
-      'campaign',        // سهم جشنواره — زیرمجموعه discount
-      'campaign_note',   // عنوان جشنواره، متنی
-      'coupon',          // سهم کد تخفیف — زیرمجموعه discount
-      'shipping',        // هزینه ارسال
-      /* بسته‌بندی کادویی — سرویس **انتخابی** مشتری، نه مبلغ
-         تحمیلی. تفاوتش با مالیات و کارمزد بنیادی است:
-           • پیش‌فرض خاموش است
-           • مشتری خودش تیک می‌زند و مبلغ را پیش از پرداخت می‌بیند
-           • در فاکتور سطر جدا دارد، پنهان نیست
-         قاعده برند «هیچ مبلغ اضافه‌ای» درباره چیزی است که مشتری
-         نخواسته و نمی‌بیند. سرویس اختیاریِ شفاف نقضش نمی‌کند. */
+      'subtotal',
+      'discount',
+      'campaign',
+      'campaign_note',
+      'coupon',
+      'shipping',
+
       'gift_wrap',
-      'grand_total'      // مبلغ پرداختی
+      'grand_total'
     ]);
     const unknown = Object.keys(t).filter(k => !ALLOWED.has(k));
     add('هیچ کلید مبلغی ناشناخته‌ای در totals نیست',
@@ -179,10 +140,6 @@ const api = (p, opt = {}, token = null) =>
     add('هیچ کلید مالیاتی در totals نیست',
       !Object.keys(t).some(k => /vat|tax|net_goods/i.test(k)));
 
-    /* معادله کامل — هر جزء مبلغ باید در آن باشد.
-       اگر جزء تازه‌ای اضافه شود ولی اینجا نیاید، آزمون سبز
-       می‌ماند در حالی که عدد پنهان وجود دارد. کادو هم به همین
-       دلیل صریح آمده، نه اینکه در grand_total حل شود. */
     const wrap = t.gift_wrap || 0;
     add('جمع کالاها − تخفیف + ارسال + کادو = مبلغ پرداختی (بدون عدد پنهان)',
       t.subtotal - t.discount + t.shipping + wrap === t.grand_total,
@@ -203,7 +160,6 @@ const api = (p, opt = {}, token = null) =>
     add('فرم تنظیمات پنل دیگر فیلد مالیات ندارد',
       !/مالیات|sVat/.test(adminHtml));
 
-    // تلاش برای برگرداندن مالیات از راه API باید بی‌اثر بماند
     const inject = await api('/api/admin/settings', {
       method: 'POST',
       body: JSON.stringify({ vat_percent: '9' })
@@ -215,7 +171,6 @@ const api = (p, opt = {}, token = null) =>
       .prepare("SELECT COUNT(*) n FROM settings WHERE key='vat_percent'").get().n;
     add('کلید vat_percent در دیتابیس ذخیره نشد', dbHas === 0);
 
-    // صفحه تسویه نباید هیچ سطر اضافه‌ای نشان بدهد
     const checkoutHtml = await fetch(`${BASE}/checkout`).then(x => x.text());
     add('صفحه تسویه فقط تخفیف و ارسال دارد',
       !/مالیات|کارمزد|عوارض/.test(checkoutHtml));

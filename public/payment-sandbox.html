@@ -78,8 +78,8 @@ function renderGate() {
         </div>
       </div>
 
-      <button class="btn btn-block" onclick="finish('success')">پرداخت موفق (آزمایشی)</button>
-      <button class="btn btn-outline btn-block" style="margin-top:9px" onclick="finish('cancel')">
+      <button class="btn btn-block" data-csp-click="finish('success')">پرداخت موفق (آزمایشی)</button>
+      <button class="btn btn-outline btn-block" style="margin-top:9px" data-csp-click="finish('cancel')">
         انصراف از پرداخت
       </button>
     </div>`;
@@ -143,5 +143,6 @@ async function finish(result) {
 
 renderGate();
 </script>
+<script src="/assets/csp-actions.js"></script>
 </body>
 </html>

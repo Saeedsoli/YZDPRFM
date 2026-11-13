@@ -1,22 +1,5 @@
 #!/usr/bin/env node
-/**
- * آزمون تزریق اسکریپت (XSS).
- *
- * چرا مهم است؟
- *   نظر کاربر، نام نمایشی، تیکت مرجوعی و پاسخ ادمین همگی در HTML
- *   رندر می‌شوند. اگر بدون خنثی‌سازی چاپ شوند، یک نظر حاوی
- *   <script> روی مرورگر هر بازدیدکننده اجرا می‌شود — از جمله خود
- *   شما در پنل مدیریت، جایی که توکن ادمین در دسترس است.
- *
- *   خطر واقعی: مهاجم نظری می‌فرستد که توکن مدیر را می‌دزدد یا
- *   قیمت‌ها را تغییر می‌دهد، و منتظر می‌ماند تا شما نظرات را
- *   بررسی کنید.
- *
- * روش: داده مخرب می‌فرستیم و بررسی می‌کنیم که در خروجی API
- *      به شکل خام برنگردد و در HTML قابل اجرا نباشد.
- *
- * اجرا: node scripts/test_xss.js
- */
+
 'use strict';
 
 const { spawn } = require('child_process');
@@ -34,7 +17,6 @@ const r = s => `\x1b[31m${s}\x1b[0m`;
 const d = s => `\x1b[2m${s}\x1b[0m`;
 const sleep = ms => new Promise(res => setTimeout(res, ms));
 
-/** بارهای مخرب متداول */
 const PAYLOADS = [
   '<script>window.__xss=1</script>',
   '<img src=x onerror="window.__xss=1">',
@@ -68,10 +50,9 @@ async function boot() {
   return { proc, getLog: () => log };
 }
 
-/** آیا رشته در HTML قابل اجراست؟ (تگ یا رویداد باز) */
 function isDangerous(html, payload) {
   if (!html) return false;
-  // نشانه‌های خطر: تگ اسکریپت خام، هندلر رویداد، یا پروتکل javascript:
+
   const raw = payload.replace(/"/g, '&quot;');
   return html.includes(payload) || html.includes(raw);
 }
@@ -87,7 +68,6 @@ function isDangerous(html, payload) {
     process.exit(code);
   };
 
-  // ── ورود مشتری ──
   await fetch(`${BASE}/api/auth/request-code`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
@@ -110,7 +90,6 @@ function isDangerous(html, payload) {
   const slug = cat.products[0].slug;
   const checks = [];
 
-  // ══ نظر با بار مخرب ══
   console.log(d('  ثبت نظر با بارهای مخرب…\n'));
 
   for (const payload of PAYLOADS) {
@@ -131,7 +110,6 @@ function isDangerous(html, payload) {
       })
     });
 
-    // نظر را تأیید کن تا عمومی شود
     const db1 = new Database(DB);
     db1.prepare("UPDATE reviews SET status='APPROVED' WHERE mobile=?").run(MOBILE);
     db1.close();

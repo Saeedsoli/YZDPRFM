@@ -1,69 +1,9 @@
-/**
- * عطر یزد | احراز هویت مشتری
- * ------------------------------
- * گام ۶ از تفکیک کامل `server.js`.
- *
- * ── محتوا ──
- *   POST /api/auth/register         ثبت‌نام با رمز
- *   POST /api/auth/login            ورود با رمز
- *   POST /api/auth/forgot-password  درخواست بازیابی
- *   POST /api/auth/reset-password   تنظیم رمز تازه
- *   POST /api/auth/request-code     درخواست کد یکبارمصرف
- *   POST /api/auth/verify-code      تأیید کد و ساخت نشست
- *   GET  /api/auth/me               وضعیت ورود
- *   POST /api/auth/logout           خروج
- *   GET  /api/auth/orders           سفارش‌های من
- *
- * ── حساس‌ترین ماژول تا اینجا ──
- * برخلاف گام‌های پیشین، اینجا `can()` وجود ندارد — این مسیرها
- * **عمومی‌اند** و خودشان دروازه ورود به سیستم‌اند. پس محافظ‌ها
- * از جنس دیگری هستند:
- *
- *   ۱) **محدودیت نرخ چندلایه** — ثبت‌نام ۵ در نیم‌ساعت، ورود ۸ در
- *      ربع‌ساعت، کد یکبارمصرف هم بر پایه IP و هم بر پایه شماره
- *   ۲) **کوکی HttpOnly** — توکن نشست از دسترس جاوااسکریپت بیرون
- *   ۳) **پاسخ یکسان برای موبایل موجود و ناموجود** در بازیابی رمز،
- *      تا نتوان فهرست مشتریان را حدس زد
- *   ۴) **`publicCustomer()`** — هش رمز هرگز برنمی‌گردد
- *
- * هر چهار مورد در `test_accounts.js` و `test_otp_persistence.js`
- * آزموده می‌شوند.
- *
- * ── قرارداد `ctx` ──
- * ماژول زمینه می‌گیرد و `Promise<boolean>` برمی‌گرداند.
- */
-
 'use strict';
 const phoneVerification = require('../customer-phone-verification');
 const crypto = require('crypto');
 const returnStore = require('../return-store');
 const { eligibility: returnEligibility } = require('../return-eligibility');
 
-/**
- * @param {object}   ctx
- * @param {string}   ctx.method
- * @param {string}   ctx.pathname
- * @param {object}   ctx.req
- * @param {object}   ctx.res                  برای کوکی نشست
- * @param {Function} ctx.parseBody
- * @param {Function} ctx.appLog
- * @param {object}   ctx.db
- * @param {object}   ctx.otp
- * @param {object}   ctx.analytics
- * @param {object}   ctx.RL                   سیاست محدودیت نرخ
- * @param {Function} ctx.rateLimit
- * @param {Function} ctx.resetRateLimit
- * @param {Function} ctx.clientIP
- * @param {Function} ctx.cleanText
- * @param {Function} ctx.getCustomer
- * @param {Function} ctx.createCustomer
- * @param {Function} ctx.setCustomerPassword
- * @param {Function} ctx.verifyPassword
- * @param {Function} ctx.publicCustomer       فهرست سفید — بدون هش رمز
- * @param {Function} ctx.createSession
- * @param {Function} ctx.getCustomerToken
- * @returns {Promise<boolean>}
- */
 async function handle(ctx) {
   const {
     method, pathname, req, res,
@@ -73,10 +13,6 @@ async function handle(ctx) {
     publicCustomer, createSession, getCustomerToken
   } = ctx;
 
-  /* پوشش `sendJSON` — درس گام ۱.
-     بررسی شد: این ماژول پاسخ استریمی ندارد. دو مورد
-     `res.setHeader` برای کوکی نشست‌اند که **پیش از** بدنه اجرا
-     می‌شوند، پس تداخلی ندارند. */
   const sendJSON = (code, data) => { ctx.sendJSON(code, data); return true; };
   if (pathname.startsWith('/api/auth/')) res.setHeader('Cache-Control','no-store');
   function issueCustomerCookie(token) {
@@ -84,8 +20,7 @@ async function handle(ctx) {
     res.setHeader('Cache-Control','no-store');
     res.setHeader('Set-Cookie',`yazd_customer=${token}; HttpOnly; Path=/; Max-Age=${otp.SESSION_TTL / 1000}; SameSite=Lax${secure}`);
   }
-  // Browser UI requests a cookie-only response; token-based API clients keep
-  // the existing response for backward compatibility.
+
   const apiToken=token=>req.headers['x-customer-cookie-only']==='1'?{}:{token};
 
   if (method === 'POST' && pathname === '/api/auth/register') {
@@ -117,8 +52,7 @@ async function handle(ctx) {
     }
 
     if (!phoneVerification.ready(db)) return sendJSON(503,{error:'سامانه تأیید شماره هنوز آماده نیست.'});
-    // OTP consumption, ownership record, customer mutation and session are
-    // one transaction. Legacy accounts/passwords are not implicitly trusted.
+
     const result=db.transaction(()=>{
       const check=otp.consumeCode(mobile,b.code);
       if(!check.ok)return {status:400,error:check.error};
@@ -140,7 +74,6 @@ async function handle(ctx) {
     return sendJSON(result.status,{message:`خوش آمدید ${first}!`,...apiToken(result.token),customer:result.customer});
   }
 
-  /** ورود با شماره موبایل و رمز */
   if (method === 'POST' && pathname === '/api/auth/login') {
     const b = await parseBody(req);
     const ip = clientIP(req);
@@ -157,13 +90,11 @@ async function handle(ctx) {
     if (!phoneVerification.ready(db)) return sendJSON(503,{error:'سامانه تأیید شماره هنوز آماده نیست.'});
     const mobile = otp.normalizeMobile(b.mobile);
     const password = String(b.password || '');
-    // Distributed guesses remain bounded even if the forwarded IP changes.
+
     const phoneKey = otp.isValidMobile(mobile) ? 'clogin-phone:'+crypto.createHash('sha256').update(mobile).digest('hex') : null;
     if(phoneKey){const ph=rateLimit(phoneKey,8,15*60e3,15*60e3);if(!ph.ok)return sendJSON(429,{error:'تلاش‌های ورود برای این شماره بیش از حد است. کمی بعد تلاش کنید.',retry_after:ph.retry_after});}
     const c = getCustomer(mobile);
 
-    // پیام یکسان برای «حساب نیست» و «رمز غلط» تا شماره‌های
-    // ثبت‌شده لو نروند
     const bad = () => {
       appLog('WARN', 'security', 'ورود ناموفق مشتری', { ip });
       return sendJSON(401, { error: 'شماره موبایل یا رمز عبور نادرست است.' });
@@ -171,8 +102,7 @@ async function handle(ctx) {
 
     if (!c || !c.pass_hash) return bad();
     if (!verifyPassword(password, c.pass_hash, c.pass_salt)) return bad();
-    // Verify the same stored credential again under a write lock before issuing
-    // a session: a concurrent OTP reset must not resurrect an old password.
+
     const auth=db.transaction(()=>{
       const latest=getCustomer(mobile);
       if(!latest || latest.pass_hash!==c.pass_hash || latest.pass_salt!==c.pass_salt)return {kind:'bad'};
@@ -191,12 +121,6 @@ async function handle(ctx) {
     return sendJSON(200,{message:'ورود موفق',...apiToken(auth.token),customer:auth.customer});
   }
 
-  /**
-   * بازیابی رمز — مرحله یک: درخواست کد پیامکی.
-   *
-   * پاسخ همیشه یکسان است، حتی اگر شماره ثبت نشده باشد. وگرنه
-   * مهاجم می‌تواند بفهمد چه شماره‌هایی در سیستم هستند.
-   */
   if (method === 'POST' && pathname === '/api/auth/forgot-password') {
     const b = await parseBody(req);
     const ip = clientIP(req);
@@ -214,18 +138,13 @@ async function handle(ctx) {
       });
     }
 
-    // Share SMS abuse limits with ordinary code requests; otherwise this
-    // endpoint can bypass the per-IP and per-phone limits for sending codes.
     const ipRl = rateLimit(`otp-ip:${ip}`, RL.otpIp.limit, RL.otpIp.window, RL.otpIp.block);
     if (!ipRl.ok) return sendJSON(429,{error:'درخواست‌های بیش از حد. لطفاً بعداً تلاش کنید.',retry_after:ipRl.retry_after});
     const pRl = rateLimit(`otp-ph:${mobile}`, RL.otpPhone.limit, RL.otpPhone.window, RL.otpPhone.block);
     if (!pRl.ok) return sendJSON(429,{error:'برای این شماره درخواست‌های زیادی ثبت شده. یک ساعت دیگر تلاش کنید.',retry_after:pRl.retry_after});
 
     if (!phoneVerification.ready(db) || !(await otp.deliveryAvailable())) return sendJSON(503,{error:'سامانه پیامک یا تأیید شماره هنوز آماده نیست.'});
-    // Both existing and unknown numbers take the same provider path. Merely
-    // returning the same text while sending only for existing accounts leaks
-    // account existence through provider latency. Code ownership is still
-    // required; reset-password will not create a missing account.
+
     await otp.requestCode(mobile);
 
     return sendJSON(200, {
@@ -233,7 +152,6 @@ async function handle(ctx) {
     });
   }
 
-  /** بازیابی رمز — مرحله دو: تأیید کد و ثبت رمز تازه */
   if (method === 'POST' && pathname === '/api/auth/reset-password') {
     const b = await parseBody(req);
     const mobile = otp.normalizeMobile(b.mobile);
@@ -318,8 +236,6 @@ async function handle(ctx) {
     return sendJSON(200, { message: 'خروج انجام شد' });
   }
 
-  // Only the verified owner can read the fields needed to prefill checkout.
-  // Unpaid/cancelled guest orders must not become a default address.
   if (method === 'GET' && pathname === '/api/auth/checkout-profile') {
     const mobile=otp.mobileFromToken(getCustomerToken(req));
     if(!mobile)return sendJSON(401,{error:'ابتدا شماره موبایل را تأیید کنید.'});
@@ -329,7 +245,6 @@ async function handle(ctx) {
     return sendJSON(200,{profile:row || null});
   }
 
-  // سفارش‌های من — نیازمند ورود
   if (method === 'GET' && pathname === '/api/auth/orders') {
     const mobile = otp.mobileFromToken(getCustomerToken(req));
     if (!mobile) return sendJSON(401, { error: 'ابتدا وارد شوید.' });
@@ -365,7 +280,7 @@ async function handle(ctx) {
     });
   }
 
-  return false;   // هیچ‌کدام از مسیرهای این ماژول نبود
+  return false;
 }
 
 module.exports = { handle };

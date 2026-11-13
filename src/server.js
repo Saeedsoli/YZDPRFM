@@ -1,10 +1,3 @@
-/**
- * عطر یزد | Yazd Perfume — سرور اصلی
- * ----------------------------------
- * دیتابیس: SQLite واقعی (src/db.js)
- * امنیت: اعتبارسنجی قیمت سمت سرور + محافظت از مسیرهای ادمین
- */
-
 const http = require('http');
 const fs = require('fs');
 const path = require('path');
@@ -14,6 +7,7 @@ const zlib = require('zlib');
 const { isPublicVariant, publicVariantSql } = require('./variant-visibility');
 const { variantAvailability } = require('./availability');
 const stockReservations = require('./order-stock-reservations');
+const essenceInventory = require('./essence-inventory');
 const returnStore = require('./return-store');
 const orderIdempotency = require('./order-idempotency');
 const checkoutAttempt = require('./checkout-attempt');
@@ -41,9 +35,7 @@ const {
 } = require('./db');
 const reports = require('./reports').build(db);
 const analytics = require('./analytics').build(db, appLog, clientIP);
-/* پروفایل بویایی — منطق امتیازدهی کوییز، بیرون کشیده شده تا هم
-   `/api/quiz` و هم «پیشنهاد برای شما» از یک نسخه استفاده کنند.
-   منطق تکراری در دو جا یعنی دیر یا زود دو نتیجه متفاوت. */
+
 const taste = require('./taste').build(db, { parseProduct, attachVariants });
 const pay = require('./payment');
 const otp = require('./otp');
@@ -53,13 +45,6 @@ const alerts = require('./alerts');
 const media  = require('./media');
 const seo = require('./seo');
 
-/* ── مسیرهای جداشده ──
-   `server.js` به ۴٬۳۵۱ خط رسیده بود و بزرگ‌ترین ریسک نگهداری
-   پروژه شده. تفکیک تدریجی انجام می‌شود: هر ماژول یک `ctx`
-   می‌گیرد و `true` برمی‌گرداند اگر مسیر را رسیدگی کرده باشد.
-
-   عمداً از کم‌خطرترین بخش شروع شد (مقالات). مسیرهای پرداخت و
-   ثبت سفارش تا تأیید این الگو دست‌نخورده می‌مانند. */
 const routeArticles = require('./routes/articles');
 const routeTickets  = require('./routes/tickets');
 const routeAccountReturns = require('./routes/account-returns');
@@ -75,9 +60,8 @@ const routeCatalog      = require('./routes/catalog');
 const routeEngagement   = require('./routes/engagement');
 const essences = require('./essences');
 
-/** چرخه مجاز وضعیت سفارش */
 const ORDER_FLOW = {
-  // وضعیت گذرا هنگام گفت‌وگو با درگاه؛ در همان درخواست تعیین تکلیف می‌شود
+
   VERIFYING:  ['PAID', 'CANCELLED', 'FAILED'],
   PENDING:    ['PAID', 'CANCELLED', 'FAILED'],
   PAID:       ['PROCESSING', 'CANCELLED'],
@@ -101,19 +85,12 @@ const PORT = process.env.PORT || 3000;
 const ROOT_DIR = path.resolve(__dirname, '..');
 const PUBLIC_DIR = path.join(ROOT_DIR, 'public');
 
-const SESSION_TTL = 8 * 3600 * 1000; // نشست ادمین: ۸ ساعت
+const SESSION_TTL = 8 * 3600 * 1000;
 
 function isValidSession(token) {
   return !!readSession(token, 'ADMIN');
 }
 
-/**
- * کارمند صاحب این نشست را برمی‌گرداند، همراه با مجوزهایش.
- *
- * نشست فقط شناسه کارمند را نگه می‌دارد؛ مجوزها هر بار از نقش
- * خوانده می‌شوند. یعنی اگر مدیر نقشی را تغییر دهد، بلافاصله روی
- * همه کاربران آن نقش اثر می‌گذارد — بدون نیاز به ورود دوباره.
- */
 function currentStaff(token) {
   const sess = readSession(token, 'ADMIN');
   if (!sess) return null;
@@ -122,56 +99,27 @@ function currentStaff(token) {
   if (!Number.isInteger(id)) return null;
 
   const st = getStaff(id);
-  if (!st || !st.active) return null;      // حساب غیرفعال‌شده فوراً بی‌اثر است
+  if (!st || !st.active) return null;
   return st;
 }
 
-/** IP is derived from the socket unless explicitly trusted proxies are set. */
 function clientIP(req) { return trustedProxyPolicy.clientIP(req); }
 
-/** سیاست‌های محدودیت نرخ */
 const RL = {
   login:    { limit: 6,   window: 10 * 60e3, block: 15 * 60e3 },
   otpIp:    { limit: 12,  window: 60 * 60e3, block: 30 * 60e3 },
   otpPhone: { limit: 5,   window: 60 * 60e3, block: 60 * 60e3 },
-  /* سقف سفارش از هر IP. متغیر محیطی فقط برای آزمون همزمانی
-     است — در تولید تنظیم نمی‌شود و همان ۱۰ می‌ماند. */
+
   order:    { limit: parseInt(process.env.RL_ORDER_LIMIT) || 10,
               window: 10 * 60e3, block: 10 * 60e3 },
   api:      { limit: 300, window: 60e3,      block: 0 },
-  /* ── مسیرهای عمومی نوشتاری (ممیزی مرداد ۱۴۰۵) ──
-     `/api/track`، `/api/tickets` و `/api/stock-alert` هیچ
-     محدودیتی نداشتند. هر سه به دیتابیس **می‌نویسند** و از
-     بیرون بدون احراز هویت قابل صدا زدن‌اند.
 
-     خطر اندازه‌گیری‌شده: ۴۰ درخواست به `/api/track` در ۳۳۷
-     میلی‌ثانیه، همه پذیرفته — یعنی یک اسکریپت ساده می‌تواند
-     جدول `events` را باد کند، دیسک لیارا را پر کند و آمار
-     «پربازدیدترین» را آلوده کند.
-
-     سقف‌ها سخاوتمندانه‌اند تا کاربر واقعی هرگز نخورد: یک بازدید
-     عادی حدود ۵ تا ۱۰ رویداد می‌سازد. */
   track:    { limit: 120, window: 60e3,      block: 5 * 60e3 },
   ticket:   { limit: 5,   window: 60 * 60e3, block: 60 * 60e3 },
   alert:    { limit: 10,  window: 60 * 60e3, block: 30 * 60e3 },
-  /* ── پیشنهاد بویایی (ممیزی مرداد ۱۴۰۵) ──
-     `/api/taste/suggest` کل جدول محصولات را می‌خواند و برای هر
-     ۲٬۱۱۱ ردیف امتیاز حساب می‌کند. اندازه‌گیری: ۵۰ میلی‌ثانیه در
-     برابر ۲.۵ میلی‌ثانیه `/api/products` — بیست برابر گران‌تر.
 
-     ۴۰ درخواست موازی در ۲.۲ ثانیه همه پذیرفته شدند. روی لیارا با
-     دو هسته، این ارزان‌ترین راه از پا درآوردن سرور بود.
-
-     سقف سخاوتمندانه است: کاربر واقعی این مسیر را یک بار در هر
-     بارگذاری صفحه اصلی صدا می‌زند.
-
-     block صفر عمدی است: این مسیر مثل ورود یا سفارش نیست که تلاش
-     مکرر نشانه حمله باشد. کاربر عادی ممکن است چند تب باز کند.
-     با block صفر، پس از پایان پنجره یک‌دقیقه‌ای بلافاصله دوباره
-     کار می‌کند — سقف هست، مجازات نیست. */
   taste:    { limit: 30,  window: 60e3,      block: 0 },
-  /* Guest tracking requires mobile plus order ID, with IP, phone and
-     order-specific rate limits. Legacy IDs remain valid. */
+
   trackIp:    { limit: 15, window: 10 * 60e3, block: 30 * 60e3 },
   trackPhone: { limit: 8,  window: 60 * 60e3, block: 60 * 60e3 },
   trackOrder: { limit: 10, window: 60 * 60e3, block: 60 * 60e3 }
@@ -184,7 +132,6 @@ function getToken(req) {
   return m ? m[1] : null;
 }
 
-/** توکن مشتری (جدا از ادمین) */
 function getCustomerToken(req) {
   const h = req.headers['x-customer-token'];
   if (h) return h;
@@ -193,27 +140,17 @@ function getCustomerToken(req) {
   return m ? m[1] : null;
 }
 
-// ═══════════════════════════════════════════
-/** An unpredictable order identifier; old IDs remain valid and unchanged. */
 function newOrderId() {
   const t = Date.now().toString(36).toUpperCase();
-  // At least 96 unpredictable bits: the order ID is part of the guest lookup.
+
   return `YZD-${t}-${crypto.randomBytes(12).toString('hex').toUpperCase()}`;
 }
 
-// ═══════════════════════════════════════════
-// قوانین ارسال (طبق توافق)
-// ═══════════════════════════════════════════
-/* نرخ ارسال یکسان است — بدون استثنا برای هیچ شهری.
-   پیش‌تر شهر یزد نرخ جدا داشت؛ حذف شد چون تفاوت قیمت برای مشتری
-   شهرستانی حس تبعیض می‌سازد و توضیح دادنش در هر صفحه هزینه
-   ارتباطی دارد. یک عدد، همه‌جا. */
 const SHIPPING = {
   FLAT: 100000,
   FREE_THRESHOLD: 2000000
 };
 
-/** بسته‌بندی کادویی — سرویس اختیاری در تسویه */
 const GIFT_WRAP_FEE = 70000;
 
 function calcShipping(subtotal) {
@@ -223,34 +160,17 @@ function calcShipping(subtotal) {
   return { fee: SHIPPING.FLAT, label: 'پست / تیپاکس سراسری (۱۰۰٬۰۰۰ تومان)' };
 }
 
-/**
- * هزینه بسته‌بندی کادویی.
- *
- * ورودی از کاربر می‌آید، پس هرگز مستقیم به مبلغ تبدیل نمی‌شود —
- * فقط «هست یا نیست». مبلغ همیشه از ثابت سرور خوانده می‌شود تا
- * دستکاری سمت مشتری بی‌اثر بماند.
- */
 function calcGiftWrap(wanted) {
   return wanted ? GIFT_WRAP_FEE : 0;
 }
 
-/**
- * اعتبارسنجی سبد خرید — قیمت‌ها از دیتابیس خوانده می‌شوند، نه از کاربر.
- * جلوی دستکاری قیمت را می‌گیرد.
- */
-/**
- * نام کامل و خوانای یک متغیر محصول.
- * برچسب سمپل خودش حجم را در خود دارد («سمپل ۳ میل تست»)، پس اگر
- * کورکورانه حجم را بچسبانیم نتیجه «سمپل ۳ میل تست 3 میل» می‌شود.
- * ضمناً حجم با رقم فارسی نوشته می‌شود تا با بقیه متن جور دربیاید.
- */
 const FA_DIGITS = '۰۱۲۳۴۵۶۷۸۹';
 const faNum = n => String(n).replace(/\d/g, d => FA_DIGITS[d]);
 
 function variantLabel(row) {
   const label = (row.type_label || '').trim();
   const ml = row.volume_ml;
-  // اگر برچسب پیش‌تر «میل» را ذکر کرده، دوباره اضافه نکن
+
   const hasVolume = !ml || /میل/.test(label);
   return hasVolume ? label : `${label} ${faNum(ml)} میل`.trim();
 }
@@ -261,25 +181,13 @@ function variantFullName(row) {
   return lbl ? `${base} — ${lbl}` : base;
 }
 
-/**
- * اطلاع‌رسانی به منتظران یک کالا.
- *
- * موجودی از چهار راه می‌تواند از صفر بالا برود: ویرایش ادمین، لغو
- * سفارش، پرداخت ناموفق، و انقضای سفارش پرداخت‌نشده. پیش‌تر تنها
- * راه اول اطلاع می‌داد و کسی که «خبرم کن» زده بود در سه حالت دیگر
- * هرگز خبردار نمی‌شد.
- *
- * @param {string[]} skus  کالاهایی که موجودی‌شان تغییر کرده
- * @param {string} reason  برای لاگ
- * @returns {number} تعداد پیامک ارسال‌شده
- */
 function notifyStockWatchers(skus, reason = 'موجودی') {
   const list = [...new Set((skus || []).filter(Boolean))];
   if (!list.length) return 0;
 
   let total = 0;
   for (const sku of list) {
-    // تنها اگر واقعاً موجود شده باشد
+
     const v = db.prepare(`SELECT v.stock, v.type, v.volume_ml, v.price_toman, p.supply_mode
       FROM variants v JOIN products p ON p.id=v.product_id WHERE v.sku=?`).get(sku);
     if (!v || !isPublicVariant(v.type, v.volume_ml) ||
@@ -311,13 +219,6 @@ function notifyStockWatchers(skus, reason = 'موجودی') {
   return total;
 }
 
-/**
- * تبدیل ارقام فارسی/عربی به لاتین و حذف جداکننده‌ها.
- *
- * کاربر ممکن است کد ملی را با ارقام فارسی، خط تیره یا فاصله وارد
- * کند («۱۲۳-۴۵۶-۷۸۹۰»). بدون این تبدیل، اعتبارسنجی ۱۰ رقمی رد
- * می‌کرد و کاربر نمی‌فهمید چرا.
- */
 function normalizeDigits(v) {
   return String(v || '')
     .replace(/[۰-۹]/g, d => '۰۱۲۳۴۵۶۷۸۹'.indexOf(d))
@@ -326,13 +227,6 @@ function normalizeDigits(v) {
     .trim();
 }
 
-/**
- * ثبت خرید موفق در تحلیل.
- *
- * سمت سرور ثبت می‌شود، نه از مرورگر — رویداد خرید مبنای
- * «پرفروش‌ترین» است و نباید با یک درخواست ساختگی قابل دستکاری باشد.
- * برای هر قلم سفارش یک رویداد جدا ثبت می‌شود تا بتوان محصول را شمرد.
- */
 function trackPurchase(order, req) {
   try {
     const items = db.prepare(`
@@ -345,26 +239,16 @@ function trackPurchase(order, req) {
       analytics.track('purchase', it.pid,
         { qty: it.q }, req);
     }
-  } catch { /* تحلیل هرگز نباید پرداخت را بشکند */ }
+  } catch {  }
 }
 
-/**
- * پاک‌سازی متن ورودی کاربر.
- *
- * دفاع لایه‌ای: فرانت با esc() خروجی را خنثی می‌کند، ولی به آن
- * تکیه نمی‌کنیم. اگر روزی جایی از قلم بیفتد یا کسی مستقیم API را
- * صدا بزند، داده مخرب نباید اصلاً وارد دیتابیس شود.
- *
- * تگ‌های HTML کاملاً حذف می‌شوند — نظر و تیکت به قالب‌بندی نیاز
- * ندارند و اجازه دادنش فقط سطح حمله را باز می‌کند.
- */
 function cleanText(input, maxLen = 2000) {
   if (input === null || input === undefined) return '';
   return String(input)
-    .replace(/<[^>]*>/g, '')          // هر تگ HTML
-    .replace(/[\u0000-\u0008\u000B\u000C\u000E-\u001F\u007F]/g, '')  // نویسه کنترلی
-    .replace(/javascript\s*:/gi, '')  // پروتکل خطرناک در متن
-    .replace(/\son\w+\s*=/gi, ' ')   // هندلر رویداد
+    .replace(/<[^>]*>/g, '')
+    .replace(/[\u0000-\u0008\u000B\u000C\u000E-\u001F\u007F]/g, '')
+    .replace(/javascript\s*:/gi, '')
+    .replace(/\son\w+\s*=/gi, ' ')
     .trim()
     .slice(0, maxLen);
 }
@@ -373,10 +257,7 @@ function validateCart(items) {
   if (!Array.isArray(items) || items.length === 0) {
     return { ok: false, error: 'سبد خرید خالی است.' };
   }
-  /* فیلدهای دامنه (خانواده، نوع، جنسیت، شناسه محصول) هم خوانده
-     می‌شوند چون کوپن و جشنواره می‌توانند فقط روی بخشی از سبد
-     اعمال شوند — مثلاً «۲۰٪ روی عطرهای چوبی». بدون این فیلدها
-     دامنه‌سنجی نیازمند کوئری دوم به‌ازای هر قلم بود. */
+
   const stmt = db.prepare(`
     SELECT v.sku, v.price_toman, v.stock, v.volume_ml, v.type_label, v.type,
            p.name_fa, p.name_en, p.slug, p.brand_fa, p.id AS product_id,
@@ -411,13 +292,19 @@ function validateCart(items) {
     if (!isPublicVariant(row.type, row.volume_ml) || availability.state === 'UNAVAILABLE') {
       return { ok: false, error: `«${row.name_fa}» فعلاً قابل تهیه نیست.` };
     }
-    if (qty > availability.max_quantity) {
-      return { ok: false, error: availability.state === 'MADE_TO_ORDER'
-        ? `«${row.name_fa}» به سفارش ساخته می‌شود؛ حداکثر ۵ عدد در هر سفارش.`
-        : `موجودی «${row.name_fa}» کافی نیست (موجود: ${row.stock}).` };
+
+    let maxQty = availability.max_quantity;
+    if (essenceInventory.ready(db)) {
+      const cap = essenceInventory.sellableCapacity(db, row.product_id, row.type, row.volume_ml);
+      if (cap) maxQty = Math.min(50, cap.total);
+    }
+    if (qty > maxQty) {
+      return { ok: false, error: availability.state === 'MADE_TO_ORDER' && maxQty <= 5
+        ? `«${row.name_fa}» به سفارش ساخته می‌شود؛ حداکثر ${maxQty} عدد در هر سفارش.`
+        : `موجودی «${row.name_fa}» کافی نیست.` };
     }
     const madeToOrder = availability.state === 'MADE_TO_ORDER';
-    const lineTotal = row.price_toman * qty;   // قیمت از دیتابیس
+    const lineTotal = row.price_toman * qty;
     subtotal += lineTotal;
     validated.push({
       sku: row.sku,
@@ -426,8 +313,7 @@ function validateCart(items) {
       unit_price: row.price_toman,
       quantity: qty,
       line_total: lineTotal,
-      // فیلدهای دامنه — در پاسخ API فرستاده نمی‌شوند، فقط برای
-      // محاسبه تخفیف داخلی به کار می‌روند
+
       _product_id: row.product_id,
       _family: row.family_slug,
       _brand: row.brand_fa,
@@ -439,19 +325,16 @@ function validateCart(items) {
   return { ok: true, items: validated, subtotal };
 }
 
-// ═══════════════════════════════════════════
-/** ساخت نشانی خوانا — فارسی و لاتین را پشتیبانی می‌کند */
 function slugify(text) {
   return String(text || '')
     .trim()
-    .replace(/[\u200c\u200f\u200e]/g, '')        // نیم‌فاصله و کاراکترهای جهت
-    .replace(/[^\p{L}\p{N}]+/gu, '-')            // هر چیز غیرحرف و عدد
+    .replace(/[\u200c\u200f\u200e]/g, '')
+    .replace(/[^\p{L}\p{N}]+/gu, '-')
     .replace(/^-+|-+$/g, '')
     .toLowerCase()
     .slice(0, 80) || 'article';
 }
 
-/** خطای ورودی کاربر — با ۴۰۰ پاسخ داده می‌شود، نه ۵۰۰ */
 class BadRequest extends Error {
   constructor(msg) { super(msg); this.name = 'BadRequest'; this.statusCode = 400; }
 }
@@ -482,6 +365,8 @@ function parseBody(req) {
   });
 }
 
+const toFaSafe = n => String(n).replace(/\d/g, d => '۰۱۲۳۴۵۶۷۸۹'[d]);
+
 const MIME = {
   '.html': 'text/html; charset=utf-8',
   '.css': 'text/css; charset=utf-8',
@@ -490,22 +375,19 @@ const MIME = {
   '.jpg': 'image/jpeg', '.jpeg': 'image/jpeg',
   '.png': 'image/png', '.svg': 'image/svg+xml',
   '.webp': 'image/webp', '.ico': 'image/x-icon',
-  /* ویدیوی هدر. بدون این سطر مرورگر نوع فایل را نمی‌شناسد و پخش نمی‌کند. */
+  '.avif': 'image/avif',
+
   '.mp4': 'video/mp4', '.webm': 'video/webm',
   '.woff2': 'font/woff2', '.woff': 'font/woff', '.ttf': 'font/ttf',
   '.csv': 'text/csv; charset=utf-8',
   '.xml': 'application/xml; charset=utf-8',
   '.txt': 'text/plain; charset=utf-8',
-  /* بدون این سطر، manifest با نوع octet-stream می‌رفت و کروم آن را
-     نادیده می‌گرفت — یعنی «افزودن به صفحه اصلی» روی اندروید نام و
-     آیکن برند را نشان نمی‌داد. */
+
   '.webmanifest': 'application/manifest+json; charset=utf-8'
 };
 
 const server = http.createServer(async (req, res) => {
-  // Request targets are untrusted. Decode before routing, but never let a
-  // malformed percent escape or UTF-8 sequence reject this async listener
-  // outside the request handler's error boundary and terminate Node.
+
   let parsed,pathname;
   try {
     parsed=url.parse(req.url,true);
@@ -517,11 +399,6 @@ const server = http.createServer(async (req, res) => {
     return res.end(JSON.stringify({error:'نشانی درخواست معتبر نیست.'}));
   }
 
-  /* HEAD باید دقیقاً مثل GET مسیریابی شود ولی بدون بدنه.
-     پیش از این HEAD به هیچ شرطی نمی‌خورد و همه‌چیز ۴۰۴ می‌گرفت —
-     ابزارهای پایش آپ‌تایم، بررسی‌کننده‌های لینک و بعضی خزنده‌ها
-     اول HEAD می‌زنند و سایت را «از دسترس خارج» گزارش می‌کردند.
-     RFC 9110: پاسخ HEAD باید همان هدرهای GET را داشته باشد. */
   const isHead = req.method === 'HEAD';
   const method = isHead ? 'GET' : req.method;
 
@@ -536,22 +413,17 @@ const server = http.createServer(async (req, res) => {
   if (isHead) {
     const realEnd = res.end.bind(res);
     const realWrite = res.write.bind(res);
-    res.write = () => true;                 // بدنه دور ریخته می‌شود
-    res.end = (...a) => realEnd();          // هدرها دست‌نخورده می‌مانند
+    res.write = () => true;
+    res.end = (...a) => realEnd();
     void realWrite;
   }
 
-  /* ── CORS ──
-     Public catalog responses may be read cross-origin; private responses do
-     not opt in. CORS alone does not stop cross-site form submissions: the
-     separate browser-origin guard above rejects unsafe cross-origin API calls. */
   const isPrivate = pathname.startsWith('/api/admin')
                  || pathname.startsWith('/api/auth')
                  || pathname.startsWith('/api/wishlist')
                  || pathname.startsWith('/api/orders')
                  || pathname.startsWith('/api/reviews')
-                 // دعوت‌نامه هم نوشتاری است: بدون این، سایت دیگری
-                 // می‌توانست با توکنِ دزدیده‌شده نظر ثبت کند
+
                  || pathname.startsWith('/api/review-invite')
                  || pathname.startsWith('/api/tickets')
                  || pathname.startsWith('/api/cart')
@@ -560,49 +432,22 @@ const server = http.createServer(async (req, res) => {
   if (!isPrivate) {
     res.setHeader('Access-Control-Allow-Origin', '*');
   } else {
-    // Sessions, orders and administration responses must not be cached.
+
     res.setHeader('Cache-Control','no-store');
   }
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
 
-  /* ── هدرهای امنیتی ──
-     فروشگاهی که پرداخت می‌گیرد باید جلوی جاسازی در iframe را
-     بگیرد؛ بدون آن حمله کلیک‌دزدی ممکن است: مهاجم صفحه پرداخت
-     را نامرئی روی سایت خودش می‌گذارد و کلیک کاربر را می‌دزدد. */
   res.setHeader('X-Content-Type-Options', 'nosniff');
   res.setHeader('X-Frame-Options', 'SAMEORIGIN');
   res.setHeader('Referrer-Policy', 'strict-origin-when-cross-origin');
   res.setHeader('Permissions-Policy',
     'geolocation=(), microphone=(), camera=(), payment=()');
 
-  /* HSTS تنها روی HTTPS معنا دارد. Liara پشت پروکسی TLS است، پس
-     از هدر فوروارد تشخیص داده می‌شود — نه از req.socket. */
   if ((req.headers['x-forwarded-proto'] || '') === 'https') {
     res.setHeader('Strict-Transport-Security', 'max-age=15552000; includeSubDomains');
   }
 
-  /* ── Content-Security-Policy ──
-     آخرین خط دفاع در برابر XSS: حتی اگر روزی کد مهاجم از فیلتر
-     ما رد شود، مرورگر اجازه نمی‌دهد به دامنه بیرونی وصل شود یا
-     اسکریپت بیگانه بار کند.
-
-     اسکریپت‌های قالب‌های ثابت با هش همان قالب در script-src-elem
-     مجاز می‌شوند، پیش از تزریق داده پویا. script-src-attr و fallback
-     هنوز unsafe-inline دارند؛ بنابراین این دفاع کامل در برابر XSS
-     نیست و حذف event-handlerهای درون‌خطی همچنان لازم است.
-
-     img-src داده‌های base64 را می‌پذیرد چون بارکد فاکتور و برخی
-     آیکن‌ها این‌طور جاسازی شده‌اند.
-
-     تنها استثنای دامنه بیرونی: `trustseal.enamad.ir` — نشان اعتماد
-     الکترونیک باید از سرور خودِ اینماد بار شود، وگرنه احراز انجام
-     نمی‌گیرد و کپی محلی هم تخلف است.
-
-     دقت کنید این استثنا **فقط برای تصویر** است. `script-src`
-     دست‌نخورده مانده، پس حتی اگر سرور اینماد روزی دستکاری شود،
-     نمی‌تواند روی این سایت کد اجرا کند. بدترین حالت: تصویر نشان
-     نمی‌آید. */
   res.setHeader('Content-Security-Policy', [
     "default-src 'self'",
     "script-src 'self' 'unsafe-inline'",
@@ -613,13 +458,7 @@ const server = http.createServer(async (req, res) => {
     "font-src 'self' data:",
     "connect-src 'self'",
     "form-action 'self'",
-    /* ── ویدیوی آپارات ──
-       تنها دامنه‌ای که اجازه iframe دارد. بدون این، ویدیوی
-       مقاله‌ها مسدود می‌شود و قاب سیاه می‌ماند.
 
-       `frame-src` فقط اجازه **نمایش** می‌دهد؛ اسکریپت آپارات
-       داخل iframe در بافت جدا اجرا می‌شود و به صفحه ما دسترسی
-       ندارد. بدترین حالت: ویدیو بار نمی‌شود. */
     "frame-src 'self' https://www.aparat.com",
     "frame-ancestors 'self'",
     "base-uri 'self'",
@@ -628,23 +467,14 @@ const server = http.createServer(async (req, res) => {
 
   if (method === 'OPTIONS') { res.writeHead(204); return res.end(); }
 
-  /** آیا مرورگر gzip می‌پذیرد؟ */
-/* ── نشانی IP در سطح درخواست ──
-     پیش‌تر هر بلوک `const ip = clientIP(req)` خودش را داشت (۵ بار
-     تکرار). هنگام افزودن محدودیت نرخ به `/api/track` معلوم شد
-     بلوک‌های دیگر به آن دسترسی ندارند و `ip is not defined`
-     می‌دهند — خطایی که در `catch` بلعیده می‌شد و کاربر ۲۰۰
-     می‌گرفت. یک بار اینجا تعریف می‌شود تا همه‌جا در دسترس باشد. */
   const reqIP = clientIP(req);
 
   const acceptsGzip = /\bgzip\b/.test(req.headers['accept-encoding'] || '');
 
-  /** ارسال با فشرده‌سازی برای پاسخ‌های بزرگ */
   const sendBody = (code, body, contentType, extraHeaders = {}) => {
     const buf = Buffer.from(body, 'utf-8');
     const headers = { 'Content-Type': contentType, ...extraHeaders };
 
-    // زیر ۱ کیلوبایت، فشرده‌سازی سربارش بیشتر از سودش است
     if (acceptsGzip && buf.length > 1024) {
       zlib.gzip(buf, { level: 6 }, (err, gz) => {
         if (err) { res.writeHead(code, headers); return res.end(buf); }
@@ -660,16 +490,14 @@ const server = http.createServer(async (req, res) => {
   };
 
   const sendJSON = (code, data) => {
-    // در تولید فاصله‌گذاری لازم نیست
+
     const json = process.env.NODE_ENV === 'production'
       ? JSON.stringify(data) : JSON.stringify(data, null, 2);
     sendBody(code, json, 'application/json; charset=utf-8');
   };
-  /* ── احراز هویت و مجوز کارکنان ──
-     `who` یک بار محاسبه می‌شود و در طول درخواست در دسترس است. */
+
   const who = currentStaff(getToken(req));
 
-  /** ثبت در سابقه با اطلاعات کارمند فعلی */
   const logAudit = (action, extra = {}) => {
     audit({
       staff_id: who?.id ?? null,
@@ -681,22 +509,12 @@ const server = http.createServer(async (req, res) => {
     });
   };
 
-  /**
-   * بررسی مجوز.
-   *
-   * @param {string} perm کلید مجوز، مثل 'orders.cancel'
-   * @returns {boolean} اگر false برگرداند، پاسخ خطا فرستاده شده
-   */
   const can = (perm) => {
     if (!who) {
       sendJSON(401, { error: 'دسترسی غیرمجاز — لطفاً وارد پنل مدیریت شوید.' });
       return false;
     }
-    /* رمز اولیه هنوز عوض نشده؟ حساب در حالت «نیمه‌باز» است.
-       تا وقتی رمزی که مدیر روی کاغذ به کارمند داده تغییر نکند،
-       هیچ کار واقعی انجام نمی‌شود — فقط ورود، دیدن هویت خود و
-       تغییر رمز. وگرنه رمز اولیه عملاً یک رمز دائمی است که
-       دست‌کم دو نفر می‌دانندش. */
+
     if (who.must_change) {
       logAudit(perm, { allowed: false, detail: { reason: 'رمز اولیه تغییر نکرده' } });
       sendJSON(403, {
@@ -706,7 +524,7 @@ const server = http.createServer(async (req, res) => {
       return false;
     }
     if (!who.permissions.includes(perm)) {
-      // تلاش ناموفق هم ثبت می‌شود — برای تشخیص سوءاستفاده
+
       logAudit(perm, { allowed: false });
       appLog('WARN', 'security', 'تلاش دسترسی بدون مجوز',
              { user: who.username, perm, path: pathname });
@@ -720,7 +538,6 @@ const server = http.createServer(async (req, res) => {
     return true;
   };
 
-  /** سازگاری با کد قدیمی: هر کارمند واردشده */
   const requireAdmin = () => {
     if (who) return true;
     sendJSON(401, { error: 'دسترسی غیرمجاز — لطفاً وارد پنل مدیریت شوید.' });
@@ -728,7 +545,7 @@ const server = http.createServer(async (req, res) => {
   };
 
   try {
-    // ═══════════ ورود ادمین ═══════════
+
     if (method === 'POST' && pathname === '/api/admin/login') {
       const ip = clientIP(req);
       const rl = rateLimit(`login:${ip}`, RL.login.limit, RL.login.window, RL.login.block);
@@ -744,16 +561,10 @@ const server = http.createServer(async (req, res) => {
       const username = String(body.username || '').trim().toLowerCase();
       const password = String(body.password || '');
 
-      /* سازگاری با گذشته: اگر فقط رمز فرستاده شد (نسخه قدیمی پنل)،
-         با حساب مدیر کل تطبیق داده می‌شود. */
       const target = username
         ? getStaffByUsername(username)
         : getStaffByUsername(process.env.ADMIN_USERNAME || 'owner');
 
-      // The forwarded IP can vary behind a proxy (or be forged if a proxy is
-      // misconfigured). A persistent account bucket also bounds attempts at a
-      // single username across IPs and restarts. Hash the bucket identifier;
-      // never store a password or raw username in the rate-limit key.
       const accountName = String(target?.username || username || process.env.ADMIN_USERNAME || 'owner').trim().toLowerCase();
       const accountKey = 'login-account:' + crypto.createHash('sha256').update(accountName).digest('hex');
       const accountLimit = rateLimit(accountKey, RL.login.limit, RL.login.window, RL.login.block);
@@ -769,7 +580,7 @@ const server = http.createServer(async (req, res) => {
         appLog('WARN', 'security', 'ورود ناموفق کارمند', { ip, username: username || '—' });
         audit({ username: username || '—', action: 'auth.login', method, path: pathname,
                 ip, allowed: false, detail: { reason: 'اعتبار نادرست' } });
-        // پیام یکسان برای «کاربر نیست» و «رمز غلط» تا نام‌های موجود لو نروند
+
         return sendJSON(401, { error: 'نام کاربری یا رمز عبور نادرست است.' });
       };
 
@@ -788,7 +599,6 @@ const server = http.createServer(async (req, res) => {
       db.prepare('UPDATE staff SET last_login=? WHERE id=?')
         .run(new Date().toISOString(), target.id);
 
-      // موضوع نشست شناسه کارمند است، نه نام — نام ممکن است عوض شود
       const token = createSession('ADMIN', String(target.id), SESSION_TTL);
 
       appLog('INFO', 'auth', 'ورود موفق کارمند',
@@ -796,7 +606,6 @@ const server = http.createServer(async (req, res) => {
       audit({ staff_id: target.id, username: target.username, role_key: target.role_key,
               action: 'auth.login', method, path: pathname, ip });
 
-      // Never send the administrator session cookie over plaintext in production.
       const secureCookie = String(process.env.NODE_ENV || '').trim().toLowerCase() === 'production' ? '; Secure' : '';
       res.setHeader('Cache-Control', 'no-store');
       res.setHeader('Set-Cookie',
@@ -804,8 +613,7 @@ const server = http.createServer(async (req, res) => {
 
       return sendJSON(200, {
         message: 'ورود موفق',
-        // The browser panel requests cookie-only auth; API integrations that
-        // explicitly use bearer sessions retain their existing response.
+
         ...(req.headers['x-admin-cookie-only']==='1' ? {} : {token}),
         user: {
           id: target.id,
@@ -835,14 +643,6 @@ const server = http.createServer(async (req, res) => {
       return sendJSON(200, { authenticated: isValidSession(getToken(req)) });
     }
 
-    /* ── کاتالوگ عمومی ── (گام ۷ تفکیک)
-       محصولات، جستجو، ویترین، برند، خانواده، نُت، اسانس،
-       کوییز، پروفایل بویایی، جشنواره و کد تخفیف عمومی
-       → `src/routes/catalog.js`
-
-       پرترافیک‌ترین ماژول سایت. مسیرهای عمومی‌اند (بدون `can`)؛
-       محافظشان فهرست سفید مرتب‌سازی، پارامترهای مقیدشده و
-       محدودیت نرخ روی `taste/suggest` است. */
     if (await routeCatalog.handle({
       method, pathname, parsed, req, reqIP, db,
       parseBody, rateLimit, RL,
@@ -852,12 +652,6 @@ const server = http.createServer(async (req, res) => {
       res, storeStats
     })) return;
 
-    /* ── تعامل مشتری ── (گام ۸ تفکیک)
-       رویداد، علاقه‌مندی، نظر، دعوت‌نامه، اطلاع موجودی،
-       نوار اعلان و پیگیری سفارش → `src/routes/engagement.js`
-
-       همه بدون `can`. سه مسیر داده شخصی برمی‌گردانند و
-       محافظشان ماسک شماره، پاسخ یکسان و ۴۰۱ است. */
     if (await routeEngagement.handle({
       method, pathname, parsed, req, res, reqIP, db,
       sendJSON, parseBody, rateLimit, RL, appLog, cleanText,
@@ -866,10 +660,6 @@ const server = http.createServer(async (req, res) => {
       getCustomerToken, otp, analytics
     })) return;
 
-    // ═══════════ سبد خرید (اعتبارسنجی سمت سرور) ═══════════
-    // وضعیت زنده چند SKU — برای همگام‌سازی سبد ذخیره‌شده در مرورگر.
-    // سبد ممکن است روزها در localStorage بماند؛ این مسیر قیمت و موجودی
-    // واقعی را برمی‌گرداند تا کاربر پیش از پرداخت از تغییرات باخبر شود.
     if (method === 'POST' && pathname === '/api/cart/sync') {
       const body = await parseBody(req);
       const skus = Array.isArray(body.skus) ? body.skus.slice(0, 30) : [];
@@ -901,23 +691,9 @@ const server = http.createServer(async (req, res) => {
       const v = validateCart(body.items);
       if (!v.ok) return sendJSON(400, { error: v.error });
 
-      /* ── جشنواره پیش از کوپن ──
-         ترتیب مهم است: جشنواره خودکار است و مشتری روی آن کنترلی
-         ندارد، پس اول اعمال می‌شود. کوپن بعد روی مبلغِ
-         تخفیف‌خورده حساب می‌شود — وگرنه دو تخفیف روی قیمت کامل
-         جمع می‌شوند و ممکن است مجموع از خودِ کالا بیشتر شود. */
       const camp = campaignDiscount(v.items);
       const afterCampaign = Math.max(0, v.subtotal - camp.total);
 
-      /* ── آستانه ارسال رایگان روی جمع کالاها، نه پس از تخفیف ──
-         با اندازه‌گیری واقعی کشف شد: سبد ۲,۶۵۲,۵۰۰ تومانی ارسال
-         رایگان داشت؛ با جشنواره ۱۰٪ به ۲,۳۸۷,۲۵۰ رسید — زیر
-         آستانه — و ۳۵۰,۰۰۰ کرایه اضافه شد. نتیجه: مشتری با
-         تخفیف ۸۴,۷۵۰ تومان **بیشتر** می‌پرداخت.
-
-         تخفیفی که پرداختی را بالا ببرد، از هر جشنواره‌ای بدتر
-         است. معیار درست «چقدر کالا خریده» است نه «چقدر پول داده»
-         — همان‌طور که کوپن هم روی کرایه اثر نمی‌گذارد. */
       const ship = calcShipping(v.subtotal);
       let shippingFee = ship.fee, shippingLabel = ship.label;
       let discount = 0, couponInfo = null, couponError = null;
@@ -945,12 +721,6 @@ const server = http.createServer(async (req, res) => {
         }
       }
 
-      /* بسته‌بندی کادویی — سرویس جدا از کالا.
-         عمداً **پس از** محاسبه تخفیف و آستانه ارسال اضافه می‌شود:
-           • کوپن نباید روی آن اثر بگذارد (تخفیف روی کالاست)
-           • نباید مشتری را به آستانه ارسال رایگان برساند
-         وگرنه کسی با افزودن کادو به ارسال رایگان می‌رسید و
-         فروشگاه هم کرایه می‌داد هم کادو. */
       const giftWrap = calcGiftWrap(body.gift_wrap);
 
       return sendJSON(200, {
@@ -970,24 +740,14 @@ const server = http.createServer(async (req, res) => {
       });
     }
 
-    // بررسی مستقل کد تخفیف
     if (method === 'POST' && pathname === '/api/coupons/validate') {
       const body = await parseBody(req);
       const v = validateCart(body.items || []);
       if (!v.ok) return sendJSON(400, { error: v.error });
 
-      /* جشنواره اینجا هم اول اعمال می‌شود — دقیقاً مثل
-         `/api/cart/calculate` و ثبت سفارش.
-
-         چرا لازم بود: صفحه سبد از این مسیر استفاده می‌کند و صفحه
-         تسویه از `calculate`. وقتی جشنواره فعال بود، سبد کوپن را
-         روی قیمت کامل حساب می‌کرد و تسویه روی قیمت تخفیف‌خورده —
-         مشتری در سبد عدد بزرگ‌تری می‌دید و یک صفحه بعد کمتر
-         می‌شد. تخفیفی که آب برود، بدتر از نداشتنش است. */
       const camp = campaignDiscount(v.items);
       const afterCampaign = Math.max(0, v.subtotal - camp.total);
 
-      // آستانه ارسال روی جمع کالاها — توضیح در /api/cart/calculate
       const ship = calcShipping(v.subtotal);
       const verifiedMobile = otp.mobileFromToken(getCustomerToken(req));
       const mobile = verifiedMobile || body.mobile || null;
@@ -1003,9 +763,6 @@ const server = http.createServer(async (req, res) => {
       });
     }
 
-    // Browser checkout capability is HttpOnly; the raw token never enters
-    // response JSON, log messages, URLs or localStorage. First-time tabs
-    // still need client-side coordination before calling this endpoint.
     if (method === 'GET' && pathname === '/api/orders/attempt/status') {
       if(!checkoutAttempt.ready(db)) return sendJSON(503,{error:'سامانه جلوگیری از ثبت تکراری هنوز آماده نیست.'});
       const cookie=checkoutAttempt.readCookie(req.headers.cookie);
@@ -1039,9 +796,8 @@ const server = http.createServer(async (req, res) => {
       return sendJSON(200,{ready:true});
     }
 
-    // ═══════════ سفارش ═══════════
     if (method === 'POST' && pathname === '/api/orders') {
-      // Never create/reserve an order when production would use a test gateway.
+
       if (!pay.productionReady()) return sendJSON(503, { error: 'درگاه پرداخت واقعی هنوز آماده نیست.' });
       if (!stockReservations.ready(db)) return sendJSON(503, { error: 'سامانه ثبت رزرو موجودی هنوز آماده نیست.' });
       const ip = clientIP(req);
@@ -1078,8 +834,7 @@ const server = http.createServer(async (req, res) => {
           }
           return orderIdempotency.lookup(db,idem);
         };
-        // Serialize with rotation; nested calls are savepoints within the
-        // checkout transaction and still hold the same SQLite write lock.
+
         return cookieToken ? db.transaction(check).immediate() : check();
       };
       const rejectOrReplay = (status,data) => {
@@ -1093,8 +848,7 @@ const server = http.createServer(async (req, res) => {
         if (!orderIdempotency.ready(db)) return sendJSON(503,{error:'سامانه جلوگیری از ثبت تکراری هنوز آماده نیست.'});
         try { idem=orderIdempotency.fingerprint(key,body); }
         catch { return sendJSON(400,{error:'کلید ثبت سفارش یا اطلاعات درخواست معتبر نیست.'}); }
-        // Replay before validating current stock or coupons; those may have
-        // legitimately changed because the original order already reserved them.
+
         const existing=lookupAttempt();
         if(existing.kind!=='NEW') return respondToAttempt(existing);
       }
@@ -1103,16 +857,11 @@ const server = http.createServer(async (req, res) => {
         return sendJSON(400, { error: 'نام و شماره موبایل معتبر (۰۹xxxxxxxxx) الزامی است.' });
       }
 
-      /* نام و نشانی روی فاکتور و برچسب پستی چاپ می‌شوند و در پنل
-         مدیریت رندر می‌گردند — پس همین‌جا پاک می‌شوند. */
       body.customer_name = cleanText(body.customer_name, 100);
       body.address       = cleanText(body.address, 500);
       body.city          = cleanText(body.city, 60);
       body.province      = cleanText(body.province, 60);
-      /* یادداشت مشتری هم پاک‌سازی می‌شود: در پنل و روی فاکتور
-         رندر می‌شود، پس همان مسیر خطر را دارد که نام و نشانی.
-         سقف ۵۰۰ نویسه — برای «فاکتور رسمی می‌خواهم» یا
-         «کادوپیچ کنید» بیش از کافی است. */
+
       body.customer_note = cleanText(body.customer_note, 500);
       if (!body.customer_name) {
         return sendJSON(400, { error: 'نام معتبر وارد کنید.' });
@@ -1120,22 +869,11 @@ const server = http.createServer(async (req, res) => {
       const v = validateCart(body.items);
       if (!v.ok) return rejectOrReplay(400, { error: v.error });
 
-      /* جشنواره دوباره سمت سرور محاسبه می‌شود، نه از سبد مشتری
-         خوانده شود. اگر جشنواره بین دیدن سبد و پرداخت تمام شده
-         باشد، مبلغ درست ثبت می‌گردد. */
       const camp = campaignDiscount(v.items);
       const afterCampaign = Math.max(0, v.subtotal - camp.total);
 
-      // آستانه ارسال روی جمع کالاها — توضیح در /api/cart/calculate
       const ship = calcShipping(v.subtotal);
 
-      /* شماره یکتا — با تضمین، نه با احتمال.
-         بخش تصادفی برخورد را عملاً غیرممکن می‌کند، ولی «عملاً» کافی
-         نیست وقتی نتیجه‌اش از دست رفتن سفارش مشتری است. یک بررسی
-         سبک (روی کلید اصلی، بدون هزینه) تا سه بار تلاش می‌کند.
-         این کار باید **پیش از** رزرو کوپن انجام شود، چون رزرو به
-         شماره سفارش گره می‌خورد و عوض کردنش بعداً رزرو را یتیم
-         می‌گذارد. */
       let orderId = null;
       for (let i = 0; i < 3; i++) {
         const cand = newOrderId();
@@ -1151,9 +889,6 @@ const server = http.createServer(async (req, res) => {
         });
       }
 
-      /* پیش‌نمایش اعتبار و مبلغ کد تخفیف؛ اعتبارسنجی و رزرو نهایی
-         داخل تراکنش سفارش انجام می‌شوند، نه هنگام پرداخت. ظرفیت
-         همراه سفارش و موجودی ثبت می‌شود و در لغو آزاد می‌گردد. */
       let shippingFee = ship.fee, discount = 0, appliedCode = null;
       let couponSnapshot = null;
       if (body.coupon_code) {
@@ -1166,13 +901,8 @@ const server = http.createServer(async (req, res) => {
         appliedCode = cv.coupon.code;
       }
 
-      /* جشنواره و کوپن هر دو کم می‌شوند. discount_amount در
-         دیتابیس مجموع هر دو است تا فاکتور با مبلغ پرداختی بخواند. */
       const totalDiscount = camp.total + discount;
 
-      /* بسته‌بندی کادویی — مبلغ از ثابت سرور، نه از ورودی کاربر.
-         بیرون از تخفیف و آستانه ارسال می‌ماند (توضیح در
-         /api/cart/calculate). */
       const giftWrapFee = calcGiftWrap(body.gift_wrap);
 
       const total = Math.max(0, v.subtotal - totalDiscount + shippingFee) + giftWrapFee;
@@ -1182,12 +912,9 @@ const server = http.createServer(async (req, res) => {
           const existing=lookupAttempt();
           if(existing.kind!=='NEW') throw Object.assign(Error('Prior order attempt'),{code:'IDEMPOTENCY_REPLAY',result:existing});
         }
-        // Recheck and reserve the coupon under the same write lock as the
-        // order, items and stock ledger. A process crash cannot leave a coupon
-        // reservation for an order that was never committed.
+
         if (couponSnapshot) {
-          // Re-read verified ownership under the order write lock: a revoked
-          // session must not authorize a restricted coupon during a race.
+
           const verifiedMobile=otp.mobileFromToken(getCustomerToken(req));
           const current=validateCoupon(body.coupon_code,afterCampaign,ship.fee,body.mobile,v.items,verifiedMobile);
           if (!current.ok || current.coupon.code!==couponSnapshot.code ||
@@ -1212,11 +939,9 @@ const server = http.createServer(async (req, res) => {
         `).run({
           customer_note: body.customer_note || null,
           discount_code: appliedCode,
-          // مجموع جشنواره و کوپن — وگرنه جمع فاکتور با مبلغ
-          // پرداختی نمی‌خواند و آزمون «بدون عدد پنهان» قرمز می‌شود
+
           discount_amount: totalDiscount,
-          /* سهم جشنواره جدا ثبت می‌شود تا فاکتور بتواند دو سطر
-             صادق چاپ کند: «تخفیف جشنواره» و «تخفیف کد». */
+
           campaign_discount: camp.total || null,
           campaign_note: camp.lines.length
             ? [...new Set(camp.lines.map(l => l.title))].join(' · ').slice(0, 160)
@@ -1224,9 +949,7 @@ const server = http.createServer(async (req, res) => {
           order_id: orderId,
           created_at: new Date().toISOString(),
           customer_name: String(body.customer_name).slice(0, 100),
-          /* نام تفکیک‌شده برای خطاب مؤدبانه و برچسب پستی مرتب.
-             سفارش‌های قدیمی این فیلدها را ندارند، پس اگر نیامد
-             از customer_name جدا می‌شود. */
+
           first_name: body.first_name
             ? String(body.first_name).slice(0, 40)
             : String(body.customer_name || '').split(' ')[0] || null,
@@ -1250,9 +973,7 @@ const server = http.createServer(async (req, res) => {
           INSERT INTO order_items (order_id, sku, product_name, unit_price, quantity, line_total)
           VALUES (?, ?, ?, ?, ?, ?)
         `);
-        // Preserve the volume actually ordered, atomically with the order and
-        // stock ledger. Existing stores without the explicit returns migration
-        // keep selling normally; historic volume is never guessed or backfilled.
+
         const canSnapshotReturns = returnStore.ready(db);
         const variantVolume = canSnapshotReturns
           ? db.prepare('SELECT volume_ml FROM variants WHERE sku=?') : null;
@@ -1260,7 +981,24 @@ const server = http.createServer(async (req, res) => {
           if (canSnapshotReturns && variantVolume.get(it.sku)?.volume_ml !== it._volume_ml)
             throw Object.assign(Error('Variant changed'), {code:'CART_CHANGED'});
           const item = insItem.run(orderId, it.sku, it.product_name, it.unit_price, it.quantity, it.line_total);
-          stockReservations.reserveItem(db, item.lastInsertRowid);
+
+          let numericTake = null;
+          if (essenceInventory.ready(db)) {
+            const row = db.prepare(`SELECT v.product_id, v.type, v.volume_ml, v.stock FROM variants v WHERE v.sku=?`).get(it.sku);
+            if (row && essenceInventory.policyFor(db, row.product_id).tracked) {
+              const policy = essenceInventory.policyFor(db, row.product_id);
+              const onHand = policy.use_count ? Math.max(0, Number(row.stock) || 0) : 0;
+              numericTake = Math.min(it.quantity, onHand);
+              const rest = it.quantity - numericTake;
+              if (rest > 0 && !policy.use_essence)
+                throw Object.assign(Error('Not enough stock'), { code: 'CART_CHANGED' });
+              essenceInventory.reserveItem(db, orderId, {
+                product_id: row.product_id, type: row.type, volume_ml: row.volume_ml, quantity: it.quantity
+              });
+            }
+          }
+          stockReservations.reserveItem(db, item.lastInsertRowid,
+            numericTake === null ? undefined : { numericQty: numericTake });
           if (canSnapshotReturns) returnStore.captureNewItem(db, item.lastInsertRowid, it._volume_ml);
         }
         if (idem) orderIdempotency.bindNew(db,{...idem,orderId});
@@ -1268,25 +1006,20 @@ const server = http.createServer(async (req, res) => {
       });
       try { tx.immediate(); }
       catch (e) {
-        // The reservation is part of this transaction and has rolled back.
-        // Never release by orderId here: it may refer to an unrelated order
-        // if a (very unlikely) identifier collision occurred.
+
         if (e.code === 'IDEMPOTENCY_REPLAY') return respondToAttempt(e.result);
         if (e.code === 'CART_CHANGED') return sendJSON(409, { error:'قیمت یا موجودی سبد تغییر کرده است؛ دوباره بررسی کنید.' });
         if (e.code === 'COUPON_CHANGED') return sendJSON(409, { error:'کد تخفیف یا ظرفیت آن تغییر کرده است؛ دوباره بررسی کنید.' });
         throw e;
       }
 
-      // درخواست پرداخت از درگاه فعال
       const pr = await pay.requestPayment({
         orderId, amountToman: total, mobile: body.mobile,
         description: `سفارش ${orderId} — عطر یزد`
       });
 
       if (!pr.ok) {
-        /* بازگرداندن موجودی در صورت خطای درگاه.
-           این مسیر رقابتی نیست (هر درخواست orderId تازه می‌سازد)، اما
-           شرط PENDING را برای یکدستی با بقیه مسیرها نگه می‌داریم. */
+
         db.transaction(() => {
           const failed = db.prepare(
             "UPDATE orders SET status='FAILED', updated_at=? " +
@@ -1294,21 +1027,17 @@ const server = http.createServer(async (req, res) => {
           ).run(new Date().toISOString(), orderId);
           if (failed.changes) {
             const released = stockReservations.release(db, orderId);
+            if (released.ok && essenceInventory.ready(db)) essenceInventory.releaseOrder(db, orderId);
             if (!released.ok) throw Error('Reservation requires manual review');
             releaseCouponUse(orderId);
             logStatus(orderId, 'FAILED', 'اتصال به درگاه ممکن نشد — رزرو انبار آزاد شد');
           }
-          // A failed or timed-out provider request is not proof that no
-          // external authority was created. Do not automatically retry it.
+
           if (idem) orderIdempotency.markUncertain(db,{keyHash:idem.keyHash,orderId});
         }).immediate();
         return sendJSON(502, { error: 'اتصال به درگاه پرداخت ممکن نشد: ' + pr.error, ...(idem ? {order_id:orderId} : {}) });
       }
 
-      // The provider call was asynchronous: an administrator or maintenance
-      // may have changed the order in the meantime. Never return a payment
-      // link for an order that is no longer pending, and never overwrite a
-      // reference already attached by another operation.
       const response = {
         message: 'سفارش ثبت شد. در حال انتقال به درگاه پرداخت…',
         order_id: orderId, subtotal: v.subtotal, discount, discount_code: appliedCode,
@@ -1333,19 +1062,14 @@ const server = http.createServer(async (req, res) => {
       return sendJSON(201, response);
     }
 
-    // ═══════════ تأیید پرداخت ═══════════
     if (method === 'POST' && pathname === '/api/payment/verify') {
       if (!pay.productionReady()) return sendJSON(503, { error: 'درگاه پرداخت واقعی هنوز آماده نیست.' });
-      // Real transactions are verified only via the bound provider callback.
+
       if (pay.GATEWAY === 'zarinpal') return sendJSON(405, { error: 'تأیید از مسیر بازگشت درگاه انجام می‌شود.' });
       const body = await parseBody(req);
       const order = db.prepare('SELECT * FROM orders WHERE order_id = ?').get(body.order_id);
       if (!order) return sendJSON(404, { error: 'سفارش یافت نشد' });
 
-      /* ── جلوگیری از پردازش دوباره ──
-         درگاه بانکی گاهی callback را چند بار می‌فرستد (تلاش مجدد شبکه)
-         یا کاربر صفحه را رفرش می‌کند. تنها سفارشی که هنوز در انتظار
-         پرداخت است باید پردازش شود. */
       if (order.status === 'PAID') {
         return sendJSON(200, {
           message: 'این سفارش قبلاً پرداخت شده است',
@@ -1353,21 +1077,13 @@ const server = http.createServer(async (req, res) => {
         });
       }
       if (order.status !== 'PENDING') {
-        // CANCELLED / FAILED / EXPIRED — موجودی پیش‌تر آزاد شده است.
-        // بدون این بررسی، هر فراخوانی دوباره موجودی را افزایش می‌داد.
+
         return sendJSON(409, {
           error: `این سفارش در وضعیت «${STATUS_FA[order.status] || order.status}» است و قابل پرداخت نیست.`,
           order_id: order.order_id, status: order.status
         });
       }
 
-      /* ── قفل پیش از فراخوانی درگاه ──
-         verifyPayment ناهمگام است. بدون قفل، ده درخواست هم‌زمان همگی
-         از بررسی وضعیت رد می‌شوند، در await معلق می‌مانند، و بعد همه
-         با هم به مسیر شکست می‌رسند — نتیجه: موجودی ده بار آزاد می‌شد.
-
-         VERIFYING یک وضعیت گذراست و در ORDER_FLOW نیست؛ کاربر هرگز
-         نمی‌بیندش چون در همین درخواست به PAID یا CANCELLED می‌رود. */
       const claimed = db.prepare(
         "UPDATE orders SET status='VERIFYING', updated_at=? " +
         "WHERE order_id=? AND status='PENDING'"
@@ -1387,8 +1103,7 @@ const server = http.createServer(async (req, res) => {
       });
 
       if (vr.ok) {
-        // شرط VERIFYING همان قفلی است که بالاتر گرفتیم؛ تنها دارنده قفل
-        // می‌تواند سفارش را PAID کند
+
         const paid = db.prepare(
           "UPDATE orders SET status='PAID', payment_ref=?, updated_at=? " +
           "WHERE order_id=? AND status='VERIFYING'"
@@ -1402,10 +1117,8 @@ const server = http.createServer(async (req, res) => {
         }
         logStatus(order.order_id, 'PAID', 'پرداخت تأیید شد');
 
-        // کوپن هنگام ثبت سفارش رزرو شده است؛ اینجا کاری لازم نیست.
         notify.orderPaid({ ...order, status: 'PAID' }).catch(() => {});
-        /* خبر به مسئول فروشگاه — بدون await، چون سفارش نباید
-           منتظر پیامک بماند. */
+
         alerts.fireAsync('newOrder', order);
         trackPurchase(order, req);
 
@@ -1417,31 +1130,30 @@ const server = http.createServer(async (req, res) => {
 
       let freed = [];
       if (!stockReservations.inspect(db, order.order_id).ok) {
-        // Leave VERIFYING for manual reconciliation; never infer old stock.
+
         logStatus(order.order_id, 'VERIFYING', 'سابقه رزرو انبار نامشخص است؛ بررسی دستی لازم است');
         return sendJSON(409, { error:'سابقه رزرو انبار نامشخص است؛ سفارش نیازمند بررسی دستی است.' });
       }
-      /* ناموفق: بازگرداندن موجودی — تنها یک بار.
-         شرط status='PENDING' داخل همان تراکنش تضمین می‌کند حتی اگر
-         چند درخواست هم‌زمان به اینجا برسند، موجودی یک بار برگردد. */
+
       db.transaction(() => {
         const cancelled = db.prepare(
           "UPDATE orders SET status='CANCELLED', updated_at=? " +
           "WHERE order_id=? AND status='VERIFYING'"
         ).run(new Date().toISOString(), order.order_id);
-        if (!cancelled.changes) return;   // درخواست دیگری زودتر رسیدگی کرده
+        if (!cancelled.changes) return;
 
         const released = stockReservations.release(db, order.order_id);
+
+        if (released.ok && essenceInventory.ready(db)) essenceInventory.releaseOrder(db, order.order_id);
         if (!released.ok) throw Error('Reservation requires manual review');
         logStatus(order.order_id, 'CANCELLED', 'پرداخت ناموفق — رزرو انبار آزاد شد');
         releaseCouponUse(order.order_id);
         freed = released.skus;
-      })();   // ظرفیت کد تخفیف هم برمی‌گردد
+      })();
       notifyStockWatchers(freed, 'پرداخت ناموفق');
       return sendJSON(200, { message: vr.error || 'پرداخت لغو شد', order_id: order.order_id, failed: true });
     }
 
-    // بازگشت از درگاه واقعی (زرین‌پال)
     if (method === 'GET' && pathname === '/payment/callback') {
       if (!pay.productionReady()) return sendJSON(503, { error: 'درگاه پرداخت واقعی هنوز آماده نیست؛ سفارش تغییری نکرده است.' });
       const orderId = parsed.query.order;
@@ -1450,8 +1162,7 @@ const server = http.createServer(async (req, res) => {
       const order = db.prepare('SELECT * FROM orders WHERE order_id=?').get(orderId);
 
       const goto = (ok, ref, msg) => {
-        // Only the order ID is carried forward; payment status is re-read
-        // from the server and provider messages/references stay out of URLs.
+
         const u = `/payment/result?order=${encodeURIComponent(orderId || '')}`
           + `&ok=${ok ? '1' : '0'}`;
         res.writeHead(302, { Location: u });
@@ -1459,15 +1170,13 @@ const server = http.createServer(async (req, res) => {
       };
 
       if (!order) return goto(false, null, 'سفارش یافت نشد');
-      // Do not accept a caller-provided authority belonging to another order,
-      // including cancellation callbacks; refuse without changing stock/order.
+
       if (pay.GATEWAY === 'zarinpal' && order.status === 'PENDING' &&
           (order.payment_gateway !== pay.gatewayName() || !order.payment_ref ||
            typeof authority !== 'string' || authority !== order.payment_ref)) {
         return sendJSON(409, { error: 'شناسه پرداخت با سفارش مطابقت ندارد؛ سفارش تغییری نکرده است.' });
       }
 
-      // بازگشت دوباره از درگاه یا رفرش مرورگر — نتیجه قبلی را نشان بده
       if (order.status === 'PAID') return goto(true, order.payment_ref);
       if (order.status === 'CANCELLED' || order.status === 'FAILED') {
         return goto(false, null, 'این سفارش پیش‌تر لغو شده است');
@@ -1479,32 +1188,30 @@ const server = http.createServer(async (req, res) => {
         return goto(false, null, `سفارش در وضعیت «${STATUS_FA[order.status] || order.status}» است`);
       }
 
-      /* آزادسازی موجودی — تنها یک بار.
-         شرط PENDING داخل تراکنش، از چند بار برگرداندن موجودی هنگام
-         رفرش صفحه یا callback تکراری جلوگیری می‌کند. */
       let releasedSkus = [];
       const releaseStock = (note) => db.transaction(() => {
         const done = db.prepare(
           "UPDATE orders SET status='CANCELLED', updated_at=? " +
           "WHERE order_id=? AND status IN ('PENDING','VERIFYING')"
         ).run(new Date().toISOString(), orderId);
-        if (!done.changes) return false;   // درخواست دیگری زودتر رسیدگی کرد
+        if (!done.changes) return false;
 
         const released = stockReservations.release(db, orderId);
+
+        if (released.ok && essenceInventory.ready(db)) essenceInventory.releaseOrder(db, orderId);
         if (!released.ok) throw Error('Reservation requires manual review');
         logStatus(orderId, 'CANCELLED', note);
         releasedSkus = released.skus;
         return true;
       })();
-      // A real-gateway callback is a public GET and its status can be forged.
-      // Do not cancel/release from an unverified NOK; hold it for reconciliation.
+
       if (status !== 'OK' && pay.GATEWAY === 'zarinpal') {
         const held=db.prepare("UPDATE orders SET status='VERIFYING',updated_at=? WHERE order_id=? AND status='PENDING'")
           .run(new Date().toISOString(),orderId);
         if (held.changes) logStatus(orderId,'VERIFYING','وضعیت بازگشت درگاه نیازمند بررسی دستی است');
         return sendJSON(503,{error:'وضعیت پرداخت نیازمند بررسی است؛ سفارش لغو نشده است.',order_id:orderId});
       }
-      // کاربر در صفحه بانک آزمایشی «انصراف» زده است
+
       if (status !== 'OK') {
         if (!stockReservations.inspect(db, orderId).ok) return sendJSON(409, { error:'سابقه رزرو انبار نامشخص است؛ سفارش نیازمند بررسی دستی است.' });
         if (releaseStock('پرداخت توسط کاربر لغو شد')) releaseCouponUse(orderId);
@@ -1512,9 +1219,6 @@ const server = http.createServer(async (req, res) => {
         return goto(false, null, 'پرداخت توسط شما لغو شد');
       }
 
-      /* قفل پیش از گفت‌وگو با درگاه.
-         verifyPayment ناهمگام است؛ بدون این قفل، دو callback هم‌زمان
-         هر دو رد می‌شدند و موجودی دو بار آزاد می‌شد. */
       const lock = db.prepare(
         "UPDATE orders SET status='VERIFYING', updated_at=? " +
         "WHERE order_id=? AND status='PENDING'"
@@ -1526,8 +1230,7 @@ const server = http.createServer(async (req, res) => {
       const vr = await pay.verifyPayment({ authority: pay.GATEWAY === 'zarinpal' ? order.payment_ref : authority, amountToman: order.total_paid });
 
       if (vr.requires_review) {
-        // Keep VERIFYING: automatic expiry must not release stock or cancel an
-        // order whose bank outcome is unknown. A manager must reconcile it.
+
         logStatus(orderId, 'VERIFYING', 'نتیجه درگاه نامشخص است و بررسی دستی لازم دارد');
         appLog('WARN', 'payment', 'وضعیت پرداخت نیازمند بررسی دستی است', { order_id: orderId });
         return sendJSON(503, { error: 'وضعیت پرداخت نیازمند بررسی است؛ سفارش لغو نشده است.', order_id: orderId });
@@ -1540,15 +1243,13 @@ const server = http.createServer(async (req, res) => {
         ).run(vr.ref_id, new Date().toISOString(), orderId);
 
         if (!paid.changes) {
-          // The provider confirmed payment, but the order changed while the
-          // request was in flight. Do not claim a successful settlement or
-          // silently release anything; this case needs reconciliation.
+
           appLog('ERROR','payment','پرداخت تأیید شد اما وضعیت سفارش تغییر کرده؛ بررسی دستی لازم است',{order_id:orderId});
           return sendJSON(503,{error:'وضعیت سفارش و پرداخت نیازمند بررسی دستی است.',order_id:orderId});
         }
 
         logStatus(orderId, 'PAID', 'پرداخت تأیید شد');
-        // کوپن هنگام ثبت سفارش رزرو شده است؛ اینجا کاری لازم نیست.
+
         notify.orderPaid({ ...order, status: 'PAID' }).catch(() => {});
         alerts.fireAsync('newOrder', order);
         trackPurchase(order, req);
@@ -1565,28 +1266,6 @@ const server = http.createServer(async (req, res) => {
       return goto(false, null, vr.error);
     }
 
-
-    // ادمین: سفارشات با جستجو و فیلتر
-
-    // پشتیبان‌گیری از دیتابیس
-
-    // فهرست پشتیبان‌های خودکار
-
-    /* دانلود یک پشتیبان مشخص.
-       پشتیبان روی همان دیسک دیتابیس ذخیره می‌شود؛ اگر آن دیسک از دست
-       برود همه‌چیز می‌رود. مدیر باید بتواند نسخه‌ها را بیرون بکشد و
-       جای دیگری نگه دارد. */
-
-    // ═══════════ مدیریت وضعیت سفارش (ادمین) ═══════════
-
-    // تاریخچه وضعیت
-
-    /* ── احراز هویت مشتری ── (گام ۶ تفکیک)
-       ثبت‌نام، ورود، بازیابی رمز، کد یکبارمصرف، نشست
-       → `src/routes/auth.js`
-
-       این مسیرها عمومی‌اند (بدون `can`)، پس محافظشان محدودیت
-       نرخ چندلایه و کوکی HttpOnly است. */
     if (await routeAccountReturns.handle({
       method, pathname, req, sendJSON, can, parseBody, db, otp, getCustomerToken,
       rateLimit, ip:reqIP, RL, who, logAudit, notify, cleanText
@@ -1600,18 +1279,12 @@ const server = http.createServer(async (req, res) => {
       publicCustomer, createSession, getCustomerToken
     })) return;
 
-    /* ── نظرات و دعوت‌نامه ── (گام ۵ تفکیک)
-       تأیید، پاسخ، حذف نظر و مدیریت دعوت‌نامه مشتریان حضوری
-       → `src/routes/admin-reviews.js` */
     if (await routeAdminReviews.handle({
       method, pathname, parsed, req,
       sendJSON, can, parseBody, logAudit, appLog, who, db,
       otp, cleanText, faNum, createReviewInvite, INVITE_TTL_DAYS
     })) return;
 
-    /* ── سیستم و آمادگی ── (گام ۴ تفکیک)
-       پشتیبان، سابقه کارها، بررسی آمادگی، گزارش و تحلیل
-       → `src/routes/admin-system.js` */
     if (await routeAdminSystem.handle({
       method, pathname, parsed, req, res,
       sendJSON, can, parseBody, logAudit, appLog, rateLimit, who, db,
@@ -1619,20 +1292,12 @@ const server = http.createServer(async (req, res) => {
       reports, analytics, verifyPassword, trustedProxyPolicy
     })) return;
 
-    /* ── بازاریابی مدیریتی ── (گام ۳ تفکیک)
-       کوپن، جشنواره و نوار اعلان → `src/routes/admin-marketing.js` */
     if (await routeAdminMarketing.handle({
       method, pathname, req,
       sendJSON, can, parseBody, logAudit, db,
       cleanText, normalizeDigits, bustCampaignCache
     })) return;
 
-    /* ── سفارش‌های مدیریتی ── (گام ۲ تفکیک)
-       فهرست، وضعیت، تاریخچه، فاکتور و خروجی CSV
-       → `src/routes/admin-orders.js`
-
-       `POST /api/orders` عمداً اینجا نیست: با درگاه پرداخت گره
-       خورده و آزمون واقعی با پول ندارد. */
     if (await routeAdminReconciliation.handle({
       method, pathname, req, sendJSON, can, parseBody, db, who, cleanText, logAudit
     })) return;
@@ -1645,18 +1310,13 @@ const server = http.createServer(async (req, res) => {
       getSettings, nextInvoiceNo, STATUS_FA, ORDER_FLOW
     })) return;
 
-    /* ── کاتالوگ مدیریتی ── (گام ۱ تفکیک)
-       ویرایش قیمت/موجودی، کالاهای رو به اتمام، لاگ، نگهداشت و
-       بازسازی ایندکس → `src/routes/admin-catalog.js` */
     if (await routeAdminCatalog.handle({
       method, pathname, parsed, req,
       sendJSON, can, who, parseBody, logAudit, appLog, db,
       parseProduct, attachVariants, notifyStockWatchers, normalizeFa,
       releaseStaleOrders, buildSearchIndex, buildNotesIndex, bustStatsCache
     })) return;
-    // اطلاعات تماس عمومی — تنها فیلدهای بی‌خطر.
-    // کد اقتصادی و شناسه ملی عمداً بیرون گذاشته شده‌اند؛ آن‌ها
-    // فقط روی فاکتور رسمی معنا دارند نه در یک API باز.
+
     if (method === 'GET' && pathname === '/api/contact-info') {
       const st = getSettings();
       return sendJSON(200, {
@@ -1665,43 +1325,14 @@ const server = http.createServer(async (req, res) => {
         phone: st.phone || null,
         address: st.address || null,
         postal_code: st.postal_code || null,
-        /* فروشگاه تلفن ثابت ندارد و موبایل تنها راه ارتباط است.
-           مشتری باید بداند می‌تواند پیام بدهد، نه فقط زنگ بزند —
-           بسیاری ترجیح می‌دهند بنویسند. */
+
         phone_whatsapp: String(st.phone_whatsapp || '') === '1',
-        /* نشان اعتماد — هر دو بخش لازم است.
-           هر دو در نشانی عمومی نشان دیده می‌شوند، پس محرمانه
-           نیستند؛ ولی تنها وقتی فرستاده می‌شوند که **هر دو** ثبت
-           شده باشند. نیمه‌کاره یعنی نشانی خراب و تصویر شکسته. */
+
         enamad_id: (st.enamad_id && st.enamad_code) ? st.enamad_id : null,
         enamad_code: (st.enamad_id && st.enamad_code) ? st.enamad_code : null
       });
     }
 
-    // ═══════════ کارکنان و نقش‌ها ═══════════
-
-    /** اطلاعات کارمند واردشده — برای ساخت منوی پنل */
-    /**
-     * اعلان‌های کاری کارمند.
-     *
-     * فقط کارهایی که **این کارمند** مجوزش را دارد شمرده می‌شوند.
-     * انباردار «تیکت تازه» نمی‌بیند چون کاری با آن ندارد، و
-     * شمردنش فقط شلوغی می‌سازد.
-     *
-     * هر شمارش با مجوز خودش محافظت می‌شود؛ نبود مجوز یعنی آن
-     * بخش اصلاً در پاسخ نیست — نه اینکه صفر باشد.
-     */
-    /**
-     * پروفایل و کارنامه شخصی کارمند.
-     *
-     * هر کارمند **فقط فعالیت خودش** را می‌بیند — نیازی به مجوز
-     * ویژه ندارد چون داده‌ای جز کار خودش نمی‌بیند. مقایسه با
-     * دیگران هم عمداً نیست: کارنامه ابزار خودارزیابی است، نه
-     * تابلوی رقابت.
-     *
-     * `staff_id` مبنای فیلتر است نه `username`، چون نام کاربری
-     * ممکن است عوض شود ولی شناسه ثابت می‌ماند.
-     */
     if (method === 'GET' && pathname === '/api/admin/me/activity') {
       if (!who) return sendJSON(401, { error: 'وارد نشده‌اید.' });
       if (who.must_change) {
@@ -1719,8 +1350,6 @@ const server = http.createServer(async (req, res) => {
         WHERE staff_id = ? AND at >= datetime('now', ?)
       `).get(who.id, since);
 
-      /* پرکارترین عمل‌ها — «مشاهده» هم ثبت می‌شود، پس فهرست
-         بدون فیلتر شلوغ می‌شد. تنها کارهای مؤثر شمرده می‌شوند. */
       const VIEW_ONLY = ['orders.view', 'products.view', 'reviews.view',
                          'tickets.view', 'coupons.view', 'staff.view',
                          'settings.view', 'content.view', 'reports.sales',
@@ -1748,7 +1377,6 @@ const server = http.createServer(async (req, res) => {
         WHERE staff_id = ? ORDER BY id DESC LIMIT 15
       `).all(who.id);
 
-      // آمار ویژه بر پایه نقش — فقط چیزی که به کارش می‌آید
       const highlights = [];
       if (who.permissions.includes('orders.status')) {
         const n = db.prepare(`
@@ -1791,24 +1419,10 @@ const server = http.createServer(async (req, res) => {
         highlights.push({ label: 'مقاله نوشته/ویرایش‌شده', value: n });
       }
 
-      /* فقط نشست‌های هنوز معتبر شمرده می‌شوند. بدون شرط انقضا،
-         عدد شامل نشست‌های مرده هم می‌شد و کارمند بی‌جهت نگران
-         می‌شد که «کسی با حساب من وارد شده». */
       const sessions = db.prepare(
         "SELECT COUNT(*) n FROM sessions WHERE kind='ADMIN' AND subject=? AND expires_at > ?"
       ).get(String(who.id), Date.now()).n;
 
-      /* ── شرح دسترسی ──
-         پیش‌تر فقط عدد «۳۴ مجوز» برمی‌گشت. کارمند می‌دانست چند
-         اجازه دارد ولی نمی‌دانست **کدام** — و مهم‌تر، نمی‌دانست
-         چه کارهایی از او برنمی‌آید.
-
-         نتیجه عملی: انباردار روی سفارش کلیک می‌کرد، خطای «دسترسی
-         ندارید» می‌گرفت و نمی‌فهمید اشتباه کرده یا سیستم خراب
-         است. حالا از اول می‌داند مرز کارش کجاست.
-
-         `denied` عمداً برگردانده می‌شود: دانستن آنچه نمی‌توانی،
-         به‌اندازه دانستن آنچه می‌توانی مهم است. */
       const mine = new Set(who.permissions);
       const granted = [], denied = [];
       for (const g of perms.groupedPermissions()) {
@@ -1854,7 +1468,6 @@ const server = http.createServer(async (req, res) => {
       });
     }
 
-    /** به‌روزرسانی مشخصات شخصی — نام نمایشی و موبایل */
     if (method === 'PUT' && pathname === '/api/admin/me/profile') {
       if (!who) return sendJSON(401, { error: 'وارد نشده‌اید.' });
       const b = await parseBody(req);
@@ -1875,9 +1488,6 @@ const server = http.createServer(async (req, res) => {
         fields.push('mobile=?'); args.push(m);
       }
 
-      /* نقش و وضعیت فعال عمداً اینجا نیستند — کارمند نباید بتواند
-         خودش را ارتقا دهد. آن مسیر جداست و مجوز staff.manage
-         می‌خواهد. */
       if (!fields.length) return sendJSON(400, { error: 'تغییری ارسال نشد.' });
 
       args.push(who.id);
@@ -1889,9 +1499,6 @@ const server = http.createServer(async (req, res) => {
       appLog('INFO', 'staff', 'کارمند مشخصات خود را به‌روز کرد',
              { user: who.username });
 
-      /* `publicStaff` فیلدهای رمز را حذف می‌کند.
-         ممیزی نشان داد `getStaff()` هش scrypt و salt را هم
-         برمی‌گرداند و اینجا مستقیم در پاسخ می‌رفت. */
       return sendJSON(200, {
         message: 'مشخصات شما به‌روز شد.',
         staff: publicStaff(getStaff(who.id))
@@ -1927,8 +1534,6 @@ const server = http.createServer(async (req, res) => {
           label: 'تیکت مرجوعی باز', urgent: false
         });
 
-        /* تیکتی که از مهلت پاسخ (۲۴ ساعت) گذشته — فوری است.
-           این همان قولی است که در صفحه تماس به مشتری داده‌ایم. */
         const late = db.prepare(`
           SELECT COUNT(*) n FROM tickets
           WHERE status != 'CLOSED' AND sla_deadline IS NOT NULL
@@ -1974,21 +1579,6 @@ const server = http.createServer(async (req, res) => {
         });
       }
 
-      /* ── آمادگی افتتاح ──
-         فروشگاه بدون این‌ها هم بی‌خطا کار می‌کند، پس نقص تا
-         نخستین بازرسی یا شکایت مشتری پنهان می‌ماند.
-         فقط به کسی که می‌تواند درستش کند نشان داده می‌شود.
-
-         تنها **اطلاعات تماس** سنجیده می‌شود، نه اطلاعات حقوقی.
-         دلیلش: اینماد درج تلفن، نشانی و کد پستی را روی سایت
-         الزامی کرده، ولی کد اقتصادی و شناسه ملی فقط روی «فاکتور
-         رسمی» چاپ می‌شوند که اختیاری است.
-
-         (خواسته مالک، مرداد ۱۴۰۵: «در فاکتور نیازی به درج
-          اطلاعات حقوقی نداریم، خود ای‌نماد کفایت می‌کند.»)
-
-         منطق تفصیلی در `/api/admin/readiness` است؛ اینجا فقط
-         یک اعلان سبک برای دیده شدن. */
       if (has('settings.edit')) {
         const st = getSettings();
         const REQUIRED = {
@@ -2016,7 +1606,6 @@ const server = http.createServer(async (req, res) => {
       });
     }
 
-    // ═══════════ نقش‌ها، کارکنان، دسترسی (ماژول جدا) ═══════════
     if (await routeRbac.handle({
       method, pathname, req, res, sendJSON, can, logAudit, who,
       parseBody, db, appLog, perms, cleanText, normalizeDigits,
@@ -2025,24 +1614,8 @@ const server = http.createServer(async (req, res) => {
       otp, notify, faNum, getToken, publicStaff
     })) return;
 
-    /** سابقه کارها */
-
-    // ═══════════ تنظیمات فروشگاه ═══════════
-    /* ── بررسی آمادگی افتتاح ──
-       یک نگاه واحد به همه چیزی که باید پیش از فروش واقعی درست
-       باشد. تا پیش از این، تنها راه فهمیدن اینکه کلید پیامک یا
-       شناسه درگاه درست است، ثبت سفارش واقعی بود — یعنی خرابی
-       را **اولین مشتری** کشف می‌کرد.
-
-       هیچ کلید یا رمزی برنگردانده نمی‌شود؛ فقط «ست شده / نشده»
-       و چند نویسه آخر برای تشخیص. */
-
-    /* آزمون واقعی سرویس‌ها — مسیر جدا دارد چون اثر جانبی دارد:
-       پیامک آزمایشی از اعتبار حساب کم می‌کند. */
-
     if (pathname === '/api/admin/settings') {
-      // خواندن و نوشتن مجوز جدا دارند: حسابدار باید اطلاعات حقوقی
-      // را ببیند ولی نتواند عوضشان کند
+
       if (method === 'GET') {
         if (!can('settings.view')) return;
         return sendJSON(200, getSettings());
@@ -2053,9 +1626,6 @@ const server = http.createServer(async (req, res) => {
         const s = saveSettings(b);
         appLog('INFO', 'admin', 'تنظیمات فروشگاه به‌روز شد');
 
-        /* اگر مقداری الگو را نداشت، `saveSettings` کنارش گذاشته.
-           پیام «ذخیره شد» در آن حالت دروغ است — مدیر باید همان
-           لحظه بفهمد، نه روزها بعد که ببیند نشان روی سایت نیست. */
         const FA = { enamad_id: 'شناسه نماد', enamad_code: 'کد امنیتی نماد' };
         const bad = s._rejected || [];
         if (bad.length) {
@@ -2068,47 +1638,38 @@ const server = http.createServer(async (req, res) => {
       }
     }
 
-    // ═══════════ داده فاکتور و برچسب ═══════════
-
-    // ═══════════ گزارش‌های فروش (ادمین) ═══════════
-
-    /** داشبورد تحلیل بازدید — قیف خرید، جستجوها، رفتار مشتری */
-
-    /** ساخت دوباره ویترین به‌صورت دستی */
-
-    // ═══════════ مدیریت نظرات (ادمین) ═══════════
-
-    // ═══════════ مدیریت کدهای تخفیف (ادمین) ═══════════
-
-    // ═══════════ تیکت مرجوعی (ماژول جدا) ═══════════
     if (await routeTickets.handle({
       method, pathname, req, sendJSON, can, parseBody,
       db, cleanText, otp, notify, getCustomerToken,
       rateLimit, ip: reqIP, RL
     })) return;
 
-    // ═══════════ مقالات ═══════════
-    // ═══════════ مجله (ماژول جدا) ═══════════
     if (await routeArticles.handle({
       method, pathname, parsed, req, res,
       sendJSON, can, parseBody, db, appLog, slugify
     })) return;
 
-    // ═══════════ خروجی CSV ═══════════
+    const siteBase = () => process.env.SITE_URL || 'https://yazdperfume.ir';
+    const xmlHead = () => '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n';
+    const today = () => new Date().toISOString().slice(0, 10);
 
-    // ═══════════ SEO ═══════════
     if (method === 'GET' && pathname === '/sitemap.xml') {
-      const base = process.env.SITE_URL || 'https://yazdperfume.ir';
-      const today = new Date().toISOString().slice(0, 10);
+      const base = siteBase();
+      const xml = '<?xml version="1.0" encoding="UTF-8"?>\n'
+        + '<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
+        + ['sitemap-pages.xml', 'sitemap-products.xml', 'sitemap-articles.xml']
+            .map(name => `  <sitemap><loc>${base}/${name}</loc><lastmod>${today()}</lastmod></sitemap>\n`)
+            .join('')
+        + '</sitemapindex>';
+      return sendBody(200, xml, 'application/xml; charset=utf-8',
+        { 'Cache-Control': 'public, max-age=3600' });
+    }
 
-      /* صفحات ثابت. brands/terms/privacy/contact پیش‌تر جا افتاده بودند
-         و گوگل راهی برای پیدا کردنشان جز پیمایش لینک‌ها نداشت.
-         صفحات شخصی (سبد، حساب، علاقه‌مندی) عمداً نیستند — محتوای
-         عمومی ندارند و ایندکس شدنشان بی‌معنی است. */
+    if (method === 'GET' && pathname === '/sitemap-pages.xml') {
+      const base = siteBase();
+
       const STATIC = [
         ['/', '1.0', 'daily'],
-        /* سمپل اولویت بالا دارد: مانع اصلی خرید آنلاین عطر
-           «نچشیده خریدن» است و این صفحه پاسخ همان است. */
         ['/samples', '0.9', 'weekly'],
         ['/golchin', '0.7', 'weekly'],
         ['/why-us', '0.8', 'monthly'],
@@ -2120,23 +1681,18 @@ const server = http.createServer(async (req, res) => {
         ['/privacy', '0.4', 'yearly'],
         ['/contact', '0.5', 'yearly']
       ];
-
-      let xml = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n`;
+      let xml = xmlHead();
       for (const [path, pri, freq] of STATIC) {
-        xml += `  <url><loc>${base}${path}</loc>`
-             + `<changefreq>${freq}</changefreq><priority>${pri}</priority></url>\n`;
+        xml += `  <url><loc>${base}${path}</loc><changefreq>${freq}</changefreq><priority>${pri}</priority></url>\n`;
       }
-      /* ── فقط محصولاتی که واقعاً می‌شود سفارش داد ──
-         sitemap یعنی «این‌ها را ایندکس کن». معرفی صفحه‌ای که
-         محصولش را نمی‌توانیم تأمین کنیم، هم به بازدیدکننده
-         بدقولی است هم به گوگل سیگنال «انبوه صفحه بی‌پشتوانه».
+      return sendBody(200, xml + '</urlset>', 'application/xml; charset=utf-8',
+        { 'Cache-Control': 'public, max-age=3600' });
+    }
 
-         محصولات UNAVAILABLE از سایت حذف نمی‌شوند — صفحه‌شان کار
-         می‌کند، جستجوی داخلی پیدایشان می‌کند، و دکمه «خبرم کن»
-         دارند. فقط به گوگل پیشنهادشان نمی‌دهیم.
+    if (method === 'GET' && pathname === '/sitemap-products.xml') {
+      const base = siteBase();
 
-         اولویت هم پویا شد: کالای موجود در انبار (۰٫۹) از کالای
-         به‌سفارش (۰٫۷) مهم‌تر است. */
+      let xml = xmlHead();
       db.prepare(`
         SELECT p.slug,
                (SELECT COALESCE(SUM(v.stock),0) FROM variants v
@@ -2148,50 +1704,147 @@ const server = http.createServer(async (req, res) => {
         )
       `).all().forEach(p => {
         const pri = p.stock > 0 ? '0.9' : '0.7';
-        xml += `  <url><loc>${base}/perfume/${p.slug}</loc>`
-             + `<changefreq>weekly</changefreq><priority>${pri}</priority></url>\n`;
+        xml += `  <url><loc>${base}/perfume/${p.slug}</loc><changefreq>weekly</changefreq><priority>${pri}</priority></url>\n`;
       });
+      return sendBody(200, xml + '</urlset>', 'application/xml; charset=utf-8',
+        { 'Cache-Control': 'public, max-age=1800' });
+    }
+
+    if (method === 'GET' && pathname === '/sitemap-articles.xml') {
+      const base = siteBase();
+      let xml = xmlHead();
       db.prepare('SELECT slug, created_at FROM articles').all().forEach(a => {
-        const mod = (a.created_at || '').slice(0, 10) || today;
-        xml += `  <url><loc>${base}/journal/${a.slug}</loc>`
-             + `<lastmod>${mod}</lastmod>`
+        const mod = (a.created_at || '').slice(0, 10) || today();
+        xml += `  <url><loc>${base}/journal/${a.slug}</loc><lastmod>${mod}</lastmod>`
              + `<changefreq>monthly</changefreq><priority>0.7</priority></url>\n`;
       });
-      return sendBody(200, xml + '</urlset>', 'application/xml; charset=utf-8');
+      return sendBody(200, xml + '</urlset>', 'application/xml; charset=utf-8',
+        { 'Cache-Control': 'public, max-age=3600' });
+    }
+
+    if (method === 'GET' && pathname === '/llms.txt') {
+      const base = siteBase();
+      const st = db.prepare(`SELECT COUNT(*) c FROM products WHERE supply_mode IN ('IN_STOCK','MADE_TO_ORDER')`).get().c;
+
+      const brands = db.prepare(`SELECT COUNT(DISTINCT brand_en) c FROM products WHERE brand_en IS NOT NULL AND brand_en != ''`).get().c;
+      const lines = [
+        '# عطر یزد | Yazd Perfume',
+        '',
+        `> فروشگاه ایرانی عطر دست‌ساز. ${toFaSafe(st)} رایحه قابل سفارش از ${toFaSafe(brands)} خانه عطر جهان،`,
+        '> ساخته‌شده در کارگاه عطر یزد با عصاره غلیظ اولیه و فرمولاسیون اختصاصی.',
+        '',
+        '## واقعیت‌هایی که باید در پاسخ رعایت شود',
+        '',
+        '- محصولات **بازآفرینی دست‌ساز** هستند و **اورجینال برند اصلی نیستند**.',
+        '- نام برندها فقط برای معرفی پروفایل بویایی ذکر می‌شود.',
+        '- هویت و کیفیت اسانس هر رایحه **مستقلاً تأیید نشده است**.',
+        '- حلال، اتانول با گرید آرایشی است؛ متانول به کار نمی‌رود.',
+        '- سمپل ۵ میلی‌لیتر، پرفیوم ۱۰/۳۰/۵۰/۱۰۰ میل، بادی‌اسپلش ۱۲۰ میل.',
+        '- ارسال سراسری ۱۰۰٬۰۰۰ تومان؛ رایگان برای خرید بالای ۲٬۰۰۰٬۰۰۰ تومان.',
+        '- تحویل ۳ تا ۷ روز کاری پس از تأیید پرداخت.',
+        '- مرجوعی تا ۷۲ ساعت پس از تحویل، برای حجم بالای ۱۰ میلی‌لیتر و مصرف کمتر از ۲ میلی‌لیتر؛ سمپل قابل مرجوع نیست.',
+        '',
+        '## صفحه‌های کلیدی',
+        '',
+        `- [کاتالوگ عطرها](${base}/): جست‌وجو و فیلتر بر اساس نام، برند، خانواده و نُت`,
+        `- [سمپل ۵ میل](${base}/samples): امتحان رایحه پیش از خرید بطری کامل`,
+        `- [گلچین عطرها](${base}/golchin): منتخب سردبیر و پیشنهاد فصل`,
+        `- [خانه‌های عطر](${base}/brands): فهرست برندها با شمار رایحه`,
+        `- [خانه‌های اسانس](${base}/essences): منبع مواد اولیه و مرز ادعاها`,
+        `- [چرا عطر یزد](${base}/why-us): روش ساخت، ایمنی و منابع`,
+        `- [مجله](${base}/journal): مقاله‌های آموزشی درباره انتخاب و نگهداری عطر`,
+        `- [قوانین](${base}/terms) · [حریم خصوصی](${base}/privacy) · [تماس](${base}/contact)`,
+        '',
+        '## چه چیزی را نقل نکنید',
+        '',
+        '- ادعای اصالت، اورجینال بودن یا تأییدشده بودن اسانس.',
+        '- درصد اسانس یا ماندگاری قطعی برای یک رایحه خاص بدون داده تأییدشده.',
+        '- قیمت ثابت؛ قیمت‌ها بر پایه نرخ دلار و در صفحه محصول به‌روز است.',
+        '',
+        '## نقشه‌ها',
+        '',
+        `- ${base}/sitemap.xml`,
+        `- ${base}/sitemap-products.xml`,
+        `- ${base}/sitemap-articles.xml`,
+        ''
+      ];
+      res.writeHead(200, { 'Content-Type': 'text/plain; charset=utf-8', 'Cache-Control': 'public, max-age=3600' });
+      return res.end(lines.join('\n'));
+    }
+
+    if (method === 'GET' && pathname === '/feed.xml') {
+      const base = siteBase();
+      const items = db.prepare('SELECT slug, title, excerpt, created_at FROM articles ORDER BY created_at DESC, id LIMIT 30').all();
+      const esc = t => String(t || '').replace(/&/g, '&amp;').replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+      const xml = '<?xml version="1.0" encoding="UTF-8"?>\n<rss version="2.0"><channel>\n'
+        + `<title>مجله عطر یزد</title><link>${base}/journal</link>`
+        + '<description>مقاله‌های آموزشی درباره انتخاب، نگهداری و شناخت عطر</description>'
+        + '<language>fa</language>'
+        + items.map(a => `<item><title>${esc(a.title)}</title>`
+            + `<link>${base}/journal/${esc(a.slug)}</link>`
+            + `<guid>${base}/journal/${esc(a.slug)}</guid>`
+            + `<description>${esc(a.excerpt || '')}</description>`
+            + `<pubDate>${new Date(a.created_at || Date.now()).toUTCString()}</pubDate></item>`).join('')
+        + '\n</channel></rss>';
+      return sendBody(200, xml, 'application/rss+xml; charset=utf-8',
+        { 'Cache-Control': 'public, max-age=1800' });
     }
 
     if (method === 'GET' && pathname === '/robots.txt') {
-      res.writeHead(200, { 'Content-Type': 'text/plain; charset=utf-8' });
       const base = process.env.SITE_URL || 'https://yazdperfume.ir';
-      return res.end(
-        'User-agent: *\n' +
-        'Allow: /\n' +
-        'Disallow: /admin\n' +
-        'Disallow: /api/\n' +
-        // صفحات شخصی و چاپی — محتوای عمومی ندارند
-        'Disallow: /account\n' +
-        'Disallow: /cart\n' +
-        'Disallow: /checkout\n' +
-        'Disallow: /wishlist\n' +
-        'Disallow: /login\n' +
-        'Disallow: /invoice\n' +
-        'Disallow: /label\n' +
-        'Disallow: /payment/\n' +
-        'Disallow: /offline\n' +
-        `Sitemap: ${base}/sitemap.xml\n`);
+
+      const CLOSED = [
+        '/admin', '/api/', '/account', '/cart', '/checkout', '/wishlist',
+        '/login', '/invoice', '/label', '/payment/', '/offline', '/review/'
+      ];
+      const rules = (ua, extra = []) => [
+        `User-agent: ${ua}`,
+        ...extra,
+        'Allow: /',
+        ...CLOSED.map(p => `Disallow: ${p}`),
+        ''
+      ].join('\n');
+      const body = [
+        '# عطر یزد | Yazd Perfume — robots.txt',
+        '# محتوای عمومی برای موتور جست‌وجو و پاسخ‌دهی هوش مصنوعی باز است.',
+        '',
+        rules('*'),
+        '# ── موتورهای جست‌وجو ──',
+        rules('Googlebot'),
+        rules('Bingbot'),
+        '',
+        '# ── خزنده‌های هوش مصنوعی: صریحاً مجاز ──',
+        '# محتوای فروشگاه توصیف محصول است، نه داده شخصی؛ پاسخ‌دهی',
+        '# درست درباره رایحه‌ها و سیاست‌های فروشگاه برای ما سود دارد.',
+        rules('GPTBot'),
+        rules('OAI-SearchBot'),
+        rules('ChatGPT-User'),
+        rules('ClaudeBot'),
+        rules('Claude-User'),
+        rules('anthropic-ai'),
+        rules('PerplexityBot'),
+        rules('Perplexity-User'),
+        rules('Google-Extended'),
+        rules('Applebot-Extended'),
+        rules('CCBot'),
+        rules('meta-externalagent'),
+        rules('Bytespider'),
+        '',
+        `Sitemap: ${base}/sitemap.xml`,
+        `Sitemap: ${base}/sitemap-products.xml`,
+        `Sitemap: ${base}/sitemap-articles.xml`,
+        `# راهنمای ماشین‌خوان برای مدل‌های زبانی:`,
+        `# ${base}/llms.txt`,
+        ''
+      ].join('\n');
+      res.writeHead(200, {
+        'Content-Type': 'text/plain; charset=utf-8',
+        'Cache-Control': 'public, max-age=3600'
+      });
+      return res.end(body);
     }
 
-    /**
-     * سرویس‌ورکر.
-     *
-     * چرا مسیر اختصاصی و نه سرو ساده از public:
-     *   ۱) **هرگز نباید کش شود.** اگر مرورگر نسخه قدیمی sw.js را
-     *      نگه دارد، کاربر تا مدت‌ها نسخه تازه سایت را نمی‌بیند و
-     *      هیچ راهی برای رفعش نداری. این بدترین اشتباه رایج در
-     *      PWA است.
-     *   ۲) `Service-Worker-Allowed` تضمین می‌کند دامنه کنترل
-     *      کل سایت باشد، نه فقط پوشه فایل.
-     */
     if (method === 'GET' && pathname === '/sw.js') {
       const swPath = path.join(PUBLIC_DIR, 'sw.js');
       if (!fs.existsSync(swPath)) return sendJSON(404, { error: 'یافت نشد' });
@@ -2203,8 +1856,6 @@ const server = http.createServer(async (req, res) => {
       return res.end(fs.readFileSync(swPath));
     }
 
-    // Public liveness exposes only the public catalog count needed by quiz.
-    // Operational paths, sessions, provider state and order counts are private.
     if (method === 'GET' && pathname === '/api/health') {
       res.setHeader('Cache-Control','no-store');
       return sendJSON(200,{status:'ok',products:db.prepare('SELECT COUNT(*) c FROM products').get().c});
@@ -2228,7 +1879,6 @@ const server = http.createServer(async (req, res) => {
       });
     }
 
-    // ═══════════ صفحات ═══════════
     if (method === 'GET' && !pathname.startsWith('/api/')) {
       const pages = {
         '/': 'index.html',
@@ -2253,19 +1903,12 @@ const server = http.createServer(async (req, res) => {
         '/terms': 'terms.html',
         '/privacy': 'privacy.html',
         '/contact': 'contact.html',
-        /* صفحه آفلاین — سرویس‌ورکر آن را در نصب کش می‌کند و وقتی
-           شبکه نیست به‌جای صفحه خطای مرورگر نشان می‌دهد. */
+
         '/offline': 'offline.html'
       };
 
-      /* ── یک صفحه، یک نشانی ──
-         هم `/terms` و هم `/terms.html` همان محتوا را می‌دادند. برای گوگل
-         این یعنی دو صفحه با محتوای تکراری، و اعتبار بین‌شان تقسیم می‌شد.
-         نسخه `.html` با ۳۰۱ به نشانی رسمی هدایت می‌شود.
-         (فاکتور و برچسب مستثنا هستند؛ در پنجره جدید باز می‌شوند و
-          ایندکس نمی‌شوند.) */
       if (method === 'GET' && pathname.endsWith('.html')) {
-        const clean = pathname.slice(0, -5);          // حذف «.html»
+        const clean = pathname.slice(0, -5);
         const NO_REDIRECT = ['/invoice', '/label', '/404', '/payment-sandbox',
                              '/payment-result', '/check'];
         if (pages[clean] && !NO_REDIRECT.includes(clean)) {
@@ -2277,37 +1920,27 @@ const server = http.createServer(async (req, res) => {
 
       let file = pages[pathname];
 
-      // صفحه محصول: /perfume/:slug — تنها اگر محصول وجود داشته باشد
       if (!file && pathname.startsWith('/perfume/')) {
         const pslug = pathname.replace('/perfume/', '').replace(/\/$/, '');
         const exists = db.prepare('SELECT 1 FROM products WHERE slug=? OR id=?')
           .get(pslug, pslug);
         if (exists) file = 'product.html';
       }
-      /* صفحه دعوت‌نامه نظر: /review/:token
-         خودِ صفحه بدون بررسی توکن سرو می‌شود و اعتبارسنجی را
-         جاوااسکریپت از API می‌گیرد — چون توکن نامعتبر باید پیام
-         مهربان ببیند نه ۴۰۴ خشک. صفحه `noindex` است. */
+
       if (!file && /^\/review\/[a-f0-9]{32}$/.test(pathname)) {
         file = 'review-invite.html';
       }
-      // صفحه مقاله: /journal/:slug — تنها اگر مقاله واقعاً وجود داشته باشد
+
       if (!file && pathname.startsWith('/journal/')) {
         const aslug = pathname.replace('/journal/', '').replace(/\/$/, '');
         const exists = db.prepare('SELECT 1 FROM articles WHERE slug=? OR id=?')
           .get(aslug, aslug);
         if (exists) file = 'article.html';
       }
-      // درگاه آزمایشی
+
       if (!file && pathname.startsWith('/payment/sandbox')) file = 'payment-sandbox.html';
       if (!file) file = pathname.replace(/^\//, '');
 
-      /* ── تصاویر آپلودشده مقالات ──
-         روی لیارا این‌ها در `/app/data/journal/` می‌نشینند نه در
-         `public/`، چون تنها آن مسیر دیسک پایدار دارد. پس ریشه
-         سرو برای همین یک پیشوند فرق می‌کند.
-
-         محلی هر دو یکی‌اند و این شاخه بی‌اثر است. */
       let baseDir = PUBLIC_DIR;
       if (file.startsWith('images/journal/')) {
         baseDir = media.MEDIA_DIR;
@@ -2319,12 +1952,9 @@ const server = http.createServer(async (req, res) => {
       if (full) {
         const ext = path.extname(full).toLowerCase();
 
-        // تزریق متادیتا سمت سرور برای خزنده‌ها
         if (ext === '.html') {
           let html = fs.readFileSync(full, 'utf-8');
-          // Hash the trusted template only. User-controlled SEO content must
-          // never be included in the allowlist.
-          res.setHeader('Content-Security-Policy', scriptElementCsp.forTemplate(res.getHeader('Content-Security-Policy'), html, {disallowInlineHandlers: ['account.html','login.html','checkout.html','invoice.html','label.html','track.html'].includes(path.basename(full))}));
+
           try {
             if (pathname.startsWith('/perfume/')) {
               const slug = pathname.replace('/perfume/', '').replace(/\/$/, '');
@@ -2341,55 +1971,42 @@ const server = http.createServer(async (req, res) => {
                 .get(aslug, aslug);
               if (art) html = seo.articlePage(html, art);
             } else if (pathname === '/journal') {
-              /* تازه‌ترین مقاله را همان‌طور می‌گیریم که فرانت
-                 می‌گیرد: `/api/articles` با همین ORDER BY، و
-                 عنصر اول فهرست.
 
-                 نکته‌ای که با بررسی داده معلوم شد: همه مقاله‌های
-                 اولیه `created_at` یکسان دارند، پس ترتیب صرفاً
-                 با تاریخ قطعی نیست. `id` به‌عنوان شکننده تساوی
-                 اضافه شد — هم اینجا هم در API — تا سرور و مرورگر
-                 حتماً یک مقاله را «شاخص» بدانند. بدون این، preload
-                 گاهی به تصویر اشتباه می‌خورد. */
               const top = db.prepare(
                 'SELECT * FROM articles ORDER BY created_at DESC, id LIMIT 1'
               ).get();
               html = seo.journalPage(html, top || null);
             } else if (pathname === '/brands') {
-              /* همان پرس‌وجویی که `/api/brands` می‌زند — تا فهرست
-                 سمت سرور و سمت مرورگر یکی باشد و چیدمان نپرد.
-                 محصولات غیرقابل تأمین شمرده نمی‌شوند: عدد کنار
-                 نام برند باید همانی باشد که مشتری با کلیک
-                 می‌بیند. */
-              const brands = db.prepare(`
-                SELECT brand_fa, brand_en, COUNT(*) AS count
-                FROM products
-                WHERE supply_mode != 'UNAVAILABLE'
-                GROUP BY brand_fa, brand_en
-                ORDER BY count DESC, brand_fa
-              `).all();
-              html = seo.brandsPage(html, require('./brand-logos').attach(brands));
+
+              const brands = require('./brand-logos')
+                .attach(require('./brand-list').listBrands(db));
+              html = seo.brandsPage(html, brands);
             } else if (seo.hasSimple(pathname)) {
               html = seo.simplePage(html, pathname);
             }
           } catch (e) { appLog('WARN', 'seo', e.message, { path: pathname }); }
 
-          // Sensitive page URLs may contain order IDs or one-use tokens.
-          // Avoid persisting those URLs in a browser/proxy HTTP cache too.
+          res.setHeader('Content-Security-Policy', scriptElementCsp.forTemplate(
+            res.getHeader('Content-Security-Policy'), html));
+
           const privatePage = /^\/(?:admin|account|invoice|label|checkout|payment|login|track|wishlist)(?:\/|\.html|$)/.test(pathname)
             || /^\/review(?:\/|-invite(?:\.html)?$)/.test(pathname);
           return sendBody(200, html, 'text/html; charset=utf-8',
             { 'Cache-Control': privatePage ? 'no-store' : 'public, max-age=300' });
         }
 
-        // ارائه خودکار WebP به مرورگرهای پشتیبان (۵۰٪ سبک‌تر)
         let served = full, servedExt = ext;
-        if (/\.(jpg|jpeg|png)$/.test(ext)) {
+        if (/\.(jpg|jpeg|png|webp)$/.test(ext)) {
           const accept = req.headers.accept || '';
-          if (accept.includes('image/webp')) {
-            const webpName = file.replace(/\.(jpg|jpeg|png)$/i, '.webp');
-            const webp = resolvePublicFile(baseDir, webpName);
-            if (webp) { served = webp; servedExt = '.webp'; }
+          const bases = file.replace(/\.(jpg|jpeg|png|webp)$/i, '');
+
+          const options = ext === '.webp'
+            ? [['image/avif', '.avif']]
+            : [['image/avif', '.avif'], ['image/webp', '.webp']];
+          for (const [token, format] of options) {
+            if (!accept.includes(token)) continue;
+            const candidate = resolvePublicFile(baseDir, bases + format);
+            if (candidate) { served = candidate; servedExt = format; break; }
           }
         }
 
@@ -2399,17 +2016,14 @@ const server = http.createServer(async (req, res) => {
           headers['Access-Control-Allow-Origin'] = '*';
         }
         if (/\.(mp4|webm)$/.test(servedExt)) {
-          /* ویدیو تغییر نمی‌کند؛ کش طولانی جلوی دانلود دوباره در هر
-             بازدید را می‌گیرد. فشرده‌سازی هم لازم نیست: خودش فشرده است. */
+
           headers['Cache-Control'] = 'public, max-age=604800, immutable';
         }
-        if (/\.(jpg|jpeg|png|svg|webp|ico)$/.test(servedExt)) {
+        if (/\.(jpg|jpeg|png|svg|webp|avif|ico)$/.test(servedExt)) {
           headers['Cache-Control'] = 'public, max-age=604800, immutable';
           headers['Vary'] = 'Accept';
         }
 
-        // فایل‌های متنی (CSS/JS/SVG/JSON) فشرده می‌شوند — تا ۷۵٪ سبک‌تر
-        // فونت woff2 و تصاویر از قبل فشرده‌اند، دوباره فشرده کردنشان فقط CPU می‌سوزاند
         if (/\.(css|js|svg|json|xml|txt|map)$/.test(servedExt)) {
           headers['Cache-Control'] = headers['Cache-Control'] || 'public, max-age=3600';
           const txt = fs.readFileSync(served);
@@ -2444,7 +2058,7 @@ const server = http.createServer(async (req, res) => {
     return sendJSON(404, { error: 'مسیر API یافت نشد' });
 
   } catch (err) {
-    // خطای ورودی کاربر لاگ نمی‌شود تا لاگ خطاهای واقعی شلوغ نشود
+
     if (err instanceof BadRequest) {
       return sendJSON(400, { error: err.message });
     }
@@ -2456,14 +2070,8 @@ const server = http.createServer(async (req, res) => {
   }
 });
 
-/* وقتی زمان‌بند خودکار سفارش منقضی را آزاد می‌کند، منتظران خبردار شوند.
-   بدون این، تنها مسیرهای دستی اطلاع می‌دادند. */
 setStockFreedHandler(skus => notifyStockWatchers(skus, 'انقضای خودکار'));
 
-/* ── تازه‌سازی بخش‌های خودکار صفحه اصلی ──
-   «پرفروش‌ترین» و «محبوب‌ترین» از پیش محاسبه می‌شوند تا صفحه اصلی
-   — پربازدیدترین صفحه سایت — هیچ GROUP BY سنگینی نزند.
-   یک بار هنگام بالا آمدن، سپس هر ساعت. */
 const SHOWCASE_HOURS = Math.max(1, parseInt(process.env.SHOWCASE_REFRESH_HOURS) || 1);
 setTimeout(() => {
   try {
@@ -2477,18 +2085,6 @@ setInterval(() => {
   catch (e) { appLog('ERROR', 'analytics', e.message); }
 }, SHOWCASE_HOURS * 3600 * 1000).unref();
 
-/* پاکسازی داده قدیمی — روزی یک بار.
-   `events` از ابتدا پاک می‌شد، ولی `audit_log` نه: تابع
-   `purgeAudit` نوشته و صادر شده بود ولی **هیچ‌جا صدا زده
-   نمی‌شد** (ممیزی مرداد ۱۴۰۵).
-
-   نرخ اندازه‌گیری‌شده در همین محیط: حدود ۳٬۱۰۰ ردیف در روز — که
-   بیشترش از آزمون‌هاست، ولی سقفی نداشت. روی دیسک محدود لیارا،
-   جدولی که فقط رشد می‌کند دیر یا زود مشکل‌ساز می‌شود.
-
-   مدت نگهداشت از `AUDIT_KEEP_DAYS` می‌آید (پیش‌فرض ۹۰ روز، همان
-   قراردادی که در FILE_INDEX مستند شده). خودِ `purgeAudit` این
-   پیش‌فرض را مدیریت می‌کند، پس اینجا عددی تحمیل نمی‌شود. */
 setInterval(() => {
   try { analytics.purge(); }
   catch (e) { appLog('ERROR', 'analytics', e.message); }
@@ -2510,5 +2106,16 @@ server.listen(PORT, () => {
   console.log(`   مجله    : http://localhost:${PORT}/journal`);
   console.log(`   کوییز   : http://localhost:${PORT}/quiz`);
   console.log(`   مدیریت  : http://localhost:${PORT}/admin`);
+  const siteEnv = (process.env.SITE_URL || '').trim();
+  console.log(`   نشانی عمومی : ${siteEnv || 'https://yazdperfume.ir (پیش‌فرض)'}`);
   console.log('═'.repeat(55));
+  if (process.env.NODE_ENV === 'production' && !siteEnv) {
+    console.warn('⚠  SITE_URL تنظیم نشده است؛ sitemap، canonical و llms.txt با دامنهٔ پیش‌فرض ساخته می‌شوند.');
+    console.warn('   اگر دامنهٔ واقعی چیز دیگری است، پیش از ثبت در Search Console مقدار SITE_URL را ست کنید.');
+    appLog('WARN', 'seo', 'SITE_URL در محیط تولید تنظیم نشده است', { fallback: 'https://yazdperfume.ir' });
+  }
+  if (process.env.NODE_ENV === 'production' && !(process.env.TRUSTED_PROXY_CIDRS || '').trim()) {
+    console.warn('⚠  TRUSTED_PROXY_CIDRS تنظیم نشده است؛ نشانی واقعی کاربر از هدر پراکسی پذیرفته نمی‌شود.');
+    appLog('WARN', 'security', 'TRUSTED_PROXY_CIDRS در محیط تولید تنظیم نشده است');
+  }
 });

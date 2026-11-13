@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 'use strict';
-// Unit-level HTML parser boundary checks; no real database or network.
+
 const assert = require('assert');
 const seo = require('../src/seo');
 const html = '<html><head><title>old</title></head><body><div id="feature" style="min-height:54vh"></div><article id="content" style="display:none"><img id="cover" src="" alt="" loading="eager" fetchpriority="high"><h1 id="title"></h1><div class="excerpt" id="excerpt"></div><div class="content" id="body"></div></article></body></html>';

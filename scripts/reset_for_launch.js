@@ -1,7 +1,6 @@
 #!/usr/bin/env node
 'use strict';
-// Historical command retired: an undifferentiated reset would destroy genuine
-// orders and customers. This command is now strictly read-only on every DB.
+
 const fs=require('fs'),path=require('path');
 const args=process.argv.slice(2);
 if(args.some(a=>a!=='--dry-run')){

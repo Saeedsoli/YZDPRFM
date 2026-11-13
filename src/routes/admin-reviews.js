@@ -1,51 +1,5 @@
-/**
- * عطر یزد | مسیرهای نظرات و دعوت‌نامه — بخش مدیریتی
- * ----------------------------------------------------
- * گام ۵ از تفکیک کامل `server.js`.
- *
- * ── محتوا ──
- *   GET    /api/admin/reviews            نظرات در انتظار تأیید
- *   PUT    /api/admin/reviews/:id        تأیید، رد، پاسخ عمومی
- *   DELETE /api/admin/reviews/:id        حذف نظر
- *   GET    /api/admin/review-invites     فهرست دعوت‌نامه‌ها
- *   POST   /api/admin/review-invites     ساخت دعوت‌نامه
- *   DELETE /api/admin/review-invites/:id حذف دعوت استفاده‌نشده
- *
- * ── چرا دعوت‌نامه اهمیت دارد ──
- * فروشگاه دوازده سال فروش حضوری دارد و صفر نظر آنلاین. دعوت‌نامه
- * تنها راهی است که مشتری حضوری بتواند نظر ثبت کند بدون آنکه
- * سفارش آنلاینی داشته باشد.
- *
- * دو قاعده که باید سالم بمانند:
- *   ۱) توکن دعوت **یک‌بارمصرف** است — پس از ثبت نظر می‌سوزد
- *   ۲) دعوت استفاده‌شده **حذف نمی‌شود** — وگرنه ردِ اینکه آن نظر
- *      از کجا آمده گم می‌شود (پاسخ ۴۰۹)
- *
- * ── قرارداد `ctx` ──
- * ماژول زمینه می‌گیرد و `Promise<boolean>` برمی‌گرداند.
- */
-
 'use strict';
 
-/**
- * @param {object}   ctx
- * @param {string}   ctx.method
- * @param {string}   ctx.pathname
- * @param {object}   ctx.parsed
- * @param {object}   ctx.req
- * @param {Function} ctx.can
- * @param {Function} ctx.parseBody
- * @param {Function} ctx.logAudit
- * @param {Function} ctx.appLog
- * @param {object}   ctx.who
- * @param {object}   ctx.db
- * @param {object}   ctx.otp
- * @param {Function} ctx.cleanText
- * @param {Function} ctx.faNum
- * @param {Function} ctx.createReviewInvite
- * @param {number}   ctx.INVITE_TTL_DAYS
- * @returns {Promise<boolean>}
- */
 async function handle(ctx) {
   const {
     method, pathname, parsed, req,
@@ -53,9 +7,6 @@ async function handle(ctx) {
     otp, cleanText, faNum, createReviewInvite, INVITE_TTL_DAYS
   } = ctx;
 
-  /* پوشش `sendJSON` — درس گام ۱.
-     این ماژول پاسخ استریمی ندارد، پس پوشش برای همه مسیرها کافی
-     است (بررسی شد: هیچ `return;` خالی و هیچ `pipe(res)`). */
   const sendJSON = (code, data) => { ctx.sendJSON(code, data); return true; };
 
   if (method === 'GET' && pathname === '/api/admin/reviews') {
@@ -72,8 +23,6 @@ async function handle(ctx) {
     return sendJSON(200, { total: rows.length, counts, reviews: rows });
   }
 
-  /* ── دعوت‌نامه نظر (مدیریت) ──
-     برای مشتریان ۱۲ سال فروش حضوری که سفارش آنلاین ندارند. */
   if (method === 'GET' && pathname === '/api/admin/review-invites') {
     if (!can('reviews.view')) return true;
     const rows = db.prepare(`
@@ -90,7 +39,7 @@ async function handle(ctx) {
       total: rows.length,
       invites: rows.map(r => ({
         ...r,
-        // وضعیت محاسبه‌شده تا پنل خودش تاریخ حساب نکند
+
         state: r.used_at ? 'USED'
           : new Date(r.expires_at) < now ? 'EXPIRED' : 'OPEN',
         url: `/review/${r.token}`
@@ -110,9 +59,6 @@ async function handle(ctx) {
     if (!otp.isValidMobile(mobile))
       return sendJSON(400, { error: 'شماره موبایل معتبر وارد کنید (۰۹xxxxxxxxx).' });
 
-    /* اگر همین مشتری قبلاً برای همین محصول نظر داده، دعوت تازه
-       بی‌معنی است — جدول `reviews` کلید یکتای (محصول، شماره)
-       دارد و نظر دوم فقط اولی را بازنویسی می‌کند. */
     const existing = db.prepare('SELECT status FROM reviews WHERE product_id=? AND mobile=?')
       .get(p.id, mobile);
     if (existing) {
@@ -121,8 +67,6 @@ async function handle(ctx) {
       });
     }
 
-    /* دعوت باز و منقضی‌نشده هم تکراری است. به‌جای ساخت دومی،
-       همان لینک قبلی برگردانده می‌شود تا مدیر دو پیامک نفرستد. */
     const open = db.prepare(`
       SELECT token, expires_at FROM review_invites
       WHERE product_id=? AND mobile=? AND used_at IS NULL AND expires_at > ?
@@ -148,7 +92,7 @@ async function handle(ctx) {
       token: inv.token,
       url: `/review/${inv.token}`,
       expires_at: inv.expires_at,
-      // متن آماده برای کپی و ارسال — مدیر خودش تایپ نکند
+
       sms_text: `${p.brand_fa ? p.brand_fa + ' — ' : ''}${p.name_fa}\n`
         + `سلام! اگر این رایحه را از ما گرفته‌اید، خوشحال می‌شویم تجربه‌تان را بنویسید:\n`
         + `${(process.env.SITE_URL || 'https://yazdperfume.ir').replace(/\/$/, '')}/review/${inv.token}\n`
@@ -159,8 +103,7 @@ async function handle(ctx) {
   if (method === 'DELETE' && /^\/api\/admin\/review-invites\/\d+$/.test(pathname)) {
     if (!can('reviews.invite')) return true;
     const id = parseInt(pathname.split('/').pop());
-    /* فقط دعوت استفاده‌نشده حذف می‌شود. اگر نظری با آن ثبت شده،
-       حذف دعوت یعنی گم کردن ردِ اینکه آن نظر از کجا آمده. */
+
     const r = db.prepare('DELETE FROM review_invites WHERE id=? AND used_at IS NULL').run(id);
     if (!r.changes) {
       return sendJSON(409, {
@@ -177,8 +120,6 @@ async function handle(ctx) {
     const cur = db.prepare('SELECT * FROM reviews WHERE id=?').get(id);
     if (!cur) return sendJSON(404, { error: 'نظر یافت نشد' });
 
-    /* تأیید/رد و پاسخ عمومی دو کار جدا هستند: ممکن است بخواهید
-       کسی نظرها را تأیید کند ولی از طرف فروشگاه پاسخ ننویسد. */
     const wantsStatus = ['APPROVED', 'REJECTED', 'PENDING'].includes(b.status)
       && b.status !== cur.status;
     const wantsReply = b.admin_reply != null && String(b.admin_reply).trim() !== '';
@@ -192,7 +133,7 @@ async function handle(ctx) {
 
     const status = ['APPROVED', 'REJECTED', 'PENDING'].includes(b.status)
       ? b.status : cur.status;
-    // پاسخ ادمین هم داده کاربر است و در صفحه محصول رندر می‌شود
+
     const reply = wantsReply ? cleanText(b.admin_reply, 1000) : null;
 
     db.prepare('UPDATE reviews SET status=?, admin_reply=COALESCE(?, admin_reply) WHERE id=?')
@@ -215,7 +156,7 @@ async function handle(ctx) {
                      : sendJSON(404, { error: 'نظر یافت نشد' });
   }
 
-  return false;   // هیچ‌کدام از مسیرهای این ماژول نبود
+  return false;
 }
 
 module.exports = { handle };

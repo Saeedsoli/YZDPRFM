@@ -1,28 +1,4 @@
 #!/usr/bin/env node
-/**
- * ممیزی ریسک «محتوای انبوهِ کم‌تمایز» از دید گوگل
- * ══════════════════════════════════════════════
- *
- * چرا این اسکریپت وجود دارد
- * ─────────────────────────
- * گوگل محتوای هوش‌مصنوعی را جریمه نمی‌کند؛ سیاست رسمی‌اش
- * «scaled content abuse» است: تولید انبوه صفحه با ارزش کمِ
- * یکتا، «فارغ از اینکه چطور ساخته شده». پس معیارِ خطر برای ما
- * «AI بودن» نیست، این چهار عدد است:
- *
- *   ۱) چند صفحه داریم            → مقیاس
- *   ۲) هر صفحه چقدر متن یکتا دارد → تمایز
- *   ۳) چند صفحه واقعاً قابل خرید‌اند → دلیل وجود
- *   ۴) چند ادعای راستی‌آزمایی‌پذیرِ مشکوک داریم → E-E-A-T
- *
- * این اسکریپت هر چهار را می‌سنجد و به هر محصول یکی از سه رتبه
- * می‌دهد: A (آماده ایندکس) · B (نیازمند غنی‌سازی) · C (فعلاً
- * نباید ایندکس شود).
- *
- * هیچ چیزی را تغییر نمی‌دهد. فقط گزارش می‌دهد.
- *
- * اجرا:  node scripts/audit_seo_ai_risk.js [--json] [--list-a]
- */
 
 'use strict';
 
@@ -43,8 +19,6 @@ function jsonArr(s) {
   catch { return []; }
 }
 
-/* ═════════════ داده ═════════════ */
-
 const products = db.prepare(`
   SELECT p.*,
          (SELECT COUNT(*)           FROM variants v WHERE v.product_id = p.id) AS n_variants,
@@ -56,12 +30,9 @@ const products = db.prepare(`
 const TOTAL = products.length;
 const brandSet = new Set(products.map(p => String(p.brand_en || '').toLowerCase().trim()).filter(Boolean));
 
-/* چند محصول با هر تصویر */
 const imgUse = new Map();
 for (const p of products) imgUse.set(p.image_url, (imgUse.get(p.image_url) || 0) + 1);
 
-/* متن توصیفیِ یکتا: taste + accords + notes. اگر دو محصول
-   دقیقاً یکی باشند، هیچ‌کدام «یکتا» حساب نمی‌شوند. */
 const descKey = p => [
   p.taste || '', p.accords || '',
   p.notes_top || '', p.notes_middle || '', p.notes_base || ''
@@ -72,21 +43,16 @@ for (const p of products) {
   descCount.set(k, (descCount.get(k) || 0) + 1);
 }
 
-/* یادداشت‌های تکراری — اگر یک متن روی چند صفحه بنشیند، همان
-   مشکلی را می‌سازد که قرار بود حل کند. */
 const makerCount = new Map();
 for (const p of products) {
   if (!p.maker_note) continue;
   makerCount.set(p.maker_note, (makerCount.get(p.maker_note) || 0) + 1);
 }
 
-/* ═════════════ سنجه‌های هر محصول ═════════════ */
-
 function assess(p) {
   const notes = jsonArr(p.notes_top).length + jsonArr(p.notes_middle).length + jsonArr(p.notes_base).length;
   const accords = jsonArr(p.accords).join(' ');
-  /* یادداشت عطرساز بخشی از متن یکتاست — و مهم‌ترین بخشش، چون
-     برخلاف taste و accords از دیتاست نمی‌آید. */
+
   const makerLen = String(p.maker_note || '').length;
   const uniqueText = String(p.taste || '').length + accords.length + makerLen;
   const shared = imgUse.get(p.image_url) || 1;
@@ -100,8 +66,7 @@ function assess(p) {
   if (dupDesc)               flags.push('متن تکراری با محصول دیگر');
   if (!makerLen)             flags.push('بدون یادداشت عطرساز');
   if (dupMaker)              flags.push('یادداشت عطرساز تکراری');
-  /* برچسب تصویر عمداً عددِ دقیق را در خود ندارد؛ وگرنه هر تصویر
-     یک ردیف جدا در جدول تجمیع می‌سازد و گزارش خوانا نمی‌ماند. */
+
   if (shared > 20)           flags.push('تصویر مشترک با بیش از ۲۰ محصول');
   if (perfumerIsBrand)       flags.push('عطرساز = نام برند (راستی‌آزمایی‌نشده)');
   if (p.supply_mode === 'UNAVAILABLE') flags.push('غیرقابل تأمین');
@@ -110,12 +75,6 @@ function assess(p) {
   const buyable = p.supply_mode !== 'UNAVAILABLE' && p.n_variants > 0;
   const inStock = p.total_stock > 0;
 
-  /* رتبه‌بندی
-     A: صفحه‌ای که همین امروز ارزش ایندکس دارد — قابل خرید،
-        متن یکتا، تصویر نه چندان مشترک، ادعای مشکوک ندارد.
-     B: محتوا قابل قبول است ولی دلیل وجود صفحه ضعیف است
-        (موجود نیست یا تصویر عمومی) — با غنی‌سازی A می‌شود.
-     C: صفحه‌ای که ایندکس شدنش به کل دامنه ضرر می‌زند. */
   let grade;
   if (!buyable || notes < 6 || dupDesc || uniqueText < 150) grade = 'C';
   else if (inStock && uniqueText >= 300 && makerLen > 0 && !dupMaker
@@ -127,8 +86,6 @@ function assess(p) {
 }
 
 const rows = products.map(p => ({ p, a: assess(p) }));
-
-/* ═════════════ تجمیع ═════════════ */
 
 const grades = { A: 0, B: 0, C: 0 };
 for (const r of rows) grades[r.a.grade]++;
@@ -142,17 +99,11 @@ const inStockN  = rows.filter(r => r.a.inStock).length;
 const reviewedN = rows.filter(r => r.p.n_reviews > 0).length;
 
 const articles = db.prepare('SELECT slug, title, LENGTH(content) len FROM articles').all();
-const staticPages = 10; // فهرست STATIC در sitemap
+const staticPages = 10;
 
-/* ── فقط محصولات قابل سفارش در sitemap می‌آیند ──
-   نسخه پیشین همه محصولات را می‌شمرد و عدد ۲٬۱۲۶ می‌داد، در
-   حالی که sitemap واقعی فقط ۱۵ نشانی داشت. ممیزی‌ای که عدد
-   غلط بدهد بدتر از نبودنش است — اینجا دقیقاً همان منطق
-   `src/server.js` بازتولید می‌شود. */
 const orderable = products.filter(p => p.supply_mode !== 'UNAVAILABLE').length;
 const indexable = staticPages + orderable + articles.length;
 
-/* نسبت طلایی: چند درصد از صفحاتِ ایندکس‌شدنی، صفحهٔ «بی‌دلیل»اند */
 const thinRatio = Number(pct(grades.C, indexable));
 
 const report = {
@@ -177,8 +128,6 @@ if (JSON_OUT) {
   console.log(JSON.stringify(report, null, 2));
   process.exit(0);
 }
-
-/* ═════════════ چاپ ═════════════ */
 
 const line = '─'.repeat(64);
 const h = t => console.log(`\n${t}\n${line}`);

@@ -1,50 +1,3 @@
-/**
- * عطر یزد | مسیرهای تعامل مشتری
- * ------------------------------------------------
- * گام ۸ از تفکیک کامل `server.js` — و آخرین گام بی‌خطر.
- *
- * ── محتوا ──
- *   POST   /api/track                 ثبت رویداد از مرورگر
- *   GET    /api/wishlist              فهرست علاقه‌مندی
- *   POST   /api/wishlist              افزودن/برداشتن (کلید دوحالته)
- *   GET    /api/wishlist/check/:key   وضعیت یک محصول
- *   GET    /api/reviews/:key          نظرات تأییدشده یک محصول
- *   GET    /api/review-invite/:token  اعتبار دعوت‌نامه حضوری
- *   POST   /api/review-invite         ثبت نظر با دعوت‌نامه
- *   POST   /api/reviews               ثبت نظر (کاربر واردشده)
- *   POST   /api/stock-alert           اطلاع موجود شدن
- *   GET    /api/notice                نوار اعلان
- *   GET|POST /api/orders/track        پیگیری با موبایل و شماره سفارش
- *
- * ── وجه مشترک این یازده مسیر ──
- * همه **بدون `can()`** کار می‌کنند و همه به شکلی «کاربر چیزی
- * می‌گذارد» هستند نه «کاربر چیزی می‌خرد». پول جابه‌جا نمی‌شود،
- * پس هیچ‌کدام تراکنشی نیستند — ولی سه‌تایشان داده‌ی شخصی
- * برمی‌گردانند و محافظشان باید سالم بماند:
- *
- *   ۱) `/api/orders/track` موبایل و شناسه سفارش را هر دو می‌خواهد.
- *      برای عدم تطبیق، فهرست خالی می‌دهد و داده نشانی برنمی‌گرداند.
- *
- *   ۲) `/api/review-invite/:token` شماره را **ماسک‌شده** برمی‌گرداند
- *      (`0913****79`). مشتری مطمئن می‌شود لینک مال خودش است، ولی
- *      اگر لینک به دست دیگری افتاد شماره کامل لو نمی‌رود.
- *
- *   ۳) `/api/wishlist` بدون ورود ۴۰۱ می‌دهد. علاقه‌مندی خودش
- *      یک نیمرخ رفتاری است.
- *
- * ── سه محدودیت نرخ با دو رفتار عمداً متفاوت ──
- *   `track`   → رد شدن **۲۰۰ با `throttled:true`**. تحلیل نباید
- *               تجربه کاربر را خراب کند؛ کاربر منتظر پاسخ نیست.
- *   `alert`   → رد شدن **۴۲۹ با پیام**. کاربر منتظر تأیید است و
- *               سکوت یعنی دروغ گفتن.
- *   `review`  → **۵ نظر در ۲۴ ساعت** به ازای هر شماره. مثل `alert`
- *               گویا است. سطلش پنجره‌ی درازی دارد، پس آزمون باید
- *               پیش از هر اجرا پاکش کند.
- *
- * ── قرارداد `ctx` ──
- * ماژول زمینه می‌گیرد و `Promise<boolean>` برمی‌گرداند.
- */
-
 'use strict';
 
 const shopTime = require('../shop-time');
@@ -52,30 +5,6 @@ const { publicVariantSql } = require('../variant-visibility');
 const crypto = require('crypto');
 const { variantAvailability } = require('../availability');
 
-/**
- * @param {object}   ctx
- * @param {string}   ctx.method
- * @param {string}   ctx.pathname
- * @param {object}   ctx.parsed
- * @param {object}   ctx.req
- * @param {string}   ctx.reqIP
- * @param {object}   ctx.db
- * @param {Function} ctx.parseBody
- * @param {Function} ctx.rateLimit
- * @param {object}   ctx.RL
- * @param {Function} ctx.appLog
- * @param {Function} ctx.cleanText
- * @param {Function} ctx.parseProduct
- * @param {Function} ctx.attachVariants
- * @param {Function} ctx.reviewSummary
- * @param {Function} ctx.hasPurchased
- * @param {Function} ctx.readReviewInvite
- * @param {Function} ctx.consumeReviewInvite
- * @param {Function} ctx.getCustomerToken
- * @param {object}   ctx.otp
- * @param {object}   ctx.analytics
- * @returns {Promise<boolean>}
- */
 async function handle(ctx) {
   const {
     method, pathname, parsed, req, res, reqIP, db,
@@ -85,32 +14,17 @@ async function handle(ctx) {
     getCustomerToken, otp, analytics
   } = ctx;
 
-  /* پوشش `sendJSON` — درس گام ۱.
-     بازبینی انجام‌شده: مسیر پیگیری برای جلوگیری از ذخیره داده
-     محرمانه هدر no-store می‌گذارد؛ بدنه‌ها از پوشش زیر می‌روند.
-
-     یک نکته ویژه این ماژول: بلوک `/api/wishlist` بیرونی است و
-     درونش `GET` و `POST` تودرتو دارد. اگر متد چیز دیگری باشد
-     بلوک **بدون پاسخ** تمام می‌شود و اجرا به `return false`
-     پایین می‌رسد — همان رفتار پیشین (۴۰۴ از سرور). */
   const sendJSON = (code, data) => { ctx.sendJSON(code, data); return true; };
 
-  /* رقم فارسی در پیام‌های کاربر.
-     پیش‌تر «۳۰ دقیقه» به‌صورت «30 دقیقه» نمایش داده می‌شد — تنها
-     جای سایت که رقم لاتین به کاربر نشان داده می‌شد. */
   const fa = n => String(n).replace(/\d/g, d => '۰۱۲۳۴۵۶۷۸۹'[d]);
 
-
-  /** ثبت رویداد از سمت مرورگر (افزودن به سبد، شروع تسویه، کوییز) */
   if (method === 'POST' && pathname === '/api/track') {
-    /* بی‌صدا رد می‌شود، نه با خطا: تحلیل نباید تجربه کاربر را
-       خراب کند. اگر کسی از سقف گذشت، رویدادش ثبت نمی‌شود ولی
-       صفحه‌اش هم نمی‌شکند. */
+
     const trl = rateLimit(`track:${reqIP}`, RL.track.limit, RL.track.window, RL.track.block);
     if (!trl.ok) return sendJSON(200, { ok: false, throttled: true });
 
     const b = await parseBody(req);
-    // Purchases are recorded exclusively from a verified server-side payment.
+
     if (b.kind === 'purchase') return sendJSON(200,{ok:false});
     const ok = analytics.track(
       String(b.kind || ''),
@@ -121,8 +35,6 @@ async function handle(ctx) {
     return sendJSON(200, { ok });
   }
 
-
-  // ═══════════ علاقه‌مندی ═══════════
   if (pathname === '/api/wishlist') {
     const mobile = otp.mobileFromToken(getCustomerToken(req));
     if (!mobile) return sendJSON(401, { error: 'برای استفاده از علاقه‌مندی وارد شوید.' });
@@ -156,7 +68,6 @@ async function handle(ctx) {
     }
   }
 
-  // بررسی وضعیت یک محصول در علاقه‌مندی
   if (method === 'GET' && pathname.startsWith('/api/wishlist/check/')) {
     const mobile = otp.mobileFromToken(getCustomerToken(req));
     if (!mobile) return sendJSON(200, { saved: false, guest: true });
@@ -168,7 +79,6 @@ async function handle(ctx) {
     return sendJSON(200, { saved });
   }
 
-  // ═══════════ نظرات ═══════════
   if (method === 'GET' && pathname.startsWith('/api/reviews/')) {
     const key = decodeURIComponent(pathname.replace('/api/reviews/', ''));
     const p = db.prepare('SELECT id FROM products WHERE id=? OR slug=?').get(key, key);
@@ -197,10 +107,6 @@ async function handle(ctx) {
     });
   }
 
-  /* ── دعوت‌نامه نظر (عمومی) ──
-     مشتری فروش حضوری با لینک یکتا وارد می‌شود. بدون ورود با
-     رمز، چون این مشتری‌ها اصلاً حساب کاربری ندارند — خودِ لینک
-     سند هویت است. */
   if (method === 'GET' && pathname.startsWith('/api/review-invite/')) {
     const token = pathname.replace('/api/review-invite/', '');
     const chk = readReviewInvite(token);
@@ -212,8 +118,7 @@ async function handle(ctx) {
 
     return sendJSON(200, {
       product: p,
-      // شماره ماسک‌شده تا مشتری مطمئن شود لینک مال خودش است،
-      // ولی اگر لینک به دست دیگری افتاد شماره کامل لو نرود
+
       mobile_masked: chk.invite.mobile.slice(0, 4) + '****' + chk.invite.mobile.slice(-2),
       expires_at: chk.invite.expires_at
     });
@@ -225,10 +130,6 @@ async function handle(ctx) {
     if (!chk.ok) return sendJSON(410, { error: chk.error, used: !!chk.used });
     const inv = chk.invite;
 
-    /* محدودیت نرخ روی خودِ توکن، نه شماره: مشتری حضوری شماره‌اش
-       در سامانه ورود نیست و کسی که لینک را دارد فقط یک بار
-       می‌تواند استفاده کند — ولی تلاش پیاپی برای دور زدن
-       اعتبارسنجی باید متوقف شود. */
     const rl = rateLimit(`invite:${inv.token}`, 10, 3600e3);
     if (!rl.ok) return sendJSON(429, { error: 'تلاش بیش از حد. یک ساعت بعد دوباره امتحان کنید.' });
 
@@ -247,10 +148,6 @@ async function handle(ctx) {
     const name = cleanText(b.display_name, 40)
       || `${inv.mobile.slice(0, 4)}****${inv.mobile.slice(-2)}`;
 
-    /* ثبت نظر و مصرف دعوت در یک تراکنش.
-       اگر مصرف دعوت جدا انجام شود و بین دو دستور خطایی بیفتد،
-       یا نظر بدون باطل شدن لینک ثبت می‌شود (قابل تکرار) یا لینک
-       می‌سوزد بدون اینکه نظری ثبت شده باشد. */
     let reviewId = null;
     const ok = db.transaction(() => {
       const r = db.prepare(`
@@ -270,7 +167,6 @@ async function handle(ctx) {
         || db.prepare('SELECT id FROM reviews WHERE product_id=? AND mobile=?')
              .get(inv.product_id, inv.mobile)?.id;
 
-      // اتمی — دو درخواست همزمان با یک لینک، فقط یکی می‌گذرد
       return consumeReviewInvite(inv.token, reviewId);
     })();
 
@@ -327,14 +223,12 @@ async function handle(ctx) {
            clamp(b.longevity), clamp(b.sillage), verified);
 
     appLog('INFO', 'review', 'نظر جدید ثبت شد', { product: p.id, rating, verified });
-    /* خبر به مسئول نظرات — شمار کل صف فرستاده می‌شود نه تک‌تک
-       نظرها، چون سقف ساعتی دارد و «۳ نظر در انتظار» مفیدتر از
-       سه پیامک جداگانه است. */
+
     try {
       const pend = db.prepare(
         "SELECT COUNT(*) c FROM reviews WHERE status='PENDING'").get().c;
       require('../alerts').fireAsync('newReview', { count: pend });
-    } catch { /* اطلاع‌رسانی نباید ثبت نظر را بشکند */ }
+    } catch {  }
 
     return sendJSON(201, {
       message: 'نظر شما ثبت شد و پس از بررسی منتشر می‌شود.',
@@ -342,7 +236,6 @@ async function handle(ctx) {
     });
   }
 
-  // ═══════════ اطلاع موجود شدن ═══════════
   if (method === 'POST' && pathname === '/api/stock-alert') {
     const arl = rateLimit(`alert:${reqIP}`, RL.alert.limit, RL.alert.window, RL.alert.block);
     if (!arl.ok) {
@@ -367,11 +260,6 @@ async function handle(ctx) {
     return sendJSON(201, { message: 'به‌محض موجود شدن، پیامک اطلاع‌رسانی می‌شود.' });
   }
 
-  /* ── نوار اعلان (عمومی) ──
-     تک‌پیامی و بدون چرخش. پژوهش‌ها نشان می‌دهند بنر اسلایدی
-     فقط ۱٪ کلیک می‌گیرد و ۸۴٪ همان کلیک روی اسلاید اول است —
-     پس چرخش عملاً پیام‌های بعدی را نامرئی می‌کند و CLS را هم
-     خراب می‌کند. یک پیام، همان که مهم‌تر است. */
   if (method === 'GET' && pathname === '/api/notice') {
     const today = shopTime.dateKey();
     const n = db.prepare(`
@@ -384,10 +272,8 @@ async function handle(ctx) {
     return sendJSON(200, { notice: n || null });
   }
 
-  // پیگیری سفارش با موبایل
   if ((method === 'GET' || method === 'POST') && pathname === '/api/orders/track') {
-    // No listing by phone alone; both pieces are necessary. POST keeps them out
-    // of access-log query strings. GET remains for existing clients.
+
     res.setHeader('Cache-Control','no-store');
     res.setHeader('Pragma','no-cache');
     const data=method==='POST' ? await parseBody(req) : parsed.query;
@@ -408,7 +294,7 @@ async function handle(ctx) {
     return sendJSON(200,{total:1,orders:[{...o,items}]});
   }
 
-  return false;   // هیچ‌کدام از مسیرهای این ماژول نبود
+  return false;
 }
 
 module.exports = { handle };

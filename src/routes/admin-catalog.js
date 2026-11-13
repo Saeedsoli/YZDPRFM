@@ -1,67 +1,9 @@
-/**
- * عطر یزد | مسیرهای کاتالوگ مدیریتی
- * ------------------------------------
- * گام ۱ از تفکیک کامل `server.js`.
- *
- * ── محتوا ──
- *   PUT    /api/admin/variants/:sku    ویرایش قیمت و موجودی
- *   PUT    /api/admin/products/:id     ویرایش گروهی متغیرها
- *   GET    /api/admin/low-stock        کالاهای رو به اتمام
- *   GET    /api/admin/logs             لاگ سیستم
- *   POST   /api/admin/maintenance      آزادسازی سفارش‌های معلق
- *   POST   /api/admin/reindex          بازسازی ایندکس جستجو و نُت
- *
- * ── چرا این بلوک اول ──
- * شش مسیر پیوسته با مرز روشن، پوشش آزمون خوب
- * (`smoke_test.sh`، `test_stock_alerts.js`، `test_access_card.js`)
- * و بدون دست زدن به پول یا احراز هویت.
- *
- * ── قرارداد `ctx` ──
- * همان الگوی `routes/articles.js`: ماژول یک زمینه می‌گیرد و
- * `Promise<boolean>` برمی‌گرداند —
- *   true  → رسیدگی شد
- *   false → مسئولش نیستم، ادامه بده
- *
- * ── نکته `can()` ──
- * `can()` در صورت نبود مجوز، خودش پاسخ ۴۰۳ را می‌فرستد. در
- * `server.js` الگویش `return;` بود (خروج از handler)، ولی اینجا
- * باید `return true;` باشد: پاسخ فرستاده شده، پس مسیر **رسیدگی
- * شده** است. اگر `false` برگردد، سرور ادامه می‌دهد و در نهایت
- * ۴۰۴ روی همان پاسخ می‌نویسد.
- *
- * ── درسی که این ماژول رعایت می‌کند ──
- * در تفکیک RBAC، وابستگی‌ها با regex استخراج شدند و چهار مورد جا
- * افتاد؛ `node -c` سبز داد ولی مسیرها در اجرا می‌شکستند. اینجا
- * از `scripts/lib/extract_deps.js` استفاده شد که آگاه از رشته و
- * کامنت است، و پس از تفکیک **هر شش مسیر واقعاً اجرا شدند**.
- */
-
 'use strict';
 const { RATE_KEY, rateString, previewExchangeRate, updateExchangeRate } = require('../essence-pricing-store');
 const { gramToKg, productPriceState, previewProductPrice, applyProductPrice } = require('../product-essence-pricing');
 const { publicVariantSql } = require('../variant-visibility');
+const essenceInventory = require('../essence-inventory');
 
-/**
- * @param {object}   ctx
- * @param {string}   ctx.method
- * @param {string}   ctx.pathname
- * @param {object}   ctx.parsed              خروجی url.parse
- * @param {object}   ctx.req
- * @param {Function} ctx.sendJSON
- * @param {Function} ctx.can                 خودش ۴۰۳ می‌فرستد
- * @param {Function} ctx.parseBody
- * @param {Function} ctx.logAudit
- * @param {Function} ctx.appLog
- * @param {object}   ctx.db
- * @param {Function} ctx.parseProduct
- * @param {object}   ctx.who              کارمند واردشده (برای بررسی نرم مجوز)
- * @param {Function} ctx.attachVariants
- * @param {Function} ctx.notifyStockWatchers
- * @param {Function} ctx.releaseStaleOrders
- * @param {Function} ctx.buildSearchIndex
- * @param {Function} ctx.buildNotesIndex
- * @returns {Promise<boolean>}
- */
 async function handle(ctx) {
   const {
     method, pathname, parsed, req,
@@ -70,28 +12,8 @@ async function handle(ctx) {
     releaseStaleOrders, buildSearchIndex, buildNotesIndex
   , bustStatsCache} = ctx;
 
-  /* ── چرا sendJSON پوششی ──
-     در `server.js` الگوی `return sendJSON(...)` یعنی «پاسخ بده و
-     از handler خارج شو». اینجا آن الگو `undefined` برمی‌گرداند —
-     که falsy است، پس سرور فکر می‌کند مسیر رسیدگی نشده، ادامه
-     می‌دهد و ۴۰۴ روی همان پاسخ می‌نویسد:
-
-       Error [ERR_HTTP_HEADERS_SENT]: Cannot write headers after
-       they are sent to the client
-
-     و چون این خطا بیرون از try/catch رخ می‌دهد، **کل فرآیند
-     سرور را می‌کشد**. یعنی نخستین درخواست به هر مسیر این ماژول،
-     سایت را پایین می‌آورد.
-
-     این باگ در نخستین اجرای آزمون گرفته شد.
-
-     دو راه بود: ۱۳ نقطه `return sendJSON` را دستی به دو خط
-     تبدیل کنیم (پرخطا و پرنویز)، یا یک پوشش که همان الگو را
-     معنادار کند. راه دوم انتخاب شد — خواناتر و بدون فرصت
-     فراموشی. */
   const sendJSON = (code, data) => { ctx.sendJSON(code, data); return true; };
 
-  // Exchange-rate API only. No admin UI is exposed until a visual design is approved.
   if (pathname === '/api/admin/essence-pricing/rate' && method === 'GET') {
     if (!can('settings.view') || !can('products.price')) return true;
     const rate = db.prepare('SELECT value FROM settings WHERE key=?').get(RATE_KEY);
@@ -120,13 +42,12 @@ async function handle(ctx) {
       appLog('ERROR', 'pricing', 'خطا در به‌روزرسانی نرخ ارز', { error: error.message });
       return sendJSON(500, { error: 'قیمت‌ها تغییر نکردند؛ داده‌های قیمت‌گذاری نیاز به بررسی دارند.' });
     }
-    // A logging failure cannot undo an already committed transaction.
+
     try { logAudit('products.exchange_rate', { previous_rate: body.expected_rate_toman, ...result }); }
     catch (error) { appLog('ERROR', 'pricing', 'ثبت سابقه تغییر نرخ ناموفق بود', { error: error.message }); }
     return sendJSON(200, result);
   }
 
-  // Product essence prices: USD per gram is entered; toman per gram is derived from the current rate.
   const essenceProductMatch = pathname.match(/^\/api\/admin\/essence-pricing\/products\/([^/]+)(\/preview)?$/);
   if (essenceProductMatch && ['GET','POST','PUT'].includes(method)) {
     const preview = !!essenceProductMatch[2];
@@ -169,31 +90,15 @@ async function handle(ctx) {
     return sendJSON(200,result);
   }
 
-  // ═══════════ مدیریت محصول و موجودی (ادمین) ═══════════
-
-  // ویرایش قیمت/موجودی یک متغیر
   if (method === 'PUT' && pathname.startsWith('/api/admin/variants/')) {
     const sku = decodeURIComponent(pathname.replace('/api/admin/variants/', ''));
     const b = await parseBody(req);
     const v = db.prepare('SELECT * FROM variants WHERE sku=?').get(sku);
     if (!v) return sendJSON(404, { error: 'کالا یافت نشد' });
 
-    /* یک مسیر، دو عمل با حساسیت متفاوت.
-       انباردار باید موجودی را عوض کند ولی قیمت را نه — پس هر
-       فیلد مجوز خودش را می‌خواهد. بررسی فقط وقتی انجام می‌شود
-       که آن فیلد واقعاً فرستاده شده و مقدارش فرق دارد. */
     const wantsPrice = b.price_toman != null && parseInt(b.price_toman) !== v.price_toman;
     const wantsStock = b.stock != null && parseInt(b.stock) !== v.stock;
 
-    /* ── قیمت دلاری ──
-       گام اول از قیمت‌گذاری خودکار: فعلاً فقط ذخیره می‌شود.
-       فرمول (وزن × نرخ دلار + هزینه‌ها) بعداً روی همین می‌نشیند.
-
-       رشته خالی یعنی «پاک کن» و به NULL تبدیل می‌شود — نه صفر.
-       صفر یعنی «رایگان» که معنای دیگری است.
-
-       مقایسه با `!==` روی عدد اعشاری امن است چون هر دو طرف از
-       یک مسیر تبدیل می‌شوند. */
     const usdRaw = b.price_usd;
     const usdNew = (usdRaw === '' || usdRaw === null) ? null
                  : (usdRaw === undefined ? undefined : parseFloat(usdRaw));
@@ -207,8 +112,7 @@ async function handle(ctx) {
         stock: v.stock, notified: 0
       });
     }
-    /* قیمت دلاری همان حساسیت قیمت تومانی را دارد — پایه محاسبه
-       قیمت نهایی است، پس انباردار نباید بتواند عوضش کند. */
+
     if ((wantsPrice || wantsUsd) && !can('products.price')) return true;
     if (wantsStock && !can('products.stock')) return true;
 
@@ -222,10 +126,7 @@ async function handle(ctx) {
       if (!Number.isFinite(usd) || usd < 0) {
         return sendJSON(400, { error: 'قیمت دلاری نامعتبر است.' });
       }
-      /* سقف محافظتی: گران‌ترین اسانس جهان زیر ۱۰٬۰۰۰ دلار در
-         کیلوست. عدد بزرگ‌تر یعنی اشتباه تایپی — و چون قرار است
-         پایه محاسبه خودکار شود، اشتباه اینجا در قیمت هزاران
-         محصول تکثیر می‌شود. */
+
       if (usd > 100000) {
         return sendJSON(400, { error: 'قیمت دلاری بیش از حد بزرگ است.' });
       }
@@ -247,7 +148,6 @@ async function handle(ctx) {
       }
     });
 
-    // اطلاع‌رسانی به منتظران در صورت موجود شدن
     const notified = (stock > 0 && price > 0 && (v.stock <= 0 || v.price_toman <= 0))
       ? notifyStockWatchers([sku], 'ویرایش ادمین')
       : 0;
@@ -260,16 +160,6 @@ async function handle(ctx) {
     });
   }
 
-  /* ── خواندن محصول برای پنل ──
-     چرا مسیر جدا از `/api/products/:slug` عمومی:
-
-     قیمت دلاری **پایه محاسبه** است، نه اطلاعات محصول. اگر در
-     پاسخ عمومی بیاید، هر بازدیدکننده‌ای می‌تواند حاشیه سود
-     فروشگاه را حساب کند: قیمت تومانی تقسیم بر قیمت دلاری ضرب
-     در نرخ روز.
-
-     `attachVariants` فهرست سفید دارد و `price_usd` را نمی‌دهد —
-     همان‌طور که باید. پس پنل مسیر خودش را می‌خواهد. */
   if (method === 'GET' && /^\/api\/admin\/products\/[^/]+$/.test(pathname)) {
     if (!can('products.view')) return true;
     const key = decodeURIComponent(pathname.replace('/api/admin/products/', ''));
@@ -277,11 +167,7 @@ async function handle(ctx) {
     if (!row) return sendJSON(404, { error: 'محصول یافت نشد' });
 
     const product = attachVariants(parseProduct(row, { includeDrafts: true }), { includeHidden: true });
-    /* قیمت دلاری فقط برای کسی که مجوز قیمت دارد. انباردار
-       محصول را می‌بیند ولی پایه قیمت‌گذاری را نه.
 
-       `can()` صدا زده نمی‌شود چون خودش ۴۰۳ می‌فرستد و اینجا
-       نبودِ مجوز خطا نیست — فقط یعنی این میدان را نبیند. */
     if (who && who.permissions.includes('products.price')) {
       const usd = db.prepare(
         'SELECT sku, price_usd FROM variants WHERE product_id=?').all(row.id);
@@ -291,7 +177,6 @@ async function handle(ctx) {
     return sendJSON(200, product);
   }
 
-  // ویرایش گروهی متغیرهای یک محصول
   if (method === 'PUT' && /^\/api\/admin\/products\/[^/]+$/.test(pathname)) {
     if (!can('products.edit')) return true;
     const key = decodeURIComponent(pathname.replace('/api/admin/products/', ''));
@@ -299,7 +184,6 @@ async function handle(ctx) {
     const p = db.prepare('SELECT * FROM products WHERE id=? OR slug=?').get(key, key);
     if (!p) return sendJSON(404, { error: 'محصول یافت نشد' });
 
-    // تغییر درصدی قیمت همه متغیرها
     if (b.price_change_percent != null) {
       const pct = parseFloat(b.price_change_percent);
       if (isNaN(pct) || pct < -90 || pct > 500)
@@ -309,7 +193,7 @@ async function handle(ctx) {
          WHERE product_id=?`).run(pct, p.id);
       appLog('INFO', 'admin', 'تغییر درصدی قیمت', { product: p.id, percent: pct });
     }
-    // تنظیم موجودی همه متغیرها
+
     if (b.set_all_stock != null) {
       const s = parseInt(b.set_all_stock);
       if (!Number.isInteger(s) || s < 0) return sendJSON(400, { error: 'موجودی نامعتبر است.' });
@@ -317,10 +201,6 @@ async function handle(ctx) {
       appLog('INFO', 'admin', 'تنظیم گروهی موجودی', { product: p.id, stock: s });
     }
 
-    /* ── وضعیت تأمین ──
-       سه حالت، با فهرست سفید. مقدار دلخواه پذیرفته نمی‌شود چون
-       رابط و منطق سبد فقط همین سه را می‌شناسند و مقدار ناشناخته
-       یعنی کالایی که نه خریدنی است نه پیام درستی دارد. */
     if (b.supply_mode != null) {
       const MODES = ['IN_STOCK', 'MADE_TO_ORDER', 'UNAVAILABLE'];
       if (!MODES.includes(b.supply_mode)) {
@@ -337,17 +217,6 @@ async function handle(ctx) {
              { product: p.id, mode: b.supply_mode });
     }
 
-    /* ── یادداشت عطرساز ──
-       تجربه دست‌اول سازنده — تنها محتوای صفحه محصول که از
-       دیتاست نمی‌آید.
-
-       رشته خالی معنادار است و به NULL تبدیل می‌شود: مدیر باید
-       بتواند یادداشتی را حذف کند، نه فقط عوض کند. اگر خالی را
-       نادیده می‌گرفتیم، حذف غیرممکن می‌شد.
-
-       سقف ۱٬۵۰۰ نویسه: بلندتر از این دیگر «یادداشت» نیست و در
-       طراحی صفحه هم جا نمی‌شود. محدودیت سمت سرور لازم است چون
-       محدودیت سمت مرورگر قابل دور زدن است. */
     if (b.maker_note !== undefined) {
       const note = String(b.maker_note ?? '').trim();
       if (note.length > 1500) {
@@ -390,7 +259,70 @@ async function handle(ctx) {
     return sendJSON(200, { total, page, limit, items });
   }
 
-  // کالاهای رو به اتمام
+  if (pathname === '/api/admin/essence-stock' && method === 'GET') {
+    if (!can('products.view')) return true;
+    const type = String(parsed.query.type || '');
+    const percents = essenceInventory.typePercents(db);
+    const key = String(parsed.query.product || '').trim();
+    if (key) {
+      const p = db.prepare('SELECT id, slug, name_fa, brand_fa FROM products WHERE id=? OR slug=?').get(key, key);
+      if (!p) return sendJSON(404, { error: 'محصول یافت نشد.' });
+      const variants = db.prepare(`SELECT sku, type, type_label, volume_ml, stock FROM variants v
+        WHERE product_id=? AND ${publicVariantSql('v')} ORDER BY type, volume_ml`).all(p.id)
+        .map(v => {
+          const cap = essenceInventory.sellableCapacity(db, p.id, v.type, v.volume_ml);
+          return {
+            ...v,
+            ml_per_unit: essenceInventory.mlPerUnit(db, p.id, v.type, v.volume_ml),
+            max_units: essenceInventory.maxUnits(db, p.id, v.type, v.volume_ml),
+            capacity: cap
+          };
+        });
+      return sendJSON(200, { product: p, percents, essence: essenceInventory.snapshot(db, p.id), variants });
+    }
+    const rows = db.prepare(`SELECT e.product_id, e.ml_on_hand, e.percent_override, e.updated_at,
+        e.use_count, e.use_essence,
+        p.slug, p.name_fa, p.brand_fa, p.supply_mode
+      FROM essence_inventory e JOIN products p ON p.id=e.product_id
+      ${type ? 'WHERE 1=1' : ''} ORDER BY e.ml_on_hand ASC LIMIT 200`).all();
+    return sendJSON(200, { total: rows.length, percents, items: rows });
+  }
+
+  if (pathname === '/api/admin/essence-stock' && method === 'PUT') {
+    if (!can('products.stock')) return true;
+    const body = await parseBody(req);
+    const key = String(body.product || '').trim();
+    const p = db.prepare('SELECT id, slug FROM products WHERE id=? OR slug=?').get(key, key);
+    if (!p) return sendJSON(404, { error: 'محصول یافت نشد.' });
+    let result;
+    try {
+      result = essenceInventory.setStock(db, p.id, body.ml_on_hand, who?.username, body.percent_override,
+        { use_count: body.use_count, use_essence: body.use_essence });
+    } catch (error) {
+      if (error.message === 'INVALID_ML') return sendJSON(400, { error: 'موجودی اسانس باید عدد صفر یا مثبت به میلی‌لیتر باشد.' });
+      if (error.message === 'INVALID_PERCENT') return sendJSON(400, { error: 'درصد اسانس باید بین ۰ و ۱۰۰ باشد.' });
+      if (error.message === 'NO_STOCK_SOURCE') return sendJSON(400, { error: 'دست‌کم یکی از دو منبع موجودی باید فعال بماند.' });
+      throw error;
+    }
+    try { logAudit('products.essence_stock', { product: p.id, ml: result.ml_on_hand, percent: result.percent_override }); }
+    catch (error) { appLog('ERROR', 'pricing', 'ثبت سابقه موجودی اسانس ناموفق بود', { error: error.message }); }
+    return sendJSON(200, { message: 'موجودی اسانس ثبت شد.', essence: result });
+  }
+
+  if (pathname === '/api/admin/essence-percent' && method === 'PUT') {
+    if (!can('products.stock')) return true;
+    const body = await parseBody(req);
+    try {
+      const percents = essenceInventory.setTypePercent(db, String(body.type || ''), body.percent);
+      try { logAudit('products.essence_percent', { type: body.type, percent: body.percent }); } catch {}
+      return sendJSON(200, { message: 'درصد مصرف اسانس ذخیره شد.', percents });
+    } catch (error) {
+      if (error.message === 'INVALID_TYPE') return sendJSON(400, { error: 'نوع محصول نامعتبر است.' });
+      if (error.message === 'INVALID_PERCENT') return sendJSON(400, { error: 'درصد باید بین ۰ و ۱۰۰ باشد.' });
+      throw error;
+    }
+  }
+
   if (method === 'GET' && pathname === '/api/admin/low-stock') {
     if (!can('reports.stock')) return true;
     const th = parseInt(parsed.query.threshold) || 10;
@@ -403,7 +335,6 @@ async function handle(ctx) {
     return sendJSON(200, { threshold: th, total: rows.length, items: rows });
   }
 
-  // لاگ سیستم
   if (method === 'GET' && pathname === '/api/admin/logs') {
     if (!can('system.logs')) return true;
     const level = parsed.query.level;
@@ -414,7 +345,6 @@ async function handle(ctx) {
     return sendJSON(200, { total: rows.length, logs: rows });
   }
 
-  // اجرای دستی نگهداشت
   if (method === 'POST' && pathname === '/api/admin/maintenance') {
     if (!can('system.maintenance')) return true;
     const res_ = releaseStaleOrders();
@@ -429,18 +359,6 @@ async function handle(ctx) {
     });
   }
 
-  /**
-   * بازسازی ایندکس جستجو و نُت.
-   *
-   * چرا لازم است: هر دو ایندکس از ستون‌های محصول ساخته می‌شوند و
-   * فقط هنگام راه‌اندازی سرور به‌روز می‌شوند. اگر داده محصول از
-   * بیرون عوض شود (اسکریپت، بازیابی پشتیبان، ویرایش مستقیم
-   * دیتابیس)، ایندکس کهنه می‌ماند و **بی‌صدا** نتیجه غلط می‌دهد:
-   * جستجو محصول تازه را پیدا نمی‌کند و فیلتر نُت شمار اشتباه
-   * نشان می‌دهد. هیچ خطایی هم در لاگ نمی‌آید.
-   *
-   * تا امروز تنها راه بازسازی، راه‌اندازی دوباره کل سرور بود.
-   */
   if (method === 'POST' && pathname === '/api/admin/reindex') {
     if (!can('system.maintenance')) return true;
     const t0 = Date.now();
@@ -455,7 +373,7 @@ async function handle(ctx) {
     });
   }
 
-  return false;   // هیچ‌کدام از مسیرهای این ماژول نبود
+  return false;
 }
 
 module.exports = { handle };

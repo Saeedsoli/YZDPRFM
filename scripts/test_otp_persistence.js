@@ -1,20 +1,5 @@
 #!/usr/bin/env node
-/**
- * آزمون پایداری کد یکبار مصرف.
- *
- * چرا مهم است؟
- *   کدها قبلاً در حافظه بودند. روی Liara ری‌استارت عادی است — deploy،
- *   کرش، مقیاس‌دهی. هر ری‌استارت کد کاربری را که همین الان پیامک
- *   گرفته بود باطل می‌کرد و او پیام «ابتدا درخواست کد بدهید» می‌گرفت.
- *
- * سناریوها:
- *   ۱) کد پس از ری‌استارت سرور همچنان معتبر است
- *   ۲) کد پس از یک بار استفاده دیگر کار نمی‌کند
- *   ۳) کد نادرست شمارنده تلاش را بالا می‌برد
- *   ۴) پس از ۵ تلاش نادرست، کد باطل می‌شود
- *
- * اجرا: node scripts/test_otp_persistence.js
- */
+
 'use strict';
 
 const { spawn } = require('child_process');
@@ -40,7 +25,6 @@ function cleanup() {
   db.close();
 }
 
-/** سرور را بالا می‌آورد و لاگش را نگه می‌دارد (کد در حالت console آنجاست) */
 async function boot() {
   const proc = spawn('node', ['src/server.js'], {
     cwd: ROOT,
@@ -77,7 +61,6 @@ const post = (p, body) =>
     process.exit(code);
   };
 
-  // ── درخواست کد ──
   const req = await post('/api/auth/request-code', { mobile: MOBILE });
   if (req.status !== 200) {
     console.error(r('  ✗ درخواست کد ناموفق: ' + JSON.stringify(req.json)));
@@ -87,13 +70,11 @@ const post = (p, body) =>
   const code = (srv.getLog().match(/\b\d{5}\b/g) || []).pop();
   console.log(d(`  کد صادرشده: ${code}`));
 
-  // ── کد باید در دیتابیس باشد، نه فقط حافظه ──
   const db = new Database(DB, { readonly: true });
   const stored = db.prepare('SELECT * FROM otp_codes WHERE mobile=?').get(MOBILE);
   db.close();
   checks.push(['کد در دیتابیس ذخیره شد', !!stored]);
 
-  // ── سناریو ۱: ری‌استارت سرور ──
   console.log(d('  ری‌استارت سرور…'));
   srv.proc.kill('SIGKILL');
   await sleep(1200);
@@ -103,11 +84,9 @@ const post = (p, body) =>
   checks.push(['کد پس از ری‌استارت معتبر ماند', !!afterRestart.json.token]);
   console.log(d(`  پس از ری‌استارت: ${afterRestart.json.token ? 'ورود موفق' : afterRestart.json.error}`));
 
-  // ── سناریو ۲: همان کد دوباره ──
   const reuse = await post('/api/auth/verify-code', { mobile: MOBILE, code });
   checks.push(['کد پس از مصرف باطل شد', !reuse.json.token]);
 
-  // ── سناریو ۳ و ۴: تلاش نادرست ──
   cleanup();
   await post('/api/auth/request-code', { mobile: MOBILE });
   await sleep(300);
@@ -124,7 +103,6 @@ const post = (p, body) =>
   const afterMax = await post('/api/auth/verify-code', { mobile: MOBILE, code: code2 });
   checks.push(['پس از ۵ تلاش نادرست کد درست هم رد می‌شود', !afterMax.json.token]);
 
-  // ── ارقام فارسی ──
   cleanup();
   await post('/api/auth/request-code', { mobile: MOBILE });
   await sleep(300);

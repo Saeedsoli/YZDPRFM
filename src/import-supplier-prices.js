@@ -1,5 +1,5 @@
 'use strict';
-// Explicit opt-in only. Never changes supply status, legacy SKUs, stock or orders.
+
 const {priceFromUsdPerKg}=require('./essence-pricing');
 const {RATE_KEY}=require('./essence-pricing-store');
 const MARKER='supplier_exact_price_import_v1';
@@ -26,7 +26,7 @@ function importSupplierPrices(db, dataset) {
       const p=get.get(row.product_id);
       if (!p) throw new Error(`Missing product: ${row.product_id}`);
       if (p.essence_usd_per_kg != null) throw new Error(`Product already has an essence price: ${row.product_id}`);
-      // Preserve pre-existing new-volume records and avoid overwriting a manager's work.
+
       if (find.get(p.id,'SAMPLE',5) || find.get(p.id,'BODY_SPLASH',120)) throw new Error(`New-volume SKU already exists: ${p.id}`);
       const suffix=p.id.replace(/\D/g,'');
       setBase.run(String(row.usd_per_kg),p.id);

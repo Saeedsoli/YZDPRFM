@@ -1,7 +1,7 @@
 'use strict';
-// This legacy fixture explicitly tests the pre-approval unavailable baseline.
+
 process.env.APPROVED_MTO_AUTOSTART ??= '0';
-// Isolated provenance, price, note-index, guard and restart checks.
+
 const assert=require('assert/strict'),fs=require('fs'),os=require('os'),path=require('path'),crypto=require('crypto'),{spawnSync}=require('child_process');
 const root=path.join(__dirname,'..'),m=require('../seed/official_reference_prices_v9.json'),i=require('../seed/official_identity_evidence_v8.json'),n=require('../seed/official_note_corrections_v11.json'),raw=fs.readFileSync(path.join(root,'uploads/لیست_قیمت_عمده.md'));
 assert.equal(crypto.createHash('sha256').update(raw).digest('hex'),m.supplier_file_sha256);assert.equal(m.items.length,1);assert.equal(i.items[0].official_url,m.items[0].official_url);assert.equal(n.items[0].source_url,m.items[0].official_url);

@@ -1,6 +1,5 @@
 'use strict';
-// One explicitly selected reference; independent sources are never official.
-// Create only new, fixed-scope records; never overwrite a product or order.
+
 const fs=require('fs'),crypto=require('crypto');
 const {kgToGram,applyProductPrice}=require('./product-essence-pricing');
 const {allowedVariant,RATE_KEY}=require('./essence-pricing-store');

@@ -1,18 +1,5 @@
 #!/usr/bin/env node
-/**
- * آزمون ماژول سفارش‌های مدیریتی — گام ۲ تفکیک.
- *
- * چرا این آزمون از گام ۱ سخت‌گیرتر است:
- *   این بلوک سه چیز دارد که کاتالوگ نداشت —
- *     • **پول**: لغو سفارش موجودی برمی‌گرداند و کوپن آزاد می‌کند
- *     • **داده شخصی**: فاکتور و CSV نام و موبایل مشتری دارند
- *     • **دو مسیر دسترسی**: فاکتور هم مشتری هم کارمند
- *
- *   پس فقط «۲۰۰ برگشت» کافی نیست. باید اثر واقعی روی دیتابیس و
- *   مرز دسترسی هر دو نقش سنجیده شود.
- *
- * اجرا: node scripts/test_admin_orders.js
- */
+
 'use strict';
 
 const http = require('http');
@@ -58,7 +45,6 @@ function api(p, opt = {}, token, extraHeaders) {
   });
 }
 
-/** ساخت سفارش واقعی برای آزمون — با موجودی موقت */
 function seedOrder(sku, qty = 1) {
   const v = db.prepare('SELECT * FROM variants WHERE sku=?').get(sku);
   const p = db.prepare('SELECT name_fa, brand_fa FROM products WHERE id=?')
@@ -79,7 +65,7 @@ function seedOrder(sku, qty = 1) {
       (order_id, sku, product_name, unit_price, quantity, line_total)
       VALUES (?,?,?,?,?,?)`)
       .run(oid, sku, `${p.brand_fa} — ${p.name_fa}`, v.price_toman, qty, sub);
-    // Test fixture models a genuine physical reservation.
+
     db.prepare('UPDATE variants SET stock=stock-? WHERE sku=? AND stock>=?').run(qty,sku,qty);
     db.prepare('INSERT INTO order_stock_reservations(item_id,reserved_qty,released) VALUES(?,?,0)').run(item.lastInsertRowid,qty);
   })();
@@ -115,7 +101,6 @@ function cleanOrder(oid) {
   db.prepare('UPDATE variants SET stock=? WHERE sku=?').run(20, v0.sku);
   const ord = seedOrder(v0.sku, 2);
 
-  // ══ ۱) دسترس‌پذیری ══
   console.log(d('  دسترس‌پذیری مسیرها'));
 
   const list = await api('/api/orders?limit=5', {}, OT);
@@ -144,7 +129,6 @@ function cleanOrder(oid) {
   add('CSV با BOM شروع می‌شود (اکسل فارسی)',
       csv.raw.charCodeAt(0) === 0xFEFF);
 
-  // ══ ۲) پول — لغو سفارش ══
   console.log(d('\n  اثر مالی'));
 
   const stockBeforeCancel = db.prepare('SELECT stock FROM variants WHERE sku=?')
@@ -166,7 +150,6 @@ function cleanOrder(oid) {
     'SELECT COUNT(*) c FROM order_status_log WHERE order_id=?').get(ord.oid).c;
   add('تاریخچه وضعیت ثبت می‌شود', logRows >= 2, `${logRows} ردیف`);
 
-  // ══ ۳) داده شخصی ══
   console.log(d('\n  داده شخصی'));
 
   add('فاکتور نام و موبایل مشتری دارد',
@@ -174,14 +157,11 @@ function cleanOrder(oid) {
       /09121110044/.test(JSON.stringify(inv.json)));
   add('CSV شماره مشتری دارد', /09121110044/.test(csv.raw));
 
-  /* شماره فاکتور فقط یک بار صادر می‌شود — درخواست دوم همان
-     شماره را می‌دهد، نه شماره تازه. */
   const inv2 = await api(`/api/orders/${ord.oid}/invoice`, {}, OT);
   add('شماره فاکتور دوباره صادر نمی‌شود',
       inv2.json.invoice_no === inv.json.invoice_no,
       `${inv.json.invoice_no} = ${inv2.json.invoice_no}`);
 
-  // ══ ۴) کنترل دسترسی ══
   console.log(d('\n  کنترل دسترسی'));
 
   for (const [p, m] of [['/api/orders', 'GET'],
@@ -203,9 +183,6 @@ function cleanOrder(oid) {
     const canInv = await api(`/api/orders/${ord.oid}/invoice`, {}, wh.token);
     add('انباردار فاکتور را می‌بیند', canInv.status === 200);
 
-    /* ── مهم‌ترین مرز این ماژول ──
-       انباردار می‌تواند وضعیت را پیش ببرد، ولی **نمی‌تواند لغو
-       کند** — چون لغو اثر مالی دارد (موجودی و کوپن). */
     const noCancel = await api(`/api/orders/${ord.oid}/status`, {
       method: 'PUT', body: JSON.stringify({ status: 'CANCELLED' })
     }, wh.token);
@@ -222,7 +199,6 @@ function cleanOrder(oid) {
     if (wh.id) await api(`/api/admin/staff/${wh.id}`, { method: 'DELETE' }, OT);
   }
 
-  // ══ ۵) دسترسی مشتری به فاکتور خودش ══
   console.log(d('\n  دسترسی مشتری'));
 
   const M = '09121110044';
@@ -238,7 +214,6 @@ function cleanOrder(oid) {
     const mine = await api(`/api/orders/${ord.oid}/invoice`, {}, null, CH);
     add('مشتری فاکتور خودش را می‌بیند', mine.status === 200, `status ${mine.status}`);
 
-    /* سفارش شخص دیگر نباید دیده شود — نشت داده شخصی */
     const other = seedOrder(v0.sku, 1);
     const notMine = await api(`/api/orders/${other.oid}/invoice`, {}, null, CH);
     db.prepare('UPDATE orders SET mobile=? WHERE order_id=?').run('09129998888', other.oid);
@@ -250,7 +225,6 @@ function cleanOrder(oid) {
     add('چرخه ورود مشتری آزموده شد', false, 'کد یکبارمصرف ساخته نشد');
   }
 
-  // ══ ۶) ورودی نامعتبر ══
   console.log(d('\n  ورودی نامعتبر'));
 
   const bad1 = await api('/api/orders/YZD-NAKOJA-9999/history', {}, OT);
@@ -264,7 +238,6 @@ function cleanOrder(oid) {
   const bad3 = await api('/api/orders/YZD-NAKOJA-9999/invoice', {}, OT);
   add('فاکتور سفارش ناموجود ۴۰۴', bad3.status === 404);
 
-  // ══ ۷) مسیرهای همسایه ══
   console.log(d('\n  مسیرهای همسایه'));
 
   let nOk = true;
@@ -272,8 +245,7 @@ function cleanOrder(oid) {
     ['/api/health', 200], ['/api/products?limit=2', 200],
     ['/api/admin/low-stock', 200], ['/api/admin/audit?limit=2', 200],
     ['/api/admin/backups', 200],
-    /* پیگیری با شماره ناموجود ۲۰۰ با فهرست خالی می‌دهد، نه ۴۰۴ —
-       نبود سفارش «خطا» نیست، نتیجهٔ خالی است. */
+
     ['/api/orders/track?order_id=x&mobile=09120000000', 200]
   ]) {
     const res = await api(p, {}, OT);
@@ -281,7 +253,6 @@ function cleanOrder(oid) {
   }
   add('مسیرهای مجاور دست‌نخورده‌اند', nOk);
 
-  // ══ ۸) ساختار ══
   console.log(d('\n  ساختار'));
 
   const ROOT = path.dirname(__dirname);
@@ -304,7 +275,6 @@ function cleanOrder(oid) {
   const n = srv.split('\n').length;
   add('server.js کوچک‌تر شد', n < 3800, `${n} خط`);
 
-  // پاک‌سازی
   cleanOrder(ord.oid);
   db.prepare('UPDATE variants SET stock=? WHERE sku=?').run(v0.stock, v0.sku);
   db.prepare('DELETE FROM customers WHERE mobile=?').run(M);

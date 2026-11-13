@@ -1,7 +1,7 @@
 'use strict';
 const assert=require('assert/strict'),fs=require('fs'),os=require('os'),path=require('path'),{spawnSync}=require('child_process');
 const root=path.join(__dirname,'..'),m=require('../seed/active_official_note_corrections_v3.json');assert.equal(m.items.length,8);
-// Isolate the older official-note milestone from the later independent batch.
+
 const d=fs.mkdtempSync(path.join(os.tmpdir(),'yazd-active-notes-'));const env={...process.env,DB_PATH:path.join(d,'db.sqlite'),BACKUP_DISABLED:'1',ACTIVE_SECONDARY_NOTES_AUTOSTART:'0'};delete env.APPROVED_MTO_AUTOSTART;
 function run(code){const p=spawnSync(process.execPath,['-e',code],{cwd:root,env,encoding:'utf8',timeout:120000});if(p.status!==0)throw Error(p.stdout+'\n'+p.stderr)}
 try{

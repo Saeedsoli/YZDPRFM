@@ -1,12 +1,12 @@
 'use strict';
-// No database or real SMS required. Verify user-facing promised time wording.
+
 const assert=require('assert'),fs=require('fs'),path=require('path');
 const root=path.resolve(__dirname,'..');const get=f=>fs.readFileSync(path.join(root,f),'utf8');
 const product=get('public/product.html'),footer=get('public/assets/app.js'),terms=get('public/terms.html'),sandbox=get('public/payment-sandbox.html');
 assert(product.includes('به سفارش ساخته می‌شود — تحویل ۳ تا ۷ روز کاری پس از تأیید پرداخت'));
-assert(product.includes('تحویل با پست یا تیپاکس ۳ تا ۷ روز کاری پس از تأیید پرداخت'));
+assert(product.includes('تحویل با پست پیشتاز یا تیپاکس ۳ تا ۷ روز کاری پس از تأیید پرداخت'));
 assert(!product.includes('آماده‌سازی ۳ تا ۷ روز کاری'));
-assert(footer.includes('زمان تحویل: ۳ تا ۷ روز کاری پس از تأیید پرداخت'));
+assert(footer.includes('تحویل:</b> ۳ تا ۷ روز کاری'));
 assert(terms.includes('۳ تا ۷ روز کاری</strong> پس از تأیید پرداخت'));
 assert(sandbox.includes('زمان تحویل سفارش ۳ تا ۷ روز کاری پس از تأیید پرداخت است'));
 const sms=require('../src/sms');const messages=[];sms.send=async(mobile,text)=>{messages.push(text);return {ok:true}};

@@ -1,22 +1,5 @@
 #!/usr/bin/env node
-/**
- * آزمون ماژول بازاریابی — گام ۳ تفکیک.
- *
- * چرا تمرکز روی این دو محور:
- *   تخفیف **مستقیم روی پرداختی مشتری** اثر می‌گذارد. دو محافظ
- *   باید سالم بمانند:
- *
- *   ۱) **اعتبارسنجی** — درصد بیش از ۱۰۰، تاریخ نامعتبر، دامنه
- *      ناشناخته باید رد شوند. یک جشنواره با درصد اشتباه یعنی
- *      فروش زیر قیمت تمام‌شده.
- *
- *   ۲) **باطل کردن کش** — `activeCampaigns()` پنج ثانیه کش دارد.
- *      اگر `bustCampaignCache()` پس از تغییر صدا زده نشود،
- *      جشنواره تازه تا پنج ثانیه اعمال نمی‌شود و مشتری قیمت
- *      قدیم می‌بیند. این باگ **بی‌صداست**.
- *
- * اجرا: node scripts/test_admin_marketing.js
- */
+
 'use strict';
 
 const http = require('http');
@@ -81,7 +64,6 @@ const CODE = 'TESTG3' + Math.random().toString(36).slice(2, 5).toUpperCase();
   const OT = own.json.token;
   if (!OT) { console.log(r('  ورود مدیر ناموفق.\n')); process.exit(1); }
 
-  // ══ ۱) دسترس‌پذیری ══
   console.log(d('  دسترس‌پذیری مسیرها'));
 
   for (const [p, label] of [
@@ -93,17 +75,11 @@ const CODE = 'TESTG3' + Math.random().toString(36).slice(2, 5).toUpperCase();
     add(`GET ${p}`, res.status === 200, `${label}`);
   }
 
-  // ══ ۲) چرخه کامل کوپن ══
   console.log(d('\n  چرخه کوپن'));
 
   const mk = await api('/api/admin/coupons', {
     method: 'POST',
-    /* `type` الزامی است: PERCENT | FIXED | FREE_SHIPPING.
-       نخستین اجرای آزمون بدون آن ۴۰۰ گرفت — قرارداد سرور درست
-       بود، انتظار آزمون غلط. */
-    /* قرارداد واقعی: `type` + `value` (نه `percent`).
-       دو بار انتظار آزمون غلط بود و کد سرور درست — یادآوری
-       اینکه ماژول تازه باید با API واقعی سنجیده شود نه با حدس. */
+
     body: JSON.stringify({ code: CODE, type: 'PERCENT', value: 15,
                            max_uses: 5, min_order: 1000000 })
   }, OT);
@@ -120,7 +96,6 @@ const CODE = 'TESTG3' + Math.random().toString(36).slice(2, 5).toUpperCase();
   const dbC2 = db.prepare('SELECT active FROM coupons WHERE code=?').get(CODE);
   add('غیرفعالی واقعاً ذخیره شد', dbC2 && dbC2.active === 0);
 
-  /* کوپن غیرفعال نباید در تسویه پذیرفته شود — مرز مالی */
   const val = await api('/api/coupons/validate', {
     method: 'POST', body: JSON.stringify({ code: CODE, subtotal: 2000000 })
   });
@@ -133,7 +108,6 @@ const CODE = 'TESTG3' + Math.random().toString(36).slice(2, 5).toUpperCase();
   add('حذف واقعاً انجام شد',
       !db.prepare('SELECT 1 FROM coupons WHERE code=?').get(CODE));
 
-  // ══ ۳) اعتبارسنجی — محافظ مالی اول ══
   console.log(d('\n  اعتبارسنجی مالی'));
 
   const T = 'PERCENT';
@@ -166,13 +140,8 @@ const CODE = 'TESTG3' + Math.random().toString(36).slice(2, 5).toUpperCase();
   add('🔴 جشنواره با درصد نامعتبر رد می‌شود', badCamp.status >= 400,
       `status ${badCamp.status}`);
 
-  // ══ ۴) باطل کردن کش — محافظ مالی دوم ══
   console.log(d('\n  باطل کردن کش جشنواره'));
 
-  /* این مهم‌ترین بررسی این ماژول است.
-     `activeCampaigns()` پنج ثانیه کش دارد. اگر تفکیک،
-     `bustCampaignCache()` را از دست بدهد، جشنواره تازه تا پنج
-     ثانیه روی قیمت اعمال نمی‌شود — و هیچ خطایی هم نمی‌دهد. */
   const before = await api('/api/campaigns');
   const nBefore = (before.json.campaigns || []).length;
 
@@ -189,13 +158,11 @@ const CODE = 'TESTG3' + Math.random().toString(36).slice(2, 5).toUpperCase();
   const campId = camp.json.campaign?.id ||
     db.prepare("SELECT id FROM campaigns WHERE title='آزمون گام ۳' ORDER BY id DESC").get()?.id;
 
-  /* بلافاصله — بدون صبر — باید دیده شود */
   const after = await api('/api/campaigns');
   const nAfter = (after.json.campaigns || []).length;
   add('🔴 جشنواره تازه بی‌درنگ فعال می‌شود', nAfter > nBefore,
       `${nBefore} → ${nAfter}`);
 
-  /* اثر واقعی روی قیمت محصول */
   const prod = await api('/api/products?limit=1');
   const p1 = (prod.json.products || [])[0];
   add('درصد جشنواره روی محصول اعمال شد',
@@ -217,7 +184,6 @@ const CODE = 'TESTG3' + Math.random().toString(36).slice(2, 5).toUpperCase();
     add('حذف جشنواره', delC.status === 200);
   }
 
-  // ══ ۵) اعلان ══
   console.log(d('\n  نوار اعلان'));
 
   const nt = await api('/api/admin/notices', {
@@ -240,7 +206,6 @@ const CODE = 'TESTG3' + Math.random().toString(36).slice(2, 5).toUpperCase();
         !db.prepare('SELECT 1 FROM notices WHERE id=?').get(ntId));
   }
 
-  // ══ ۶) کنترل دسترسی ══
   console.log(d('\n  کنترل دسترسی'));
 
   for (const p of ['/api/admin/coupons', '/api/admin/campaigns', '/api/admin/notices']) {
@@ -269,15 +234,13 @@ const CODE = 'TESTG3' + Math.random().toString(36).slice(2, 5).toUpperCase();
     if (wh.id) await api(`/api/admin/staff/${wh.id}`, { method: 'DELETE' }, OT);
   }
 
-  // ══ ۷) مسیرهای همسایه ══
   console.log(d('\n  مسیرهای همسایه'));
 
   let nOk = true;
   for (const [p, want] of [
     ['/api/health', 200], ['/api/products?limit=2', 200],
     ['/api/orders?limit=2', 200], ['/api/admin/low-stock', 200],
-    /* `coupons/public` بدون پارامتر `code` عمداً ۴۰۰ می‌دهد —
-       رفتار درست است، نه خطا. */
+
     ['/api/coupons/public?code=NAKOJA', 404], ['/api/campaigns', 200],
     ['/api/admin/reviews', 200]
   ]) {
@@ -286,7 +249,6 @@ const CODE = 'TESTG3' + Math.random().toString(36).slice(2, 5).toUpperCase();
   }
   add('مسیرهای مجاور دست‌نخورده‌اند', nOk);
 
-  // ══ ۸) ساختار ══
   console.log(d('\n  ساختار'));
 
   const ROOT = path.dirname(__dirname);
@@ -299,17 +261,7 @@ const CODE = 'TESTG3' + Math.random().toString(36).slice(2, 5).toUpperCase();
   add('هیچ can بدون return true نمانده', !/!can\('[^']+'\)\) return;/.test(mod));
   add('bustCampaignCache منتقل شد', /bustCampaignCache\(\)/.test(mod));
   add('server.js ماژول را صدا می‌زند', /routeAdminMarketing\.handle\(/.test(srv));
-  /* مسیرهای عمومی نباید داخل ماژول مدیریتی بروند — ولی جای دقیقشان
-     با گام‌های بعدی تفکیک عوض شد:
-       • /api/coupons/validate  → هنوز در server.js
-       • /api/campaigns         → در گام کاتالوگ به catalog.js رفت
-       • /api/coupons/public    → همان‌جا، در catalog.js
 
-     آزمون قبلی هر دو را در server.js می‌خواست و پس از انتقال قرمز
-     شد — ولی جابه‌جایی عمدی و درست بود، نه خرابی. آنچه واقعاً
-     اهمیت دارد این است که مسیر عمومی **داخل ماژول مدیریتی نباشد**
-     (وگرنه پشت احراز هویت می‌افتد و مشتری نمی‌تواند کوپن بزند).
-     پس همان را می‌سنجیم، نه فایل میزبان را. */
   const cat = fs.readFileSync(path.join(ROOT, 'src/routes/catalog.js'), 'utf8');
   const publicRoutes = [
     ['/api/coupons/validate', srv],

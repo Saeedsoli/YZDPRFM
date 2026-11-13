@@ -186,7 +186,7 @@ function quickAdd(sku, price, slug) {
   const label = v
     ? `${p.brand_fa ? p.brand_fa + ' — ' : ''}${p.name_fa} — ${v.type_label || ''} ${v.volume_ml || ''} میل`.trim()
     : p.name_fa;
-  YazdCart.add(sku, label, price, p.image_url, 1);
+  YazdCart.add(sku, label, price, p.image_url, 1, p.slug);
 }
 
 async function load() {
@@ -202,7 +202,7 @@ async function load() {
     document.getElementById('loading').innerHTML =
       `<div class="empty-state soft-card"><h3>ارتباط برقرار نشد</h3>
        <p style="margin-top:6px;font-size:.87rem;color:var(--muted)">اتصال اینترنت را بررسی کنید.</p>
-       <button class="btn" style="margin-top:14px" onclick="location.reload()">تلاش دوباره</button></div>`;
+       <button class="btn" style="margin-top:14px" data-csp-click="location.reload()">تلاش دوباره</button></div>`;
     return;
   }
 
@@ -212,5 +212,6 @@ async function load() {
 
 load();
 </script>
+<script src="/assets/csp-actions.js"></script>
 </body>
 </html>

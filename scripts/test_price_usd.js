@@ -1,29 +1,5 @@
 #!/usr/bin/env node
-/**
- * آزمون فیلد قیمت دلاری پایه.
- *
- * ── چرا این فیلد وجود دارد ──
- * فروشگاه فرمولی برای قیمت‌گذاری دارد که به نرخ دلار وابسته است
- * (وزن اسانس × قیمت دلاری + هزینه‌ها). هدف نهایی: با تغییر نرخ
- * ارز، قیمت تومانی همه محصولات خودکار به‌روز شود.
- *
- * این گام **اول** است — فقط نگهداری عدد. فرمول بعداً می‌آید.
- *
- * ── چرا آزمون از حالا ──
- * این عدد قرار است پایه محاسبه هزاران قیمت شود. اگر امروز
- * NULL و صفر با هم قاطی شوند، یا اعشار گرد شود، خطا در فرمول
- * نهایی تکثیر می‌شود — جایی که کشفش خیلی سخت‌تر است.
- *
- * پوشش:
- *   ۱) ستون با مهاجرت امن اضافه شده
- *   ۲) NULL و صفر از هم تفکیک می‌شوند
- *   ۳) اعشار حفظ می‌شود (گرد نمی‌شود)
- *   ۴) مجوز: انباردار نمی‌تواند عوضش کند
- *   ۵) 🔴 به مشتری نشت نمی‌کند
- *   ۶) در سابقه کارها ثبت می‌شود
- *
- * اجرا: node scripts/test_price_usd.js   (سرور بالا)
- */
+
 'use strict';
 
 const http = require('http');
@@ -77,7 +53,6 @@ const put = (p, obj, token) =>
   console.log(h('  آزمون قیمت دلاری پایه'));
   console.log(d('  ─────────────────────────────────────────────'));
 
-  // ─────────────── ۱) ساختار
   console.log();
   console.log(h('  ۱) ستون دیتابیس'));
 
@@ -91,7 +66,6 @@ const put = (p, obj, token) =>
   add('ستون‌های پیشین دست‌نخورده‌اند',
       ['sku', 'price_toman', 'stock'].every(n => cols.some(c => c.name === n)));
 
-  // ─────────────── ۲) ورود مدیر
   console.log();
   console.log(h('  ۲) دسترسی'));
 
@@ -112,7 +86,6 @@ const put = (p, obj, token) =>
   `).get();
   const before = db.prepare('SELECT * FROM variants WHERE sku=?').get(sample.sku);
 
-  // ─────────────── ۳) ذخیره و بازخوانی
   console.log();
   console.log(h('  ۳) ذخیره مقدار'));
 
@@ -132,7 +105,6 @@ const put = (p, obj, token) =>
   const r2 = db.prepare('SELECT price_usd FROM variants WHERE sku=?').get(sample.sku);
   add('اعشار ریز هم حفظ می‌شود', r2.price_usd === 0.075, String(r2.price_usd));
 
-  // ─────────────── ۴) NULL در برابر صفر
   console.log();
   console.log(h('  ۴) «نامشخص» در برابر «صفر»'));
 
@@ -149,7 +121,6 @@ const put = (p, obj, token) =>
   add('صفر و NULL یکی نیستند', zero.price_usd !== nul.price_usd,
       '۰ یعنی رایگان · NULL یعنی وارد نشده');
 
-  // ─────────────── ۵) اعتبارسنجی
   console.log();
   console.log(h('  ۵) اعتبارسنجی'));
 
@@ -170,18 +141,9 @@ const put = (p, obj, token) =>
   add('پس از ورودی نامعتبر، مقدار پیشین سالم است',
       afterBad.price_usd === null, 'ذخیره نیمه‌کاره رخ نمی‌دهد');
 
-  // ─────────────── ۶) مجوز
   console.log();
   console.log(h('  ۶) مرز دسترسی'));
 
-  /* `makeStaff` یک **شیء** برمی‌گرداند (`{token, nid, mobile}`)
-     نه رشته توکن. نسخه اول این آزمون آن را مستقیم به‌عنوان توکن
-     فرستاد؛ سرور هدر بی‌معنا گرفت و ۴۰۳ داد — که تصادفاً شبیه
-     «مرز دسترسی کار می‌کند» بود. سبزِ توخالی خطرناک‌تر از قرمز
-     است. */
-  /* پاک‌سازی پیش از ساخت، نه فقط بعدش: اگر اجرای قبلی نیمه‌کاره
-     تمام شده باشد، کارمند می‌ماند و ساخت دوباره ۴۰۰ می‌دهد.
-     آزمون باید از هر وضعیتی بتواند شروع کند. */
   cleanupStaff(db, ['usdtest_wh']);
   const whStaff = await makeStaff(api, owner, 'usdtest_wh', 'warehouse');
   const wh = whStaff.token;
@@ -203,7 +165,6 @@ const put = (p, obj, token) =>
         'مرز دسترسی دقیق است، نه سراسری');
   }
 
-  // ─────────────── ۷) نشت به مشتری
   console.log();
   console.log(h('  ۷) نشت اطلاعات'));
 
@@ -235,7 +196,6 @@ const put = (p, obj, token) =>
         'مجوز نرم — نبودش خطا نیست، فقط دیده نمی‌شود');
   }
 
-  // ─────────────── ۸) سابقه کارها
   console.log();
   console.log(h('  ۸) ثبت در سابقه'));
 
@@ -250,7 +210,6 @@ const put = (p, obj, token) =>
       withUsd && /\[.*,.*\]/.test(withUsd.detail || ''),
       'برای پیگیری تغییر قیمت');
 
-  // ─────────────── ۹) پنل
   console.log();
   console.log(h('  ۹) رابط پنل'));
 
@@ -268,11 +227,9 @@ const put = (p, obj, token) =>
       /\/api\/admin\/products\/' \+ encodeURIComponent\(slug\)/.test(adm),
       'نه مسیر عمومی که price_usd ندارد');
 
-  // ─────────────── پاک‌سازی
   db.prepare('UPDATE variants SET price_usd=?, stock=? WHERE sku=?')
     .run(before.price_usd ?? null, before.stock, sample.sku);
-  /* پاک‌سازی با کد ملی، نه نام مستعار — نام کاربری کارمند کد
-     ملی است و الگوی `usdtest%` هرگز نمی‌خواند. */
+
   cleanupStaff(db, ['usdtest_wh']);
 
   const restored = db.prepare('SELECT price_usd, stock FROM variants WHERE sku=?')

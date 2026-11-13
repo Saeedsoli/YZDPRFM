@@ -1,24 +1,5 @@
 #!/usr/bin/env node
-/**
- * آزمون «بررسی آمادگی افتتاح» — با تأکید بر نشت نکردن کلید.
- *
- * چرا این آزمون: صفحه‌ای ساختیم که وضعیت کلیدهای حساس را نشان
- * می‌دهد. اگر روزی کسی سهواً خودِ کلید را به پاسخ اضافه کند،
- * یک کلید API در پاسخ HTTP قرار می‌گیرد که در لاگ‌ها، کش مرورگر
- * و ابزارهای توسعه‌دهنده باقی می‌ماند. این آزمون نگهبان آن است.
- *
- * پوشش:
- *   • هیچ کلید، رمز یا شناسه‌ای کامل برنمی‌گردد
- *   • فقط چند نویسه آخر، با ماسک
- *   • مقادیر جای‌نگهدار اطلاعات حقوقی «کامل» شمرده نمی‌شوند
- *   • قالب کد اقتصادی/شناسه ملی/کد پستی سنجیده می‌شود
- *   • رمز پیش‌فرض خطا می‌دهد
- *   • دسترسی بدون مجوز settings.view ممکن نیست
- *   • قالب نادرست Merchant ID بدون تماس شبکه رد می‌شود
- *   • آزمون پیامک محدودیت نرخ دارد
- *
- * اجرا: bash scripts/smoke_test.sh (only in its isolated test stage)
- */
+
 'use strict';
 
 const { spawn } = require('child_process');
@@ -27,7 +8,7 @@ const Database = require('better-sqlite3');
 
 const ROOT = path.dirname(__dirname);
 const DB = path.join(ROOT, 'data', 'yazd.db');
-// This legacy fixture edits settings and rate limits. Never open a real store.
+
 if (process.env.YAZD_SMOKE_STAGE !== '1' || process.env.NODE_ENV !== 'test' ||
     !/^\/tmp\/yazd-smoke-[A-Za-z0-9]{8}$/.test(ROOT) ||
     path.resolve(process.env.DB_PATH || '') !== DB) {
@@ -46,7 +27,6 @@ const add = (label, ok, note) => {
   checks.push(ok);
 };
 
-/** کلیدهای ساختگی — هیچ‌کدام نباید در پاسخ ظاهر شوند */
 const FAKE_MERCHANT = 'aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee';
 const FAKE_SMS_KEY  = 'DEADBEEF0123456789ABCDEF01234567';
 const FAKE_ADMIN_PW = 'S3cretPassw0rd!xyz';
@@ -78,18 +58,6 @@ const api = (port, p, opt = {}, tok = null) =>
   }).then(async x => ({ status: x.status, text: await x.text() }))
     .then(x => ({ ...x, body: (() => { try { return JSON.parse(x.text); } catch { return {}; } })() }));
 
-/**
- * ورود مدیر.
- *
- * نکته‌ای که با شکست آزمون کشف شد: حساب `owner` یک بار در
- * دیتابیس ساخته می‌شود (`seedOwner`) و رمزش همان‌جا هش می‌گردد.
- * تغییر بعدی `ADMIN_PASSWORD` روی حساب موجود اثر ندارد — فقط
- * مسیر پشتیبانِ «قفل بیرون نماندن» را عوض می‌کند.
- *
- * پس آزمون هر دو را امتحان می‌کند: اول رمز محیطی، بعد رمز
- * ذخیره‌شده. این رفتار **باگ نیست** — عمداً این‌طور است تا رمزی
- * که مدیر در پنل عوض کرده با یک ری‌استارت برنگردد.
- */
 async function login(port, pw) {
   for (const p of [...new Set([pw, process.env.ADMIN_PASSWORD, 'yazd1404'].filter(Boolean))]) {
     const r = await api(port, '/api/admin/login', {
@@ -116,9 +84,7 @@ async function login(port, pw) {
   };
 
   try {
-    // ═══════════════════════════════════════
-    // سرور با کلیدهای ساختگی — بدترین حالت نشت
-    // ═══════════════════════════════════════
+
     const P1 = 4481;
     procs.push(await boot(P1, {
       PAYMENT_GATEWAY: 'zarinpal',
@@ -148,9 +114,6 @@ async function login(port, pw) {
       add(`${label}: رمز مدیر در پاسخ نیست`,
         !raw.includes(FAKE_ADMIN_PW));
 
-      /* حتی بخش بزرگی از کلید هم نباید بیاید — ماسک باید واقعی
-         باشد نه نمایشی. نیمه اول کلید کافی است برای اینکه بگوییم
-         نشت کرده. */
       add(`${label}: نیمی از کلید پیامک هم نیامده`,
         !raw.includes(FAKE_SMS_KEY.slice(0, 16)));
       add(`${label}: نیمی از شناسه پذیرنده هم نیامده`,
@@ -172,7 +135,6 @@ async function login(port, pw) {
         b.items.find(i => i.key === 'admin_password')?.message);
     }
 
-    // ═══════════════════════════════════════
     console.log('\n  ── تشخیص مقدار جای‌نگهدار (اطلاعات تماس) ──');
 
     {
@@ -183,7 +145,7 @@ async function login(port, pw) {
           .all().map(x => [x.key, x.value]));
 
       const put = db.prepare('INSERT OR REPLACE INTO settings (key,value) VALUES (?,?)');
-      // مقادیر نمونه‌ای که در پروژه بود
+
       put.run('legal_name', 'عطر یزد');
       put.run('economic_code', '411358697643');
       put.run('national_id', '14009876543');
@@ -199,14 +161,10 @@ async function login(port, pw) {
         legal?.level === 'error', legal?.level);
       add('پیام می‌گوید کدام فیلدها نمونه‌اند',
         /مقدار نمونه/.test(legal?.message || ''));
-      /* پیام باید بگوید **چرا** مهم است.
-         پیش‌تر به «فاکتور» اشاره می‌کرد؛ پس از تفکیک فاکتور
-         عادی و رسمی، این بررسی به «اطلاعات تماس» تغییر نام داد
-         و دلیلش الزام اینماد است نه فاکتور. */
+
       add('هشدار دلیل الزام را می‌گوید',
         /اینماد/.test(legal?.message || ''), legal?.message?.slice(0, 60));
 
-      // حالا مقادیر واقعی‌نما با قالب درست
       const db2 = new Database(DB);
       const put2 = db2.prepare('INSERT OR REPLACE INTO settings (key,value) VALUES (?,?)');
       put2.run('legal_name', 'شرکت رایحه پارس یزد');
@@ -222,7 +180,6 @@ async function login(port, pw) {
       add('مقادیر واقعی سبز می‌شوند',
         ok.body.items.find(i => i.key === 'legal')?.level === 'ok');
 
-      // قالب نادرست
       const db3 = new Database(DB);
       db3.prepare('INSERT OR REPLACE INTO settings (key,value) VALUES (?,?)')
         .run('postal_code', '123');
@@ -232,16 +189,6 @@ async function login(port, pw) {
       add('کد پستی کوتاه تشخیص داده می‌شود',
         lg?.level === 'error' && /کد پستی/.test(lg.message), lg?.message?.slice(0, 60));
 
-      /* بازگرداندن وضعیت اولیه.
-         نکته‌ای که یک بار از قلم افتاد و داده جعلی در دیتابیس ماند:
-         `prev` فقط کلیدهایی را دارد که **پیش از آزمون وجود داشتند**.
-         کلیدهایی که خود آزمون تازه ساخته (مثل economic_code وقتی
-         فروشنده اصلاً اطلاعات حقوقی ثبت نکرده) در prev نیستند، پس
-         با INSERT OR REPLACE برنمی‌گردند — باید صریحاً حذف شوند.
-
-         نتیجه آن نشت: کد اقتصادی و شناسه ملی ساختگی روی فاکتور
-         رسمی چاپ می‌شد، آن هم برای فروشنده‌ای که گفته بود اصلاً
-         اطلاعات حقوقی نمی‌خواهد. */
       const TOUCHED = ['legal_name', 'economic_code', 'national_id',
                        'register_no', 'phone', 'address', 'postal_code'];
       const db4 = new Database(DB);
@@ -249,11 +196,10 @@ async function login(port, pw) {
       const del = db4.prepare('DELETE FROM settings WHERE key=?');
       for (const k of TOUCHED) {
         if (Object.prototype.hasOwnProperty.call(prev, k)) rp.run(k, prev[k]);
-        else del.run(k);            // پیش از آزمون نبود → باید نباشد
+        else del.run(k);
       }
       db4.close();
 
-      // آزمونِ خودِ پاک‌سازی — وگرنه دوباره بی‌صدا نشت می‌کند
       const dbv = new Database(DB, { readonly: true });
       const leaked = TOUCHED.filter(k =>
         !Object.prototype.hasOwnProperty.call(prev, k) &&
@@ -263,7 +209,6 @@ async function login(port, pw) {
         leaked.length ? leaked.join('، ') : '');
     }
 
-    // ═══════════════════════════════════════
     console.log('\n  ── قالب نادرست شناسه پذیرنده ──');
 
     {
@@ -280,7 +225,6 @@ async function login(port, pw) {
         res.body.payment?.message);
     }
 
-    // ═══════════════════════════════════════
     console.log('\n  ── حالت پیش‌فرض (بدون کلید) ──');
 
     {
@@ -290,8 +234,6 @@ async function login(port, pw) {
       const res = await api(P3, '/api/admin/readiness?deep=1', {}, T3);
       const b = res.body;
 
-      // Existing owner was changed in the isolated smoke setup; a default
-      // environment variable must not override the actual database credential.
       add('وضعیت رمز از حساب ذخیره‌شده می‌آید، نه مقدار محیط',
         b.items.find(i => i.key === 'admin_password')?.level === 'ok');
       add('رمز واقعی یا هش در خروجی نمایش داده نمی‌شود',
@@ -304,7 +246,6 @@ async function login(port, pw) {
         b.sms?.key_hint === null && b.payment?.merchant_hint === null);
       add('«آماده» نیست چون خطا دارد', b.ready === false, `${b.errors} خطا`);
 
-      // Made-to-order with zero stock is still genuinely orderable.
       const dbx = new Database(DB);
       const vis = require('../src/variant-visibility').publicVariantSql('v');
       const had = dbx.prepare(`SELECT COUNT(DISTINCT p.id) c FROM variants v JOIN products p ON p.id=v.product_id WHERE p.supply_mode IN ('IN_STOCK','MADE_TO_ORDER') AND v.price_toman>0 AND v.stock>=0 AND (v.stock>0 OR p.supply_mode='MADE_TO_ORDER') AND ${vis}`).get().c;
@@ -314,13 +255,11 @@ async function login(port, pw) {
         had === 0 ? stock?.level === 'error' : stock?.level === 'ok',
         `${had} محصول قابل سفارش`);
 
-      // دسترسی
       const noAuth = await api(P3, '/api/admin/readiness');
       add('بدون ورود قابل دسترسی نیست',
         noAuth.status === 401 || noAuth.status === 403, `status ${noAuth.status}`);
     }
 
-    // ═══════════════════════════════════════
     console.log('\n  ── محدودیت آزمون پیامک ──');
 
     {
@@ -328,8 +267,6 @@ async function login(port, pw) {
       dbr.prepare('DELETE FROM rate_limits').run();
       dbr.close();
 
-      // Use the separate console-only server: P1 deliberately has fake live
-      // credentials for masking tests and must never send a test SMS externally.
       const smsPort = 4483;
       const smsToken = await login(smsPort, 'yazd1404');
       if (!smsToken) throw new Error('Console SMS test login failed');
@@ -352,7 +289,6 @@ async function login(port, pw) {
         badMob.status === 400 || badMob.status === 429, `status ${badMob.status}`);
     }
 
-    // ═══════════════════════════════════════
     console.log('\n  ── رابط کاربری ──');
 
     {
@@ -364,8 +300,6 @@ async function login(port, pw) {
       add('پنل تأکید می‌کند کلیدی نمایش داده نمی‌شود',
         /هیچ کلیدی اینجا نمایش داده نمی‌شود/.test(adm));
 
-      /* نگهبان: هیچ فایل ورک‌اسپیس نباید کلید واقعی داشته باشد.
-         .env تصادفی ساخته شود و در بسته استقرار برود، فاجعه است. */
       const envFile = path.join(ROOT, '.env');
       add('فایل .env در ورک‌اسپیس وجود ندارد', !fs.existsSync(envFile));
       const dockerignore = fs.readFileSync(path.join(ROOT, '.dockerignore'), 'utf8');

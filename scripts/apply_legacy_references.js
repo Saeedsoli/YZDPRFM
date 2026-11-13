@@ -1,5 +1,5 @@
 'use strict';
-// Explicit operation on an offline DB after verified backup. Reindex only scope.
+
 const fs=require('fs'),path=require('path');const file=process.argv[2];
 if(!file||!fs.existsSync(file))throw Error('Existing database path required');
 process.env.DB_PATH=path.resolve(file);process.env.BACKUP_DISABLED='1';

@@ -1,35 +1,3 @@
-/**
- * عطر یزد | مسیرهای سیستم و آمادگی
- * ------------------------------------
- * گام ۴ از تفکیک کامل `server.js`.
- *
- * ── محتوا ──
- *   GET  /api/admin/backup            دانلود پشتیبان زنده
- *   GET  /api/admin/backups           فهرست نسخه‌های خودکار
- *   GET  /api/admin/backups/:file     دانلود یک نسخه
- *   GET  /api/admin/audit             سابقه کارهای کارکنان
- *   GET  /api/admin/readiness         بررسی آمادگی افتتاح
- *   POST /api/admin/readiness/test-sms  آزمون پیامک
- *   GET  /api/admin/reports           گزارش فروش
- *   GET  /api/admin/analytics         تحلیل بازدید
- *   POST /api/admin/analytics/refresh بازسازی ویترین
- *
- * ── سه نکته که این ماژول را متفاوت می‌کند ──
- *
- * ۱) **پاسخ استریمی.** دو مسیر پشتیبان، فایل را مستقیم روی `res`
- *    می‌ریزند و `sendJSON` صدا نمی‌زنند. پس پوشش `sendJSON`
- *    کمکشان نمی‌کند و باید صریحاً `return true` بگذارند.
- *
- * ۲) **بررسی آمادگی گران است.** با `?deep=1` به درگاه پرداخت و
- *    سامانه پیامک وصل می‌شود. محدودیت نرخ دارد.
- *
- * ۳) **نشت کلید ممنوع.** `readiness` هرگز نباید مقدار کلید API
- *    را برگرداند — فقط «هست یا نیست». آزمون این را می‌سنجد.
- *
- * ── قرارداد `ctx` ──
- * ماژول زمینه می‌گیرد و `Promise<boolean>` برمی‌گرداند.
- */
-
 'use strict';
 
 const fs = require('fs');
@@ -39,8 +7,6 @@ const persianDate = require('../../public/assets/persian-date');
 const {publicVariantSql} = require('../variant-visibility');
 const stockReservations = require('../order-stock-reservations');
 
-// Backup files contain customer and order data. Destroy the read stream when
-// the client disconnects; always clean up our private temporary directory.
 function streamBackup(res, file, cleanup, appLog, fd) {
   const stream = fd === undefined ? fs.createReadStream(file) : fs.createReadStream(file,{fd,autoClose:true});
   let cleaned = false;
@@ -58,8 +24,6 @@ function streamBackup(res, file, cleanup, appLog, fd) {
   stream.pipe(res);
 }
 
-// Open the exact file once and stream the same descriptor: checking a path
-// then reopening it would allow it to be replaced between check and use.
 function openAutomaticBackup(dir, name, dbPath) {
   const directory=fs.lstatSync(dir);
   if(!directory.isDirectory()||directory.isSymbolicLink())throw Error('Unsafe backup directory');
@@ -69,7 +33,7 @@ function openAutomaticBackup(dir, name, dbPath) {
   try {
     const st=fs.fstatSync(fd);
     if(!st.isFile()||st.nlink!==1||st.size<100)throw Error('Unsafe backup file');
-    // An offline snapshot must be independent from the live DB and its WAL.
+
     for(const base of [dbPath,dbPath+'-wal',dbPath+'-shm',dbPath+'-journal']) {
       try { const live=fs.statSync(base);if(live.dev===st.dev&&live.ino===st.ino)throw Error('Live database alias'); }
       catch(e){if(e.code!=='ENOENT')throw e;}
@@ -81,31 +45,6 @@ function openAutomaticBackup(dir, name, dbPath) {
   } catch(e) {fs.closeSync(fd);throw e;}
 }
 
-/**
- * @param {object}   ctx
- * @param {string}   ctx.method
- * @param {string}   ctx.pathname
- * @param {object}   ctx.parsed
- * @param {object}   ctx.req
- * @param {object}   ctx.res            برای استریم پشتیبان
- * @param {Function} ctx.can
- * @param {Function} ctx.parseBody
- * @param {Function} ctx.logAudit
- * @param {Function} ctx.appLog
- * @param {Function} ctx.rateLimit
- * @param {object}   ctx.who
- * @param {object}   ctx.db
- * @param {string}   ctx.DB_PATH
- * @param {object}   ctx.otp
- * @param {object}   ctx.notify
- * @param {object}   ctx.pay
- * @param {Function} ctx.getSettings
- * @param {Function} ctx.normalizeDigits
- * @param {object}   ctx.reports
- * @param {object}   ctx.analytics
- * @param {Function} ctx.verifyPassword  برای بررسی امن هش رمز حساب مدیر
- * @returns {Promise<boolean>}
- */
 async function handle(ctx) {
   const {
     method, pathname, parsed, req, res,
@@ -114,9 +53,6 @@ async function handle(ctx) {
     reports, analytics, verifyPassword, trustedProxyPolicy
   } = ctx;
 
-  /* پوشش `sendJSON` — درس گام ۱.
-     ولی توجه: دو مسیر پشتیبان **استریم** می‌فرستند و این پوشش
-     کمکشان نمی‌کند؛ آن‌ها صریحاً `return true` دارند. */
   const sendJSON = (code, data) => { ctx.sendJSON(code, data); return true; };
 
   if (method === 'GET' && pathname === '/api/admin/backup') {
@@ -124,11 +60,10 @@ async function handle(ctx) {
     const stamp = new Date().toISOString().slice(0, 19).replace(/[:T]/g, '-');
     let dir;
     try {
-      // Unique directory prevents collisions for concurrent requests and is
-      // private even when the parent directory is broadly readable.
+
       dir = fs.mkdtempSync(path.join(path.dirname(DB_PATH), '.manual-backup-'));
       const tmp = path.join(dir, 'snapshot.db');
-      db.prepare('VACUUM INTO ?').run(tmp);   // نسخه سازگار حتی حین نوشتن
+      db.prepare('VACUUM INTO ?').run(tmp);
       const size = fs.statSync(tmp).size;
       appLog('INFO', 'backup', 'پشتیبان دستی گرفته شد', { size });
       res.writeHead(200, {
@@ -167,7 +102,7 @@ async function handle(ctx) {
     if (!can('system.backup')) return true;
 
     const raw = decodeURIComponent(pathname.replace('/api/admin/backups/', ''));
-    // فقط نام فایل‌های تولیدشده خودمان — جلوگیری از پیمایش مسیر
+
     if (!/^yazd-\d{10}\.db$/.test(raw)) {
       return sendJSON(400, { error: 'نام فایل پشتیبان معتبر نیست.' });
     }
@@ -222,20 +157,8 @@ async function handle(ctx) {
     if (!can('settings.view')) return true;
 
     const st = getSettings();
-    const deep = parsed.query.deep === '1';   // تماس واقعی با سرویس‌ها
+    const deep = parsed.query.deep === '1';
 
-    /* اطلاعات حقوقی روی فاکتور چاپ می‌شود و جعلی بودنش مسئولیت
-       قانونی دارد — پس ناقص بودنش «خطا» است نه «هشدار».
-
-       ولی «خالی نبودن» کافی نیست: مقادیر جای‌نگهدار که هنگام
-       ساخت پروژه گذاشته شده بودند، پر **به نظر می‌رسند** و
-       بررسی را سبز می‌کردند در حالی که روی فاکتور واقعی چاپ
-       می‌شوند. این خطرناک‌تر از خالی بودن است، چون خالی بودن
-       دست‌کم دیده می‌شود.
-
-       پس هم خالی بودن سنجیده می‌شود، هم برابری با مقدار
-       جای‌نگهدار، هم قالب (کد اقتصادی ۱۲ رقم، شناسه ملی ۱۱
-       رقم، کد پستی ۱۰ رقم). */
     const PLACEHOLDER = new Set([
       '411358697643', '14009876543', '12345',
       '8916945781', '03536248000', 'عطر یزد'
@@ -246,24 +169,6 @@ async function handle(ctx) {
       postal_code:   [10, 'کد پستی باید ۱۰ رقم باشد']
     };
 
-    /* ── دو دسته، دو سطح سخت‌گیری ──
-
-       **الزامی:** تلفن، نشانی و کد پستی. اینها را خودِ اینماد
-       الزام می‌کند («درج دقیق آدرس پستی، کدپستی و شماره تماس
-       در سایت الزامی است»)، پس نبودشان صدور مجوز را به خطر
-       می‌اندازد. ضمناً نشانی روی برچسب پستی به‌عنوان فرستنده
-       چاپ می‌شود و پست بدون آن مرسوله را نمی‌پذیرد.
-
-       **اختیاری:** نام حقوقی، کد اقتصادی، شناسه ملی، شماره
-       ثبت. اینها فقط روی «فاکتور رسمی» (`?formal=1`) چاپ
-       می‌شوند — برای خریدار عمده‌ای که سند رسمی می‌خواهد.
-       مشتری خرده‌فروشی هرگز نمی‌بیندشان.
-
-       خواسته صریح مالک (مرداد ۱۴۰۵): «در فاکتور نیازی به درج
-       اطلاعات حقوقی نداریم، خود ای‌نماد کفایت می‌کند.»
-       پس نبودشان **خطا نیست**. ولی اگر پر شده باشند و مقدار
-       نمونه باشند، هشدار داده می‌شود — چون آن‌وقت روی سندی
-       چاپ می‌شوند که به دست خریدار می‌رسد. */
     const LEGAL_REQUIRED = [
       ['phone', 'تلفن'], ['address', 'نشانی'], ['postal_code', 'کد پستی']
     ];
@@ -287,8 +192,6 @@ async function handle(ctx) {
       }
     }
 
-    /* فیلدهای اختیاری فقط وقتی سنجیده می‌شوند که پر باشند —
-       خالی بودنشان کاملاً پذیرفته است. */
     for (const [k, label] of LEGAL_OPTIONAL) {
       const v = String(st[k] || '').trim();
       if (!v) continue;
@@ -303,12 +206,10 @@ async function handle(ctx) {
     const push = (key, title, level, message, hint) =>
       items.push({ key, title, level, message, hint });
 
-    // ── اطلاعات حقوقی ──
     {
       const problems = [];
       if (missingLegal.length) problems.push(`خالی: ${missingLegal.join('، ')}`);
-      /* جای‌نگهدار جدا و با لحن صریح‌تر گزارش می‌شود — چون
-         برخلاف فیلد خالی، به چشم نمی‌آید. */
+
       if (fakeLegal.length) problems.push(`هنوز مقدار نمونه دارد: ${fakeLegal.join('، ')}`);
       if (badShape.length) problems.push(badShape.join('، '));
 
@@ -321,11 +222,6 @@ async function handle(ctx) {
         problems.length ? 'پنل → تنظیمات فروشگاه' : undefined);
     }
 
-    /* ── اطلاعات حقوقی: فقط هشدار، نه خطا ──
-       نبودشان کاملاً پذیرفته است (فاکتور عادی به آنها نیازی
-       ندارد). ولی اگر مقدار نمونه در آنها مانده باشد، روی
-       «فاکتور رسمی» چاپ می‌شود و آن سند به دست خریدار عمده
-       می‌رسد — پس باید دیده شود. */
     {
       const anySet = LEGAL_OPTIONAL.some(([k]) => String(st[k] || '').trim());
       push('legal_formal', 'اطلاعات حقوقی (فاکتور رسمی)',
@@ -340,16 +236,13 @@ async function handle(ctx) {
           : undefined);
     }
 
-    // The environment initializes a new owner, but is NOT the credential used
-    // for an existing account. Inspect active owner records without exposing
-    // their hashes, names, or passwords; also honor pending password changes.
     const owners = db.prepare("SELECT pass_hash,pass_salt,must_change FROM staff WHERE role_key='owner' AND active=1").all();
     let ownerRisk = !owners.length;
     for (const owner of owners) {
       try {
         if (owner.must_change || !/^[0-9a-f]{128}$/i.test(owner.pass_hash || '') || !owner.pass_salt ||
             verifyPassword('yazd1404', owner.pass_hash, owner.pass_salt)) ownerRisk = true;
-      } catch { ownerRisk = true; } // invalid credentials must not appear safe
+      } catch { ownerRisk = true; }
     }
     push('admin_password', 'رمز مدیر کل',
       ownerRisk ? 'error' : 'ok',
@@ -358,11 +251,6 @@ async function handle(ctx) {
         : 'رمز پیش‌فرض و الزام تغییر رمز در حساب‌های فعال مدیر کل دیده نشد.',
       ownerRisk ? 'از حساب مدیر کل وارد شوید و رمز اولیه را در پنل تغییر دهید.' : undefined);
 
-    /* ── نماد اعتماد ──
-       نشان **دو بخش** دارد و با یکی کار نمی‌کند: نشانی تصویر هم
-       `id` می‌خواهد هم `Code`. پس حالت «نیمه‌پر» جدا گزارش می‌شود،
-       وگرنه مدیر شناسه را وارد می‌کند، کارت سبز می‌شود، و نشان
-       روی سایت نمی‌آید بی‌آنکه بداند چرا. */
     const enId = String(st.enamad_id || '').trim();
     const enCode = String(st.enamad_code || '').trim();
     const enBoth = enId && enCode;
@@ -374,11 +262,6 @@ async function handle(ctx) {
         : 'کد نماد وارد نشده — فوتر نشان آزمایشی می‌دهد.',
       enBoth ? undefined : 'پنل → تنظیمات فروشگاه → شناسه و کد امنیتی نماد');
 
-    /* ── اطلاع‌رسانی داخلی ──
-       اگر هیچ کارمندی موبایل نداشته باشد، سفارش‌ها ثبت می‌شوند و
-       هیچ‌کس خبردار نمی‌شود تا وقتی کسی پنل را باز کند. برای
-       فروشگاهی که تحویل ۳ تا ۷ روز وعده داده، این یعنی از دست
-       دادن روزها. */
     try {
       const al = require('../alerts').status();
       push('alerts', 'اطلاع‌رسانی به کارکنان',
@@ -391,9 +274,8 @@ async function handle(ctx) {
         al.reachable || !al.enabled
           ? undefined
           : 'پنل → کارکنان → شماره موبایل هر نفر را ثبت کنید');
-    } catch { /* نبود ماژول نباید بررسی آمادگی را بشکند */ }
+    } catch {  }
 
-    // ── موجودی ──
     const supply = db.prepare(`SELECT
       COUNT(DISTINCT CASE WHEN v.stock>0 THEN p.id END) in_stock,
       COUNT(DISTINCT CASE WHEN v.stock=0 AND p.supply_mode='MADE_TO_ORDER' THEN p.id END) made_to_order
@@ -409,26 +291,21 @@ async function handle(ctx) {
       !ledgerReady ? 'پس از پشتیبان معتبر، مهاجرت محافظت‌شده رزرو انبار لازم است.' :
         sellable ? undefined : 'پنل → محصولات → بررسی قیمت و وضعیت تأمین');
 
-    // Configuration alone cannot prove the proxy overwrites/appends headers
-    // safely or that the server is reachable only through that proxy.
     push('proxy','آدرس IP و پروکسی','warn',
       trustedProxyPolicy?.configured
         ? 'پروکسی مورد اعتماد تنظیم شده؛ رفتار واقعی آن هنوز باید در محیط لیارا بررسی شود.'
         : 'پروکسی مورد اعتماد تنظیم نشده؛ محدودیت درخواست ممکن است برای همه مشتریان مشترک شود.',
       'پیش از افتتاح، مسیر شبکه و فهرست دقیق پروکسی‌های مورد اعتماد را بررسی کنید.');
 
-    // ── دیسک پایدار ──
     const onLiara = /^\/app\//.test(DB_PATH);
     push('disk', 'دیسک پایدار دیتابیس',
       onLiara ? 'ok' : 'warn',
       onLiara ? `دیتابیس روی ${DB_PATH}` : `مسیر محلی: ${DB_PATH}`,
       onLiara ? undefined : 'روی لیارا باید DB_PATH=/app/data/yazd.db و دیسک متصل باشد.');
 
-    // ── سرویس‌های بیرونی ──
     let payInfo, smsInfo;
     if (deep) {
-      /* تماس واقعی — فقط وقتی مدیر صریحاً بخواهد، چون چند ثانیه
-         طول می‌کشد و به شبکه وابسته است. */
+
       [payInfo, smsInfo] = await Promise.all([
         pay.testConnection().catch(e => ({ ok: false, message: e.message })),
         notify.testConnection().catch(e => ({ ok: false, message: e.message }))
@@ -436,8 +313,7 @@ async function handle(ctx) {
     } else {
       payInfo = { ok: pay.isLive(), live: pay.isLive(), gateway: pay.gatewayName(),
         message: pay.isLive() ? 'درگاه واقعی پیکربندی شده.' : 'درگاه آزمایشی فعال است.' };
-      // No network call without a phone number. Provider name alone does not
-      // imply credentials, a configured sender or actual delivery.
+
       smsInfo = await notify.testConnection();
     }
 
@@ -468,8 +344,7 @@ async function handle(ctx) {
     if (mobile && !otp.isValidMobile(mobile)) {
       return sendJSON(400, { error: 'شماره موبایل معتبر وارد کنید.' });
     }
-    /* محدودیت نرخ: پیامک آزمایشی هزینه دارد و نباید دکمه‌ای
-       باشد که بشود صد بار پشت هم زد. */
+
     const rl = rateLimit(`smstest:${who?.id || 'anon'}`, 5, 3600e3);
     if (!rl.ok) return sendJSON(429, { error: 'حداکثر ۵ آزمون در ساعت.' });
 
@@ -484,23 +359,11 @@ async function handle(ctx) {
     return sendJSON(200, reports.full(days));
   }
 
-  /* ── خروجی گزارش فروش ──
-     گزارش تا امروز فقط در پنل دیده می‌شد. حسابدار برای بستن
-     دفتر ماهانه باید عددها را دستی رونویسی می‌کرد — کاری که
-     پرخطاست و انجام نمی‌شود.
-
-     ── چرا چند جدول در یک فایل ──
-     CSV استاندارد یک جدول است. ولی گزارش فروش شش نمای مختلف
-     دارد (روزانه، محصول، برند، استان، کوپن، مشتری) و شش فایل
-     جدا یعنی شش بار دانلود. اکسل با سطر خالی و عنوان، بلوک‌ها
-     را جدا نشان می‌دهد و همه در یک برگه می‌مانند. */
   if (method === 'GET' && pathname === '/api/admin/reports/csv') {
     if (!can('reports.sales')) return true;
     const days = Math.min(365, Math.max(1, parseInt(parsed.query.days) || 30));
     const rep = reports.full(days);
 
-    /* BOM لازم است وگرنه اکسل فارسی را «ØªÙˆÙ…Ø§Ù†» نشان می‌دهد.
-       این را یک بار در CSV سفارش‌ها یاد گرفتیم. */
     const out = ['\uFEFF'];
     const block = (title, headers, rows) => {
       out.push(`\n${title}\n`);
@@ -526,9 +389,6 @@ async function handle(ctx) {
       ['تاریخ', 'سفارش', 'درآمد'],
       (rep.daily || []).map(d => [persianDate.formatDate(d.d), d.orders, d.revenue]));
 
-    /* نام میدان‌ها از پاسخ واقعی گرفته شده، نه حدس: `d` نه
-       `day`، و `name_fa`/`brand_fa` نه `name`. حدس اولیه سه
-       ستون خالی می‌داد. */
     block('پرفروش‌ترین محصولات',
       ['برند', 'محصول', 'تعداد', 'سفارش', 'درآمد'],
       (rep.top_products || []).map(p =>
@@ -567,7 +427,7 @@ async function handle(ctx) {
     return sendJSON(200, { message: 'ویترین صفحه اصلی به‌روز شد.', ...r });
   }
 
-  return false;   // هیچ‌کدام از مسیرهای این ماژول نبود
+  return false;
 }
 
 module.exports = { handle };

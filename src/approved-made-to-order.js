@@ -1,6 +1,5 @@
 'use strict';
-// Owner-approved fixed scope. Never changes prices, stock, customer/order data.
-// A one-time marker prevents reopening products the owner later disables.
+
 const fs=require('fs');
 const {allowedVariant,RATE_KEY}=require('./essence-pricing-store');
 const {priceFromUsdPerKg}=require('./essence-pricing');
@@ -40,7 +39,7 @@ function applyApprovedMadeToOrder(db,file){
 const NOTICE_MARKER='approved_mto_notice_correction_2026_11_v1';
 const OLD_NOTICE='این محصول، بازآفرینی دست‌ساز با عصاره خالص اولیه و فرمولاسیون اختصاصی عطر یزد است.';
 const SAFE_NOTICE='این محصول بازآفرینی دست‌ساز است و محصول اورجینال برند اصلی نیست. نام رایحه مرجع از وب‌سایت رسمی برند بررسی شده؛ هویت و کیفیت اسانس تأمین‌کننده مستقلاً تأیید نشده است.';
-// Only replace the exact old boilerplate. Preserve every owner-edited notice.
+
 function correctApprovedNotices(db,file){
  const m=JSON.parse(fs.readFileSync(file,'utf8'));
  if(m.version!==VERSION||m.source_sha256!==EXPECTED_SOURCE||!Array.isArray(m.items)||m.items.length!==192)throw Error('Invalid approval manifest');

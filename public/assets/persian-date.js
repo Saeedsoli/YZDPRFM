@@ -1,9 +1,6 @@
-/* Persian calendar for display and date-only input. Database/API values remain ISO.
-   A calendar date has no time zone; instants are displayed in Asia/Tehran. */
 (function(root,factory){
   const core=typeof module!=='undefined' && module.exports ? require('./jalaali-core.js') : root?.jalaali;
-  // A page-level fallback keeps non-date actions working if this dependency
-  // fails to load. Date entry must remain disabled rather than guess.
+
   if(!core) { if(root?.YazdDate)return; throw Error('Persian calendar core unavailable'); }
   const api=factory(core);
   if(typeof module!=='undefined' && module.exports)module.exports=api;
@@ -33,7 +30,7 @@
   if(typeof v==='number')return Number.isFinite(v)&&Number.isFinite(new Date(v).getTime())?{ms:v,dateOnly:false}:null;
   if(typeof v!=='string'||!v)return null;
   if(/^\d{4}-\d{2}-\d{2}$/.test(v)){const ms=isoDateMs(v);return ms===null?null:{ms,dateOnly:true};}
-  // SQLite CURRENT_TIMESTAMP and unzoned stored timestamps are UTC.
+
   let text=v.trim().replace(' ','T');
   if(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}(?::\d{2}(?:\.\d+)?)?$/.test(text))text+='Z';
   const ms=Date.parse(text);return Number.isFinite(ms)?{ms,dateOnly:false}:null;

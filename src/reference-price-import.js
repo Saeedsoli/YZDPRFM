@@ -1,6 +1,5 @@
 'use strict';
-// Provisional price references, never verification of the supplied essence.
-// Reprice only untouched, unavailable products; preserve all owner changes.
+
 const fs=require('fs');
 const {kgToGram,productPriceState,applyProductPrice}=require('./product-essence-pricing');
 const {HOST_BY_BRAND}=require('./official-identities');
@@ -102,8 +101,7 @@ function applyReferencePrices(db,file){
    const p=find.get(x.product_id), e=needsIdentity ? official.get(x.product_id) : null;
    const identityOk=!needsIdentity || !!(p&&p.brand_en===x.brand_en&&p.name_en===x.expected_name_en&&e&&e.official_url===x.official_url&&e.status==='official_original_found_supplier_essence_unverified');
    const already=priorEvidence.get(x.product_id)||(priorSecondary&&priorSecondary.get(x.product_id));
-   // For the previously imported 42, add provenance only when the value is
-   // unchanged and the original one-time import marker exists. Never reprice.
+
    if(second&&p&&p.slug===x.slug&&p.supply_mode==='UNAVAILABLE'&&identityOk&&originalImport&&!already&&p.essence_usd_per_kg===x.usd_per_kg){
     evidence.run(p.id,data.supplier_file_sha256,x.official_url,x.usd_per_kg,x.quality,x.match_status);backfilled++;continue;
    }

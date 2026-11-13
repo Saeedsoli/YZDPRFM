@@ -1,5 +1,5 @@
 'use strict';
-// Explicit, all-or-nothing migration; operator must back up the offline DB first.
+
 const Database=require('better-sqlite3'),path=require('path'),fs=require('fs');
 const file=process.argv[2];if(!file||!fs.existsSync(file))throw Error('Existing database path required');
 const db=new Database(file,{fileMustExist:true});db.pragma('foreign_keys = ON');

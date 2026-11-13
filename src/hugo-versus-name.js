@@ -1,5 +1,5 @@
 'use strict';
-// Correct an untouched seed name only; keep owner edits and old search aliases.
+
 const KEY='hugo_versus_name_2026_11_v1';
 function apply(db){return db.transaction(()=>{
  if(db.prepare('select value from settings where key=?').get(KEY))return {reason:'already_applied'};

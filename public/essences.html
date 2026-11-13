@@ -26,7 +26,7 @@
   .es-hero p { font-size: .95rem; opacity: .82; max-width: 680px;
                margin: 0 auto; line-height: 2.1; }
 
-  .truth { max-width: 860px; margin: -28px auto 40px; padding: 0 20px; position: relative; z-index: 5; }
+  .truth { max-width: 860px; margin: -18px auto 40px; padding: 8px 20px 0; position: relative; z-index: 5; }
   .truth-card { background: var(--surface); border: 1px solid var(--border);
                 border-right: 5px solid var(--gold); border-radius: var(--radius);
                 padding: 26px; box-shadow: var(--shadow); }
@@ -97,6 +97,10 @@
   @media (max-width: 860px) {
     #houseGrid:not(.is-ready) { min-height: 227vh }
   }
+  /* لینک منبع در متن: زیرخط دارد تا از متن معمولی جدا شود */
+  main a[target="_blank"] { color: var(--gold-dark); font-weight: 700;
+    text-decoration: underline; text-underline-offset: 3px }
+  main a[target="_blank"]:hover { color: var(--text) }
 </style>
 </head>
 <body>
@@ -113,7 +117,13 @@
     <div class="inner">
       <span class="eyebrow">منبع مواد اولیه</span>
       <h1>آشنایی با <em>خانه‌های عطر جهان</em></h1>
-      <p>ژیوودان، فیرمنیش، ایبرکم و لوزی از خانه‌های شناخته‌شده عطرسازی هستند. هویت اسانس هر رایحه مستقلاً تأیید نشده است.</p>
+      <p>
+        <a href="https://www.givaudan.com" target="_blank" rel="noopener noreferrer nofollow">ژیوودان</a>،
+        <a href="https://www.firmenich.com" target="_blank" rel="noopener noreferrer nofollow">فیرمنیش</a>،
+        <a href="https://www.iff.com" target="_blank" rel="noopener noreferrer nofollow">ایبرکم (IFF)</a> و
+        <a href="https://www.symrise.com" target="_blank" rel="noopener noreferrer nofollow">لوزی (Symrise)</a>
+        از خانه‌های شناخته‌شده عطرسازی هستند. هویت اسانس هر رایحه مستقلاً تأیید نشده است.
+      </p>
     </div>
   </section>
 
@@ -122,7 +132,10 @@
       <h2>یک حقیقت که کمتر گفته می‌شود</h2>
       <p>
         بعضی برندهای عطر با <strong>خانه‌های عطرسازی</strong> همکاری می‌کنند؛
-        شرکت‌هایی مانند ژیوودان و فیرمنیش. نام یک خانه به‌تنهایی به معنی
+        شرکت‌هایی مانند
+        <a href="https://www.givaudan.com" target="_blank" rel="noopener noreferrer nofollow">ژیوودان</a> و
+        <a href="https://www.firmenich.com" target="_blank" rel="noopener noreferrer nofollow">فیرمنیش</a>.
+        نام یک خانه به‌تنهایی به معنی
         یکسان بودن فرمول، کیفیت یا منشأ اسانس محصولات مختلف نیست.
       </p>
 
@@ -191,7 +204,7 @@
     <div class="faq-item">
       <div class="q">از کجا بدانم راست می‌گویید؟</div>
       <div class="a">
-        بهترین راه، آزمودن است. سمپل ۵ میلی‌لیتری رایحه‌های قابل سفارش، در صورت موجود بودن،
+        بهترین راه، آزمودن است. سمپل سمپل ۵ میل رایحه‌های قابل سفارش، در صورت موجود بودن،
         برای آزمودن در دسترس است. کیفیت اسانس در ماندگاری و نحوه باز شدن
         نُت‌ها روی پوست خودش را نشان می‌دهد.
       </div>
@@ -209,7 +222,7 @@
 
   <section class="cta-band">
     <h2>خودتان بیازمایید</h2>
-    <p>سمپل ۵ میلی‌لیتری، پیش از سفارش شیشه اصلی</p>
+    <p>سمپل ۵ میل، پیش از سفارش شیشه اصلی</p>
     <a href="/" class="btn">مشاهده کاتالوگ عطرها</a>
   </section>
 </main>
@@ -247,10 +260,11 @@ async function load() {
   } catch {
     document.getElementById('loading').innerHTML =
       `<div class="empty-state"><h3>ارتباط برقرار نشد</h3>
-       <button class="btn" style="margin-top:14px" onclick="location.reload()">تلاش دوباره</button></div>`;
+       <button class="btn" style="margin-top:14px" data-csp-click="location.reload()">تلاش دوباره</button></div>`;
   }
 }
 load();
 </script>
+<script src="/assets/csp-actions.js"></script>
 </body>
 </html>

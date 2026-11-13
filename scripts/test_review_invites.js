@@ -1,26 +1,5 @@
 #!/usr/bin/env node
-/**
- * آزمون دعوت‌نامه نظر — مشتریان ۱۲ سال فروش حضوری.
- *
- * چرا این آزمون مهم است: دعوت‌نامه یک **کلید دسترسی** است. هر
- * ضعفی در آن یعنی کسی می‌تواند نظر جعلی با نشان «تأییدشده» ثبت
- * کند — یعنی همان سازوکاری که قرار بود اعتماد بسازد، تبدیل به
- * ابزار فریب می‌شود. ضرر اینجا اعتبار برند است، نه پول.
- *
- * پوشش:
- *   • ساخت دعوت‌نامه فقط با مجوز reviews.invite
- *   • توکن تصادفی، ۳۲ نویسه، غیرقابل حدس
- *   • مشتری بدون حساب کاربری می‌تواند نظر بدهد
- *   • یک‌بارمصرف بودن — حتی زیر درخواست همزمان
- *   • توکن جعلی، منقضی و دستکاری‌شده رد می‌شود
- *   • نظر با منشأ INVITED ثبت و نشان جدا می‌گیرد
- *   • نظر تا تأیید مدیر منتشر نمی‌شود
- *   • دعوت تکراری دوباره ساخته نمی‌شود
- *   • شماره مشتری هرگز کامل لو نمی‌رود
- *   • صفحه /review/:token سرو می‌شود و noindex است
- *
- * اجرا: node scripts/test_review_invites.js
- */
+
 'use strict';
 
 const { spawn } = require('child_process');
@@ -44,12 +23,11 @@ const add = (label, ok, note) => {
   checks.push(ok);
 };
 
-const MOB = '09120009911';       // شماره آزمایشی
+const MOB = '09120009911';
 const MOB2 = '09120009922';
 
 function cleanup() {
-  /* اگر جدول هنوز ساخته نشده (اولین اجرا پیش از بالا آمدن سرور)،
-     پاک‌سازی نباید کل آزمون را بترکاند. */
+
   const db = new Database(DB);
   const has = n => !!db.prepare(
     "SELECT 1 FROM sqlite_master WHERE type='table' AND name=?").get(n);
@@ -118,7 +96,6 @@ const api = (p, opt = {}, tok = null) =>
     add('ورود مدیر', !!TOK);
     if (!TOK) return finish();
 
-    // ─────────────────────────────────────────────
     console.log('\n  ── دسترسی ──');
 
     {
@@ -130,7 +107,6 @@ const api = (p, opt = {}, tok = null) =>
         noAuth.status === 401 || noAuth.status === 403, `status ${noAuth.status}`);
     }
 
-    // ─────────────────────────────────────────────
     console.log('\n  ── ساخت دعوت‌نامه ──');
 
     let TOKEN = null;
@@ -152,8 +128,7 @@ const api = (p, opt = {}, tok = null) =>
     }
 
     {
-      /* دو دعوت پیاپی نباید دو توکن بدهند — مدیر ممکن است دوبار
-         کلیک کند و دو پیامک بفرستد که مشتری را گیج می‌کند. */
+
       const again = await api('/api/admin/review-invites', {
         method: 'POST',
         body: JSON.stringify({ product: P.slug, mobile: MOB })
@@ -177,7 +152,6 @@ const api = (p, opt = {}, tok = null) =>
       add('محصول نامعتبر رد می‌شود', badProduct.status === 404, `status ${badProduct.status}`);
     }
 
-    // ─────────────────────────────────────────────
     console.log('\n  ── مشتری لینک را باز می‌کند (بدون حساب کاربری) ──');
 
     {
@@ -197,13 +171,11 @@ const api = (p, opt = {}, tok = null) =>
       const malformed = await api('/api/review-invite/abc');
       add('توکن بدشکل رد می‌شود', malformed.status === 410, `status ${malformed.status}`);
 
-      /* تلاش برای پیمایش مسیر — نباید فایلی لو برود */
       const trav = await fetch(`${BASE}/api/review-invite/..%2F..%2Fetc%2Fpasswd`);
       add('پیمایش مسیر در توکن بی‌اثر است', trav.status === 410 || trav.status === 404,
         `status ${trav.status}`);
     }
 
-    // ─────────────────────────────────────────────
     console.log('\n  ── اعتبارسنجی ورودی نظر ──');
 
     {
@@ -225,12 +197,10 @@ const api = (p, opt = {}, tok = null) =>
       });
       add('متن کوتاه‌تر از ۱۰ حرف رد می‌شود', shortBody.status === 400);
 
-      /* هیچ‌کدام از تلاش‌های ناموفق نباید دعوت را بسوزاند */
       const still = await api(`/api/review-invite/${TOKEN}`);
       add('دعوت پس از تلاش ناموفق همچنان معتبر است', still.status === 200);
     }
 
-    // ─────────────────────────────────────────────
     console.log('\n  ── ثبت نظر ──');
 
     {
@@ -274,13 +244,10 @@ const api = (p, opt = {}, tok = null) =>
         view.status === 410 && view.body.used === true);
     }
 
-    // ─────────────────────────────────────────────
     console.log('\n  ── یک‌بارمصرف بودن زیر درخواست همزمان ──');
 
     {
-      /* بدترین حالت: مشتری روی دکمه دوبار می‌زند، یا لینک را در
-         دو تب باز می‌کند. بدون اتمی بودن، هر دو از بررسی رد
-         می‌شوند و دو نظر ثبت می‌شود. */
+
       const mk = await api('/api/admin/review-invites', {
         method: 'POST',
         body: JSON.stringify({ product: P2.slug, mobile: MOB2 })
@@ -305,7 +272,6 @@ const api = (p, opt = {}, tok = null) =>
       add('فقط یک نظر در دیتابیس ثبت شد', n === 1, `${n} نظر`);
     }
 
-    // ─────────────────────────────────────────────
     console.log('\n  ── دعوت منقضی ──');
 
     {
@@ -330,7 +296,6 @@ const api = (p, opt = {}, tok = null) =>
       add('با دعوت منقضی نظر ثبت نمی‌شود', send.status === 410);
     }
 
-    // ─────────────────────────────────────────────
     console.log('\n  ── نمایش عمومی نظر ──');
 
     {
@@ -357,7 +322,6 @@ const api = (p, opt = {}, tok = null) =>
       add('خلاصه امتیاز به‌روز شد', after.body.summary?.count >= 1);
     }
 
-    // ─────────────────────────────────────────────
     console.log('\n  ── فهرست مدیریت ──');
 
     {
@@ -374,7 +338,6 @@ const api = (p, opt = {}, tok = null) =>
         del.status === 409, `status ${del.status}`);
     }
 
-    // ─────────────────────────────────────────────
     console.log('\n  ── صفحه عمومی ──');
 
     {

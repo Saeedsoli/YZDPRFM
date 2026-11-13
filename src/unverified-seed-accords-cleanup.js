@@ -1,6 +1,5 @@
 'use strict';
-// Remove only the 31 exact untouched generated drafts in this fixed scope.
-// Source tiers, customer/order data, prices, stock and manager edits are kept.
+
 const fs=require('fs'),crypto=require('crypto');
 const KEY='unverified_seed_accords_cleanup_2026_11_v1';
 const DIGEST='e938407cc8671675a32b42c4cfe934dc507fecdf5183579e81ee2f666236eb6f';

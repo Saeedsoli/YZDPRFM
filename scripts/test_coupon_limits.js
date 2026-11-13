@@ -1,19 +1,5 @@
 #!/usr/bin/env node
-/**
- * آزمون سقف استفاده از کد تخفیف.
- *
- * چرا مهم است؟
- *   `validateCoupon` سقف را هنگام **ثبت سفارش** بررسی می‌کند، ولی
- *   `recordCouponUse` شمارنده را هنگام **پرداخت** بالا می‌برد. بین
- *   این دو فاصله هست. اگر کوپنی با ظرفیت ۳ داشته باشید و ده نفر
- *   هم‌زمان سفارش بدهند، همه از بررسی رد می‌شوند چون شمارنده هنوز
- *   صفر است.
- *
- *   همین‌طور «یک‌بار برای هر کاربر»: اگر یک نفر دو سفارش هم‌زمان
- *   بفرستد، هر دو ممکن است تخفیف بگیرند.
- *
- * اجرا: node scripts/test_coupon_limits.js
- */
+
 'use strict';
 
 const { spawn } = require('child_process');
@@ -26,8 +12,8 @@ const DB = path.join(ROOT, 'data', 'yazd.db');
 const PORT = 4410;
 const BASE = `http://127.0.0.1:${PORT}`;
 
-const CODE_LIMIT = 'TESTCAP3';    // ظرفیت کل: ۳
-const CODE_ONCE = 'TESTONCE';     // یک‌بار برای هر کاربر
+const CODE_LIMIT = 'TESTCAP3';
+const CODE_ONCE = 'TESTONCE';
 
 const g = s => `\x1b[32m${s}\x1b[0m`;
 const r = s => `\x1b[31m${s}\x1b[0m`;
@@ -77,7 +63,6 @@ async function boot() {
   return proc;
 }
 
-/** یک سفارش با کد تخفیف ثبت و بلافاصله پرداخت می‌کند */
 async function orderAndPay(label, mobile, sku, code) {
   const created = await (await fetch(`${BASE}/api/orders`, {
     method: 'POST',
@@ -106,9 +91,6 @@ async function orderAndPay(label, mobile, sku, code) {
   };
 }
 
-/* محدودیت نرخ سفارش ۱۰ در ۱۰ دقیقه است. سناریوی اول همه سهمیه را
-   مصرف می‌کند، پس بین سناریوها پاکش می‌کنیم — وگرنه سناریوهای بعدی
-   با ۴۲۹ رد می‌شوند و نتیجه گمراه‌کننده می‌شود. */
 function clearRateLimit() {
   const db = new Database(DB);
   db.prepare('DELETE FROM rate_limits').run();
@@ -144,7 +126,6 @@ function usageCount(code) {
 
   const checks = [];
 
-  // ══ سناریو ۱: ظرفیت کل ۳، ده سفارش هم‌زمان ══
   console.log(d(`  سناریو ۱ — کد «${CODE_LIMIT}» با ظرفیت ۳، ده سفارش هم‌زمان`));
   const results = await Promise.all(
     Array.from({ length: 10 }, (_, i) =>
@@ -158,7 +139,6 @@ function usageCount(code) {
   checks.push(['شمارنده با رکوردها می‌خواند', u1.counter === u1.rows]);
   checks.push(['شمارنده از ظرفیت بیشتر نشد', u1.counter <= 3]);
 
-  // ══ سناریو ۲: یک‌بار برای هر کاربر، پنج سفارش هم‌زمان از یک شماره ══
   clearRateLimit();
   console.log(d(`\n  سناریو ۲ — کد «${CODE_ONCE}» یک‌بار برای هر نفر، ۵ سفارش هم‌زمان از یک شماره`));
   const same = '09123334444';
@@ -172,7 +152,6 @@ function usageCount(code) {
   checks.push([`یک کاربر فقط یک بار (نه ${got2})`, got2 === 1]);
   checks.push(['رکورد مصرف برای کاربر تکراری ساخته نشد', u2.rows === 1]);
 
-  // ══ سناریو ۳: لغو سفارش ظرفیت را برمی‌گرداند ══
   clearRateLimit();
   console.log(d('\n  سناریو ۳ — سفارش با کد تخفیف لغو می‌شود'));
   const dbR = new Database(DB);
@@ -204,7 +183,7 @@ function usageCount(code) {
   await fetch(`${BASE}/api/payment/verify`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ order_id: o3.order_id, authority: 'x' })  // بدون success = لغو
+    body: JSON.stringify({ order_id: o3.order_id, authority: 'x' })
   });
   await sleep(300);
   const afterCancel = usageCount(CODE_LIMIT);

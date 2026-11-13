@@ -1,6 +1,5 @@
 'use strict';
-// Bounded structural checks, not a full image decoder or malware scanner.
-// Accept only complete, dimension-limited JPEG, PNG, WebP and GIF containers.
+
 const MAX_SIDE=12000,MAX_PIXELS=80000000;
 const dimensions=(w,h)=>Number.isInteger(w)&&Number.isInteger(h)&&w>0&&h>0&&w<=MAX_SIDE&&h<=MAX_SIDE&&w*h<=MAX_PIXELS;
 const u24=(b,p)=>b[p]|(b[p+1]<<8)|(b[p+2]<<16);
@@ -85,7 +84,7 @@ function detect(buf){
   if(jpeg(buf))return {ext:'jpg',mime:'image/jpeg'};
   if(webp(buf))return {ext:'webp',mime:'image/webp'};
   if(gif(buf))return {ext:'gif',mime:'image/gif'};
- }catch{/* Invalid/truncated input is rejected. */}
+ }catch{}
  return null;
 }
 module.exports={detect,MAX_SIDE,MAX_PIXELS};

@@ -1,5 +1,5 @@
 'use strict';
-// Backend for product-level essence pricing. No storefront or admin UI dependency.
+
 const crypto=require('crypto');
 const {priceFromUsdPerKg}=require('./essence-pricing');
 const {RATE_KEY,allowedVariant}=require('./essence-pricing-store');
@@ -27,11 +27,11 @@ function productPriceState(db,id) {
 }
 function previewProductPrice(db,id,usdPerGram) {
   const state=productPriceState(db,id),kg=gramToKg(usdPerGram);
-  // Validate calculation and maximum safe integer even when no EDP variants exist.
+
   priceFromUsdPerKg(kg,state.rate_toman,'EDP',100);
   const rows=db.prepare('SELECT sku,type,volume_ml,price_toman FROM variants WHERE product_id=? ORDER BY type,volume_ml,sku').all(state.product_id);
   const changes=rows.filter(v=>allowedVariant(v.type,v.volume_ml)).map(v=>({...v,new_price_toman:priceFromUsdPerKg(kg,state.rate_toman,v.type,v.volume_ml)}));
-  // New catalog products may not yet have any variants at all.
+
   for(const [type,volume] of [['SAMPLE',5],['EDP',10],['EDP',30],['EDP',50],['EDP',100],['BODY_SPLASH',120]]) {
     if (!changes.some(v=>v.type===type&&v.volume_ml===volume)) changes.push({sku:null,type,volume_ml:volume,price_toman:null,new_price_toman:priceFromUsdPerKg(kg,state.rate_toman,type,volume)});
   }

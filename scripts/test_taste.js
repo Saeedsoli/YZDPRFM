@@ -1,25 +1,5 @@
 #!/usr/bin/env node
-/**
- * آزمون پروفایل بویایی.
- *
- * چه چیزی سنجیده می‌شود:
- *   ۱) پاک‌سازی ورودی — آرایه، مقدار نامعتبر، کلید ناشناس، null
- *   ۲) امتیازدهی: وزن‌ها درست و نتیجه مرتبط
- *   ۳) بودجه: اعمال می‌شود و در صورت لزوم بازتر می‌شود
- *   ۴) تنوع برند
- *   ۵) ذخیره و خواندن پروفایل برای کاربر واردشده
- *   ۶) ساخت رکورد مشتری در صورت نبود (ورود با کد یکبارمصرف)
- *   ۷) حذف پروفایل
- *   ۸) سیم‌کشی رابط
- *
- * چرا این آزمون لازم است:
- *   دو باگ در همین قابلیت فقط با اجرای واقعی پیدا شدند — یکی
- *   افزودن ستون به جدول اشتباه، و یکی ذخیره‌نشدن بی‌صدای پروفایل
- *   برای کاربری که با پیامک وارد شده ولی ثبت‌نام نکرده بود.
- *   هیچ‌کدام خطا تولید نمی‌کردند.
- *
- * اجرا: node scripts/test_taste.js
- */
+
 'use strict';
 
 const fs = require('fs');
@@ -67,7 +47,6 @@ function api(method, p, body, hdr) {
 (async () => {
   console.log('\n  آزمون پروفایل بویایی\n');
 
-  // ══ ۱) پاک‌سازی ورودی ══
   console.log(d('  پاک‌سازی ورودی'));
 
   add('پاسخ معتبر می‌ماند',
@@ -91,7 +70,6 @@ function api(method, p, body, hdr) {
   add('پروفایل با دو معیار معتبر است',
       taste.isMeaningful({ gender: 'MEN', family: 'چوبی' }));
 
-  // ══ ۲) کیفیت پیشنهاد ══
   console.log(d('\n  کیفیت پیشنهاد'));
 
   const rec = taste.recommend({ gender: 'MEN', family: 'چوبی', temperature: 'گرم' }, 8);
@@ -114,15 +92,11 @@ function api(method, p, body, hdr) {
   add('از هر برند حداکثر دو تا', Math.max(...Object.values(brands)) <= 2,
       `بیشینه ${Math.max(...Object.values(brands))}`);
 
-  /* کوییز باید همیشه نتیجه بدهد — حتی وقتی کاربر به همه سؤال‌ها
-     «فرقی نمی‌کند» داده. نسخه اول اینجا فهرست خالی برمی‌گرداند و
-     کوییز را برای کاربرِ «همه را نشانم بده» به بن‌بست می‌برد. */
   add('کوییز با همه ANY هم نتیجه می‌دهد',
       taste.recommend({ gender: 'ANY', family: 'ANY' }, 6).items.length === 6);
   add('کوییز با پاسخ خالی هم نتیجه می‌دهد',
       taste.recommend({}, 6).items.length === 6);
 
-  /* ولی «پیشنهاد برای شما» بدون سلیقه بی‌معناست */
   add('پیشنهاد شخصی بدون سلیقه چیزی نمی‌دهد',
       taste.recommend({ gender: 'ANY' }, 8, { requireProfile: true })
         .items.length === 0);
@@ -130,7 +104,6 @@ function api(method, p, body, hdr) {
       taste.recommend({ gender: 'MEN', family: 'چوبی' }, 8,
         { requireProfile: true }).items.length === 8);
 
-  // ══ ۳) بودجه ══
   console.log(d('\n  بودجه'));
 
   const cheap = taste.recommend(
@@ -149,7 +122,6 @@ function api(method, p, body, hdr) {
       taste.inBudget(6000000, 'high') === true &&
       taste.inBudget(100, 'ANY') === true);
 
-  // ══ ۴) خلاصه خوانا ══
   console.log(d('\n  خلاصه خوانا'));
 
   const sum = taste.describe({ gender: 'WOMEN', family: 'گلی', temperature: 'خنک' });
@@ -158,23 +130,18 @@ function api(method, p, body, hdr) {
   add('خلاصه پروفایل خالی، خالی است',
       taste.describe({}).length === 0);
 
-  // ══ ۵) ذخیره‌سازی ══
   console.log(d('\n  ذخیره‌سازی'));
 
   const cols = db.prepare('PRAGMA table_info(customers)').all().map(c => c.name);
   add('ستون taste_profile در جدول customers است',
       cols.includes('taste_profile') && cols.includes('taste_updated_at'));
 
-  /* این بررسی از یک باگ واقعی آمده: نسخه اول ستون‌ها را با
-     `addCol` اضافه می‌کرد که به جدول `orders` اشاره داشت. */
   const ocols = db.prepare('PRAGMA table_info(orders)').all().map(c => c.name);
   add('جدول orders آلوده نشده', !ocols.includes('taste_profile'));
 
   const TEST_MOBILE = '09129998877';
   db.prepare('DELETE FROM customers WHERE mobile=?').run(TEST_MOBILE);
 
-  /* ورود با کد یکبارمصرف رکورد مشتری نمی‌سازد — فقط نشست.
-     بدون resolveCustomerId، پروفایل بی‌صدا ذخیره نمی‌شد. */
   const cid = taste.resolveCustomerId(TEST_MOBILE);
   add('رکورد مشتری در صورت نبود ساخته می‌شود', !!cid, `id=${cid}`);
   add('فراخوانی دوباره همان شناسه را می‌دهد',
@@ -196,7 +163,6 @@ function api(method, p, body, hdr) {
 
   db.prepare('DELETE FROM customers WHERE mobile=?').run(TEST_MOBILE);
 
-  // ══ ۶) مسیرهای API ══
   console.log(d('\n  مسیرهای API'));
 
   const health = await api('GET', '/api/health');
@@ -228,7 +194,6 @@ function api(method, p, body, hdr) {
     const noAuth = await api('DELETE', '/api/taste/profile');
     add('حذف پروفایل بدون ورود ۴۰۱ می‌دهد', noAuth.s === 401);
 
-    // چرخه کامل با ورود
     const M = '09121110002';
     await api('POST', '/api/auth/request-code', { mobile: M });
     const row = db.prepare('SELECT code FROM otp_codes WHERE mobile=?').get(M);
@@ -244,9 +209,6 @@ function api(method, p, body, hdr) {
       add('پروفایل از حساب خوانده می‌شود',
           p2.b.authenticated && p2.b.profile && p2.b.profile.family === 'گلی');
 
-      /* ── ممیزی مرداد ۱۴۰۵ ──
-         خواندن نباید بنویسد. نسخه اول در GET و DELETE هم
-         `resolveCustomerId` را صدا می‌زد که رکورد مشتری می‌ساخت. */
       const M2 = '09121110099';
       db.prepare('DELETE FROM customers WHERE mobile=?').run(M2);
       await api('POST', '/api/auth/request-code', { mobile: M2 });
@@ -282,16 +244,10 @@ function api(method, p, body, hdr) {
     }
   }
 
-  // ══ محدودیت نرخ ══
-  // آخر اجرا می‌شود چون سهمیه را مصرف می‌کند
   console.log(d('\n  محدودیت نرخ'));
 
   if (health.status === 200) {
-    /* ── ممیزی مرداد ۱۴۰۵ ──
-       `/api/taste/suggest` کل جدول محصولات را پویش می‌کند: ۵۰
-       میلی‌ثانیه در برابر ۲.۵ میلی‌ثانیه `/api/products`. بدون
-       محدودیت، ۴۰ درخواست موازی در ۲.۲ ثانیه همه پذیرفته می‌شدند
-       — ارزان‌ترین راه از پا درآوردن سرور دو هسته‌ای لیارا. */
+
     db.prepare("DELETE FROM rate_limits WHERE bucket LIKE 'taste%'").run();
 
     let accepted = 0, throttled = 0;
@@ -307,11 +263,9 @@ function api(method, p, body, hdr) {
     add('محدودیت بی‌صدا رد می‌شود نه با خطا',
         (await api('POST', '/api/taste/suggest', { answers: {} })).s === 200);
 
-    // سهمیه پاک می‌شود تا اجرای بعدی و محیط توسعه گیر نکند
     db.prepare("DELETE FROM rate_limits WHERE bucket LIKE 'taste%'").run();
   }
 
-  // ══ ۷) سیم‌کشی رابط ══
   console.log(d('\n  سیم‌کشی رابط'));
 
   const appJs  = fs.readFileSync(path.join(ROOT, 'public/assets/app.js'), 'utf8');
@@ -336,7 +290,6 @@ function api(method, p, body, hdr) {
       /taste-chip/.test(appJs) && /\.taste-chip/.test(css));
   add('دکمه‌ها focus-visible دارند', /\.taste-clear:focus-visible/.test(css));
 
-  // ══ نتیجه ══
   const failed = checks.filter(x => !x).length;
   console.log();
   console.log(failed === 0

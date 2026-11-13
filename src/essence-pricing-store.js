@@ -1,5 +1,5 @@
 'use strict';
-// Internal pricing infrastructure; admin UI integration remains separate.
+
 const { priceFromUsdPerKg } = require('./essence-pricing');
 const RATE_KEY = 'essence_usd_rate_toman';
 function migratePricing(db) {
@@ -17,8 +17,7 @@ function allowedVariant(type, volume) {
     (type === 'EDP' && [10,30,50,100].includes(volume)) ||
     (type === 'BODY_SPLASH' && volume === 120);
 }
-// Atomic rate update + reprice: never rewrites orders or products with no verified input.
-// Unsupported legacy variants remain untouched and are counted for migration review.
+
 function updateExchangeRate(db, newRate, expectedRate = null) {
   const rate=rateString(newRate);
   const expected=expectedRate == null ? null : rateString(expectedRate);
@@ -32,7 +31,7 @@ function updateExchangeRate(db, newRate, expectedRate = null) {
     const update=db.prepare('UPDATE variants SET price_toman=? WHERE sku=?');
     let repriced=0, skipped=0;
     for (const product of products) {
-      // Validate even if product has no valid variants, so corrupted data roll back all changes.
+
       priceFromUsdPerKg(product.usd,rate,'EDP',10);
       for (const variant of variants.all(product.id)) {
         if (!allowedVariant(variant.type,variant.volume_ml)) { skipped++; continue; }

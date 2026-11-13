@@ -1,29 +1,5 @@
 #!/usr/bin/env node
-/**
- * آزمون نشان اعتماد الکترونیک (اینماد).
- *
- * چرا این آزمون لازم است:
- *
- *   کدی که اینماد به فروشنده می‌دهد پنج مشکل دارد و اگر همان‌طور
- *   کپی شود، یا کار نمی‌کند یا آسیب‌پذیری می‌سازد. مهم‌تر از همه:
- *   مقدار شناسه از **پنل مدیریت** می‌آید و مستقیم داخل نشانی
- *   `src` تصویر و `href` لینک می‌نشیند.
- *
- *   یعنی یک ورودی مدیر، به HTML صفحه اصلی راه دارد. این دقیقاً
- *   همان الگویی است که تزریق می‌سازد — پس دو لایه محافظ دارد
- *   (سرور و مرورگر) و هر دو باید آزموده شوند.
- *
- * پوشش:
- *   ۱) اعتبارسنجی سمت سرور — مقدار بدشکل ذخیره نمی‌شود
- *   ۲) مدیر از رد شدن مقدار باخبر می‌شود (پیام دروغ نمی‌بیند)
- *   ۳) API تنها وقتی نشان می‌دهد که **هر دو** بخش ثبت شده باشند
- *   ۴) CSP اجازه تصویر می‌دهد ولی نه اسکریپت
- *   ۵) کارت آمادگی حالت نیمه‌پر را خطا می‌داند
- *   ۶) فوتر چهار اصلاح ایمنی را دارد
- *   ۷) پرش چیدمان (CLS) رخ نمی‌دهد — فضا از پیش رزرو است
- *
- * اجرا: node scripts/test_enamad.js   (سرور باید بالا باشد)
- */
+
 'use strict';
 
 const http = require('http');
@@ -70,7 +46,6 @@ function api(p, opt = {}, token) {
   });
 }
 
-// شناسه واقعی فروشگاه — همان که مالک داده است
 const REAL_ID   = '580961';
 const REAL_CODE = 'ZWbXjtwpxxh2fPPh72XCAXEIjFrTLMU8';
 
@@ -79,14 +54,12 @@ const REAL_CODE = 'ZWbXjtwpxxh2fPPh72XCAXEIjFrTLMU8';
   console.log(h('  آزمون نماد اعتماد الکترونیک'));
   console.log(d('  ─────────────────────────────────────────────'));
 
-  // وضعیت اولیه را نگه می‌داریم تا آزمون داده واقعی را خراب نکند
   const before = getSettings();
   const restore = {
     enamad_id: before.enamad_id || '',
     enamad_code: before.enamad_code || ''
   };
 
-  // ───────────────────────── ۱) اعتبارسنجی سمت سرور
   console.log();
   console.log(h('  ۱) اعتبارسنجی — لایه سرور'));
 
@@ -95,8 +68,6 @@ const REAL_CODE = 'ZWbXjtwpxxh2fPPh72XCAXEIjFrTLMU8';
   add('رشته خالی پذیرفته می‌شود (یعنی پاک کن)',
       isValidSetting('enamad_id', '') && isValidSetting('enamad_code', ''));
 
-  /* هفت شکل حمله که همه باید رد شوند. هر کدام از راهی متفاوت
-     می‌کوشد از نشانی تصویر بیرون بزند. */
   const attacks = [
     ['شکستن ویژگی با کوتیشن', 'enamad_code', '580961" onerror="alert(1)'],
     ['بستن تگ img',           'enamad_code', 'abc"><script>alert(1)</script>'],
@@ -110,7 +81,6 @@ const REAL_CODE = 'ZWbXjtwpxxh2fPPh72XCAXEIjFrTLMU8';
     add(`رد می‌شود: ${name}`, !isValidSetting(key, val), String(val).slice(0, 30));
   });
 
-  // ───────────────────────── ۲) ذخیره واقعی
   console.log();
   console.log(h('  ۲) ذخیره واقعی در دیتابیس'));
 
@@ -131,7 +101,6 @@ const REAL_CODE = 'ZWbXjtwpxxh2fPPh72XCAXEIjFrTLMU8';
   add('فاصله دور مقدار پاک می‌شود', s3.enamad_id === '580961',
       'کپی از پنل اینماد اغلب فاصله دارد');
 
-  // ───────────────────────── ۳) پیام صادقانه به مدیر
   console.log();
   console.log(h('  ۳) پیام مدیر — دروغ نمی‌گوید'));
 
@@ -169,7 +138,6 @@ const REAL_CODE = 'ZWbXjtwpxxh2fPPh72XCAXEIjFrTLMU8';
         'مدیر نباید نام ستون دیتابیس ببیند');
   }
 
-  // ───────────────────────── ۴) API عمومی
   console.log();
   console.log(h('  ۴) API عمومی — قاعده «هر دو یا هیچ»'));
 
@@ -194,7 +162,6 @@ const REAL_CODE = 'ZWbXjtwpxxh2fPPh72XCAXEIjFrTLMU8';
   add('بدون تنظیم، هر دو null‌اند',
       none.json.enamad_id === null && none.json.enamad_code === null);
 
-  // ───────────────────────── ۵) CSP
   console.log();
   console.log(h('  ۵) سیاست امنیتی محتوا'));
 
@@ -212,15 +179,11 @@ const REAL_CODE = 'ZWbXjtwpxxh2fPPh72XCAXEIjFrTLMU8';
   add('‎default-src همچنان self است', /default-src 'self'/.test(csp));
   add('‎object-src بسته مانده', /object-src 'none'/.test(csp));
 
-  // ───────────────────────── ۶) کارت آمادگی
   console.log();
   console.log(h('  ۶) کارت بررسی آمادگی'));
 
   if (token) {
-    /* قرارداد واقعی: پاسخ `items` دارد و هر قلم `level` نه `status`.
-       نسخه اول این آزمون `status` را حدس زد و هر چهار بررسی قرمز
-       شد — در حالی که پیام‌ها درست تولید می‌شدند. ششمین بار در این
-       پروژه که مقصر آزمون بود نه کد. */
+
     const readiness = async () => {
       const x = await api('/api/admin/readiness', {}, token);
       return (x.json.items || []).find(c => c.key === 'enamad') || {};
@@ -233,9 +196,7 @@ const REAL_CODE = 'ZWbXjtwpxxh2fPPh72XCAXEIjFrTLMU8';
     const halfCard = await readiness();
     add('نیمه‌پر → خطا نه هشدار', halfCard.level === 'error',
         'وگرنه مدیر کارت سبز می‌بیند و نشان نمی‌آید');
-    /* پیام از زاویه «چه چیزی هست» نوشته شده نه «چه چیزی نیست»:
-       «فقط شناسه ثبت شده». هر دو صورت درست‌اند، ولی آزمون باید
-       همان چیزی را بسنجد که کد واقعاً می‌گوید. */
+
     add('پیام می‌گوید کدام بخش کم است',
         /فقط شناسه ثبت شده/.test(halfCard.message || ''), halfCard.message);
 
@@ -254,7 +215,6 @@ const REAL_CODE = 'ZWbXjtwpxxh2fPPh72XCAXEIjFrTLMU8';
       .forEach(t => add(t, true, 'بدون توکن رد شد'));
   }
 
-  // ───────────────────────── ۷) فوتر — چهار اصلاح ایمنی
   console.log();
   console.log(h('  ۷) فوتر — چهار اصلاح نسبت به کد اینماد'));
 
@@ -282,7 +242,6 @@ const REAL_CODE = 'ZWbXjtwpxxh2fPPh72XCAXEIjFrTLMU8';
   add('‎aria-label برای صفحه‌خوان دارد', /aria-label/.test(seal) &&
       /مشاهده پرونده/.test(seal));
 
-  // ───────────────────────── ۸) محافظ سمت مرورگر
   console.log();
   console.log(h('  ۸) لایه دوم — محافظ سمت مرورگر'));
 
@@ -316,7 +275,6 @@ const REAL_CODE = 'ZWbXjtwpxxh2fPPh72XCAXEIjFrTLMU8';
   add('نبود جعبه تماس، نشان را حذف نمی‌کند',
       /if \(!box\) \{ renderEnamad\(null, null\); return; \}/.test(app));
 
-  // ───────────────────────── ۹) پرش چیدمان
   console.log();
   console.log(h('  ۹) پایداری چیدمان (CLS)'));
 
@@ -326,10 +284,7 @@ const REAL_CODE = 'ZWbXjtwpxxh2fPPh72XCAXEIjFrTLMU8';
   add('گزینشگر بر قاعده عمومی فوتر غلبه می‌کند',
       /\.footer-grid a\.enamad-seal/.test(css),
       'بدون آن، نشان تمام عرض ستون را می‌گرفت');
-  /* شمردن نویسه‌های بین گزینشگر و اعلان شکننده است — کامنت
-     توضیحی وسط، الگو را می‌شکند در حالی که CSS درست است.
-     پس بلوک را جدا می‌کنیم و داخلش را می‌سنجیم.
-     رفتار واقعی hover را آزمون مرورگر می‌سنجد. */
+
   const hoverBlock = (css.match(
     /\.footer-grid a\.enamad-seal:hover[\s\S]*?\}/) || [''])[0];
   add('‎padding در hover خنثی شده',
@@ -343,7 +298,6 @@ const REAL_CODE = 'ZWbXjtwpxxh2fPPh72XCAXEIjFrTLMU8';
   add('حالت فوکوس صفحه‌کلید دارد',
       /\.enamad-seal:focus-visible/.test(css), 'دسترس‌پذیری');
 
-  // ───────────────────────── ۱۰) سرویس‌ورکر
   console.log();
   console.log(h('  ۱۰) سرویس‌ورکر'));
 
@@ -352,7 +306,6 @@ const REAL_CODE = 'ZWbXjtwpxxh2fPPh72XCAXEIjFrTLMU8';
       /url\.origin !== self\.location\.origin\) return/.test(sw),
       'نشان اینماد باید همیشه تازه از سرور خودشان بیاید');
 
-  // ───────────────────────── ۱۱) بازگرداندن وضعیت
   console.log();
   console.log(h('  ۱۱) پاک‌سازی'));
 

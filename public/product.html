@@ -55,6 +55,8 @@
   .thumbs button:hover { opacity: 1; transform: translateY(-2px) }
   .thumbs button.on { border-color: var(--gold); opacity: 1 }
   @media (max-width: 900px) { .thumbs { display: none } }
+  /* اگر محصول فقط یک نمای واقعی دارد، نوار بندانگشتی و نقطه‌ها معنا ندارند */
+  .gallery-single .thumbs, .gallery-single .gallery-dots { display: none }
 
   /* نشان جنسیت روی گالری */
   .g-badge {
@@ -69,12 +71,22 @@
   .pdp .en-title { font-size: .95rem; color: var(--muted); font-weight: 600; margin-bottom: 14px; letter-spacing:.3px; }
 
   .meta-chips { display: flex; flex-wrap: wrap; gap: 7px; margin: 14px 0; }
+  /* ── چیپ اطلاعاتی و چیپ پیوندی ──
+     پیش‌تر همه چیپ‌ها hover داشتند، حتی آن‌هایی که کاری نمی‌کردند؛
+     کاربر لمس می‌کرد و هیچ اتفاقی نمی‌افتاد. حالا دو حالت روشن:
+       .chip        → فقط اطلاعات، بدون hover و بدون اشاره‌گر
+       .chip-link   → واقعاً به فهرست فیلترشده می‌رود
+     همان تفکیک برای برچسب نُت‌ها هم اعمال شده است. */
   .chip { background: var(--sand); border: 1px solid var(--border);
       padding: 6px 13px; border-radius: var(--r-full);
-      font-size: var(--fs-xs); font-weight: 600;
-      transition: background var(--t-fast), border-color var(--t-fast);
+      font-size: var(--fs-xs); font-weight: 600; color: var(--text);
       animation: fadeUp 420ms var(--ease-out) backwards; }
-  .chip:hover { background: #FFFBF0; border-color: var(--gold); }
+  .chip-link { text-decoration: none; cursor: pointer;
+      transition: background var(--t-fast), border-color var(--t-fast), color var(--t-fast); }
+  .chip-link::after { content: ' ↗'; font-size: .9em; opacity: .55 }
+  .chip-link:hover, .chip-link:focus-visible {
+      background: #FFFBF0; border-color: var(--gold); color: var(--gold-dark); }
+  .chip-link:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px }
 
   /* ── هرم بویایی: سه لایه با خط زمانی طلایی ── */
   .notes-box { background: var(--surface); border: 1px solid var(--border);
@@ -160,7 +172,10 @@
     border-radius: 30px; padding: 5px 12px; font-size: .78rem; color: #3A3A3A;
     transition: background var(--t-fast), border-color var(--t-fast), transform var(--t-fast);
   }
-  .note-tag:hover { background: #FFFBF0; border-color: rgba(197,155,39,.45); transform: translateY(-1px) }
+  .note-tag-link { text-decoration: none; cursor: pointer }
+  .note-tag-link:hover, .note-tag-link:focus-visible {
+    background: #FFFBF0; border-color: rgba(197,155,39,.55); transform: translateY(-1px) }
+  .note-tag-link:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px }
 
   /* ── جمع‌بندی سریع بالای صفحه ── */
   .quick { display: grid; grid-template-columns: repeat(3,1fr); gap: 9px; margin: 16px 0 }
@@ -336,7 +351,7 @@
   <main id="main"><div class="pdp">
     <div>
       <div style="position:relative">
-      <button class="wish-btn" id="wishBtn" onclick="toggleWish()"
+      <button class="wish-btn" id="wishBtn" data-csp-click="toggleWish()"
         aria-label="افزودن به علاقه‌مندی" title="افزودن به علاقه‌مندی">♡</button>
       <span class="g-badge" id="gBadge"></span>
       <div class="gallery" id="gallery" role="region" aria-label="گالری تصاویر محصول">
@@ -351,7 +366,7 @@
     <div>
       <h1 id="titleFa"></h1>
       <div class="en-title" id="titleEn"></div>
-      <div class="rating-inline" id="ratingInline" onclick="scrollToReviews()" style="display:none"></div>
+      <div class="rating-inline" id="ratingInline" data-csp-click="scrollToReviews()" style="display:none"></div>
 
       <div class="quick" id="quick"></div>
       <div class="meta-chips" id="chips"></div>
@@ -423,16 +438,17 @@
         <div class="price-lg" id="price"></div>
         <div style="font-size:.76rem;color:var(--muted)" id="stockInfo"></div>
 
+        <p id="essenceLine" hidden style="font-size:.78rem;color:var(--muted);line-height:1.9;margin:0 0 6px"></p>
         <div class="qty-row">
           <span style="font-size:.84rem;font-weight:700;">تعداد:</span>
           <div class="qty-ctrl">
-            <button onclick="chQty(-1)" aria-label="کاهش تعداد">−</button>
+            <button data-csp-click="chQty(-1)" aria-label="کاهش تعداد">−</button>
             <span id="qty" aria-live="polite">۱</span>
-            <button onclick="chQty(1)" aria-label="افزایش تعداد">+</button>
+            <button data-csp-click="chQty(1)" aria-label="افزایش تعداد">+</button>
           </div>
         </div>
 
-        <button class="btn btn-block" id="addBtn" onclick="addToCart()" aria-label="افزودن به سبد خرید">افزودن به سبد خرید</button>
+        <button class="btn btn-block" id="addBtn" data-csp-click="addToCart()" aria-label="افزودن به سبد خرید">افزودن به سبد خرید</button>
 
         <div class="assure">
           <span><svg viewBox="0 0 24 24"><path d="M12 3l7 3v6c0 4.4-3 8.2-7 9-4-.8-7-4.6-7-9V6z"/></svg> پرداخت امن بانکی</span>
@@ -444,8 +460,9 @@
           <svg width="17" height="17" viewBox="0 0 24 24" fill="var(--gold)" style="flex-shrink:0;margin-top:3px">
             <path d="M20 8h-3V4H3c-1.1 0-2 .9-2 2v11h2c0 1.66 1.34 3 3 3s3-1.34 3-3h6c0 1.66 1.34 3 3 3s3-1.34 3-3h2v-5l-3-4zM6 18.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5zm13.5-9l1.96 2.5H17V9.5h2.5zm-1.5 9c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/>
           </svg>
-          <span>تحویل با پست یا تیپاکس ۳ تا ۷ روز کاری پس از تأیید پرداخت — ارسال سراسری ۱۰۰٬۰۰۰ تومان.
-          خرید بالای ۲٬۰۰۰٬۰۰۰ تومان ارسال رایگان.</span>
+          <span>تحویل با پست پیشتاز یا تیپاکس ۳ تا ۷ روز کاری پس از تأیید پرداخت — ارسال سراسری ۱۰۰٬۰۰۰ تومان.
+          خرید بالای ۲٬۰۰۰٬۰۰۰ تومان ارسال رایگان. مرجوعی تا ۷۲ ساعت پس از تحویل،
+          برای حجم‌های بالای ۱۰ میلی‌لیتر و با مصرف کمتر از ۲ میلی‌لیتر.</span>
         </div>
       </div>
     </div>
@@ -472,7 +489,7 @@
 
 <div class="buy-bar" id="buyBar">
   <div class="p"><div class="n" id="barPrice">—</div><div class="l" id="barLabel">—</div></div>
-  <button class="btn" id="barBtn" onclick="addToCart()">افزودن به سبد</button>
+  <button class="btn" id="barBtn" data-csp-click="addToCart()">افزودن به سبد</button>
 </div>
 
 <div id="ftr"></div>
@@ -506,7 +523,7 @@ async function load() {
   if (navigator.onLine === false) {
     box.innerHTML = card('اتصال اینترنت برقرار نیست',
       'برای دیدن قیمت و موجودی لحظه‌ای به اتصال نیاز است.',
-      '<button class="btn" style="margin-top:16px" onclick="location.reload()">تلاش دوباره</button>');
+      '<button class="btn" style="margin-top:16px" data-csp-click="location.reload()">تلاش دوباره</button>');
     window.addEventListener('online', () => location.reload(), { once: true });
     return;
   }
@@ -518,7 +535,7 @@ async function load() {
     // شکست شبکه وسط درخواست
     box.innerHTML = card('اتصال برقرار نشد',
       'اتصال اینترنت خود را بررسی کنید.',
-      '<button class="btn" style="margin-top:16px" onclick="location.reload()">تلاش دوباره</button>');
+      '<button class="btn" style="margin-top:16px" data-csp-click="location.reload()">تلاش دوباره</button>');
     window.addEventListener('online', () => location.reload(), { once: true });
     return;
   }
@@ -531,7 +548,7 @@ async function load() {
   if (!r.ok) {
     box.innerHTML = card('مشکلی پیش آمد',
       'لحظه‌ای بعد دوباره تلاش کنید.',
-      '<button class="btn" style="margin-top:16px" onclick="location.reload()">تلاش دوباره</button>');
+      '<button class="btn" style="margin-top:16px" data-csp-click="location.reload()">تلاش دوباره</button>');
     return;
   }
 
@@ -541,7 +558,7 @@ async function load() {
   } catch {
     box.innerHTML = card('مشکلی پیش آمد',
       'لحظه‌ای بعد دوباره تلاش کنید.',
-      '<button class="btn" style="margin-top:16px" onclick="location.reload()">تلاش دوباره</button>');
+      '<button class="btn" style="margin-top:16px" data-csp-click="location.reload()">تلاش دوباره</button>');
   }
 }
 
@@ -564,11 +581,18 @@ function render() {
   document.getElementById('gBadge').textContent =
     p.gender === 'MEN' ? 'مردانه' : p.gender === 'WOMEN' ? 'زنانه' : p.gender === 'UNISEX' ? 'یونیسکس' : 'نامشخص';
 
-  // گالری (سه نمای یکسان تا عکاسی واقعی جایگزین شود)
-  const imgs = [p.image_url, p.image_url, '/images/products/variant-sample.jpg'];
+  /* ── گالری ──
+     پیش‌تر سه «نما» ساخته می‌شد که دو تای اول عیناً یک فایل بودند؛
+     یعنی دو بندانگشتی تکراری و اسلایدی که چیزی نشان نمی‌داد.
+     حالا فقط نماهای واقعاً متفاوت ساخته می‌شوند و اگر عکاسی واقعی
+     نبود، یک تصویر با برچسب صادقانه کافی است. */
+  const views = [p.image_url];
+  const sampleView = '/images/products/variant-sample.jpg';
+  if (p.image_url !== sampleView) views.push(sampleView);
+  const imgs = views;
   const illustrative = isGenericProductImage(p.image_url);
   document.getElementById('imageDisclosure').hidden = !illustrative;
-  const capt = ['نمای اصلی', 'جزئیات', 'سمپل'];
+  const capt = imgs.map((_, i) => (i === 0 ? 'نمای اصلی' : 'سمپل'));
   /* تصویر نخست با <picture> ساخته می‌شود تا با همان فایل WebP که
      سرور preload کرده یکی باشد.
 
@@ -597,22 +621,61 @@ function render() {
     const sm = s.replace(/(\.[a-z]+)$/i, '-sm$1');
     return `<button class="${i === 0 ? 'on' : ''}" data-i="${i}" aria-label="${capt[i]}">
        <img src="${esc(sm)}" data-fallback="${esc(s)}" alt="${capt[i]}" loading="lazy" decoding="async"
-            onerror="this.onerror=null;this.src=this.dataset.fallback"></button>`;
+            data-csp-error="this.onerror=null;this.src=this.dataset.fallback"></button>`;
   }).join('');
+  document.body.classList.toggle('gallery-single', imgs.length < 2);
   initGallery(imgs.length);
+
+  /* موجودی اسانس این محصول (میلی‌لیتر) — فقط اگر ثبت شده باشد */
+  (() => {
+    const box = document.getElementById('essenceLine');
+    if (!box) return;
+    const e = product.essence;
+    if (!e) { box.hidden = true; return; }
+    const ml = Math.max(0, Math.round(e.ml_on_hand));
+    const pct = e.percent_override || null;
+    const bits = [];
+    if (e.use_count !== false) {
+      const ready = (product.variants || []).reduce((sum, v) => sum + (v.stock > 0 ? v.stock : 0), 0);
+      if (ready > 0) bits.push(`${toFa(ready)} عدد آماده ارسال`);
+    }
+    if (e.use_essence !== false) bits.push(`${toFa(ml)} میلی‌لیتر اسانس`);
+    box.hidden = false;
+    box.textContent = bits.length
+      ? `موجودی این رایحه: ${bits.join(' · ')}` + (pct ? ` · مصرف هر بطری ${toFa(pct)}٪ حجم` : '') + '.'
+      : 'موجودی این رایحه ثبت نشده است.';
+  })();
 
   document.getElementById('titleFa').innerHTML = `${esc(full)} <span class="tag">«دست‌ساز»</span>`;
   document.getElementById('titleEn').textContent = p.name_en;
   document.getElementById('transparency').textContent =
     p.transparency_notice || 'این محصول بازآفرینی دست‌ساز است و محصول اورجینال برند اصلی نیست؛ هویت اسانس تأمین‌کننده مستقلاً تأیید نشده است.';
 
-  const chips = [
-    p.gender === 'MEN' ? 'مردانه' : p.gender === 'WOMEN' ? 'زنانه' : p.gender === 'UNISEX' ? 'یونیسکس' : null,
-    p.family_fa, p.season, p.occasion, p.temperature,
-    p.longevity ? 'ماندگاری: ' + p.longevity : null,
-    p.sillage ? 'پخش بو: ' + p.sillage : null
-  ].filter(Boolean);
-  document.getElementById('chips').innerHTML = chips.map(c => `<span class="chip">${esc(c)}</span>`).join('');
+  /* ── چیپ‌های مشخصات ──
+     فقط چیپ‌هایی که فیلتر واقعی دارند پیوند می‌شوند؛ بقیه متن‌اند.
+     `season` و `occasion` و ماندگاری در کاتالوگ فیلتر ندارند، پس
+     کلیک‌پذیر نشان دادنشان گمراه‌کننده بود. */
+  /* مقدار خالی اصلاً چیپ نمی‌سازد؛ پیش‌تر `chip(undefined)` یک
+     حباب خالی روی صفحه می‌گذاشت. */
+  const chip = (label, href) => {
+    const text = String(label == null ? '' : label).trim();
+    if (!text) return '';
+    return href
+      ? `<a class="chip chip-link" href="${href}" title="دیدن همه ${esc(text)}">${esc(text)}</a>`
+      : `<span class="chip">${esc(text)}</span>`;
+  };
+  const chipsHTML = [
+    p.gender === 'MEN' ? chip('مردانه', '/?gender=MEN')
+      : p.gender === 'WOMEN' ? chip('زنانه', '/?gender=WOMEN')
+      : p.gender === 'UNISEX' ? chip('یونیسکس', '/?gender=UNISEX') : '',
+    p.family_fa ? chip(p.family_fa, p.family_slug ? `/?family=${encodeURIComponent(p.family_slug)}` : null) : '',
+    chip(p.season, null),
+    chip(p.occasion, null),
+    chip(p.temperature, null),
+    p.longevity ? chip('ماندگاری: ' + p.longevity, null) : '',
+    p.sillage ? chip('پخش بو: ' + p.sillage, null) : ''
+  ].filter(Boolean).join('');
+  document.getElementById('chips').innerHTML = chipsHTML;
 
   /* جمع‌بندی — چیزی که خریدار اول از همه می‌خواهد بداند.
      «سال عرضه» برای داده‌های دارای منبع اضافه شده است.
@@ -664,6 +727,16 @@ function render() {
     document.getElementById('originBox').hidden = false;
   }
 
+  /* برچسب نُت → جست‌وجوی همان نُت در کاتالوگ.
+     نُت‌های هرم لینک دارند چون جست‌وجو واقعاً نتیجه می‌دهد؛ برچسبی
+     که در کاتالوگ فیلتر/جست‌وجوی معتبر ندارد، متن ساده می‌ماند. */
+  const noteTag = n => {
+    const label = String(n || '').trim();
+    if (!label) return '';
+    return `<a class="note-tag note-tag-link" href="/?q=${encodeURIComponent(label)}"
+              title="جست‌وجوی عطرهای دارای نُت ${esc(label)}">${esc(label)}</a>`;
+  };
+
   // هرم بویایی — سه لایه روی خط زمانی
   const LAYERS = [
     ['نُت آغازین', 'دقایق نخست', p.notes.top],
@@ -675,7 +748,7 @@ function render() {
     .filter(([, , arr]) => arr && arr.length)
     .map(([name, when, arr]) => `<div class="layer">
         <div class="lb"><b>${name}</b><i>${when}</i></div>
-        <div class="note-tags">${arr.map(n => `<span class="note-tag">${esc(n)}</span>`).join('')}</div>
+        <div class="note-tags">${arr.map(n => noteTag(n)).join('')}</div>
       </div>`).join('');
   document.getElementById('pyramid').innerHTML = pyramidHTML || (referenceAccords.length ? '' :
     '<div style="font-size:.84rem;color:var(--muted)">هرم نُت برای این رایحه ثبت نشده است.</div>');
@@ -683,7 +756,7 @@ function render() {
   referenceBox.hidden = referenceAccords.length === 0;
   referenceBox.innerHTML = referenceAccords.length ? `
     <div style="${pyramidHTML ? 'border-top:1px solid var(--border);margin-top:16px;padding-top:16px;' : ''}font-size:.84rem;font-weight:700;margin-bottom:12px">نت‌های معرفی‌شده بدون تفکیک هرم</div>
-    <div class="note-tags">${referenceAccords.map(n => `<span class="note-tag">${esc(n)}</span>`).join('')}</div>` : '';
+    <div class="note-tags">${referenceAccords.map(n => noteTag(n)).join('')}</div>` : '';
 
   const vg = document.getElementById('variants');
   /* آیا درصد جشنواره بین واریانت‌ها فرق می‌کند؟ */
@@ -712,7 +785,7 @@ function render() {
        بار و رساتر می‌گوید. ولی وقتی مثلاً فقط سمپل تخفیف دارد،
        برچسب تنها راه فهمیدن است. */
     return `<div class="variant-btn ${out ? 'out' : ''}" data-i="${i}"
-              onclick="${out ? '' : `pick(${i})`}">
+              data-csp-click="${out ? '' : `pick(${i})`}">
       ${pct > 0 && mixedPct ? `<span class="voff"><bdi>${toFa(pct)}٪</bdi></span>` : ''}
       <div class="vt">${label}</div>
       <div class="vt" style="color:var(--muted);font-size:.72rem">${toFa(v.volume_ml)} میل</div>
@@ -772,6 +845,9 @@ function render() {
 function pick(i) {
   selected = product.variants[i];
   qty = 1;
+  /* اگر اسانس این محصول تمام شده باشد، دکمه سفارش هم غیرفعال می‌شود. */
+  const cap = product.essence?.max_units?.[selected.sku];
+  if (Number.isInteger(cap) && cap < 1) qty = 0;
   document.getElementById('qty').textContent = toFa(1);
   document.querySelectorAll('.variant-btn').forEach(b =>
     b.classList.toggle('on', +b.dataset.i === i));
@@ -853,7 +929,7 @@ function updatePrice() {
   if (dead) {
     btn.insertAdjacentHTML('afterend',
       `<button id="notifyBtn" class="btn btn-outline btn-block" style="margin-top:9px"
-        onclick="notifyMe('${selected.sku}')">به من اطلاع بده وقتی رسید</button>`);
+        data-csp-click="notifyMe('${selected.sku}')">به من اطلاع بده وقتی رسید</button>`);
   }
   if (mto) {
     btn.insertAdjacentHTML('afterend',
@@ -868,8 +944,12 @@ function chQty(d) {
   if (!selected) return;
   const n = qty + d;
   /* در حالت «به سفارش» موجودی صفر است ولی سفارش مجاز؛ سقف
-     منطقی می‌گذاریم تا سفارش غیرواقعی ثبت نشود. */
-  const cap = selected.stock > 0 ? selected.stock : 5;
+     منطقی می‌گذاریم تا سفارش غیرواقعی ثبت نشود.
+     اگر محصول با موجودی اسانس کنترل می‌شود، سقف همان است:
+     با ۱۰۰ میل اسانس و ۳۵٪ مصرف، ۵۰ میل یعنی حداکثر ۵ عدد. */
+  const essenceCap = product.essence?.max_units?.[selected.sku];
+  const stockCap = selected.stock > 0 ? selected.stock : 5;
+  const cap = Number.isInteger(essenceCap) ? Math.max(0, Math.min(stockCap, essenceCap)) : stockCap;
   if (n < 1 || n > cap) return;
   qty = n;
   document.getElementById('qty').textContent = toFa(qty);
@@ -892,7 +972,7 @@ function addToCart() {
      سطر جداگانه نشان می‌دهد که شفاف‌تر است. */
   YazdCart.add(selected.sku,
     `${full} — ${label} ${toFa(selected.volume_ml)} میل`,
-    selected.price_toman, product.image_url, qty);
+    selected.price_toman, product.image_url, qty, product.slug);
 }
 
 async function loadRelated() {
@@ -911,10 +991,21 @@ function initGallery(n) {
 
   const thumbs = document.getElementById('thumbs');
 
-  const go = i => {
-    idx = Math.max(0, Math.min(n - 1, i));
-    track.style.transition = 'transform 340ms cubic-bezier(.16,1,.3,1)';
-    track.style.transform = `translateX(${idx * 100}%)`;
+  /* ── جهت اسلاید در RTL ──
+     در چیدمان راست‌به‌چپ، تراک با `translateX(+100%)` به نمای بعدی
+     می‌رود. پیش‌تر همان مقدار با معنای چپ‌به‌راست استفاده می‌شد و
+     اسلاید برعکس و با تأخیر حس می‌شد. */
+  const raf = () => new Promise(r => requestAnimationFrame(() => requestAnimationFrame(r)));
+  const go = async i => {
+    const next = Math.max(0, Math.min(n - 1, i));
+    if (next === idx) {
+      track.style.transition = '';
+      track.style.transform = `translateX(${idx * 100}%)`;
+    } else {
+      track.style.transition = 'transform 300ms cubic-bezier(.16,1,.3,1)';
+      track.style.transform = `translateX(${next * 100}%)`;
+      idx = next;
+    }
     [...dots].forEach((d, k) => d.classList.toggle('on', k === idx));
     [...thumbs.children].forEach((t, k) => t.classList.toggle('on', k === idx));
   };
@@ -925,23 +1016,28 @@ function initGallery(n) {
   };
   // کلید جهت‌دار — دسترس‌پذیری صفحه‌کلید
   document.getElementById('gallery').tabIndex = 0;
+  /* در RTL نمای بعدی سمت چپ است: کلید چپ جلو می‌رود، راست برمی‌گردد. */
   document.getElementById('gallery').addEventListener('keydown', e => {
-    if (e.key === 'ArrowLeft')  go(idx + 1);
-    if (e.key === 'ArrowRight') go(idx - 1);
+    if (e.key === 'ArrowLeft')  { go(idx + 1); e.preventDefault(); }
+    if (e.key === 'ArrowRight') { go(idx - 1); e.preventDefault(); }
   });
 
+  const width = () => document.getElementById('gallery').clientWidth || 1;
   const down = x => { dragging = true; startX = x; delta = 0; track.style.transition = 'none'; };
   const move = x => {
     if (!dragging) return;
     delta = x - startX;
-    track.style.transform = `translateX(calc(${idx * 100}% + ${delta}px))`;
+    // در RTL کشیدن به راست یعنی نمای بعدی
+    const atEdge = (idx === 0 && delta < 0) || (idx === n - 1 && delta > 0);
+    track.style.transform = `translateX(calc(${idx * 100}% + ${atEdge ? delta * 0.25 : delta}px))`;
   };
   const up = () => {
     if (!dragging) return;
     dragging = false;
-    // RTL: کشیدن به چپ (delta منفی) → عکس بعدی
-    if (delta < -55) go(idx + 1);
-    else if (delta > 55) go(idx - 1);
+    /* آستانه کوتاه‌تر (۱۸٪ عرض یا ۴۰ پیکسل) تا تغییر اسلاید سخت نباشد */
+    const threshold = Math.min(40, width() * 0.18);
+    if (delta > threshold) go(idx + 1);
+    else if (delta < -threshold) go(idx - 1);
     else go(idx);
   };
 
@@ -949,6 +1045,7 @@ function initGallery(n) {
   g.addEventListener('touchstart', e => down(e.touches[0].clientX), { passive: true });
   g.addEventListener('touchmove',  e => move(e.touches[0].clientX), { passive: true });
   g.addEventListener('touchend', up);
+  g.addEventListener('touchcancel', up);
   g.addEventListener('mousedown', e => { e.preventDefault(); down(e.clientX); });
   window.addEventListener('mousemove', e => move(e.clientX));
   window.addEventListener('mouseup', up);
@@ -1078,7 +1175,7 @@ function renderRevForm(d) {
       <div style="margin-top:6px;font-size:.8rem">
         <span class="stars">${starRow(d.my_review.rating)}</span> ${esc(d.my_review.title || '')}</div>
       <button class="btn btn-outline" style="margin-top:9px;padding:6px 14px;font-size:.78rem"
-        onclick="editMyReview()">ویرایش نظر</button></div>`;
+        data-csp-click="editMyReview()">ویرایش نظر</button></div>`;
     return;
   }
   showRevForm(d.purchased);
@@ -1096,7 +1193,7 @@ function showRevForm(purchased) {
         <div style="font-size:.82rem;font-weight:700;margin-bottom:5px">امتیاز کلی *</div>
         <div id="starPick" role="group" aria-label="انتخاب امتیاز">
           ${[1,2,3,4,5].map(n => `<button type="button" class="star-pick" data-n="${n}"
-            onclick="pickStar(${n})" aria-label="${n} ستاره">★</button>`).join('')}
+            data-csp-click="pickStar(${n})" aria-label="${n} ستاره">★</button>`).join('')}
         </div>
       </div>
       <div class="field"><label for="rvTitle">عنوان</label>
@@ -1111,7 +1208,7 @@ function showRevForm(purchased) {
           <select id="rvSill"><option value="">انتخاب…</option>
             ${[1,2,3,4,5].map(n => `<option value="${n}">${n}</option>`).join('')}</select></div>
       </div>
-      <button class="btn" onclick="submitReview()">ثبت نظر</button>
+      <button class="btn" data-csp-click="submitReview()">ثبت نظر</button>
       <div style="font-size:.74rem;color:var(--muted);margin-top:9px">
         نظر شما پس از بررسی منتشر می‌شود.</div>
     </div>`;
@@ -1175,5 +1272,6 @@ function initBuyBar() {
 
 load().then(initBuyBar);
 </script>
+<script src="/assets/csp-actions.js"></script>
 </body>
 </html>

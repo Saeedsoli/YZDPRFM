@@ -1,24 +1,5 @@
 #!/usr/bin/env node
-/**
- * ساخت نمونه خروجی‌های پنل مدیریت.
- *
- * ── چرا اسکریپت و نه ساخت دستی ──
- * نمونه‌ای که دستی ساخته شود، با نخستین تغییر قالب فاکتور کهنه
- * می‌شود و کسی متوجه نمی‌شود. با اسکریپت، بازتولیدش یک دستور
- * است.
- *
- * ── سفارش نمونه ──
- * عمداً پیچیده‌ترین حالت ممکن: سه قلم کالا، تخفیف جشنواره **و**
- * کد تخفیف با هم، ارسال رایگان، یادداشت مشتری، کد رهگیری.
- * اگر نمونه ساده باشد، بخش‌های خالی فاکتور آزموده نمی‌شوند.
- *
- * ── پاک‌سازی ──
- * سفارش نمونه در پایان حذف می‌شود. اگر بماند، در گزارش فروش و
- * بخش «پرفروش‌ترین» می‌نشیند و آمار را آلوده می‌کند.
- *
- * پیش‌نیاز: سرور بالا باشد.
- * اجرا: node scripts/make_samples.js
- */
+
 'use strict';
 
 const fs = require('fs');
@@ -62,7 +43,6 @@ function api(p, opt = {}, token) {
   });
 }
 
-/** سفارش نمونه با همه حالت‌های ممکن */
 function makeOrder() {
   db.prepare('DELETE FROM order_items WHERE order_id=?').run(OID);
   db.prepare('DELETE FROM orders WHERE order_id=?').run(OID);
@@ -80,7 +60,7 @@ function makeOrder() {
   const campaign = Math.floor(subtotal * 0.10);
   const coupon = 200000;
   const discount = campaign + coupon;
-  const shipping = 0;                       // بالای ۲٫۵ میلیون رایگان
+  const shipping = 0;
   const total = subtotal - discount + shipping;
 
   db.prepare(`INSERT INTO orders
@@ -141,7 +121,6 @@ function cleanOrder() {
 
   const made = [];
 
-  // ── CSV ها ──
   console.log();
   for (const [p, name, label] of [
     ['/api/admin/export/csv', 'orders-export.csv', 'CSV سفارش‌ها'],
@@ -151,9 +130,7 @@ function cleanOrder() {
     if (res.status !== 200) { console.log(`  ${r('✗')} ${label} — کد ${res.status}`); continue; }
 
     let buf = res.buf;
-    /* CSV سفارش‌ها همه سفارش‌های واقعی را دارد. برای نمونه فقط
-       چند سطر نگه می‌داریم — هم سبک‌تر، هم داده مشتریان واقعی
-       در مخزن نمی‌ماند. */
+
     if (name === 'orders-export.csv') {
       const txt = buf.toString('utf8');
       const bom = txt.startsWith('\uFEFF') ? '\uFEFF' : '';
@@ -170,7 +147,6 @@ function cleanOrder() {
     made.push(name);
   }
 
-  // ── PDF ها ──
   const pdfScript = `
 import asyncio, sys
 from playwright.async_api import async_playwright
@@ -210,8 +186,6 @@ asyncio.run(main())
       d('  — playwright نصب است؟ pip install playwright'));
   }
 
-  /* سفارش نمونه باید برود — وگرنه در گزارش فروش و «پرفروش‌ترین»
-     می‌نشیند و آمار واقعی را آلوده می‌کند. */
   cleanOrder();
   const gone = !db.prepare('SELECT 1 FROM orders WHERE order_id=?').get(OID);
   console.log();

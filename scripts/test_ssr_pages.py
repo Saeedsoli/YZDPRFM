@@ -154,9 +154,11 @@ def main():
                 pg.goto(url, wait_until="networkidle")
                 after = re.sub(r"\s+", " ", pg.eval_on_selector(
                     "#body", "el => el.innerText")).strip()
-                m = re.search(r'<div class="content" id="body">([\s\S]*?)</div>\s*</div>',
-                              get(f"/journal/{s}"))
-                srv = re.sub(r"\s+", " ", re.sub(r"<[^>]+>", " ", m.group(1))).strip()
+                html_raw = get(f"/journal/{s}")
+                m = re.search(r'<div class="content" id="body">([\s\S]*?)</div>', html_raw)
+                inner = m.group(1)
+                inner = re.sub(r"<script[\s\S]*?</script>", "", inner)
+                srv = re.sub(r"\s+", " ", re.sub(r"<[^>]+>", " ", inner)).strip()
                 ratio = min(len(srv), len(after)) / max(len(srv), len(after), 1)
                 add(f"مقاله یکسان می‌ماند — {s}", ratio > 0.95,
                     f"سرور {len(srv)} / مرورگر {len(after)}")

@@ -37,7 +37,7 @@ function run(file,mode,token){return new Promise((resolve,reject)=>{const p=spaw
  }
  db.prepare("update orders set status='PAID' where order_id='PENDING'").run();const rotated=attempts.rotate(db,token);assert(rotated.ok&&!attempts.active(db,token)&&attempts.active(db,rotated.token));
  assert.deepEqual(attempts.rotate(db,token),{ok:false,reason:'INACTIVE'});
- // If allocating a replacement fails, revocation must roll back too.
+
  const unused=attempts.issue(db);db.exec("CREATE TRIGGER fail_token BEFORE INSERT ON checkout_attempt_tokens BEGIN SELECT RAISE(ABORT,'fixture'); END");
  assert.throws(()=>attempts.rotate(db,unused));assert(attempts.active(db,unused));db.exec('DROP TRIGGER fail_token');
  assert.equal(db.pragma('integrity_check',{simple:true}),'ok');db.close();

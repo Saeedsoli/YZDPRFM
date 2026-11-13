@@ -1,7 +1,7 @@
 'use strict';
-// Versioned one-time correction: only overwrite untouched seed notes, never prices or orders.
+
 const fs=require('fs');
-const MARKER='official_notes_2026_10_v1'; // legacy export for integrations
+const MARKER='official_notes_2026_10_v1';
 function applyOfficialNotes(db,file) {
   if (!fs.existsSync(file)) return {updated:0,skipped:0,reason:'file_missing'};
   const data=JSON.parse(fs.readFileSync(file,'utf8'));

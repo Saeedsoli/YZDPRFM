@@ -1,24 +1,5 @@
 #!/usr/bin/env node
-/**
- * آزمون ماژول کاتالوگ مدیریتی — گام ۱ تفکیک `server.js`.
- *
- * چرا این آزمون وجود دارد:
- *   در تفکیک RBAC، چهار وابستگی جا افتاد. `node -c` سبز داد،
- *   سرور بالا آمد، `GET` کار کرد — ولی `POST` خطای داخلی می‌داد.
- *   فقط اجرای واقعیِ هر مسیر گرفتش.
- *
- *   پس این آزمون **هر شش مسیر را واقعاً صدا می‌زند**، با مجوز و
- *   بدون مجوز، و اثرشان روی دیتابیس را بررسی می‌کند.
- *
- * پوشش:
- *   ۱) هر شش مسیر پاسخ درست می‌دهند (نه ۴۰۴، نه ۵۰۰)
- *   ۲) کنترل دسترسی پس از جابه‌جایی سالم مانده
- *   ۳) اثر واقعی روی داده (قیمت، موجودی، ایندکس)
- *   ۴) ثبت در سابقه کارها (audit) نشکسته
- *   ۵) مسیرهای همسایه دست‌نخورده‌اند
- *
- * اجرا: node scripts/test_admin_catalog.js
- */
+
 'use strict';
 
 const http = require('http');
@@ -81,13 +62,11 @@ function api(p, opt = {}, token) {
   const OT = own.json.token;
   if (!OT) { console.log(r('  ورود مدیر ناموفق.\n')); process.exit(1); }
 
-  // نمونه کار: یک واریانت واقعی
   const v0 = db.prepare('SELECT sku, price_toman, stock FROM variants LIMIT 1').get();
   const p0 = db.prepare(
     'SELECT p.id, p.slug FROM products p JOIN variants v ON v.product_id=p.id WHERE v.sku=?'
   ).get(v0.sku);
 
-  // ══ ۱) هر شش مسیر زنده‌اند ══
   console.log(d('  دسترس‌پذیری مسیرها'));
 
   const vRes = await api(`/api/admin/variants/${encodeURIComponent(v0.sku)}`, {
@@ -115,7 +94,6 @@ function api(p, opt = {}, token) {
   add('POST /api/admin/reindex', rxRes.status === 200,
       `${rxRes.json.products} محصول · ${rxRes.json.note_rows} نُت`);
 
-  // ══ ۲) اثر واقعی روی داده ══
   console.log(d('\n  اثر روی داده'));
 
   const newStock = (v0.stock || 0) + 7;
@@ -134,11 +112,9 @@ function api(p, opt = {}, token) {
   add('تغییر قیمت واقعاً ذخیره شد', after2.price_toman === newPrice,
       `${v0.price_toman} → ${after2.price_toman}`);
 
-  // بازگرداندن وضعیت اولیه
   db.prepare('UPDATE variants SET stock=?, price_toman=? WHERE sku=?')
     .run(v0.stock, v0.price_toman, v0.sku);
 
-  // ══ ۳) ورودی نامعتبر ══
   console.log(d('\n  ورودی نامعتبر'));
 
   const bad1 = await api(`/api/admin/variants/${encodeURIComponent(v0.sku)}`, {
@@ -161,7 +137,6 @@ function api(p, opt = {}, token) {
   }, OT);
   add('درصد تغییر خارج از بازه رد می‌شود', bad4.status === 400);
 
-  // ══ ۴) کنترل دسترسی پس از جابه‌جایی ══
   console.log(d('\n  کنترل دسترسی'));
 
   for (const p of ['/api/admin/low-stock', '/api/admin/logs']) {
@@ -173,8 +148,6 @@ function api(p, opt = {}, token) {
   const noAuthPost = await api('/api/admin/reindex', { method: 'POST', body: '{}' });
   add('بازسازی ایندکس بدون ورود ۴۰۱ می‌دهد', noAuthPost.status === 401);
 
-  /* نقش محدود: انباردار موجودی را می‌تواند، قیمت را نه.
-     این دقیقاً همان مرزی است که جابه‌جایی کد می‌توانست بشکند. */
   const wh = await makeStaff(api, OT, 'split-step1-wh', 'warehouse');
   if (!wh.token) {
     add('ساخت انباردار آزمایشی', false, wh.error || 'توکن نگرفت');
@@ -202,9 +175,6 @@ function api(p, opt = {}, token) {
     const okLow = await api('/api/admin/low-stock', {}, wh.token);
     add('انباردار گزارش موجودی را می‌بیند', okLow.status === 200);
 
-    /* ۴۰۳ باید پاسخ کامل باشد، نه پاسخ نیمه‌کاره.
-       اگر ماژول `false` برگرداند، سرور ادامه می‌دهد و روی همان
-       پاسخ ۴۰۴ می‌نویسد — خطای «headers already sent». */
     add('پاسخ ۴۰۳ سالم و کامل است',
         !!noPrice.json.error && !/يافت نشد|یافت نشد/.test(noPrice.json.error || ''),
         (noPrice.json.error || '').slice(0, 40));
@@ -212,7 +182,6 @@ function api(p, opt = {}, token) {
     if (wh.id) await api(`/api/admin/staff/${wh.id}`, { method: 'DELETE' }, OT);
   }
 
-  // ══ ۵) ثبت در سابقه کارها ══
   console.log(d('\n  سابقه کارها'));
 
   const before = db.prepare(
@@ -228,7 +197,6 @@ function api(p, opt = {}, token) {
   db.prepare('UPDATE variants SET stock=?, price_toman=? WHERE sku=?')
     .run(v0.stock, v0.price_toman, v0.sku);
 
-  // ══ ۶) مسیرهای همسایه نشکسته‌اند ══
   console.log(d('\n  مسیرهای همسایه'));
 
   const neighbours = [
@@ -246,7 +214,6 @@ function api(p, opt = {}, token) {
   }
   add('مسیرهای مجاور دست‌نخورده‌اند', nOk, `${neighbours.length} مسیر`);
 
-  // ══ ۷) ساختار ماژول ══
   console.log(d('\n  ساختار'));
 
   const fs = require('fs');

@@ -1,6 +1,5 @@
 'use strict';
-// Explicit, backup-first additive migration of an OFFLINE existing database.
-// Offline-only recovery: all application writers must be stopped. Never retries a provider or changes payment/stock.
+
 const fs=require('fs'),path=require('path'),Database=require('better-sqlite3');
 const args=process.argv.slice(2);
 if(args.length!==11||args[0]!=='--db'||args[2]!=='--backup'||args[4]!=='--order-id'||args[6]!=='--actor'||args[8]!=='--note'||args[10]!=='--offline-confirmed'){

@@ -1,24 +1,5 @@
 #!/usr/bin/env node
-/**
- * ممیزی پوشش مجوزها.
- *
- * چرا لازم است؟
- *   وقتی مجوزی در `permissions.js` تعریف می‌شود ولی هیچ‌جا در
- *   سرور بررسی نمی‌گردد، سیستم وعده‌ای می‌دهد که عمل نمی‌کند.
- *   مدیر در پنل تیک «تغییر قیمت» را برمی‌دارد و فکر می‌کند
- *   کارمند دیگر نمی‌تواند قیمت عوض کند — در حالی که می‌تواند.
- *
- *   این دقیقاً اتفاقی بود که افتاد: انباردار قیمت را از
- *   ۱۹۶٬۰۰۰ به ۱ تومان تغییر داد چون مسیر ویرایش کالا فقط
- *   `products.stock` را می‌سنجید.
- *
- * چه چیزی بررسی می‌شود:
- *   ۱) هر مجوز تعریف‌شده دست‌کم یک بار در سرور بررسی شود
- *   ۲) هیچ مسیر مدیریتی بدون بررسی مجوز نماند
- *   ۳) هر مجوز در دست‌کم یک نقش پیش‌فرض باشد (کلید مرده نباشد)
- *
- * اجرا: node scripts/audit_permissions.js
- */
+
 'use strict';
 
 const fs = require('fs');
@@ -26,13 +7,7 @@ const path = require('path');
 
 const ROOT = path.dirname(__dirname);
 const perms = require(path.join(ROOT, 'src', 'permissions'));
-/* ── چرا همه فایل‌های مسیر خوانده می‌شوند ──
-   پیش‌تر فقط `server.js` اسکن می‌شد. با شروع تفکیک ماژول‌ها،
-   مسیرهایی که به `src/routes/` منتقل شدند از دید این ممیزی
-   ناپدید می‌شدند و مجوزهایشان «بدون بررسی» گزارش می‌شد.
 
-   ممیزی‌ای که با جابه‌جایی کد کور شود، بدتر از نبودنش است —
-   چون سبز بودنش دروغ می‌گوید. */
 const ROUTES_DIR = path.join(ROOT, 'src', 'routes');
 const routeFiles = fs.existsSync(ROUTES_DIR)
   ? fs.readdirSync(ROUTES_DIR).filter(f => f.endsWith('.js'))
@@ -49,15 +24,12 @@ const r = s => `\x1b[31m${s}\x1b[0m`;
 const y = s => `\x1b[33m${s}\x1b[0m`;
 const d = s => `\x1b[2m${s}\x1b[0m`;
 
-/* مجوزهایی که عمداً مسیر API ندارند و فقط نمایش تب را کنترل
-   می‌کنند. اگر موردی اینجا اضافه می‌کنید، دلیلش را بنویسید. */
 const UI_ONLY = {
   'content.view': 'کاتالوگ مقالات عمومی است؛ فقط تب پنل را کنترل می‌کند'
 };
 
 let problems = 0;
 
-// ── ۱) مجوزهای بدون بررسی ──
 console.log('\n  ۱. مجوزهای تعریف‌شده که در سرور بررسی می‌شوند\n');
 const unchecked = [];
 for (const key of perms.ALL_KEYS) {
@@ -78,21 +50,17 @@ for (const [k, why] of Object.entries(UI_ONLY)) {
   console.log(`  ${d('•')} ${d(k + ' — ' + why)}`);
 }
 
-// ── ۲) مسیرهای مدیریتی بدون محافظت ──
 console.log('\n  ۲. مسیرهای مدیریتی بدون بررسی مجوز\n');
 const lines = src.split('\n');
 const openRoutes = [];
 
 for (let i = 0; i < lines.length; i++) {
   const ln = lines[i];
-  // مسیرهای /api/admin/ یا عملیات نوشتاری روی منابع مدیریتی
+
   const isAdminPath = /pathname\s*(===|\.startsWith\()\s*'\/api\/admin\//.test(ln);
   if (!isAdminPath) continue;
   if (!/^\s*if \(/.test(ln)) continue;
 
-  /* تا انتهای همان بلوک if دنبال بررسی مجوز بگرد.
-     پنجره ثابت کافی نیست: مسیرهایی که چند عمل دارند، بررسی را
-     بعد از خواندن بدنه درخواست انجام می‌دهند. */
   let depth = 0, end = i;
   for (let j = i; j < Math.min(lines.length, i + 120); j++) {
     depth += (lines[j].match(/\{/g) || []).length;
@@ -103,7 +71,6 @@ for (let i = 0; i < lines.length; i++) {
   const block = lines.slice(i, end + 1).join('\n');
   const guarded = /can\('/.test(block) || /if \(!who\)/.test(block);
 
-  // ورود و whoami عمداً باز هستند
   const isPublicByDesign = /admin\/login|admin\/whoami|admin\/me|admin\/logout/.test(ln);
 
   if (!guarded && !isPublicByDesign) {
@@ -120,20 +87,18 @@ if (openRoutes.length) {
   console.log(`  ${g('✓')} همه مسیرهای مدیریتی محافظت شده‌اند`);
 }
 
-// ── ۳) مجوزهای یتیم ──
 console.log('\n  ۳. مجوزهایی که در هیچ نقش پیش‌فرضی نیستند\n');
 const inRoles = new Set();
 perms.DEFAULT_ROLES.forEach(role => role.permissions.forEach(p => inRoles.add(p)));
 const orphans = perms.ALL_KEYS.filter(k => !inRoles.has(k));
 
 if (orphans.length) {
-  // این خطا نیست — فقط یعنی فقط مدیر کل دارد
+
   orphans.forEach(k => console.log(`  ${y('•')} ${k} ${d('— فقط مدیر کل')}`));
 } else {
   console.log(`  ${g('✓')} همه مجوزها دست‌کم در یک نقش هستند`);
 }
 
-// ── ۴) خلاصه پوشش هر نقش ──
 console.log('\n  ۴. پوشش نقش‌ها\n');
 for (const role of perms.DEFAULT_ROLES) {
   const dangerous = role.permissions.filter(k => {

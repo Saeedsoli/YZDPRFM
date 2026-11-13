@@ -1,23 +1,10 @@
-/**
- * عطر یزد | لایه پرداخت قابل‌تعویض
- * ---------------------------------
- * انتخاب درگاه با متغیر محیطی PAYMENT_GATEWAY:
- *   sandbox   → درگاه آزمایشی داخلی (پیش‌فرض)
- *   zarinpal  → زرین‌پال واقعی
- *
- * برای فعال‌سازی زرین‌پال کافیست دو متغیر ست شود:
- *   PAYMENT_GATEWAY=zarinpal
- *   ZARINPAL_MERCHANT_ID=xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
- * هیچ تغییری در کد لازم نیست.
- */
-
 const https = require('https');
 const crypto = require('crypto');
 
 const GATEWAY     = (process.env.PAYMENT_GATEWAY || 'sandbox').toLowerCase();
 const MERCHANT_ID = process.env.ZARINPAL_MERCHANT_ID || '';
 const SITE_URL    = (process.env.SITE_URL || 'http://localhost:3000').replace(/\/+$/, '');
-// زرین‌پال در حالت تست، ساب‌دامین sandbox دارد
+
 const ZP_SANDBOX  = process.env.ZARINPAL_SANDBOX === 'true';
 const ZP_HOST     = ZP_SANDBOX ? 'sandbox.zarinpal.com' : 'payment.zarinpal.com';
 const PRODUCTION = String(process.env.NODE_ENV || '').trim().toLowerCase() === 'production';
@@ -28,7 +15,6 @@ function productionReady() {
   try { const u=new URL(SITE_URL);return u.protocol==='https:' && !u.username && !u.password && u.pathname==='/' && !u.search && !u.hash && !['localhost','127.0.0.1','[::1]'].includes(u.hostname); }
   catch { return false; }
 }
-
 
 function postJSON(host, path, payload) {
   return new Promise((resolve, reject) => {
@@ -56,10 +42,6 @@ function postJSON(host, path, payload) {
   });
 }
 
-/**
- * درخواست پرداخت
- * @returns {{ok:boolean, redirect_url?:string, authority?:string, error?:string}}
- */
 async function requestPayment({ orderId, amountToman, mobile, description }) {
   if (!productionReady()) return {ok:false,error:'درگاه پرداخت واقعی هنوز آماده نیست.'};
   if (GATEWAY === 'zarinpal') {
@@ -69,7 +51,7 @@ async function requestPayment({ orderId, amountToman, mobile, description }) {
     try {
       const r = await postJSON(ZP_HOST, '/pg/v4/payment/request.json', {
         merchant_id: MERCHANT_ID,
-        amount: amountToman * 10,            // زرین‌پال ریال می‌گیرد
+        amount: amountToman * 10,
         callback_url: `${SITE_URL}/payment/callback?order=${orderId}`,
         description: description || `سفارش ${orderId} — عطر یزد`,
         metadata: mobile ? { mobile } : undefined
@@ -89,7 +71,6 @@ async function requestPayment({ orderId, amountToman, mobile, description }) {
     }
   }
 
-  // درگاه آزمایشی داخلی
   return {
     ok: true,
     authority: 'SBX-' + crypto.randomBytes(8).toString('hex').toUpperCase(),
@@ -97,10 +78,6 @@ async function requestPayment({ orderId, amountToman, mobile, description }) {
   };
 }
 
-/**
- * تأیید پرداخت
- * @returns {{ok:boolean, ref_id?:string, error?:string}}
- */
 async function verifyPayment({ authority, amountToman, sandboxResult }) {
   if (!productionReady()) return {ok:false,requires_review:true,error:'درگاه پرداخت واقعی هنوز آماده نیست.'};
   if (GATEWAY === 'zarinpal') {
@@ -110,9 +87,7 @@ async function verifyPayment({ authority, amountToman, sandboxResult }) {
         amount: amountToman * 10,
         authority
       });
-      // A fresh provider confirmation can settle exactly this bound order.
-      // 101 is already verified: for a still-pending order it is ambiguous,
-      // so preserve it for reconciliation instead of marking it paid twice.
+
       if (r?.data?.code === 100) return { ok: true, ref_id: String(r.data.ref_id || authority) };
       if (r?.data?.code === 101) return { ok: false, requires_review: true, error: 'پرداخت پیش‌تر تأیید شده و نیازمند بررسی است.' };
       return { ok: false, requires_review: true, error: 'وضعیت پرداخت نیازمند بررسی است.' };
@@ -121,7 +96,6 @@ async function verifyPayment({ authority, amountToman, sandboxResult }) {
     }
   }
 
-  // آزمایشی
   if (sandboxResult === 'success') {
     return { ok: true, ref_id: 'SANDBOX-' + crypto.randomBytes(6).toString('hex').toUpperCase() };
   }
@@ -136,20 +110,6 @@ function gatewayName() {
 
 function isLive() { return GATEWAY === 'zarinpal' && !!MERCHANT_ID && !ZP_SANDBOX && (!PRODUCTION || productionReady()); }
 
-/**
- * بررسی سلامت پیکربندی درگاه — بدون ثبت تراکنش واقعی.
- *
- * چرا این تابع لازم شد: تنها راه فهمیدن اینکه Merchant ID درست
- * است، رفتن مشتری تا صفحه پرداخت بود. اگر شناسه غلط بود، اولین
- * خریدار واقعی با خطا روبه‌رو می‌شد و احتمالاً برنمی‌گشت.
- *
- * روش: یک درخواست پرداخت با کمترین مبلغ مجاز (۱۰۰۰ تومان) ساخته
- * می‌شود. زرین‌پال `authority` می‌دهد ولی چون هیچ‌کس روی لینک
- * نمی‌رود، تراکنشی انجام نمی‌شود و ظرف مدت کوتاهی منقضی می‌گردد.
- * هزینه‌ای ندارد و پولی جابه‌جا نمی‌شود.
- *
- * شناسه پذیرنده هرگز کامل برنمی‌گردد.
- */
 async function testConnection() {
   const masked = MERCHANT_ID
     ? '••••••••-••••-••••-••••-' + MERCHANT_ID.slice(-6)
@@ -177,8 +137,6 @@ async function testConnection() {
     };
   }
 
-  /* شناسه پذیرنده زرین‌پال دقیقاً ۳۶ نویسه UUID است. بررسی شکل
-     پیش از تماس با شبکه، خطای واضح‌تری می‌دهد تا «کد ۱۰۱ نامعتبر». */
   const shapeOk = /^[0-9a-fA-F-]{36}$/.test(MERCHANT_ID);
   if (!shapeOk) {
     return {
@@ -192,7 +150,7 @@ async function testConnection() {
   try {
     const r = await postJSON(ZP_HOST, '/pg/v4/payment/request.json', {
       merchant_id: MERCHANT_ID,
-      amount: 10000,                                  // ۱۰۰۰ تومان = کمترین مبلغ
+      amount: 10000,
       callback_url: `${SITE_URL}/payment/callback?order=HEALTHCHECK`,
       description: 'بررسی سلامت پیکربندی — عطر یزد'
     });

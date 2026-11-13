@@ -1,6 +1,5 @@
 'use strict';
-// Official classification of the reference fragrance, applied only to unchanged,
-// unavailable products. It does not restrict who can wear any perfume.
+
 const fs=require('fs');
 function applyOfficialGender(db,file) {
   if (!fs.existsSync(file)) return {updated:0,skipped:0,reason:'file_missing'};

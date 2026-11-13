@@ -1,30 +1,5 @@
 #!/usr/bin/env node
-/**
- * آزمون تفکیک «فاکتور عادی» از «فاکتور رسمی».
- *
- * پس‌زمینه — خواسته صریح مالک فروشگاه (مرداد ۱۴۰۵):
- *   «ما در فاکتور یا جای دیگر، اصلا نیازی به درج اطلاعات حقوقی
- *    نداریم. خود ای‌نماد کفایت می‌کند.»
- *
- * ولی یک تفکیک لازم بود:
- *   • کد اقتصادی / شناسه ملی / شماره ثبت → فقط فاکتور رسمی
- *   • تلفن / نشانی / کد پستی → **الزام خودِ اینماد**، می‌مانند
- *
- * چرا آزمون لازم است: اگر روزی کسی سهواً اطلاعات حقوقی را به
- * فاکتور عادی برگرداند، سندی به دست مشتری می‌رسد که ممکن است
- * مقدارش ساختگی باشد — مسئولیت حقوقی مستقیم.
- *
- * پوشش:
- *   • فاکتور عادی هیچ فیلد حقوقی ندارد
- *   • فاکتور رسمی آن‌ها را دارد (اگر ثبت شده باشند)
- *   • تلفن و نشانی در هر دو حالت هستند
- *   • برچسب پستی نشانی فرستنده را نگه می‌دارد
- *   • فوتر تلفن و نشانی نشان می‌دهد (الزام اینماد)
- *   • بررسی آمادگی: حقوقی خطا نیست، تماس خطاست
- *   • /api/contact-info کد اقتصادی لو نمی‌دهد
- *
- * اجرا: node scripts/test_invoice_legal.js
- */
+
 'use strict';
 
 const { spawn } = require('child_process');
@@ -48,8 +23,6 @@ const add = (label, ok, note) => {
   checks.push(ok);
 };
 
-/* مقادیر آزمونی — واقعی‌نما ولی نه در فهرست PLACEHOLDER،
-   تا بررسی آمادگی آن‌ها را «نمونه» نشمارد. */
 const T = {
   legal_name: 'شرکت رایحه پارس یزد',
   economic_code: '411777888999',
@@ -88,7 +61,6 @@ async function boot() {
 (async () => {
   console.log('\n  آزمون تفکیک فاکتور عادی و رسمی\n');
 
-  // وضعیت فعلی را نگه می‌داریم تا آخر برگردانیم
   {
     const db = new Database(DB);
     for (const k of Object.keys(T)) {
@@ -112,7 +84,7 @@ async function boot() {
   };
 
   try {
-    // ── منبع فاکتور ──
+
     console.log('  ── قالب صفحه فاکتور ──');
 
     const inv = fs.readFileSync(path.join(ROOT, 'public/invoice.html'), 'utf8');
@@ -122,8 +94,7 @@ async function boot() {
       ['legal_name', 'نام حقوقی'], ['economic_code', 'کد اقتصادی'],
       ['national_id', 'شناسه ملی'], ['register_no', 'شماره ثبت']
     ]) {
-      /* هر فیلد حقوقی باید پشت شرط formal باشد. اگر کسی شرط را
-         بردارد، اینجا قرمز می‌شود. */
+
       const re = new RegExp(`formal && st\\.${field}`);
       add(`«${label}» فقط در حالت رسمی چاپ می‌شود`, re.test(inv));
     }
@@ -132,7 +103,6 @@ async function boot() {
     add('عنوان سند در حالت رسمی فرق می‌کند',
       /formal \? 'فاکتور رسمی فروش کالا'/.test(inv));
 
-    // ── رفتار واقعی با داده ثبت‌شده ──
     console.log('\n  ── با اطلاعات حقوقی ثبت‌شده ──');
 
     setSettings(T);
@@ -141,7 +111,7 @@ async function boot() {
     add('اطلاعات تماس عمومی تلفن دارد', shop.phone === T.phone, shop.phone);
     add('اطلاعات تماس عمومی نشانی دارد', !!shop.address);
     add('اطلاعات تماس عمومی کد پستی دارد', shop.postal_code === T.postal_code);
-    /* حیاتی: این مسیر باز است و هر کسی می‌تواند صدایش بزند. */
+
     add('کد اقتصادی در API عمومی نیست',
       !JSON.stringify(shop).includes(T.economic_code));
     add('شناسه ملی در API عمومی نیست',
@@ -149,7 +119,6 @@ async function boot() {
     add('شماره ثبت در API عمومی نیست',
       !JSON.stringify(shop).includes(T.register_no));
 
-    // ── بررسی آمادگی ──
     console.log('\n  ── بررسی آمادگی افتتاح ──');
 
     const login = await fetch(`${BASE}/api/admin/login`, {
@@ -178,7 +147,7 @@ async function boot() {
     }
 
     {
-      /* حالت اصلی مورد نظر مالک: هیچ اطلاعات حقوقی‌ای ثبت نشده. */
+
       setSettings({ legal_name: '', economic_code: null,
         national_id: null, register_no: null });
       const d2 = await rd();
@@ -193,7 +162,7 @@ async function boot() {
     }
 
     {
-      /* مقدار نمونه در فیلد اختیاری → هشدار، نه خطا */
+
       setSettings({ economic_code: '411358697643' });
       const d3 = await rd();
       const formal = d3.items.find(i => i.key === 'legal_formal');
@@ -205,7 +174,7 @@ async function boot() {
     }
 
     {
-      /* نبودِ تلفن → خطا، چون اینماد الزام کرده */
+
       setSettings({ phone: '' });
       const d4 = await rd();
       const legal = d4.items.find(i => i.key === 'legal');
@@ -215,20 +184,17 @@ async function boot() {
       setSettings({ phone: T.phone });
     }
 
-    // ── برچسب پستی ──
     console.log('\n  ── برچسب پستی ──');
 
     {
       const lab = fs.readFileSync(path.join(ROOT, 'public/label.html'), 'utf8');
       add('نشانی فرستنده روی برچسب می‌ماند', /st\.address/.test(lab));
       add('کد پستی فرستنده روی برچسب می‌ماند', /st\.postal_code/.test(lab));
-      /* پست بدون نشانی فرستنده مرسوله را نمی‌پذیرد و مرسوله
-         برگشتی جایی برای رفتن ندارد. */
+
       add('برچسب کد اقتصادی چاپ نمی‌کند', !/economic_code/.test(lab));
       add('برچسب شناسه ملی چاپ نمی‌کند', !/national_id/.test(lab));
     }
 
-    // ── فوتر ──
     console.log('\n  ── فوتر سایت (الزام اینماد) ──');
 
     {
@@ -244,7 +210,6 @@ async function boot() {
       add('استایل فوتر تماس در CSS هست', /\.foot-contact/.test(css));
     }
 
-    // ── پنل ──
     console.log('\n  ── دکمه فاکتور رسمی در پنل ──');
 
     {
@@ -254,16 +219,13 @@ async function boot() {
       add('توضیح کاربردش داده شده', /خریدار عمده/.test(adm));
     }
 
-    // ── سرو شدن هر دو نسخه ──
     console.log('\n  ── هر دو نسخه سرو می‌شوند ──');
 
     {
-      /* سفارش آزمونی خودمان را می‌سازیم، نه اینکه به داده موجود
-         تکیه کنیم. روی دیتابیس تازهٔ افتتاح هیچ سفارش پرداخت‌شده‌ای
-         نیست و آزمونی که به آشغال قبلی تکیه دارد آنجا قرمز می‌شود. */
+
       const db = new Database(DB);
       const { makePaidOrder, cleanupOrders } = require('./lib/test_order');
-      cleanupOrders(db);                       // بازمانده اجرای قبلی
+      cleanupOrders(db);
       const o = makePaidOrder(db, { giftWrap: 70000 });
 
       {

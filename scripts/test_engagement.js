@@ -1,29 +1,5 @@
 #!/usr/bin/env node
-/**
- * آزمون ماژول تعامل مشتری — گام ۸ تفکیک `server.js`.
- *
- * چرا این آزمون:
- *
- *   یازده مسیر این ماژول همه **بدون `can()`** کار می‌کنند. یعنی
- *   لایه دفاعی متمرکزی که شش ماژول مدیریتی داشتند اینجا نیست؛
- *   هر مسیر محافظ خودش را دارد. اگر یکی از آن محافظ‌ها هنگام
- *   جابه‌جایی بیفتد، هیچ ۴۰۳ سراسری جلویش را نمی‌گیرد.
- *
- *   سه مسیر داده شخصی برمی‌گردانند و آزمون روی هر سه سخت‌گیر است:
- *     • `/api/orders/track`      → سفارش دیگری دیده نشود
- *     • `/api/review-invite/:t`  → شماره کامل لو نرود
- *     • `/api/wishlist`          → بدون ورود چیزی برنگردد
- *
- * پوشش:
- *   ۱) هر یازده مسیر پاسخ درست می‌دهند
- *   ۲) مرز داده شخصی سالم مانده
- *   ۳) دو محدودیت نرخ با دو رفتار متفاوت (۲۰۰ خاموش / ۴۲۹ گویا)
- *   ۴) توکن دعوت یک‌بارمصرف است
- *   ۵) اثر واقعی روی دیتابیس (علاقه‌مندی، هشدار موجودی، نظر)
- *   ۶) سرور پس از همه اینها زنده است
- *
- * اجرا: node scripts/test_engagement.js   (سرور باید بالا باشد)
- */
+
 'use strict';
 
 const http = require('http');
@@ -43,13 +19,6 @@ const add = (label, ok, note) => {
   checks.push(ok);
 };
 
-/* مسیر همیشه اینجا امن می‌شود، نه در محل فراخوانی.
-   نسخه اول این کار را نمی‌کرد و اولین نامک فارسی، آزمون را با
-   ERR_UNESCAPED_CHARACTERS می‌انداخت — خطای آزمون، نه سرور.
-
-   فقط نویسه‌های خام غیر-ASCII کدگذاری می‌شوند. `encodeURIComponent`
-   روی کل مسیر، بخش‌هایی را که فراخوان از قبل کد کرده دوباره کد
-   می‌کرد (`%D9` → `%25D9`) و آزمون بی‌دلیل قرمز می‌شد. */
 const enc = p => p.replace(/[^\x00-\x7F]/g, encodeURIComponent);
 
 function api(p, opt = {}, cookie) {
@@ -80,7 +49,6 @@ function api(p, opt = {}, cookie) {
 const post = (p, obj, cookie) =>
   api(p, { method: 'POST', body: JSON.stringify(obj) }, cookie);
 
-/** ورود مشتری واقعی با کد یکبارمصرف — تنها راه گرفتن کوکی نشست */
 async function loginCustomer(mobile) {
   db.prepare("DELETE FROM rate_limits WHERE bucket LIKE 'otp%'").run();
   await post('/api/auth/request-code', { mobile });
@@ -103,7 +71,6 @@ async function loginCustomer(mobile) {
   const MOBILE = '09121110001';
   const OTHER  = '09121110002';
 
-  // ───────────────────────── ۱) ثبت رویداد
   console.log();
   console.log(h('  ۱) ثبت رویداد از مرورگر'));
 
@@ -117,7 +84,6 @@ async function loginCustomer(mobile) {
   const tEmpty = await post('/api/track', {});
   add('بدنه خالی نمی‌شکند', tEmpty.status === 200);
 
-  // ───────────────────────── ۲) علاقه‌مندی
   console.log();
   console.log(h('  ۲) علاقه‌مندی'));
 
@@ -169,7 +135,6 @@ async function loginCustomer(mobile) {
     add('‎check محصول ناموجود ۴۰۴', chkNo.status === 404);
   }
 
-  // ───────────────────────── ۳) نظرات (خواندن)
   console.log();
   console.log(h('  ۳) نظرات — خواندن'));
 
@@ -191,7 +156,6 @@ async function loginCustomer(mobile) {
         `purchased=${rvIn.json.purchased}`);
   }
 
-  // ───────────────────────── ۴) نظرات (ثبت)
   console.log();
   console.log(h('  ۴) نظرات — ثبت'));
 
@@ -200,9 +164,7 @@ async function loginCustomer(mobile) {
 
   if (cookie) {
     db.prepare('DELETE FROM reviews WHERE mobile=?').run(MOBILE);
-    /* سطل «۵ نظر در روز» بین اجراهای آزمون باقی می‌ماند و پنجره‌اش
-       ۲۴ ساعت است. بدون این پاک‌سازی، اجرای دوم آزمون همه‌ی این
-       بخش را ۴۲۹ می‌گرفت — و باز هم مقصر آزمون بود نه کد. */
+
     db.prepare("DELETE FROM rate_limits WHERE bucket LIKE 'review:%'").run();
 
     const badRate = await post('/api/reviews',
@@ -245,9 +207,6 @@ async function loginCustomer(mobile) {
         xss.status === 201 && !/<script/i.test(xrow.body || ''),
         'نظر در پنل مدیریت رندر می‌شود');
 
-    /* محدودیت سوم این ماژول که در بازبینی اولیه از قلم افتاده بود:
-       ۵ نظر در ۲۴ ساعت به ازای هر شماره. رفتارش مثل `alert` گویا
-       است (۴۲۹ با پیام) چون کاربر منتظر تأیید است. */
     let rev429 = false, revMsg = '';
     for (let i = 0; i < 8; i++) {
       const x = await post('/api/reviews', {
@@ -263,7 +222,6 @@ async function loginCustomer(mobile) {
     db.prepare('DELETE FROM reviews WHERE mobile=?').run(MOBILE);
   }
 
-  // ───────────────────────── ۵) دعوت‌نامه نظر
   console.log();
   console.log(h('  ۵) دعوت‌نامه نظر مشتری حضوری'));
 
@@ -273,12 +231,6 @@ async function loginCustomer(mobile) {
   add('ثبت با توکن نامعتبر ۴۱۰',
       (await post('/api/review-invite', { token: 'x' })).status === 410);
 
-  /* دعوت‌نامه واقعی از خودِ `createReviewInvite` گرفته می‌شود، نه
-     دست‌ساز. نسخه اول این آزمون توکن `test-xxxx` می‌ساخت و همه‌ی
-     بررسی‌های این بخش قرمز شدند — چون `readReviewInvite` توکن را
-     با `/^[a-f0-9]{32}$/` می‌سنجد. کد درست بود، آزمون غلط.
-
-     درس تکراری: قرارداد واقعی را بخوان، حدس نزن. */
   db.prepare('DELETE FROM review_invites WHERE mobile=?').run(OTHER);
   db.prepare('DELETE FROM reviews WHERE mobile=?').run(OTHER);
   const { createReviewInvite } = require('../src/db');
@@ -316,7 +268,6 @@ async function loginCustomer(mobile) {
   db.prepare('DELETE FROM reviews WHERE mobile=?').run(OTHER);
   db.prepare('DELETE FROM review_invites WHERE mobile=?').run(OTHER);
 
-  // ───────────────────────── ۶) اطلاع موجود شدن
   console.log();
   console.log(h('  ۶) اطلاع موجود شدن'));
 
@@ -353,7 +304,6 @@ async function loginCustomer(mobile) {
 
   db.prepare('DELETE FROM stock_alerts WHERE mobile=?').run(MOBILE);
 
-  // ───────────────────────── ۷) نوار اعلان
   console.log();
   console.log(h('  ۷) نوار اعلان'));
 
@@ -378,7 +328,6 @@ async function loginCustomer(mobile) {
       'تاریخ پایان واقعاً اعمال می‌شود');
   db.prepare('DELETE FROM notices WHERE text LIKE ?').run('آزمون گام ۸%');
 
-  // ───────────────────────── ۸) پیگیری سفارش
   console.log();
   console.log(h('  ۸) پیگیری سفارش'));
 
@@ -417,7 +366,6 @@ async function loginCustomer(mobile) {
     add('جستجوی دقیق یک سفارش برمی‌گرداند', true, 'رد شد');
   }
 
-  // ───────────────────────── ۹) دو محدودیت نرخ، دو رفتار
   console.log();
   console.log(h('  ۹) محدودیت نرخ — دو رفتار عمدی'));
 
@@ -451,7 +399,6 @@ async function loginCustomer(mobile) {
   db.prepare("DELETE FROM rate_limits WHERE bucket LIKE 'track%' OR bucket LIKE 'alert%'").run();
   db.prepare('DELETE FROM stock_alerts WHERE mobile=?').run(MOBILE);
 
-  // ───────────────────────── ۱۰) همسایه‌ها
   console.log();
   console.log(h('  ۱۰) مسیرهای همسایه'));
 
@@ -468,7 +415,6 @@ async function loginCustomer(mobile) {
   add('صفحه اصلی رندر می‌شود', (await api('/')).status === 200);
   add('مسیر ناشناخته ۴۰۴', (await api('/api/hich')).status === 404);
 
-  // ───────────────────────── ۱۱) سلامت ساختاری
   console.log();
   console.log(h('  ۱۱) سلامت ساختاری تفکیک'));
 
@@ -505,17 +451,10 @@ async function loginCustomer(mobile) {
 
   const srvLines = srv.split('\n').length;
   const modLines = mod.split('\n').length;
-  /* آستانه‌ای که با هر قابلیت تازه جابه‌جا می‌شود، آزمون نیست —
-     یادآور است. هدف این بررسی «کوچک ماندن server.js» بود، نه یک
-     عدد دقیق. از زمان گام ۸ سه قابلیت اضافه شده (نماد اعتماد،
-     رسانه مقالات، هشدار داخلی) و هر کدام چند خط به سرور برده‌اند.
 
-     ۲٬۴۰۰ سقفی است که اگر رد شود، یعنی واقعاً چیزی باید تفکیک
-     شود — نه اینکه صرفاً یک قابلیت اضافه شده. */
   add('server.js کوچک مانده', srvLines < 2400, `${srvLines} خط`);
   console.log(d(`      ماژول engagement: ${modLines} خط`));
 
-  // ───────────────────────── ۱۲) سرور زنده است؟
   console.log();
   console.log(h('  ۱۲) سرور پس از همه اینها'));
   add('سرور هنوز پاسخ می‌دهد',

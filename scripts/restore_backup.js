@@ -1,7 +1,6 @@
 #!/usr/bin/env node
 'use strict';
-// Read-only inspection and restoration into a NEW isolated file only.
-// Never overwrite the live DB or its WAL/SHM; no --yes bypass exists.
+
 const fs=require('fs'),path=require('path'),crypto=require('crypto');
 const Database=require('better-sqlite3');
 const ROOT=path.dirname(__dirname), DB_PATH=process.env.DB_PATH||path.join(ROOT,'data','yazd.db');
@@ -26,7 +25,7 @@ function list(){
 }
 function restoreToNew(source,destination){
  const src=path.resolve(source),out=canonicalTarget(destination),live=canonicalTarget(DB_PATH);
- // A configured DB path can itself be a symlink; protect both spellings.
+
  const activePaths=new Set([live]);if(fs.existsSync(DB_PATH))activePaths.add(fs.realpathSync(DB_PATH));
  for(const base of activePaths)if([base,base+'-wal',base+'-shm',base+'-journal'].includes(out))throw Error('Destination is the active database or a sidecar');
  const stat=fs.lstatSync(src);if(!stat.isFile()||stat.isSymbolicLink())throw Error('Backup must be a regular non-symlink file');

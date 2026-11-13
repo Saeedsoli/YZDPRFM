@@ -1,49 +1,5 @@
-/**
- * عطر یزد | مسیرهای بازاریابی — کوپن، جشنواره، اعلان
- * ------------------------------------------------------
- * گام ۳ از تفکیک کامل `server.js`.
- *
- * ── محتوا ──
- *   GET|POST|PUT|DELETE  /api/admin/coupons      کد تخفیف
- *   GET|POST|PUT|DELETE  /api/admin/campaigns    جشنواره خودکار
- *   GET|POST|PUT|DELETE  /api/admin/notices      نوار اعلان
- *
- * ── چرا این سه با هم ──
- * هر سه «ابزار تخفیف و پیام» هستند و از همان مجوز `coupons.*`
- * استفاده می‌کنند. تفکیک مجوزشان فقط پیچیدگی اضافه می‌کرد
- * (تصمیم ثبت‌شده در خود کد).
- *
- * ── حساسیت مالی ──
- * تخفیف **مستقیم روی پرداختی مشتری** اثر می‌گذارد. یک جشنواره با
- * درصد اشتباه یا دامنه غلط، یعنی فروش زیر قیمت تمام‌شده.
- *
- * دو محافظ که باید سالم بمانند:
- *   ۱) اعتبارسنجی درصد و تاریخ هنگام ساخت
- *   ۲) `bustCampaignCache()` پس از هر تغییر — وگرنه جشنواره تا
- *      پنج ثانیه بعد اعمال نمی‌شود و مشتری قیمت قدیم می‌بیند
- *
- * آزمون این ماژول روی همین دو تمرکز دارد.
- *
- * ── قرارداد `ctx` ──
- * ماژول زمینه می‌گیرد و `Promise<boolean>` برمی‌گرداند.
- */
-
 'use strict';
 
-/**
- * @param {object}   ctx
- * @param {string}   ctx.method
- * @param {string}   ctx.pathname
- * @param {object}   ctx.req
- * @param {Function} ctx.can                 خودش ۴۰۳ می‌فرستد
- * @param {Function} ctx.parseBody
- * @param {Function} ctx.logAudit
- * @param {object}   ctx.db
- * @param {Function} ctx.cleanText
- * @param {Function} ctx.normalizeDigits
- * @param {Function} ctx.bustCampaignCache   کش جشنواره را باطل می‌کند
- * @returns {Promise<boolean>}
- */
 async function handle(ctx) {
   const {
     method, pathname, req,
@@ -51,14 +7,6 @@ async function handle(ctx) {
     cleanText, normalizeDigits, bustCampaignCache
   } = ctx;
 
-  /* پوشش `sendJSON` — درس گام ۱.
-     الگوی `return sendJSON(...)` در server.js `undefined` می‌دهد
-     که falsy است؛ در ماژول یعنی «رسیدگی نشد» و سرور ۴۰۴ روی همان
-     پاسخ می‌نویسد → ERR_HTTP_HEADERS_SENT → مرگ فرآیند.
-
-     اینجا الگوی ternary هم هست
-     (`return r.changes ? sendJSON(200,…) : sendJSON(404,…)`)
-     که با همین پوشش، هر دو شاخه‌اش `true` می‌دهند. */
   const sendJSON = (code, data) => { ctx.sendJSON(code, data); return true; };
 
   if (method === 'GET' && pathname === '/api/admin/coupons') {
@@ -77,8 +25,6 @@ async function handle(ctx) {
     if (db.prepare('SELECT 1 FROM coupons WHERE UPPER(code)=?').get(code))
       return sendJSON(409, { error: 'این کد قبلاً ثبت شده است.' });
 
-    /* اعتبارسنجی تاریخ — «۳۱ خرداد» یک بار در seed بود و
-       جاوااسکریپت بی‌صدا به روز بعد تفسیرش می‌کرد. */
     const validDate = (x) => {
       if (!x) return true;
       const dt = new Date(x);
@@ -95,14 +41,11 @@ async function handle(ctx) {
         return sendJSON(400, { error: 'درصد باید بین ۱ تا ۱۰۰ باشد.' });
     }
 
-    // موبایل اختصاصی با ارقام فارسی هم پذیرفته شود
     const assigned = b.assigned_mobile
       ? normalizeDigits(String(b.assigned_mobile)) : null;
     if (assigned && !/^09\d{9}$/.test(assigned))
       return sendJSON(400, { error: 'شماره موبایل اختصاصی نامعتبر است.' });
 
-    /* دامنه‌ها به‌صورت CSV ذخیره می‌شوند. آرایه هم پذیرفته
-       می‌شود تا پنل بتواند مستقیم بفرستد. */
     const csv = (x) => {
       if (!x) return null;
       const arr = Array.isArray(x) ? x : String(x).split(',');
@@ -154,9 +97,6 @@ async function handle(ctx) {
     return sendJSON(200, { message: b.active ? 'کد فعال شد.' : 'کد غیرفعال شد.' });
   }
 
-  /* ═══════════ جشنواره (تخفیف خودکار) ═══════════
-     از همان مجوزهای کوپن استفاده می‌کند — هر دو ابزار تخفیف‌اند
-     و تفکیک مجوزشان فقط پیچیدگی اضافه می‌کرد. */
   if (method === 'GET' && pathname === '/api/admin/campaigns') {
     if (!can('coupons.view')) return true;
     const rows = db.prepare('SELECT * FROM campaigns ORDER BY id DESC').all();
@@ -171,9 +111,7 @@ async function handle(ctx) {
     if (!title) return sendJSON(400, { error: 'عنوان جشنواره الزامی است.' });
 
     const pct = parseInt(b.percent);
-    /* سقف ۹۰٪: تخفیف بالاتر معمولاً اشتباه تایپی است و ضرر
-       مستقیم می‌زند. اگر واقعاً لازم شد، از کد تخفیف با مبلغ
-       ثابت استفاده شود. */
+
     if (!(pct > 0 && pct <= 90))
       return sendJSON(400, { error: 'درصد باید بین ۱ تا ۹۰ باشد.' });
 
@@ -213,8 +151,6 @@ async function handle(ctx) {
       ends_at: b.ends_at || null
     });
 
-    /* کش را همین‌جا باطل کن تا مدیر بلافاصله اثر را ببیند —
-       وگرنه تا ۵ ثانیه گمان می‌کند جشنواره کار نمی‌کند. */
     bustCampaignCache();
     logAudit('campaign.create', { target: title, percent: pct });
     return sendJSON(201, { message: 'جشنواره ایجاد شد.', id: r.lastInsertRowid });
@@ -243,7 +179,6 @@ async function handle(ctx) {
                      : sendJSON(404, { error: 'جشنواره یافت نشد' });
   }
 
-  /* ═══════════ نوار اعلان ═══════════ */
   if (method === 'GET' && pathname === '/api/admin/notices') {
     if (!can('coupons.view')) return true;
     const rows = db.prepare('SELECT * FROM notices ORDER BY id DESC').all();
@@ -256,9 +191,6 @@ async function handle(ctx) {
     const text = cleanText(b.text, 160);
     if (!text) return sendJSON(400, { error: 'متن اعلان الزامی است.' });
 
-    /* لینک فقط داخلی — لینک بیرونی در نوار بالای سایت یعنی
-       هر کسی که به پنل دسترسی بگیرد می‌تواند بازدیدکننده را
-       به سایت دیگری بفرستد. */
     const link = b.link ? String(b.link).trim() : null;
     if (link && !link.startsWith('/'))
       return sendJSON(400, { error: 'لینک باید داخلی باشد و با / شروع شود.' });
@@ -275,8 +207,6 @@ async function handle(ctx) {
     if (b.starts_at && b.ends_at && b.starts_at > b.ends_at)
       return sendJSON(400, { error: 'تاریخ شروع بعد از پایان است.' });
 
-    /* فقط یک اعلان همزمان فعال باشد. دو نوار روی هم، هم زشت
-       است هم فضای بالای صفحه را می‌بلعد. */
     const r = db.transaction(() => {
       db.prepare('UPDATE notices SET active=0').run();
       return db.prepare(`
@@ -317,7 +247,7 @@ async function handle(ctx) {
                      : sendJSON(404, { error: 'کد یافت نشد' });
   }
 
-  return false;   // هیچ‌کدام از مسیرهای این ماژول نبود
+  return false;
 }
 
 module.exports = { handle };

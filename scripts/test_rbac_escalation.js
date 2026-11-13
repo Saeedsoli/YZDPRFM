@@ -1,20 +1,5 @@
 #!/usr/bin/env node
-/**
- * آزمون نفوذ به سامانه نقش‌ها — «آیا کارمند می‌تواند خودش را بالا بکشد؟»
- *
- * آزمون قبلی (test_rbac.js) می‌سنجید که هر نقش کار خودش را بکند.
- * این یکی برعکس است: نقش‌های میانی را می‌گیرد و تلاش می‌کند از
- * راه‌های غیرمستقیم به قدرت مدیر کل برسد.
- *
- * پنج مسیر حمله:
- *   ۱) مدیر کارکنان رمز مدیر کل را بازنشانی کند و با آن وارد شود
- *   ۲) مدیر کارکنان حساب مدیر کل را حذف یا غیرفعال کند
- *   ۳) مدیر نقش‌ها نقشِ خودش را ویرایش کند و مجوز تازه بردارد
- *   ۴) مدیر کارکنان نقش خودش را به نقش قوی‌تر عوض کند
- *   ۵) کارمندی که هنوز رمز اولیه دارد، بدون عوض کردن آن کار کند
- *
- * اجرا: node scripts/test_rbac_escalation.js
- */
+
 'use strict';
 
 const { spawn } = require('child_process');
@@ -42,8 +27,6 @@ function cleanup() {
   db.prepare('DELETE FROM rate_limits').run();
   db.close();
 
-  /* اگر حمله‌ای موفق شود، رمز مدیر کل واقعاً عوض می‌ماند و آزمون
-     بعدی اصلاً نمی‌تواند وارد شود. پس همیشه به حالت اولیه برمی‌گردانیم. */
   const { db: liveDb, hashPassword } = require('../src/db');
   const { hash, salt } = hashPassword(process.env.ADMIN_PASSWORD || 'yazd1404');
   liveDb.prepare(
@@ -92,7 +75,7 @@ const login = (username, password) =>
     cleanup();
     const failed = checks.filter(x => !x).length;
     console.log();
-    // خروج زودهنگام هرگز نباید «موفق» شمرده شود
+
     if (aborted) {
       console.log(r('  آزمون نیمه‌کاره رها شد — نتیجه معتبر نیست.\n'));
       process.exit(1);
@@ -114,7 +97,6 @@ const login = (username, password) =>
   const OWNER = ol.json.token;
   const ownerId = ol.json.user.id;
 
-  // ── ساخت نقش «مدیر کارکنان» (staff.manage بدون roles.manage) ──
   await api('/api/admin/roles', {
     method: 'POST',
     body: JSON.stringify({
@@ -123,7 +105,6 @@ const login = (username, password) =>
     })
   }, OWNER);
 
-  // ── نقش «مدیر نقش‌ها» (roles.manage بدون staff.manage) ──
   await api('/api/admin/roles', {
     method: 'POST',
     body: JSON.stringify({
@@ -132,7 +113,6 @@ const login = (username, password) =>
     })
   }, OWNER);
 
-  // ── نقش کم‌قدرت برای آزمون رمز اولیه ──
   await api('/api/admin/roles', {
     method: 'POST',
     body: JSON.stringify({
@@ -141,8 +121,6 @@ const login = (username, password) =>
     })
   }, OWNER);
 
-  /* makeStaff ساخت + ورود با رمز موقت + تغییر اجباری رمز را
-     یکجا انجام می‌دهد و توکن آماده برمی‌گرداند. */
   const hr    = await makeStaff(api, OWNER, 't_hr', 't_hrrole');
   const rm    = await makeStaff(api, OWNER, 't_rm', 't_rmrole');
   const ow2   = await makeStaff(api, OWNER, 't_owner2', 'owner');
@@ -157,7 +135,6 @@ const login = (username, password) =>
   const hrId = hr.id, rmId = rm.id, ow2Id = ow2.id;
   const HR = hr.token, RM = rm.token;
 
-  // ═══ حمله ۱: بازنشانی رمز مدیر کل توسط مدیر کارکنان ═══
   console.log(d('\n  ۱) مدیر کارکنان رمز مدیر کل را بازنشانی می‌کند'));
 
   const reset = await api(`/api/admin/staff/${ownerId}`, {
@@ -173,14 +150,12 @@ const login = (username, password) =>
   const ownerStillIn = await login(OWNER_USER, OWNER_PASS);
   add('رمز اصلی مدیر کل دست‌نخورده مانده', !!ownerStillIn.json.token);
 
-  // بازنشانی رمز کارمند هم‌رده باید مجاز بماند
   const okReset = await api(`/api/admin/staff/${fresh.id}`, {
     method: 'PUT', body: JSON.stringify({ password: 'ResetOk12345' })
   }, HR);
   add('بازنشانی رمز کارمند عادی همچنان مجاز است', okReset.status === 200,
       `کد ${okReset.status}`);
 
-  // ═══ حمله ۲: حذف یا غیرفعال کردن مدیر کل ═══
   console.log(d('\n  ۲) مدیر کارکنان مدیر کل دوم را حذف/غیرفعال می‌کند'));
 
   const deact = await api(`/api/admin/staff/${ow2Id}`, {
@@ -194,7 +169,6 @@ const login = (username, password) =>
   const ow2Login = await login(ow2.nid, ow2.password);
   add('مدیر کل دوم هنوز پابرجاست', !!ow2Login.json.token);
 
-  // ═══ حمله ۳: مدیر نقش‌ها نقش خودش را پرقدرت می‌کند ═══
   console.log(d('\n  ۳) مدیر نقش‌ها به نقش خودش مجوز اضافه می‌کند'));
 
   const selfRole = await api('/api/admin/roles/t_rmrole', {
@@ -212,7 +186,6 @@ const login = (username, password) =>
   add('مجوز تازه به دست نیامده (خروجی مشتریان بسته است)', exportTry.status === 403,
       `کد ${exportTry.status}`);
 
-  // ویرایش نقش دیگران باید مجاز بماند
   const otherRole = await api('/api/admin/roles/t_weak', {
     method: 'PUT',
     body: JSON.stringify({ name: 'نقش کم‌قدرت آزمایشی',
@@ -221,7 +194,6 @@ const login = (username, password) =>
   add('ویرایش نقش دیگران همچنان مجاز است', otherRole.status === 200,
       `کد ${otherRole.status}`);
 
-  // ═══ حمله ۴: مدیر کارکنان نقش خودش را عوض می‌کند ═══
   console.log(d('\n  ۴) مدیر کارکنان نقش خودش را ارتقا می‌دهد'));
 
   const selfPromote = await api(`/api/admin/staff/${hrId}`, {
@@ -240,14 +212,12 @@ const login = (username, password) =>
   add('نقش مدیر کارکنان عوض نشده', hrWho.json.role_key === 't_hrrole',
       hrWho.json.role_key);
 
-  // تغییر نام خودش باید مجاز بماند
   const selfName = await api(`/api/admin/staff/${hrId}`, {
     method: 'PUT', body: JSON.stringify({ display_name: 'نام تازه آزمایشی' })
   }, HR);
   add('ویرایش نام خود همچنان مجاز است', selfName.status === 200,
       `کد ${selfName.status}`);
 
-  // ═══ حمله ۵: کار کردن با رمز اولیه بدون تغییر آن ═══
   console.log(d('\n  ۵) کارمند با رمز اولیه بدون تغییر آن کار می‌کند'));
 
   const freshLogin = await login(fresh.nid, 'ResetOk12345');
@@ -273,10 +243,9 @@ const login = (username, password) =>
   add('پس از تغییر رمز کار باز می‌شود', freshWork2.status === 200,
       `کد ${freshWork2.status}`);
 
-  // ═══ ثبت در سابقه ═══
   console.log(d('\n  ثبت تلاش‌های ناموفق در سابقه'));
   const audit = await api('/api/admin/audit?denied=1&limit=200', {}, OWNER);
-  // نام کاربری حالا کد ملی است، نه پیشوند حرفی
+
   const testNids = TEST_USERS.map(nidFor);
   const denied = (audit.json.entries || [])
     .filter(e => e.username && testNids.includes(e.username));

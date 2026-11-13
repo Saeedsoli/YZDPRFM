@@ -1,5 +1,5 @@
 'use strict';
-// Legacy rows are kept for historical orders, not presented or sold to customers.
+
 function isPublicVariant(type, volume) {
   if (type === 'HAIR_MIST') return false;
   if (type === 'SAMPLE') return Number(volume) === 5;

@@ -1,5 +1,5 @@
 'use strict';
-// Staged primitive tested only on throwaway databases; no live payment.
+
 const assert=require('assert/strict'),Database=require('better-sqlite3');
 const fs=require('fs'),os=require('os'),path=require('path'),{spawn}=require('child_process');
 const store=require('../src/order-idempotency');
@@ -26,7 +26,7 @@ function worker(file){return new Promise((resolve,reject)=>{const p=spawn(proces
  let db=dbFile();assert(!store.ready(db));assert.deepEqual(store.install(db),{created:true});assert.deepEqual(store.install(db),{created:false});assert(store.ready(db));
  assert.equal(store.lookup(db,dig).kind,'NEW');
  assert.throws(()=>store.bindNew(db,{...dig,orderId:'A'}));
- // A failed order transaction cannot leave a bound key behind.
+
  assert.throws(()=>db.transaction(()=>{db.prepare("INSERT INTO orders VALUES('A','PENDING',NULL)").run();store.bindNew(db,{...dig,orderId:'A'});throw Error('crash')})());
  assert.equal(store.lookup(db,dig).kind,'NEW');assert.equal(db.prepare('select count(*) n from orders').get().n,0);
  db.transaction(()=>{db.prepare("INSERT INTO orders VALUES('A','PENDING',NULL)").run();store.bindNew(db,{...dig,orderId:'A'});}).immediate();
@@ -35,7 +35,7 @@ function worker(file){return new Promise((resolve,reject)=>{const p=spawn(proces
  assert(!JSON.stringify(db.prepare('select * from order_idempotency').get()).includes(key));
  const response={order_id:'A',payment_url:'/payment/sandbox?order=A',subtotal:100000,discount:0,discount_code:null,shipping_fee:100000,gift_wrap_fee:0,total_payable:200000};
  assert.throws(()=>db.transaction(()=>store.markReady(db,{keyHash:dig.keyHash,orderId:'A',authority:'AUTH',response}))());
- // Simulated crash after authority update rolls back both records.
+
  assert.throws(()=>db.transaction(()=>{db.prepare("UPDATE orders SET payment_ref='AUTH' WHERE order_id='A'").run();store.markReady(db,{keyHash:dig.keyHash,orderId:'A',authority:'AUTH',response});throw Error('crash')})());
  assert.deepEqual(db.prepare("select status,payment_ref from orders where order_id='A'").get(),{status:'PENDING',payment_ref:null});
  assert.equal(store.lookup(db,dig).kind,'UNCERTAIN');

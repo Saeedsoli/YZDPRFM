@@ -1,14 +1,5 @@
 #!/usr/bin/env node
-/**
- * خزنده لینک — هر href و src در هر صفحه را واقعاً درخواست می‌کند.
- *
- * چرا لازم است: لینک شکسته تنها چیزی است که هیچ آزمون واحدی
- * نمی‌گیرد ولی هر بازدیدکننده‌ای فوراً می‌بیند. مسیرها در این پروژه
- * چند بار عوض شده‌اند (‎.html → مسیر تمیز) و هر بار احتمال جاماندن
- * یک لینک هست.
- *
- * اجرا: node scripts/audit_links.js   (سرور باید روی ۳۰۰۰ باشد)
- */
+
 'use strict';
 
 const BASE = process.env.BASE || 'http://localhost:3000';
@@ -18,7 +9,6 @@ const r = s => `\x1b[31m${s}\x1b[0m`;
 const y = s => `\x1b[33m${s}\x1b[0m`;
 const d = s => `\x1b[2m${s}\x1b[0m`;
 
-// صفحاتی که کاربر واقعاً می‌بیند
 const PAGES = [
   '/', '/cart', '/checkout', '/account', '/wishlist', '/track',
   '/contact', '/terms', '/privacy', '/quiz', '/brands', '/essences',
@@ -27,52 +17,38 @@ const PAGES = [
   '/invoice.html', '/label.html', '/404.html', '/payment-result.html'
 ];
 
-/* هدر، منو و فوتر با جاوااسکریپت از app.js ساخته می‌شوند و در HTML
-   خام هیچ‌جا نیستند. اگر این فایل‌ها را نخزیم، لینک‌های منو — یعنی
-   پربازدیدترین لینک‌های سایت — اصلاً بررسی نمی‌شوند. */
 const JS_FILES = ['/assets/app.js'];
 
 const results = { ok: 0, broken: [], external: [], skipped: 0 };
-const seen = new Map();   // url → status
+const seen = new Map();
 
-/** استخراج همه نشانی‌ها از HTML */
 function extractLinks(html) {
   const out = new Set();
-  /* کامنت‌های HTML حذف می‌شوند. بدون این، توضیحات فارسی داخل کد
-     که نمونه‌ای از یک تگ را نقل می‌کنند به‌اشتباه «لینک شکسته»
-     گزارش می‌شدند. */
+
   html = html.replace(/<!--[\s\S]*?-->/g, '');
-  /* محتوای <script> هم کنار گذاشته می‌شود.
-     قالب‌های رشته‌ای مثل href="/perfume/${p.slug}" را الگوی
-     استخراج نصفه می‌بُرد و «‎/perfume/» را لینک شکسته می‌شمرد.
-     لینک‌های واقعیِ داخل جاوااسکریپت جداگانه از فایل app.js
-     خزیده می‌شوند. */
+
   html = html.replace(/<script\b[^>]*>[\s\S]*?<\/script>/gi, '');
-  // href="..." و src="..."
+
   const re = /(?:href|src)\s*=\s*["']([^"']+)["']/gi;
   let m;
   while ((m = re.exec(html))) out.add(m[1].trim());
-  /* نشانی‌های داخل CSS: url(...)
-     نکته: بدون شرطِ «پیش از url حرف نباشد»، این الگو با کد
-     جاوااسکریپتِ writeURL(push) و createObjectURL(blob) هم مطابقت
-     می‌کرد و چهار لینک شکسته جعلی می‌ساخت. */
+
   const reCss = /(?<![A-Za-z_$])url\(\s*["']?([^"')]+)["']?\s*\)/gi;
   while ((m = reCss.exec(html))) out.add(m[1].trim());
   return [...out];
 }
 
-/** آیا این نشانی را باید بررسی کنیم؟ */
 function classify(link) {
   if (!link) return 'skip';
-  if (link.startsWith('data:')) return 'skip';           // فونت base64
-  if (link.startsWith('#')) return 'skip';               // لنگر
+  if (link.startsWith('data:')) return 'skip';
+  if (link.startsWith('#')) return 'skip';
   if (link.startsWith('javascript:')) return 'skip';
   if (link.startsWith('mailto:') || link.startsWith('tel:')) return 'skip';
   if (/^https?:\/\//i.test(link)) {
     return link.startsWith(BASE) ? 'internal' : 'external';
   }
   if (link.startsWith('//')) return 'external';
-  // نشانی‌های قالبی داخل جاوااسکریپت مثل /perfume/${slug}
+
   if (link.includes('${') || link.includes('{{')) return 'skip';
   return 'internal';
 }
@@ -81,7 +57,7 @@ async function head(url) {
   if (seen.has(url)) return seen.get(url);
   let status;
   try {
-    // بعضی سرورها HEAD را درست پاسخ نمی‌دهند؛ GET مطمئن‌تر است
+
     const res = await fetch(url, { redirect: 'manual' });
     status = res.status;
   } catch (e) {
@@ -123,7 +99,7 @@ async function head(url) {
       const url = link.startsWith('http') ? link
         : BASE + (link.startsWith('/') ? link : '/' + link);
       const status = await head(url);
-      // ۲۰۰ خوب، ۳۰۱/۳۰۲ هم قابل قبول (ریدایرکت عمدی)
+
       if (status === 200 || status === 301 || status === 302 || status === 304) {
         results.ok++;
       } else {
@@ -136,7 +112,6 @@ async function head(url) {
       d(`(${links.length} لینک${pageBroken ? '، ' + pageBroken + ' شکسته' : ''})`));
   }
 
-  // ── فایل‌های جاوااسکریپت (منو و فوتر) ──
   for (const jsFile of JS_FILES) {
     let js;
     try {
@@ -149,7 +124,6 @@ async function head(url) {
       js = await res.text();
     } catch (e) { continue; }
 
-    // فقط href='/...' های ثابت — قالبی‌ها (${...}) خودبه‌خود رد می‌شوند
     const re = /href\s*=\s*\\?["']([^"'`$]+)\\?["']/gi;
     const links = new Set();
     let m;
