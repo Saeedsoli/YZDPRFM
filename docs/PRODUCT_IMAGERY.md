@@ -416,9 +416,7 @@ const VARIANT_COUNTS = {
 
 | فایل | حجم |
 |---|---|
-| `hero-cinematic.webp` | ۴۹KB |
-| `hero-cinematic.jpg` | ۱۰۵KB |
-| `hero-cinematic-sm.webp` | ۱۹KB |
+این تصویر در آرشیو تاریخی استفاده شده بود و از خروجی عمومی حذف شده است؛ هیروی فعلی با `public/videos/hero-craft.webm` و پوستر `public/images/hero-video-poster.webp` ساخته می‌شود.
 
 ### انیمیشن — ذرات طلایی معلق
 

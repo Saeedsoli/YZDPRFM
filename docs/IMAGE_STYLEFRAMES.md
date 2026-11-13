@@ -34,14 +34,14 @@
 
 | فایل | کجا استفاده می‌شود |
 |---|---|
-| `images/hero-cinematic.{jpg,webp}` + نسخه `-sm` | بنر هیرو صفحه اصلی — **جانشین `hero_banner`** شد |
+| `/videos/hero-craft.webm` و `/videos/hero-craft.mp4` + `/images/hero-video-poster.webp` | ویدیوی کارگاه در هیرو؛ پوستر برای fallback/لود اولیه |
 | `images/ingredients_banner.{jpg,webp}` | کاور پیش‌فرض مقاله‌های بدون تصویر (`src/routes/articles.js`) |
 
 ### پرامپت‌ها — برای بازتولید در آینده
 
 | عنوان بنر | وضعیت فایل | پرامپت هوش مصنوعی (AI Prompt) |
 |---|---|---|
-| **Hero Banner (صفحه اصلی)** | ❌ حذف شد — `hero-cinematic` جایش را گرفت | `Ultra-luxurious minimalist hero banner for high-end perfume brand Yazd Perfume. A clear glass artisan perfume bottle with custom gold metallic cap resting on warm sand textured surface. Soft warm amber rim lighting, dark velvet obsidian background, artistic editorial lighting, high resolution, 8k, photorealistic, cinematic depth of field. No text on image.` |
+| **Hero Banner (صفحه اصلی)** | ❌ آرشیوی — هیرو اکنون ویدیوی کارگاه با پوستر fallback است | `Ultra-luxurious minimalist hero banner for high-end perfume brand Yazd Perfume. A clear glass artisan perfume bottle with custom gold metallic cap resting on warm sand textured surface. Soft warm amber rim lighting, dark velvet obsidian background, artistic editorial lighting, high resolution, 8k, photorealistic, cinematic depth of field. No text on image.` |
 | **مجموعه سمپل‌ها و دکانت‌ها** | ❌ حذف شد — صفحه `/samples` بنر ندارد | `Luxury minimalist display of three 3ml glass sample decant vials with gold spray nozzles, lined up neatly on dark slate stone. Elegant soft backlighting, subtle perfume droplets, high end perfume photography, 8k resolution, cinematic atmosphere. No text on image.` |
 | **عطر مو (Hair Mist)** | ❌ حذف شد — دسته‌بندی صفحه اختصاصی ندارد | `Minimalist luxury hair mist perfume bottle surrounded by floating water droplets and delicate white jasmine flower petals. Clean nude background, warm ambient lighting, high fashion commercial product photography, sharp focus, 8k. No text on image.` |
 | **بادی اسپلش (Body Splash)** | ❌ حذف شد — دسته‌بندی صفحه اختصاصی ندارد | `Fresh luxury body splash perfume bottle with dynamic water spray splash, fresh bergamot slices and citrus in background. Clean bright minimalist aesthetic, golden hour sunlight reflections, ultra detailed, 8k. No text on image.` |
