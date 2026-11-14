@@ -259,7 +259,6 @@ function renderFooter() {
         <h4>اسانس</h4>
         <a href="/essences">ژیوودان · فیرمنیش</a>
         <a href="/essences">ایبرکم · لوزی</a>
-        <p>هویت و کیفیت اسانس هر رایحه مستقلاً تأیید نشده است.</p>
       </div>
     </div>
 

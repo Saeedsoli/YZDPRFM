@@ -232,6 +232,7 @@ run_test test_weekend_owner_correction.js "Weekend owner correction safety"
 run_test test_notifications.js "panel notifications"
 run_test test_profile.js "staff profile"
 run_test test_content.js "journal content and quiz"
+run_test test_footer_layout.js "footer desktop columns and spacing"
 run_test test_accounts.js "customer and staff accounts"
 
 # آزمون مرورگر واقعی — تنها اگر Chromium واقعاً نصب باشد.
@@ -319,6 +320,13 @@ except Exception: print(0)" 2>/dev/null)
     F=$((F+1))
     echo "  X browser CSP (template hashes / inline event denial) — /tmp/csp-browser.log"
     tail -8 /tmp/csp-browser.log | sed 's/^/      /'
+  fi
+  if python3 scripts/test_footer_layout_browser.py >/tmp/footer-browser.log 2>&1; then
+    P=$((P+1))
+  else
+    F=$((F+1))
+    echo "  X browser footer columns/spacing — /tmp/footer-browser.log"
+    tail -8 /tmp/footer-browser.log | sed 's/^/      /'
   fi
 else
   echo "  - browser test skipped (playwright not installed)"

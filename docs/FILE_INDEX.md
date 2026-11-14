@@ -135,6 +135,8 @@ bash scripts/smoke_test.sh     # ۹۲ آزمون خودکار
 | `test_notifications.js` | ۱۶ اعلان‌های پنل |
 | `test_profile.js` | ۲۱ پروفایل و کارنامه کارمند |
 | `test_content.js` | ۱۹ محتوای مجله و کوییز |
+| `test_footer_layout.js` | سه ستون دسکتاپ، شکست tablet/mobile، حذف جملهٔ مشخص‌شده از ستون اسانس |
+| `test_footer_layout_browser.py` | رندر واقعی دسکتاپ/موبایل، هم‌ردیفی سه ستون و عدم سرریز |
 | `test_accounts.js` | ۳۳ حساب مشتری و کارمند |
 | `test_no_extra_charges.js` | ۱۴ بررسی — هیچ مالیات/کارمزدی نباید برگردد |
 | `test_order_id_race.js` | ۱۲ بررسی — یکتایی شماره سفارش زیر بار همزمان |
