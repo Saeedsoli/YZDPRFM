@@ -147,9 +147,12 @@ const serverSrc = [
         .map(f => fs.readFileSync(path.join(_routesDir, f), 'utf8'))
     : [])
 ].join('\n');
-const codeRoutes = [...new Set(
-  [...serverSrc.matchAll(/pathname === '(\/api\/[^']+)'/g)].map(m => m[1])
-)].sort();
+const codeRoutes = [...new Set([
+  ...[...serverSrc.matchAll(/pathname === '(\/api\/[^']+)'/g)].map(m => m[1]),
+  // Some delegated route modules keep literal paths in local constants
+  // before comparing pathname; count those as routes too.
+  ...[...serverSrc.matchAll(/^\s*(?:const|let)\s+\w+\s*=\s*'(\/api\/[^']+)'/gm)].map(m => m[1])
+])].sort();
 
 const apiDoc = fs.existsSync(path.join(DOCS, 'API_REFERENCE.md'))
   ? fs.readFileSync(path.join(DOCS, 'API_REFERENCE.md'), 'utf8') : '';

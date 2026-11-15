@@ -4,7 +4,8 @@ import json,os,socket,sqlite3,subprocess,tempfile,time,urllib.request
 from pathlib import Path
 from playwright.sync_api import sync_playwright,expect
 root=Path(__file__).resolve().parent.parent
-x={'product_id':'SUP-CH-900005','slug':'chanel-coco-edp','image_url':'/images/products/generic-neutral-6.jpg'}
+manifest=json.loads((root/'seed/generic_image_assignments_v1.json').read_text())
+x=manifest['items'][0]
 with tempfile.TemporaryDirectory(prefix='yazd-generic-browser-') as td:
  db=str(Path(td)/'shop.sqlite');sock=socket.socket();sock.bind(('127.0.0.1',0));port=sock.getsockname()[1];sock.close()
  env={'PATH':os.environ['PATH'],'HOME':os.environ.get('HOME','/tmp'),'DB_PATH':db,'BACKUP_DISABLED':'1','NODE_ENV':'test','PORT':str(port)}
@@ -28,7 +29,7 @@ with tempfile.TemporaryDirectory(prefix='yazd-generic-browser-') as td:
     page.goto(base+'/',wait_until='domcontentloaded');expect(page.locator('.product-card').first).to_be_visible()
     card=page.evaluate("p => productCard(p)",{**p,'in_stock':False});assert 'تصویر نمادین' in card and '-sm.jpg' in card and 'card-illustrative' not in card
     # Live search suggestions must describe made-to-order instead of unavailable.
-    page.locator('#q').fill('کوکو');expect(page.locator('#sugg')).to_be_visible(timeout=7000)
+    page.locator('#q').fill(p['brand_fa']);expect(page.locator('#sugg')).to_be_visible(timeout=7000)
     row=page.locator(f'#sugg a[href="/perfume/{x["slug"]}"]');expect(row).to_be_visible(timeout=7000);expect(row).to_contain_text('به سفارش');expect(row).not_to_contain_text('تصویر نمادین است')
     page.goto(base+'/perfume/'+x['slug'],wait_until='domcontentloaded');expect(page.locator('#content')).to_be_visible();expect(page.locator('#imageDisclosure')).to_be_visible();expect(page.locator('#imageDisclosure')).to_have_text('تصویر نمادین است')
     first=page.locator('#track picture img');expect(first).to_have_attribute('alt', 'تصویر نمادین '+p['brand_fa']+' — '+p['name_fa']);assert first.evaluate('(e)=>e.complete && e.naturalWidth>0')

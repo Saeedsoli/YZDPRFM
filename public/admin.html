@@ -1367,7 +1367,7 @@ function startAdminClock(){
   if(adminClockStarted)return;adminClockStarted=true;
   const target=document.getElementById('adminToday');
   const render=()=>{
-    const p=YazdDate.current();
+    const p=typeof YazdDate.current==='function'?YazdDate.current():null;
     const value=p?[p.day,p.month,p.year].map((n,i)=>String(n).padStart(i===2?1:2,'0').replace(/\d/g,d=>'۰۱۲۳۴۵۶۷۸۹'[Number(d)])):null;
     const text=value?value.join(' / '):'—';
     if(target.textContent===text)return;

@@ -26,17 +26,18 @@ with tempfile.TemporaryDirectory(prefix='admin-catalog-xss-') as td:
                 article={'id':key,'title':payload,'slug':key,'category':payload}
                 page.route('**/api/articles',lambda route:route.fulfill(json={'total':1,'articles':[article]}))
                 page.route('**/api/products?*',lambda route:route.fulfill(json={'total':1,'products':[product]}))
+                page.route('**/api/admin/inventory*',lambda route:route.fulfill(json={'total':0,'items':[],'limit':30,'page':1}))
                 page.route('**/api/admin/low-stock?*',lambda route:route.fulfill(json={'total':1,'threshold':15,'items':[{'slug':key,'brand_fa':payload,'name_fa':payload,'type_label':payload,'sku':payload,'stock':1,'price_toman':1000,'volume_ml':5}]}))
                 page.goto(base+'/admin',wait_until='domcontentloaded');page.locator('#usr').fill('owner');page.locator('#pw').fill('Catalog-Xss-Owner-981');page.locator('#loginView button').click();expect(page.locator('#panel')).to_be_visible()
                 page.locator('#adminMenuToggle').click();page.locator('.tab[data-t="articles"]').click();expect(page.locator('#articlesTable')).to_contain_text(payload)
                 assert page.locator('#articlesTable img').count()==0
                 assert page.locator('#articlesTable a').get_attribute('href')=='/journal/'+__import__('urllib.parse',fromlist=['quote']).quote(key,safe="~()*!.'-")
                 page.evaluate('window.editArticle = x => { window.__article = x }');page.locator('#articlesTable button').first.click();assert page.evaluate('window.__article')==key
-                page.locator('#adminMenuToggle').click();page.locator('.tab[data-t="products"]').click();page.locator('#pSearch').fill('sample');page.evaluate('searchProducts(true)')
+                page.locator('#adminMenuToggle').click();page.locator('.tab[data-t="products"]').click();page.locator('#pSearch').fill('sample');page.evaluate('clearTimeout(inventoryTimer);searchProducts(true)')
                 expect(page.locator('#pResults')).to_contain_text(payload);assert page.locator('#pResults img').count()==0
-                page.evaluate('window.editProduct = x => { window.__product = x }');page.locator('#pResults button').click();assert page.evaluate('window.__product')==key
+                page.evaluate('window.editProduct = x => { window.__product = x }');page.locator('#pResults button[data-csp-click^="editProduct"]').click();assert page.evaluate('window.__product')==key
                 page.evaluate('showLowStock()');expect(page.locator('#pResults')).to_contain_text(payload);assert page.locator('#pResults img').count()==0
-                page.locator('#pResults button').click();assert page.evaluate('window.__product')==key
+                page.locator('#pResults button[data-csp-click^="editProduct"]').click();assert page.evaluate('window.__product')==key
                 page.evaluate('''([key,payload]) => { document.getElementById('pEditCard').classList.remove('hidden'); currentProduct={variants:[{sku:key,type_label:payload,volume_ml:5,price_toman:1000,stock:1}]}; renderVariants(); window.stepStock=(sku,n)=>{window.__sku=sku;window.__delta=n}; }''',[key,payload])
                 assert page.locator('#pVariants img').count()==0;expect(page.locator('#pVariants')).to_contain_text(payload)
                 page.locator('#pVariants button[aria-label="افزایش موجودی"]').click();assert page.evaluate('window.__sku')==key and page.evaluate('window.__delta')==1
