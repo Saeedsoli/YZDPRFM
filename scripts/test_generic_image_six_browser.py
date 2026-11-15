@@ -26,16 +26,16 @@ with tempfile.TemporaryDirectory(prefix='yazd-generic-browser-') as td:
     page=browser.new_page(viewport={'width':width,'height':844});errors=[];page.on('pageerror',lambda error:errors.append(str(error)))
     page.route('**/*',lambda route:route.continue_() if route.request.url.startswith(base) else route.abort())
     page.goto(base+'/',wait_until='domcontentloaded');expect(page.locator('.product-card').first).to_be_visible()
-    card=page.evaluate("p => productCard(p)",{**p,'in_stock':False});assert 'تصویر نمادین' in card and '-sm.jpg' in card
+    card=page.evaluate("p => productCard(p)",{**p,'in_stock':False});assert 'تصویر نمادین' in card and '-sm.jpg' in card and 'card-illustrative' not in card
     # Live search suggestions must describe made-to-order instead of unavailable.
     page.locator('#q').fill('کوکو');expect(page.locator('#sugg')).to_be_visible(timeout=7000)
-    row=page.locator(f'#sugg a[href="/perfume/{x["slug"]}"]');expect(row).to_be_visible(timeout=7000);expect(row).to_contain_text('به سفارش');expect(row).to_contain_text('تصویر نمادین است')
+    row=page.locator(f'#sugg a[href="/perfume/{x["slug"]}"]');expect(row).to_be_visible(timeout=7000);expect(row).to_contain_text('به سفارش');expect(row).not_to_contain_text('تصویر نمادین است')
     page.goto(base+'/perfume/'+x['slug'],wait_until='domcontentloaded');expect(page.locator('#content')).to_be_visible();expect(page.locator('#imageDisclosure')).to_be_visible();expect(page.locator('#imageDisclosure')).to_have_text('تصویر نمادین است')
     first=page.locator('#track picture img');expect(first).to_have_attribute('alt', 'تصویر نمادین '+p['brand_fa']+' — '+p['name_fa']);assert first.evaluate('(e)=>e.complete && e.naturalWidth>0')
-    expect(page.locator('#addBtn')).to_be_enabled();expect(page.locator('#addBtn')).to_contain_text('سفارش ساخت');page.locator('#addBtn').click();page.goto(base+'/cart',wait_until='domcontentloaded');expect(page.locator('#wrap')).to_contain_text('تصویر نمادین است')
+    expect(page.locator('#addBtn')).to_be_enabled();expect(page.locator('#addBtn')).to_contain_text('سفارش ساخت');page.locator('#addBtn').click();page.goto(base+'/cart',wait_until='domcontentloaded');expect(page.locator('#wrap')).not_to_contain_text('تصویر نمادین است')
     assert page.evaluate('document.documentElement.scrollWidth <= innerWidth + 1'),('overflow',width)
-    page.goto(base+'/samples',wait_until='domcontentloaded');expect(page.locator('.sc').first).to_be_visible();html=page.evaluate("p=>card({...p,sample_price:1000})",p);assert 'تصویر نمادین' in html
-    page.context.add_cookies([{'name':'yazd_customer','value':token,'url':base,'httpOnly':True,'sameSite':'Lax'}]);page.goto(base+'/wishlist',wait_until='domcontentloaded');expect(page.locator('.wish-card').first).to_be_visible();expect(page.locator('.wish-card .card-illustrative').first).to_have_text('تصویر نمادین')
+    page.goto(base+'/samples',wait_until='domcontentloaded');expect(page.locator('.sc').first).to_be_visible();html=page.evaluate("p=>card({...p,sample_price:1000})",p);assert 'تصویر نمادین' in html and 'card-illustrative' not in html
+    page.context.add_cookies([{'name':'yazd_customer','value':token,'url':base,'httpOnly':True,'sameSite':'Lax'}]);page.goto(base+'/wishlist',wait_until='domcontentloaded');expect(page.locator('.wish-card').first).to_be_visible();assert page.locator('.wish-card .card-illustrative').count()==0
     assert not errors,errors;page.close()
    browser.close()
   print('PASS image six mobile/desktop: image disclosure, real image loading, search MTO, product, cart, sample and wishlist')

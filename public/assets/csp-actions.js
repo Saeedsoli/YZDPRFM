@@ -8,7 +8,7 @@
     'deleteNotice','deleteRole','deleteStaff','dlBackup','downloadBackup','downloadReport','editArticle','editMyReview',
     'editProduct','exportCsv','filterStatus','finish','go','goBack','goOrderPage','insertAparat','insertPickedImage',
     'insertQuote','invalidateEssencePreview','invalidateExchangePreview','inventorySearch','ivCopy','ivCopyText','ivPick',
-    'ivSearch','jumpToTab','loadAnalytics','loadAudit','loadInventory','loadLogs','loadOrders','loadProducts',
+    'ivSearch','jumpToTab','loadAnalytics','loadAudit','loadInventory','loadLogs','loadOrders','loadProducts','resetInventoryPage',
     'loadProfile','loadReadiness','loadReports','loadReviews','login','logout','makeInvite','notifyMe','onCouponType',
     'openPasswordChange','openRoleForm','openStaffForm','pick','pickBrand','pickStar','previewExchangeRateUI',
     'previewProductEssenceUI','publish','refreshShowcase','removeCoupon','replyReview','replyTicket','resetQuiz',

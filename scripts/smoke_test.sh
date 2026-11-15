@@ -461,6 +461,7 @@ run_test test_new_pages.js "why-us / samples pages"
 
 # چهار خواسته مرداد ۱۴۰۵: موجودی صفر · کنترل ± · حجم ۱۵۰ · پیشنهاد جستجو
 run_test test_stock_and_suggest.js "stock default / volume 150 / search suggest"
+run_test test_catalog_stats.js "in-stock stats match public sellable variants"
 
 # یکتایی شماره سفارش زیر بار همزمان — باگی که بنچمارک پیدا کرد
 run_test test_order_id_race.js "order id uniqueness under concurrency"

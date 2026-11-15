@@ -235,8 +235,9 @@ async function loginCustomer(mobile) {
   db.prepare('DELETE FROM reviews WHERE mobile=?').run(OTHER);
   const { createReviewInvite } = require('../src/db');
   const tok = createReviewInvite(prod.id, OTHER, 'آزمون گام ۸', 'test').token;
-  add('توکن دعوت ۳۲ نویسه hex است', /^[a-f0-9]{32}$/.test(tok),
-      'حدس زدنی نباشد — لینک عملاً کلید دسترسی است');
+  add('توکن دعوت ۲۲ نویسه base64url با ۱۲۸ بیت entropy است',
+      /^[A-Za-z0-9_-]{22}$/.test(tok) && Buffer.from(tok, 'base64url').length === 16,
+      'لینک کوتاه‌تر شد و قدرت تصادفی ۱۲۸بیتی حفظ شده است');
 
   const inv = await api('/api/review-invite/' + tok);
   add('دعوت‌نامه معتبر ۲۰۰ می‌دهد', inv.status === 200);
@@ -424,7 +425,7 @@ async function loginCustomer(mobile) {
 
   add('ماژول قرارداد handle را دارد',
       /async function handle\(ctx\)/.test(mod) && /module\.exports = \{ handle \}/.test(mod));
-  add('در پایان false برمی‌گرداند', /return false;\s*\/\//.test(mod));
+  add('در پایان false برمی‌گرداند', /return false;\s*}\s*\n\s*module\.exports/.test(mod));
   add('پوشش sendJSON با return true هست',
       /const sendJSON = \(code, data\) => \{ ctx\.sendJSON\(code, data\); return true; \};/.test(mod));
 

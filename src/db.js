@@ -7,6 +7,7 @@ const stockReservations = require('./order-stock-reservations');
 const essenceInventory = require('./essence-inventory');
 const shopTime = require('./shop-time');
 const { referenceAccords } = require('./reference-accord-display');
+const { countPublicInStockProducts } = require('./catalog-stats');
 
 const ROOT_DIR = path.resolve(__dirname, '..');
 
@@ -1488,7 +1489,7 @@ function reviewSummary(productId) {
 const INVITE_TTL_DAYS = 30;
 
 function createReviewInvite(productId, mobile, note, createdBy) {
-  const token = crypto.randomBytes(16).toString('hex');
+  const token = crypto.randomBytes(16).toString('base64url');
   const expires = new Date(Date.now() + INVITE_TTL_DAYS * 86400e3).toISOString();
 
   const r = db.prepare(`
@@ -1500,7 +1501,7 @@ function createReviewInvite(productId, mobile, note, createdBy) {
 }
 
 function readReviewInvite(token) {
-  if (!token || typeof token !== 'string' || !/^[a-f0-9]{32}$/.test(token)) {
+  if (!token || typeof token !== 'string' || !/^(?:[A-Za-z0-9_-]{22}|[a-f0-9]{32})$/.test(token)) {
     return { ok: false, error: 'لینک دعوت معتبر نیست.' };
   }
   const inv = db.prepare('SELECT * FROM review_invites WHERE token=?').get(token);
@@ -2184,7 +2185,9 @@ const STATS_TTL = 60_000;
 
 function storeStats(force = false) {
   const now = Date.now();
-  if (!force && _statsCache && now - _statsAt < STATS_TTL) return _statsCache;
+  const inStock = countPublicInStockProducts(db);
+  if (!force && _statsCache && now - _statsAt < STATS_TTL)
+    return { ..._statsCache, in_stock: inStock };
 
   const one = sql => { try { return db.prepare(sql).get().c; } catch { return 0; } };
 
@@ -2193,7 +2196,7 @@ function storeStats(force = false) {
     brands:       one('SELECT COUNT(DISTINCT brand_en) c FROM products'),
     variants:     one('SELECT COUNT(*) c FROM variants'),
 
-    in_stock:     one(`SELECT COUNT(DISTINCT product_id) c FROM variants WHERE stock > 0`),
+    in_stock:     inStock,
     made_to_order: one(`SELECT COUNT(*) c FROM products
                         WHERE supply_mode = 'MADE_TO_ORDER'`),
     orderable:    one(`SELECT COUNT(*) c FROM products p

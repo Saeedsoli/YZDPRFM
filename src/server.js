@@ -1927,7 +1927,7 @@ const server = http.createServer(async (req, res) => {
         if (exists) file = 'product.html';
       }
 
-      if (!file && /^\/review\/[a-f0-9]{32}$/.test(pathname)) {
+      if (!file && /^\/review\/(?:[A-Za-z0-9_-]{22}|[a-f0-9]{32})$/.test(pathname)) {
         file = 'review-invite.html';
       }
 

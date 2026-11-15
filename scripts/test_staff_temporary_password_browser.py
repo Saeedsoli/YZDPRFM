@@ -21,7 +21,7 @@ with tempfile.TemporaryDirectory(prefix='staff-credential-browser-') as td:
     page=browser.new_page(viewport={'width':width,'height':844});errors=[];page.on('pageerror',lambda err:errors.append(str(err)))
     page.route('**/*',lambda route:route.continue_() if route.request.url.startswith(base) else route.abort())
     page.goto(base+'/admin',wait_until='domcontentloaded');page.locator('#usr').fill('owner');page.locator('#pw').fill('Browser-Owner-Secret-281');page.locator('#loginView button').click()
-    expect(page.locator('#panel')).to_be_visible();page.locator('.tab[data-t="staff"]').click();expect(page.locator('#btnNewStaff')).to_be_visible();page.locator('#btnNewStaff').click()
+    expect(page.locator('#panel')).to_be_visible();page.locator('#adminMenuToggle').click();page.locator('.tab[data-t="staff"]').click();expect(page.locator('#btnNewStaff')).to_be_visible();page.locator('#btnNewStaff').click()
     expect(page.locator('#staffForm')).to_contain_text('رمز موقت تصادفی');expect(page.locator('#staffForm')).to_contain_text('رمز از طریق پیامک ارسال نمی‌شود')
     page.locator('#sfFirst').fill('آزمایشی');page.locator('#sfLast').fill('کارمند');page.locator('#sfNid').fill(f'100000000{index+1}');page.locator('#sfMobile').fill(f'0912000111{index+1}');page.locator('#sfRole').select_option('warehouse')
     with page.expect_response(lambda r:r.url.endswith('/api/admin/staff') and r.request.method=='POST') as response:

@@ -177,7 +177,7 @@ async function handle(ctx) {
   }
 
   if (method === 'GET' && pathname === '/api/stats') {
-    res.setHeader('Cache-Control', 'public, max-age=60');
+    res.setHeader('Cache-Control', 'public, max-age=15');
     return sendJSON(200, ctx.storeStats());
   }
 

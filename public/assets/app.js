@@ -345,7 +345,6 @@ function productCard(p) {
      aria-label="${esc(fullName(p))} — ${supply.aria}">
     <div class="img-wrap">
       <img src="${esc(img)}" alt="${illustrative ? 'تصویر نمادین' : 'تصویر'} ${esc(fullName(p))}" loading="lazy" width="300" height="300">
-      ${illustrative ? '<span class="card-illustrative">تصویر نمادین</span>' : ''}
       ${genderLabel(p.gender) ? `<span class="card-badge">${genderLabel(p.gender)}</span>` : ''}
       ${supply.label ? `<span class="card-out${madeToOrder ? ' mto' : ''}">${supply.label}</span>` : ''}
       ${off > 0 && inStock ? `<span class="card-off"><bdi>${esc(toFa(pct))}٪</bdi> تخفیف</span>` : ''}

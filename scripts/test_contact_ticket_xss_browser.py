@@ -31,7 +31,7 @@ with tempfile.TemporaryDirectory(prefix='ticket-xss-') as td:
                 assert page.locator('#ways img').count()==0
                 expect(page.get_by_role('link',name='ورود به حساب کاربری')).to_be_visible();assert page.locator('#formBox').count()==0
                 page.goto(base+'/admin',wait_until='domcontentloaded');page.locator('#usr').fill('owner');page.locator('#pw').fill('Ticket-Xss-Owner-981');page.locator('#loginView button').click();expect(page.locator('#panel')).to_be_visible()
-                page.locator('.tab[data-t="tickets"]').click();expect(page.locator('#ticketsTable')).to_contain_text(payload)
+                page.locator('#adminMenuToggle').click();page.locator('.tab[data-t="tickets"]').click();expect(page.locator('#ticketsTable')).to_contain_text(payload)
                 assert page.locator('#ticketsTable img').count()==0
                 page.evaluate('window.replyTicket = x => { window.__ticket = x }');page.locator('#ticketsTable button').click();assert page.evaluate('window.__ticket')==key
                 page.wait_for_timeout(250);assert page.evaluate('window.__xss || 0')==0;assert not errors,errors

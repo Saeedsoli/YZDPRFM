@@ -41,7 +41,7 @@ with tempfile.TemporaryDirectory(prefix='admin-review-xss-') as td:
     page.route('**/api/admin/roles/*',role_update)
     page.goto(base+'/admin',wait_until='domcontentloaded');page.locator('#usr').fill('owner');page.locator('#pw').fill('Review-Xss-Owner-982');page.locator('#loginView button').click();expect(page.locator('#panel')).to_be_visible()
     expect(page.locator('#health')).to_contain_text('فعال')
-    page.locator('.tab[data-t="reviews"]').click();expect(page.locator('#reviewsList')).to_contain_text(payload);expect(page.locator('#reviewsList')).to_contain_text('خط دوم')
+    page.locator('#adminMenuToggle').click();page.locator('.tab[data-t="reviews"]').click();expect(page.locator('#reviewsList')).to_contain_text(payload);expect(page.locator('#reviewsList')).to_contain_text('خط دوم')
     assert page.locator('#reviewsList img, #reviewsList script').count()==0
     expect(page.locator('#ivList')).to_contain_text('نامعتبر')
     good=page.locator('#ivList tr').filter(has_text='معتبر').filter(has_not_text='نامعتبر');bad=page.locator('#ivList tr').filter(has_text='نامعتبر')
@@ -52,7 +52,7 @@ with tempfile.TemporaryDirectory(prefix='admin-review-xss-') as td:
     page.locator('#ivResult').get_by_role('button',name='کپی لینک').click();assert page.evaluate('window.__copiedInvite')==base+valid
     page.locator('#ivMobile').fill('09120001111');page.get_by_role('button',name='ساخت دعوت‌نامه').click();expect(page.locator('#ivResult')).to_have_text('نشانی دعوت‌نامه معتبر نیست.')
     assert page.locator('#ivResult a, #ivResult button').count()==0 and page.evaluate('window.__xss || 0')==0
-    page.locator('.tab[data-t="staff"]').click();expect(page.locator('#rolesList')).to_contain_text(payload)
+    page.locator('#adminMenuToggle').click();page.locator('.tab[data-t="staff"]').click();expect(page.locator('#rolesList')).to_contain_text(payload)
     assert page.locator('#rolesList img').count()==0
     page.locator('#rolesList').get_by_role('button',name='ویرایش اجازه‌ها').click();expect(page.locator('#roleForm')).to_be_visible()
     page.locator('#roleForm').get_by_role('button',name='انتخاب همه').click();assert page.locator('#roleForm .perm-box').is_checked()

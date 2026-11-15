@@ -273,7 +273,6 @@ const wrap = document.getElementById('wrap');
           ${link(i, `<img src="${esc(i.image)}" alt="${isGenericProductImage(i.image) ? 'تصویر نمادین ' : ''}${esc(i.name)}" width="78" height="78" loading="lazy" decoding="async">`)}
           <div style="flex:1">
             <div class="ci-name">${link(i, esc(i.name))}</div>
-            ${isGenericProductImage(i.image) ? '<span class="ci-flag">تصویر نمادین است</span>' : ''}
             <div class="ci-price">
               ${m.oldPrice ? `<span class="ci-old">${money(m.oldPrice)}</span>` : ''}
               ${money(i.price)} تومان

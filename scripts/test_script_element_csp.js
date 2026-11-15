@@ -61,3 +61,27 @@ for (const name of pages) {
 }
 assert(actionPages > 0, 'delegated actions are in use');
 console.log(`PASS: ${actionPages} pages use external delegated actions; all ${pages.length} pages have no inline handler; offline shell updated`);
+
+// Inventory filters rely on the delegated change-action allowlist. Verify
+// changing the sort selector actually invokes the reload callback.
+const vm = require('vm'), delegated = {};
+let inventoryReloads = 0;
+const adminHtml = fs.readFileSync(path.join(__dirname, '../public/admin.html'), 'utf8');
+assert(adminHtml.includes('id="adminMenuToggle"') && adminHtml.includes('class="admin-drawer" id="tabs"'), 'admin sections must use the side drawer');
+assert(adminHtml.includes('function openAdminMenu(') && adminHtml.includes("event.key==='Escape'"), 'side drawer must open and support Escape-to-close');
+assert(adminHtml.includes('<dialog id="adminConfirmDialog"'), 'admin confirmations must use the themed dialog');
+assert(adminHtml.includes('.admin-confirm::backdrop') && adminHtml.includes('function adminConfirm('), 'the custom confirmation must be styled and reusable');
+assert(!/\bconfirm\s*\(/.test(adminHtml), 'admin must not use native browser confirmation popups');
+const productHtml = fs.readFileSync(path.join(__dirname, '../public/product.html'), 'utf8');
+assert(productHtml.includes('<dialog id="notifyPhoneDialog"'), 'product phone input must use the themed dialog');
+assert(productHtml.includes('.phone-dialog::backdrop') && productHtml.includes('function promptAlertMobile('));
+assert(!/\bprompt\s*\(/.test(productHtml), 'product page must not use the native browser prompt');
+assert(/id="inventorySort"[^>]*data-csp-change="resetInventoryPage\(\)"/.test(adminHtml));
+vm.runInNewContext(fs.readFileSync(path.join(__dirname, '../public/assets/csp-actions.js'), 'utf8'), {
+  window: { resetInventoryPage: () => { inventoryReloads++; } },
+  document: { addEventListener: (name, fn) => { delegated[name] = fn; } }
+});
+const sortSelect = { getAttribute: name => name === 'data-csp-change' ? 'resetInventoryPage()' : null };
+delegated.change({ target: { closest: selector => selector === '[data-csp-change]' ? sortSelect : null } });
+assert.equal(inventoryReloads, 1, 'inventory sort change must reload results immediately');
+console.log('PASS inventory sort change is allowed and reloads results immediately');

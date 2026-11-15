@@ -25,6 +25,7 @@ const add = (label, ok, note) => {
 
 const MOB = '09120009911';
 const MOB2 = '09120009922';
+const MOB3 = '09120009933';
 
 function cleanup() {
 
@@ -33,8 +34,8 @@ function cleanup() {
     "SELECT 1 FROM sqlite_master WHERE type='table' AND name=?").get(n);
   try {
     if (has('review_invites'))
-      db.prepare('DELETE FROM review_invites WHERE mobile IN (?,?)').run(MOB, MOB2);
-    db.prepare('DELETE FROM reviews WHERE mobile IN (?,?)').run(MOB, MOB2);
+      db.prepare('DELETE FROM review_invites WHERE mobile IN (?,?,?)').run(MOB, MOB2, MOB3);
+    db.prepare('DELETE FROM reviews WHERE mobile IN (?,?,?)').run(MOB, MOB2, MOB3);
     db.prepare('DELETE FROM rate_limits').run();
   } finally { db.close(); }
 }
@@ -118,8 +119,9 @@ const api = (p, opt = {}, tok = null) =>
       add('دعوت‌نامه ساخته شد', mk.status === 201, `status ${mk.status} ${mk.body.error || ''}`);
       TOKEN = mk.body.token;
 
-      add('توکن ۳۲ نویسه hex است (غیرقابل حدس)',
-        /^[a-f0-9]{32}$/.test(TOKEN || ''), TOKEN);
+      add('توکن کوتاه ۲۲ نویسه base64url و ۱۲۸ بیت است',
+        /^[A-Za-z0-9_-]{22}$/.test(TOKEN || '') && Buffer.from(TOKEN, 'base64url').length === 16,
+        TOKEN ? `${TOKEN.length} نویسه` : '');
       add('نشانی صفحه برگردانده می‌شود', mk.body.url === `/review/${TOKEN}`);
       add('متن آماده پیامک تولید می‌شود',
         typeof mk.body.sms_text === 'string' && mk.body.sms_text.includes(TOKEN));
@@ -162,6 +164,19 @@ const api = (p, opt = {}, tok = null) =>
         view.body.mobile_masked === '0912****11'
         && !JSON.stringify(view.body).includes(MOB),
         view.body.mobile_masked);
+    }
+
+    const LEGACY_TOKEN = 'a'.repeat(32);
+    {
+      const db = new Database(DB);
+      db.prepare(`INSERT INTO review_invites(token,product_id,mobile,note,created_by,expires_at)
+                  VALUES(?,?,?,?,?,?)`).run(LEGACY_TOKEN,P.id,MOB3,'legacy','test',
+                    new Date(Date.now()+86400e3).toISOString());
+      db.close();
+      const legacy = await api(`/api/review-invite/${LEGACY_TOKEN}`);
+      add('دعوت‌نامه قدیمی ۳۲ نویسه‌ای هنوز معتبر است', legacy.status === 200);
+      const shortPage = await fetch(`${BASE}/review/${TOKEN}`);
+      add('مسیر توکن کوتاه صفحه می‌دهد', shortPage.status === 200, `status ${shortPage.status}`);
     }
 
     {

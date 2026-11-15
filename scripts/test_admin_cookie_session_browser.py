@@ -32,15 +32,20 @@ with tempfile.TemporaryDirectory(prefix='admin-cookie-browser-') as td:
      page.locator('#loginView button').click()
     assert login_response.value.status==200 and 'token' not in login_response.value.json()
     expect(page.locator('#panel')).to_be_visible()
+    expect(page.locator('#adminMenuToggle')).to_have_attribute('aria-expanded','false')
+    page.locator('#adminMenuToggle').click();expect(page.locator('#tabs')).to_be_visible()
+    expect(page.locator('#adminMenuToggle')).to_have_attribute('aria-expanded','true')
+    page.keyboard.press('Escape');expect(page.locator('#tabs')).to_be_hidden()
+    expect(page.locator('#adminMenuToggle')).to_have_attribute('aria-expanded','false')
     cookies=[c for c in context.cookies() if c['name']=='yazd_admin'];assert len(cookies)==1 and cookies[0]['httpOnly'] and cookies[0]['sameSite']=='Lax'
     assert page.evaluate("localStorage.getItem('yazd_admin_token')") is None and 'yazd_admin=' not in page.evaluate('document.cookie')
     who=page.evaluate("async()=>{const r=await fetch('/api/admin/whoami');return {status:r.status,cache:r.headers.get('cache-control')}}");assert who=={'status':200,'cache':'no-store'}
     page.evaluate("localStorage.setItem('yazd_admin_token','stale-legacy-token')")
     page.reload(wait_until='domcontentloaded');expect(page.locator('#panel')).to_be_visible();assert page.evaluate("localStorage.getItem('yazd_admin_token')") is None
-    page.locator('.tab[data-t="settings"]').click();page.locator('button[data-csp-click="loadReadiness(false)"]').click()
+    page.locator('#adminMenuToggle').click();page.locator('.tab[data-t="settings"]').click();page.locator('button[data-csp-click="loadReadiness(false)"]').click()
     expect(page.locator('#readyList')).to_contain_text('آدرس IP و پروکسی');expect(page.locator('#readyList')).to_contain_text('پروکسی مورد اعتماد تنظیم نشده')
     assert page.evaluate('document.documentElement.scrollWidth <= innerWidth + 1')
-    page.locator('.tab[data-t="reports"]').click()
+    page.locator('#adminMenuToggle').click();page.locator('.tab[data-t="reports"]').click()
     with page.expect_download() as download_event:page.locator('#tab-reports button[data-csp-click="downloadReport()"]').click()
     download=download_event.value;assert download.suggested_filename.endswith('.csv') and Path(download.path()).read_bytes().startswith(b'\xef\xbb\xbf')
     page.goto(base+'/invoice?order=FIXTURE-ORDER',wait_until='domcontentloaded');expect(page.locator('#sheet')).to_contain_text('نام نمونه')

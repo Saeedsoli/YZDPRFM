@@ -26,11 +26,14 @@ with tempfile.TemporaryDirectory(prefix='jalali-admin-browser-') as td:
     def clock_route(route):clock['calls']+=1;route.fulfill(status=200,json={'now_ms':clock['now']},headers={'Cache-Control':'no-store'})
     page.route('**/api/admin/clock',clock_route)
     page.goto(base+'/admin',wait_until='domcontentloaded');page.locator('#usr').fill('owner');page.locator('#pw').fill('Calendar-Owner-982');page.locator('#loginView button').click();expect(page.locator('#panel')).to_be_visible()
-    expect(page.locator('#adminToday')).to_have_text('۱۲ / ۰۸ / ۱۴۰۵');assert 'تهران' not in page.locator('.admin-top').inner_text()
+    expect(page.locator('#adminToday')).to_have_text('۱۲ / ۰۸ / ۱۴۰۵')
+    assert page.locator('#adminToday').get_attribute('dir')=='rtl'
+    assert page.locator('#adminToday').evaluate("el=>getComputedStyle(el).direction==='rtl'&&Array.from(el.children).map(x=>x.textContent).join('')==='۱۲ / ۰۸ / ۱۴۰۵'")
+    assert 'تهران' not in page.locator('.admin-top').inner_text()
     clock['now']=after;page.evaluate("document.dispatchEvent(new Event('visibilitychange'))")
     expect(page.locator('#adminToday')).to_have_text('۱۳ / ۰۸ / ۱۴۰۵');assert clock['calls']>=2
     browserDates=page.evaluate("()=>{const x=[];for(let y=1200;y<=1600;y++)for(const [m,k] of [[1,1],[12,29],[12,30]])x.push(YazdDate.toISO(y,m,k));return x}");assert browserDates==expected,[(1200+i//3,i%3,browserDates[i],expected[i]) for i in range(len(expected)) if browserDates[i]!=expected[i]][:15]
-    page.locator('.tab[data-t="coupons"]').click();assert page.locator('input[type=date]').count()==0
+    page.locator('#adminMenuToggle').click();page.locator('.tab[data-t="coupons"]').click();assert page.locator('input[type=date]').count()==0
     page.locator('#tab-coupons details.scope-box summary').first.click()
     def choose(field,y,m,d,iso):
      page.locator(field).click();expect(page.locator('.jalali-picker')).to_be_visible()
@@ -49,8 +52,9 @@ with tempfile.TemporaryDirectory(prefix='jalali-admin-browser-') as td:
     assert page.get_by_role('button',name='۳۰ اسفند ۱۴۰۴').count()==0
     page.keyboard.press('Escape');assert page.locator('.jalali-picker').count()==0
     choose('#fStart',1403,12,30,'2025-03-20');choose('#fEnd',1404,1,1,'2025-03-21')
-    page.locator('#fTitle').fill('CAL-CAMPAIGN-'+str(width));page.locator('#fPct').fill('10');page.once('dialog',lambda dialog:dialog.accept())
-    with page.expect_response(lambda r:r.url.endswith('/api/admin/campaigns') and r.request.method=='POST') as event:page.get_by_role('button',name='راه‌اندازی جشنواره').click()
+    page.locator('#fTitle').fill('CAL-CAMPAIGN-'+str(width));page.locator('#fPct').fill('10')
+    with page.expect_response(lambda r:r.url.endswith('/api/admin/campaigns') and r.request.method=='POST') as event:
+     page.get_by_role('button',name='راه‌اندازی جشنواره').click();expect(page.locator('#adminConfirmDialog')).to_be_visible();page.locator('#adminConfirmOk').click()
     assert event.value.status==201,event.value.text();expect(page.locator('#campaignsTable')).to_contain_text('۳۰ / ۱۲ / ۱۴۰۳')
     with sqlite3.connect(db) as c:assert c.execute('select starts_at,ends_at from campaigns where title=?',('CAL-CAMPAIGN-'+str(width),)).fetchone()==('2025-03-20','2025-03-21')
     choose('#nEnd',1405,8,14,'2026-11-05');page.locator('#nText').fill('CAL-NOTICE-'+str(width))

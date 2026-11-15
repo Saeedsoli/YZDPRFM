@@ -300,6 +300,31 @@
   .alert-box { background:#FFF8E7; border-right:3px solid #F39C12;
     padding:13px 15px; border-radius:10px; margin-top:12px; font-size:.84rem }
 
+  .phone-dialog {
+    width:min(440px,calc(100% - 30px)); max-width:100%; padding:0;
+    border:1px solid rgba(197,155,39,.28); border-radius:20px;
+    background:var(--surface,#fff); color:var(--text,#1c1c1c);
+    box-shadow:0 24px 72px rgba(0,0,0,.24); direction:rtl;
+    font-family:var(--font,system-ui,sans-serif);
+  }
+  .phone-dialog::backdrop { background:rgba(18,18,18,.58); backdrop-filter:blur(3px) }
+  .phone-dialog-inner { padding:24px }
+  .phone-dialog-head { display:flex; align-items:center; gap:12px; margin-bottom:10px }
+  .phone-dialog-icon { width:42px;height:42px;display:grid;place-items:center;border-radius:13px;
+    background:rgba(197,155,39,.13);color:var(--gold-dark,#A37E1C);font-size:1.15rem }
+  .phone-dialog h2 { font-size:1.02rem;font-weight:800;margin:0 }
+  .phone-dialog p { color:var(--muted,#6B6B6B);font-size:.83rem;line-height:1.9;margin:0 0 17px }
+  .phone-dialog label { display:block;font-size:.8rem;font-weight:700;margin-bottom:6px }
+  .phone-dialog input { width:100%;min-height:48px;border:1px solid var(--border,#E5E2DC);border-radius:10px;
+    padding:10px 13px;font:inherit;font-size:1rem;direction:ltr;text-align:left;background:#fff;color:var(--text,#1c1c1c) }
+  .phone-dialog input:focus { outline:3px solid rgba(197,155,39,.18);border-color:var(--gold,#C59B27) }
+  .phone-dialog .phone-error { min-height:1.6em;color:var(--danger,#C0392B);font-size:.76rem;margin-top:5px }
+  .phone-dialog-actions { display:flex;gap:9px;margin-top:6px }
+  .phone-dialog-actions button { min-height:42px;padding:8px 17px;border-radius:9px;font:inherit;font-size:.83rem;font-weight:700;cursor:pointer }
+  .phone-dialog-cancel { background:#fff;color:var(--text,#1c1c1c);border:1px solid var(--border,#E5E2DC) }
+  .phone-dialog-submit { margin-inline-start:auto;background:var(--gold,#C59B27);border:1px solid var(--gold,#C59B27);color:#211B0B }
+  @media(max-width:520px) { .phone-dialog-inner { padding:20px } }
+
   .related { max-width: 1280px; margin: 56px auto; padding: 0 20px; }
   .related h2 { font-size: 1.2rem; font-weight: 800; margin-bottom: 18px; }
 
@@ -326,6 +351,19 @@
 </head>
 <body class="has-buy-bar">
 <a href="#main" class="skip-link">پرش به محتوای اصلی</a>
+<dialog id="notifyPhoneDialog" class="phone-dialog" aria-labelledby="notifyPhoneTitle" aria-describedby="notifyPhoneDescription">
+  <form id="notifyPhoneForm" class="phone-dialog-inner" novalidate>
+    <div class="phone-dialog-head"><span class="phone-dialog-icon" aria-hidden="true">☎</span><h2 id="notifyPhoneTitle">اطلاع از موجودی کالا</h2></div>
+    <p id="notifyPhoneDescription">شماره موبایلتان را وارد کنید تا به‌محض موجود شدن این رایحه، پیامک بفرستیم.</p>
+    <label for="notifyPhoneInput">شماره موبایل</label>
+    <input id="notifyPhoneInput" type="tel" inputmode="tel" autocomplete="tel" maxlength="20" dir="ltr" placeholder="۰۹۱۲۳۴۵۶۷۸۹" required>
+    <div id="notifyPhoneError" class="phone-error" role="alert" aria-live="polite"></div>
+    <div class="phone-dialog-actions">
+      <button type="button" class="phone-dialog-cancel" id="notifyPhoneCancel">انصراف</button>
+      <button type="submit" class="phone-dialog-submit">ثبت شماره</button>
+    </div>
+  </form>
+</dialog>
 <!-- ارتفاع هدر از پیش رزرو می‌شود. هدر با جاوااسکریپت از app.js
      ساخته می‌شود، پس تا آن لحظه ارتفاعش صفر است و با ظاهر شدن،
      کل صفحه ۹۷ تا ۱۰۳ پیکسل پایین می‌پرد. ردیابی نشان داد این
@@ -1242,12 +1280,47 @@ async function submitReview() {
   if (r.ok) loadReviews();
 }
 
+/* ── ورود شماره برای پیامک موجودی، در پنجرهٔ هم‌سبک سایت ── */
+function promptAlertMobile() {
+  const dialog=document.getElementById('notifyPhoneDialog');
+  const form=document.getElementById('notifyPhoneForm');
+  const input=document.getElementById('notifyPhoneInput');
+  const error=document.getElementById('notifyPhoneError');
+  const cancel=document.getElementById('notifyPhoneCancel');
+  input.value='';error.textContent='';dialog.returnValue='cancel';
+  return new Promise(resolve=>{
+    const finish=value=>{
+      form.removeEventListener('submit',submit);
+      cancel.removeEventListener('click',cancelPrompt);
+      dialog.removeEventListener('cancel',escapePrompt);
+      dialog.close(value===null?'cancel':'submit');
+      resolve(value);
+    };
+    const cancelPrompt=()=>finish(null);
+    const escapePrompt=event=>{event.preventDefault();finish(null);};
+    const submit=event=>{
+      event.preventDefault();
+      let mobile=input.value.trim().replace(/[۰-۹]/g,d=>'۰۱۲۳۴۵۶۷۸۹'.indexOf(d)).replace(/\D/g,'');
+      if(mobile.startsWith('98'))mobile='0'+mobile.slice(2);
+      if(mobile.length===10&&mobile.startsWith('9'))mobile='0'+mobile;
+      if(!/^09\d{9}$/.test(mobile)){
+        error.textContent='شماره موبایل معتبر وارد کنید.';input.focus();return;
+      }
+      finish(mobile);
+    };
+    form.addEventListener('submit',submit);
+    cancel.addEventListener('click',cancelPrompt);
+    dialog.addEventListener('cancel',escapePrompt);
+    dialog.showModal();input.focus();
+  });
+}
+
 /* ── اطلاع موجود شدن ── */
 async function notifyMe(sku) {
   const me=await YazdAuth.check();
   let mobile = me.authenticated ? me.mobile : null;
   if (!mobile) {
-    mobile = prompt('شماره موبایل برای اطلاع‌رسانی:');
+    mobile = await promptAlertMobile();
     if (!mobile) return;
   }
   const r = await fetch('/api/stock-alert', {

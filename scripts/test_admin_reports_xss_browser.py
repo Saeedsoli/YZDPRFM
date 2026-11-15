@@ -41,11 +41,11 @@ with tempfile.TemporaryDirectory(prefix='admin-report-xss-') as td:
                 expect(page.locator('#couponsTable')).to_contain_text(payload)
                 expect(page.locator('#logsBox')).to_contain_text(payload)
                 assert page.locator('#couponsTable img, #logsBox img').count()==0
-                page.locator('.tab[data-t="coupons"]').click()
+                page.locator('#adminMenuToggle').click();page.locator('.tab[data-t="coupons"]').click()
                 page.evaluate('window.delCoupon = value => { window.__clickedCoupon = value }')
                 page.locator('#couponsTable tr').filter(has_text=code).locator('button.del').click()
                 assert page.evaluate('window.__clickedCoupon') == code
-                page.locator('.tab[data-t="reports"]').click()
+                page.locator('#adminMenuToggle').click();page.locator('.tab[data-t="reports"]').click()
                 for selector in ('#repTop','#repBrand','#repType','#repProv','#repCust','#repCoup'):
                     expect(page.locator(selector)).to_contain_text(payload)
                     assert page.locator(selector+' img, '+selector+' script').count()==0,selector

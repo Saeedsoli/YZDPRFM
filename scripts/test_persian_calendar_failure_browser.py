@@ -28,7 +28,7 @@ with tempfile.TemporaryDirectory(prefix='calendar-failure-') as td:
     page.route('**/api/admin/coupons',coupons);page.route('**/api/orders/*/invoice',lambda r:r.fulfill(status=200,json=fixture))
     page.goto(base+'/admin',wait_until='domcontentloaded');page.locator('#usr').fill('owner');page.locator('#pw').fill('Calendar-Failure-982');page.locator('#loginView button').click();expect(page.locator('#panel')).to_be_visible()
     assert page.evaluate('YazdDate.ready') is False;expect(page.locator('#adminToday')).to_have_text('—')
-    page.locator('.tab[data-t="coupons"]').click();expect(page.locator('#cExp')).to_be_disabled();page.locator('#cCode').fill('SHOULD-NOT-SEND');page.locator('#cValue').fill('10');page.get_by_role('button',name='ایجاد کد تخفیف').click()
+    page.locator('#adminMenuToggle').click();page.locator('.tab[data-t="coupons"]').click();expect(page.locator('#cExp')).to_be_disabled();page.locator('#cCode').fill('SHOULD-NOT-SEND');page.locator('#cValue').fill('10');page.get_by_role('button',name='ایجاد کد تخفیف').click()
     expect(page.locator('.toast')).to_contain_text('تقویم در دسترس نیست');assert not posts
     page.goto(base+'/invoice?order=SAFE-1',wait_until='domcontentloaded');expect(page.locator('#sheet')).to_contain_text('نام نمونه');expect(page.locator('#sheet')).to_contain_text('تاریخ: —')
     page.goto(base+'/label?order=SAFE-1',wait_until='domcontentloaded');expect(page.locator('#label')).to_contain_text('نام نمونه');expect(page.locator('#label')).to_contain_text('—')

@@ -464,7 +464,6 @@ function renderResults() {
           <div class="quiz-result-name">${esc(full)}
             <span style="font-size:.7rem;color:var(--gold)">«دست‌ساز»</span></div>
           <div class="quiz-result-brand">${esc(p.name_en || '')}</div>
-          ${isGenericProductImage(p.image_url) ? '<div class="quiz-result-notes">تصویر نمادین است</div>' : ''}
           ${notesStr ? `<div class="quiz-result-notes">${gLabel(p.gender)}${esc(notesStr)}</div>` : ''}
           ${priceStr ? `<div class="quiz-result-price">از ${esc(priceStr)}</div>` : ''}
           <div class="fitbar" title="میزان تطابق با سلیقه شما">
