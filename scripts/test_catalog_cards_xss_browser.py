@@ -20,7 +20,8 @@ with tempfile.TemporaryDirectory(prefix='catalog-cards-xss-') as td:
   image='/images/products/missing" onerror="window.__cardXss=4.jpg'
   product={**normal,'slug':slug,'name_fa':payload,'brand_fa':payload,'name_en':payload,'family_fa':payload,'image_url':image,'notes':{'top':[payload],'middle':[],'base':[]},'notes_top':[payload],
            'sample_price':1000,'min_price':1000,'supply_mode':'MADE_TO_ORDER','in_stock':False,'_score':5,
-           'variants':[{'sku':sku,'type':'SAMPLE','type_label':'سمپل','volume_ml':5,'price_toman':1000,'stock':0}]}
+           'variants':[{'sku':sku,'type':'SAMPLE','type_label':'سمپل','volume_ml':5,'price_toman':1000,'stock':0}],
+           'card_variant':{'sku':sku,'type':'EDP','type_label':'ادو پرفیوم دست‌ساز','volume_ml':30,'price_toman':1000,'stock':0}}
   with sync_playwright() as pw:
    browser=pw.chromium.launch(executable_path=os.environ.get('CHROME_EXECUTABLE') or None,headless=True,args=['--no-sandbox'])
    for width in (390,1440):
@@ -52,12 +53,12 @@ with tempfile.TemporaryDirectory(prefix='catalog-cards-xss-') as td:
     assert page.locator('#grid .sc img').get_attribute('src')==image and page.locator('#grid .sc img').get_attribute('onerror') is None
     page.goto(base+'/quiz',wait_until='domcontentloaded');page.wait_for_function("document.querySelector('#quizCard').children.length > 0")
     page.evaluate("p=>{results=[p];renderResults()}",product)
-    expect(page.locator('.quiz-result-name')).to_contain_text(payload);assert page.locator('.quiz-result-name img,.quiz-result-notes img,.quiz-result-brand img').count()==0
-    assert page.locator('.quiz-result-card img').get_attribute('src')==image and page.locator('.quiz-result-card img').get_attribute('onerror') is None
+    expect(page.locator('.quiz-product-grid .card-title')).to_contain_text(payload);assert page.locator('.quiz-product-grid .card-title img,.quiz-product-grid .card-sub img').count()==0
+    assert page.locator('.quiz-product-grid .img-wrap img').get_attribute('src')==image and page.locator('.quiz-product-grid .img-wrap img').get_attribute('onerror') is None
     page.goto(base+'/wishlist',wait_until='domcontentloaded');expect(page.locator('.wish-card')).to_be_visible()
     expect(page.locator('.card-title')).to_contain_text(payload);assert page.locator('.card-title img,.card-notes img').count()==0
     assert page.locator('.wish-card .img-wrap img').get_attribute('src')==image and page.locator('.wish-card .img-wrap img').get_attribute('onerror') is None
-    add=page.locator('[data-action=add-sample]');assert add.get_attribute('data-sku')==sku and add.get_attribute('onclick') is None;add.click()
+    add=page.locator('[data-card-add]');assert add.get_attribute('data-sku')==sku and add.get_attribute('onclick') is None;add.click()
     cart=page.evaluate("JSON.parse(localStorage.getItem('yazd_cart_v1'))");assert cart[0]['sku']==sku and payload in cart[0]['name'] and '&lt;' not in cart[0]['name']
     remove=page.locator('[data-action=remove]');assert remove.get_attribute('onclick') is None;remove.click();expect(page.locator('#grid')).to_contain_text('هنوز رایحه‌ای ذخیره نکرده‌اید');assert removed and removed[0]['product']==slug
     assert page.evaluate('window.__cardXss || 0')==0

@@ -1018,7 +1018,9 @@ async function loadRelated() {
   const r = await fetch(`/api/products?family=${product.family_slug}&limit=5`);
   const d = await r.json();
   const list = d.products.filter(x => x.id !== product.id).slice(0, 4);
-  document.getElementById('related').innerHTML = list.map(productCard).join('');
+  const related = document.getElementById('related');
+  related.innerHTML = list.map(p => productCard(p)).join('');
+  initCardImages(related);
 }
 
 /* گالری لمسی — کشیدن چپ = بعدی، راست = قبلی */

@@ -283,12 +283,40 @@ function fullName(p) {
 }
 
 function isGenericProductImage(url) {
-  return /\/(?:generic-neutral-[1-7]|studio-dark-[1-8])(?:-sm)?\.(?:jpg|webp)$/i.test(url || '');
+  return /\/(?:generic-neutral-[1-7]|studio-dark-[1-8])(?:-sm)?\.(?:jpe?g|webp|avif)$/i.test(url || '');
+}
+function cardFullImage(url) {
+  const raw = String(url || '');
+  const match = raw.match(/^(\/images\/products\/[a-z0-9_-]+)(?:-sm)?\.(?:jpe?g|webp|avif)$/i);
+  return match ? `${match[1]}.jpg` : raw;
 }
 function cardImage(url) {
-  return (/\/fam-[a-z0-9-]+\.jpg$/.test(url || '') || isGenericProductImage(url))
-    ? url.replace(/\.jpg$/, '-sm.jpg')
-    : url;
+  const raw = String(url || '');
+  const match = raw.match(/^(\/images\/products\/[a-z0-9_-]+)(?:-sm)?\.(?:jpe?g|webp|avif)$/i);
+  return match ? `${match[1]}-sm.jpg` : raw;
+}
+function cardWebpImage(url) {
+  const small = cardImage(url);
+  return /^\/images\/products\/[a-z0-9_-]+-sm\.jpg$/i.test(small)
+    ? small.replace(/\.jpg$/i, '.webp') : '';
+}
+function cardFullWebpImage(url) {
+  const full = cardFullImage(url);
+  return /^\/images\/products\/[a-z0-9_-]+\.jpg$/i.test(full)
+    ? full.replace(/\.jpg$/i, '.webp') : '';
+}
+function cardDefaultVariant(p) {
+  if (p?.card_variant && Number(p.card_variant.volume_ml) === 30) return p.card_variant;
+  if (p?.selected_variant && Number(p.selected_variant.volume_ml) === 30) return p.selected_variant;
+  return (p?.variants || []).find(v => v.type === 'EDP' && Number(v.volume_ml) === 30) || null;
+}
+function cardMaxPrice(p) {
+  if (Number(p?.max_price) > 0) return Number(p.max_price);
+  const prices = (p?.variants || []).map(v => Number(v.price_toman)).filter(n => n > 0);
+  return prices.length ? Math.max(...prices) : 0;
+}
+function cardMoney(n) {
+  return toFa(Math.max(0, Math.round(Number(n) || 0)).toLocaleString('en-US').replace(/,/g, '٬'));
 }
 
 function variantSellable(p, v) {
@@ -300,8 +328,9 @@ function productSupply(p) {
   const unknown = p.availability_unknown === true;
   const eligible = ['IN_STOCK', 'MADE_TO_ORDER'].includes(mode);
 
-  const derived = (p.variants || []).some(v =>
-    eligible && v.price_toman > 0 && Number(v.stock) > 0);
+  const variants = [...(p.variants || []), ...(p.card_variant ? [p.card_variant] : [])];
+  const derived = variants.some(v =>
+    eligible && Number(v.price_toman) > 0 && Number(v.stock) > 0);
   const knownInStock = p.in_stock === true || p.in_stock === 1;
   const inStock = eligible && (knownInStock || (p.in_stock == null && derived));
   const madeToOrder = !unknown && !inStock && mode === 'MADE_TO_ORDER' && Number(p.min_price) > 0;
@@ -319,49 +348,168 @@ function productSupply(p) {
   };
 }
 
-function productCard(p) {
-  const notes = (p.notes?.top || []).slice(0, 3).join('، ');
-  const img = cardImage(p.image_url);
-  const illustrative = isGenericProductImage(p.image_url);
-
-  const pct = p.campaign_percent || 0;
-  const off = pct > 0 ? Math.floor(p.min_price * pct / 100) : 0;
-  const priceBlock = p.availability_unknown
-    ? `<span class="price">مشاهده قیمت روز</span>`
-    : Number(p.min_price) <= 0 || !Number.isFinite(Number(p.min_price))
-    ? `<span class="price">قیمت در دسترس نیست</span>`
-    : off > 0 ? `<span class="price">
-         <s class="price-old">${money(p.min_price)}</s>
-         از ${money(p.min_price - off)} <small>تومان</small>
-       </span>`
-    : `<span class="price">از ${money(p.min_price)} <small>تومان</small></span>`;
-
-  const supply = productSupply(p);
+function productCard(p, options = {}) {
+  const supply = options.supply || productSupply(p);
   const { inStock, madeToOrder, out, unknown } = supply;
+  const variant = cardDefaultVariant(p);
+  const selectedPrice = Number(variant?.price_toman) || 0;
+  const canAdd = !unknown && variantSellable(p, variant);
+  const status = unknown ? 'وضعیت نامشخص'
+    : inStock ? 'موجود در انبار'
+    : madeToOrder ? 'ساخت پس از سفارش' : 'ناموجود';
+  const gender = genderLabel(p.gender) || 'نامشخص';
+  const nameFa = p.title_fa_display || p.name_fa || 'رایحه';
+  const nameEn = p.subtitle_en_display || p.name_en || 'نام انگلیسی ثبت‌نشده';
+  const href = `/perfume/${encodeURIComponent(p.slug || '')}`;
+  const fallback = cardImage(p.image_url);
+  const fullJpg = cardFullImage(p.image_url);
+  const webp = cardWebpImage(p.image_url);
+  const fullWebp = cardFullWebpImage(p.image_url);
+  const sizes = '(max-width: 760px) 50vw, (max-width: 1200px) 25vw, 25vw';
+  const jpgSrcset = fullJpg && fullJpg !== fallback ? `${fallback} 320w, ${fullJpg} 560w` : '';
+  const webpSrcset = webp && fullWebp && webp !== fullWebp ? `${webp} 320w, ${fullWebp} 760w` : webp;
+  const illustrative = isGenericProductImage(p.image_url);
+  const pct = Number(p.campaign_percent) || 0;
+  const off = !unknown && inStock && pct > 0 && selectedPrice > 0
+    ? Math.floor(selectedPrice * pct / 100) : 0;
+  const displayPrice = selectedPrice > 0 ? selectedPrice - off : 0;
+  const maxPrice = cardMaxPrice(p);
+  const state = unknown ? 'unknown' : inStock ? 'in' : madeToOrder ? 'mto' : 'out';
+  const nameSearch = [nameFa, nameEn, p.brand_fa, ...(p.notes?.top || [])]
+    .filter(Boolean).join(' ').toLocaleLowerCase('fa-IR');
+  const priceHtml = unknown
+    ? '<span class="cprice cprice-missing">قیمت در صفحهٔ محصول</span>'
+    : displayPrice > 0
+      ? `<span class="cprice">
+           ${off > 0 ? `<s class="price-old" aria-label="قیمت پیش از تخفیف">${cardMoney(selectedPrice)}</s>` : ''}
+           <b class="pv">${cardMoney(displayPrice)}</b><span>تومان</span>
+           ${off > 0 ? `<small class="card-off"><bdi>${esc(toFa(pct))}٪</bdi></small>` : ''}
+         </span>`
+      : '<span class="cprice cprice-missing">قیمت ثبت‌نشده</span>';
+
+  const addControl = canAdd
+    ? `<button class="add" type="button" data-card-add
+         data-sku="${esc(variant.sku)}" data-price="${esc(selectedPrice)}"
+         data-item-name="${esc(`${p.brand_fa ? p.brand_fa + ' — ' : ''}${nameFa} — ${variant.type_label || 'ادو پرفیوم دست‌ساز'} ${toFa(variant.volume_ml)} میل`)}"
+         data-image="${esc(p.image_url || '')}" data-slug="${esc(p.slug || '')}"
+         aria-label="افزودن ${esc(nameFa)}، ۳۰ میل، به سبد خرید">+</button>`
+    : out
+      ? `<a class="add add-alert card-go-notify" data-alert href="${href}"
+           aria-label="دیدن صفحهٔ محصول ${esc(nameFa)} و گزینهٔ اطلاع از موجودی">خبرم کن</a>`
+      : `<a class="add add-alert" data-alert href="${href}" aria-label="دیدن جزئیات ${esc(nameFa)}">جزئیات</a>`;
+
+  const extraClass = options.extraClass ? ` ${options.extraClass}` : '';
+  const extraControls = options.extraControls || '';
+  const source = webpSrcset
+    ? `<source type="image/webp" sizes="${esc(sizes)}" srcset="${esc(webpSrcset)}" data-srcset="${esc(webpSrcset)}">` : '';
+  const cardName = esc(nameFa);
 
   return `
-  <a class="${supply.classes} fade-up"
-     href="/perfume/${encodeURIComponent(p.slug)}"
-     aria-label="${esc(fullName(p))} — ${supply.aria}">
-    <div class="img-wrap">
-      <img src="${esc(img)}" alt="${illustrative ? 'تصویر نمادین' : 'تصویر'} ${esc(fullName(p))}" loading="lazy" width="300" height="300">
-      ${genderLabel(p.gender) ? `<span class="card-badge">${genderLabel(p.gender)}</span>` : ''}
-      ${supply.label ? `<span class="card-out${madeToOrder ? ' mto' : ''}">${supply.label}</span>` : ''}
-      ${off > 0 && inStock ? `<span class="card-off"><bdi>${esc(toFa(pct))}٪</bdi> تخفیف</span>` : ''}
-      <div class="card-peek">${supply.cta}</div>
-    </div>
-    <div class="body">
-      <div class="card-title">${esc(fullName(p))} <span class="card-tag">«دست‌ساز»</span></div>
-      <div class="card-sub">${esc(p.name_en)}</div>
-      ${notes ? `<div class="card-notes">نُت‌های آغازین: ${esc(notes)}</div>` : ''}
-      <div class="card-price-row">
-        ${priceBlock}
-        ${out
-          ? '<span class="card-go-notify">خبرم کن ←</span>'
-          : '<span class="card-go">مشاهده ←</span>'}
+  <article class="card-shell${extraClass}" data-slug="${esc(p.slug || '')}">
+    <a class="${supply.classes} card" href="${href}"
+       data-card data-id="${esc(p.id || '')}" data-name-fa="${esc(nameFa)}"
+       data-brand="${esc(p.brand_fa || '')}" data-fam="${esc(p.family_slug || '')}"
+       data-gen="${esc(p.gender || '')}" data-state="${state}"
+       data-sel-ml="30" data-sel-price="${esc(selectedPrice)}"
+       data-min="${esc(p.min_price || 0)}" data-max="${esc(maxPrice)}"
+       data-name="${esc(nameSearch)}"
+       aria-label="${cardName} — دیدن صفحهٔ محصول">
+      <div class="cmedia img-wrap">
+        <picture class="cpicture">
+          ${source}
+          <img class="cimg" src="${esc(fallback)}"
+               data-src="${esc(fallback)}" data-fallback="${esc(fallback)}"
+               ${jpgSrcset ? `srcset="${esc(jpgSrcset)}" data-srcset="${esc(jpgSrcset)}" sizes="${esc(sizes)}"` : ''}
+               alt="${illustrative ? 'تصویر نمادین' : 'تصویر رایحه'} ${cardName}"
+               loading="lazy" decoding="async" width="560" height="700">
+        </picture>
+        <span class="sheen" aria-hidden="true"></span>
+        <span class="ctag card-out${madeToOrder ? ' mto' : ''}${inStock ? ' in' : ''}${unknown ? ' unknown' : ''}">${esc(status)}</span>
+        <span class="cgen card-badge">${esc(gender)}</span>
       </div>
-    </div>
-  </a>`;
+      <div class="cbar">
+        <div class="cbl">
+          <h3 class="cname card-title">${cardName}</h3>
+          <span class="cen card-sub" lang="en" dir="ltr">${esc(nameEn)}</span>
+        </div>
+        <div class="cbr">
+          <span class="cv">۳۰ میل</span>
+          ${priceHtml}
+        </div>
+      </div>
+    </a>
+    ${addControl}
+    ${extraControls}
+  </article>`;
+}
+
+let cardImageObserver = null;
+function loadCardImage(img) {
+  if (!img || img.dataset.cardLoaded === '1' || !img.dataset.src) return;
+  img.dataset.cardLoaded = '1';
+  const source = img.closest('picture')?.querySelector('source[data-srcset]');
+  const webpSrc = source?.dataset.srcset || '';
+  if (source && webpSrc) {
+    source.srcset = webpSrc;
+    source.removeAttribute('data-srcset');
+  }
+  if (img.dataset.srcset) {
+    img.srcset = img.dataset.srcset;
+    img.removeAttribute('data-srcset');
+  }
+  img.addEventListener('load', () => img.classList.add('ld'), { once: true });
+  img.addEventListener('error', () => {
+    if (source?.hasAttribute('srcset') && img.dataset.fallbackTried !== '1') {
+      source.removeAttribute('srcset');
+      img.dataset.fallbackTried = '1';
+      img.src = img.dataset.fallback || img.dataset.src;
+      return;
+    }
+    img.classList.add('ld', 'img-error');
+  });
+  if (img.getAttribute('src') !== img.dataset.src) img.src = img.dataset.src;
+  if (img.complete && img.naturalWidth > 0) img.classList.add('ld');
+}
+function initCardImages(root = document) {
+  if (!root) return;
+  const images = [];
+  if (root.matches?.('.cimg[data-src]')) images.push(root);
+  root.querySelectorAll?.('.cimg[data-src]').forEach(img => images.push(img));
+  if (!images.length) return;
+  if (!('IntersectionObserver' in window)) return images.forEach(loadCardImage);
+  if (!cardImageObserver) {
+    cardImageObserver = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (!entry.isIntersecting) return;
+        loadCardImage(entry.target);
+        cardImageObserver.unobserve(entry.target);
+      });
+    }, { rootMargin: '160px 0px' });
+  }
+  images.forEach(img => cardImageObserver.observe(img));
+}
+function addProductCardItem(button) {
+  const shell = button?.closest('.card-shell');
+  const card = shell?.querySelector('.product-card[data-card]') || button?.closest('.product-card[data-card]');
+  if (!card || button.disabled) return;
+  const sku = button.dataset.sku;
+  const price = Number(button.dataset.price);
+  if (!sku || !Number.isFinite(price) || price <= 0) return;
+  button.disabled = true;
+  const label = button.dataset.itemName || card.dataset.nameFa || 'رایحه';
+  try {
+    YazdCart.add(sku, label, price, button.dataset.image || '', 1, button.dataset.slug || '');
+    button.classList.add('done');
+    button.textContent = '✓';
+    setTimeout(() => {
+      button.classList.remove('done');
+      button.textContent = '+';
+      button.disabled = false;
+    }, 1600);
+  } catch {
+    button.disabled = false;
+    toast('افزودن به سبد انجام نشد');
+  }
 }
 
 const YazdRecent = {
@@ -382,11 +530,20 @@ const YazdRecent = {
     if (!p || !p.slug) return;
     try {
       const list = this._read().filter(x => x.slug !== p.slug);
+      const selected = cardDefaultVariant(p);
       list.unshift({
         slug: p.slug, id: p.id,
         name_fa: p.name_fa, name_en: p.name_en,
         brand_fa: p.brand_fa, gender: p.gender,
-        image_url: p.image_url, min_price: p.min_price,
+        family_slug: p.family_slug, image_url: p.image_url,
+        min_price: p.min_price, max_price: cardMaxPrice(p),
+        card_variant: selected ? {
+          sku: selected.sku, type: selected.type, type_label: selected.type_label,
+          volume_ml: selected.volume_ml, price_toman: selected.price_toman,
+          stock: selected.stock
+        } : null,
+        supply_mode: p.supply_mode, in_stock: p.in_stock,
+        campaign_percent: p.campaign_percent,
         at: Date.now()
       });
       localStorage.setItem(this.KEY, JSON.stringify(list.slice(0, this.MAX)));
@@ -420,6 +577,7 @@ const YazdRecent = {
        <div class="product-grid">
          ${items.map(p => productCard({ ...p, notes: { top: [] }, availability_unknown: true })).join('')}
        </div>`;
+    initCardImages(box);
 
     box.querySelector('.recent-clear').onclick = () => {
       this.clear();
@@ -497,6 +655,7 @@ const YazdTaste = {
       <div class="product-grid">
         ${d.items.map(p => productCard({ ...p, notes: { top: p.notes_top || [] } })).join('')}
       </div>`;
+    initCardImages(box);
 
     box.querySelector('.taste-clear').onclick = async () => {
       this.clear();
@@ -531,12 +690,12 @@ const YazdAuth = {
 
 function skeletonGrid(n = 8) {
   return Array.from({ length: n }, () => `
-    <div class="sk-card">
+    <div class="sk-card card-skeleton">
       <div class="sk-img skeleton"></div>
-      <div class="sk-body">
-        <div class="sk-line skeleton" style="width:75%"></div>
-        <div class="sk-line skeleton" style="width:52%"></div>
-        <div class="sk-line skeleton" style="width:88%;margin-top:14px"></div>
+      <div class="sk-glass">
+        <div><div class="sk-line skeleton" style="width:74%"></div>
+          <div class="sk-line skeleton" style="width:48%;margin-bottom:0"></div></div>
+        <div class="sk-plus skeleton"></div>
       </div>
     </div>`).join('');
 }
@@ -795,6 +954,20 @@ const YazdPWA = {
     };
   }
 };
+
+document.addEventListener('click', event => {
+  const button = event.target.closest?.('[data-card-add]');
+  if (!button) return;
+  event.preventDefault();
+  event.stopPropagation();
+  addProductCardItem(button);
+});
+document.addEventListener('keydown', event => {
+  const card = event.target.closest?.('a.product-card[data-card]');
+  if (!card || event.key !== ' ') return;
+  event.preventDefault();
+  location.href = card.href;
+});
 
 document.addEventListener('DOMContentLoaded', async () => {
   initHeaderShadow();

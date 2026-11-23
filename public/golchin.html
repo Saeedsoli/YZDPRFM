@@ -73,6 +73,7 @@ function showSlot(key) {
   gridEl.innerHTML = (slot.items || []).map(p => productCard({
     ...p, notes: { top: [] }, min_price: p.min_price
   })).join('');
+  initCardImages(gridEl);
   emptyEl.hidden = !!(slot.items || []).length;
 }
 

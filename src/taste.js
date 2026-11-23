@@ -125,6 +125,10 @@ function build(db, helpers) {
 
         const p = attachVariants(parseProduct(s.row));
         if (respectBudget && !inBudget(p.min_price, a.budget)) continue;
+        const cardVariant = p.variants.find(v => v.type === 'EDP' && Number(v.volume_ml) === 30) || null;
+        const prices = p.variants.map(v => Number(v.price_toman)).filter(price => price > 0);
+        const inStock = ['IN_STOCK','MADE_TO_ORDER'].includes(p.supply_mode) &&
+          p.variants.some(v => Number(v.stock) > 0 && Number(v.price_toman) > 0);
 
         brandCount[b] = (brandCount[b] || 0) + 1;
         out.push({
@@ -136,6 +140,9 @@ function build(db, helpers) {
 
           notes_top: (p.notes?.top || []).slice(0, 3),
           image_url: p.image_url, min_price: p.min_price,
+          max_price: prices.length ? Math.max(...prices) : 0,
+          card_variant: cardVariant, supply_mode: p.supply_mode,
+          in_stock: inStock,
           _score: s.score
         });
       }

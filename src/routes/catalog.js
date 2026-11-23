@@ -136,6 +136,8 @@ async function handle(ctx) {
       if (wantFull) { p.campaign_percent = pct; return p; }
 
       const inStock = ['IN_STOCK','MADE_TO_ORDER'].includes(p.supply_mode) && p.variants.some(v => v.stock > 0 && v.price_toman > 0);
+      const cardVariant = p.variants.find(v => v.type === 'EDP' && Number(v.volume_ml) === 30) || null;
+      const prices = p.variants.map(v => Number(v.price_toman)).filter(price => price > 0);
       return {
         id: p.id, slug: p.slug,
         name_fa: p.name_fa, name_en: p.name_en,
@@ -144,6 +146,8 @@ async function handle(ctx) {
         season: p.season, image_url: p.image_url,
         notes: { top: p.notes.top.slice(0, 3) },
         min_price: p.min_price,
+        max_price: prices.length ? Math.max(...prices) : 0,
+        card_variant: cardVariant,
         ...(samplesOnly ? { sample_price: p.sample_price } : {}),
         campaign_percent: pct,
         in_stock: inStock,
@@ -191,12 +195,22 @@ async function handle(ctx) {
 
     const liveCard = db.prepare(`SELECT p.supply_mode,
       (SELECT MIN(v.price_toman) FROM variants v WHERE v.product_id=p.id AND ${publicVariantSql('v')} AND v.price_toman>0) AS min_price,
-      EXISTS(SELECT 1 FROM variants v WHERE v.product_id=p.id AND ${publicVariantSql('v')} AND v.stock>0 AND v.price_toman>0) AS in_stock
+      (SELECT MAX(v.price_toman) FROM variants v WHERE v.product_id=p.id AND ${publicVariantSql('v')} AND v.price_toman>0) AS max_price,
+      EXISTS(SELECT 1 FROM variants v WHERE v.product_id=p.id AND ${publicVariantSql('v')} AND v.stock>0 AND v.price_toman>0) AS in_stock,
+      (SELECT v.sku FROM variants v WHERE v.product_id=p.id AND v.type='EDP' AND v.volume_ml=30 AND v.price_toman>0 LIMIT 1) AS card_sku,
+      (SELECT v.type_label FROM variants v WHERE v.product_id=p.id AND v.type='EDP' AND v.volume_ml=30 AND v.price_toman>0 LIMIT 1) AS card_type_label,
+      (SELECT v.price_toman FROM variants v WHERE v.product_id=p.id AND v.type='EDP' AND v.volume_ml=30 AND v.price_toman>0 LIMIT 1) AS card_price,
+      (SELECT v.stock FROM variants v WHERE v.product_id=p.id AND v.type='EDP' AND v.volume_ml=30 AND v.price_toman>0 LIMIT 1) AS card_stock
       FROM products p WHERE p.id=?`);
     const withPct = arr => (arr || []).map(x => {
       const live = liveCard.get(x.id);
       if (!live) return null;
+      const cardVariant = live.card_sku ? {
+        sku: live.card_sku, type: 'EDP', type_label: live.card_type_label,
+        volume_ml: 30, price_toman: live.card_price, stock: live.card_stock
+      } : null;
       return { ...x, supply_mode: live.supply_mode, min_price: live.min_price || 0,
+        max_price: live.max_price || 0, card_variant: cardVariant,
         campaign_percent: scamps.length ? campaignPercentFor(x, scamps) : 0,
         in_stock: ['IN_STOCK','MADE_TO_ORDER'].includes(live.supply_mode) && !!live.in_stock };
     }).filter(Boolean);
@@ -265,9 +279,13 @@ async function handle(ctx) {
     } catch {  }
 
     const totalProducts = db.prepare('SELECT COUNT(*) c FROM products').get().c;
+    const camps = activeCampaigns();
     return sendJSON(200, {
       total: rec.items.length,
-      results: rec.items,
+      results: rec.items.map(item => ({
+        ...item,
+        campaign_percent: camps.length ? campaignPercentFor(item, camps) : 0
+      })),
       total_products: totalProducts,
       profile: rec.profile,
       profile_saved: saved,

@@ -1086,7 +1086,8 @@ async function loadProducts() {
     note.style.display = 'none';
   }
 
-  document.getElementById('grid').innerHTML = d.products.map(productCard).join('');
+  document.getElementById('grid').innerHTML = d.products.map(p => productCard(p)).join('');
+  initCardImages(document.getElementById('grid'));
   initReveal();
   renderPager(d.page, d.totalPages);
 }

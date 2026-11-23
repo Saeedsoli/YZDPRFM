@@ -29,6 +29,10 @@
       animation: haloBreath 12s ease-in-out infinite;
     }
     .quiz-container { position: relative; z-index: 2; width: 100%; max-width: 540px; margin: 20px }
+    .quiz-container.results-mode { max-width: 1240px; align-self: flex-start; margin: 24px auto; }
+    .quiz-container.results-mode .quiz-head, .quiz-container.results-mode .quiz-nav { display: none; }
+    .quiz-card.results-mode { display: block; min-height: 0; }
+    .quiz-product-grid { margin: 18px 0 22px; }
 
     /* ── نوار پیشرفت با شماره ── */
     .quiz-head { display: flex; align-items: center; justify-content: space-between;
@@ -427,7 +431,9 @@ async function runQuiz() {
 
 function renderResults() {
   const card = document.getElementById('quizCard');
-  card.className = 'quiz-card animate-in';
+  const root = document.getElementById('quizRoot');
+  root.classList.toggle('results-mode', results.length > 0);
+  card.className = results.length ? 'quiz-card animate-in results-mode' : 'quiz-card animate-in';
   
   if (results.length === 0) {
     card.innerHTML = `
@@ -442,35 +448,10 @@ function renderResults() {
     return;
   }
 
-  // بیشترین امتیاز مبنای درصد تطابق است
-  const best = Math.max(...results.map(r => r._score || 0), 1);
-  
-  /* نشان جنسیت کنار نُت‌ها — کاربر باید ببیند پیشنهاد مردانه است
-     یا زنانه، بدون اینکه لازم باشد صفحه محصول را باز کند. */
-  const gLabel = g => g === 'MEN' ? '<b style="color:var(--gold)">مردانه</b> · '
-                    : g === 'WOMEN' ? '<b style="color:var(--gold)">زنانه</b> · '
-                    : g === 'UNISEX' ? '<b style="color:var(--gold)">یونیسکس</b> · ' : '';
-
-  const resultsHTML = results.map((p, i) => {
-    const notesStr = (p.notes_top || []).slice(0, 3).join('، ');
-    const full = p.brand_fa ? `${p.brand_fa} — ${p.name_fa}` : p.name_fa;
-    const priceStr = p.min_price ? faNum(p.min_price.toLocaleString('en-US')) + ' تومان' : '';
-    const fit = Math.round(((p._score || 0) / best) * 100);
-    return `
-      <a class="quiz-result-card" href="/perfume/${encodeURIComponent(p.slug)}" style="animation-delay:${i * 80}ms">
-        <div class="quiz-result-rank">${faNum(i + 1)}</div>
-        ${p.image_url ? `<img src="${esc(cardImage(p.image_url))}" alt="${isGenericProductImage(p.image_url) ? 'تصویر نمادین' : ''}" loading="lazy">` : ''}
-        <div class="quiz-result-info">
-          <div class="quiz-result-name">${esc(full)}
-            <span style="font-size:.7rem;color:var(--gold)">«دست‌ساز»</span></div>
-          <div class="quiz-result-brand">${esc(p.name_en || '')}</div>
-          ${notesStr ? `<div class="quiz-result-notes">${gLabel(p.gender)}${esc(notesStr)}</div>` : ''}
-          ${priceStr ? `<div class="quiz-result-price">از ${esc(priceStr)}</div>` : ''}
-          <div class="fitbar" title="میزان تطابق با سلیقه شما">
-            <i style="width:${fit}%;animation-delay:${i * 80 + 200}ms"></i></div>
-        </div>
-      </a>`;
-  }).join('');
+  const resultsHTML = `
+    <div class="product-grid quiz-product-grid">
+      ${results.map(p => productCard({ ...p, notes: { top: p.notes_top || [] } })).join('')}
+    </div>`;
 
   // خلاصه پاسخ‌ها — کاربر ببیند بر چه اساسی انتخاب شده
   const chosen = questions
@@ -492,6 +473,7 @@ function renderResults() {
     ${resultsHTML}
     <button class="btn-primary" data-csp-click="resetQuiz()">شروع دوباره کوییز</button>
     <button class="btn-secondary" data-csp-click="location.href='/'">مشاهده کاتالوگ کامل</button>`;
+  initCardImages(card);
 }
 
 function faNum(n) { return String(n).replace(/\d/g, d => '۰۱۲۳۴۵۶۷۸۹'[d]); }
@@ -500,6 +482,7 @@ function resetQuiz() {
   currentStep = 0;
   answers = {};
   results = [];
+  document.getElementById('quizRoot').classList.remove('results-mode');
   renderProgress();
   renderQuestion();
   document.getElementById('quizCard').scrollIntoView({ behavior: 'smooth', block: 'center' });

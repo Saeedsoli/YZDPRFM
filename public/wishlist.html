@@ -59,45 +59,13 @@ const TRASH = '<svg viewBox="0 0 24 24"><path d="M4 7h16M10 11v6M14 11v6' +
    قبلاً برای برداشتن یک رایحه از این فهرست باید به صفحه محصول
    برمی‌گشتید و قلب را دوباره می‌زدید. */
 function wishCard(p) {
-  const notes = (p.notes?.top || []).slice(0, 3).join('، ');
   const supply = productSupply(p);
-  const cheapest = (p.variants || [])
-    .filter(v => v.type === 'SAMPLE' && v.volume_ml === 5 && variantSellable(p, v))
-    .sort((a, b) => a.price_toman - b.price_toman)[0];
-
-  return `
-  <div class="${supply.classes} wish-card" data-slug="${esc(p.slug)}">
-    <button class="rm" title="حذف از علاقه‌مندی"
+  const remove = `
+    <button class="rm" type="button" title="حذف از علاقه‌مندی"
       aria-label="حذف ${esc(p.name_fa)} از علاقه‌مندی"
-      data-action="remove">${TRASH}</button>
-
-    <a href="/perfume/${encodeURIComponent(p.slug)}" style="text-decoration:none;color:inherit;display:block">
-      <div class="img-wrap">
-        <img src="${esc(cardImage(p.image_url))}" alt="${isGenericProductImage(p.image_url) ? 'تصویر نمادین' : 'تصویر'} ${esc(p.name_fa)}" loading="lazy" width="300" height="300">
-        ${genderLabel(p.gender) ? `<span class="card-badge">${genderLabel(p.gender)}</span>` : ''}
-        ${supply.label ? `<span class="card-out${supply.madeToOrder ? ' mto' : ''}">${supply.label}</span>` : ''}
-      </div>
-      <div class="body">
-        <div class="card-title">${esc(p.brand_fa ? p.brand_fa + ' — ' : '')}${esc(p.name_fa)}
-          <span class="card-tag">«دست‌ساز»</span></div>
-        <div class="card-sub">${esc(p.name_en || '')}</div>
-        ${notes ? `<div class="card-notes">نُت‌های آغازین: ${esc(notes)}</div>` : ''}
-        <div class="card-price-row">
-          <span class="price">${p.min_price > 0 ? `از ${money(p.min_price)} <small>تومان</small>` : 'قیمت در دسترس نیست'}</span>
-          ${supply.out
-            ? '<span class="card-go-notify">خبرم کن ←</span>'
-            : '<span class="card-go">مشاهده ←</span>'}
-        </div>
-      </div>
-    </a>
-
-    <div class="wish-act">
-      <a href="/perfume/${encodeURIComponent(p.slug)}">جزئیات و حجم‌ها</a>
-      ${cheapest ? `<button class="gold"
-        data-action="add-sample" data-sku="${esc(cheapest.sku)}">
-        افزودن سمپل</button>` : ''}
-    </div>
-  </div>`;
+      data-action="remove">${TRASH}</button>`;
+  // productCard keeps the shared .card-go-notify state and default 30ml action.
+  return productCard(p, { supply, extraClass: 'wish-card', extraControls: remove });
 }
 
 function render() {
@@ -135,6 +103,7 @@ function render() {
     </div>`;
 
   grid.innerHTML = items.map(wishCard).join('');
+  initCardImages(grid);
 }
 
 // Keep product identifiers out of executable inline JavaScript.
